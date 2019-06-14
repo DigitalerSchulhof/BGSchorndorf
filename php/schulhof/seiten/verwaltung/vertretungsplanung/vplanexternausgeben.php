@@ -1,10 +1,5 @@
 <?php
 function cms_vertretungsplan_komplettansicht_aus_datei($art, $datei) {
-  global $CMS_RECHTE;
-
-  if (!$CMS_RECHTE['verwaltung'] && !$CMS_RECHTE['lehrer']) {
-    return cms_meldung_berechtigung();
-  }
 
   $code = cms_vertretungsplan_komplettansicht_aus_datei_lehrer($datei);
   return $code;

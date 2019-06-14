@@ -3,10 +3,6 @@
 
 <h1>Postfach</h1>
 
-<?php
-if ($CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer']) {
-?>
-
 </div>
 
 <div class="cms_spalte_4">
@@ -58,14 +54,6 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 
 </div>
 </div>
-
-<?php
-}
-else {
-	echo cms_meldung_berechtigung();
-	echo "</div>";
-}
-?>
 
 
 <div class="cms_clear"></div>

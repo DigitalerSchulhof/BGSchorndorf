@@ -19,7 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-$zugriff = $CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer'];
+$zugriff = $CMS_RECHTE['Planung']['Leihgeräte sehen'];
 
 
 if ($fehler) {$zugriff = false;}

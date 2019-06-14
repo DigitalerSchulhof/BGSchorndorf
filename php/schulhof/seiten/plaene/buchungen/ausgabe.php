@@ -1,5 +1,5 @@
 <?php
-function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $jahr) {
+function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $anonymisiert = false) {
   global $CMS_URLGANZ, $CMS_RECHTE;
   if ($buchungsart == 'l') {
     $blocktabelle = 'leihenblockieren';
@@ -15,22 +15,24 @@ function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $
   $code .= "<h3>Buchung</h3>";
 
   // BUCHUNGSMASKE
-  $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_einblenden('cms_neue_buchung')\">+ Buchung hinzufügen</span></p>";
+  if ($CMS_RECHTE['Planung']['Buchungen vornehmen']) {
+    $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_einblenden('cms_neue_buchung')\">+ Buchung hinzufügen</span></p>";
 
-  $code .= "<div id=\"cms_neue_buchung\" style=\"display: none;\">";
-    $code .= "<table class=\"cms_formular\">";
-      $code .= "<tr><th>Grund:</th><td><input name=\"cms_buchung_grund\" id=\"cms_buchung_grund\"></td></tr>";
-      $code .= "<tr><th>Datum:</th><td>".cms_datum_eingabe('cms_buchung_datum')."</td></tr>";
-      $code .= "<tr><th>Beginn:</th><td>".cms_uhrzeit_eingabe('cms_buchung_beginn')."</td></tr>";
-      $code .= "<tr><th>Ende:</th><td>".cms_uhrzeit_eingabe('cms_buchung_ende')."</td></tr>";
-    $code .= "</table>";
+    $code .= "<div id=\"cms_neue_buchung\" style=\"display: none;\">";
+      $code .= "<table class=\"cms_formular\">";
+        $code .= "<tr><th>Grund:</th><td><input name=\"cms_buchung_grund\" id=\"cms_buchung_grund\"></td></tr>";
+        $code .= "<tr><th>Datum:</th><td>".cms_datum_eingabe('cms_buchung_datum')."</td></tr>";
+        $code .= "<tr><th>Beginn:</th><td>".cms_uhrzeit_eingabe('cms_buchung_beginn')."</td></tr>";
+        $code .= "<tr><th>Ende:</th><td>".cms_uhrzeit_eingabe('cms_buchung_ende')."</td></tr>";
+      $code .= "</table>";
 
-    $code .= "<p><span class=\"cms_button\" onclick=\"cms_buchung_neu_speichern('$buchungsart', '$buchungsstandort', '$CMS_URLGANZ')\">Buchung speichern</span> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_neue_buchung')\">Abbrechen</span></p>";
-  $code .= "</div>";
+      $code .= "<p><span class=\"cms_button\" onclick=\"cms_buchung_neu_speichern('$buchungsart', '$buchungsstandort', '$CMS_URLGANZ')\">Buchung speichern</span> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_neue_buchung')\">Abbrechen</span></p>";
+    $code .= "</div>";
+  }
 
   $code .= "<div class=\"cms_termine_jahrueberischt_knoepfe\"><span class=\"cms_termine_jahrueberischt_knoepfe_vorher\"><span class=\"cms_button\" onclick=\"cms_buchunganzeigen('$buchungsart', '$buchungsstandort', '-', '$CMS_URLGANZ')\">«</span></span><span class=\"cms_termine_jahrueberischt_knoepfe_jahr\">".cms_datum_eingabe('cms_buchungsplan_datum', $tag, $monat, $jahr, 'cms_buchunganzeigen(\''.$buchungsart.'\', '.$buchungsstandort.', 0, \''.$CMS_URLGANZ.'\')')."</span><span class=\"cms_termine_jahrueberischt_knoepfe_nachher\"><span class=\"cms_button\" onclick=\"cms_buchunganzeigen('$buchungsart', '$buchungsstandort', '+', '$CMS_URLGANZ')\">»</span></span></div>";
 
-  $code .= cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $CMS_URLGANZ);
+  $code .= cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $CMS_URLGANZ, $anonymisiert);
 
   if ($CMS_RECHTE['Organisation']['Buchungen löschen']) {
     $code .= "<p><span class=\"cms_button_nein\" onclick=\"cms_buchung_alleloeschen_vorbereiten('$CMS_URLGANZ')\">Alle vergangenen Buchungen aller Räume und Leihgeräte löschen</span></p>";
@@ -40,7 +42,7 @@ function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $
 }
 
 
-function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $url) {
+function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $url, $anonymisiert = false;) {
   global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERID, $CMS_RECHTE;
   $jetzt = mktime(0,0,0,$monat, $tag, $jahr);
   if ($buchungsart == 'l') {
@@ -159,7 +161,9 @@ function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $
           $ypos = $b['beginn'] - $beginnabschnitt;
           $code .= "<div class=\"cms_buchung_blockierung\" style=\"top: $ypos"."px;height: $hoehe"."px;\">";
             $code .= "<span class=\"cms_buchung_zeit\">".$b['beginns'].":".$b['beginnm']." - ".$b['endes'].":".$b['endem']."</span>";
-            $code .= "<span class=\"cms_buchung_grund\">".$b['grund']."</span>";
+            if (!$anonymisiert) {
+              $code .= "<span class=\"cms_buchung_grund\">".$b['grund']."</span>";
+            }
           $code .= "</div>";
         }
       }
@@ -170,8 +174,10 @@ function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $
         if ($b['person'] == $CMS_BENUTZERID) {$klasse = "selbst";} else {$klasse = "fremd";}
         $code .= "<div class=\"cms_buchung_$klasse\" style=\"top: $ypos"."px;height: $hoehe"."px;\">";
           $code .= "<span class=\"cms_buchung_zeit\">".$b['beginns'].":".$b['beginnm']." - ".$b['endes'].":".$b['endem']."</span>";
-          $code .= "<span class=\"cms_buchung_grund\">".$b['grund']."</span>";
-          $code .= "<span class=\"cms_buchung_von\">".cms_generiere_anzeigename($b['vorname'], $b['nachname'], $b['titel'])."</span>";
+          if (!$anonymisiert) {
+            $code .= "<span class=\"cms_buchung_grund\">".$b['grund']."</span>";
+            $code .= "<span class=\"cms_buchung_von\">".cms_generiere_anzeigename($b['vorname'], $b['nachname'], $b['titel'])."</span>";
+          }
           if (($b['person'] == $CMS_BENUTZERID) || ($CMS_RECHTE['Organisation']['Buchungen löschen'])) {
             $code .= "<span class=\"cms_buchung_aktion\"><span class=\"cms_button_nein\" onclick=\"cms_buchung_loeschen_vorbereiten(".$b['id'].", '$buchungsart', $buchungsstandort, '$url')\">Löschen</span></span>";
           }

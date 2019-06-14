@@ -132,12 +132,6 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
   }
   $sql->close();
 
-	$CMS_RECHTE['schueler'] = false;
-	$CMS_RECHTE['eltern'] = false;
-	$CMS_RECHTE['lehrer'] = false;
-	$CMS_RECHTE['verwaltung'] = false;
-	$CMS_RECHTE['extern'] = false;
-
 	$CMS_BENUTZERART = "";
 
 	if (isset($_SESSION['BENUTZERART'])) {$BENUTZERARTTEST = $_SESSION['BENUTZERART'];}
@@ -158,7 +152,6 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 	}
 
 	// Rechte nach Benutzerart ändern
-
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 	if ($CMS_BENUTZERART != "") {
 		if ($CMS_BENUTZERART == 's') {
@@ -166,35 +159,49 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['schueler'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'e') {
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['eltern'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'l') {
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['lehrer'] = true;
+			$CMS_RECHTE['Technik']['Probleme melden'];
+			$CMS_RECHTE['Planung']['Buchungen vornehmen'];
+			$CMS_RECHTE['Personen']['Personen sehen'];
+			$CMS_RECHTE['Zugriffe']['Lehrernetz'];
+			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Räume sehen'];
+			$CMS_RECHTE['Planung']['Raumpläne sehen'];
+			$CMS_RECHTE['Planung']['Leihgeräte sehen'];
 		}
 		else if ($CMS_BENUTZERART == 'v') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['verwaltung'] = true;
+			$CMS_RECHTE['Technik']['Probleme melden'];
+			$CMS_RECHTE['Planung']['Buchungen vornehmen'];
+			$CMS_RECHTE['Personen']['Personen sehen'];
+			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Räume sehen'];
+			$CMS_RECHTE['Planung']['Raumpläne sehen'];
+			$CMS_RECHTE['Planung']['Leihgeräte sehen'];
 		}
 		else if ($CMS_BENUTZERART == 'x') {
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['extern'] = true;
 		}
 	}
 

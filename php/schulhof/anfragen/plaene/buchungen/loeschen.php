@@ -20,9 +20,7 @@ if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 $CMS_RECHTE = cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet()) {
 	$fehler = false;
 
 	if ($art == 'r') {$buchungstabelle = 'raeumebuchen';}

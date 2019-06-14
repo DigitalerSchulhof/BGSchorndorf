@@ -4,7 +4,7 @@
 <h1>Personen auf dem Schulhof</h1>
 
 <?php
-if (($CMS_RECHTE['lehrer']) || ($CMS_RECHTE['verwaltung'])) {
+if ($CMS_RECHTE['Personen']['Personen sehen']) {
 ?>
 	<h4>Filter</h4>
 	<table class="cms_formular">

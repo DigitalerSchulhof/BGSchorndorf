@@ -280,12 +280,7 @@ function cms_schulhof_rechte() {
     while ($daten = $anfrage->fetch_assoc()) {
       $id = $daten['id'];
       $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-      if ($CMS_ANGEMELDET && ($CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'])) {
-        $datenschutz .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $id, 'p')\">$name</span> ";
-      }
-      else {
-        $datenschutz .= "<span class=\"cms_button\" onclick=\"cms_kontaktformular ('datenschutz')\">$name</span> ";
-      }
+      $datenschutz .= "<span class=\"cms_button\" onclick=\"cms_kontaktformular ('datenschutz')\">$name</span> ";
     }
     $anfrage->free();
   }
@@ -304,19 +299,14 @@ function cms_schulhof_rechte() {
     while ($daten = $anfrage->fetch_assoc()) {
       $id = $daten['id'];
       $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-      if ($CMS_ANGEMELDET && ($CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'])) {
-        $admin .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $id, 'p')\">$name</span> ";
-      }
-      else {
-        $admin .= "<span class=\"cms_button\" onclick=\"cms_kontaktformular ('admin')\">$name</span> ";
-      }
+      $admin .= "<span class=\"cms_button\" onclick=\"cms_kontaktformular ('admin')\">$name</span> ";
     }
     $anfrage->free();
   }
   cms_trennen($dbs);
 
   if (strlen($admin) == 0) {
-    $code .= "<p class=\"cms_notiz\">keine Datenschutzbeauftragte benannt</p>";
+    $code .= "<p class=\"cms_notiz\">keine Administratoren benannt</p>";
   }
   else {
     $code .= "<p>$admin</p>";

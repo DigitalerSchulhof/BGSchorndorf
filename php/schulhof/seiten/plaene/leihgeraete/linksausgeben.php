@@ -3,7 +3,7 @@ function cms_schulhof_leihgeraete_links_anzeigen () {
   global $CMS_RECHTE, $CMS_SCHLUESSEL, $CMS_BENUTZERID;
   $ausgabe = "";
 
-  if ($CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung']) {
+  if ($CMS_RECHTE['Planung']['Leihgeräte sehen']) {
 
     $dbs = cms_verbinden('s');
     $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihen WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;";

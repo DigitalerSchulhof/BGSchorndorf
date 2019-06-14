@@ -7,7 +7,7 @@ $code .= "</p>";
 $lehrerbezeichnung = $CMS_URL[3];
 $code .= "<h1>Stundenplan von ".(str_replace('_', ' ', $lehrerbezeichnung))."</h1>";
 
-$zugriff = $CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer'];
+$zugriff = $CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
 $fehler = false;
 
 if ($fehler) {$zugriff = false;}

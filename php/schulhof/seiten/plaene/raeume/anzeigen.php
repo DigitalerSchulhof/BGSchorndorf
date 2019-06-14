@@ -19,7 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-$zugriff = $CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer'];
+$zugriff = $CMS_RECHTE['Planung']['Räume sehen'];
 
 if ($fehler) {$zugriff = false;}
 $angemeldet = cms_angemeldet();
@@ -52,32 +52,40 @@ if ($angemeldet && $zugriff) {
 
 		$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 		include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
-		$code .= "<h3>Regulärer Raumplan</h3>";
-		if ($CMS_EINSTELLUNGEN['Stundenplan Raum extern'] == '1') {
 
-			if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
+		if ($CMS_RECHTE['Planung']['Raumpläne sehen']) {
+			$code .= "<h3>Regulärer Raumplan</h3>";
+			if ($CMS_EINSTELLUNGEN['Stundenplan Raum extern'] == '1') {
+
+				if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
+				else {
+					include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+					$code .= cms_raumplan_aus_datei($stundenplan);
+				}
+			}
 			else {
-				include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
-				$code .= cms_raumplan_aus_datei($stundenplan);
+				include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+				if ($zeitraum != '-') {
+					$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'r', $id, false);
+				}
+				else {
+					$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
+				}
 			}
 		}
 		else {
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
-			if ($zeitraum != '-') {
-				$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'r', $id, false);
-			}
-			else {
-				$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
-			}
+			$code .= cms_meldung('info', '<h4>Raumplan nicht verfügbar</h4><p>Auf den Raumplan ist kein Zugriff möglich.</p>');
 		}
-
-
 
 		$jetzt = time();
 
 		if ($buchbar == 1) {
-			include_once('php/schulhof/seiten/plaene/buchungen/ausgabe.php');
-			$code .= cms_buchungen_ausgeben('r', $raumid, date("d"), date("m"), date("Y"));
+			if ($CMS_RECHTE['Planung']['Buchungen anonymisiert sehen'] || $CMS_RECHTE['Planung']['Buchungen sehen']) {
+				include_once('php/schulhof/seiten/plaene/buchungen/ausgabe.php');
+				if ($CMS_RECHTE['Planung']['Buchungen sehen']) {$anonymisiert = false;}
+				else {$anonymisiert = true;}
+				$code .= cms_buchungen_ausgeben('r', $raumid, date("d"), date("m"), date("Y"), $anonymisiert);
+			}
 		}
 
 		$code .= "</div></div>";

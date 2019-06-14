@@ -16,7 +16,7 @@ if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 $CMS_BENUTZERID = $_SESSION["BENUTZERID"];
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Technik']['Probleme melden'];
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

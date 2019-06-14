@@ -1,10 +1,5 @@
 <?php
 function cms_vertretungsplan_komplettansicht_heute($art) {
-  global $CMS_RECHTE;
-
-  if (!$CMS_RECHTE['verwaltung'] && !$CMS_RECHTE['lehrer']) {
-    return cms_meldung_berechtigung();
-  }
 
   $jetzt = time();
   $beginn = mktime(0,0,0, date('n', $jetzt), date('j', $jetzt), date('Y', $jetzt));
@@ -19,11 +14,6 @@ function cms_vertretungsplan_komplettansicht_heute($art) {
 }
 
 function cms_vertretungsplan_komplettansicht_naechsterschultag($art) {
-  global $CMS_RECHTE;
-
-  if (!$CMS_RECHTE['verwaltung'] && !$CMS_RECHTE['lehrer']) {
-    return cms_meldung_berechtigung();
-  }
 
   // Suche den nächsten Schultag
   $jetzt = time();
@@ -125,11 +115,7 @@ function cms_vertretungsplan_komplettansicht_naechsterschultag($art) {
 }
 
 function cms_vertretungsplan_komplettansicht_tag($dbs, $art, $beginn, $ende) {
-  global $CMS_RECHTE, $CMS_SCHLUESSEL;
-
-  if (!$CMS_RECHTE['verwaltung'] && !$CMS_RECHTE['lehrer']) {
-    return cms_meldung_berechtigung();
-  }
+  global $CMS_SCHLUESSEL;
 
   $vtext = "";
   $sql = "SELECT AES_DECRYPT(textschueler, '$CMS_SCHLUESSEL') AS vts, AES_DECRYPT(textlehrer, '$CMS_SCHLUESSEL') AS vtl FROM vertretungstexte WHERE beginn = $beginn";

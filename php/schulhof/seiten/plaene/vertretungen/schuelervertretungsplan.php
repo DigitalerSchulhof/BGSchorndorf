@@ -7,7 +7,7 @@ $code .= "</p>";
 $code .= "<h1>Schülervertretungsplan</h1>";
 
 
-$zugriff = $CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer'];
+$zugriff = $CMS_RECHTE['Planung']['Schülervertretungsplan sehen'];
 $fehler = false;
 
 if ($fehler) {$zugriff = false;}

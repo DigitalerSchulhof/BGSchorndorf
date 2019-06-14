@@ -1,15 +1,11 @@
 <?php
 function cms_vertretungsplan_extern_persoenlich() {
-  global $CMS_RECHTE, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
+  global $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
 
   $code = "";
 
-  if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'e')) {
+  if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'e') || ($CMS_BENUTZERART == 'x')) {
     return $code;
-  }
-  if (!$CMS_RECHTE['lehrer'] && !$CMS_RECHTE['schueler']) {
-    print_r($CMS_RECHTE);
-    return cms_meldung_berechtigung();
   }
 
   $kuerzel = null;

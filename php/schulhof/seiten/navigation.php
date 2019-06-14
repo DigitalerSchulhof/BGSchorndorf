@@ -163,12 +163,12 @@ function cms_schulhofnavigation_informationen($dbs) {
 				$code['mobil'] .= "<li><a href=\"Schulhof/Listen\">Listen</a><span id=\"cms_mobilmenue_knopf_i_listen\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('i_listen')\">&#8628;</span>";
 				$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i_listen\" style=\"display:none;\">";
 					$code['mobil'] .= "<ul>";
-						$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Lehrer\">Lehrer</a></li> ";
+						if ($CMS_RECHTE['Personen']['Lehrerliste sehen']) {$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Lehrer\">Lehrer</a></li> ";}
 						$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Verwaltungspersonal\">Verwaltungspersonal</a></li>";
-							$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li>";
-							$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Stufen\">Stufen</a></li>";
-							$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li>";
-							$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Elternvertretung\">Elternvertretung</a></li>";
+						if ($CMS_RECHTE['Gruppen']['Klassen Listen sehen']) {$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";}
+						if ($CMS_RECHTE['Gruppen']['Stufen Listen sehen']) {$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Stufen\">Stufen</a></li> ";}
+						if ($CMS_RECHTE['Personen']['Schülervertreter sehen']) {$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li> ";}
+						if ($CMS_RECHTE['Personen']['Elternvertreter sehen']) {$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";}
 					$code['mobil'] .= "</ul>";
 				$code['mobil'] .= "</div>";
 			$code['mobil'] .= "</li>";
@@ -189,14 +189,12 @@ function cms_schulhofnavigation_informationen($dbs) {
 					$code['pc'] .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_informationen_0\" style=\"display: block;\">";
 						$code['pc'] .= "<div class=\"cms_reitermenue_i\">";
 							$code['pc'] .= "<ul>";
-								$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Lehrer\">Lehrer</a></li> ";
+								if ($CMS_RECHTE['Personen']['Lehrerliste sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Lehrer\">Lehrer</a></li> ";}
 								$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Verwaltungspersonal\">Verwaltungspersonal</a></li> ";
-								if ($CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung']) {
-									$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";
-									$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Stufen\">Stufen</a></li> ";
-									$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li> ";
-									$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Elternvertretung\">Elternvertretung</a></li> ";
-								}
+								if ($CMS_RECHTE['Gruppen']['Klassen Listen sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";}
+								if ($CMS_RECHTE['Gruppen']['Stufen Listen sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Stufen\">Stufen</a></li> ";}
+								if ($CMS_RECHTE['Personen']['Schülervertreter sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li> ";}
+								if ($CMS_RECHTE['Personen']['Elternvertreter sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";}
 							$code['pc'] .= "</ul>";
 						$code['pc'] .= "</div>";
 					$code['pc'] .= "</div>";
@@ -417,7 +415,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	$VERWALTUNG = false;
 	// PERSONEN
 	$VERpersonenundgruppen = "";
-	$zugriff = ($CMS_RECHTE['lehrer']) || ($CMS_RECHTE['verwaltung']);
+	$zugriff = $CMS_RECHTE['Personen']['Personen sehen'];
 	if ($zugriff) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen\">Personen</a></li> ";
 	}

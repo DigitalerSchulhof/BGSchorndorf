@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Liste der Elternvertretungen</h1>";
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Personen']['Elternvertreter sehen'];
 
 if ($zugriff) {
 	$dbs = cms_verbinden();

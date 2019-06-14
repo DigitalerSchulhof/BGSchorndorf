@@ -3,10 +3,6 @@
 
 <h1>Postfach</h1>
 
-<?php
-if ($CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer']) {
-?>
-
 </div>
 
 <div class="cms_spalte_4">
@@ -47,14 +43,6 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 	<p><span class="cms_button" onclick="cms_postfach_neuertag();">Speichern</span> <a class="cms_button_nein" href="Schulhof/Nutzerkonto/Postfach/Tags">Abbrechen</a></p>
 </div>
 </div>
-
-<?php
-}
-else {
-	echo cms_meldung_berechtigung();
-	echo "</div>";
-}
-?>
 
 
 <div class="cms_clear"></div>

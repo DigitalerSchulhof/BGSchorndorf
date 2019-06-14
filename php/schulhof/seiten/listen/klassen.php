@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Klassen- und Kurslisten</h1>";
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Gruppen']['Klassen Listen sehen'];
 
 if ($zugriff) {
 	$dbs = cms_verbinden();

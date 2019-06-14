@@ -26,10 +26,12 @@ if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 $CMS_RECHTE = cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Planung']['Buchungen sehen'] || $CMS_RECHTE['Planung']['Buchungen anonymisiert sehen'];
 
 if (cms_angemeldet() && $zugriff) {
-	echo cms_buchungsplan_laden($art, $standort, $tag, $monat, $jahr, $ziel);
+	if ($CMS_RECHTE['Planung']['Buchungen sehen']) {$anonymisiert = false;}
+	else {$anonymisiert = true;}
+	echo cms_buchungsplan_laden($art, $standort, $tag, $monat, $jahr, $ziel, $anonymisiert);
 }
 else {
 	echo "BERECHTIGUNG";

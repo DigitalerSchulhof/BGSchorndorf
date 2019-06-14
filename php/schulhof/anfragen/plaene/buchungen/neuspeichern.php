@@ -33,7 +33,7 @@ if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 $CMS_RECHTE = cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Planung']['Buchungen vornehmen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

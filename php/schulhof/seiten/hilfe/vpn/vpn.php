@@ -3,7 +3,7 @@
 
 <?php
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Zugriffe']['Lehrernetz'];
 
 if (!$zugriff) {
 	echo cms_meldung_berechtigung();

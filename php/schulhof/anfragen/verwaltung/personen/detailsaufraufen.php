@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = ($CMS_RECHTE['lehrer']) || ($CMS_RECHTE['verwaltung']);
+$zugriff = $CMS_RECHTE['Personen']['Persönliche Daten sehen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

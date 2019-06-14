@@ -4,9 +4,9 @@ $code .= "<div class=\"cms_spalte_i\">";
 $code .= "<p class=\"cms_brotkrumen\">";
 $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
-$code .= "<h1>Liste der Klassen- und Kurssprecher</h1>";
+$code .= "<h1>Liste der Schülervertreter</h1>";
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Personen']['Schülervertreter sehen'];
 
 if ($zugriff) {
 	$dbs = cms_verbinden();

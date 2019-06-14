@@ -12,7 +12,7 @@
 // PERSONEN UND GRUPPEN
 $tabzahl = 0;
 $code = "";
-if ($CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung']) {
+if ($CMS_RECHTE['Personen']['Personen sehen']) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_personen\" href=\"Schulhof/Verwaltung/Personen\">";
 			$code .= "<h3>Personen</h3>";

@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Stufenlisten</h1>";
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = $CMS_RECHTE['Gruppen']['Stufen Listen sehen'];
 
 if ($zugriff) {
 	$dbs = cms_verbinden();

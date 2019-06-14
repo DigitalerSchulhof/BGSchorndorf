@@ -19,7 +19,7 @@ if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; 
 
 $CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = ($CMS_RECHTE['verwaltung']) || ($CMS_RECHTE['lehrer']);
+$zugriff = $CMS_RECHTE['Personen']['Personen sehen'];
 
 
 if (cms_angemeldet() && $zugriff) {
@@ -118,7 +118,7 @@ if (cms_angemeldet() && $zugriff) {
 					$online = "offline.png";
 					if ($daten['sessiontimeout'] > $jetzt) {$online = "online.png";}
 					$ausgabe .= "<td>";
-					if ($CMS_RECHTE['Personen']['Anmeldedetails einsehen']) {
+					if ($CMS_RECHTE['Personen']['Anmeldedetails sehen']) {
 						if (!is_null($daten['nutzerkonto'])) {
 							$ausgabe .= "<img src=\"res/icons/klein/$online\">";
 						}
@@ -134,7 +134,7 @@ if (cms_angemeldet() && $zugriff) {
 					else {$anzeigename = $daten['vorname']."_".$daten['nachname'];}
 					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\"><span class=\"cms_hinweis\">Nachricht schreiben</span><img src=\"res/icons/klein/nachricht.png\"></span> ";
 
-					$zugriff = ($CMS_RECHTE['lehrer']) || ($CMS_RECHTE['verwaltung']);
+					$zugriff = $CMS_RECHTE['Personen']['Persönliche Daten sehen'];
 					if ($zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', ".$daten['id'].", 'Details')\"><span class=\"cms_hinweis\">Details</span><img src=\"res/icons/klein/details.png\"></span> ";
 					}

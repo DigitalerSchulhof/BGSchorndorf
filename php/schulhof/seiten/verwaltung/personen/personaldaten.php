@@ -6,7 +6,7 @@ function cms_personaldaten_ausgeben($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = ($CMS_RECHTE['lehrer']) || ($CMS_RECHTE['verwaltung']);
+		$zugriff = $CMS_RECHTE['Personen']['Persönliche Daten sehen'];
 		$detailansicht = true;
 	}
 
@@ -108,7 +108,7 @@ function cms_personaldaten_ausgeben($id) {
 						$code .= "<tr class=\"$versteckklasse\"><th>Lehrerkürzel:</th><td>$profildaten_lehrerkuerzel</td></tr>";
 						$versteckt = true;
 					}
-					if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Anmeldedetails einsehen'])) {
+					if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Anmeldedetails sehen'])) {
 						$code .= "<tr class=\"$versteckklasse\"><th>Letzte Anmeldung:</th><td>$letzteanzeige</td></tr>";
 						$code .= "<tr class=\"$versteckklasse\"><th>Vorletzte Anmeldung:</th><td>$vorletzteanzeige</td></tr>";
 						$code .= "<tr class=\"$versteckklasse\"><th>Online:</th><td><img src=\"res/icons/klein/$status\"/></td></tr>";
@@ -313,7 +313,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = ($CMS_RECHTE['lehrer']) || ($CMS_RECHTE['verwaltung']);
+		$zugriff = $CMS_RECHTE['Personen']['Ansprechpartner sehen'];
 		$detailansicht = true;
 	}
 

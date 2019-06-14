@@ -9,7 +9,7 @@ $code .= "<h1>Stundenplan der Stufe ".(str_replace('_', ' ', $CMS_ZUSATZ[0]))."<
 if (isset($_SESSION["STUFENPLANANZEIGEN"])) {$id = $_SESSION["STUFENPLANANZEIGEN"];} else {$id = '-';}
 
 if ($id != "-") {
-	$zugriff = $CMS_RECHTE['verwaltung'] || $CMS_RECHTE['lehrer'];
+	$zugriff = $CMS_RECHTE['Gruppen']['Stufen Listen sehen'];
 	$fehler = false;
 
 	if ($fehler) {$zugriff = false;}
