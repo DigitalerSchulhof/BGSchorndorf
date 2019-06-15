@@ -7,12 +7,12 @@ include_once("../../schulhof/funktionen/check.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['url'])) {$url = cms_texttrafo_e_db($_POST['url']);} else {$url = "";}
-if (isset($_POST['header'])) {$header = cms_texttrafo_e_db($_POST['header']);} else {$header = "";}
-if (isset($_POST['titel'])) {$titel = cms_texttrafo_e_db($_POST['titel']);} else {$titel = "";}
-if (isset($_POST['beschreibung'])) {$beschreibung = cms_texttrafo_e_db($_POST['beschreibung']);} else {$beschreibung = "";}
-if (isset($_POST['name'])) {$name = cms_texttrafo_e_db($_POST['name']);} else {$name = "";}
-if (isset($_POST['feedback'])) {$feedback = cms_texttrafo_e_db($_POST['feedback']);} else {$feedback = "";}
+if (isset($_POST['url'])) {$url = htmlentities(cms_texttrafo_e_event($_POST['url']));} else {$url = "";}
+if (isset($_POST['header'])) {$header = htmlentities(cms_texttrafo_e_event($_POST['header']));} else {$header = "";}
+if (isset($_POST['titel'])) {$titel = htmlentities(cms_texttrafo_e_event($_POST['titel']));} else {$titel = "";}
+if (isset($_POST['beschreibung'])) {$beschreibung = htmlentities(cms_texttrafo_e_event($_POST['beschreibung']));} else {$beschreibung = "";}
+if (isset($_POST['name'])) {$name = htmlentities(cms_texttrafo_e_event($_POST['name']));} else {$name = "";}
+if (isset($_POST['feedback'])) {$feedback = htmlentities(cms_texttrafo_e_event($_POST['feedback']));} else {$feedback = "";}
 
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $CMS_ANGEMELDET = cms_angemeldet();
@@ -35,10 +35,15 @@ if($titel != "") {
     $ersteller = "";
     if(isset($_SESSION["BENUTZERID"]))
       $ersteller = $_SESSION["BENUTZERID"];
-    $headerS = cms_array_leserlich(json_decode(urldecode($header)), "\n");;
+    $headerS = json_decode(urldecode($header), true);
+    unset($headerS["Cookie"]);
+    $headerS = cms_array_leserlich($headerS, "\n");
     $sessionS = "Leer";
-    if(isset($_SESSION))
-      $sessionS = cms_array_leserlich($_SESSION, "\n");
+    if(isset($_SESSION)) {
+      $session = $_SESSION;
+      unset($session["SESSIONID"]);
+      $sessionS = cms_array_leserlich($session, "\n");
+    }
     $sql = $dbs->prepare("INSERT INTO fehlermeldungen (id, ersteller, url, titel, beschreibung, header, session, zeitstempel, status, sichtbar) VALUES (?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?,'$CMS_SCHLUESSEL'), AES_ENCRYPT(?,'$CMS_SCHLUESSEL'), ?, ?, ?)");
     $weilreference0 = 0;
     $weilreference1 = 1;
