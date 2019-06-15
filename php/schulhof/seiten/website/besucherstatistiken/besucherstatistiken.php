@@ -8,8 +8,10 @@ $code .= "</p>";
 $code .= "<h1>Besucherstatistiken</h1>";
 
 $code .= "<p>";
-$code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_gruppe_website.png');\" href=\"Schulhof/Website/Besucherstatistiken/Website\">Besucherstatistiken - Website</a> ";
-$code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_schulhof.png');\" href=\"Schulhof/Website/Besucherstatistiken/Schulhof\">Besucherstatistiken - Schulhof</a> ";
+if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'])
+  $code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_gruppe_website.png');\" href=\"Schulhof/Website/Besucherstatistiken/Website\">Besucherstatistiken - Website</a> ";
+if($CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'])
+  $code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_schulhof.png');\" href=\"Schulhof/Website/Besucherstatistiken/Schulhof\">Besucherstatistiken - Schulhof</a> ";
 $code .= "</p>";
 
 $code .= "</div>";
