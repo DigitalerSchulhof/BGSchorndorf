@@ -7,7 +7,7 @@ include_once("../../schulhof/funktionen/dateisystem.php");
 
 session_start();
 
-if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
+if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
