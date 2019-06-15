@@ -1,0 +1,226 @@
+// out: ../css/spezialfaelle.css, sourcemap: false, compress: true, autoprefixer: false
+@import "standard.less";
+
+#cms_neuerungenverlauf p + h4 {
+  margin-top: @absatzabstand;
+}
+
+.cms_sichtbar {
+  max-height: 2500px !important;
+}
+
+#cms_dsgvo_datenschutz {
+  position:fixed;
+  bottom:0px;
+  width: 100%;
+  left: 0px;
+  padding:10px;
+}
+
+#cms_dsgvo_datenschutz .cms_meldung {
+  margin: 0px;
+  box-shadow: 0px 0px 10px @fehlerdunkel;
+}
+
+#cms_netzcheckstatus span {font-size: inherit;}
+
+.cms_filter_ein {
+    display: none;
+}
+
+.cms_absender {text-align: right;}
+.cms_empfaenger, .cms_anhangtitel {color: @standarddunkel;}
+
+.cms_postfach_papierkorb_aussen {
+  width: 6px;
+  height: 23px;
+  background: @fehlerhell;
+  border-radius: 3px;
+  display: inline-block;
+  line-height: 0px;
+  position: relative;
+  bottom: -6px;
+  margin-bottom: 2px;
+}
+
+.cms_postfach_papierkorb_innen {
+  width: 6px;
+  height: 23px;
+  background: @erfolghell;
+  border-radius: 3px;
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.cms_button .cms_postfach_anhang {
+  margin-right: 0px !important;
+}
+
+.cms_postfach_anhang {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 3px;
+  position: relative;
+}
+
+.cms_postfach_anhang img {
+  position: relative;
+  top: 3px;
+}
+
+.cms_postfach_anhang .cms_button_nein {
+  position: absolute;
+  left: -3px;
+  z-index: 1;
+  display: none;
+}
+
+.cms_postfach_anhang:hover .cms_button_nein {
+  display: block;
+}
+
+.cms_signatur, .cms_originalnachricht_meta {
+  margin-top: 15px;
+  padding-top:5px;
+  border-top: 1px dotted @standarddunkel;
+  color: @standarddunkel;
+  font-size: 80%;
+}
+
+.cms_originalnachricht {
+  padding-left: 5px;
+  border-left: 2px solid @standardhell;
+}
+
+#cms_geraeteproblem_kommentar {
+  color: @fehlerdunkel;
+}
+
+#cms_geraeteproblem {
+    margin-top: 20px;
+}
+
+.cms_versteckt {
+    display: none;
+}
+
+
+#cms_debug {
+  bottom: 0px;
+  left: 0px;
+  z-index: 1000;
+  padding: 10px 10px 30px 10px;
+  background: @warnunghell;
+  display: none;
+}
+
+.cms_geraeteproblem_meldung {
+  margin-top: 20px;
+}
+
+.cms_geraeteproblem_meldung textarea {
+  height: 50px !important;
+}
+
+#cms_kurse_kursklassen .cms_notiz {
+  text-align: center;
+}
+
+.cms_optimierung_P ul.cms_bloguebersicht a p img {
+  width: 100%;
+}
+
+.cms_optimierung_H ul.cms_bloguebersicht a p img {
+  width: 100%;
+}
+
+#cms_gruppe_icon_auswahl {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  width: 100%;
+  max-width: 800px;
+  background: @standardhell;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.cms_nicht_genehmigt {
+  opacity: .35;
+}
+
+.cms_genehmigungausstehend {
+  font-weight: bold;
+  padding: 5px !important;
+  border-radius: 5px;
+  color: @schriftfarbehell;
+  background-color: @fehlerdunkel;
+}
+
+.cms_spamschutz {
+  border-radius: 5px;
+  border: 1px solid @hintergrundhell;
+}
+
+.cms_vorlaeufig {
+  opacity: .5;
+}
+
+.cms_vollbild {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: @hintergrundhell;
+  top: 0px;
+  left: 0px;
+  z-index: 10000000;
+  display: block;
+  padding: 20px;
+  font-size: 120%;
+}
+
+.cms_problemmeldung_box {
+  display: flex;
+}
+
+.cms_problemmeldung {
+  display: flex;
+  flex-wrap: wrap;
+  width: 20%;
+  border-right: 5px solid @hintergrundhell;
+}
+
+.cms_problemmeldunginnen {
+  border-radius: 10px;
+  padding: 10px;
+  display: block;
+  width: 100%;
+}
+
+.cms_geraetelegende1, .cms_geraetelegende2, .cms_geraetelegende3, .cms_geraetelegende4, .cms_geraetelegende5 {
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.cms_geraetelegende2, .cms_geraetelegende3, .cms_geraetelegende4, .cms_geraetelegende5 {margin-right: 5px;}
+
+.cms_problemmeldung_standort, .cms_problemmeldung_status, .cms_problemmeldung_meldung, .cms_problemmeldung_kommentar, .cms_problemmeldung_zeit {display: block;}
+
+.cms_problemmeldung_standort, .cms_problemmeldung_status, .cms_problemmeldung_meldung, .cms_problemmeldung_kommentar {margin-bottom: 5px;}
+
+.cms_problemmeldung_standort, .cms_problemmeldung_status {font-size: 120%;}
+
+.cms_problemmeldung_standort {font-weight:bold;}
+
+.cms_problem1 .cms_problemmeldunginnen, .cms_geraetelegende1 {background: @infohell; border: 2px solid @infodunkel;}
+.cms_problem2 .cms_problemmeldunginnen, .cms_geraetelegende2 {background: @warnunghell; border: 2px solid @warnungdunkel;}
+.cms_problem3 .cms_problemmeldunginnen, .cms_geraetelegende3 {background: @fehlerhell; border: 2px solid @fehlerdunkel;}
+.cms_problem4 .cms_problemmeldunginnen, .cms_geraetelegende4 {background: @standarddunkel; border: 2px solid @hintergrunddunkel;}
+.cms_problem5 .cms_problemmeldunginnen, .cms_geraetelegende5 {background: @hintergrundhell; border: 2px solid @standardhell;}

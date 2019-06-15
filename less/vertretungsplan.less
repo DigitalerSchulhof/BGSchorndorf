@@ -1,0 +1,97 @@
+// out: ../css/vertretungsplan.css, sourcemap: false, compress: true, autoprefixer: false
+@import "standard.less";
+
+.cms_vplanuebersicht {
+  padding: 0px;
+  margin: 0px;
+  border-bottom: 1px solid @standardhell;
+}
+
+.cms_vplanuebersicht li {
+  padding: 0px;
+  margin: 0px;
+  border-top: 1px solid @standardhell;
+  list-style-type: none;
+  display: block;
+  padding: 5px;
+}
+
+.cms_vplanuebersicht h3 {
+  font-size: 110%;
+  font-weight: bold;
+  margin-bottom: @absatzabstand;
+}
+
+.cms_vplan_vertretungsstunde {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+.cms_vplan_uebergang {
+  display: inline-block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  color: @schriftfarbedunkel;
+  text-align: center;
+  font-size: 250%;
+  font-weight: bold;
+  opacity: .3;
+}
+
+.cms_vplan_stundevorher, .cms_vplan_stundenachher, .cms_vplan_stundeentfall {
+  display: inline-block;
+  width: 50%;
+  position: relative;
+  font-size: 80%;
+}
+
+.cms_vplan_stundevorher {
+  padding: 5px;
+  background: @standardhell;
+}
+
+.cms_vplan_stundenachher, .cms_vplan_stundeentfall {
+  padding: 5px;
+  text-align: right;
+}
+
+.cms_vplan_stundenachher {
+  background: @erfolghell;
+}
+
+.cms_vplan_stundeentfall {
+  background: @hintergrundhell;
+}
+
+.cms_vplan_stundevorentfall {
+  background: @fehlerhell;
+}
+
+.cms_vertretung_stundennr {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 0px;
+  font-weight: bold;
+  font-size: 250%;
+  color: @schriftfarbedunkel;
+  left: 0px;
+  opacity: .3;
+}
+
+.cms_vplan_stundevorher .cms_vertretung_stundennr {
+  text-align: right;
+  padding-right: 15px;
+}
+
+.cms_vplan_stundenachher .cms_vertretung_stundennr, .cms_vplan_stundeentfall .cms_vertretung_stundennr {
+  text-align: left;
+  padding-left: 15px;
+}
+
+.cms_vertretung_inhalt {
+  position: relative;
+}
