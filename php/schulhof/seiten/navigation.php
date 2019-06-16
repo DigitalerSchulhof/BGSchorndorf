@@ -616,7 +616,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 				}
 				if (strlen($VERwebsite) > 0) {
 					$code['mobil'] .= "<li><a href=\"Schulhof/Verwaltung\">Website</a><span id=\"cms_mobilmenue_knopf_v_website\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('v_website')\">&#8628;</span>";
-						$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_v_organisation\" style=\"display:none;\">";
+						$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_v_website\" style=\"display:none;\">";
 							$code['mobil'] .= "<ul>";
 								$code['mobil'] .= str_replace('class="cms_button"', '', $VERwebsite);
 							$code['mobil'] .= "</ul>";

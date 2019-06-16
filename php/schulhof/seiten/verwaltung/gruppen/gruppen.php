@@ -9,12 +9,15 @@ $code .= "<h1>Gruppen</h1>";
 
 include_once('php/schulhof/anfragen/verwaltung/gruppen/initial.php');
 
-$code .= "<p>";
-foreach ($CMS_GRUPPEN as $gruppe) {
+$gruppen = "";
+foreach ($CMS_GRUPPEN as $gruppe)
   if($CMS_RECHTE['Gruppen'][$gruppe.' anlegen'] || $CMS_RECHTE['Gruppen'][$gruppe.' bearbeiten'] || $CMS_RECHTE['Gruppen'][$gruppe.' löschen'])
-    $code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/".cms_textzulink($gruppe).".png');\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($gruppe)."\">$gruppe</a> ";
-}
-$code .= "</p>";
+    $gruppen .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/".cms_textzulink($gruppe).".png');\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($gruppe)."\">$gruppe</a> ";
+
+if (strlen($gruppen) > 0)
+	$code .= "<p>".$gruppen."</p>";
+else
+	$code .= cms_meldung_berechtigung();
 
 $code .= "</div>";
 $code .= "<div class=\"cms_clear\"></div>";

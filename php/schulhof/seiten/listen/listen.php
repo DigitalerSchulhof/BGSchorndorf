@@ -9,10 +9,14 @@ $code .= "<h1>Listen</h1>";
 $code .= "<ul>";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Lehrer\">Lehrer</a></li>";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Verwaltungspersonal\">Verwaltungspersonal</a></li>";
-	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li>";
-	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Stufen\">Stufen</a></li>";
-	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li>";
-	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Elternvertretung\">Elternvertretung</a></li>";
+	if($CMS_RECHTE['Gruppen']['Klassen Listen sehen'])
+		$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li>";
+	if($CMS_RECHTE['Gruppen']['Stufen Listen sehen'])
+		$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Stufen\">Stufen</a></li>";
+	if($CMS_RECHTE['Personen']['Schülervertreter sehen'])
+		$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li>";
+	if($CMS_RECHTE['Personen']['Elternvertreter sehen'])
+		$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Elternvertretung\">Elternvertretung</a></li>";
 $code .= "</ul>";
 
 $code .= "</div>";
