@@ -274,4 +274,8 @@ $CMS_ZIELE[309] = 'php/schulhof/anfragen/verwaltung/galerien/ablehnen.php';
 $CMS_ZIELE[310] = 'php/schulhof/anfragen/hausmeister/markieren.php';
 $CMS_ZIELE[311] = 'php/schulhof/anfragen/hausmeister/vorbereiten.php';
 $CMS_ZIELE[312] = 'php/schulhof/anfragen/hausmeister/loeschen.php';
+$CMS_ZIELE[313] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/neuspeichern.php';
+$CMS_ZIELE[314] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/loeschen.php';
+$CMS_ZIELE[315] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenvorbereiten.php';
+$CMS_ZIELE[316] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenspeichern.php';
 ?>

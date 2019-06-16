@@ -58,6 +58,11 @@ function cms_hausmeisterauftrag_neu_speichern() {
 			if (rueckgabe == "ERFOLG") {
 				cms_meldung_an('erfolg', 'Hausmeisterauftrag einreichen', '<p>Der Hausmeistereintrag wurde eingereicht. Sie erhalten eine Notifikation, wenn er bearbeitet wurde.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister\');">Zurück zur Hausmeisterseite</span></p>');
 			}
+			else if (rueckgabe.match(/BÖSE/)) {
+				var meldung = '<p>Der Auftrag konnte nicht erstellt werden, denn ...</p><ul>';
+				meldung += '<ul><li>der Auftrag enthält verboten Code. Der Verstoß wurde protokolliert.</li></ul>';
+				cms_meldung_an('fehler', 'Hausmeisterauftrag einreichen', meldung, '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 

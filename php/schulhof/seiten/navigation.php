@@ -155,7 +155,10 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 }
 
 function cms_schulhofnavigation_informationen($dbs) {
-	global $CMS_RECHTE;
+	global $CMS_RECHTE, $CMS_BENUTZERART;
+
+	include_once('php/schulhof/seiten/verwaltung/dauerbrenner/linksausgeben.php');
+	$dauerbrenner = cms_dauerbrenner_links_anzeigen();
 
 	$code['mobil'] = "<h3>Informationen</h3>";
 	$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i\">";
@@ -172,8 +175,15 @@ function cms_schulhofnavigation_informationen($dbs) {
 					$code['mobil'] .= "</ul>";
 				$code['mobil'] .= "</div>";
 			$code['mobil'] .= "</li>";
+			$code['mobil'] .= "<li><a href=\"Schulhof/Dauerbrenner\">Dauerbrenner</a><span id=\"cms_mobilmenue_knopf_i_listen\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('i_dauerbrenner')\">&#8628;</span>";
+			$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i_dauerbrenner\" style=\"display:none;\">";
+					$code['mobil'] .= str_replace('class="cms_button"', '', $dauerbrenner);
+			$code['mobil'] .= "</div>";
+		$code['mobil'] .= "</li>";
 		$code['mobil'] .= "</ul>";
 	$code['mobil'] .= "</div>";
+
+
 
 
 	$code['pc'] = "<li><span class=\"cms_kategorie1\" onclick=\"cms_hauptnavigation_einblenden('info')\">Informationen</span>";
@@ -183,7 +193,8 @@ function cms_schulhofnavigation_informationen($dbs) {
 				$code['pc'] .= "<span class=\"cms_unternavigation_schliessen cms_button_nein\" id=\"cms_hauptnavigation_info_l\" onclick=\"cms_hauptnavigation_ausblenden('info')\">&times;</span>";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= "<ul class=\"cms_reitermenue\">";
-						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('informationen', 0,0)\">Listen</a></li> ";
+						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('informationen', 0,1)\">Listen</a></li> ";
+						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('informationen', 1,1)\">Dauerbrenner</a></li> ";
 					$code['pc'] .= "</ul>";
 
 					$code['pc'] .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_informationen_0\" style=\"display: block;\">";
@@ -196,6 +207,12 @@ function cms_schulhofnavigation_informationen($dbs) {
 								if ($CMS_RECHTE['Personen']['Schülervertreter sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen-_und_Kurssprecher\">Klassen- und Kurssprecher</a></li> ";}
 								if ($CMS_RECHTE['Personen']['Elternvertreter sehen']) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";}
 							$code['pc'] .= "</ul>";
+						$code['pc'] .= "</div>";
+					$code['pc'] .= "</div>";
+
+					$code['pc'] .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_informationen_1\" style=\"display: none;\">";
+						$code['pc'] .= "<div class=\"cms_reitermenue_i\">";
+								$code['pc'] .= $dauerbrenner;
 						$code['pc'] .= "</div>";
 					$code['pc'] .= "</div>";
 

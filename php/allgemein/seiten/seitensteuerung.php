@@ -126,6 +126,10 @@ else if ($CMS_URL[0] == 'Schulhof') {
   if (preg_match("/^Schulhof\/Pläne\/Leihgeräte\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/plaene/leihgeraete/anzeigen.php';}
 
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Dauerbrenner']                                        = 'php/schulhof/seiten/verwaltung/dauerbrenner/alle.php';
+  if (preg_match("/^Schulhof\/Dauerbrenner\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/verwaltung/dauerbrenner/anzeigen.php';}
+
   // Verwaltung
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung']                                          = 'php/schulhof/seiten/verwaltung/verwaltung.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen']                                 = 'php/schulhof/seiten/verwaltung/personen/personen.php';
@@ -151,6 +155,10 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre']                               = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahre.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Neues_Schuljahr_anlegen']       = 'php/schulhof/seiten/verwaltung/schuljahre/neuesschuljahr.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Schuljahr_bearbeiten']          = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahrbearbeiten.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner']                             = 'php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrenner.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner/Neuen_Dauerbrenner_anlegen']  = 'php/schulhof/seiten/verwaltung/dauerbrenner/neuerdauerbrenner.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner/Dauerbrenner_bearbeiten']     = 'php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrennerbearbeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Profile']                                             = 'php/schulhof/seiten/personensuche/personenprofil.php';
 

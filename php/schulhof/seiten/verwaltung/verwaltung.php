@@ -221,6 +221,15 @@ if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen'] || $CMS_RECHTE['Org
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Organisation']['Dauerbrenner anlegen'] || $CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten'] || $CMS_RECHTE['Organisation']['Dauerbrenner löschen']) {
+	$code .= "<li>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_dauerbrenner\" href=\"Schulhof/Verwaltung/Dauerbrenner\">";
+			$code .=  "<h3>Dauerbrenner</h3>";
+			$code .=  "<p>Dauerbrenner anlegen, bearbeiten und löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 if ($tabzahl > 0) {
 	$code = "<h2>Organisation</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
@@ -362,6 +371,34 @@ if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['F
 }
 if ($tabzahl > 0) {
 	$code = "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+}
+echo $code;
+
+
+
+// WEBSITE
+$tabzahl = 0;
+$code = "";
+if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_geraete\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">";
+			$code .=  "<h3>Geräte verwalten</h3>";
+			$code .=  "<p>Fehlermeldungen zu Geräten verarbeiten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_hausmeister\" href=\"Schulhof/Hausmeister/Aufträge\">";
+			$code .=  "<h3>Hausmeisteraufräge</h3>";
+			$code .=  "<p>Hausmeisteraufträge sehen, markieren und löschen..</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($tabzahl > 0) {
+	$code = "<h2>Technik</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
 echo $code;
 

@@ -20,6 +20,9 @@ if (!cms_check_ganzzahl($monat,1,12))       {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0))           {echo "FEHLER"; exit;}
 if (!cms_check_name($titel))                {echo "FEHLER"; exit;}
 
+$titel = cms_texttrafo_e_db($titel);
+$beschreibung = cms_texttrafo_e_db($beschreibung);
+
 $CMS_RECHTE = cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
