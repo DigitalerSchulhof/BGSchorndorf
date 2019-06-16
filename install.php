@@ -1,6 +1,6 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
+$rechteplaetten = false;
 $einstellungenplaetten = false;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;
@@ -542,6 +542,10 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Titelbilder löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auffälliges sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auffälliges verwalten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 		/*$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Sprachen anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Sprachen bearbeiten', '$CMS_SCHLUESSEL'))";
@@ -561,8 +565,6 @@ if ($rechteplaetten) {
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Kontakt bearbeiten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Kontakt löschen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Besucherstatistik sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		*/
 

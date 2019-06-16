@@ -342,7 +342,7 @@ if ($zugriff) {
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Fehlermeldungen Anmeldung notwendig:</th>";
-		$code .= "<td>".cms_schieber_generieren('fehlermeldungenangemeldet',$einstellungen['Fehlermeldung Anmeldung notwendig'])."</td>";		//Bl
+		$code .= "<td>".cms_schieber_generieren('fehlermeldungenangemeldet',$einstellungen['Fehlermeldung Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Feedback Aktiv:</th>";
@@ -350,7 +350,7 @@ if ($zugriff) {
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Feedback Anmeldung notwendig:</th>";
-		$code .= "<td>".cms_schieber_generieren('feedbackangemeldet',$einstellungen['Feedback Anmeldung notwendig'])."</td>";		//Bl
+		$code .= "<td>".cms_schieber_generieren('feedbackangemeldet',$einstellungen['Feedback Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 

@@ -238,11 +238,12 @@
 
 			$code .= "<script src=\"js/summernote/jquery.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";	//B
-			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";	//B
+			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
 		}

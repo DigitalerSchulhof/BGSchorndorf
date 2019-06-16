@@ -369,7 +369,7 @@ if ($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE
 	$code .=  "</li>";
 	$tabzahl++;
 }
-if ($CMS_RECHTE['Website']['Feedback sehen'] || $CMS_RECHTE['Website']['Feedback verwalten']) {	//B
+if ($CMS_RECHTE['Website']['Feedback sehen'] || $CMS_RECHTE['Website']['Feedback verwalten']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">";
 			$code .=  "<h3>Feedback</h3>";
@@ -378,7 +378,7 @@ if ($CMS_RECHTE['Website']['Feedback sehen'] || $CMS_RECHTE['Website']['Feedback
 	$code .=  "</li>";
 	$tabzahl++;
 }
-if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {	//B
+if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen\" href=\"Schulhof/Website/Fehlermeldungen\">";
 			$code .=  "<h3>Fehlermeldungen</h3>";
@@ -387,6 +387,16 @@ if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['F
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auffaellig\" href=\"Schulhof/Aufgaben/Auffälliges\">";
+			$code .=  "<h3>Auffälliges Verhalten</h3>";
+			$code .=  "<p>Auffälliges Verhalten von Nutzern sehen".($CMS_RECHTE['Website']['Auffälliges verwalten']?" und verwalten":"").".</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+
 if ($tabzahl > 0) {
 	$code = "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
