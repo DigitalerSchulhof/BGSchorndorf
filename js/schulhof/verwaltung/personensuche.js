@@ -215,7 +215,7 @@ function cms_personensuche_mail(id) {
     }
   }
 
-  if ((!cms_check_toggle(schueler)) || (!cms_check_toggle(eltern)) || (!cms_check_toggle(lehrer)) || (!cms_check_toggle(verwaltung))) {
+  if ((!cms_check_toggle(schueler)) || (!cms_check_toggle(eltern)) || (!cms_check_toggle(lehrer)) || (!cms_check_toggle(verwaltung)) || (!cms_check_toggle(extern))) {
     fehler = true;
     meldung.innerHTML = "Bei den Personengruppen wurde eine ungültige Auswahl getroffen.";
   }
@@ -329,4 +329,114 @@ function cms_personenliste_laden() {
 	}
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+function cms_personensuche_schuljahr(id) {
+  var meldung = document.getElementById(id+'_suchergebnis');
+  meldung.innerHTML = '<img src="res/laden/standard.gif"><br><br>Die Suche läuft. Bitte warten ...';
+  document.getElementById(id+'_suchergebnis').style.textAlign = 'center';
+
+  var vorname    = document.getElementById(id+'_personensuche_vorname').value;
+	var nachname   = document.getElementById(id+'_personensuche_nachname').value;
+	var erlaubt    = document.getElementById(id+'_personensuche_erlaubt').value;
+	var gewaehlt   = document.getElementById(id+'_personensuche_gewaehlt').value;
+  var fehler = false;
+
+  if (erlaubt.match(/e/)) {var eltern = document.getElementById(id+'_personensuche_e').value;} else {var eltern = '0';}
+  if (erlaubt.match(/s/)) {var schueler = document.getElementById(id+'_personensuche_s').value;} else {var schueler = '0';}
+  if (erlaubt.match(/l/)) {var lehrer = document.getElementById(id+'_personensuche_l').value;} else {var lehrer = '0';}
+  if (erlaubt.match(/v/)) {var verwaltung = document.getElementById(id+'_personensuche_v').value;} else {var verwaltung = '0';}
+  if (erlaubt.match(/x/)) {var extern = document.getElementById(id+'_personensuche_x').value;} else {var extern = '0';}
+
+	if (vorname.length > 0) {
+    if (!cms_check_name(vorname)) {
+      fehler = true;
+      meldung.innerHTML = "Im Suchmuster des Vornamens sind ungültige Zeichen enthalten.";
+    }
+  }
+  if (nachname.length > 0) {
+    if (!cms_check_name(nachname)) {
+      fehler = true;
+      meldung.innerHTML = "Im Suchmuster des Nachnamens sind ungültige Zeichen enthalten.";
+    }
+  }
+
+  if ((!cms_check_toggle(schueler)) || (!cms_check_toggle(eltern)) || (!cms_check_toggle(lehrer)) || (!cms_check_toggle(verwaltung)) || (!cms_check_toggle(extern))) {
+    fehler = true;
+    meldung.innerHTML = "Bei den Personengruppen wurde eine ungültige Auswahl getroffen.";
+  }
+
+	var formulardaten = new FormData();
+	formulardaten.append("erlaubt",       erlaubt);
+	formulardaten.append("schueler",   		schueler);
+	formulardaten.append("eltern",     		eltern);
+	formulardaten.append("lehrer",     		lehrer);
+	formulardaten.append("verwaltung", 		verwaltung);
+	formulardaten.append("extern", 	    	extern);
+	formulardaten.append("vorname",    		vorname);
+	formulardaten.append("nachname",   		nachname);
+  formulardaten.append("gewaehlt",      gewaehlt);
+	formulardaten.append("feld",     	    id);
+	formulardaten.append("anfragenziel", 	'208');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "FEHLER") {
+      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den Administrator über den Link in der Fußzeile informieren.";
+    }
+		else if (rueckgabe.slice(0,6) == 'ERFOLG') {
+      var ausgabe = "";
+      var personen = rueckgabe.split(';');
+      for (var i=1; i<personen.length-1; i++) {
+        var person = personen[i].split(',');
+        var personenid = person[0];
+        var personenart = person[1];
+        var personenname = person[2];
+        var personenbez = "Schüler";
+        var personenicon = "schueler.png";
+        if (personenart == 'l') {personenbez = 'Lehrer'; personenicon = 'lehrer.png';}
+        if (personenart == 's') {personenbez = 'Schüler'; personenicon = 'schueler.png';}
+        if (personenart == 'e') {personenbez = 'Eltern'; personenicon = 'elter.png';}
+        if (personenart == 'v') {personenbez = 'Verwaltungsangestellte'; personenicon = 'verwaltung.png';}
+        if (personenart == 'x') {personenbez = 'Externe'; personenicon = 'extern.png';}
+        ausgabe += "<span class=\"cms_button\" onclick=\"cms_personensuche_schuljahr_wahl('"+id+"', '"+personenid+"', '"+personenart+"', '"+personenname+"');\"><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">"+personenbez+"</span><img src=\"res/icons/klein/"+personenicon+"\"></span> "+personenname+"</span>";
+      }
+      meldung.style.textAlign = 'left';
+      meldung.innerHTML = ausgabe;
+    }
+    else {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+	}
+
+	cms_ajaxanfrage (fehler, formulardaten, anfragennachbehandlung);
+}
+
+
+function cms_personensuche_schuljahr_wahl(id, personenid, personenart, personenname) {
+  var mailF = document.getElementById(id+'_F');
+  var icon = '';
+  var hinweis = ''
+  if (personenart == 'l') {icon = 'lehrer'; hinweis = 'Lehrer';}
+  else if (personenart == 's') {icon = 'schueler'; hinweis = 'Schüler';}
+  else if (personenart == 'e') {icon = 'eltern'; hinweis = 'Eltern';}
+  else if (personenart == 'v') {icon = 'verwaltung'; hinweis = 'Verwaltungsangestellte';}
+  else if (personenart == 'x') {icon = 'extern'; hinweis = 'Externe';}
+  var code = '<span class="cms_icon_klein_o"><span class="cms_hinweis">'+hinweis+'</span><img src="res/icons/klein/'+icon+'.png"></span> '+personenname;
+  var mailcode = cms_togglebutton_generieren(id+'_personensuche_schuljahr_'+personenid, code, 1, 'cms_personensuche_entfernen_schuljahr(\''+id+'\', \''+personenid+'\')')+' ';
+  cms_id_eintragen(id+'_personensuche_gewaehlt', personenid);
+  mailF.innerHTML += mailcode;
+  cms_personensuche_schuljahr(id);
+}
+
+function cms_personensuche_entfernen_schuljahr(id, personenid) {
+  cms_id_entfernen(id+'_personensuche_gewaehlt', personenid);
+
+  var mailF = document.getElementById(id+'_F');
+  var mailK = document.getElementById(id+'_personensuche_schuljahr_'+personenid+'_K');
+  var mailKF = document.getElementById(id+'_personensuche_schuljahr_'+personenid);
+  mailF.removeChild(mailK);
+  mailF.removeChild(mailKF);
+
+  cms_personensuche_schuljahr(id);
 }

@@ -5,16 +5,20 @@ function cms_notifikationen_ausgeben($dbs, $person) {
   $sql = "SELECT id, AES_DECRYPT(gruppe, '$CMS_SCHLUESSEL') AS gruppe, gruppenid, status, art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link FROM notifikationen WHERE person = $person ORDER BY zeit DESC";
   if ($anfrage = $dbs->query($sql)) {
     while ($daten = $anfrage->fetch_assoc()) {
-      if (($daten['status'] == 'l') || ($daten['status'] == 'a')) {$event = " onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"";}
+      if (($daten['status'] == 'l') || ($daten['status'] == 'a') || ($daten['status'] == 'w') || ($daten['status'] == 'e')) {
+        $event = " onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"";
+      }
       else {$event = " onclick=\"cms_link('".$daten['link']."')\"";}
       $neuigkeiten .= "<li class=\"cms_neuigkeit\">";
         $gruppe = cms_notifikation_gruppendetails($dbs, $daten['gruppe'], $daten['gruppenid']);
         $neuigkeiten .= "<span class=\"cms_neuigkeit_icon\"><img src=\"".$gruppe['icon']."\"></span> ";
         $art = cms_notifikation_art_ermitteln($daten['status'],$daten['art']);
         $neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>".$gruppe['bezeichnung']."<br>$art</h4></p>";
-        $neuigkeiten .= "<p>".$daten['titel']."</p><p class=\"cms_neuigkeit_vorschau\">".$daten['vorschau']."</p></span>";
+        $neuigkeiten .= "<p>".$daten['titel']."</p>";
+        if ($daten['art'] != 'a') {$neuigkeiten .= "<p class=\"cms_neuigkeit_vorschau\">".$daten['vorschau']."</p>";}
+        $neuigkeiten .= "</span>";
         $neuigkeiten .= "<span class=\"cms_neuigkeit_schliessen cms_button_nein\" onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"><span class=\"cms_hinweis\">Neuigkeit schließen</span>&times;</span>";
-        if (($daten['status'] != 'l') && ($daten['status'] != 'a')) {
+        if (($daten['status'] != 'l') && ($daten['status'] != 'a') && ($daten['art'] != 'a')) {
           $neuigkeiten .= "<span class=\"cms_neuigkeit_oeffnen cms_button_ja\" onclick=\"cms_link('".$daten['link']."')\"><span class=\"cms_hinweis\"> Neuigkeit öffnen</span>»</span>";
         }
         $neuigkeiten .= "</li>";
@@ -53,6 +57,12 @@ function cms_notifikation_art_ermitteln($status, $art) {
     else if ($art == 't') {$rart = 'Termin abgelehnt';}
     else if ($art == 'g') {$rart = 'Galerie abgelehnt';}
   }
+  else if ($status == 'e') {
+    if ($art == 'a') {$rart = 'Auftrag erledigt';}
+  }
+  else if ($status == 'w') {
+    if ($art == 'a') {$rart = 'Auftrag wiederaufgenommen';}
+  }
   return $rart;
 }
 
@@ -71,6 +81,10 @@ function cms_notifikation_gruppendetails($dbs, $gruppe, $gruppenid) {
   else if ($gruppe == 'Galerien') {
     $rueckgabe['icon'] = "res/icons/gross/galerien.png";
     $rueckgabe['bezeichnung'] = "Galerien";
+  }
+  else if ($gruppe == 'Hausmeister') {
+    $rueckgabe['icon'] = "res/icons/gross/hausmeister.png";
+    $rueckgabe['bezeichnung'] = "Hausmeister";
   }
   else {
     $gk = cms_textzudb($gruppe);

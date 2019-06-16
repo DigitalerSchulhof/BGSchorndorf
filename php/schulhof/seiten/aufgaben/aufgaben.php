@@ -13,7 +13,7 @@ if ($fehler) {$zugriff = false;}
 $angemeldet = cms_angemeldet();
 
 if ($angemeldet && $zugriff) {
-	$sonderrollen = cms_sonderrollen_generieren($CMS_RECHTE);
+	$sonderrollen = cms_sonderrollen_generieren();
 	if (strlen($sonderrollen) != 0) {
 		$code .= "<ul>".$sonderrollen."</ul>";
 	}

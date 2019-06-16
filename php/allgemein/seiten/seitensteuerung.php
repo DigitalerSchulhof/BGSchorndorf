@@ -82,11 +82,16 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Tag_bearbeiten']            = 'php/schulhof/seiten/nutzerkonto/postfach/tagbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Neuen_Tag_anlegen']         = 'php/schulhof/seiten/nutzerkonto/postfach/neuertag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten']                           = 'php/schulhof/seiten/aufgaben/geraete/verwalten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten/Problembericht_bearbeiten'] = 'php/schulhof/seiten/aufgaben/geraete/problemberichtbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Identitätsdiebstähle_behandeln']             = 'php/schulhof/seiten/aufgaben/identitaetsdiebstahl/identitaetsdiebstahl.php';
+  // Hausmeister
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister']                                         = 'php/schulhof/seiten/hausmeister/hausmeister.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge']                                = 'php/schulhof/seiten/hausmeister/auftraege.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge/Details']                        = 'php/schulhof/seiten/hausmeister/details.php';
   // Listen
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen']                                              = 'php/schulhof/seiten/listen/listen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Lehrer']                                       = 'php/schulhof/seiten/listen/lehrer.php';

@@ -8,18 +8,19 @@ function cms_schulhof_schuljahr_neu_speichern() {
 	var endet = document.getElementById('cms_schulhof_schuljahr_ende_T').value;
 	var endem = document.getElementById('cms_schulhof_schuljahr_ende_M').value;
 	var endej = document.getElementById('cms_schulhof_schuljahr_ende_J').value;
-	var schulleitung = document.getElementById('cms_schulhof_schuljahr_schulleitung').value;
-	var stellschulleitung = document.getElementById('cms_schulhof_schuljahr_stellschulleitung').value;
-	var abteilungsleitung = document.getElementById('cms_schulhof_schuljahr_abteilungsleitung').value;
-	var sekretariat = document.getElementById('cms_schulhof_schuljahr_sekretariat').value;
-	var sozialarbeit = document.getElementById('cms_schulhof_schuljahr_sozialarbeit').value;
-	var oberstufenberatung = document.getElementById('cms_schulhof_schuljahr_oberstufenberatung').value;
-	var beratungslehrer = document.getElementById('cms_schulhof_schuljahr_beratungslehrer').value;
-	var verbindungslehrer = document.getElementById('cms_schulhof_schuljahr_verbindungslehrer').value;
-	var schuelersprecher = document.getElementById('cms_schulhof_schuljahr_schuelersprecher').value;
-	var elternbeirat = document.getElementById('cms_schulhof_schuljahr_elternbeirat').value;
-	var vertretungsplanung = document.getElementById('cms_schulhof_schuljahr_vertretungsplanung').value;
-	var datenschutz = document.getElementById('cms_schulhof_schuljahr_datenschutz').value;
+	var schulleitung = document.getElementById('cms_schuljahr_schulleitung_personensuche_gewaehlt').value;
+	var stellschulleitung = document.getElementById('cms_schuljahr_stellschulleitung_personensuche_gewaehlt').value;
+	var abteilungsleitung = document.getElementById('cms_schuljahr_abteilungsleitung_personensuche_gewaehlt').value;
+	var sekretariat = document.getElementById('cms_schuljahr_sekretariat_personensuche_gewaehlt').value;
+	var sozialarbeit = document.getElementById('cms_schuljahr_sozialarbeit_personensuche_gewaehlt').value;
+	var oberstufenberatung = document.getElementById('cms_schuljahr_oberstufenberatung_personensuche_gewaehlt').value;
+	var beratungslehrer = document.getElementById('cms_schuljahr_beratungslehrer_personensuche_gewaehlt').value;
+	var verbindungslehrer = document.getElementById('cms_schuljahr_verbindungslehrer_personensuche_gewaehlt').value;
+	var schuelersprecher = document.getElementById('cms_schuljahr_schuelersprecher_personensuche_gewaehlt').value;
+	var elternbeirat = document.getElementById('cms_schuljahr_elternbeirat_personensuche_gewaehlt').value;
+	var vertretungsplanung = document.getElementById('cms_schuljahr_vertretungsplanung_personensuche_gewaehlt').value;
+	var datenschutz = document.getElementById('cms_schuljahr_datenschutz_personensuche_gewaehlt').value;
+	var hausmeister = document.getElementById('cms_schuljahr_hausmeister_personensuche_gewaehlt').value;
 
 	var meldung = '<p>Das Schuljahr konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -68,6 +69,7 @@ function cms_schulhof_schuljahr_neu_speichern() {
 		formulardaten.append("elternbeirat", 		elternbeirat);
 		formulardaten.append("vertretungsplanung",	vertretungsplanung);
 		formulardaten.append("datenschutz",	datenschutz);
+		formulardaten.append("hausmeister",	hausmeister);
 		formulardaten.append("anfragenziel", 	'148');
 
 		function anfragennachbehandlung(rueckgabe) {
@@ -140,18 +142,19 @@ function cms_schulhof_schuljahr_bearbeiten_speichern() {
 	var endet = document.getElementById('cms_schulhof_schuljahr_ende_T').value;
 	var endem = document.getElementById('cms_schulhof_schuljahr_ende_M').value;
 	var endej = document.getElementById('cms_schulhof_schuljahr_ende_J').value;
-	var schulleitung = document.getElementById('cms_schulhof_schuljahr_schulleitung').value;
-	var stellschulleitung = document.getElementById('cms_schulhof_schuljahr_stellschulleitung').value;
-	var abteilungsleitung = document.getElementById('cms_schulhof_schuljahr_abteilungsleitung').value;
-	var sekretariat = document.getElementById('cms_schulhof_schuljahr_sekretariat').value;
-	var sozialarbeit = document.getElementById('cms_schulhof_schuljahr_sozialarbeit').value;
-	var oberstufenberatung = document.getElementById('cms_schulhof_schuljahr_oberstufenberatung').value;
-	var beratungslehrer = document.getElementById('cms_schulhof_schuljahr_beratungslehrer').value;
-	var verbindungslehrer = document.getElementById('cms_schulhof_schuljahr_verbindungslehrer').value;
-	var schuelersprecher = document.getElementById('cms_schulhof_schuljahr_schuelersprecher').value;
-	var elternbeirat = document.getElementById('cms_schulhof_schuljahr_elternbeirat').value;
-	var vertretungsplanung = document.getElementById('cms_schulhof_schuljahr_vertretungsplanung').value;
-	var datenschutz = document.getElementById('cms_schulhof_schuljahr_datenschutz').value;
+	var schulleitung = document.getElementById('cms_schuljahr_schulleitung_personensuche_gewaehlt').value;
+	var stellschulleitung = document.getElementById('cms_schuljahr_stellschulleitung_personensuche_gewaehlt').value;
+	var abteilungsleitung = document.getElementById('cms_schuljahr_abteilungsleitung_personensuche_gewaehlt').value;
+	var sekretariat = document.getElementById('cms_schuljahr_sekretariat_personensuche_gewaehlt').value;
+	var sozialarbeit = document.getElementById('cms_schuljahr_sozialarbeit_personensuche_gewaehlt').value;
+	var oberstufenberatung = document.getElementById('cms_schuljahr_oberstufenberatung_personensuche_gewaehlt').value;
+	var beratungslehrer = document.getElementById('cms_schuljahr_beratungslehrer_personensuche_gewaehlt').value;
+	var verbindungslehrer = document.getElementById('cms_schuljahr_verbindungslehrer_personensuche_gewaehlt').value;
+	var schuelersprecher = document.getElementById('cms_schuljahr_schuelersprecher_personensuche_gewaehlt').value;
+	var elternbeirat = document.getElementById('cms_schuljahr_elternbeirat_personensuche_gewaehlt').value;
+	var vertretungsplanung = document.getElementById('cms_schuljahr_vertretungsplanung_personensuche_gewaehlt').value;
+	var datenschutz = document.getElementById('cms_schuljahr_datenschutz_personensuche_gewaehlt').value;
+	var hausmeister = document.getElementById('cms_schuljahr_hausmeister_personensuche_gewaehlt').value;
 
 	var meldung = '<p>Das Schuljahr konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -200,6 +203,7 @@ function cms_schulhof_schuljahr_bearbeiten_speichern() {
 		formulardaten.append("elternbeirat", 		elternbeirat);
 		formulardaten.append("vertretungsplanung",	vertretungsplanung);
 		formulardaten.append("datenschutz",	datenschutz);
+		formulardaten.append("hausmeister",	hausmeister);
 		formulardaten.append("anfragenziel", 	'151');
 
 		function anfragennachbehandlung(rueckgabe) {

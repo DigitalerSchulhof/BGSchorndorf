@@ -163,6 +163,11 @@ if ($CMS_BENUTZERART == 'l' || $CMS_BENUTZERART == 's') {
 $fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 $fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach/Posteingang\">Postfach</a></li> ";
 
+if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] || $CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] ||
+    (($CMS_RECHTE['Planung']['Räume sehen'] || $CMS_RECHTE['Planung']['Leihgeräte sehen']) && ($CMS_RECHTE['Technik']['Geräte-Probleme melden']))) {
+	$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
+}
+
 if (strlen($fav) > 0) {echo "<h2>Häufig gesucht</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
 
 ?>
@@ -191,7 +196,7 @@ if (strlen($aktionen) > 0) {
 	echo "<h2>Aktionen</h2><ul class=\"cms_aktionen_liste\">$aktionen</ul>";
 }
 
-$sonderrollencodeverwaltung = cms_sonderrollen_generieren($CMS_RECHTE);
+$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
 if (strlen($sonderrollencodeverwaltung) != 0) {
 	$sonderrollencode = "<h2>Aufgaben</h2>";
 	$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";

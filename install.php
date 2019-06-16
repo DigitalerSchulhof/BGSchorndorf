@@ -5,6 +5,7 @@ $einstellungenplaetten = false;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;
+$update = false;
 
 $personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
 $gruppen = array("Gremien", "Fachschaften", "Klassen", "Kurse", "Stufen", "Arbeitsgemeinschaften", "Arbeitskreise", "Fahrten", "Wettbewerbe", "Ereignisse", "Sonstige Gruppen");
@@ -449,7 +450,15 @@ if ($rechteplaetten) {
 		// TECHNIK
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Geräte verwalten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Probleme melden', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Geräte-Probleme melden', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Hausmeisteraufträge erteilen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Hausmeisteraufträge sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Hausmeisteraufträge markieren', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Hausmeisteraufträge löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 
 		// WEBSITE
@@ -670,8 +679,29 @@ if ($einstellungenplaetten) {
 	echo "ALLGEMEINE EINSTELLUNGEN ERNEUERT";
 }
 
+if ($update) {
+	include_once("php/schulhof/funktionen/texttrafo.php");
+	include_once("php/allgemein/funktionen/sql.php");
+	include_once("php/schulhof/funktionen/generieren.php");
+	include_once("php/schulhof/funktionen/config.php");
 
-if ((!$rechteplaetten) && (!$dateienplaetten) && (!$einstellungenplaetten) && (!$zulaessigedateienplaetten) && (!$gremienklassen) && (!$postfachordner)) {
+	$dbs = cms_verbinden('s');
+	$sql = "CREATE TABLE `hausmeisterauftraege` (
+	  `id` bigint(255) UNSIGNED NOT NULL,
+	  `status` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+	  `titel` varbinary(1000) NOT NULL,
+	  `beschreibung` blob NOT NULL,
+	  `start` bigint(255) UNSIGNED NOT NULL,
+	  `ziel` bigint(255) UNSIGNED NOT NULL,
+	  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
+	  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+	$dbs->query($sql);
+	cms_trennen($dbs);
+}
+
+
+if ((!$rechteplaetten) && (!$dateienplaetten) && (!$einstellungenplaetten) && (!$zulaessigedateienplaetten) && (!$gremienklassen) && (!$postfachordner) && (!$update)) {
 	echo "INAKTIV";
 }
 

@@ -27,6 +27,7 @@ if (isset($_POST['schuelersprecher'])) {$schuelersprecher = $_POST['schuelerspre
 if (isset($_POST['elternbeirat'])) {$elternbeirat = $_POST['elternbeirat'];} else {echo "FEHLER";exit;}
 if (isset($_POST['vertretungsplanung'])) {$vertretungsplanung = $_POST['vertretungsplanung'];} else {echo "FEHLER";exit;}
 if (isset($_POST['datenschutz'])) {$datenschutz = $_POST['datenschutz'];} else {echo "FEHLER";exit;}
+if (isset($_POST['hausmeister'])) {$hausmeister = $_POST['hausmeister'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION["SCHULJAHREBEARBEITEN"])) {$id = $_SESSION["SCHULJAHREBEARBEITEN"];} else {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
@@ -78,24 +79,22 @@ if (cms_angemeldet() && $zugriff) {
 		// Prüfen, ob die Personen in den Schlüsselpositionen der richtigen Personengruppe angehören
 		$personenfehler = false;
 		$perslehrer = $schulleitung.$stellschulleitung.$abteilungsleitung.$oberstufenberatung.$beratungslehrer.$verbindungslehrer.$vertretungsplanung;
-		$persverwaltung = $sekretariat.$sozialarbeit;
+		$persmischmasch = $sekretariat.$sozialarbeit.$hausmeister;
 		$persschueler = $schuelersprecher;
 		$perseltern = $elternbeirat;
 
-		$personen[0]['id'] = str_replace("|", ", ", $perslehrer);
+		$personen[0]['id'] = str_replace("|", ",", $perslehrer);
 		$personen[0]['art'] = 'l';
-		$personen[1]['id'] = str_replace("|", ", ", $persverwaltung);
-		$personen[1]['art'] = 'v';
-		$personen[2]['id'] = str_replace("|", ", ", $persschueler);
-		$personen[2]['art'] = 's';
-		$personen[3]['id'] = str_replace("|", ", ", $perseltern);
-		$personen[3]['art'] = 'e';
+		$personen[1]['id'] = str_replace("|", ",", $persschueler);
+		$personen[1]['art'] = 's';
+		$personen[2]['id'] = str_replace("|", ",", $perseltern);
+		$personen[2]['art'] = 'e';
 
 		for ($i=0; $i<count($personen); $i++) {
 			$ids = $personen[$i]['id'];
 			$art = $personen[$i]['art'];
 			if ($ids > 2) {
-				$ids = "(".substr($ids, 2).")";
+				$ids = "(".substr($ids, 1).")";
 				if (cms_check_idliste($ids)) {
 					$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$ids." AND art = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');");
 				  $sql->bind_param("s", $art);
@@ -109,6 +108,25 @@ if (cms_angemeldet() && $zugriff) {
 				}
 				else {$fehler = true;}
 			}
+		}
+
+		$ids = str_replace("|", ",", $persmischmasch);
+		$art1 = "v";
+		$art2 = "x";
+		if ($ids > 2) {
+			$ids = "(".substr($ids, 1).")";
+			if (cms_check_idliste($ids)) {
+				$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$ids." AND (art = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') OR art = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'));");
+				$sql->bind_param("ss", $art1, $art2);
+				if ($sql->execute()) {
+					$sql->bind_result($anzahl);
+					if ($sql->fetch()) {if ($anzahl > 0) {$personenfehler = true;}}
+					else {$fehler = true;}
+				}
+				else {$fehler = true;}
+				$sql->close();
+			}
+			else {$fehler = true;}
 		}
 
 		if ($personenfehler) {
@@ -172,6 +190,8 @@ if (cms_angemeldet() && $zugriff) {
 		$personen[10]['bez'] = 'Elternbeiratsvorsitzende';
 		$personen[11]['id'] = explode("|", $datenschutz);
 		$personen[11]['bez'] = 'Datenschutzbeauftragter';
+		$personen[12]['id'] = explode("|", $hausmeister);
+		$personen[12]['bez'] = 'Hausmeister';
 
 		// j läuft über die einzelnen schlüsselpositionen
 		$sql = $dbs->prepare("INSERT INTO schluesselposition (person, position, schuljahr) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?);");

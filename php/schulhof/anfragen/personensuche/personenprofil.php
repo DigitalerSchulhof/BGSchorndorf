@@ -11,7 +11,7 @@ session_start();
 if (isset($_POST['person'])) {$person = $_POST['person'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($person)) {echo "FEHLER"; exit;}
 
-if (cms_angemeldet()) {
+if (cms_angemeldet() && $CMS_RECHTE['Personen']['Personen sehen']) {
 	$fehler = false;
 
   $dbs = cms_verbinden('s');

@@ -1,5 +1,5 @@
 <?php
-function cms_blogeintragverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen) {
+function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
   global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
   $genehmigen = $CMS_RECHTE['Organisation']['Blogeinträge genehmigen'];
@@ -57,7 +57,9 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $l
     }
     $anfrage->free();
     if (strlen($schulhofblogeintraege) == 0) {
-      $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
+      $spalten = 6;
+      if ($aktionen) {$spalten++;}
+      $code .= "<tr><td colspan=\"$spalten\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
     }
     else {$code .= $schulhofblogeintraege;}
   }

@@ -633,7 +633,7 @@ function cms_schulhof_verwaltung_nutzerkonto_neu_speichern() {
 		formulardaten.append("anfragenziel", 	'135');
 
 		function anfragennachbehandlung(rueckgabe) {
-			if (rueckgabe == "FEHLER") {
+			if (rueckgabe == "BENUTZERDOPPELT") {
 				meldung += '<li>es gibt bereits einen Benutzer mit diesem Benutzernamen.</li>';
 				cms_meldung_fehler('fehler', 'Neues Nutzerkonto anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}

@@ -9,8 +9,8 @@ function cms_schulhof_vertretungen_links_anzeigen () {
   if ($CMS_RECHTE['Planung']['Schülervertretungsplan sehen']) {
     $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Vertretungen/Schüleransicht\">Schüleransicht</a></li> ";
   }
-    
-  if ($ausgabe > 0) {
+
+  if (strlen($ausgabe) > 0) {
     $ausgabe = "<ul>".$ausgabe."</ul>";
   }
   else {

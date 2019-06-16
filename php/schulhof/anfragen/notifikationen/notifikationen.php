@@ -1,13 +1,14 @@
 <?php
 /* Eintrag ist ein Array bestehend aus:
-   $eintrag['gruppe']    -- Termine, Blogeinträge, Galerien oder Gruppentitel (Gremien, Fachschaften, etc.)
+   $eintrag['gruppe']    -- Termine, Blogeinträge, Galerien, Hausmeister oder Gruppentitel (Gremien, Fachschaften, etc.)
    $eintrag['gruppenid'] -- Welche der jeweiligen Gruppen
                          -- bei Terminen, Blogeinträgen und Galerien wird der Öffentlichkeitsgrad übergeben
                          -- bei Terminen, Blogeinträgen und Galerien anschließend 0 eingetragen
-   $eintrag['zielid']    -- Ziel der Notifikation - ID des Termins, des Blogeintrags, der Galerie
+                         -- bei Hausmeister wird 0 übergeben
+   $eintrag['zielid']    -- Ziel der Notifikation - ID des Termins, des Blogeintrags, der Galerie, des Hausmeister
                          -- Bei Löschungen null
-   $eintrag['status']    -- [n]eu, [b]earbeitet, ge[l]öscht, [g]enehmigt, [a]bgelehnt
-   $eintrag['art']       -- [t]ermin, [b]log, [g]alerie
+   $eintrag['status']    -- [n]eu, [b]earbeitet, ge[l]öscht, [g]enehmigt, [a]bgelehnt, [e]rledigt, [w]iedereröffnet
+   $eintrag['art']       -- [t]ermin, [b]log, [g]alerie, [a]uftrag
    $eintrag['titel']     -- Angezeigter Titel in der Notifikation
    $eintrag['vorschau']  -- Angezeigte Vorschau in der Notifikation
    $eintrag['link']      -- Link der zur Volldarstellung führt
@@ -18,7 +19,9 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
 
   // ALTE NOTIFIKATION ZU DIESEM THEMA LÖSCHEN
   $loeschgruppenid = $eintrag['gruppenid'];
-  if (($gruppek == 'termine') || ($gruppek == 'blogeinträge') || ($gruppek == 'blogeintraege') || ($gruppek == 'galerien')) {$loeschgruppenid = 0;}
+  if (($gruppek == 'termine') || ($gruppek == 'blogeinträge') || ($gruppek == 'blogeintraege') || ($gruppek == 'galerien') || ($gruppek == 'hausmeister')) {
+    $loeschgruppenid = 0;
+  }
   $sql = $dbs->prepare("DELETE FROM notifikationen WHERE gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND gruppenid = ? AND zielid = ?");
   $sql->bind_param("sii", $eintrag['gruppe'], $loeschgruppenid, $eintrag['zielid']);
   $sql->execute();
@@ -26,7 +29,7 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
 
   // Alle Empfänger von Notifikationen suchen
   $empfaenger = array();
-  $spalten = "letztenotifikation, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, letzteanmeldung, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email";
+  $spalten = "letztenotifikation, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, letzteanmeldung, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email";
 
   if (($gruppek == "termine") || ($gruppek == "blogeinträge") || ($gruppek == "blogeintraege") || ($gruppek == "galerien")) {
     $sql = $dbs->prepare(cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spalten));
@@ -36,6 +39,9 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
   else if (in_array($eintrag['gruppe'], $CMS_GRUPPEN)) {
     $sql = $dbs->prepare("SELECT $gruppek"."notifikationsabo.person AS id, $spalten FROM $gruppek"."notifikationsabo JOIN nutzerkonten ON nutzerkonten.id = $gruppek"."notifikationsabo.person JOIN personen_einstellungen ON personen_einstellungen.person = nutzerkonten.id JOIN personen ON personen.id = nutzerkonten.id WHERE gruppe = ? AND personen.id != ?");
     $sql->bind_param("ii", $eintrag['gruppenid'], $ausnahme);
+  }
+  else if ($gruppek == "hausmeister") {
+    $sql = $dbs->prepare("SELECT hausmeisterauftraege.idvon AS id, $spalten FROM hausmeisterauftraege JOIN nutzerkonten ON nutzerkonten.id = hausmeisterauftraege.idvon JOIN personen_einstellungen ON personen_einstellungen.person = nutzerkonten.id JOIN personen ON personen.id = nutzerkonten.id");
   }
 
   if ($sql->execute()) {

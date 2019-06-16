@@ -268,146 +268,183 @@ function cms_kategorieicons_generieren($id, $art, $icon = 'standard.png') {
   return $code;
 }
 
-function cms_sonderrollen_generieren($CMS_RECHTE) {
-	global $CMS_SCHLUESSEL, $CMS_GRUPPEN;
+function cms_geraeteverwalten_knopf($dbs) {
+  $zusatz = "";
+  $sqlwhere = "";
+  $anzahldefekt = 0;
+  $anzahlneu = 0;
+  $anzahl = "";
+  $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $anzahldefekt = $daten['anzahl'];
+    }
+    $anfrage->free();
+  }
+  $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $anzahlneu = $daten['anzahl'];
+    }
+    $anfrage->free();
+  }
+  $zusatz = '';
+  if ($anzahlneu > 0) {
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahldefekt</span>";
+  }
+  else if ($anzahldefekt > 0) {
+    $anzahl = " <span class=\"cms_meldezahl\">$anzahldefekt</span>";
+  }
+  return "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten".$anzahl."</a>";
+}
+
+function cms_terminegenehmigen_knopf($dbs) {
+  global $CMS_RECHTE, $CMS_GRUPPEN;
+  $zusatz = "";
+  $sql = "";
+  $code = "";
+  if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+  if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+    foreach ($CMS_GRUPPEN as $g) {
+      $gk = cms_textzudb($g);
+      $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
+    }
+  }
+  $sql = substr($sql, 7);
+  $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $zusatz = "";
+      $anzahl = "";
+      if ($daten['anzahl'] > 0) {
+        $zusatz = "cms_meldezahl_wichtig";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+      }
+      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen".$anzahl."</a>";
+    }
+    $anfrage->free();
+  }
+  return $code;
+}
+
+function cms_blogeintraegegenehmigen_knopf($dbs) {
+  global $CMS_RECHTE, $CMS_GRUPPEN;
+  $code = "";
+  $zusatz = "";
+  $sql = "";
+  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+  if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+    foreach ($CMS_GRUPPEN as $g) {
+      $gk = cms_textzudb($g);
+      $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
+    }
+  }
+  $sql = substr($sql, 7);
+  $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $zusatz = "";
+      $anzahl = "";
+      if ($daten['anzahl'] > 0) {
+        $zusatz = "cms_meldezahl_wichtig";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+      }
+      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen".$anzahl."</a>";
+    }
+    $anfrage->free();
+  }
+  return $code;
+}
+
+function cms_galeriengenehmigen_knopf($dbs) {
+  $code = "";
+  $zusatz = "";
+  $sql = "SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $zusatz = "";
+      $anzahl = "";
+      if ($daten['anzahl'] > 0) {
+        $zusatz = "cms_meldezahl_wichtig";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+      }
+      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">Galerien genehmigen".$anzahl."</a>";
+    }
+    $anfrage->free();
+  }
+  return $code;
+}
+
+function cms_identitaetsdiebstaehle_knopf($dbs) {
+  $code = "";
+  $zusatz = "";
+  $sql = "SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $zusatz = "";
+      $anzahl = "";
+      if ($daten['anzahl'] > 0) {
+        $zusatz = "cms_meldezahl_wichtig";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+      }
+      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\">Identitätsdiebstähle behandeln".$anzahl."</a>";
+    }
+    $anfrage->free();
+  }
+  return $code;
+}
+
+function cms_hausmeisterauftraege_knopf($dbs) {
+  $zusatz = "";
+  $anzahlauftraege = 0;
+  $anzahlneu = 0;
+  $anzahl = "";
+  $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $anzahlauftraege = $daten['anzahl'];
+    }
+    $anfrage->free();
+  }
+  $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $anzahlneu = $daten['anzahl'];
+    }
+    $anfrage->free();
+  }
+  $zusatz = '';
+  if ($anzahlneu > 0) {
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span>";
+  }
+  else if ($anzahlauftraege > 0) {
+    $anzahl = " <span class=\"cms_meldezahl\">$anzahlauftraege</span>";
+  }
+  return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a>";
+}
+
+function cms_sonderrollen_generieren() {
+	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN;
 	$code = "";
 	$dbs = cms_verbinden('s');
 	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
-		$zusatz = "";
-		$sqlwhere = "";
-    $anzahldefekt = 0;
-    $anzahlneu = 0;
-    $anzahl = "";
-		$sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$anzahldefekt = $daten['anzahl'];
-			}
-			$anfrage->free();
-		}
-    $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$anzahlneu = $daten['anzahl'];
-			}
-			$anfrage->free();
-		}
-    $zusatz = '';
-    if ($anzahlneu > 0) {
-      $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahldefekt</span>";
-    }
-    else if ($anzahldefekt > 0) {
-      $anzahl = " <span class=\"cms_meldezahl\">$anzahldefekt</span>";
-    }
-    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten".$anzahl."</a></li> ";
-
-	}
-
-
-	if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
-		$zusatz = "";
-    $sql = "";
-    if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
-    if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
-      foreach ($CMS_GRUPPEN as $g) {
-        $gk = cms_textzudb($g);
-        $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
-      }
-    }
-    $sql = substr($sql, 7);
-		$sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$zusatz = "";
-        $anzahl = "";
-				if ($daten['anzahl'] > 0) {
-          $zusatz = "cms_meldezahl_wichtig";
-					$anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
-				}
-				$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen".$anzahl."</a></li> ";
-			}
-			$anfrage->free();
-		}
-	}
-
-
-  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
-		$zusatz = "";
-    $sql = "";
-    if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
-    if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
-      foreach ($CMS_GRUPPEN as $g) {
-        $gk = cms_textzudb($g);
-        $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
-      }
-    }
-    $sql = substr($sql, 7);
-		$sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$zusatz = "";
-        $anzahl = "";
-				if ($daten['anzahl'] > 0) {
-          $zusatz = "cms_meldezahl_wichtig";
-					$anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
-				}
-				$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen".$anzahl."</a></li> ";
-			}
-			$anfrage->free();
-		}
-	}
-
-
-	if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
-		$zusatz = "";
-		$sql = "SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$zusatz = "";
-        $anzahl = "";
-				if ($daten['anzahl'] > 0) {
-          $zusatz = "cms_meldezahl_wichtig";
-					$anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
-				}
-				$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">Galerien genehmigen".$anzahl."</a></li> ";
-			}
-			$anfrage->free();
-		}
-	}
-
-
-	if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
-		$zusatz = "";
-		$sql = "SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$zusatz = "";
-        $anzahl = "";
-				if ($daten['anzahl'] > 0) {
-          $zusatz = "cms_meldezahl_wichtig";
-					$anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
-				}
-				$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\">Identitätsdiebstähle behandeln".$anzahl."</a></li> ";
-			}
-			$anfrage->free();
-		}
-	}
-
-  /*
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {
-    $seiten = array();
-    $sql = "SELECT id FROM seiten WHERE status = 'i'";
-		if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
-        if (!in_array($daten['id'], $seiten)) {array_push($seiten, $daten['id']);}
-      }
-    }
-    $anzahl = count($seiten);
-    if ($anzahl > 0) {$anzahl = "<span class=\"cms_meldezahl cms_meldezahl_wichtig\">".$anzahl."</span>";}
-    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Freigabecenter\">Inhalte freigeben".$anzahl."</a></li> ";
+    $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
   }
-    */
-
+	if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+    $code .= "<li>".cms_terminegenehmigen_knopf($dbs)."</li> ";
+	}
+  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+    $code .= "<li>".cms_blogeintraegegenehmigen_knopf($dbs)."</li> ";
+	}
+	if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+    $code .= "<li>".cms_galeriengenehmigen_knopf($dbs)."</li> ";
+	}
+	if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
+		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
+	}
+	if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
+	}
 	cms_trennen($dbs);
 	return $code;
 }
@@ -569,5 +606,18 @@ function cms_postfachvorschau($text) {
   foreach ($zwischen as $z) {$vorschau .= $z." ";}
   if (count($zwischen) > 15) {$text .= "...";}
   return $vorschau;
+}
+
+function cms_listezuabsatz($liste) {
+  $absatz = str_replace("<ul>", "<p>", $liste);
+  $absatz = str_replace("</ul>", "</p>", $absatz);
+  $absatz = str_replace("<li>", "", $absatz);
+  $absatz = str_replace("</li>", " ", $absatz);
+  return $absatz;
+}
+
+
+function cms_generiere_hinweisicon($icon, $hinweis) {
+  return "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
 }
 ?>

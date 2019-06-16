@@ -62,7 +62,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 
 	$aufgabenpc = "";
 	$aufgabenmobil = "";
-	$sonderrollen = cms_sonderrollen_generieren($CMS_RECHTE);
+	$sonderrollen = cms_sonderrollen_generieren();
 	if (strlen($sonderrollen) != 0) {
 		$aufgabenpc .= "<h3>Aufgaben</h3><ul>".$sonderrollen."</ul>";
 		$aufgabenmobil .= "<li><a href=\"Schulhof/Aufgaben\">Aufgaben</a><span id=\"cms_mobilmenue_knopf_n_aufgaben\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('n_aufgaben')\">&#8628;</span>";

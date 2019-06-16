@@ -42,7 +42,7 @@ function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $
 }
 
 
-function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $url, $anonymisiert = false;) {
+function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $url, $anonymisiert = false) {
   global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERID, $CMS_RECHTE;
   $jetzt = mktime(0,0,0,$monat, $tag, $jahr);
   if ($buchungsart == 'l') {

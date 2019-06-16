@@ -128,11 +128,11 @@ function cms_personensuche_mail_generieren($dbs, $id, $pool, $gewaehlt) {
       if ($anfrage = $dbs->query($sql)) {
         while ($daten = $anfrage->fetch_assoc()) {
           $anzeige = "<img src=\"\">";
-          if ($daten['art'] = 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
-          else if ($daten['art'] = 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
-          else if ($daten['art'] = 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
-          else if ($daten['art'] = 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
-          else if ($daten['art'] = 'x') {$icon = 'extern'; $hinweis = 'Externe';}
+          if ($daten['art'] == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
+          else if ($daten['art'] == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
+          else if ($daten['art'] == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
+          else if ($daten['art'] == 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
+          else if ($daten['art'] == 'x') {$icon = 'extern'; $hinweis = 'Externe';}
           else {$icon = ''; $hinweis = '';}
           $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
           $anzeige .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
@@ -167,7 +167,72 @@ function cms_personensuche_mail_generieren($dbs, $id, $pool, $gewaehlt) {
   else {
     $code .= cms_meldung('info', '<h4>Keine Empfänger wählbar</h4><p>Es gibt niemandem, dem geschrieben werden kann.</p>');
   }
+  return $code;
+}
 
+
+function cms_personensuche_schuljahr_generieren($dbs, $id, $erlaubt, $gewaehlt) {
+  global $CMS_SCHLUESSEL;
+
+  $code = "";
+
+  if (strlen($erlaubt) > 0) {
+    $sqlart = "";
+    if (preg_match('/e/', $erlaubt)) {$sqlart .= "'e',";}
+    if (preg_match('/s/', $erlaubt)) {$sqlart .= "'s',";}
+    if (preg_match('/l/', $erlaubt)) {$sqlart .= "'l',";}
+    if (preg_match('/v/', $erlaubt)) {$sqlart .= "'v',";}
+    if (preg_match('/x/', $erlaubt)) {$sqlart .= "'x',";}
+    $sqlart = "(".substr($sqlart, 0, -1).")";
+
+    $event = "cms_personensuche_schuljahr('$id');";
+    $code .= "<p id=\"$id"."_F\">";
+    if (strlen($gewaehlt) > 0) {
+      $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
+      $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x WHERE art IN $sqlart ORDER BY nachname ASC, vorname ASC";
+      if ($anfrage = $dbs->query($sql)) {
+        while ($daten = $anfrage->fetch_assoc()) {
+          $anzeige = "<img src=\"\">";
+          if ($daten['art'] == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
+          else if ($daten['art'] == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
+          else if ($daten['art'] == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
+          else if ($daten['art'] == 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
+          else if ($daten['art'] == 'x') {$icon = 'extern'; $hinweis = 'Externe';}
+          else {$icon = ''; $hinweis = '';}
+          $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
+          $anzeige .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+          $code .= cms_togglebutton_generieren($id."_personensuche_schuljahr_".$daten['id'], $anzeige, 1, "cms_personensuche_entfernen_schuljahr('$id', '".$daten['id']."')")." ";
+        }
+        $anfrage->free();
+      }
+    }
+    $code .= "</p>";
+    $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_einblenden('$id"."_suchfeld', 'table');\">+</span></p>";
+
+
+    $code .= "<p><input type=\"hidden\" value=\"$gewaehlt\" name=\"$id"."_personensuche_gewaehlt\" id=\"$id"."_personensuche_gewaehlt\"></p>";
+
+    $code .= "<table class=\"cms_formular\" id=\"$id"."_suchfeld\" style=\"display: none;\">";
+      $code .= "<tr>";
+        $code .= "<th>Nachname</th><th colspan=\"2\">Vorname <span class=\"cms_button_nein cms_button_schliessen\" onclick=\"cms_ausblenden('$id"."_suchfeld')\">&times;</span></th>";
+      $code .= "</tr><tr>";
+        $code .= "<td><input type=\"text\" id=\"$id"."_personensuche_nachname\" name=\"$id"."_personensuche_nachname\" onkeyup=\"$event\"></td>";
+        $code .= "<td><input type=\"text\" id=\"$id"."_personensuche_vorname\" name=\"$id"."_personensuche_vorname\" onkeyup=\"$event\"></td>";
+      $code .= "</tr>";
+        $code .= "<tr><td colspan=\"2\">";
+          if (preg_match('/s/', $erlaubt)) {$code .= " ".cms_togglebutton_generieren($id."_personensuche_s", "Schüler", 0, $event);}
+          if (preg_match('/l/', $erlaubt)) {$code .= " ".cms_togglebutton_generieren($id."_personensuche_l", "Lehrer", 0, $event);}
+          if (preg_match('/v/', $erlaubt)) {$code .= " ".cms_togglebutton_generieren($id."_personensuche_v", "Verwaltungsangestellte", 0, $event);}
+          if (preg_match('/e/', $erlaubt)) {$code .= " ".cms_togglebutton_generieren($id."_personensuche_e", "Eltern", 0, $event);}
+          if (preg_match('/x/', $erlaubt)) {$code .= " ".cms_togglebutton_generieren($id."_personensuche_x", "Externe", 0, $event);}
+          $code .= "<input type=\"hidden\" id=\"$id"."_personensuche_erlaubt\" name=\"$id"."_personensuche_erlaubt\" value=\"$erlaubt\">";
+        $code .= "</td></tr>";
+        $code .= "<tr><td colspan=\"4\" id=\"$id"."_suchergebnis\" style=\"text-align: center;\">-- keine Personen gefunden --</td></tr>";
+    $code .= "</table>";
+  }
+  else {
+    $code .= cms_meldung('info', '<h4>Keine Empfänger wählbar</h4><p>Es gibt niemandem, dem geschrieben werden kann.</p>');
+  }
   return $code;
 }
 ?>

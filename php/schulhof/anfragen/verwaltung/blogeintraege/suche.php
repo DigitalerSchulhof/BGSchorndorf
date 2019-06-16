@@ -27,7 +27,7 @@ if ($bearbeiten || $loeschen) {$spalten++;}
 if (cms_angemeldet() && $zugriff) {
   if (!$fehler) {
   	$dbs = cms_verbinden('s');
-  	$ausgabe = cms_blogeintragverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen);
+  	$ausgabe = cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen);
   	cms_trennen($dbs);
   	echo $ausgabe;
   }
