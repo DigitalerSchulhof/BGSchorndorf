@@ -693,9 +693,14 @@ if ($update) {
 	  `beschreibung` blob NOT NULL,
 	  `start` bigint(255) UNSIGNED NOT NULL,
 	  `ziel` bigint(255) UNSIGNED NOT NULL,
+	  `erledigt` bigint(255) UNSIGNED DEFAULT NULL,
+	  `erledigtvon` bigint(255) UNSIGNED DEFAULT NULL,
 	  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
 	  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+	$dbs->query($sql);
+	$sql = "ALTER TABLE `hausmeisterauftraege`
+	  ADD PRIMARY KEY (`id`);";
 	$dbs->query($sql);
 	cms_trennen($dbs);
 }

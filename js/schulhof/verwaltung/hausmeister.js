@@ -137,7 +137,7 @@ function cms_hausmeisterauftrag_loeschen(id) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Auftrag löschen', '<p>Der Auftrag wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister/Aufträge\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Auftrag löschen', '<p>Der Auftrag wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister/Aufträge\');">OK</span></p>');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

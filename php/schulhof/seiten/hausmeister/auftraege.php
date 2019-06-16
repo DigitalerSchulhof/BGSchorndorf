@@ -16,7 +16,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
     $sql = "SELECT $sqlfelder FROM hausmeisterauftraege LEFT JOIN personen ON personen.id = hausmeisterauftraege.idvon LEFT JOIN nutzerkonten ON nutzerkonten.id = hausmeisterauftraege.idvon ORDER BY status DESC, ziel ASC, erstellt ASC";
 
     if ($anfrage = $dbs->query($sql)) {
-      if ($daten = $anfrage->fetch_assoc()) {
+      while ($daten = $anfrage->fetch_assoc()) {
         $eintraege .= "<tr>";
           $eintraege .= "<td><img src=\"res/icons/klein/hausmeister.png\"></td>";
           if ($daten['status'] == 'e') {$icon = "gruen"; $hinweis = "erledigt";} else {$icon = "rot"; $hinweis = "offen";}

@@ -22,7 +22,11 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
     // AUFTRAG ÄNDERN
 		$jetzt = time();
-		$sql = $dbs->prepare("DELETE FROM hausmeisterauftraege  WHERE id = ?");
+		$sql = $dbs->prepare("DELETE FROM hausmeisterauftraege WHERE id = ?");
+		$sql->bind_param("i", $id);
+	  $sql->execute();
+	  $sql->close();
+		$sql = $dbs->prepare("DELETE FROM notifikationen WHERE gruppe = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL') AND zielid = ?");
 		$sql->bind_param("i", $id);
 	  $sql->execute();
 	  $sql->close();

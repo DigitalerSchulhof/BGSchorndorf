@@ -41,7 +41,8 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
     $sql->bind_param("ii", $eintrag['gruppenid'], $ausnahme);
   }
   else if ($gruppek == "hausmeister") {
-    $sql = $dbs->prepare("SELECT hausmeisterauftraege.idvon AS id, $spalten FROM hausmeisterauftraege JOIN nutzerkonten ON nutzerkonten.id = hausmeisterauftraege.idvon JOIN personen_einstellungen ON personen_einstellungen.person = nutzerkonten.id JOIN personen ON personen.id = nutzerkonten.id");
+    $sql = $dbs->prepare("SELECT hausmeisterauftraege.idvon AS id, $spalten FROM hausmeisterauftraege JOIN nutzerkonten ON nutzerkonten.id = hausmeisterauftraege.idvon JOIN personen_einstellungen ON personen_einstellungen.person = nutzerkonten.id JOIN personen ON personen.id = nutzerkonten.id WHERE hausmeisterauftraege.id = ?");
+    $sql->bind_param("i", $eintrag['zielid']);
   }
 
   if ($sql->execute()) {
@@ -63,7 +64,7 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
     $sql->close();
     $jetzt = time();
     // Nach dem Löschen gibt es keine Zielid mehr
-    if (($eintrag['art'] == 'l') || ($eintrag['art'] == 'a')) {$eintrag['zielid'] = 'NULL';}
+    if ($eintrag['art'] == 'l') {$eintrag['zielid'] = 'NULL';}
 
     $sqlnot = $dbs->prepare("UPDATE notifikationen SET person = ?, zeit = ?, gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), gruppenid = ?, zielid = ?, status = ?, art = ?, titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
     $sqlnut = $dbs->prepare("UPDATE nutzerkonten SET letztenotifikation = ? WHERE id = ?");
