@@ -55,7 +55,7 @@ function cms_array_leserlich($arr, $sep = "<br>", $l = 0) {
 
 function cms_boesartig($string) {
 	$regex = array(
-		"/ [oO][nN][a-zA-Z]* *=[^\\\\]*/",																																																																	// onevent=
+		"/ [oO][nN][a-zA-Z]* *=[^\\\\]*/",																																																																// onevent=
 		"/(.[^ ])*[jJ](&.*;)*[aA](&.*;)*[vV](&.*;)*[aA](&.*;)*[sS](&.*;)*[cC](&.*;)*[rR](&.*;)*[iI](&.*;)*[pP](&.*;)*[tT](&.*;)*(:|;[cC][oO][lL][oO][nN])/",							// javascript:
 		"/<[sS][cC][rR][iI][pP][tT].*>/",																																																																	// <script>
 		"/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/",		// data:x/y
