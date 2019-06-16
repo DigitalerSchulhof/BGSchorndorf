@@ -7,12 +7,17 @@ $code .= "</p>";
 
 $code .= "<h1>Besucherstatistiken</h1>";
 
-$code .= "<p>";
+$bs = "";
+
 if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'])
-  $code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_gruppe_website.png');\" href=\"Schulhof/Website/Besucherstatistiken/Website\">Besucherstatistiken - Website</a> ";
+  $bs .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_gruppe_website.png');\" href=\"Schulhof/Website/Besucherstatistiken/Website\">Besucherstatistiken - Website</a> ";
 if($CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'])
-  $code .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_schulhof.png');\" href=\"Schulhof/Website/Besucherstatistiken/Schulhof\">Besucherstatistiken - Schulhof</a> ";
-$code .= "</p>";
+  $bs .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_schulhof.png');\" href=\"Schulhof/Website/Besucherstatistiken/Schulhof\">Besucherstatistiken - Schulhof</a> ";
+
+if (strlen($bs) > 0)
+	$code .= "<p>".$bs."</p>";
+else
+	$code .= cms_meldung_berechtigung();
 
 $code .= "</div>";
 $code .= "<div class=\"cms_clear\"></div>";
