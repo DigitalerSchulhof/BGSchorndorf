@@ -8,7 +8,7 @@ function cms_texttrafo_e_event($string) {
 
 function cms_texttrafo_e_db($string) {
 	$string = str_replace("<br></p>", "</p>", $string);
-	$string = cms_texttrafo_e_event($string);
+	//$string = cms_texttrafo_e_event($string);
 	if(cms_boesartig($string)) {
 		die("BÖSE");
 	}

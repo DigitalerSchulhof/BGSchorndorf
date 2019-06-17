@@ -47,10 +47,7 @@ if ($angemeldet) {
 
 		if ($zugriff) {
 			$code .= "<h1>$bezeichnung</h1>";
-			$code .= "<p>".cms_textaustextfeld_anzeigen($beschreibung)."</p>";
-			if ($schreiben) {
-				$code .= "<p><a class=\"cms_button cms_button_ja\" href=\"Schulhof/Pinnwände/".cms_textzulink($bezeichnung)."/Neuer_Anschlag\">+ Neuer Anschlag</a></p>";
-			}
+			$code .= "</div><div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 			// Alte Anschläge löschen
 			$jetzt = time();
 			$sql = "DELETE FROM pinnwandanschlag WHERE ende < $jetzt";
@@ -137,6 +134,23 @@ if ($angemeldet) {
 				$anschlaege = "<div class=\"cms_pinnwand_anschlaege\">".$anschlaege."</div>";
 				$code .= cms_toggleeinblenden_generieren ('cms_ausstehende_anschlaege', 'Ausstehende Anschläge einblenden', 'Ausstehende Anschläge ausblenden', $anschlaege, 0);
 			}
+
+			$code .= "</div></div><div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
+			$code .= "<p>".cms_textaustextfeld_anzeigen($beschreibung)."</p>";
+
+			$code .= "<p>";
+			if ($sichtbarl == '1') {$code .= cms_generiere_hinweisicon('lehrer', 'Sichtbar für Lehrer')." ";}
+			if ($sichtbars == '1') {$code .= cms_generiere_hinweisicon('schueler', 'Sichtbar für Schüler')." ";}
+			if ($sichtbare == '1') {$code .= cms_generiere_hinweisicon('elter', 'Sichtbar für Eltern')." ";}
+			if ($sichtbarv == '1') {$code .= cms_generiere_hinweisicon('verwaltung', 'Sichtbar für Verwaltungsnagestellte')." ";}
+			if ($sichtbarx == '1') {$code .= cms_generiere_hinweisicon('extern', 'Sichtbar für Externe')." ";}
+			$code .= "</p>";
+
+			if ($schreiben) {
+				$code .= "<h2>Aktionen</h2>";
+				$code .= "<p><a class=\"cms_button cms_button_ja\" href=\"Schulhof/Pinnwände/".cms_textzulink($bezeichnung)."/Neuer_Anschlag\">+ Neuer Anschlag</a></p>";
+			}
+			$code .= "</div>";
 		}
 		else {
 			$code .= "<h1>Pinnwand</h1>";
