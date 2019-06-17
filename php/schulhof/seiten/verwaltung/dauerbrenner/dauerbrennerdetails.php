@@ -28,10 +28,10 @@ function cms_dauerbrenner_ausgeben ($dauerbrennerid) {
 	$code .= "<h3>Details</h3>";
 	$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr><th>Bezeichnung:</th><td colspan=\"5\"><input type=\"text\" name=\"cms_dauerbrenner_bezeichnung\" id=\"cms_dauerbrenner_bezeichnung\" value=\"".$bezeichnung."\"></td></tr>";
-		$code .= "<tr><th rowspan=\"2\">Sichtbarkeit:</th><td>".cms_generiere_hinweisicon("lehrer", "Lehrer")."</td>";
+		$code .= "<tr><th></th><td>".cms_generiere_hinweisicon("lehrer", "Lehrer")."</td>";
 		$code .= "<td>".cms_generiere_hinweisicon("schueler", "Schüler")."</td><td>".cms_generiere_hinweisicon("elter", "Eltern")."</td>";
 		$code .= "<td>".cms_generiere_hinweisicon("verwaltung", "Verwaltungsangestellte")."</td><td>".cms_generiere_hinweisicon("extern", "Externe")."</td></tr>";
-		$code .= "<tr><td>".cms_schieber_generieren('dauerbrenner_sichtbarl', $sichtbarl)."</td>";
+		$code .= "<tr><th>Sichtbarkeit:</th><td>".cms_schieber_generieren('dauerbrenner_sichtbarl', $sichtbarl)."</td>";
 		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbars', $sichtbars)."</td>";
 		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbare', $sichtbare)."</td>";
 		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbarv', $sichtbarv)."</td>";

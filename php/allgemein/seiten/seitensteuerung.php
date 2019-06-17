@@ -130,6 +130,14 @@ else if ($CMS_URL[0] == 'Schulhof') {
   if (preg_match("/^Schulhof\/Dauerbrenner\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/verwaltung/dauerbrenner/anzeigen.php';}
 
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Pinnwände']                                           = 'php/schulhof/seiten/verwaltung/pinnwaende/alle.php';
+  if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/verwaltung/pinnwaende/anzeigen.php';}
+    if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER\/Neuer_Anschlag$/", $CMS_URLGANZ))
+      {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                              = 'php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/neueranschlag.php';}
+      if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER\/Anschlag_bearbeiten$/", $CMS_URLGANZ))
+        {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                            = 'php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/anschlagbearbeiten.php';}
+
   // Verwaltung
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung']                                          = 'php/schulhof/seiten/verwaltung/verwaltung.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen']                                 = 'php/schulhof/seiten/verwaltung/personen/personen.php';
@@ -159,6 +167,10 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner']                             = 'php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrenner.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner/Neuen_Dauerbrenner_anlegen']  = 'php/schulhof/seiten/verwaltung/dauerbrenner/neuerdauerbrenner.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner/Dauerbrenner_bearbeiten']     = 'php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrennerbearbeiten.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Pinnwände']                                = 'php/schulhof/seiten/verwaltung/pinnwaende/pinnwaende.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Pinnwände/Neue_Pinnwand_anlegen']          = 'php/schulhof/seiten/verwaltung/pinnwaende/neuepinnwand.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Pinnwände/Pinnwand_bearbeiten']            = 'php/schulhof/seiten/verwaltung/pinnwaende/pinnwandbearbeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Profile']                                             = 'php/schulhof/seiten/personensuche/personenprofil.php';
 

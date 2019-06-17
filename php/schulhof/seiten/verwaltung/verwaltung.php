@@ -203,20 +203,29 @@ if ($CMS_RECHTE['Organisation']['Schulanmeldung vorbereiten'] || $CMS_RECHTE['Or
 	$code .=  "</li>";
 	$tabzahl++;
 }
-if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
 	$code .= "<li>";
-		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_oe\" href=\"Schulhof/Aufgaben/Öffentliche_Beiträge_genehmigen\">";
-			$code .=  "<h3>Genehmigungscenter Öffentlichkeit</h3>";
-			$code .=  "<p>Öffentliche Termine, Blogeinträge und Galerien bearbeiten und genehmigen.</p>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_termine\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">";
+			$code .=  "<h3>Genehmigungscenter Termine</h3>";
+			$code .=  "<p>Öffentliche und gruppeninterne Termine bearbeiten und genehmigen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
 }
-if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
 	$code .= "<li>";
-		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_in\" href=\"Schulhof/Aufgaben/Gruppeninterna_genehmigen\">";
-			$code .=  "<h3>Genehmigungscenter Gruppeninterna</h3>";
-			$code .=  "<p>Gruppeninterne Termine und Blogeinträge bearbeiten und genehmigen.</p>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_blogeintraege\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">";
+			$code .=  "<h3>Genehmigungscenter Blogeinträge</h3>";
+			$code .=  "<p>Öffentliche und gruppeninterne Blogeinträge bearbeiten und genehmigen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+	$code .= "<li>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_galerien\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">";
+			$code .=  "<h3>Genehmigungscenter Galerien</h3>";
+			$code .=  "<p>Öffentliche Galerien bearbeiten und genehmigen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
@@ -226,6 +235,15 @@ if ($CMS_RECHTE['Organisation']['Dauerbrenner anlegen'] || $CMS_RECHTE['Organisa
 		$code .= "<a class=\"cms_uebersicht_verwaltung_dauerbrenner\" href=\"Schulhof/Verwaltung/Dauerbrenner\">";
 			$code .=  "<h3>Dauerbrenner</h3>";
 			$code .=  "<p>Dauerbrenner anlegen, bearbeiten und löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Organisation']['Pinnwände anlegen'] || $CMS_RECHTE['Organisation']['Pinnwände bearbeiten'] || $CMS_RECHTE['Organisation']['Pinnwände löschen']) {
+	$code .= "<li>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_pinnwaende\" href=\"Schulhof/Verwaltung/Pinnwände\">";
+			$code .=  "<h3>Pinnwände</h3>";
+			$code .=  "<p>Pinnwände anlegen, bearbeiten und löschen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
@@ -392,7 +410,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_hausmeister\" href=\"Schulhof/Hausmeister/Aufträge\">";
 			$code .=  "<h3>Hausmeisteraufräge</h3>";
-			$code .=  "<p>Hausmeisteraufträge sehen, markieren und löschen..</p>";
+			$code .=  "<p>Hausmeisteraufträge sehen, markieren und löschen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;

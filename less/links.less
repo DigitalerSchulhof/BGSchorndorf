@@ -1,7 +1,7 @@
 // out: ../css/links.css, sourcemap: false, compress: true, autoprefixer: false
 @import "standard.less";
 
-a {
+a, .cms_link {
   font-size: inherit;
   text-decoration: none;
   color: @schriftlink;
@@ -9,12 +9,12 @@ a {
   display: inline-block;
 }
 
-a:hover {
+a:hover, .cms_link:hover {
   color: @schriftlinkh;
   display: inline-block;
 }
 
-.cms_notiz a:hover {
+.cms_notiz a:hover, .cms_notiz .cms_link:hover {
   color: @schriftbuttonfusszeileh !important;
   display: inline-block;
 }

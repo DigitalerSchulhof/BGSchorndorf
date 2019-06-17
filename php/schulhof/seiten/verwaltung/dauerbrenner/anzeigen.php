@@ -9,10 +9,10 @@ $angemeldet = cms_angemeldet();
 if ($angemeldet) {
 	$fehler = false;
 	// DAUERBRENNER SUCHEN
-	$bezeichnung =  $CMS_URL[count($CMS_URL)-1];
+	$bezeichnung = cms_linkzutext($CMS_URL[count($CMS_URL)-1]);
 
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, id, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL'), sichtbars, sichtbarl, sichtbare, sichtbarv, sichtbarx FROM dauerbrenner WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
-	
+
 	$sql->bind_param("s", $bezeichnung);
 	if ($sql->execute()) {
 	  $sql->bind_result($anzahl, $id, $inhalt, $sichtbars, $sichtbarl, $sichtbare, $sichtbarv, $sichtbarx);
@@ -40,6 +40,7 @@ if ($angemeldet) {
 	}
 	else {
 		cms_fehler('Schulhof', '404');
+		$code = "";
 	}
 }
 else {

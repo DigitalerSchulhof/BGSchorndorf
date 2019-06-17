@@ -356,6 +356,12 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Pinnwände löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Pinnwandanschläge anlegen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Pinnwandanschläge bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Pinnwandanschläge löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 
 
 		// PERSONEN

@@ -159,6 +159,8 @@ function cms_schulhofnavigation_informationen($dbs) {
 
 	include_once('php/schulhof/seiten/verwaltung/dauerbrenner/linksausgeben.php');
 	$dauerbrenner = cms_dauerbrenner_links_anzeigen();
+	include_once('php/schulhof/seiten/verwaltung/pinnwaende/linksausgeben.php');
+	$pinnwaende = cms_pinnwaende_links_anzeigen();
 
 	$code['mobil'] = "<h3>Informationen</h3>";
 	$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i\">";
@@ -174,12 +176,20 @@ function cms_schulhofnavigation_informationen($dbs) {
 						if ($CMS_RECHTE['Personen']['Elternvertreter sehen']) {$code['mobil'] .= "<li><a href=\"Schulhof/Listen/Klassen_und_Kurse\">Klassen und Kurse</a></li> ";}
 					$code['mobil'] .= "</ul>";
 				$code['mobil'] .= "</div>";
-			$code['mobil'] .= "</li>";
-			$code['mobil'] .= "<li><a href=\"Schulhof/Dauerbrenner\">Dauerbrenner</a><span id=\"cms_mobilmenue_knopf_i_listen\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('i_dauerbrenner')\">&#8628;</span>";
-			$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i_dauerbrenner\" style=\"display:none;\">";
+				$code['mobil'] .= "</li>";
+
+				$code['mobil'] .= "<li><a href=\"Schulhof/Dauerbrenner\">Dauerbrenner</a><span id=\"cms_mobilmenue_knopf_i_dauerbrenner\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('i_dauerbrenner')\">&#8628;</span>";
+				$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i_dauerbrenner\" style=\"display:none;\">";
 					$code['mobil'] .= str_replace('class="cms_button"', '', $dauerbrenner);
-			$code['mobil'] .= "</div>";
-		$code['mobil'] .= "</li>";
+				$code['mobil'] .= "</div>";
+				$code['mobil'] .= "</li>";
+
+				$code['mobil'] .= "<li><a href=\"Schulhof/Pinnwände\">Pinnwände</a><span id=\"cms_mobilmenue_knopf_i_pinnwaende\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('i_pinnwaende')\">&#8628;</span>";
+				$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_i_pinnwaende\" style=\"display:none;\">";
+					$code['mobil'] .= str_replace('class="cms_button"', '', $pinnwaende);
+				$code['mobil'] .= "</div>";
+				$code['mobil'] .= "</li>";
+
 		$code['mobil'] .= "</ul>";
 	$code['mobil'] .= "</div>";
 
@@ -193,8 +203,9 @@ function cms_schulhofnavigation_informationen($dbs) {
 				$code['pc'] .= "<span class=\"cms_unternavigation_schliessen cms_button_nein\" id=\"cms_hauptnavigation_info_l\" onclick=\"cms_hauptnavigation_ausblenden('info')\">&times;</span>";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= "<ul class=\"cms_reitermenue\">";
-						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('informationen', 0,1)\">Listen</a></li> ";
-						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('informationen', 1,1)\">Dauerbrenner</a></li> ";
+						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('informationen', 0,2)\">Listen</a></li> ";
+						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('informationen', 1,2)\">Dauerbrenner</a></li> ";
+						$code['pc'] .= "<li><span id=\"cms_reiter_informationen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('informationen', 2,2)\">Pinnwände</a></li> ";
 					$code['pc'] .= "</ul>";
 
 					$code['pc'] .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_informationen_0\" style=\"display: block;\">";
@@ -213,6 +224,12 @@ function cms_schulhofnavigation_informationen($dbs) {
 					$code['pc'] .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_informationen_1\" style=\"display: none;\">";
 						$code['pc'] .= "<div class=\"cms_reitermenue_i\">";
 								$code['pc'] .= $dauerbrenner;
+						$code['pc'] .= "</div>";
+					$code['pc'] .= "</div>";
+
+					$code['pc'] .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_informationen_2\" style=\"display: none;\">";
+						$code['pc'] .= "<div class=\"cms_reitermenue_i\">";
+								$code['pc'] .= $pinnwaende;
 						$code['pc'] .= "</div>";
 					$code['pc'] .= "</div>";
 
@@ -503,6 +520,14 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	$zugriff = ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']);
 	if ($zugriff) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Gruppenblogeinträge_genehmigen\">Gruppenblogeinträge genehmigen</a></li> ";
+	}
+	$zugriff = $CMS_RECHTE['Organisation']['Dauerbrenner anlegen'] || $CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten'] || $CMS_RECHTE['Organisation']['Dauerbrenner löschen'];
+	if ($zugriff) {
+		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Dauerbrenner\">Dauerbrenner</a></li> ";
+	}
+	$zugriff = $CMS_RECHTE['Organisation']['Pinnwände anlegen'] || $CMS_RECHTE['Organisation']['Pinnwände bearbeiten'] || $CMS_RECHTE['Organisation']['Pinnwände löschen'];
+	if ($zugriff) {
+		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Pinnwände\">Pinnwände</a></li> ";
 	}
 	// WEBSITE
 	$VERwebsite = "";

@@ -278,4 +278,12 @@ $CMS_ZIELE[313] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/neuspeichern.ph
 $CMS_ZIELE[314] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/loeschen.php';
 $CMS_ZIELE[315] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenvorbereiten.php';
 $CMS_ZIELE[316] = 'php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenspeichern.php';
+$CMS_ZIELE[317] = 'php/schulhof/anfragen/verwaltung/pinnwaende/neuspeichern.php';
+$CMS_ZIELE[318] = 'php/schulhof/anfragen/verwaltung/pinnwaende/loeschen.php';
+$CMS_ZIELE[319] = 'php/schulhof/anfragen/verwaltung/pinnwaende/bearbeitenvorbereiten.php';
+$CMS_ZIELE[320] = 'php/schulhof/anfragen/verwaltung/pinnwaende/bearbeitenspeichern.php';
+$CMS_ZIELE[321] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/neuspeichern.php';
+$CMS_ZIELE[322] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/loeschen.php';
+$CMS_ZIELE[323] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/bearbeitenvorbereiten.php';
+$CMS_ZIELE[324] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/bearbeitenspeichern.php';
 ?>

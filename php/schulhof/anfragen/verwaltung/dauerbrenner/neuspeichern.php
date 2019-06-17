@@ -19,7 +19,7 @@ $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 $inhalt = cms_texttrafo_e_db($inhalt);
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Räume anlegen'];
+$zugriff = $CMS_RECHTE['Organisation']['Dauerbrenner anlegen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

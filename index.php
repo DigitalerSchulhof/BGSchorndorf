@@ -169,6 +169,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/summernote.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
     echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";
@@ -216,6 +217,7 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/ferien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/hausmeister.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/dauerbrenner.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/pinnwaende.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
@@ -242,6 +244,7 @@
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
 			echo $code;
+			$code = "";
 		}
 		?>
 
@@ -262,7 +265,7 @@
 					else {
 						echo "var CMS_IMLN = false;\n";
 					}
-					echo "var CMS_NETZCHECK = setInterval('cms_netzcheck()', 3000);\n";
+					echo "var CMS_NETZCHECK = setInterval('cms_netzcheck()', 30000);\n";
 				}
         echo "var CMS_BENUTZERNAME = '".$_SESSION['BENUTZERNAME']."';\n";
 		    echo "var CMS_SCHULSTUNDENDAUER = $CMS_STUNDENDAUER;\n";
@@ -277,7 +280,7 @@
         echo "var CMS_BENUTZERNACHNAME = '".$_SESSION['BENUTZERNACHNAME']."';\n";
         echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
         echo "var CMS_MAX_DATEI = ".$CMS_MAX_DATEI.";\n";
-        echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 2000);\n";
+        echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
 				$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
         if ($CMS_IMLN) {
 	        $dbsschluessel = openssl_encrypt ($CMS_SCHLUESSEL, 'aes128', $iv, 0, $iv);
