@@ -51,7 +51,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['termine'];
+$zugriff = $CMS_GRUPPENRECHTE['termine'] || $CMS_RECHTE['Organisation']['Gruppentermine bearbeiten'];
 
 if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppentermine genehmigen'])) {$genehmigt = '0';}
 
@@ -156,10 +156,10 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
     $ort = cms_texttrafo_e_db($ort);
     $text = cms_texttrafo_e_db($text);
-
+		$jetzt = time();
   	// TERMIN EINTRAGEN
-    $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-    $sql->bind_param("ssiiiiiiiisii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $terminid);
+    $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+    $sql->bind_param("ssiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
     $sql->execute();
     $sql->close();
 

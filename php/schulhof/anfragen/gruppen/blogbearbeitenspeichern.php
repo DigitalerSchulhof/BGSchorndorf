@@ -44,7 +44,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'];
+$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge bearbeiten'];
 
 if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'])) {$genehmigt = '0';}
 
@@ -143,10 +143,10 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
     $text = cms_texttrafo_e_db($text);
-
+		$jetzt = time();
 		// BLOGEINTRAG EINTRAGEN
-		$sql = $dbs->prepare("UPDATE $gk"."blogeintraegeintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), gruppe = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-	  $sql->bind_param("sisiiissii", $bezeichnung, $datum, $zusammenfassung, $gruppenid, $genehmigt, $aktiv, $text, $autor, $CMS_BENUTZERID, $blogid);
+		$sql = $dbs->prepare("UPDATE $gk"."blogeintraegeintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), gruppe = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+	  $sql->bind_param("sisiiissiii", $bezeichnung, $datum, $zusammenfassung, $gruppenid, $genehmigt, $aktiv, $text, $autor, $CMS_BENUTZERID, $jetzt, $blogid);
 	  $sql->execute();
 	  $sql->close();
 

@@ -65,6 +65,10 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 		$code .= "<span class=\"cms_icon_klein_o cms_gruppen_oeffentlich_art\"><span class=\"cms_hinweis\">$hinweis</span><span class=\"cms_".$daten['art']."\"></span></span>";
 	}*/
 
+	if ($daten['art'] == 'in') {
+		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern</span> ";
+	}
+
 	if (strlen($daten['autor']) > 0) {$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/icons/oegruppen/autor.png')\">".$daten['autor']."</span> ";}
 
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen

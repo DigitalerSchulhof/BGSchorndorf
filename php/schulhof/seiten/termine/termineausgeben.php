@@ -65,6 +65,10 @@ function cms_termin_zusatzinfo($dbs, $daten) {
 		$code .= "<span class=\"cms_icon_klein_o cms_gruppen_oeffentlich_art\"><span class=\"cms_hinweis\">$hinweis</span><span class=\"cms_".$daten['art']."\"></span></span>";
 	}*/
 
+	if ($daten['art'] == 'in') {
+		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern</span> ";
+	}
+
 	if ($daten['ortt'] == 1) {
 		$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/icons/oegruppen/ort.png')\">".$daten['ort']."</span> ";
 	}

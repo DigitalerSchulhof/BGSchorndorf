@@ -70,6 +70,10 @@ function cms_textzudb(wert) {
   return (wert.replace(' ', '')).toLowerCase();
 } 
 
+function cms_textzulink(wert) {
+  return wert.replace(' ', '_');
+} 
+
 function cms_datumzweistellig(zahl) {
   if (zahl<=9) {
     return '0'+''+zahl;

@@ -366,17 +366,27 @@ function cms_blogeintraegeintern_neu_speichern(ziel) {
 	}
 }
 
-function cms_blogeintraegeintern_bearbeiten_vorbereiten(id, ziel) {
+function cms_blogeintraegeintern_bearbeiten_vorbereiten(id, ziel, gruppe, gruppenid, schuljahr, gruppenname) {
+  var gruppe = gruppe || null;
+  var gruppenid = gruppenid || null;
+  var schuljahr = schuljahr || null;
+  var gruppenname = gruppenname || null;
 	cms_laden_an('Blogeintrag bearbeiten', 'Die notwendigen Daten werden gesammelt.');
 
 	var formulardaten = new FormData();
 	formulardaten.append("id", id);
 	formulardaten.append("ziel", ziel);
+  formulardaten.append("gruppe", gruppe);
+	formulardaten.append("gruppenid", gruppenid);
 	formulardaten.append("anfragenziel", 	'22');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
       cms_link(ziel+'/Blogeintrag_bearbeiten');
+		}
+    if (rueckgabe == "ERFOLG") {
+      if ((gruppe === null) && (gruppenid === null)) {cms_link(ziel+'/Blogeintrag_bearbeiten');}
+      else {cms_link('Schulhof/Gruppen/'+cms_textzulink(schuljahr)+'/'+cms_textzulink(gruppe)+'/'+cms_textzulink(gruppenname)+'/Blog/Blogeintrag_bearbeiten');}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -484,17 +494,24 @@ function cms_termineintern_neu_speichern(ziel) {
 	}
 }
 
-function cms_termineintern_bearbeiten_vorbereiten(id, ziel) {
+function cms_termineintern_bearbeiten_vorbereiten(id, ziel, gruppe, gruppenid, schuljahr, gruppenname) {
+  var gruppe = gruppe || null;
+  var gruppenid = gruppenid || null;
+  var schuljahr = schuljahr || null;
+  var gruppenname = gruppenname || null;
 	cms_laden_an('Termin bearbeiten', 'Die notwendigen Daten werden gesammelt.');
 
 	var formulardaten = new FormData();
 	formulardaten.append("id", id);
 	formulardaten.append("ziel", ziel);
+	formulardaten.append("gruppe", gruppe);
+	formulardaten.append("gruppenid", gruppenid);
 	formulardaten.append("anfragenziel", 	'205');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-      cms_link(ziel+'/Termin_bearbeiten');
+      if ((gruppe === null) && (gruppenid === null)) {cms_link(ziel+'/Termin_bearbeiten');}
+      else {cms_link('Schulhof/Gruppen/'+cms_textzulink(schuljahr)+'/'+cms_textzulink(gruppe)+'/'+cms_textzulink(gruppenname)+'/Termine/Termin_bearbeiten');}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);

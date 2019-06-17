@@ -8,7 +8,7 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
+if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER";exit;}
 $CMS_RECHTE = cms_rechte_laden();
 

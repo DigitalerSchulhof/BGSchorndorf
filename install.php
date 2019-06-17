@@ -310,7 +310,11 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Gruppenblogeinträge genehmigen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Gruppenblogeinträge bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Gruppentermine genehmigen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Gruppentermine bearbeiten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Leihgeräte anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;

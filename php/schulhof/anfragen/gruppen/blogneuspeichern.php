@@ -144,10 +144,10 @@ if (cms_angemeldet() && $zugriff) {
 
   	// NÄCHSTE FREIE ID SUCHEN
 		$blogid = cms_generiere_kleinste_id($gk.'blogeintraegeintern');
-
+		$jetzt = time();
 		// BLOGEINTRAG EINTRAGEN
-		$sql = $dbs->prepare("UPDATE $gk"."blogeintraegeintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), gruppe = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-	  $sql->bind_param("sisiiissii", $bezeichnung, $datum, $zusammenfassung, $gruppenid, $genehmigt, $aktiv, $text, $autor, $CMS_BENUTZERID, $blogid);
+		$sql = $dbs->prepare("UPDATE $gk"."blogeintraegeintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), gruppe = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+	  $sql->bind_param("sisiiissiii", $bezeichnung, $datum, $zusammenfassung, $gruppenid, $genehmigt, $aktiv, $text, $autor, $CMS_BENUTZERID, $jetzt, $blogid);
 	  $sql->execute();
 	  $sql->close();
 

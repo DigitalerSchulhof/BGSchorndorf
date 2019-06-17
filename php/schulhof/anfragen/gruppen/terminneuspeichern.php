@@ -172,13 +172,13 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
     $ort = cms_texttrafo_e_db($ort);
     $text = cms_texttrafo_e_db($text);
-
+		$jetzt = time();
     for ($i = 0; $i<count($BEGINN); $i++) {
 			// NÄCHSTE FREIE ID SUCHEN
 			$terminid = cms_generiere_kleinste_id($gk.'termineintern');
 			// TERMIN EINTRAGEN
-      $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, gruppe = ? WHERE id = ?");
-      $sql->bind_param("ssiiiiiiiisiii", $bezeichnung, $ort, $BEGINN[$i], $ENDE[$i], $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $gruppenid, $terminid);
+      $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ?, gruppe = ? WHERE id = ?");
+      $sql->bind_param("ssiiiiiiiisiiii", $bezeichnung, $ort, $BEGINN[$i], $ENDE[$i], $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $gruppenid, $terminid);
       $sql->execute();
       $sql->close();
 
