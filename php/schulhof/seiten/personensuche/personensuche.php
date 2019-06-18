@@ -171,7 +171,7 @@ function cms_personensuche_mail_generieren($dbs, $id, $pool, $gewaehlt) {
 }
 
 
-function cms_personensuche_schuljahr_generieren($dbs, $id, $erlaubt, $gewaehlt) {
+function cms_personensuche_personhinzu_generieren($dbs, $id, $erlaubt, $gewaehlt) {
   global $CMS_SCHLUESSEL;
 
   $code = "";
@@ -201,7 +201,7 @@ function cms_personensuche_schuljahr_generieren($dbs, $id, $erlaubt, $gewaehlt) 
           else {$icon = ''; $hinweis = '';}
           $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
           $anzeige .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-          $code .= cms_togglebutton_generieren($id."_personensuche_schuljahr_".$daten['id'], $anzeige, 1, "cms_personensuche_entfernen_schuljahr('$id', '".$daten['id']."')")." ";
+          $code .= cms_togglebutton_generieren($id."_personensuche_schuljahr_".$daten['id'], $anzeige, 1, "cms_personensuche_personhinzu_entfernen('$id', '".$daten['id']."')")." ";
         }
         $anfrage->free();
       }

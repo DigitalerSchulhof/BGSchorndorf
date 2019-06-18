@@ -8,7 +8,6 @@ if ($zugriff) {
 	// PERSÖNLICHE DATEN LADEN
 	if (isset($_SESSION["SCHULJAHREBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/schuljahre/schuljahrdetails.php');
-		include_once("php/schulhof/seiten/verwaltung/personen/personensuche.php");
 		echo cms_schuljahr_ausgeben($_SESSION["SCHULJAHREBEARBEITEN"]);
 		echo "<p><span class=\"cms_button\" onclick=\"cms_schulhof_schuljahr_bearbeiten_speichern();\">Änderungen speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Schuljahre\">Abbrechen</a></p>";
 		}

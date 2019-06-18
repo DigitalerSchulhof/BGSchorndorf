@@ -4,9 +4,10 @@
 /* NORMALE BUTTONS */
 .cms_button, .cms_button_ja, .cms_button_nein, .cms_button_wichtig,
 .cms_toggle, .cms_toggle_aktiv, .cms_toggle_inaktiv, .cms_iconbutton, .cms_iconbutton_ja,
-.cms_iconbutton_nein, .cms_button_passiv, .cms_button_eingeschraenkt,
+.cms_iconbutton_nein, .cms_button_passiv, .cms_button_passivda, .cms_button_eingeschraenkt,
 .cms_iconbutton_eingeschraenkt, .cms_toggle_aktiv_fest, .cms_datentypwahl,
 .cms_fussnavigation a, .cms_fussnavigation span {
+  border: 1px solid transparent;
   display: inline-block;
   border-radius: 3px;
   padding: 3px 7px;
@@ -106,8 +107,14 @@
   background-color: @hintergrundhell;
 }
 
+.cms_button_passivda {
+  color: @schriftfarbedunkel;
+  border: 1px solid @hintergrunddunkel;
+  background-color: @hintergrundhell;
+}
+
 .cms_button_eingeschraenkt:hover, .cms_iconbutton_eingeschraenkt:hover,
-.cms_button_passiv:hover {
+.cms_button_passiv:hover, .cms_button_passivda {
   cursor: default;
 }
 

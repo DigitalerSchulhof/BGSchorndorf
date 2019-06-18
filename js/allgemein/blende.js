@@ -79,6 +79,14 @@ function cms_meldung_fehler_code() {
 	return cms_meldung_code('fehler', 'Unbekannter Fehler', '<p>Es ist ein unbekannter Fehler aufgetreten. Bitte den Administrator mit einem detailierten Bericht benachrichtigen, damit dieser Fehler behoben werden kann!</p>');
 }
 
+function cms_meldung_keinkonto() {
+	cms_meldung_an('info', 'Kein Nutzerkonto', '<p>Die gewählte Person verfügt über kein Nutzerkonto.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+}
+
+function cms_meldung_nichtschreiben() {
+	cms_meldung_an('info', 'Schreiben nicht möglich', '<p>Die gewählte Person verfügt über ein Nutzerkonto, ihr kann aber nicht geschrieben werden.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+}
+
 /* MELDUNG AUSBLENDEN */
 function cms_meldung_aus () {
 	cms_ausblenden('cms_blende_o');

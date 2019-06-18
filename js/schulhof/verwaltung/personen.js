@@ -539,7 +539,7 @@ function cms_schulhof_verwaltung_person_schuljahr_einstellen(schuljahr, person) 
 /* PERSON WIRD FÜR ZUORDNUNG VORBEREITET UND GEÖFFNET */
 function cms_schulhof_verwaltung_personen_verknuepfung () {
 	cms_laden_an('Schüler und Eltern verknüpfen', 'Die Berechtigung wird geprüft.');
-	var zuordnung = document.getElementById('cms_schulhof_personen_schuelereltern').value;
+	var zuordnung = document.getElementById('cms_schuereltern_zuordnung_personensuche_gewaehlt').value;
 
 	var formulardaten = new FormData();
 	formulardaten.append("zuordnung", zuordnung);

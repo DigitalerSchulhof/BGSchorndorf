@@ -94,12 +94,18 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge/Details']                        = 'php/schulhof/seiten/hausmeister/details.php';
   // Listen
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen']                                              = 'php/schulhof/seiten/listen/listen.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Lehrer']                                       = 'php/schulhof/seiten/listen/lehrer.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Verwaltungspersonal']                          = 'php/schulhof/seiten/listen/verwaltungspersonal.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Klassen_und_Kurse']                            = 'php/schulhof/seiten/listen/klassen.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Stufen']                                       = 'php/schulhof/seiten/listen/stufen.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Klassen-_und_Kurssprecher']                    = 'php/schulhof/seiten/listen/sprecher.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Elternvertretung']                             = 'php/schulhof/seiten/listen/elternvertretung.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Personen']                                     = 'php/schulhof/seiten/listen/listenpersonen.php';
+  if (preg_match("/^Schulhof\/Listen\/Personen\/(Lehrer|Schüler|Eltern|Verwaltung|Externe|Schülervertreter|Elternvertreter)/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/listen/personenlisten.php';}
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Gruppen']                                      = 'php/schulhof/seiten/listen/listengruppen.php';
+  if (preg_match("/^Schulhof\/Listen\/Gruppen\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/listen/listengruppenart.php';}
+  if (preg_match("/^Schulhof\/Listen\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                              = 'php/schulhof/seiten/listen/listengruppenschuljahr.php';}
+  if (preg_match("/^Schulhof\/Listen\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                              = 'php/schulhof/seiten/listen/gruppenlisten.php';}
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen/Verwaltungspersonal']                          = 'php/schulhof/seiten/listen/gruppenlisten.php';
   // Pläne
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Pläne']                                               = 'php/schulhof/seiten/plaene/alle.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Pläne/Vertretungen']                                  = 'php/schulhof/seiten/plaene/vertretungen/alle.php';

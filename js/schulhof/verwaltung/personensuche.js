@@ -399,7 +399,7 @@ function cms_personensuche_schuljahr(id) {
         if (personenart == 'e') {personenbez = 'Eltern'; personenicon = 'elter.png';}
         if (personenart == 'v') {personenbez = 'Verwaltungsangestellte'; personenicon = 'verwaltung.png';}
         if (personenart == 'x') {personenbez = 'Externe'; personenicon = 'extern.png';}
-        ausgabe += "<span class=\"cms_button\" onclick=\"cms_personensuche_schuljahr_wahl('"+id+"', '"+personenid+"', '"+personenart+"', '"+personenname+"');\"><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">"+personenbez+"</span><img src=\"res/icons/klein/"+personenicon+"\"></span> "+personenname+"</span>";
+        ausgabe += "<span class=\"cms_button\" onclick=\"cms_personensuche_personhinzu_wahl('"+id+"', '"+personenid+"', '"+personenart+"', '"+personenname+"');\"><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">"+personenbez+"</span><img src=\"res/icons/klein/"+personenicon+"\"></span> "+personenname+"</span>";
       }
       meldung.style.textAlign = 'left';
       meldung.innerHTML = ausgabe;
@@ -413,7 +413,7 @@ function cms_personensuche_schuljahr(id) {
 }
 
 
-function cms_personensuche_schuljahr_wahl(id, personenid, personenart, personenname) {
+function cms_personensuche_personhinzu_wahl(id, personenid, personenart, personenname) {
   var mailF = document.getElementById(id+'_F');
   var icon = '';
   var hinweis = ''
@@ -423,13 +423,13 @@ function cms_personensuche_schuljahr_wahl(id, personenid, personenart, personenn
   else if (personenart == 'v') {icon = 'verwaltung'; hinweis = 'Verwaltungsangestellte';}
   else if (personenart == 'x') {icon = 'extern'; hinweis = 'Externe';}
   var code = '<span class="cms_icon_klein_o"><span class="cms_hinweis">'+hinweis+'</span><img src="res/icons/klein/'+icon+'.png"></span> '+personenname;
-  var mailcode = cms_togglebutton_generieren(id+'_personensuche_schuljahr_'+personenid, code, 1, 'cms_personensuche_entfernen_schuljahr(\''+id+'\', \''+personenid+'\')')+' ';
+  var mailcode = cms_togglebutton_generieren(id+'_personensuche_schuljahr_'+personenid, code, 1, 'cms_personensuche_personhinzu_entfernen(\''+id+'\', \''+personenid+'\')')+' ';
   cms_id_eintragen(id+'_personensuche_gewaehlt', personenid);
   mailF.innerHTML += mailcode;
   cms_personensuche_schuljahr(id);
 }
 
-function cms_personensuche_entfernen_schuljahr(id, personenid) {
+function cms_personensuche_personhinzu_entfernen(id, personenid) {
   cms_id_entfernen(id+'_personensuche_gewaehlt', personenid);
 
   var mailF = document.getElementById(id+'_F');

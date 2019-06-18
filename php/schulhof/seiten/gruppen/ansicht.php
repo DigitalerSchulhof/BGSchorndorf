@@ -115,9 +115,11 @@ if (!$fehler) {
 			$code .= "</ul>";
 
 			$personencode = "";
-			$personencode .= cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, 'vorsitz');
-			$personencode .= cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, 'mitglieder');
-			$personencode .= cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, 'aufsicht');
+			include_once('php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');
+			$schreibpool = cms_postfach_empfaengerpool_generieren($dbs);
+			$personencode .= cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, 'vorsitz');
+			$personencode .= cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, 'mitglieder');
+			$personencode .= cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, 'aufsicht');
 
 			if (strlen($personencode) > 0) {$code .= "<h2>Personen</h2>".$personencode;}
 
@@ -136,14 +138,22 @@ else {
 echo $code;
 
 
-function cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $personengruppe) {
+function cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, $personengruppe) {
 	global $CMS_SCHLUESSEL;
 	$code = "";
 	$sql = "(SELECT person FROM $gk"."$personengruppe WHERE gruppe = $gruppenid) AS x";
-	$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $sql ON personen.id = x.person) AS y ORDER BY nachname ASC, vorname ASC";
+	$sql = "SELECT y.id AS id, vorname, nachname, titel, nutzerkonten.id AS nutzerkonto FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $sql ON personen.id = x.person) AS y LEFT JOIN nutzerkonten ON y.id = nutzerkonten.id ORDER BY nachname ASC, vorname ASC";
 	if ($anfrage = $dbs->query($sql)) {
 		while ($daten = $anfrage->fetch_assoc()) {
-			$code .= "<li><span class=\"cms_button\" onclick=\"cms_personenprofil('".$daten['id']."')\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</a></li> ";
+			if (is_null($daten['nutzerkonto'])) {
+				$code .= "<li><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto();\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";
+			}
+			else if (in_array($daten['id'], $schreibpool)) {
+				$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";
+			}
+			else {
+				$code .= "<li><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben();\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";
+			}
 		}
 		$anfrage->free();
 	}

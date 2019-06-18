@@ -287,6 +287,8 @@ if ($rechteplaetten) {
 			$dbs->query($sql); $id++;
 			$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Gruppen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$g Listen sehen', '$CMS_SCHLUESSEL'))";
 			$dbs->query($sql); $id++;
+			$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Gruppen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$g Listen sehen wenn Mitglied', '$CMS_SCHLUESSEL'))";
+			$dbs->query($sql); $id++;
 		}
 
 		// ORGANISATION
@@ -376,6 +378,14 @@ if ($rechteplaetten) {
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Lehrerkürzel ändern', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Lehrerliste sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schülerliste sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Elternliste sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Verwaltungsliste sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Externenliste sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Lehrern Stundenpläne zuweisen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;

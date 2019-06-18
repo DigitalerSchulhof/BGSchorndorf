@@ -8,7 +8,9 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 if (isset($_POST['zuordnung'])) {$zuordnung = $_POST['zuordnung'];} else {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($zuordnung,0)) {echo "FEHLER"; exit;}
+$zuordnungin = str_replace('|', ', ', $zuordnung);
+$zuordnungin = "(".substr($zuordnungin, 2).")";
+if (!cms_check_idliste($zuordnungin) && strlen($zuordnungin) > 2) {echo "FEHLER"; exit;}
 if (isset($_SESSION['PERSONENDETAILS'])) {$person = $_SESSION['PERSONENDETAILS'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($person,0)) {echo "FEHLER"; exit;}
 
@@ -30,17 +32,6 @@ if (cms_angemeldet() && ($CMS_RECHTE['Personen']['Schüler und Eltern verknüpfe
   else {$fehler = true;}
   $sql->close();
 
-
-	$sql = "";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$personenart = $daten['art'];
-		}
-		else {$fehler = true;}
-		$anfrage->free();
-	}
-	else {$fehler = true;}
-
 	// Prüfen, alle zu verknüpfenden Personen von der entsprechenden art sind
 	$sqlwhere = "";
 	$personenfehler = false;
@@ -48,9 +39,7 @@ if (cms_angemeldet() && ($CMS_RECHTE['Personen']['Schüler und Eltern verknüpfe
 		if ($personenart == 's') {$art = "e";}
 		else if ($personenart == 'e') {$art = "s";}
 		else {$fehler = true;}
-		$zuordnungin = str_replace('|', ', ', $zuordnung);
 		if (strlen($zuordnungin) > 2) {
-			$zuordnungin = "(".substr($zuordnungin, 2).")";
 			if (cms_check_idliste($zuordnungin)) {
 				$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$zuordnungin." AND art != AES_ENCRYPT(?, '$CMS_SCHLUESSEL');");
 			  $sql->bind_param("s", $art);
