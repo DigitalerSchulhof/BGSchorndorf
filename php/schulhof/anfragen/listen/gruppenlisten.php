@@ -20,6 +20,17 @@ if (isset($_POST['adresse'])) {$adresse = $_POST['adresse'];} else {echo "FEHLER
 if (isset($_POST['kontaktdaten'])) {$kontaktdaten = $_POST['kontaktdaten'];} else {echo "FEHLER";exit;}
 if (isset($_POST['geburtsdatum'])) {$geburtsdatum = $_POST['geburtsdatum'];} else {echo "FEHLER";exit;}
 if (isset($_POST['konfession'])) {$konfession = $_POST['konfession'];} else {echo "FEHLER";exit;}
+
+if (isset($_POST['rollenm'])) {$rollenm = $_POST['rollenm'];} else {echo "FEHLER";exit;}
+if (isset($_POST['rollenv'])) {$rollenv = $_POST['rollenv'];} else {echo "FEHLER";exit;}
+if (isset($_POST['rollena'])) {$rollena = $_POST['rollena'];} else {echo "FEHLER";exit;}
+
+if (isset($_POST['personens'])) {$personens = $_POST['personens'];} else {echo "FEHLER";exit;}
+if (isset($_POST['personenl'])) {$personenl = $_POST['personenl'];} else {echo "FEHLER";exit;}
+if (isset($_POST['personene'])) {$personene = $_POST['personene'];} else {echo "FEHLER";exit;}
+if (isset($_POST['personenv'])) {$personenv = $_POST['personenv'];} else {echo "FEHLER";exit;}
+if (isset($_POST['personenx'])) {$personenx = $_POST['personenx'];} else {echo "FEHLER";exit;}
+
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER";exit;}
@@ -38,6 +49,16 @@ if (!cms_check_toggle($adresse)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($kontaktdaten)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($geburtsdatum)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($konfession)) {echo "FEHLER"; exit;}
+
+if (!cms_check_toggle($rollenm)) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($rollenv)) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($rollena)) {echo "FEHLER"; exit;}
+
+if (!cms_check_toggle($personens)) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($personenl)) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($personene)) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($personenv)) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($personenx)) {echo "FEHLER"; exit;}
 
 if (!cms_valide_gruppe($gruppe)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($gruppenid, 0)) {echo "FEHLER"; exit;}
@@ -76,8 +97,18 @@ if (cms_angemeldet() && $zugriff) {
   $schreibenpool = cms_postfach_empfaengerpool_generieren($dbs);
 
   include_once('../../schulhof/seiten/listen/listenausgeben.php');
-  $rueckgabe = cms_listen_gruppenliste_ausgeben($dbs, $gk, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli,
-	                                       $adresse, $kontaktdaten, $geburtsdatum, $konfession);
+	$personengruppen = "";
+	if ($personens == '1') {$personengruppen .= 's';}
+	if ($personenl == '1') {$personengruppen .= 'l';}
+	if ($personene == '1') {$personengruppen .= 'e';}
+	if ($personenv == '1') {$personengruppen .= 'v';}
+	if ($personenx == '1') {$personengruppen .= 'x';}
+	$gruppenraenge = "";
+	if ($rollenm == '1') {$gruppenraenge .= 'm';}
+	if ($rollena == '1') {$gruppenraenge .= 'a';}
+	if ($rollenv == '1') {$gruppenraenge .= 'v';}
+
+  $rueckgabe = cms_listen_gruppenliste_ausgeben($dbs, $gk, $gruppenid, $personengruppen, $gruppenraenge, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
 	echo $rueckgabe['tabelle'];
 }
 else {

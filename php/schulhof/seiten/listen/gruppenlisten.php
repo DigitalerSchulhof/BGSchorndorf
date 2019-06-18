@@ -63,12 +63,28 @@ if (cms_valide_gruppe($g)) {
       // Personen laden
       $code .= "<div id=\"cms_gruppenliste\">";
         include_once('php/schulhof/seiten/listen/listenausgeben.php');
-        $rueckgabe = cms_listen_gruppenliste_ausgeben($dbs, $gk, $gruppenid, $schreibenpool, 1);
+        $rueckgabe = cms_listen_gruppenliste_ausgeben($dbs, $gk, $gruppenid, 'slevx', 'mva', $schreibenpool, 1);
         $code .= $rueckgabe['tabelle'];
       $code .= "</div>";
 
 
     $code .= "</div></div><div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
+      $code .= "<h2>Personengruppen</h2>";
+      $code .= "<p>";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_ps', 'Schüler', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_pl', 'Lehrer', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_pe', 'Eltern', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_pv', 'Verwaltung', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_px', 'Extern', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= "</p>";
+
+      $code .= "<h2>Gruppenrollen</h2>";
+      $code .= "<p>";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_rm', 'Mitglieder', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_rv', 'Vorsitzende', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= cms_togglebutton_generieren ('cms_gruppenliste_ra', 'Aufsichten', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+      $code .= "</p>";
+
       $code .= "<h2>Optionen</h2>";
       $code .= "<p>";
       $code .= cms_togglebutton_generieren ('cms_gruppenliste_postfach', 'Postfach', 1, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
@@ -81,6 +97,7 @@ if (cms_valide_gruppe($g)) {
         $code .= cms_togglebutton_generieren ('cms_gruppenliste_kontaktdaten', 'Kontaktdaten', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')");
         $code .= cms_togglebutton_generieren ('cms_gruppenliste_geburtsdatum', 'Geburtsdatum', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')");
         $code .= cms_togglebutton_generieren ('cms_gruppenliste_reliunterricht', 'Religionsunterricht', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
+        $code .= cms_togglebutton_generieren ('cms_gruppenliste_profil', 'Profile', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')")." ";
         $code .= cms_togglebutton_generieren ('cms_gruppenliste_konfession', 'Konfession', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')");
       }
       else {
@@ -88,6 +105,7 @@ if (cms_valide_gruppe($g)) {
         $code .= "<span class=\"cms_button_eingeschraenkt\">Kontaktdaten</span> ";
         $code .= "<span class=\"cms_button_eingeschraenkt\">Geburtsdatum</span> ";
         $code .= "<span class=\"cms_button_eingeschraenkt\">Religionsunterricht</span> ";
+        $code .= "<span class=\"cms_button_eingeschraenkt\">Profile</span> ";
         $code .= "<span class=\"cms_button_eingeschraenkt\">Konfession</span> ";
       }
       $code .= "</p>";

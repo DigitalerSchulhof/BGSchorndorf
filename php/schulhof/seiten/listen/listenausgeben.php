@@ -1,5 +1,5 @@
 <?php
-function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach = '0', $leer = '0', $eltern = '0', $kinder = '0', $klassen = '0', $reli = '0', $adresse  = '0', $kontaktdaten = '0', $geburtsdatum = '0', $konfession = '0') {
+function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach = '0', $leer = '0', $eltern = '0', $kinder = '0', $klassen = '0', $reli = '0', $adresse  = '0', $kontaktdaten = '0', $geburtsdatum = '0', $konfession = '0', $profil = '0') {
 	global $CMS_SCHLUESSEL, $CMS_BENUTZERSCHULJAHR;
 	$spalten = 2;
 	$code = "<tr><th></th><th>Name</th>";
@@ -108,60 +108,38 @@ function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach
 
 
 
-function cms_listen_gruppenliste_ausgeben($dbs, $gruppenart, $gruppenid, $schreibenpool, $postfach = '0', $leer = '0', $eltern = '0', $kinder = '0', $klassen = '0', $reli = '0', $adresse  = '0', $kontaktdaten = '0', $geburtsdatum = '0', $konfession = '0') {
+function cms_listen_gruppenliste_ausgeben($dbs, $gruppenart, $gruppenid, $personengruppen, $gruppenraenge, $schreibenpool, $postfach = '0', $leer = '0', $eltern = '0', $kinder = '0', $klassen = '0', $reli = '0', $adresse  = '0', $kontaktdaten = '0', $geburtsdatum = '0', $konfession = '0', $profil = '0') {
 
-  $mitgliederliste = cms_listen_gruppenliste_personengruppen_ausgeben($dbs, 'mitglieder', $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
-  $vorsitzliste = cms_listen_gruppenliste_personengruppen_ausgeben($dbs, 'vorsitz', $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
-  $aufsichtsliste = cms_listen_gruppenliste_personengruppen_ausgeben($dbs, 'aufsicht', $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
+	if (preg_match("/m/", $gruppenraenge)) {
+	  $mitgliederliste = cms_listen_gruppenliste_gruppenraenge_ausgeben($dbs, 'mitglieder', $gruppenart, $gruppenid, $personengruppen, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$mitgliederliste = cms_listen_gruppenliste_leererueckgabe();}
+	if (preg_match("/v/", $gruppenraenge)) {
+		$vorsitzliste = cms_listen_gruppenliste_gruppenraenge_ausgeben($dbs, 'vorsitz', $gruppenart, $gruppenid, $personengruppen, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$vorsitzliste = cms_listen_gruppenliste_leererueckgabe();}
+		if (preg_match("/a/", $gruppenraenge)) {
+		$aufsichtsliste = cms_listen_gruppenliste_gruppenraenge_ausgeben($dbs, 'aufsicht', $gruppenart, $gruppenid, $personengruppen, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$aufsichtsliste = cms_listen_gruppenliste_leererueckgabe();}
 
   $code = "";
   $allenschreiben = "";
-  $rueckgabe['schreiben']['s'] = "";
-  $rueckgabe['schreiben']['l'] = "";
-  $rueckgabe['schreiben']['e'] = "";
-  $rueckgabe['schreiben']['v'] = "";
-  $rueckgabe['schreiben']['x'] = "";
-  $knoepfe = $mitgliederliste['knoepfe'].$vorsitzliste['knoepfe'].$aufsichtsliste['knoepfe'];
-
+	$knoepfe = "";
   if (strlen($mitgliederliste['tabelle']) > 0) {
     $code .= "<h2>Mitglieder</h2>".$mitgliederliste['tabelle'];
-    $allenschreiben .= "|".$mitgliederliste['schreiben']['alle'];
-    if (strlen($mitgliederliste['schreiben']['s']) > 0) {$rueckgabe['schreiben']['s'] .= $mitgliederliste['schreiben']['s'];}
-    if (strlen($mitgliederliste['schreiben']['l']) > 0) {$rueckgabe['schreiben']['l'] .= $mitgliederliste['schreiben']['l'];}
-    if (strlen($mitgliederliste['schreiben']['e']) > 0) {$rueckgabe['schreiben']['e'] .= $mitgliederliste['schreiben']['e'];}
-    if (strlen($mitgliederliste['schreiben']['v']) > 0) {$rueckgabe['schreiben']['v'] .= $mitgliederliste['schreiben']['v'];}
-    if (strlen($mitgliederliste['schreiben']['x']) > 0) {$rueckgabe['schreiben']['x'] .= $mitgliederliste['schreiben']['x'];}
+    $allenschreiben .= "|".$mitgliederliste['schreiben'];
   }
   if (strlen($vorsitzliste['tabelle']) > 0) {
     $code .= "<h2>Vorsitz</h2>".$vorsitzliste['tabelle'];
-    $allenschreiben .= "|".$vorsitzliste['schreiben']['alle'];
-    if (strlen($vorsitzliste['schreiben']['s']) > 0) {$rueckgabe['schreiben']['s'] .= $vorsitzliste['schreiben']['s'];}
-    if (strlen($vorsitzliste['schreiben']['l']) > 0) {$rueckgabe['schreiben']['l'] .= $vorsitzliste['schreiben']['l'];}
-    if (strlen($vorsitzliste['schreiben']['e']) > 0) {$rueckgabe['schreiben']['e'] .= $vorsitzliste['schreiben']['e'];}
-    if (strlen($vorsitzliste['schreiben']['v']) > 0) {$rueckgabe['schreiben']['v'] .= $vorsitzliste['schreiben']['v'];}
-    if (strlen($vorsitzliste['schreiben']['x']) > 0) {$rueckgabe['schreiben']['x'] .= $vorsitzliste['schreiben']['x'];}
+    $allenschreiben .= "|".$vorsitzliste['schreiben'];
   }
   if (strlen($aufsichtsliste['tabelle']) > 0) {
     $code .= "<h2>Aufsicht</h2>".$aufsichtsliste['tabelle'];
-    $allenschreiben .= "|".$aufsichtsliste['schreiben']['alle'];
-    if (strlen($aufsichtsliste['schreiben']['s']) > 0) {$rueckgabe['schreiben']['s'] .= $aufsichtsliste['schreiben']['s'];}
-    if (strlen($aufsichtsliste['schreiben']['l']) > 0) {$rueckgabe['schreiben']['l'] .= $aufsichtsliste['schreiben']['l'];}
-    if (strlen($aufsichtsliste['schreiben']['e']) > 0) {$rueckgabe['schreiben']['e'] .= $aufsichtsliste['schreiben']['e'];}
-    if (strlen($aufsichtsliste['schreiben']['v']) > 0) {$rueckgabe['schreiben']['v'] .= $aufsichtsliste['schreiben']['v'];}
-    if (strlen($aufsichtsliste['schreiben']['x']) > 0) {$rueckgabe['schreiben']['x'] .= $aufsichtsliste['schreiben']['x'];}
+    $allenschreiben .= "|".$aufsichtsliste['schreiben'];
   }
 
-  if (strlen($allenschreiben) > 0) {$knoepfe = "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($allenschreiben,1)."')\">Allen schreiben</span> ".$knoepfe;}
-
-  if (strlen($rueckgabe['schreiben']['s']) > 0) {$knoepfe .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($rueckgabe['schreiben']['s'],1)."')\">Allen Schülern schreiben</span> ";}
-
-  if (strlen($rueckgabe['schreiben']['l']) > 0) {$knoepfe .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($rueckgabe['schreiben']['l'],1)."')\">Allen Lehrern schreiben</span> ";}
-
-  if (strlen($rueckgabe['schreiben']['e']) > 0) {$knoepfe .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($rueckgabe['schreiben']['e'],1)."')\">Allen Eltern schreiben</span> ";}
-
-  if (strlen($rueckgabe['schreiben']['v']) > 0) {$knoepfe .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($rueckgabe['schreiben']['v'],1)."')\">Allen Verwaltungsangestellten schreiben</span> ";}
-
-  if (strlen($rueckgabe['schreiben']['x']) > 0) {$knoepfe .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($rueckgabe['schreiben']['x'],1)."')\">Allen Externen schreiben</span> ";}
+  if (strlen($allenschreiben) > 0) {$knoepfe = "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($allenschreiben,1)."')\">Allen schreiben</span> ";}
 
   $rueckgabe['tabelle'] = $code;
   $rueckgabe['knoepfe'] = $knoepfe;
@@ -170,57 +148,54 @@ function cms_listen_gruppenliste_ausgeben($dbs, $gruppenart, $gruppenid, $schrei
 }
 
 
-function cms_listen_gruppenliste_personengruppen_ausgeben($dbs, $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession) {
-  $schuelertabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 's', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
-  $lehrertabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'l', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
-  $elterntabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'e', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
-  $verwaltungstabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'v', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
-  $externentabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'x', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession);
+function cms_listen_gruppenliste_gruppenraenge_ausgeben($dbs, $personengruppe, $gruppenart, $gruppenid, $personengruppen, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil) {
+	if (preg_match("/s/", $personengruppen)) {
+		$schuelertabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 's', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$schuelertabelle = cms_listen_gruppenliste_leererueckgabe();}
+	if (preg_match("/l/", $personengruppen)) {
+	  $lehrertabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'l', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$lehrertabelle = cms_listen_gruppenliste_leererueckgabe();}
+	if (preg_match("/e/", $personengruppen)) {
+		$elterntabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'e', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$elterntabelle = cms_listen_gruppenliste_leererueckgabe();}
+	if (preg_match("/v/", $personengruppen)) {
+		$verwaltungstabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'v', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$verwaltungstabelle = cms_listen_gruppenliste_leererueckgabe();}
+	if (preg_match("/x/", $personengruppen)) {
+		$externentabelle = cms_listen_gruppenliste_personen_ausgeben($dbs, 'x', $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil);
+	}
+	else {$externentabelle = cms_listen_gruppenliste_leererueckgabe();}
 
   $code = "";
   $allenschreiben = "";
   $knoepfe = "";
-  $rueckgabe['schreiben']['s'] = "";
-  $rueckgabe['schreiben']['l'] = "";
-  $rueckgabe['schreiben']['e'] = "";
-  $rueckgabe['schreiben']['v'] = "";
-  $rueckgabe['schreiben']['x'] = "";
   if (strlen($schuelertabelle['tabelle']) > 0) {
     $code .= "<h3>Schüler</h3><table class=\"cms_liste\">".$schuelertabelle['tabelle']."</table>";
     $allenschreiben .= "|".$schuelertabelle['schreiben'];
-    $rueckgabe['schreiben']['s'] .= $schuelertabelle['schreiben'];
   }
   if (strlen($lehrertabelle['tabelle']) > 0) {
     $code .= "<h3>Lehrer</h3><table class=\"cms_liste\">".$lehrertabelle['tabelle']."</table>";
     $allenschreiben .= "|".$lehrertabelle['schreiben'];
-    $rueckgabe['schreiben']['l'] .= $lehrertabelle['schreiben'];
   }
   if (strlen($elterntabelle['tabelle']) > 0) {
     $code .= "<h3>Eltern</h3><table class=\"cms_liste\">".$elterntabelle['tabelle']."</table>";
     $allenschreiben .= "|".$elterntabelle['schreiben'];
-    $rueckgabe['schreiben']['e'] .= $elterntabelle['schreiben'];
   }
   if (strlen($verwaltungstabelle['tabelle']) > 0) {
     $code .= "<h3>Verwaltungsangestellte</h3><table class=\"cms_liste\">".$verwaltungstabelle['tabelle']."</table>";
     $allenschreiben .= "|".$verwaltungstabelle['schreiben'];
-    $rueckgabe['schreiben']['v'] .= $verwaltungstabelle['schreiben'];
   }
   if (strlen($externentabelle['tabelle']) > 0) {
     $code .= "<h3>Externe</h3><table class=\"cms_liste\">".$externentabelle['tabelle']."</table>";
     $allenschreiben .= "|".$externentabelle['schreiben'];
-    $rueckgabe['schreiben']['x'] .= $externentabelle['schreiben'];
-  }
-
-  if (strlen($code) > 0) {
-    if ($personengruppe == 'vorsitz') {$text = 'Vorsitzenden';}
-    else if ($personengruppe == 'aufsicht') {$text = 'Aufsichten';}
-    else {$text = 'Mitgliedern';}
-    $knoepfe .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($allenschreiben,1)."')\">Allen $text schreiben</span> ";
   }
 
   $rueckgabe['tabelle'] = $code;
-  $rueckgabe['schreiben']['alle'] = $allenschreiben;
-  $rueckgabe['knoepfe'] = $knoepfe;
+  $rueckgabe['schreiben'] = $allenschreiben;
 
 	return $rueckgabe;
 }
@@ -228,7 +203,7 @@ function cms_listen_gruppenliste_personengruppen_ausgeben($dbs, $personengruppe,
 
 
 
-function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession) {
+function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, $gruppenart, $gruppenid, $schreibenpool, $postfach, $leer, $eltern, $kinder, $klassen, $reli, $adresse, $kontaktdaten, $geburtsdatum, $konfession, $profil) {
   global $CMS_SCHLUESSEL, $CMS_BENUTZERSCHULJAHR;
   $spalten = 2;
 
@@ -339,6 +314,14 @@ function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, 
   $rueckgabe['schreiben'] = $allenschreiben;
 
   return $rueckgabe;
+}
+
+
+function cms_listen_gruppenliste_leererueckgabe() {
+	$rueckgabe['tabelle'] = "";
+  $rueckgabe['schreiben'] = "";
+  $rueckgabe['knoepfe'] = "";
+	return $rueckgabe;
 }
 
 ?>

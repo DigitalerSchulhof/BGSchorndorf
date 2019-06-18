@@ -50,6 +50,7 @@ if ($zugriff) {
       if ($listenart == 'Schüler' || $listenart == 'Schülervertreter') {
         $code .= cms_togglebutton_generieren ('cms_personenliste_geburtsdatum', 'Geburtsdatum', 0, "cms_listen_personenliste_laden('$listenart')");
         $code .= cms_togglebutton_generieren ('cms_personenliste_reliunterricht', 'Religionsunterricht', 0, "cms_listen_personenliste_laden('$listenart')")." ";
+        $code .= cms_togglebutton_generieren ('cms_personenliste_profil', 'Profile', 0, "cms_listen_personenliste_laden('$listenart')")." ";
         $code .= cms_togglebutton_generieren ('cms_personenliste_konfession', 'Konfession', 0, "cms_listen_personenliste_laden('$listenart')");
       }
     }
@@ -59,6 +60,7 @@ if ($zugriff) {
       if ($listenart == 'Schüler' || $listenart == 'Schülervertreter') {
         $code .= "<span class=\"cms_button_eingeschraenkt\">Geburtsdatum</span> ";
         $code .= "<span class=\"cms_button_eingeschraenkt\">Religionsunterricht</span> ";
+        $code .= "<span class=\"cms_button_eingeschraenkt\">Profile</span> ";
         $code .= "<span class=\"cms_button_eingeschraenkt\">Konfession</span> ";
       }
     }
