@@ -269,6 +269,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Galerie_bearbeiten']                 = 'php/schulhof/seiten/website/galerien/galeriebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Galerien_genehmigen']                        = 'php/schulhof/seiten/website/galerien/genehmigungscenter.php';
 
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Auffälliges']                                = 'php/schulhof/seiten/auffaelliges/liste.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Auffälliges/Details']                        = 'php/schulhof/seiten/auffaelliges/details.php';
+
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Besucherstatistiken']                         = 'php/schulhof/seiten/website/besucherstatistiken/besucherstatistiken.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Besucherstatistiken/Schulhof']                = 'php/schulhof/seiten/website/besucherstatistiken/besucherstatistikenSchulhof.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Besucherstatistiken/Website']                 = 'php/schulhof/seiten/website/besucherstatistiken/besucherstatistikenGruppeWebsite.php';

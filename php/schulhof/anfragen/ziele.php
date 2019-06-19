@@ -261,6 +261,7 @@ $CMS_ZIELE[258] = 'php/schulhof/anfragen/website/fehlermeldungen/auswerten.php';
 $CMS_ZIELE[259] = 'php/website/anfragen/feedback/auswerten.php';
 $CMS_ZIELE[260] = 'php/schulhof/anfragen/website/besucherstatistik/auswertenWebsite.php';
 $CMS_ZIELE[261] = 'php/schulhof/anfragen/website/feedback/auswerten.php';
+// Wait, hier fehlt was
 $CMS_ZIELE[300] = 'php/lehrerzimmer/anfragen/intern/geraetezustand.php';
 $CMS_ZIELE[301] = 'php/schulhof/anfragen/verwaltung/galerien/neuvorbereiten.php';
 $CMS_ZIELE[302] = 'php/schulhof/anfragen/verwaltung/galerien/bearbeitenvorbereiten.php';
@@ -291,4 +292,7 @@ $CMS_ZIELE[326] = 'php/schulhof/anfragen/verwaltung/zeitraeume/neuspeichern.php'
 $CMS_ZIELE[327] = 'php/schulhof/anfragen/verwaltung/zeitraeume/loeschen.php';
 $CMS_ZIELE[328] = 'php/schulhof/anfragen/verwaltung/zeitraeume/bearbeitenvorbereiten.php';
 $CMS_ZIELE[329] = 'php/schulhof/anfragen/verwaltung/zeitraeume/bearbeitenspeichern.php';
+$CMS_ZIELE[330] = 'php/schulhof/anfragen/verwaltung/auffaelliges/vorbereiten.php';
+$CMS_ZIELE[331] = 'php/schulhof/anfragen/verwaltung/auffaelliges/notizen.php';
+$CMS_ZIELE[332] = 'php/schulhof/anfragen/verwaltung/auffaelliges/status.php';
 ?>
