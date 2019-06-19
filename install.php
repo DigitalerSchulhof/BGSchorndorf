@@ -706,6 +706,11 @@ if ($update) {
 	include_once("php/schulhof/funktionen/config.php");
 
 	$dbs = cms_verbinden('s');
+	/*
+	dauerbrenner
+	hausemisterauftraege
+	zeitraeume
+	schulstunden
 	$sql = "CREATE TABLE `dauerbrenner` (
 	  `id` bigint(255) UNSIGNED NOT NULL,
 	  `bezeichnung` varbinary(5000) NOT NULL,
@@ -719,25 +724,7 @@ if ($update) {
 	  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 	$dbs->query($sql);
-	$sql = "CREATE TABLE `hausmeisterauftraege` (
-	  `id` bigint(255) UNSIGNED NOT NULL,
-	  `status` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-	  `titel` varbinary(1000) NOT NULL,
-	  `beschreibung` blob NOT NULL,
-	  `start` bigint(255) UNSIGNED NOT NULL,
-	  `ziel` bigint(255) UNSIGNED NOT NULL,
-	  `erledigt` bigint(255) UNSIGNED DEFAULT NULL,
-	  `erledigtvon` bigint(255) UNSIGNED DEFAULT NULL,
-	  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
-	  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-	$dbs->query($sql);
-	$sql = "ALTER TABLE `dauerbrenner`
-	  ADD PRIMARY KEY (`id`);";
-	$dbs->query($sql);
-	$sql = "ALTER TABLE `hausmeisterauftraege`
-	  ADD PRIMARY KEY (`id`);";
-	$dbs->query($sql);
+	*/
 	cms_trennen($dbs);
 }
 

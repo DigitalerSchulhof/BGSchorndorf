@@ -178,13 +178,13 @@ if (cms_angemeldet() && $zugriff) {
 			if (substr($gids[$i], 0,4) != 'temp') {
 				$sqlalt->bind_param("si", $bezeichnung, $gids[$i]);
 				$sqlalt->execute();
-				$gidsvorhanden = str_replace('|'.$gids[$i].'|', '|', $gidsvorhanden);
 			}
 			else {
 				$gid = cms_generiere_kleinste_id('raeumegeraete');
 				$sqlneu->bind_param("sii", $bezeichnung, $id, $gid);
 				$sqlneu->execute();
 			}
+			$gidsvorhanden = str_replace('|'.$gids[$i].'|', '|', $gidsvorhanden);
 		}
 		$sqlneu->close();
 		$sqlalt->close();

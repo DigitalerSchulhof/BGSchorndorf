@@ -279,6 +279,28 @@ if ($CMS_RECHTE['Planung']['Vertretungen planen']) {
 	$tabzahl++;
 }*/
 
+?>
+</div>
+</div>
+
+
+
+<div class="cms_spalte_4">
+<div class="cms_spalte_i">
+
+
+<?php
+$code = "";
+if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_zeitraeume\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
+			$code .=  "<h3>Stundenplanzeiträume</h3>";
+			$code .=  "<p>Für einzelne Schuljahre Planungszeiträume anlegen, bearbeiten und löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+
 if ($tabzahl > 0) {
 	$code = "<h2>Planung</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
@@ -391,10 +413,20 @@ if ($tabzahl > 0) {
 	$code = "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
 echo $code;
+?>
 
 
+</div>
+</div>
 
-// WEBSITE
+<div class="cms_clear"></div>
+
+<div class="cms_spalte_4">
+<div class="cms_spalte_i">
+
+<?php
+
+// TECHNIK
 $tabzahl = 0;
 $code = "";
 if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
@@ -422,47 +454,26 @@ echo $code;
 
 ?>
 
-<!-- <ul class="cms_uebersicht">
-<li>
-	<a class="cms_uebersicht_verwaltung_antraege" href="Schulhof/Verwaltung/Anträge/">
-		<h3>Anträge</h3>
-		<p>Anträge erstellen, bearbeiten und löschen. Festlegen, wer Anträge genehmigen darf.</p>
-	</a>
-</li>
-	<li>
-		<a class="cms_uebersicht_verwaltung_stundenplaene" href="Schulhof/Verwaltung/Stundenpläne/">
-			<h3>Stundenpläne</h3>
-			<p>Stundenpläne erstellen, bearbeiten und löschen.</p>
-		</a>
-	</li>
-	<li>
-		<a class="cms_uebersicht_verwaltung_vertretungsplan" href="Schulhof/Verwaltung/Vertretungsplan/">
-			<h3>Vertretungsplan</h3>
-			<p>Vertretungen erstellen, bearbeiten und löschen.</p>
-		</a>
-	</li>
-</ul> -->
+</div>
+</div>
 
 
 
-<!-- <h2>Technik</h2>
-<p class="cms_notiz">In Planung</p>
-<ul class="cms_uebersicht">
-	<li>
-		<a class="cms_uebersicht_verwaltung_geraete" href="Schulhof/Verwaltung/Geräte/">
-			<h3>Geräte</h3>
-			<p>Geräte erstellen, bearbeiten, warten und löschen.</p>
-		</a>
-	</li>
-</ul>
+<div class="cms_spalte_4">
+<div class="cms_spalte_i">
 
+<h2>Tagebuch</h2>
+<p class="cms_notiz">In Planung...</p>
+
+</div>
+</div>
+
+
+<div class="cms_spalte_4">
+<div class="cms_spalte_i">
 
 <h2>Noten</h2>
 <p class="cms_notiz">In Planung in späteren Versionen</p>
-
-
-<h2>Tagebuch</h2>
-<p class="cms_notiz">In Planung in späteren Versionen</p> -->
 
 </div>
 </div>
@@ -583,5 +594,4 @@ echo $code;
 
 </div>
 </div>
-
 <div class="cms_clear"></div>

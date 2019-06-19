@@ -34,6 +34,9 @@ if ($zugriff) {
 					if ($CMS_RECHTE['Organisation']['Schuljahre bearbeiten']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_schuljahr_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
+					if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen']) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_stundenplanzeitraeume_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Zeiträume</span><img src=\"res/icons/klein/stundenplanzeitraeume.png\"></span> ";
+					}
 					//if ($CMS_RECHTE['Organisation']['Schuljahre anlegen']) {
 					//	$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"\"><span class=\"cms_hinweis\">Nächstes Schuljahr aus diesem erzeugen</span><img src=\"res/icons/klein/generieren.png\"></span> ";
 					//}

@@ -148,8 +148,6 @@ function cms_raeume_eingabencheck() {
 	formulardaten.append("stundenplan", stundenplan);
 	formulardaten.append("geraeteanzahl", geraeteanzahl);
 	formulardaten.append("geraeteids", geraeteids);
-	formulardaten.append("geraeteanzahl", geraeteanzahl);
-	formulardaten.append("geraeteids", geraeteids);
 	formulardaten.append("blockierunganzahl", blockierunganzahl);
 	formulardaten.append("blockierungids", blockierungids);
 

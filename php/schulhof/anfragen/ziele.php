@@ -286,4 +286,9 @@ $CMS_ZIELE[321] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/neuspe
 $CMS_ZIELE[322] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/loeschen.php';
 $CMS_ZIELE[323] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/bearbeitenvorbereiten.php';
 $CMS_ZIELE[324] = 'php/schulhof/anfragen/verwaltung/pinnwaende/anschlaege/bearbeitenspeichern.php';
+$CMS_ZIELE[325] = 'php/schulhof/anfragen/verwaltung/zeitraeume/vorbereiten.php';
+$CMS_ZIELE[326] = 'php/schulhof/anfragen/verwaltung/zeitraeume/neuspeichern.php';
+$CMS_ZIELE[327] = 'php/schulhof/anfragen/verwaltung/zeitraeume/loeschen.php';
+$CMS_ZIELE[328] = 'php/schulhof/anfragen/verwaltung/zeitraeume/bearbeitenvorbereiten.php';
+$CMS_ZIELE[329] = 'php/schulhof/anfragen/verwaltung/zeitraeume/bearbeitenspeichern.php';
 ?>

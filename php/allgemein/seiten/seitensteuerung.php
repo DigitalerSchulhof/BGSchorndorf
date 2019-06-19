@@ -139,10 +139,10 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Pinnwände']                                           = 'php/schulhof/seiten/verwaltung/pinnwaende/alle.php';
   if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/verwaltung/pinnwaende/anzeigen.php';}
-    if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER\/Neuer_Anschlag$/", $CMS_URLGANZ))
-      {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                              = 'php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/neueranschlag.php';}
-      if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER\/Anschlag_bearbeiten$/", $CMS_URLGANZ))
-        {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                            = 'php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/anschlagbearbeiten.php';}
+  if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER\/Neuer_Anschlag$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/neueranschlag.php';}
+  if (preg_match("/^Schulhof\/Pinnwände\/$CMS_LINKMUSTER\/Anschlag_bearbeiten$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/anschlagbearbeiten.php';}
 
   // Verwaltung
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung']                                          = 'php/schulhof/seiten/verwaltung/verwaltung.php';
@@ -179,6 +179,11 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Pinnwände/Pinnwand_bearbeiten']            = 'php/schulhof/seiten/verwaltung/pinnwaende/pinnwandbearbeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Profile']                                             = 'php/schulhof/seiten/personensuche/personenprofil.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung']                                  = 'php/schulhof/seiten/verwaltung/verwaltung.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume']                                    = 'php/schulhof/seiten/verwaltung/raeume/raeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume/Neuen_Raum_anlegen']                 = 'php/schulhof/seiten/verwaltung/raeume/neuerraum.php';
