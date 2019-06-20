@@ -435,7 +435,7 @@ function cms_auffaelliges_knopf($dbs) {
         $zusatz = "cms_meldezahl_wichtig";
         $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
       }
-      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Neues Auffaälliges Verhalten ".$anzahl."</a>";
+      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Neues auffälliges Verhalten ".$anzahl."</a>";
     }
     $anfrage->free();
   }
