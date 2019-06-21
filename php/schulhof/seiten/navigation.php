@@ -524,6 +524,10 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a></li> ";
 	}
+	$zugriff = ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten']);
+	if ($zugriff) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
+	}
 
 	// WEBSITE
 	$VERtechnik = "";

@@ -423,6 +423,25 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a>";
 }
 
+function cms_auffaelliges_knopf($dbs) {
+  $code = "";
+  $zusatz = "";
+  $sql = "SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status=0";
+  if ($anfrage = $dbs->query($sql)) {
+    if ($daten = $anfrage->fetch_assoc()) {
+      $zusatz = "";
+      $anzahl = "";
+      if ($daten['anzahl'] > 0) {
+        $zusatz = "cms_meldezahl_wichtig";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+      }
+      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Neues auffälliges Verhalten ".$anzahl."</a>";
+    }
+    $anfrage->free();
+  }
+  return $code;
+}
+
 function cms_sonderrollen_generieren() {
 	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN;
 	$code = "";
@@ -442,8 +461,11 @@ function cms_sonderrollen_generieren() {
 	if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
 		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
 	}
-	if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
 		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
+	}
+  if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
+		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
 	}
 	cms_trennen($dbs);
 	return $code;
