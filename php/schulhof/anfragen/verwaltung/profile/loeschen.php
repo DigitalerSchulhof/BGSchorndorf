@@ -8,12 +8,11 @@ include_once("../../allgemein/funktionen/mail.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
-if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
+if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Fächer löschen'];
+$zugriff = $CMS_RECHTE['Planung']['Profile löschen'];
 
 if (cms_angemeldet() && $zugriff) {
 
@@ -21,8 +20,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
-
-		$sql = $dbs->prepare("DELETE FROM faecher WHERE id = ?");
+		$sql = $dbs->prepare("DELETE FROM profile WHERE id = ?");
 	  $sql->bind_param("i", $id);
 	  $sql->execute();
 	  $sql->close();

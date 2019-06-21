@@ -51,7 +51,7 @@ function cms_leihgeraet_eingabencheck() {
 	}
 
 	if (gfehler) {
-		meldung += '<li>bei den Geräten ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei den Geräten ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (gtitelf) {
@@ -120,7 +120,7 @@ function cms_leihgeraet_eingabencheck() {
 	}
 
 	if (bfehler) {
-		meldung += '<li>bei den Blockierungen ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei den Blockierungen ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (bwochentagf) {

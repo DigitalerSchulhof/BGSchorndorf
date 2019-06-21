@@ -1,8 +1,25 @@
-/* ROLLE WIRD GESPEICHERT */
-function cms_schulhof_faecher_neu_speichern() {
+function cms_faecher_vorbereiten(id) {
+  cms_laden_an('Fächer vorbereiten', 'Die Fächer des Schuljahres werden vorbereitet ...');
+
+  var formulardaten = new FormData();
+  formulardaten.append('id', id);
+  formulardaten.append("anfragenziel", 	'335');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_link('Schulhof/Verwaltung/Planung/Fächer');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_faecher_neu_speichern() {
 	cms_laden_an('Neues Fach anlegen', 'Die Eingaben werden überprüft.');
 	var bezeichnung = document.getElementById('cms_faecher_bezeichnung').value;
 	var kuerzel = document.getElementById('cms_faecher_kuerzel').value;
+	var kollegen = document.getElementById('cms_faecher_kollegen_personensuche_gewaehlt').value;
 
 	var meldung = '<p>Das Fach konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -27,12 +44,13 @@ function cms_schulhof_faecher_neu_speichern() {
 		var formulardaten = new FormData();
 		formulardaten.append("bezeichnung", bezeichnung);
 		formulardaten.append("kuerzel", kuerzel);
+    formulardaten.append("kollegen", kollegen);
 
 		formulardaten.append("anfragenziel", 	'80');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Neues Fach anlegen', '<p>Das Fach <b>'+bezeichnung+'</b> wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Fächer\');">Zurück zur Übersicht</span></p>');
+				cms_meldung_an('erfolg', 'Neues Fach anlegen', '<p>Das Fach <b>'+bezeichnung+'</b> wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">Zurück zur Übersicht</span></p>');
 			}
 			else if (rueckgabe.match(/DOPPELTB/)) {
 				meldung += '<li>es gibt bereits ein Fach mit dieser Bezeichnung.</li>';
@@ -44,7 +62,7 @@ function cms_schulhof_faecher_neu_speichern() {
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		
+
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
@@ -64,7 +82,7 @@ function cms_schulhof_faecher_loeschen(anzeigename, id) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Fächer löschen', '<p>Das Fach wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Fächer\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Fächer löschen', '<p>Das Fach wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">OK</span></p>');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
@@ -82,7 +100,7 @@ function cms_schulhof_faecher_bearbeiten_vorbereiten (id) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_link('Schulhof/Verwaltung/Fächer/Fach_bearbeiten');
+			cms_link('Schulhof/Verwaltung/Planung/Fächer/Fach_bearbeiten');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
@@ -94,6 +112,7 @@ function cms_schulhof_faecher_bearbeiten () {
 	cms_laden_an('Fach bearbeiten', 'Die Eingaben werden überprüft.');
 	var bezeichnung = document.getElementById('cms_faecher_bezeichnung').value;
 	var kuerzel = document.getElementById('cms_faecher_kuerzel').value;
+	var kollegen = document.getElementById('cms_faecher_kollegen_personensuche_gewaehlt').value;
 
 	var meldung = '<p>Das Fach konnte nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
@@ -118,11 +137,12 @@ function cms_schulhof_faecher_bearbeiten () {
 		var formulardaten = new FormData();
 		formulardaten.append("bezeichnung", bezeichnung);
 		formulardaten.append("kuerzel", kuerzel);
+    formulardaten.append("kollegen", kollegen);
 		formulardaten.append("anfragenziel", 	'83');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Fach bearbetien', '<p>Das Fach <b>'+bezeichnung+'</b> wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Fächer\');">Zurück zur Übersicht</span></p>');
+				cms_meldung_an('erfolg', 'Fach bearbeiten', '<p>Das Fach <b>'+bezeichnung+'</b> wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">Zurück zur Übersicht</span></p>');
 			}
 			else if (rueckgabe.match(/DOPPELTB/)) {
 				meldung += '<li>es gibt bereits ein Fach mit dieser Bezeichnung.</li>';

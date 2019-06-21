@@ -184,6 +184,12 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile']                          = 'php/schulhof/seiten/verwaltung/profile/profile.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Neues_Profil_anlegen']     = 'php/schulhof/seiten/verwaltung/profile/neuesprofil.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Profil_bearbeiten']        = 'php/schulhof/seiten/verwaltung/profile/profilbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer']                           = 'php/schulhof/seiten/verwaltung/faecher/faecher.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen']        = 'php/schulhof/seiten/verwaltung/faecher/neuesfach.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Fach_bearbeiten']           = 'php/schulhof/seiten/verwaltung/faecher/fachbearbeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume']                                    = 'php/schulhof/seiten/verwaltung/raeume/raeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume/Neuen_Raum_anlegen']                 = 'php/schulhof/seiten/verwaltung/raeume/neuerraum.php';
@@ -191,9 +197,6 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Leihgeräte']                               = 'php/schulhof/seiten/verwaltung/leihgeraete/leihgeraete.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Leihgeräte/Neue_Leihgeräte_anlegen']       = 'php/schulhof/seiten/verwaltung/leihgeraete/neueleihgeraete.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Leihgeräte/Leihgeräte_bearbeiten']         = 'php/schulhof/seiten/verwaltung/leihgeraete/leihgeraetebearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Fächer']                                   = 'php/schulhof/seiten/verwaltung/faecher/faecher.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Fächer/Neues_Fach_anlegen']                = 'php/schulhof/seiten/verwaltung/faecher/neuesfach.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Fächer/Fach_bearbeiten']                   = 'php/schulhof/seiten/verwaltung/faecher/fachbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Allgemeine_Einstellungen']                 = 'php/schulhof/seiten/verwaltung/allgemeineeinstellungen/allgemeineeinstellungen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schulnetze']                               = 'php/schulhof/seiten/verwaltung/schulnetze/schulnetze.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/VPN']                                      = 'php/schulhof/seiten/verwaltung/vpn/vpn.php';

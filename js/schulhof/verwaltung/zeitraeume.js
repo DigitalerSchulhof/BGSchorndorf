@@ -116,7 +116,7 @@ function cms_zeitraeume_eingabencheck() {
 	}
 
 	if (sfehler) {
-		meldung += '<li>bei den Schulstunden ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei den Schulstunden ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (sbezeichnungf) {

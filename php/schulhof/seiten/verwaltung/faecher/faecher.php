@@ -1,62 +1,91 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
-<h1>Fächer</h1>
-
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Fächer anlegen'] || $CMS_RECHTE['Organisation']['Fächer bearbeiten'] || $CMS_RECHTE['Organisation']['Fächer löschen'];
+$zugriff = $CMS_RECHTE['Planung']['Fächer anlegen'] || $CMS_RECHTE['Planung']['Fächer bearbeiten'] || $CMS_RECHTE['Planung']['Fächer löschen'];
 
+$code = "";
 if ($zugriff) {
-?>
-	<table class="cms_liste">
-		<thead>
-			<tr><th></th><th>Bezeichnung</th><th>Kürzel</th><th>Aktionen</th></tr>
-		</thead>
-		<tbody>
-		<?php
-		// Alle Rollen ausgeben
-		$dbs = cms_verbinden('s');
-		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM faecher) AS klassenstufen ORDER BY bezeichnung ASC";
+  // Prüfen, ob Schuljahr vorhanden
+  $sjfehler = true;
+  if (isset($_SESSION['FÄCHERSCHULJAHR'])) {
+    $SCHULJAHR = $_SESSION['FÄCHERSCHULJAHR'];
+    $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre WHERE id = ?");
+    $sql->bind_param('i', $SCHULJAHR);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl, $sjbez);
+      if ($sql->fetch()) {if ($anzahl == 1) {$sjfehler = false;}}
+    }
+    $sql->close();
+  }
 
-		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$ausgabe .= "<tr>";
-					$ausgabe .= "<td><img src=\"res/icons/klein/fach.png\"></td>";
-					$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
-					$ausgabe .= "<td>".$daten['kuerzel']."</td>";
-					$ausgabe .= "<td>";
-					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-					if ($CMS_RECHTE['Organisation']['Fächer bearbeiten']) {
-						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_faecher_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
-					}
-					if ($CMS_RECHTE['Organisation']['Fächer löschen']) {
-						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_faecher_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
-					}
-					$ausgabe .= "</td>";
 
-				$ausgabe .= "</tr>";
+  if (!$sjfehler) {
+    $code .= "<h1>Fächer für das Schuljahr $sjbez</h1>";
+
+    $zeilen = "";
+    $code .= "<table class=\"cms_liste\">";
+      $code .= "<tr><th></th><th>Bezeichnung</th><th>Kürzel</th><th>Kollegen</th><th>Aktionen</th></tr>";
+			$dbs = cms_verbinden('s');
+			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM faecher WHERE schuljahr = $SCHULJAHR) AS f ORDER BY bezeichnung ASC";
+
+			$sqlkollegen = $dbs->prepare("SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM lehrer JOIN fachkollegen ON lehrer.id = fachkollegen.kollege WHERE fachkollegen.fach = ?");
+
+			$ausgabe = "";
+			if ($anfrage = $dbs->query($sql)) {
+				while ($daten = $anfrage->fetch_assoc()) {
+					$ausgabe .= "<tr>";
+						$ausgabe .= "<td><img src=\"res/icons/klein/fach.png\"></td>";
+						$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
+						$ausgabe .= "<td>".$daten['kuerzel']."</td>";
+
+						$kollegen = "";
+						$sqlkollegen->bind_param('i', $daten['id']);
+						if ($sqlkollegen->execute()) {
+							$sqlkollegen->bind_result($lkurz);
+							while ($sqlkollegen->fetch()) {
+								$kollegen .= ", ".$lkurz;
+							}
+						}
+						if (strlen($kollegen) > 0) {$kollegen = substr($kollegen,2);}
+						$ausgabe .= "<td>$kollegen</td>";
+						$ausgabe .= "<td>";
+						$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
+						if ($CMS_RECHTE['Planung']['Fächer bearbeiten']) {
+							$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_faecher_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+						}
+						if ($CMS_RECHTE['Planung']['Fächer löschen']) {
+							$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_faecher_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+						}
+						$ausgabe .= "</td>";
+
+					$ausgabe .= "</tr>";
+				}
+				$anfrage->free();
 			}
-			$anfrage->free();
-		}
+			$sqlkollegen->close();
 
-		if ($ausgabe == "") {
-			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"4\">- keine Datensätze gefunden -</td></tr>";
-		}
+			if ($ausgabe == "") {
+				$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";
+			}
 
-		echo $ausgabe;
-		cms_trennen($dbs);
-		?>
-		</tbody>
-	</table>
-<?php
-	if ($CMS_RECHTE['Organisation']['Fächer anlegen']) {
-		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a></p>";
-	}
+			$code .= $ausgabe;
+
+    $code .= "</table>";
+
+    if ($CMS_RECHTE['Planung']['Fächer anlegen']) {
+      $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a></p>";
+    }
+
+
+  }
+  else {$code .= "<h1>Fächer</h1>".cms_meldung_bastler();}
 }
 else {
-	echo cms_meldung_berechtigung();
+  $code .= "<h1>Fächer</h1>".cms_meldung_berechtigung();
 }
-?>
 
+echo $code;
+?>
 </div>
+<div class="cms_clear"></div>

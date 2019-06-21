@@ -8,16 +8,17 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
+
+if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Fächer bearbeiten'];
+$zugriff = $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile löschen'];
 
 if (cms_angemeldet() && $zugriff) {
-	$_SESSION["FAECHERBEARBEITEN"] = $id;
+	$_SESSION["PROFILSCHULJAHR"] = $id;
 	echo "ERFOLG";
 }
 else {
-	echo "FEHLER";
+	echo "BERECHTIGUNG";
 }
 ?>

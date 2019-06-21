@@ -154,7 +154,7 @@ function cms_stundenplanung_zeitraeume_neu_speichern() {
 	}
 
 	if (sfehler) {
-		meldung += '<li>bei der Erstellung der Schulstunden ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erstellung der Schulstunden ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (sbezeichnungf) {
@@ -365,7 +365,7 @@ function cms_stundenplanung_zeitraeume_bearbeiten_speichern() {
 	}
 
 	if (sfehler) {
-		meldung += '<li>bei der Änderung der Schulstunden ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Änderung der Schulstunden ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (sbezeichnungf) {

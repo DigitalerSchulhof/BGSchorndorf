@@ -27,7 +27,7 @@ if ($zugriff) {
   else {$code .= "<h1>Zeitraum bearbeiten</h1>".cms_meldung_bastler();}
 }
 else {
-	$code .= cms_meldung_berechtigung();
+	$code .= "<h1>Zeitraum bearbeiten</h1>".cms_meldung_berechtigung();
 }
 
 echo $code;

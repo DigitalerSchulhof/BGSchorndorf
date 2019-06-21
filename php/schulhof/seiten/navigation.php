@@ -432,7 +432,7 @@ function cms_schulhofnavigation_plaene($dbs) {
 }
 
 function cms_schulhofnavigation_verwaltung($dbs) {
-	global $CMS_RECHTE, $CMS_GRUPPEN;
+	global $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 
 	// Ermitteln, welche Verwaltungsrechte der Benutzer hat
 	$VERWALTUNG = false;
@@ -451,16 +451,15 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	}
 	// PLANUNG
 	$VERplanung = "";
-	/*
-	$zugriff = ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen'] || $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen']);
-	if ($zugriff) {
-		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Stundenplanung\">Stundenplanung</a></li> ";
+	if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanzeiträume</a></li> ";
 	}
-	$zugriff = ($CMS_RECHTE['Planung']['Vertretungen planen']);
-	if ($zugriff) {
-		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Vertretungsplanung\">Vertretungsplanung</a></li> ";
+	if ($CMS_RECHTE['Planung']['Fächer anlegen'] || $CMS_RECHTE['Planung']['Fächer bearbeiten'] || $CMS_RECHTE['Planung']['Fächer löschen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_faecher_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Fächer</a></li> ";
 	}
-	*/
+	if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanung</a></li> ";
+	}
 	// ORGANISATION
 	$VERorganisation = "";
 	if ($CMS_RECHTE['Organisation']['Schuljahre anlegen'] || $CMS_RECHTE['Organisation']['Schuljahre bearbeiten'] || $CMS_RECHTE['Organisation']['Schuljahre löschen']) {
@@ -471,9 +470,6 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	}
 	if ($CMS_RECHTE['Organisation']['Leihgeräte anlegen'] || $CMS_RECHTE['Organisation']['Leihgeräte bearbeiten'] || $CMS_RECHTE['Organisation']['Leihgeräte löschen']) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Leihgeräte\">Leihgeräte</a></li> ";
-	}
-	if ($CMS_RECHTE['Organisation']['Fächer anlegen'] || $CMS_RECHTE['Organisation']['Fächer bearbeiten'] || $CMS_RECHTE['Organisation']['Fächer löschen']) {
-		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Fächer\">Fächer</a></li> ";
 	}
 	if ($CMS_RECHTE['Organisation']['Ferien anlegen'] || $CMS_RECHTE['Organisation']['Ferien bearbeiten'] || $CMS_RECHTE['Organisation']['Ferien löschen']) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Ferien\">Ferien</a></li> ";

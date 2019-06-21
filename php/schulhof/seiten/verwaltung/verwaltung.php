@@ -139,6 +139,93 @@ echo $code;
 </div>
 
 
+<div class="cms_spalte_4">
+<div class="cms_spalte_i">
+<?php
+$tabzahl = 0;
+$code = "";
+if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schuljahrfabrik\" href=\"javascript:cms_schuljahrfabrik_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
+			$code .=  "<h3>Schuljahrfabrik</h3>";
+			$code .=  "<p>Für bestehende Schuljahre Stufen, Klassen und Kurse intelligent anlegen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_zeitraeume\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
+			$code .=  "<h3>Stundenplanzeiträume</h3>";
+			$code .=  "<p>Für einzelne Schuljahre Planungszeiträume anlegen, bearbeiten und löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Fächer anlegen'] || $CMS_RECHTE['Planung']['Fächer bearbeiten'] || $CMS_RECHTE['Planung']['Fächer löschen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_faecher\" href=\"javascript:cms_faecher_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
+			$code .=  "<h3>Fächer</h3>";
+			$code .=  "<p>Fächer anlegen, bearbeiten und löschen, sowie Fächer den Kollegen zuordnen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_profile\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
+			$code .=  "<h3>Profile</h3>";
+			$code .=  "<p>Für einzelne Schuljahre Profile anlegen und die entsprechenden Wahlmöglichkeiten definieren.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"\">";
+			$code .=  "<h3>Schienen</h3>";
+			$code .=  "<p>Für jede Klassenstufe Unterricht festlegen, der parallel laufen muss.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"\">";
+			$code .=  "<h3>Stundenplanung</h3>";
+			$code .=  "<p>Regelstundenpläne eingeben und ändern.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"\">";
+			$code .=  "<h3>Vertretungsplan</h3>";
+			$code .=  "<p>Schulstunden ändern, verschieben oder entfallen lassen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_ausplanung\" href=\"\">";
+			$code .=  "<h3>Ausplanungen durchführen</h3>";
+			$code .=  "<p>Räume, Lehrer, Klassen und Kurse ausplanen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+
+if ($tabzahl > 0) {
+	$code = "<h2>Planung</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+}
+echo $code;
+?>
+</div>
+</div>
+
+
 
 <div class="cms_spalte_4">
 <div class="cms_spalte_i">
@@ -172,15 +259,6 @@ if ($CMS_RECHTE['Organisation']['Leihgeräte anlegen'] || $CMS_RECHTE['Organisat
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_leihgeraete\" href=\"Schulhof/Verwaltung/Leihgeräte\">";
 			$code .=  "<h3>Leihgeräte</h3>";
 			$code .=  "<p>Leihgeräte anlegen, bearbeiten und löschen.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-	$tabzahl++;
-}
-if ($CMS_RECHTE['Organisation']['Fächer anlegen'] || $CMS_RECHTE['Organisation']['Fächer bearbeiten'] || $CMS_RECHTE['Organisation']['Fächer löschen']) {
-	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_faecher\" href=\"Schulhof/Verwaltung/Fächer\">";
-			$code .=  "<h3>Fächer</h3>";
-			$code .=  "<p>Fächer anlegen, bearbeiten und löschen, sowie Fächer den Klassenstufen zuordnen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
@@ -252,33 +330,6 @@ if ($tabzahl > 0) {
 	$code = "<h2>Organisation</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
 echo $code;
-
-
-
-// PLANUNG
-$tabzahl = 0;
-$code = "";
-
-/*if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen'] ||
-    $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen']) {
-	$code .= "<li>";
-		$code .= "<a class=\"cms_uebersicht_verwaltung_stundenplanung\" href=\"Schulhof/Verwaltung/Stundenplanung\">";
-			$code .=  "<h3>Stundenplanung</h3>";
-			$code .=  "<p>Stundenplanzeiträume anlegen, bearbeiten und löschen. Stundenpläne anlegen, bearbeiten, löschen.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-	$tabzahl++;
-}
-if ($CMS_RECHTE['Planung']['Vertretungen planen']) {
-	$code .= "<li>";
-		$code .= "<a class=\"cms_uebersicht_verwaltung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Vertretungsplanung\">";
-			$code .=  "<h3>Vertretungsplanung</h3>";
-			$code .=  "<p>Vertretungen planen.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-	$tabzahl++;
-}*/
-
 ?>
 </div>
 </div>
@@ -287,34 +338,6 @@ if ($CMS_RECHTE['Planung']['Vertretungen planen']) {
 
 <div class="cms_spalte_4">
 <div class="cms_spalte_i">
-
-
-<?php
-$code = "";
-if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
-	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_zeitraeume\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
-			$code .=  "<h3>Stundenplanzeiträume</h3>";
-			$code .=  "<p>Für einzelne Schuljahre Planungszeiträume anlegen, bearbeiten und löschen.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-	$tabzahl++;
-}
-
-if ($tabzahl > 0) {
-	$code = "<h2>Planung</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-}
-echo $code;
-?>
-</div>
-</div>
-
-
-
-<div class="cms_spalte_4">
-<div class="cms_spalte_i">
-
-
 <?php
 // WEBSITE
 $tabzahl = 0;
@@ -414,8 +437,6 @@ if ($tabzahl > 0) {
 }
 echo $code;
 ?>
-
-
 </div>
 </div>
 
@@ -443,6 +464,15 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_hausmeister\" href=\"Schulhof/Hausmeister/Aufträge\">";
 			$code .=  "<h3>Hausmeisteraufräge</h3>";
 			$code .=  "<p>Hausmeisteraufträge sehen, markieren und löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+if ($CMS_RECHTE['Technik']['Haustechnikausgabe verwalten']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_haustechnik\" href=\"Schulhof/Verwaltung/Haustechnik\">";
+			$code .=  "<h3>Haustechnikausgabe verwalten</h3>";
+			$code .=  "<p>Auswählen der Informationen, die der Haustechnikschnittstelle zur Verfügung gestellt werden.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;

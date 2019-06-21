@@ -98,7 +98,7 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 	}
 
 	if (dfehler) {
-		meldung += '<li>bei der Erstellung der Downloads ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erstellung der Downloads ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (dtitelf) {
@@ -145,7 +145,7 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 	}
 
 	if (bfehler) {
-		meldung += '<li>bei der Erstellung der Beschlüsse ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erstellung der Beschlüsse ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (btitelf) {
@@ -280,7 +280,7 @@ function cms_termineintern_eingabenpruefen(modus) {
 	}
 
 	if (dfehler) {
-		meldung += '<li>bei der Erstellung der Downloads ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erstellung der Downloads ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (dtitelf) {

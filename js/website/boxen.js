@@ -261,7 +261,7 @@ function cms_boxen_neu_speichern(zusatz) {
 	}
 
 	if (bfehler) {
-		meldung += '<li>bei der Erstellung der einzelnen Boxen ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erstellung der einzelnen Boxen ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (baktivf) {
@@ -394,7 +394,7 @@ function cms_boxen_bearbeiten_speichern(zusatz) {
 	}
 
 	if (bfehler) {
-		meldung += '<li>bei der Erstellung der einzelnen Boxen ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erstellung der einzelnen Boxen ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (baktivf) {

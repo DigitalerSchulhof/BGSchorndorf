@@ -60,9 +60,9 @@ function cms_stundenplanung_navigation() {
   		$code .=  "</a>";
   	$code .=  "</li>";
   }
-  if ($CMS_RECHTE['Organisation']['Fächer anlegen'] || $CMS_RECHTE['Organisation']['Fächer bearbeiten'] || $CMS_RECHTE['Organisation']['Fächer löschen']) {
+  if ($CMS_RECHTE['Planung']['Fächer anlegen'] || $CMS_RECHTE['Planung']['Fächer bearbeiten'] || $CMS_RECHTE['Planung']['Fächer löschen']) {
   	$code .=  "<li>";
-  		$code .=  "<a class=\"cms_uebersicht_verwaltung_faecher\" href=\"Schulhof/Verwaltung/Fächer/\">";
+  		$code .=  "<a class=\"cms_uebersicht_verwaltung_faecher\" href=\"Schulhof/Verwaltung/Planung/Fächer/\">";
   			$code .=  "<h3>Fächer</h3>";
   			$code .=  "<p>Fächer anlegen, bearbeiten und löschen, sowie Fächer den Klassenstufen zuordnen.</p>";
   		$code .=  "</a>";

@@ -55,7 +55,7 @@ function cms_personensuche(id, art, gruppe) {
 
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "FEHLER") {
-      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den Administrator über den Link in der Fußzeile informieren.";
+      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den <a href=\"Website/Feedback\">Administrator informieren</a>.";
     }
 		else if (rueckgabe.slice(0,6) == 'ERFOLG') {
       var ausgabe = "";
@@ -237,7 +237,7 @@ function cms_personensuche_mail(id) {
 
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "FEHLER") {
-      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den Administrator über den Link in der Fußzeile informieren.";
+      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den <a href=\"Website/Feedback\">Administrator informieren</a>.";
     }
 		else if (rueckgabe.slice(0,6) == 'ERFOLG') {
       var ausgabe = "";
@@ -382,7 +382,7 @@ function cms_personensuche_schuljahr(id) {
 
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "FEHLER") {
-      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den Administrator über den Link in der Fußzeile informieren.";
+      meldung.innerHTML = "Es ist ein Fehler aufgetreten, Bitte den <a href=\"Website/Feedback\">Administrator informieren</a>.";
     }
 		else if (rueckgabe.slice(0,6) == 'ERFOLG') {
       var ausgabe = "";

@@ -7,8 +7,8 @@ $code = "";
 if ($zugriff) {
 	// Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
-  if (isset($_SESSION['FÄCHERSCHULJAHR'])) {
-    $SCHULJAHR = $_SESSION['FÄCHERSCHULJAHR'];
+  if (isset($_SESSION['PROFILSCHULJAHR'])) {
+    $SCHULJAHR = $_SESSION['PROFILSCHULJAHR'];
     $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre WHERE id = ?");
     $sql->bind_param('i', $SCHULJAHR);
     if ($sql->execute()) {
@@ -20,16 +20,16 @@ if ($zugriff) {
 
 
   if (!$sjfehler) {
-    $code .= "<h1>Neues Fach anlegen für das Schuljahr $sjbez</h1>";
-		include_once('php/schulhof/seiten/verwaltung/faecher/faecherdetails.php');
+    $code .= "<h1>Neues Profil anlegen für das Schuljahr $sjbez</h1>";
+		include_once('php/schulhof/seiten/verwaltung/profile/profiledetails.php');
 
-		$code .= cms_faecher_ausgeben('-');
-		$code .= "<p><span class=\"cms_button\" onclick=\"cms_faecher_neu_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung/Fächer\">Abbrechen</a></p>";
+		$code .= cms_profile_ausgeben('-', $SCHULJAHR);
+		$code .= "<p><span class=\"cms_button\" onclick=\"cms_profile_neu_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung/Profile\">Abbrechen</a></p>";
   }
-  else {$code .= "<h1>Neues Fach anlegen</h1>".cms_meldung_bastler();}
+  else {$code .= "<h1>Neues Profil anlegen</h1>".cms_meldung_bastler();}
 }
 else {
-	$code .= "<h1>Neues Fach anlegen</h1>".cms_meldung_berechtigung();
+	$code .= "<h1>Neues Profil anlegen</h1>".cms_meldung_berechtigung();
 }
 
 echo $code;

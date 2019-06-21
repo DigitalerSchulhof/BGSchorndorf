@@ -302,12 +302,6 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Ferien löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Fächer anlegen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Fächer bearbeiten', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Fächer löschen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Galerien genehmigen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Gruppenblogeinträge genehmigen', '$CMS_SCHLUESSEL'))";
@@ -456,8 +450,33 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanzeiträume löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Vertretungen planen', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen anlegen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanung durchführen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Vertretungsplanung durchführen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Ausplanungen durchführen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Fächer anlegen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Fächer bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Fächer löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schuljahrfabrik', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+
 		/*
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anträge sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -479,6 +498,8 @@ if ($rechteplaetten) {
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Hausmeisteraufträge markieren', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Hausmeisteraufträge löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Haustechnikausgabe verwalten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 
 		// WEBSITE

@@ -37,6 +37,12 @@ if ($zugriff) {
 					if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_stundenplanzeitraeume_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Zeiträume</span><img src=\"res/icons/klein/stundenplanzeitraeume.png\"></span> ";
 					}
+					if ($CMS_RECHTE['Planung']['Fächer anlegen']) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_faecher_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Fächer</span><img src=\"res/icons/klein/faecher.png\"></span> ";
+					}
+					if ($CMS_RECHTE['Planung']['Profile anlegen']) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Profile</span><img src=\"res/icons/klein/profile.png\"></span> ";
+					}
 					//if ($CMS_RECHTE['Organisation']['Schuljahre anlegen']) {
 					//	$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"\"><span class=\"cms_hinweis\">Nächstes Schuljahr aus diesem erzeugen</span><img src=\"res/icons/klein/generieren.png\"></span> ";
 					//}

@@ -291,4 +291,10 @@ $CMS_ZIELE[326] = 'php/schulhof/anfragen/verwaltung/zeitraeume/neuspeichern.php'
 $CMS_ZIELE[327] = 'php/schulhof/anfragen/verwaltung/zeitraeume/loeschen.php';
 $CMS_ZIELE[328] = 'php/schulhof/anfragen/verwaltung/zeitraeume/bearbeitenvorbereiten.php';
 $CMS_ZIELE[329] = 'php/schulhof/anfragen/verwaltung/zeitraeume/bearbeitenspeichern.php';
+$CMS_ZIELE[330] = 'php/schulhof/anfragen/verwaltung/profile/vorbereiten.php';
+$CMS_ZIELE[331] = 'php/schulhof/anfragen/verwaltung/profile/neuspeichern.php';
+$CMS_ZIELE[332] = 'php/schulhof/anfragen/verwaltung/profile/loeschen.php';
+$CMS_ZIELE[333] = 'php/schulhof/anfragen/verwaltung/profile/bearbeitenvorbereiten.php';
+$CMS_ZIELE[334] = 'php/schulhof/anfragen/verwaltung/profile/bearbeitenspeichern.php';
+$CMS_ZIELE[335] = 'php/schulhof/anfragen/verwaltung/faecher/vorbereiten.php';
 ?>

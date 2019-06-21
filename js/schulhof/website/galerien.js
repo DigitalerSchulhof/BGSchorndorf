@@ -93,7 +93,7 @@ function cms_galerie_eingabenpruefen() {
 	}
 
 	if (bfehler) {
-		meldung += '<li>bei der Erfassung der Bilder ist ein unbekannter Fehler aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</li>';
+		meldung += '<li>bei der Erfassung der Bilder ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
 		fehler = true;
 	}
 	if (bpfadf) {

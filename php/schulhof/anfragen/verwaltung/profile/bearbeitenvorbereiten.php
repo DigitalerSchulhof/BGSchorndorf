@@ -7,14 +7,13 @@ include_once("../../schulhof/funktionen/check.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
+if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Fächer bearbeiten'];
+$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'];
 
 if (cms_angemeldet() && $zugriff) {
-	$_SESSION["FAECHERBEARBEITEN"] = $id;
+	$_SESSION["PROFILBEARBEITEN"] = $id;
 	echo "ERFOLG";
 }
 else {
