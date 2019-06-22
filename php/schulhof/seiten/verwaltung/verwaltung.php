@@ -148,7 +148,7 @@ if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schuljahrfabrik\" href=\"javascript:cms_schuljahrfabrik_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
 			$code .=  "<h3>Schuljahrfabrik</h3>";
-			$code .=  "<p>Für bestehende Schuljahre Stufen, Klassen und Kurse intelligent anlegen.</p>";
+			$code .=  "<p>Aus bestehendem Schuljahr neues Schuljahr inklusive Stufen, Klassen und Kurse generieren.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;

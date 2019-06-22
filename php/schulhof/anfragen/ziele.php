@@ -302,4 +302,17 @@ $CMS_ZIELE[335] = 'php/schulhof/anfragen/verwaltung/faecher/vorbereiten.php';
 $CMS_ZIELE[336] = 'php/schulhof/anfragen/verwaltung/auffaelliges/vorbereiten.php';
 $CMS_ZIELE[337] = 'php/schulhof/anfragen/verwaltung/auffaelliges/notizen.php';
 $CMS_ZIELE[338] = 'php/schulhof/anfragen/verwaltung/auffaelliges/status.php';
+$CMS_ZIELE[339] = 'php/schulhof/anfragen/verwaltung/schuljahrfabrik/vorbereiten.php';
+$CMS_ZIELE[340] = '';
+$CMS_ZIELE[341] = '';
+$CMS_ZIELE[342] = '';
+$CMS_ZIELE[343] = '';
+$CMS_ZIELE[344] = '';
+$CMS_ZIELE[345] = '';
+$CMS_ZIELE[346] = '';
+$CMS_ZIELE[347] = '';
+$CMS_ZIELE[348] = '';
+$CMS_ZIELE[349] = '';
+$CMS_ZIELE[350] = 'php/schulhof/anfragen/verwaltung/gruppen/klassenfaecherladen.php';
+$CMS_ZIELE[351] = 'php/schulhof/anfragen/verwaltung/gruppen/kursefaecherladen.php';
 ?>

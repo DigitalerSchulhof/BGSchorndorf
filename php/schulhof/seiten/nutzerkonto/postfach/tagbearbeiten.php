@@ -60,10 +60,10 @@ if (!$fehler) {
 						}
 						$pause++;
 						if ($i == $farbe) {
-							echo "<span class=\"cms_farbbeispiel_aktiv cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_postfach_tag_farbbeispiel_waehlen($i)\"></span>";
+							echo "<span class=\"cms_farbbeispiel_aktiv cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_farbbeispiel_waehlen($i, 'cms_postach_tag_farbe')\"></span>";
 						}
 						else  {
-							echo "<span class=\"cms_farbbeispiel cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_postfach_tag_farbbeispiel_waehlen($i)\"></span>";
+							echo "<span class=\"cms_farbbeispiel cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_farbbeispiel_waehlen($i, 'cms_postach_tag_farbe')\"></span>";
 						}
 					}
 				echo "<input type=\"hidden\" name=\"cms_postach_tag_farbe\" id=\"cms_postach_tag_farbe\" value=\"$farbe\">";

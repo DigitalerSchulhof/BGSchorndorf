@@ -19,6 +19,8 @@ function cms_faecher_neu_speichern() {
 	cms_laden_an('Neues Fach anlegen', 'Die Eingaben werden überprüft.');
 	var bezeichnung = document.getElementById('cms_faecher_bezeichnung').value;
 	var kuerzel = document.getElementById('cms_faecher_kuerzel').value;
+	var farbe = document.getElementById('cms_faecher_farbe').value;
+	var icon = document.getElementById('cms_gruppe_icon').value;
 	var kollegen = document.getElementById('cms_faecher_kollegen_personensuche_gewaehlt').value;
 
 	var meldung = '<p>Das Fach konnte nicht erstellt werden, denn ...</p><ul>';
@@ -35,6 +37,16 @@ function cms_faecher_neu_speichern() {
 		fehler = true;
 	}
 
+	if (!cms_check_ganzzahl(farbe,0,47)) {
+		meldung += '<li>die gewählte Farbe ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_dateiname(icon)) {
+		meldung += '<li>das gewählte Icon ist ungültig.</li>';
+		fehler = true;
+	}
+
 	if (fehler) {
 		cms_meldung_an('fehler', 'Neues Fach anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
@@ -44,6 +56,8 @@ function cms_faecher_neu_speichern() {
 		var formulardaten = new FormData();
 		formulardaten.append("bezeichnung", bezeichnung);
 		formulardaten.append("kuerzel", kuerzel);
+    formulardaten.append("farbe", farbe);
+    formulardaten.append("icon", icon);
     formulardaten.append("kollegen", kollegen);
 
 		formulardaten.append("anfragenziel", 	'80');
@@ -112,6 +126,8 @@ function cms_schulhof_faecher_bearbeiten () {
 	cms_laden_an('Fach bearbeiten', 'Die Eingaben werden überprüft.');
 	var bezeichnung = document.getElementById('cms_faecher_bezeichnung').value;
 	var kuerzel = document.getElementById('cms_faecher_kuerzel').value;
+	var farbe = document.getElementById('cms_faecher_farbe').value;
+	var icon = document.getElementById('cms_gruppe_icon').value;
 	var kollegen = document.getElementById('cms_faecher_kollegen_personensuche_gewaehlt').value;
 
 	var meldung = '<p>Das Fach konnte nicht geändert werden, denn ...</p><ul>';
@@ -128,6 +144,16 @@ function cms_schulhof_faecher_bearbeiten () {
 		fehler = true;
 	}
 
+	if (!cms_check_ganzzahl(farbe,0,47)) {
+		meldung += '<li>die gewählte Farbe ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_dateiname(icon)) {
+		meldung += '<li>das gewählte Icon ist ungültig.</li>';
+		fehler = true;
+	}
+
 	if (fehler) {
 		cms_meldung_an('fehler', 'Fach bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
@@ -137,6 +163,8 @@ function cms_schulhof_faecher_bearbeiten () {
 		var formulardaten = new FormData();
 		formulardaten.append("bezeichnung", bezeichnung);
 		formulardaten.append("kuerzel", kuerzel);
+    formulardaten.append("farbe", farbe);
+    formulardaten.append("icon", icon);
     formulardaten.append("kollegen", kollegen);
 		formulardaten.append("anfragenziel", 	'83');
 

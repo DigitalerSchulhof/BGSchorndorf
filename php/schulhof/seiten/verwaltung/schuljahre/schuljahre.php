@@ -43,9 +43,9 @@ if ($zugriff) {
 					if ($CMS_RECHTE['Planung']['Profile anlegen']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Profile</span><img src=\"res/icons/klein/profile.png\"></span> ";
 					}
-					//if ($CMS_RECHTE['Organisation']['Schuljahre anlegen']) {
-					//	$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"\"><span class=\"cms_hinweis\">Nächstes Schuljahr aus diesem erzeugen</span><img src=\"res/icons/klein/generieren.png\"></span> ";
-					//}
+				 if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schuljahrfabrik_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Nächstes Schuljahr aus diesem erzeugen</span><img src=\"res/icons/klein/schuljahrfabrik.png\"></span> ";
+					}
 					if ($CMS_RECHTE['Organisation']['Schuljahre löschen']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_schuljahr_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 					}

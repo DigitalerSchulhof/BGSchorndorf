@@ -223,22 +223,6 @@ function cms_postfach_signatur_aendern() {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_postfach_tag_farbbeispiel_waehlen(nr) {
-	if (isNaN(nr)) {nr = 0;}
-	if (nr % 1 != 0) {nr = 0;}
-	if (nr > 47) {nr = 0;}
-
-	// Alle deaktivieren
-	for (var i=0; i<48; i++) {
-		feld = document.getElementById('cms_farbbeispiel_'+i);
-		feld.className = "cms_farbbeispiel cms_farbbeispiel_"+i;
-	}
-
-	document.getElementById('cms_farbbeispiel_'+nr).className = "cms_farbbeispiel_aktiv cms_farbbeispiel_"+nr;
-	document.getElementById('cms_postach_tag_farbe').value = nr;
-}
-
-
 function cms_postfach_neuertag() {
 	cms_laden_an('Neuen Tag anlegen', 'Die Eingaben werden überprüft.');
 

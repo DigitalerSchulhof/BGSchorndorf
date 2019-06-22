@@ -432,6 +432,49 @@ function cms_gruppe_stufen_laden() {
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
+function cms_gruppe_klassenfaecher_laden() {
+  cms_laden_an('Fächer laden', 'Informationen werden gesammelt.');
+  var schuljahr = document.getElementById('cms_gruppe_schuljahr').value;
+  var faecher = document.getElementById('cms_gruppe_faecher');
+  var faecherF = document.getElementById('cms_grupppe_faecher_F');
+
+  faecher.value = "";
+
+  var formulardaten = new FormData();
+  formulardaten.append("schuljahr",   schuljahr);
+  formulardaten.append("anfragenziel", 	'350');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe.match(/^<span/)) {
+      faecherF.innerHTML = rueckgabe;
+      cms_meldung_aus();
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_gruppe_kursefaecher_laden() {
+  cms_laden_an('Fächer laden', 'Informationen werden gesammelt.');
+  var schuljahr = document.getElementById('cms_gruppe_schuljahr').value;
+  var faecher = document.getElementById('cms_gruppe_fach');
+
+  var formulardaten = new FormData();
+  formulardaten.append("schuljahr",   schuljahr);
+  formulardaten.append("anfragenziel", 	'351');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe.match(/^<option/)) {
+      faecher.innerHTML = rueckgabe;
+      cms_meldung_aus();
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
 function cms_gruppe_klassen_laden() {
   document.getElementById('cms_gruppe_klassen_F').innerHTML = '<div class=\"cms_meldung_laden\"><p><img src=\"res/laden/standard.gif\"></p><p class=\"cms_notiz\">Klassen dieses Schuljahres werden geladen</p></div>'
   var schuljahr = document.getElementById('cms_gruppe_schuljahr').value;

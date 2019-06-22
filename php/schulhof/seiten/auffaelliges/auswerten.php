@@ -174,11 +174,7 @@
     global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden('s');
 
-    $sql = "SELECT MAX(id) as idM FROM auffaelliges";
-    $id = 0;
-    if ($anfrage = $dbs->query($sql))
-      if ($daten = $anfrage->fetch_assoc())
-        $id = $daten["idM"]+1;
+    $id = cms_generiere_kleinste_id('auffaelliges');
 
     $ursacher = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
 
@@ -192,9 +188,8 @@
     $zeitstempel = time();
     $status = 0;
 
-    $sql = "INSERT INTO `auffaelliges` (`id`, `ursacher`, `typ`, `aktion`, `eingaben`, `details`, `zeitstempel`, `status`) VALUES (?, ?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?, ?);";
-    $sql = $dbs->prepare($sql);
-    $sql->bind_param("iiisssii", $id, $ursacher, $typ, $aktion, $eingaben, $details, $zeitstempel, $status);
+    $sql = $dbs->prepare("UPDATE auffaelliges SET ursacher = ?, typ = ?, aktion = ?, eingaben = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), details = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ?, status = ? WHERE id = ?");
+    $sql->bind_param("iisssiii", $ursacher, $typ, $aktion, $eingaben, $details, $zeitstempel, $status, $id);
     $sql->execute();
     $sql->close();
   }

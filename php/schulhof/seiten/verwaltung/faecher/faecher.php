@@ -25,9 +25,9 @@ if ($zugriff) {
 
     $zeilen = "";
     $code .= "<table class=\"cms_liste\">";
-      $code .= "<tr><th></th><th>Bezeichnung</th><th>Kürzel</th><th>Kollegen</th><th>Aktionen</th></tr>";
+      $code .= "<tr><th></th><th></th><th>Bezeichnung</th><th>Kürzel</th><th>Kollegen</th><th>Aktionen</th></tr>";
 			$dbs = cms_verbinden('s');
-			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM faecher WHERE schuljahr = $SCHULJAHR) AS f ORDER BY bezeichnung ASC";
+			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, farbe FROM faecher WHERE schuljahr = $SCHULJAHR) AS f ORDER BY bezeichnung ASC";
 
 			$sqlkollegen = $dbs->prepare("SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM lehrer JOIN fachkollegen ON lehrer.id = fachkollegen.kollege WHERE fachkollegen.fach = ?");
 
@@ -35,7 +35,8 @@ if ($zugriff) {
 			if ($anfrage = $dbs->query($sql)) {
 				while ($daten = $anfrage->fetch_assoc()) {
 					$ausgabe .= "<tr>";
-						$ausgabe .= "<td><img src=\"res/icons/klein/fach.png\"></td>";
+						$ausgabe .= "<td><img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
+            $ausgabe .= "<td><span class=\"cms_tag_gross cms_farbbeispiel_".$daten['farbe']."\"></span></td>";
 						$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
 						$ausgabe .= "<td>".$daten['kuerzel']."</td>";
 
@@ -66,7 +67,7 @@ if ($zugriff) {
 			$sqlkollegen->close();
 
 			if ($ausgabe == "") {
-				$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";
+				$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"6\">- keine Datensätze gefunden -</td></tr>";
 			}
 
 			$code .= $ausgabe;

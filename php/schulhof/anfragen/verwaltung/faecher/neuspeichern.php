@@ -10,6 +10,8 @@ session_start();
 
 if (isset($_POST['bezeichnung'])) {$bezeichnung = cms_texttrafo_e_db($_POST['bezeichnung']);} else {echo "FEHLER";exit;}
 if (isset($_POST['kuerzel'])) {$kuerzel = cms_texttrafo_e_db($_POST['kuerzel']);} else {echo "FEHLER";exit;}
+if (isset($_POST['farbe'])) {$farbe = $_POST['farbe'];} else {echo "FEHLER";exit;}
+if (isset($_POST['icon'])) {$icon = $_POST['icon'];} else {echo "FEHLER";exit;}
 if (isset($_POST['kollegen'])) {$kollegen = $_POST['kollegen'];} else {echo "FEHLER‚";exit;}
 if (isset($_SESSION['FÄCHERSCHULJAHR'])) {$SCHULJAHR = $_SESSION['FÄCHERSCHULJAHR'];} else {echo "FEHLER";exit;}
 
@@ -22,6 +24,8 @@ if (cms_angemeldet() && $zugriff) {
 	// Pflichteingaben prüfen
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 	if (!cms_check_titel($kuerzel)) {$fehler = true;}
+	if (!cms_check_ganzzahl($farbe,0,47)) {$fehler = true;}
+	if (!cms_check_dateiname($icon)) {$fehler = true;}
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
@@ -84,8 +88,8 @@ if (cms_angemeldet() && $zugriff) {
 		// Klassenstufe EINTRAGEN
 		$id = cms_generiere_kleinste_id('faecher');
 		$dbs = cms_verbinden('s');
-		$sql = $dbs->prepare("UPDATE faecher SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kuerzel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
-		$sql->bind_param("issi", $SCHULJAHR, $bezeichnung, $kuerzel, $id);
+		$sql = $dbs->prepare("UPDATE faecher SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kuerzel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), farbe = ? WHERE id = ?");
+		$sql->bind_param("isssii", $SCHULJAHR, $bezeichnung, $kuerzel, $icon, $farbe, $id);
 		$sql->execute();
 		$sql->close();
 

@@ -25,7 +25,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 		<tr><th>Titel:</th><td><input type="text" name="cms_postach_tag_titel" id="cms_postach_tag_titel"></td></tr>
 		<tr><th>Farbe:</th><td>
 			<?php
-				echo "<span class=\"cms_farbbeispiel_aktiv cms_farbbeispiel_0\" id=\"cms_farbbeispiel_0\" onclick=\"cms_postfach_tag_farbbeispiel_waehlen(0)\"></span>";
+				echo "<span class=\"cms_farbbeispiel_aktiv cms_farbbeispiel_0\" id=\"cms_farbbeispiel_0\" onclick=\"cms_farbbeispiel_waehlen(0, 'cms_postach_tag_farbe')\"></span>";
 				$pause = 1;
 				for ($i=1; $i<48; $i++) {
 					if ($pause == 12) {
@@ -33,7 +33,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 						$pause = 0;
 					}
 					$pause++;
-					echo "<span class=\"cms_farbbeispiel cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_postfach_tag_farbbeispiel_waehlen($i)\"></span>";
+					echo "<span class=\"cms_farbbeispiel cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_farbbeispiel_waehlen($i, 'cms_postach_tag_farbe')\"></span>";
 				}
 			?>
 			<input type="hidden" name="cms_postach_tag_farbe" id="cms_postach_tag_farbe" value="0">

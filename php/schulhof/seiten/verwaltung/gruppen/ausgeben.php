@@ -159,7 +159,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       }
 
       $faecher = array();
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher) AS x ORDER BY bez ASC";
+      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr $schuljahrwert) AS x ORDER BY bez ASC";
       if ($anfrage = $dbs->query($sql)) {
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($faecher, $daten);
@@ -229,8 +229,8 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
     if ($id != '-') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" disabled=\"disabled\">";}
     else if ($namek == 'stufen') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" onchange=\"cms_gruppe_reihenfolge_laden()\">";}
-    else if ($namek == 'klassen') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" onchange=\"cms_gruppe_stufen_laden()\">";}
-    else if ($namek == 'kurse') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" onchange=\"cms_gruppe_stufen_laden();cms_gruppe_klassen_laden();\">";}
+    else if ($namek == 'klassen') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" onchange=\"cms_gruppe_stufen_laden();cms_gruppe_klassenfaecher_laden();\">";}
+    else if ($namek == 'kurse') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" onchange=\"cms_gruppe_stufen_laden();cms_gruppe_klassen_laden();cms_gruppe_kursefaecher_laden();\">";}
     else {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\">";}
     // Schuljahre laden
     if ($schuljahr == '-') {$wahl = " selected=\"selected\";";} else {$wahl = "";}
@@ -338,15 +338,16 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     }
 
 
-    if (($namek == 'klassen') && (count($faecher) > 0) && ($id == '-')) {
+    if (($namek == 'klassen') && ($id == '-')) {
       $ausgabe .= "<h3>Kurse für die folgenden Fächer erstellen</h3>";
-      $ausgabe .= "<p>Es werden Kurse mit den Mitgliedern dieser Klasse erstellt.</p>";
-      $ausgabe .= "<p>";
+      $ausgabe .= "<p>Es werden Kurse mit den Mitgliedern dieser Klasse erstellt:</p>";
+      $ausgabe .= "<p id=\"cms_grupppe_faecher_F\">";
       $allefaecherids = "";
       foreach ($faecher as $f) {
         $ausgabe .= cms_togglebutton_generieren("cms_gruppe_faecher_".$f['id'], $f['bez'], 0, 'cms_gruppe_faecheraktualisieren()')." ";
         $allefaecherids .= "|".$f['id'];
       }
+      if (count($faecher) == 0) {$ausgabe .= "<span class=\"cms_notiz\">Keine Fächer für dieses Schuljahr angelegt</span>";}
       $ausgabe .= "<input type=\"hidden\" name=\"cms_gruppe_faecher_alle\" id=\"cms_gruppe_faecher_alle\" value=\"$allefaecherids\">";
       $ausgabe .= "</p>";
     }

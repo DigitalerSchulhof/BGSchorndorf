@@ -86,3 +86,18 @@ function cms_datumzweistellig(zahl) {
 function cms_uebernehmen(idvon, idzu) {
   document.getElementById(idzu).value = document.getElementById(idvon).value;
 }
+
+function cms_farbbeispiel_waehlen(nr, id) {
+	if (isNaN(nr)) {nr = 0;}
+	if (nr % 1 != 0) {nr = 0;}
+	if (nr > 47) {nr = 0;}
+
+	// Alle deaktivieren
+	for (var i=0; i<48; i++) {
+		feld = document.getElementById('cms_farbbeispiel_'+i);
+		feld.className = "cms_farbbeispiel cms_farbbeispiel_"+i;
+	}
+
+	document.getElementById('cms_farbbeispiel_'+nr).className = "cms_farbbeispiel_aktiv cms_farbbeispiel_"+nr;
+	document.getElementById(id).value = nr;
+}

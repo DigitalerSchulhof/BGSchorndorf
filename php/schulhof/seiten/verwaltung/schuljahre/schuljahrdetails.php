@@ -164,55 +164,55 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 
 	$anfang .= "<h3>Schlüsselpositionen</h3>";
 	$anfang .= "<table class=\"cms_liste\">";
-		$anfang .= "<tr><th>Schulleitung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_schulleitungFo\"><span id=\"cms_schulhof_schuljahr_schulleitungF\">".$schulleiter."</span>";
+		$anfang .= "<tr><th>Schulleitung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_schulleitungFo\">";
 			$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_schulleitung', 'l', $schulleiterhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Stellvertretende Schulleitung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_stellschulleitungFo\"><span id=\"cms_schulhof_schuljahr_stellschulleitungF\">".$stellschulleiter."</span>";
+		$anfang .= "<tr><th>Stellvertretende Schulleitung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_stellschulleitungFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_stellschulleitung', 'l', $stellschulleiterhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Abteilungsleitung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_abteilungsleitungFo\"><span id=\"cms_schulhof_schuljahr_abteilungsleitungF\">".$abteilungsleiter."</span>";
+		$anfang .= "<tr><th>Abteilungsleitung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_abteilungsleitungFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_abteilungsleitung', 'l', $abteilungsleiterhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Vertretungsplanung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_vertretungsplanungFo\"><span id=\"cms_schulhof_schuljahr_vertretungsplanungF\">".$vertretungsplanung."</span>";
+		$anfang .= "<tr><th>Vertretungsplanung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_vertretungsplanungFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_vertretungsplanung', 'l', $vertretungsplanunghidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Datenschutz:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_datenschutzFo\"><span id=\"cms_schulhof_schuljahr_datenschutzF\">".$datenschutz."</span>";
+		$anfang .= "<tr><th>Datenschutz:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_datenschutzFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_datenschutz', 'l', $datenschutzhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Sekretariat:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_sekretariatFo\"><span id=\"cms_schulhof_schuljahr_sekretariatF\">".$sekretariat."</span>";
+		$anfang .= "<tr><th>Sekretariat:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_sekretariatFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_sekretariat', 'vx', $sekretariathidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Hausmeister:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_hausmeisterFo\"><span id=\"cms_schulhof_schuljahr_hausmeisterF\">".$hausmeister."</span>";
+		$anfang .= "<tr><th>Hausmeister:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_hausmeisterFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_hausmeister', 'vx', $hausmeisterhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Sozialarbeit:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_sozialarbeitFo\"><span id=\"cms_schulhof_schuljahr_sozialarbeitF\">".$sozialarbeit."</span>";
+		$anfang .= "<tr><th>Sozialarbeit:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_sozialarbeitFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_sozialarbeit', 'vx', $sozialarbeithidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Oberstufenberatung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_oberstufenberatungFo\"><span id=\"cms_schulhof_schuljahr_oberstufenberatungF\">".$oberstufenberater."</span>";
+		$anfang .= "<tr><th>Oberstufenberatung:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_oberstufenberatungFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_oberstufenberatung', 'l', $oberstufenberaterhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Beratungslehrkräfte:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_beratungslehrerFo\"><span id=\"cms_schulhof_schuljahr_beratungslehrerF\">".$beratungslehrer."</span>";
+		$anfang .= "<tr><th>Beratungslehrkräfte:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_beratungslehrerFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_beratungslehrer', 'l', $beratungslehrerhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Verbindungslehrkräfte:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_verbindungslehrerFo\"><span id=\"cms_schulhof_schuljahr_verbindungslehrerF\">".$verbindungslehrer."</span>";
+		$anfang .= "<tr><th>Verbindungslehrkräfte:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_verbindungslehrerFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_verbindungslehrer', 'l', $verbindungslehrerhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Schülersprecher:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_schuelersprecherFo\"><span id=\"cms_schulhof_schuljahr_schuelersprecherF\">".$schuelersprecher."</span>";
+		$anfang .= "<tr><th>Schülersprecher:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_schuelersprecherFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_schuelersprecher', 's', $schuelersprecherhidden);
 		$anfang.= "</td></tr>";
 
-		$anfang .= "<tr><th>Elternbeiratsvorsitzende:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_elternbeiratFo\"><span id=\"cms_schulhof_schuljahr_elternbeiratF\">".$elternbeirat."</span>";
+		$anfang .= "<tr><th>Elternbeiratsvorsitzende:</th><td class=\"cms_personensuche_feld_aussen\" id=\"cms_schulhof_schuljahr_elternbeiratFo\">";
 				$anfang .= cms_personensuche_personhinzu_generieren($dbs, 'cms_schuljahr_elternbeirat', 'e', $elternbeirathidden);
 		$anfang.= "</td></tr>";
 	$anfang .= "</table>";
