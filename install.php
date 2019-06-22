@@ -731,9 +731,14 @@ if ($update) {
 	$dbs = cms_verbinden('s');
 	/*
 	dauerbrenner
+	pinnwände
 	hausemisterauftraege
 	zeitraeume
 	schulstunden
+	faecher
+	profile
+	profilfaecher
+	auffaelliges
 	$sql = "CREATE TABLE `dauerbrenner` (
 	  `id` bigint(255) UNSIGNED NOT NULL,
 	  `bezeichnung` varbinary(5000) NOT NULL,

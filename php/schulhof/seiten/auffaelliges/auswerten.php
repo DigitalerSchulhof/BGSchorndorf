@@ -67,7 +67,7 @@
       $aktion = "Interner Blogeintrag erstellt";
     else if(endsWith($file, "php/schulhof/anfragen/gruppen/terminbearbeitenspeichern.php"))
       $aktion = "Interner Termin erstellt";
-    else if(endsWith($file, "php/schulhof/anfragen/terminneuspeichern/.php"))
+    else if(endsWith($file, "php/schulhof/anfragen/gruppen/terminneuspeichern.php"))
       $aktion = "Interner Termin bearbeitet";
     else if(endsWith($file, "php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenspeichern.php"))
       $aktion = "Dauerbrenner bearbeitet";
