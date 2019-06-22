@@ -176,7 +176,7 @@
 
     $id = cms_generiere_kleinste_id('auffaelliges');
 
-    $ursacher = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
+    $CMS_BENUTZERID = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
 
     $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
     $file = str_replace("\\", "/", $trace[1]["file"]);
@@ -189,7 +189,7 @@
     $status = 0;
 
     $sql = $dbs->prepare("UPDATE auffaelliges SET ursacher = ?, typ = ?, aktion = ?, eingaben = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), details = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ?, status = ? WHERE id = ?");
-    $sql->bind_param("iisssiii", $ursacher, $typ, $aktion, $eingaben, $details, $zeitstempel, $status, $id);
+    $sql->bind_param("iisssiii", $CMS_BENUTZERID, $typ, $aktion, $eingaben, $details, $zeitstempel, $status, $id);
     $sql->execute();
     $sql->close();
   }
