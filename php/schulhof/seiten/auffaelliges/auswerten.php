@@ -188,7 +188,7 @@
     $zeitstempel = time();
     $status = 0;
 
-    $sql = $dbs->prepare("UPDATE auffaelliges SET ursacher = ?, typ = ?, aktion = ?, eingaben = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), details = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ?, status = ? WHERE id = ?");
+    $sql = $dbs->prepare("UPDATE auffaelliges SET ursacher = ?, typ = ?, aktion = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), eingaben = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), details = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ?, status = ? WHERE id = ?");
     $sql->bind_param("iisssiii", $CMS_BENUTZERID, $typ, $aktion, $eingaben, $details, $zeitstempel, $status, $id);
     $sql->execute();
     $sql->close();
