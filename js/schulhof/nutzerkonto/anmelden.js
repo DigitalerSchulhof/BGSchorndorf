@@ -91,44 +91,53 @@ function cms_abmelden(art) {
 
 // Aktivitätsanzeige anpassen
 function cms_timeout_aktualisieren () {
-    // Breite für die Anzeige der Leiste berechnen
-    var jetzt = new Date();
-    jetzt = jetzt.getTime()/1000;
-    var uebrig = (CMS_SESSIONTIMEOUT - jetzt)/60;
+  // Breite für die Anzeige der Leiste berechnen
+  var jetzt = new Date();
+  jetzt = jetzt.getTime()/1000;
+  var uebrig = (CMS_SESSIONTIMEOUT - jetzt)/60;
 
-    var aktiv_text = document.getElementById('cms_aktivitaet_text');
-    var aktiv_innen = document.getElementById('cms_aktivitaet_in');
+  var aktiv_text = document.getElementById('cms_aktivitaet_text');
+  var aktiv_innen = document.getElementById('cms_aktivitaet_in');
 
-    var aktiv_text_mobil = document.getElementById('cms_maktivitaet_text');
-    var aktiv_innen_mobil = document.getElementById('cms_maktivitaet_in');
+  var aktiv_text_mobil = document.getElementById('cms_maktivitaet_text');
+  var aktiv_innen_mobil = document.getElementById('cms_maktivitaet_in');
 
-    var aktiv_text_profil = document.getElementById('cms_aktivitaet_text_profil');
-    var aktiv_innen_profil = document.getElementById('cms_aktivitaet_in_profil');
+  var aktiv_text_profil = document.getElementById('cms_aktivitaet_text_profil');
+  var aktiv_innen_profil = document.getElementById('cms_aktivitaet_in_profil');
 
-    // Breite berechnen und anwenden
-    var prozent = uebrig/CMS_SESSIONAKTIVITAET*100;
-    if (aktiv_innen) {aktiv_innen.style.width = prozent+"%";}
-    if (aktiv_innen_mobil) {aktiv_innen_mobil.style.width = prozent+"%";}
-    if (aktiv_innen_profil) {aktiv_innen_profil.style.width = prozent+"%";}
+  // Breite berechnen und anwenden
+  var prozent = uebrig/CMS_SESSIONAKTIVITAET*100;
+  if (aktiv_innen) {aktiv_innen.style.width = prozent+"%";}
+  if (aktiv_innen_mobil) {aktiv_innen_mobil.style.width = prozent+"%";}
+  if (aktiv_innen_profil) {aktiv_innen_profil.style.width = prozent+"%";}
 
-    // Texte ausgeben
-    var ende = new Date(CMS_SESSIONTIMEOUT*1000);
-    var uhrzeit_ende;
-    if (ende.getHours() < 10) {uhrzeit_ende = "0"+ende.getHours()+":";}
-    else {uhrzeit_ende = ende.getHours()+":";}
+  // Texte ausgeben
+  var ende = new Date(CMS_SESSIONTIMEOUT*1000);
+  var uhrzeit_ende;
+  if (ende.getHours() < 10) {uhrzeit_ende = "0"+ende.getHours()+":";}
+  else {uhrzeit_ende = ende.getHours()+":";}
 
-    if (ende.getMinutes() < 10) {uhrzeit_ende += "0"+ende.getMinutes();}
-    else {uhrzeit_ende += ende.getMinutes();}
+  if (ende.getMinutes() < 10) {uhrzeit_ende += "0"+ende.getMinutes();}
+  else {uhrzeit_ende += ende.getMinutes();}
 
-    if (uebrig < 1) {
-	    var text = "aktiv bis "+uhrzeit_ende+" Uhr - die letzte Minute läuft";
-    }
-    if (uebrig < 2) {
-	    var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minute";
-    }
-    else {
-	    var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minuten";
+	if(uebrig < 1)
+		var text = "aktiv bis "+uhrzeit_ende+" Uhr - die letzte Minute läuft";
+	else if(uebrig < 2)
+		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minute";
+	else if(uebrig < 60)
+		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minuten";
+	else {
+		var h = uebrig / 60;
+		var m = uebrig % 60;
+		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(h))+" Stunde";
+		if(h >= 2)
+			text += "n";
+		if(m >= 1)
+			text += " und "+(Math.floor(m))+" Minute";
+		if(m >= 2)
+			text += "n";
 	}
+
 	if (aktiv_text) {aktiv_text.innerHTML = text;}
 	if (aktiv_text_mobil) {aktiv_text_mobil.innerHTML = text;}
 	if (aktiv_text_profil) {aktiv_text_profil.innerHTML = text;}

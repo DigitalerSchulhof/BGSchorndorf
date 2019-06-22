@@ -10,16 +10,46 @@
   $feedbackzugriff = $feedbackaktiv && $feedbackanmeldung;
   if($fehlerzugriff) {
     $url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:"";
-    $header = urlencode(json_encode(getallheaders(), true));
+    $header = getallheaders();
+    unset($header["Cookie"]);
+    $header = cms_array_leserlich($header, "\n");
+    $session = cms_array_leserlich($_SESSION, "\n");
     $code = "";
+
+    // Altes aufräumen
+    $sql = "DELETE FROM fehlermeldungen_daten WHERE zeitstempel<?";
+    $sql = $dbs->prepare($sql);
+    $ablaufdatum = time()-(10*60*60*24);  // 1 Tag
+    $sql->bind_param("i", $ablaufdatum);
+    $sql->execute();
+
+    // Zufällige, nicht vergebene ID suchen
+    $t = rand(0, 1000000);
+    $sql = "SELECT 1 FROM fehlermeldungen_daten WHERE id=?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $t);
+    while(true) {
+      $sql->execute();
+      if(!$sql->fetch())
+        break;
+      $t = rand(0, 1000000);
+    }
+
+    $zeit = time();
+    $benutzer = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
+
+    // Einspeichern
+    $sql = "INSERT INTO `fehlermeldungen_daten` (`id`, `benutzer`, `url`, `header`, `session`, `zeitstempel`) VALUES (?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?);";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("iisssi", $t, $benutzer, $url, $header, $session, $zeit);
+    $sql->execute();
 
     $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
       $code .= "<h1>Fehler melden</h1>";
 
       $code .= cms_meldung('info', '<p>Vielen Dank, dass Sie das System verbessern möchten.</p><p>Bitte geben Sie anschließend einen <b>knappen</b>, <b>schlagwortartigen</b> Fehlertitel und eine <b>ausführliche</b> Fehlerbeschreibung an! Je mehr Informationen zum aufgetretenen Fehler bekannt sind, desto einfacher lässt er sich beheben. Bitte gehen Sie dabei auch auf die Vorgeschichte des Fehlers ein, denn manche Funktionen des Systems erfordern Vorbereitungen, die nicht zwingend unmittelbar vor dem Fehler getroffen werden.</p><p>Zur Behebung des Fehlers kann der Sytemzustand sehr aufschlussreich sein. Diese Daten auszulesen zu können wäre daher hilfreich. Sie werden an keine Dritten weitergeben.</p>');
 
-        $code .= "<input type=\"hidden\" id=\"cms_fehlermeldung_url\" value=\"$url\">";
-        $code .= "<input type=\"hidden\" id=\"cms_fehlermeldung_header\" value=\"$header\">";
+        $code .= "<input type=\"hidden\" id=\"cms_fehlermeldung_t\" value=\"$t\">";
         $code .= "<table class=\"cms_formular\">";
           $code .= "<tbody>";
             $code .= "<tr>";
