@@ -72,13 +72,13 @@
 	$code .= "<ul>";
 		$code .= "<li>Die Dateiverschlüsselung wurde erheblich verbessert.</li>";
 		$code .= "<li>Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.</li>";
-		$code .= "<li>Der Benutzertyp extern wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister).</li>";
+		$code .= "<li>Der Benutzertyp »extern« wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister).</li>";
 		$code .= "<li>Das Hausmeister-Auftragsbuch bietet die Möglichkeit, digital online Mängel und Wünsche an die Hausmeister zu richten.</li>";
 		$code .= "<li>An Pinnwänden können Zettel auf bestimmte Zeit angepinnt werden.</li>";
 		$code .= "<li>Dauerbrenner wurden eingeführt. Dabei handelt es sich um Seiten, die allgemeine Informationen enthalten, die ständig wiederkehren. Beispiele: Sicherheitshinweise, Abläufe für neue Kollegen, etc.</li>";
 		$code .= "<li>Interne Termine und intere Blogeinträge können nun im Genehmigungscenter genehemigt werden.</li>";
 		$code .= "<li>Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für intern).</li>";
-		$code .= "<li>In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat einNutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button).</li>";
+		$code .= "<li>In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat ein Nutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button).</li>";
 		$code .= "<li>Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können.</li>";
 	$code .= "</ul>";
 	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_3', 'Neuerungen in Version 0.5.3 einblenden', 'Neuerungen in Version 0.5.3 ausblenden', $code, 1);
@@ -181,7 +181,7 @@
 
 	$code = "<h4>Version 0.3.3 - Samstag, den 01. September 2018</h4>";
 	$code .= "<ul>";
-		$code .= "<li>Die Website wird abhängig vom benutzen Gerät verschieden angezeigt. Diese Einstellung kann auch manuell geändert werden.</li>";
+		$code .= "<li>Die Website wird abhängig vom benutzten Gerät verschieden angezeigt. Diese Einstellung kann auch manuell geändert werden.</li>";
 	$code .= "</ul>";
 	$aeltere .= cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_3_3', 'Neuerungen in Version 0.3.3 einblenden', 'Neuerungen in Version 0.3.3 ausblenden', $code, 0);
 
