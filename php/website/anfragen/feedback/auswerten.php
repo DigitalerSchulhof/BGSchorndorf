@@ -7,8 +7,7 @@ include_once("../../schulhof/funktionen/check.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['url'])) {$url = htmlentities(cms_texttrafo_e_event($_POST['url']));} else {$url = "";}
-if (isset($_POST['header'])) {$header = htmlentities(cms_texttrafo_e_event($_POST['header']));} else {$header = "";}
+if (isset($_POST['t'])) {$t = cms_texttrafo_e_event($_POST['t']);} else {$t = "";}
 if (isset($_POST['titel'])) {$titel = htmlentities(cms_texttrafo_e_event($_POST['titel']));} else {$titel = "";}
 if (isset($_POST['beschreibung'])) {$beschreibung = htmlentities(cms_texttrafo_e_event($_POST['beschreibung']));} else {$beschreibung = "";}
 if (isset($_POST['name'])) {$name = htmlentities(cms_texttrafo_e_event($_POST['name']));} else {$name = "";}
@@ -32,23 +31,33 @@ if($titel != "") {
       $idM = 0;
     else
       $idM = $sqld["idM"]+1;
+
     $ersteller = "";
     if(isset($_SESSION["BENUTZERID"]))
       $ersteller = $_SESSION["BENUTZERID"];
-    $headerS = json_decode(urldecode($header), true);
-    unset($headerS["Cookie"]);
-    $headerS = cms_array_leserlich($headerS, "\n");
-    $sessionS = "Leer";
-    if(isset($_SESSION)) {
-      $session = $_SESSION;
-      unset($session["SESSIONID"]);
-      $sessionS = cms_array_leserlich($session, "\n");
-    }
+
+    $sql = "SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL') as url, AES_DECRYPT(header, '$CMS_SCHLUESSEL') as header, AES_DECRYPT(session, '$CMS_SCHLUESSEL') as session FROM fehlermeldungen_daten WHERE id = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $t);
+    $sql->bind_result($url, $header, $session);
+    $sql->execute();
+    if(!$sql->fetch())
+      die("FEHELR");
+    $sql->close();
+
+    // Altes aufräumen
+    $sql = "DELETE FROM fehlermeldungen_daten WHERE id=?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $t);
+    $sql->execute();
+    $sql->close();
+
+
     $sql = $dbs->prepare("INSERT INTO fehlermeldungen (id, ersteller, url, titel, beschreibung, header, session, zeitstempel, status, sichtbar) VALUES (?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?,'$CMS_SCHLUESSEL'), AES_ENCRYPT(?,'$CMS_SCHLUESSEL'), ?, ?, ?)");
     $weilreference0 = 0;
     $weilreference1 = 1;
     $weilreferencetime = time();
-    $sql->bind_param("issssssiii", $idM, $ersteller, $url, $titel, $beschreibung, $headerS, $sessionS, $weilreferencetime, $weilreference0, $weilreference1);
+    $sql->bind_param("issssssiii", $idM, $ersteller, $url, $titel, $beschreibung, $header, $session, $weilreferencetime, $weilreference0, $weilreference1);
     $sql->execute();
     $sql->close();
     echo "ERFOLG";

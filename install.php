@@ -1,6 +1,6 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
+$rechteplaetten = false;
 $einstellungenplaetten = false;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;

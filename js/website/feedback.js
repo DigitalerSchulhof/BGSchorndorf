@@ -1,6 +1,5 @@
 function cms_fehlermeldung_einhanden() {
-  var url = document.getElementById("cms_fehlermeldung_url").value;
-  var header = document.getElementById("cms_fehlermeldung_header").value;
+  var t = document.getElementById("cms_fehlermeldung_t").value;
   var titel = document.getElementById("cms_fehlermeldung_titel").value;
   var beschreibung = document.getElementById("cms_fehlermeldung_beschreibung").value;
   var okay = document.getElementById("cms_fehlermeldung_okay").value;
@@ -24,8 +23,7 @@ function cms_fehlermeldung_einhanden() {
 
 
   var formulardaten = new FormData();
-  formulardaten.append("url", url);
-  formulardaten.append("header", header);
+  formulardaten.append("t", t);
   formulardaten.append("titel", titel);
   formulardaten.append("beschreibung", beschreibung);
   formulardaten.append("anfragenziel", '259');
