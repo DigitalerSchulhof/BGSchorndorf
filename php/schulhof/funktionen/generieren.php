@@ -540,7 +540,7 @@ function file_get_contents_utf8($datei) {
 }
 
 function cms_textzudb ($text) {
-  $text = strtolower($text);
+  $text = mb_strtolower($text);
   $text = str_replace(' ', '', $text);
   $text = str_replace('ä', 'ae', $text);
   $text = str_replace('ö', 'oe', $text);
