@@ -1,5 +1,5 @@
 <?php
-/* gerade zehner ENGBERG - ungerade zehner WAGNER */
+/* gerade Zehner ENGBERG - ungerade Zehner WAGNER */
 $CMS_ZIELE[0]   = 'php/allgemein/anfragen/dsgvo_datenschutz.php';
 $CMS_ZIELE[1]   = 'php/allgemein/anfragen/mobilnaviladen.php';
 $CMS_ZIELE[2]   = 'php/allgemein/anfragen/mobilnavispeichern.php';
