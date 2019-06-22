@@ -180,7 +180,7 @@
       if ($daten = $anfrage->fetch_assoc())
         $id = $daten["idM"]+1;
 
-    $ursacher = $_SESSION["BENUTZERID"] or -1;
+    $ursacher = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
 
     $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
     $file = str_replace("\\", "/", $trace[1]["file"]);
