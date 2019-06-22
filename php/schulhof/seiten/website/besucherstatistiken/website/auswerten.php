@@ -1,6 +1,7 @@
 <?php
+// Keine Daten
 $kd = false;
-function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $ende = 0, $gesamt = false) {
+function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $ende = 0, $gesamt = false, $geloescht = true, $startseite = true) {
   global $kd, $CMS_SCHLUESSEL;
   date_default_timezone_set("CET");
   // Typ auswerten
@@ -52,8 +53,6 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
 
   if($anzeigetyp == "gesamtaufrufe_linie")
     $typ = "linie";
-  if($anzeigetyp == "bereiche_pie")
-    $typ = "pie";
   if($anzeigetyp == "bereiche_balken")
     $typ = "balken";
 
@@ -77,9 +76,6 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
   if($typ == "linie")
     $config["type"] = "line";
 
-  if($typ == "pie")
-    $config["type"] = "pie";
-
   if($typ == "balken")
     $config["type"] = "horizontalBar";
 
@@ -96,9 +92,7 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
       }
     }
   }
-  if($typ == "pie") {
-    $datenPie = array();
-  }
+
   if($typ == "horizontalBar") {
     $datenHBar = array();
   }
@@ -131,37 +125,6 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
       if($anzeigetyp == "gesamtaufrufe_linie") {
         $datenLinie[cms_fuehrendenull($sqld["jahr"])."-".cms_fuehrendenull($sqld["monat"])."-01"] = $sqld["sum"];
       }
-      if($anzeigetyp == "bereiche_pie") {
-        $id = $sqld["id"];
-        $bereich = "Nicht gefunden";
-        $sql = "kommt noch";
-        if($seitenTyp == "t") {
-          $bereich = "Gelöschter Termin";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM termine WHERE id = $id";
-        }
-        if($seitenTyp == "g") {
-          $bereich = "Noch nicht implementiert.";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM galerien WHERE id = $id";
-        }
-        if($seitenTyp == "b") {
-          $bereich = "Gelöschter Blog";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM blogeintraege WHERE id = $id";
-        }
-        if($seitenTyp == "w") {
-          $bereich = "Gelöschte Seite";
-          $sql = "SELECT bezeichnung AS titel FROM seiten WHERE id = $id";
-        }
-
-        // Titel getten
-        if ($anfrage = $dbs->query($sql)) {
-      		if ($daten = $anfrage->fetch_assoc()) {
-            $bereich = $daten["titel"];
-      			$dbs->query($sql);
-      		}
-      		$anfrage->free();
-      	}
-        $datenPie[$bereich] = (isset($datenPie[$bereich])?$datenPie[$bereich]:0)+$sqld["aufrufe"];
-      }
       if($anzeigetyp == "bereiche_balken") {
         $id = $sqld["id"];
         $bereich = "Nicht gefunden";
@@ -171,11 +134,11 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
           $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM termine WHERE id = $id";
         }
         if($seitenTyp == "g") {
-          $bereich = "Noch nicht implementiert.";
+          $bereich = "Gelöschte Galerie";
           $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM galerien WHERE id = $id";
         }
         if($seitenTyp == "b") {
-          $bereich = "Gelöschter Blog";
+          $bereich = "Gelöschter Blogeintrag";
           $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM blogeintraege WHERE id = $id";
         }
         if($seitenTyp == "w") {
@@ -188,7 +151,9 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
           if ($daten = $anfrage->fetch_assoc()) {
             $bereich = $daten["titel"];
             $dbs->query($sql);
-          }
+          }else
+            if($geloescht === "false")
+              continue;
           $anfrage->free();
         }
         $datenHBar[$bereich] = (isset($datenHBar[$bereich])?$datenHBar[$bereich]:0)+$sqld["sum"];
@@ -228,6 +193,15 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
   if($anzeigetyp == "bereiche_balken") {
     $datenAufrufe = $datenLabels = $datenB = $datenBG = array();
     $max = -1;
+
+    // Startseite holen
+    if($startseite === "false") {
+      $sql = "SELECT bezeichnung FROM seiten WHERE status = 's'";
+      $sql = $dbs->query($sql);
+      $startseite = $sql->fetch_assoc()["bezeichnung"];
+      unset($datenHBar[$startseite]);
+    }
+    arsort($datenHBar);
     foreach($datenHBar as $r => $a) {
       $max == -1 && $max = $a;
       // Weniger als .5 %

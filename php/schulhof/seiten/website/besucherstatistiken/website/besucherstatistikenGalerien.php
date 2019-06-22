@@ -6,6 +6,10 @@
     <?php
       include_once "php/schulhof/seiten/website/besucherstatistiken/website/auswerten.php";
       echo cms_besucherstatistik_website_jahresplaettchen('g');
+      if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen']) {
+        echo "<br>Balkendiagramm:";
+        echo " <span id='cms_besucherstatistik_website_geloescht_toggle' class='cms_toggle' onclick='cms_besucherstatistik_website_geloescht_toggle(\"g\")'>Gelöschte Galerien ausblenden</span>";
+      }
     ?>
 </p>
 <div id="besucherstatistik">

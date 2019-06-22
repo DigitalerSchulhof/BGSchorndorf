@@ -1,9 +1,11 @@
 <?php
-$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM ferien WHERE ? BETWEEN beginn AND ende ORDER BY bezeichnung ASC");
-$sql->bind_param("i", intval($buchungstag));
-if ($sql->execute()) {
-  $sql->bind_result($anzahl);
-  if ($sql->fetch()) {if ($anzahl > 0) {$ferien[$i] = true;}}
-}
-$sql->close();
+  $sql = $dbs->prepare("SQL");
+  $sql->bind_param("i", $p1);
+  $sql->bind_result($e1, $e2);
+  if ($sql->execute()) {
+    if ($sql->fetch()) {
+      shwubb($e1, $e2);
+    }
+  }
+  $sql->close();
 ?>
