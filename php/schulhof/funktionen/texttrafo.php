@@ -60,7 +60,7 @@ function cms_boesartig($string) {
 		"/ [oO][nN][a-zA-Z]* *=[^\\\\]*/",																																																																// onevent=
 		"/(.[^ ])*[jJ](&.*;)*[aA](&.*;)*[vV](&.*;)*[aA](&.*;)*[sS](&.*;)*[cC](&.*;)*[rR](&.*;)*[iI](&.*;)*[pP](&.*;)*[tT](&.*;)*(:|;[cC][oO][lL][oO][nN])/",							// javascript:
 		"/<[sS][cC][rR][iI][pP][tT].*>/",																																																																	// <script>
-		"/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/",		// data:x/y
+		"/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg\+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/",	// data:x/y
 	);
 	foreach($regex as $r)
 		if(preg_match($r, $string))
