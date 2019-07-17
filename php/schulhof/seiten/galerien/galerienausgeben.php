@@ -141,13 +141,18 @@ function cms_galerie_ausgeben($dbs) {
 				$anfrage->free();
 			}
 
-			$spaltenart = "\" style=\"float:left; width:100%";
+			$spaltenart = "hack\" style=\"float:left; width:100%";
 
 			$code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">".$kalender."";
 
 			$code .= "<div style=\"text-align: right;\"><br><h1>".$galerie['bezeichnung']."</h1>";
 			$code .= $galerie['beschreibung']."</div></div></div>";
-			$code .= "<div class=\"cms_spalte_6\"><div class=\"cms_spalte_i\"><img style=\"border-radius: 1.5px\" onclick=\"cms_link('".$galerie["vorschaubild"]."', true)\"src=\"".$galerie["vorschaubild"]."\"></div></div>";
+			$code .= "<div class=\"cms_spalte_6\"><div class=\"cms_spalte_i\">";
+			if($galerie["vorschaubild"] != "")
+				$code .= "<img style=\"border-radius: 1.5px; cursor: pointer;\" onclick=\"cms_link('".$galerie["vorschaubild"]."', true)\" src=\"".$galerie["vorschaubild"]."\">";
+			else
+				$code .= "<p>Kein Vorschaubild ausgewählt</p>";
+			$code .= "</div></div>";
 
 			$code .= "<div class=\"cms_spalte_$spaltenart\"><div class=\"cms_spalte_i\">";
 
@@ -155,11 +160,14 @@ function cms_galerie_ausgeben($dbs) {
 
 			$code .= "<div class=\"cms_bilder_spalte\">";
 			$c = 0;
+			if(count($bilder) < 1) {
+				$code .= "<p style=\"padding-left: 30px;\">Keine Bilder ausgewählt</p>";
+			}
 			foreach($bilder as $bild) {
 				$code .= "<div class=\"cms_galerie_bild\"><div class=\"cms_galerie_bild_innen\">";
 					$code .= "<img onclick=\"cms_link('".$bild["pfad"]."', true)\"src=\"".$bild["pfad"]."\"><br><p>".$bild["beschreibung"]."</p>";
 				$code .= "</div></div>";
-				if(++$c%floor(count($bilder)/3)==0)
+				if(++$c%ceil(count($bilder)/3)==0)
 					$code .= "</div><div class=\"cms_bilder_spalte\">";
 			}
 
