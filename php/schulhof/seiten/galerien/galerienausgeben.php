@@ -141,23 +141,25 @@ function cms_galerie_ausgeben($dbs) {
 				$anfrage->free();
 			}
 
-			$spaltenart = '34';
+			$spaltenart = "\" style=\"float:left; width:100%";
 
-			$code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">".$kalender."</div></div>";
+			$code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">".$kalender."";
+
+			$code .= "<div style=\"text-align: right;\"><br><h1>".$galerie['bezeichnung']."</h1>";
+			$code .= $galerie['beschreibung']."</div></div></div>";
+			$code .= "<div class=\"cms_spalte_6\"><div class=\"cms_spalte_i\"><img style=\"border-radius: 1.5px\" onclick=\"cms_link('".$galerie["vorschaubild"]."', true)\"src=\"".$galerie["vorschaubild"]."\"></div></div>";
 
 			$code .= "<div class=\"cms_spalte_$spaltenart\"><div class=\"cms_spalte_i\">";
 
 
-			$code .= "<h1>".$galerie['bezeichnung']."</h1>";
-			$code .= $galerie['beschreibung']."<br>";
 
 			$code .= "<div class=\"cms_bilder_spalte\">";
 			$c = 0;
 			foreach($bilder as $bild) {
 				$code .= "<div class=\"cms_galerie_bild\"><div class=\"cms_galerie_bild_innen\">";
-					$code .= "<img onclick=\"cms_link('".$bild["pfad"]."')\"src=\"".$bild["pfad"]."\"><br><p>".$bild["beschreibung"]."</p>";
+					$code .= "<img onclick=\"cms_link('".$bild["pfad"]."', true)\"src=\"".$bild["pfad"]."\"><br><p>".$bild["beschreibung"]."</p>";
 				$code .= "</div></div>";
-				if(++$c == floor(count($bilder)/2))
+				if(++$c%floor(count($bilder)/3)==0)
 					$code .= "</div><div class=\"cms_bilder_spalte\">";
 			}
 
