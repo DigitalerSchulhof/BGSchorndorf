@@ -119,7 +119,7 @@ if (cms_angemeldet() && $zugriff) {
 
   	// GALERIE EINTRAGEN
     $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = ?, genehmigt = ?, aktiv = ?, notifikationen = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-    $sql->bind_param("sissiiisii", $bezeichnung, $datum, $beschreibung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
+    $sql->bind_param("sissiiiisii", $bezeichnung, $datum, $beschreibung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
     $sql->execute();
     $sql->close();
 

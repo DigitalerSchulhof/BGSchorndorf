@@ -29,7 +29,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
   // Falls ein bestehender Blogeintrag geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, notifikationen AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS zusammenfassung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE id = ?");
+	  $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, notifikationen, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS zusammenfassung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE id = ?");
 
     $sql->bind_param("i", $id);
     if ($sql->execute()) {

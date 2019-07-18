@@ -132,7 +132,7 @@ if (cms_angemeldet() && $zugriff) {
 
   	// BLOGEINTRAG EINTRAGEN
     $sql = $dbs->prepare("UPDATE blogeintraege SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = ?, genehmigt = ?, aktiv = ?, notifikationen = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
-    $sql->bind_param("sissiiissiii", $bezeichnung, $datum, $zusammenfassung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $text, $autor, $CMS_BENUTZERID, $jetzt, $blogid);
+    $sql->bind_param("sissiiiissiii", $bezeichnung, $datum, $zusammenfassung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $text, $autor, $CMS_BENUTZERID, $jetzt, $blogid);
     $sql->execute();
     $sql->close();
 

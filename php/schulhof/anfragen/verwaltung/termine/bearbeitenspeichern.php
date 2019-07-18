@@ -169,7 +169,7 @@ if (cms_angemeldet() && $zugriff) {
   	// TERMIN EINTRAGEN
     $jetzt = time();
     $sql = $dbs->prepare("UPDATE termine SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, oeffentlichkeit = ?, notifikationen = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
-    $sql->bind_param("ssiiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $oeffentlichkeit, $notifikationen, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
+    $sql->bind_param("ssiiiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $oeffentlichkeit, $notifikationen, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
     $sql->execute();
     $sql->close();
 
