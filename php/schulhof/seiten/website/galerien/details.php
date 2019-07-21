@@ -14,6 +14,7 @@ function cms_galerie_details_laden($id, $ziel) {
   $aktiv = 1;
   $genehmigt = 0;
   $oeffentlichkeit = 4;
+  $notifikationen = 1;
   $beschreibung = '';
   $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
   $zus = "";
@@ -26,7 +27,7 @@ function cms_galerie_details_laden($id, $ziel) {
   // Falls eine bestehende Galerie geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = $id";
+	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, notifikationen, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = $id";
 		if ($anfrage = $dbs->query($sql)) {
 			if ($daten = $anfrage->fetch_assoc()) {
 				$bezeichnung = $daten['bezeichnung'];
@@ -34,6 +35,7 @@ function cms_galerie_details_laden($id, $ziel) {
       	$genehmigt = $daten['genehmigt'];
         $aktiv = $daten['aktiv'];
         $oeffentlichkeit = $daten['oeffentlichkeit'];
+        $notifikationen = $daten['notifikationen'];
         $beschreibung = $daten['beschreibung'];
         $vorschaubild = $daten['vorschaubild'];
         $autor = $daten['autor'];
@@ -115,6 +117,10 @@ function cms_galerie_details_laden($id, $ziel) {
     $code .= "<tr><th>Vorschaubild:</th><td>".cms_dateiwahl_knopf('galerien', 'cms_galerie_vorschaubild', 's', 'galerien', '-', 'vorschaubild', $vorschaubild)."</td></tr>";
     $code .= "<tr><th>Autor:</th><td><input type=\"text\" name=\"cms_galerie_autor\" id=\"cms_galerie_autor\" value=\"$autor\"/></td></tr>";
 		$code .= "</table>";
+    $code .= "<h3>Erweiterte Optionen</h3>";
+    $code .= "<table class=\"cms_formular\">";
+    $code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('galerie_notifikationen', $notifikationen)."</td></tr>";
+    $code .= "</table>";
 		$code .= "</div></div>";
     $code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 

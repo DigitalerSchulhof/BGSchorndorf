@@ -36,6 +36,7 @@ function cms_galerie_eingabenpruefen() {
 	var meldung = '<p>Die Galerie konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var oeffentlichkeit = document.getElementById('cms_oeffentlichkeit').value;
+	var notifikationen = document.getElementById('cms_galerie_notifikationen').value;
 	var genehmigt = document.getElementById('cms_galerie_genehmigt').value;
 	var aktiv = document.getElementById('cms_galerie_aktiv').value;
 	var datumT = document.getElementById('cms_galerie_datum_T').value;
@@ -66,6 +67,12 @@ function cms_galerie_eingabenpruefen() {
 		meldung += '<li>Die Eingabe für die Öffentlichkeit ist ungültig.</li>';
 		fehler = true;
 	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für Notifikationen ist ungültig.</li>';
+		fehler = true;
+	}
+
 
 	if (!cms_check_toggle(genehmigt)) {
 		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
@@ -103,6 +110,7 @@ function cms_galerie_eingabenpruefen() {
 
 	if (!fehler) {
 		formulardaten.append("oeffentlichkeit", oeffentlichkeit);
+		formulardaten.append("notifikationen", 	notifikationen);
 		formulardaten.append("genehmigt",  			genehmigt);
 		formulardaten.append("aktiv",  					aktiv);
 		formulardaten.append("datumT",  				datumT);

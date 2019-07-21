@@ -14,6 +14,7 @@ session_start();
 $zugeordnet = array();
 
 if (isset($_POST['oeffentlichkeit'])) {$oeffentlichkeit = cms_texttrafo_e_db($_POST['oeffentlichkeit']);}  else {echo "FEHLER";exit;}
+if (isset($_POST['notifikationen']))  {$notifikationen = cms_texttrafo_e_db($_POST['notifikationen']);}    else {echo "FEHLER";exit;}
 if (isset($_POST['genehmigt'])) 			{$genehmigt = cms_texttrafo_e_db($_POST['genehmigt']);} 						 else {echo "FEHLER";exit;}
 if (isset($_POST['aktiv'])) 			    {$aktiv = cms_texttrafo_e_db($_POST['aktiv']);} 						         else {echo "FEHLER";exit;}
 if (isset($_POST['datumT'])) 				  {$datumT = cms_texttrafo_e_db($_POST['datumT']);} 								   else {echo "FEHLER";exit;}
@@ -76,6 +77,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!cms_check_toggle($genehmigt)) {$fehler = true;}
   if (!cms_check_toggle($aktiv)) {$fehler = true;}
+  if (!cms_check_toggle($notifikationen)) {$fehler = true;}
 
 	// Pflichteingaben prüfen
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
@@ -115,8 +117,8 @@ if (cms_angemeldet() && $zugriff) {
 
   	// NÄCHSTE FREIE ID SUCHEN
 		$galerieid = cms_generiere_kleinste_id('galerien');
-    $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = ?, genehmigt = ?, aktiv = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-    $sql->bind_param("sissiiissi", $bezeichnung, $datum, $beschreibung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $autor, $CMS_BENUTZERID, $galerieid);
+    $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = ?, genehmigt = ?, aktiv = ?, notifikationen = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
+    $sql->bind_param("sissiiiissi", $bezeichnung, $datum, $beschreibung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
     $sql->execute();
     $sql->close();
 
@@ -155,7 +157,8 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Galerien/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+    if($notifikationen)
+      cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";
 	}

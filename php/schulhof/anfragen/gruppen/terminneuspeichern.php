@@ -11,6 +11,7 @@ require_once '../../phpmailer/PHPMailerAutoload.php';
 session_start();
 
 // Variablen einlesen, falls übergeben
+if (isset($_POST['notifikationen']))  {$notifikationen = $_POST['notifikationen'];}   else {echo "FEHLER";exit;}
 if (isset($_POST['genehmigt'])) 			{$genehmigt = $_POST['genehmigt'];} 						else {echo "FEHLER";exit;}
 if (isset($_POST['aktiv'])) 			    {$aktiv = $_POST['aktiv'];} 						        else {echo "FEHLER";exit;}
 if (isset($_POST['mehrtaegigt'])) 		{$mehrtaegigt = $_POST['mehrtaegigt'];} 				else {echo "FEHLER";exit;}
@@ -100,6 +101,7 @@ if (cms_angemeldet() && $zugriff) {
 
   if (!cms_check_toggle($genehmigt)) {$fehler = true;}
   if (!cms_check_toggle($aktiv)) {$fehler = true;}
+  if (!cms_check_toggle($notifikationen)) {$fehler = true;}
 
 	// Pflichteingaben prüfen
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
@@ -204,7 +206,8 @@ if (cms_angemeldet() && $zugriff) {
       $eintrag['titel']     = $bezeichnung;
       $eintrag['vorschau']  = cms_tagname(date('w', $BEGINN[$i]))." $tag. ".$monatsname." $jahr";
       $eintrag['link']      = "Schulhof/Gruppen/$gruppensj/".cms_textzulink($gruppe)."/$gruppenbez/Termine/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-      cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+			if($notifikationen)
+      	cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 		}
 
 		echo "ERFOLG";
