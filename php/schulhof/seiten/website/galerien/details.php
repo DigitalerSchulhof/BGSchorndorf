@@ -124,8 +124,10 @@ function cms_galerie_details_laden($id, $ziel) {
 		$code .= "</div></div>";
     $code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 
-    $code .= "<h3>Bilder</h3>";
+    $code .= "<h3>Bilder auswählen</h3>";
 
+    $rechte = cms_websitedateirechte_laden();
+    $code .= cms_dateiwaehler_generieren('galerien', 'galerien', 'cms_galerien_dateien', 's', 'galerien', '-');
 
     $code .= "<div id=\"cms_bilder\">";
 
@@ -150,18 +152,9 @@ function cms_galerie_details_laden($id, $ziel) {
     $code .= "</div>";
 
 
-    $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_galerie_neues_bild();\">+ Bild hinzufügen</span>";
-      $code .= "<input type=\"hidden\" id=\"cms_bilder_anzahl\" name=\"cms_bilder_anzahl\" value=\"$anzahl\">";
-      $code .= "<input type=\"hidden\" id=\"cms_bilder_nr\" name=\"cms_bilder_nr\" value=\"$anzahl\">";
-      $code .= "<input type=\"hidden\" id=\"cms_bilder_ids\" name=\"cms_bilder_ids\" value=\"$ids\">";
-    $code.= "</p>";
-
-    if ($CMS_RECHTE['Website']['Dateien hochladen']) {
-      $inhalt = "<h3>Galerienverzeichnis</h3>";
-      $rechte = cms_websitedateirechte_laden();
-      $inhalt .= cms_dateisystem_generieren ('galerien', 'galerien', 'cms_website_dateien', 's', 'galerien', '-', $rechte);
-      $code .= cms_toggleeinblenden_generieren('cms_websitedateien', "Galerienverzeichnis anzeigen", "Galerienverzeichnis ausblenden", $inhalt, 0);
-    }
+    $code .= "<input type=\"hidden\" id=\"cms_bilder_anzahl\" name=\"cms_bilder_anzahl\" value=\"$anzahl\">";
+    $code .= "<input type=\"hidden\" id=\"cms_bilder_nr\" name=\"cms_bilder_nr\" value=\"$anzahl\">";
+    $code .= "<input type=\"hidden\" id=\"cms_bilder_ids\" name=\"cms_bilder_ids\" value=\"$ids\">";
 
 		$code .= "</div></div>";
 

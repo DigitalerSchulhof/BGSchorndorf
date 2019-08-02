@@ -139,7 +139,7 @@ function cms_dateiwaehler_ordner($pfad, $netz, $bereich, $id, $feldid, $art, $ex
 					$verzeichnis['dcode'] .= "<td><img src=\"res/dateiicons/klein/$icon\"></td>";
 					$link = $pfad.'/'.$vinhalt[$i];
 					if ($ext) {$link = substr($link, 9);}
-					$verzeichnis['dcode'] .= "<td class=\"cms_dateisystem_dateiwahl\" id=\"$feldid"."_datei".$verzeichnis['dateien']."\" onclick=\"cms_datei_waehlen('$feldid', '".$link."')\">".$vinhalt[$i]."</td>";
+					$verzeichnis['dcode'] .= "<td class=\"cms_dateisystem_dateiwahl\" id=\"$feldid"."_datei".$verzeichnis['dateien']."\" data-pfad=\"$link\" onclick=\"cms_datei_waehlen('$feldid', '".$link."')\">".$vinhalt[$i]."</td>";
 					$verzeichnis['dcode'] .= "</tr>";
 					$verzeichnis['dateien']++;
 				}
