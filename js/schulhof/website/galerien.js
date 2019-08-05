@@ -36,6 +36,7 @@ function cms_galerie_eingabenpruefen() {
 	var meldung = '<p>Die Galerie konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var oeffentlichkeit = document.getElementById('cms_oeffentlichkeit').value;
+	var notifikationen = document.getElementById('cms_galerie_notifikationen').value;
 	var genehmigt = document.getElementById('cms_galerie_genehmigt').value;
 	var aktiv = document.getElementById('cms_galerie_aktiv').value;
 	var datumT = document.getElementById('cms_galerie_datum_T').value;
@@ -66,6 +67,12 @@ function cms_galerie_eingabenpruefen() {
 		meldung += '<li>Die Eingabe für die Öffentlichkeit ist ungültig.</li>';
 		fehler = true;
 	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für Notifikationen ist ungültig.</li>';
+		fehler = true;
+	}
+
 
 	if (!cms_check_toggle(genehmigt)) {
 		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
@@ -103,6 +110,7 @@ function cms_galerie_eingabenpruefen() {
 
 	if (!fehler) {
 		formulardaten.append("oeffentlichkeit", oeffentlichkeit);
+		formulardaten.append("notifikationen", 	notifikationen);
 		formulardaten.append("genehmigt",  			genehmigt);
 		formulardaten.append("aktiv",  					aktiv);
 		formulardaten.append("datumT",  				datumT);
@@ -313,8 +321,16 @@ function cms_galerie_ablehnen(id, ziel) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_galerie_neues_bild() {
-  var box = $('#cms_bilder');
+$(document).ready(function () {
+	$("#cms_galerien_dateien_inhalt_tabelle .cms_dateisystem_dateiwahl").attr("onclick", null).off("click").click(cms_galerie_bild_hinzufuegen);
+});
+
+function cms_galerie_bild_hinzufuegen() {
+	cms_galerie_bild_box_machen($(this).data("pfad"));
+}
+
+function cms_galerie_bild_box_machen(pfad) {
+	var box = $('#cms_bilder');
 	var anzahl = $('#cms_bilder_anzahl');
 	var nr = $('#cms_bilder_nr');
 	var ids = $('#cms_bilder_ids');
@@ -324,8 +340,8 @@ function cms_galerie_neues_bild() {
 
 	var code = "";
 	code += "<tr><th>Datei:</th>";
-	code += "<td colspan=\"4\"><input id=\"cms_bild_datei_"+neueid+"\" name=\"cms_bild_datei_"+neueid+"\" type=\"hidden\" value=\"\">";
-	code += "<p class=\"cms_notiz cms_vorschau\" id=\"cms_bild_datei_"+neueid+"_vorschau\">Keine Datei ausgewählt</p>";
+	code += "<td colspan=\"4\"><input id=\"cms_bild_datei_"+neueid+"\" name=\"cms_bild_datei_"+neueid+"\" type=\"hidden\" value=\""+pfad+"\">";
+	code += "<p class=\"cms_notiz cms_vorschau\" id=\"cms_bild_datei_"+neueid+"_vorschau\"><img src=\""+pfad+"\"></p>";
 		code += "<p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'galerien', '-', 'galerien', 'cms_bild_datei_"+neueid+"', 'vorschaubild', '-', '-')\">Bild auswählen</span></p>";
 		code += "<p id=\"cms_bild_datei_"+neueid+"_verzeichnis\"></p>";
 	code += "</td></tr>";

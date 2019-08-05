@@ -32,52 +32,19 @@
 
 <div class="cms_spalte_i">
 	<h2>Neuerungen</h2>
-
-	<!--<h4>Version 0.4.1 - 10. September 2018</h4>
-	<ul>-->
-		<!--<li>Lehrer können befristete Beiträge an Pinnwände schreiben. Pinnwände können zur Notifikation markiert werden.</li>-->
-		<!--<li>Ein e-Mail Postfach kann im Schulhof integriert werden. eMails können als Postfachnachrichten weitergeleitet werden.</li>-->
-		<!--<li>Galerien können auf der Website erstellt werden.</li>-->
-		<!--<li>Schnittstellen für den Vertretungsplan und für die Raumsteuerung wurden implementiert.</li>-->
-		<!--<li>Der Webmaster sieht, ob es neue Seiten gibt, auf denen es inaktive Elemente oder neue Elemente gibt.</li>-->
-		<!-- <li>Anträge können online eingereicht, genehmigt und geändert werden.</li>-->
-	<!--
-		<li>Newsletter können abonniert und versendet werden. Empfänger können verwaltet werden.</li>
-		<li>Persönlicher Serverspeicher</li>
-		<li>Migration von Schuljahren</li>
-		<li>Abstimmungsmöglichkeiten</li>
-		<li>Spamordner</li>
-		<li>Schülerzeitung</li>
-		<li>Notenserver
-			<ul>
-				<li>Zugang 3fach Authentifiziert</li>
-				<li>Salted und verschlüsselt gespeicherte zensuren</li>
-				<li>3 Notenbereiche, innerhalb jedes Bereichs beliebig viele Unterbereiche</li>
-				<li>Mitarbeit und Verhalten</li>
-				<li>Tagebuch</li>
-			</ul>
-		</li>
-		<li>Bei Erstellung von Schülern Eltern gleich mit erstellen</li>
-		<li>Umarmenknopf</li>
-		<li>Wartungsserver</li>
-		<li>Verwaltungstool für Städte</li>
-		<li>Favoriten</li>
-		$code .= "<li>Es ist möglich persönliche Termine anzulegen.</li>";
-		$code .= "<li>Blogeinträge und Termine kommen in den Geschmacksrichtungen öffentlich und gruppenintern. Obiges trifft nur auf öffentliche Termine und Blogeinträge zu. Gruppeninterne Termine und Blogeinträge haben nur eine Kategorie und können nicht veröffentlicht werden.</li>";
-	</ul>-->
 	<?php
 	$aeltere = "";
 
 	$code = "<h4>Version 0.5.3 - Samstag, den 22. Juni 2019</h4>";
 	$code .= "<ul>";
 		$code .= "<li>Die Dateiverschlüsselung wurde erheblich verbessert.</li>";
-		$code .= "<li>Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.</li>";
+		// $code .= "<li>Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.</li>";
 		$code .= "<li>Der Benutzertyp »extern« wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister).</li>";
-		$code .= "<li>Das Hausmeister-Auftragsbuch bietet die Möglichkeit, digital online Mängel und Wünsche an die Hausmeister zu richten.</li>";
+		$code .= "<li>Das Hausmeister-Auftragsbuch bietet die Möglichkeit, online Mängel und Wünsche an die Hausmeister zu richten.</li>";
 		$code .= "<li>An Pinnwänden können Zettel auf bestimmte Zeit angepinnt werden.</li>";
-		$code .= "<li>Dauerbrenner wurden eingeführt. Dabei handelt es sich um Seiten, die allgemeine Informationen enthalten, die ständig wiederkehren. Beispiele: Sicherheitshinweise, Abläufe für neue Kollegen, etc.</li>";
+		$code .= "<li>Dauerbrenner wurden eingeführt. Dabei handelt es sich um Seiten, die allgemeine Informationen enthalten, die ständig wiederkehren. Beispiele: Sicherheitshinweise, Abläufe für neue Kollegen etc.</li>";
 		$code .= "<li>Interne Termine und intere Blogeinträge können nun im Genehmigungscenter genehemigt werden.</li>";
-		$code .= "<li>Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für intern).</li>";
+		$code .= "<li>Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für »intern«).</li>";
 		$code .= "<li>In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat ein Nutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button).</li>";
 		$code .= "<li>Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können.</li>";
 	$code .= "</ul>";

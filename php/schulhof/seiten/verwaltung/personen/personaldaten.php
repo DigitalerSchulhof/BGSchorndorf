@@ -36,11 +36,11 @@ function cms_personaldaten_ausgeben($id) {
 				if ($profildaten_letzteanmeldung > 0) {
 					$letzteanzeige = (date("d.m.Y", $profildaten_letzteanmeldung))." um ".(date("H:i", $profildaten_letzteanmeldung))." Uhr";
 				}
-				else {$letzteanzeige = "hat noch nicht stattgefunden";}
+				else {$letzteanzeige = "Hat noch nicht stattgefunden";}
 				if ($profildaten_vorletzteanmeldung > 0) {
 					$vorletzteanzeige = (date("d.m.Y", $profildaten_vorletzteanmeldung))." um ".(date("H:i", $profildaten_vorletzteanmeldung))." Uhr";
 				}
-				else {$vorletzteanzeige = "hat noch nicht stattgefunden";}
+				else {$vorletzteanzeige = "Hat noch nicht stattgefunden";}
 
 
 				if ($profildaten_art == "l") {

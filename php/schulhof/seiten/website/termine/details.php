@@ -21,6 +21,7 @@ function cms_termin_details_laden($id, $ziel) {
   $oeffentlichkeit = 3;
   $text = '';
   $zgruppen = "";
+  $notifikationen = 1;
   $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
   foreach ($CMS_GRUPPEN as $g) {
     // Speichert die Gruppeninformationen
@@ -33,10 +34,10 @@ function cms_termin_details_laden($id, $ziel) {
   $dbs = cms_verbinden('s');
   if ($id != "-") {
 
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE id = ?");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, oeffentlichkeit, notifikationen, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE id = ?");
     $sql->bind_param("i", $id);
     if ($sql->execute()) {
-      $sql->bind_result($bez, $ort, $beginn, $ende, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $oeffentlichkeit, $text);
+      $sql->bind_result($bez, $ort, $beginn, $ende, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $oeffentlichkeit, $notifikationen, $text);
       if (!$sql->fetch()) {$fehler = true;}
     }
     else {$fehler = true;}
@@ -145,6 +146,10 @@ function cms_termin_details_laden($id, $ziel) {
       $code .= "<p id=\"cms_termin_wdh_tage\"></p>";
       $code .= "</td></tr>";
     }
+		$code .= "</table>";
+    $code .= "<h3>Erweiterte Optionen</h3>";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('termin_notifikationen', $notifikationen)."</td></tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";
 

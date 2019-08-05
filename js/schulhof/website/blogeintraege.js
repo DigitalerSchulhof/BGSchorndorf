@@ -37,6 +37,7 @@ function cms_blogeintraege_eingabenpruefen() {
 	var meldung = '<p>Der Blogeintrag konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var oeffentlichkeit = document.getElementById('cms_oeffentlichkeit').value;
+	var notifikationen = document.getElementById('cms_blogeintrag_notifikationen').value;
 	var genehmigt = document.getElementById('cms_blogeintrag_genehmigt').value;
 	var aktiv = document.getElementById('cms_blogeintrag_aktiv').value;
 	var datumT = document.getElementById('cms_blogeintrag_datum_T').value;
@@ -68,6 +69,11 @@ function cms_blogeintraege_eingabenpruefen() {
 
 	if ((oeffentlichkeit != 0) && (oeffentlichkeit != 1) && (oeffentlichkeit != 2) && (oeffentlichkeit != 3) && (oeffentlichkeit != 4)) {
 		meldung += '<li>Die Eingabe für die Öffentlichkeit ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für Notifikationen ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -129,6 +135,7 @@ function cms_blogeintraege_eingabenpruefen() {
 
 	if (!fehler) {
 		formulardaten.append("oeffentlichkeit", oeffentlichkeit);
+		formulardaten.append("notifikationen", 	notifikationen);
 		formulardaten.append("genehmigt",  			genehmigt);
 		formulardaten.append("aktiv",  					aktiv);
 		formulardaten.append("datumT",  				datumT);
