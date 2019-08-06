@@ -1,4 +1,5 @@
 function cms_fehlermeldung_einhanden() {
+  cms_laden_an('Fehlermeldung absenden', 'Eingaben werden überprüft');
   var t = document.getElementById("cms_fehlermeldung_t").value;
   var titel = document.getElementById("cms_fehlermeldung_titel").value;
   var beschreibung = document.getElementById("cms_fehlermeldung_beschreibung").value;
@@ -41,6 +42,7 @@ function cms_fehlermeldung_einhanden() {
 }
 
 function cms_feedback_einhanden() {
+  cms_laden_an('Feedback absenden', 'Eingaben werden überprüft');
   var name = document.getElementById("cms_feedback_name").value;
   var feedback = document.getElementById("cms_feedback_beschreibung").value;
 
