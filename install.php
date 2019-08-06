@@ -666,6 +666,8 @@ if ($einstellungenplaetten) {
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung an GitHub', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";

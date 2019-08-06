@@ -62,41 +62,44 @@ if($titel != "") {
     $sql->execute();
     $sql->close();
 
-    // GitHub Aπ
-    $api = "https://api.github.com/repos/oxydon/BGSchorndorf/issues";
+    if($CMS_EINSTELLUNGEN["Fehlermeldung an GitHub"]) {
+      // GitHub Aπ
+      $api = "https://api.github.com/repos/oxydon/BGSchorndorf/issues";
+      $api = "https://api.github.com/repos/jeengbe/IssueTest/issues";
 
-    $data = array(
-      "title" => $titel,
-      "body" => issue_body_machen(),
-      "labels" => array(
-        "automatisch",
-        "problem",
-      ),
-      "assignees" => array(
-        "jeengbe",
-      )
-    );
+      $data = array(
+        "title" => $titel,
+        "body" => issue_body_machen(),
+        "labels" => array(
+          "automatisch",
+          "problem",
+        ),
+        "assignees" => array(
+          "jeengbe",
+        )
+      );
 
-    $data = json_encode($data);
+      $data = json_encode($data);
 
-    // cURL
-    $curl = curl_init();
-    $curlConfig = array(
-      CURLOPT_URL             => $api,
-      CURLOPT_POST            => true,
-      CURLOPT_RETURNTRANSFER  => true,
-      CURLOPT_HTTPHEADER      => array(
-        "Content-Type: application/json",
-        "Authorization: token $GITHUB_OAUTH",
-        "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
-        "Accept: application/vnd.github.v3+json",
-      ),
-      CURLOPT_POSTFIELDS      => $data,
-    );
+      // cURL
+      $curl = curl_init();
+      $curlConfig = array(
+        CURLOPT_URL             => $api,
+        CURLOPT_POST            => true,
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_HTTPHEADER      => array(
+          "Content-Type: application/json",
+          "Authorization: token $GITHUB_OAUTH",
+          "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
+          "Accept: application/vnd.github.v3+json",
+        ),
+        CURLOPT_POSTFIELDS      => $data,
+      );
 
-    curl_setopt_array($curl, $curlConfig);
-    $r = curl_exec($curl);
-    curl_close($curl);
+      curl_setopt_array($curl, $curlConfig);
+      $r = curl_exec($curl);
+      curl_close($curl);
+    }
     echo "ERFOLG";
   } else {
 	  echo "BERECHTIGUNG";
