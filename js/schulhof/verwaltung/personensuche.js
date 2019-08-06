@@ -203,6 +203,10 @@ function cms_umarmen(id, anonym) {
         // Nichts tun :)
         cms_laden_aus();
       }
+      else if(rueckgabe == "HALT") {
+        cms_laden_aus();
+        cms_meldung_an('warnung', 'Nicht so schnell', '<p>Es sind zu schnell Anfragen eingegangen</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Okay</span></p>');
+      }
       else {cms_fehlerbehandlung(rueckgabe);}
     }
 
@@ -210,7 +214,6 @@ function cms_umarmen(id, anonym) {
     k.html("Umarmt! (>‿♡)");
     k.removeClass("cms_button_anonymFragezeichen");
     k.click(function() {
-      // Eastereggs, ja? nein? Für nächste Ostern vielleicht :D
       // [E]
       console.log("Da freut sich nun jemand!");
     })

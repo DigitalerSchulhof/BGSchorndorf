@@ -589,11 +589,6 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		*/
 
-		foreach ($personen as $p) {
-			$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$p umarmen', '$CMS_SCHLUESSEL'))";
-			$dbs->query($sql); $id++;
-		}
-
 		// ZUGRIFFE
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Zugriffe', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Lehrernetz', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;

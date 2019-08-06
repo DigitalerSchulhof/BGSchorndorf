@@ -27,20 +27,26 @@ if ($anfrage = $dbs->query($sql)) {
 if($fehler)
   exit("FEHLER");
 
-$zugriff = false;
-$art == "l" && $CMS_RECHTE['Personen']['Lehrer umarmen'] && $zugriff = true;
-$art == "e" && $CMS_RECHTE['Personen']['Eltern umarmen'] && $zugriff = true;
-$art == "s" && $CMS_RECHTE['Personen']['Schüler umarmen'] && $zugriff = true;
-$art == "v" && $CMS_RECHTE['Personen']['Verwaltungsangestellte umarmen'] && $zugriff = true;
+$zugriff = true;
 
 if (cms_angemeldet() && $zugriff) {
 
-  $von = $anonym?-1:$_SESSION["BENUTZERID"];
+  $von = $_SESSION["BENUTZERID"];
 
-	$sql = $dbs->prepare("INSERT INTO umarmungen (von, an, wann, gesehen) VALUES(?, ?, ?, ?)");
+  $sql = "SELECT COUNT(*) as c FROM umarmungen WHERE von=$von AND an=$person AND wann BETWEEN ".(time()-5*60)." AND ".time();
+  $sql = $dbs->query($sql);
+  $letzte = 0;
+  if($sql)
+    if($sql = $sql->fetch_assoc())
+      $letzte = $sql["c"];
+
+  if($letzte > 5)
+    die("HALT");
+
+	$sql = $dbs->prepare("INSERT INTO umarmungen (von, an, anonym, wann, gesehen) VALUES(?, ?, ?, ?, ?)");
   $jetzt = time();
   $null = 0;
-  $sql->bind_param("iiii", $von, $person, $jetzt, $null);
+  $sql->bind_param("iiiii", $von, $person, $anonym, $jetzt, $null);
 
   $sql->execute();
 
