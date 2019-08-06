@@ -83,6 +83,8 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Neuen_Tag_anlegen']         = 'php/schulhof/seiten/nutzerkonto/postfach/neuertag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Umarmungen']                              = 'php/schulhof/seiten/nutzerkonto/umarmungen.php';
+
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten']                           = 'php/schulhof/seiten/aufgaben/geraete/verwalten.php';
@@ -181,7 +183,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Profile']                                             = 'php/schulhof/seiten/personensuche/personenprofil.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung']                                  = 'php/schulhof/seiten/verwaltung/verwaltung.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik']                  = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/schuljahrfabrik.php';    
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik']                  = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/schuljahrfabrik.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';

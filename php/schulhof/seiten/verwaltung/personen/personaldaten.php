@@ -31,6 +31,13 @@ function cms_personaldaten_ausgeben($id) {
 				$profildaten_schuljahr = $daten['schuljahr'];
 				$profildaten_letzteanmeldung = $daten['letzteanmeldung'];
 				$profildaten_vorletzteanmeldung = $daten['vorletzteanmeldung'];
+
+				$sql = "SELECT von, anonym FROM umarmungen WHERE an=$id";
+				$umarmungen_s = $dbs->query($sql);
+				$umarmungen = array();
+				while($daten = $umarmungen_s->fetch_assoc()) {
+					array_push($umarmungen, array("von" => $daten["von"], "anonym" => $daten["anonym"]));
+				}
 				$anzeigename = cms_generiere_anzeigename($profildaten_vorname, $profildaten_nachname, $profildaten_titel);
 
 				if ($profildaten_letzteanmeldung > 0) {
@@ -203,6 +210,11 @@ function cms_personaldaten_ausgeben($id) {
 				}
 			}
 			else {
+
+				$umarmungen_c = count($umarmungen);
+
+				echo "<br><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Umarmungen\">$umarmungen_c Umarmung".($umarmungen_c != 1?"en":"").($umarmungen_c > 0?" ( ＾◡＾)っ ♡":"")."</a>";
+
 				echo "<h3>Daten ändern</h3>";
 				echo "<ul class=\"cms_aktionen_liste\">";
 					echo "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil/Nutzerkonto_bearbeiten\">Benutzerkonto bearbeiten</a></li> ";

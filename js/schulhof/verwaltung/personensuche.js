@@ -185,7 +185,61 @@ function cms_personenprofil(id) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+// 0 = bereit, 1 = countdown, 2 = gesandt
+var cms_umarmen_s = 0;
+var countdown;
+function cms_umarmen(id, anonym) {
+  var k = $("#cms_umarmen");
+  // Muss gesetzt sein
+  if(anonym === true || anonym === false) {
+    cms_laden_an('Die Person wird umarmt', 'Die Eingaben werden überprüft.');
+    var formulardaten = new FormData();
+    formulardaten.append("person",   		   id);
+    formulardaten.append("anonym",   		   anonym);
+    formulardaten.append("anfragenziel", 	 '340');
 
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == 'ERFOLG') {
+        // Nichts tun :)
+        cms_laden_aus();
+      }
+      else if(rueckgabe == "HALT") {
+        cms_laden_aus();
+        cms_meldung_an('warnung', 'Nicht so schnell', '<p>Es sind zu schnell Anfragen eingegangen</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Okay</span></p>');
+      }
+      else {cms_fehlerbehandlung(rueckgabe);}
+    }
+
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    k.html("Umarmt! (>‿♡)");
+    k.removeClass("cms_button_anonymFragezeichen");
+    k.click(function() {
+      // [E]
+      console.log("Da freut sich nun jemand!");
+    })
+    cms_umarmen_s = 2;
+    return;
+  }
+  if(cms_umarmen_s == 1) {
+    // Anonym
+    clearInterval(countdown);
+    cms_umarmen(id, true);
+  } else if(cms_umarmen_s == 0) {
+    cms_umarmen_s = 1;
+    var anonym = 3;
+
+    k.html("Anonym umarmen? 3");
+    k.addClass("cms_button_anonymFragezeichen");
+
+    countdown = setInterval(function() {
+      k.html("Anonym umarmen? " + --anonym);
+      if(anonym == 0) {
+        clearInterval(countdown);
+        cms_umarmen(id, false);
+      }
+    }, 1000);
+  }
+}
 
 function cms_personensuche_mail(id) {
   var meldung = document.getElementById(id+'_suchergebnis');
