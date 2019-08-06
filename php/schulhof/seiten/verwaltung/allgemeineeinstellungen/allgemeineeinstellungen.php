@@ -15,15 +15,15 @@ if ($zugriff) {
 	$einstellungen = cms_einstellungen_laden();
 
 	$code .= "<ul class=\"cms_reitermenue\">";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('einstellungen', 0,5)\">Rechte</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1,5)\">Postfach</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2,5)\">Gruppen</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3,5)\">Stundenpläne</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4,5)\">Website</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5,5)\">Geräteverwaltung</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 0, 5, true)\">Rechte</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1, 5, true)\">Postfach</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2, 5, true)\">Gruppen</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3, 5, true)\">Stundenpläne</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4, 5, true)\">Website</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5, 5, true)\">Geräteverwaltung</span></li> ";
 	$code .= "</ul>";
 
-	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: block;\">";
+	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Rechte</h2></div>";
 
@@ -479,6 +479,7 @@ if ($zugriff) {
 
 	$code .= "</div>";
 
+	$code .= "<script>cms_reiter_laden(\"einstellungen\");</script>";
 
 	echo $code;
 }
