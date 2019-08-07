@@ -32,6 +32,7 @@ function cms_reaktion(reaktion) {
   var formulardaten = new FormData();
   formulardaten.append("typ",       cms_typ);
   formulardaten.append("id",        cms_id);
+  formulardaten.append("gid",       cms_gid);
   formulardaten.append("reaktion",  reaktion);
 
   formulardaten.append("anfragenziel", 	'341');

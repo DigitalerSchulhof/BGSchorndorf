@@ -1,5 +1,6 @@
 <?php
-  function cms_artikel_reaktionen($typ, $id) {
+
+  function cms_artikel_reaktionen($typ, $id, $gruppenid) {
     $dbs = cms_verbinden("s");
     $code = "<div id=\"cms_reaktionen\">";
 
@@ -21,10 +22,10 @@
     r($reaktionen, "verwirrung",      "verwirrung.png",     "Verwirrung");
 
     foreach($reaktionen as $r) {
-      $sql = "SELECT von FROM reaktionen WHERE typ = ? AND id = ? AND emoticon = ?";
+      $sql = "SELECT von FROM reaktionen WHERE typ = ? AND id = ? AND gruppe = ? AND emoticon = ?";
       $dbs = cms_verbinden("s");
       $sql = $dbs->prepare($sql);
-      $sql->bind_param("sis", $typ, $id, $r["id"]);
+      $sql->bind_param("siss", $typ, $id, $gruppenid, $r["id"]);
       if($sql->execute()) {
         $sql->bind_result($ips);
         if (!$sql->fetch()) {$ips = "";}
@@ -43,43 +44,7 @@
       $code .= "<div class=\"cms_reaktion$c cms_reaktion_".$r["id"]."\"><img src=\"res/emoticons/gross/".$r["datei"]."\" title=\"".$r["name"]."\" data-reaktion=\"".$r["id"]."\"></img> <span>".((count($ips)-1)==0?"&nbsp;":count($ips)-1)."</span></div>";
     }
 
-
-      // $sql = "SELECT * FROM reaktionen WHERE typ='$typ' AND id=$id";
-      // $sql = $dbs->query($sql);
-      // $rk = array();
-      // if($sql)
-      //   while($sqld = $sql->fetch_assoc())
-      //     $rk[$sqld["emoticon"]] = explode(" ", $sqld["von"]);
-      //
-      // foreach($rk as $emo => $ips) {
-      //   $ip = getUserIpAddr();
-      //   $ip = md5($ip);
-      //   $c = "";
-      //   array_shift($ips);
-      //
-      //   foreach($reaktionen as $r)
-      //     if($r["id"] == $emo) {
-      //       $emo = $r["datei"];
-      //       break;
-      //     }
-      //
-      //   if(in_array($ip, $ips))
-      //     $c = " cms_reagiert";
-      //   if(count($ips) > 0)
-      //     $code .= "<div class=\"cms_reaktion$c\"><img src=\"res/emoticons/gross/".$emo."\"> ".count($ips)."</img></div>";
-      // }
-
-
-    //   $code .= "<div id=\"cms_neue_reaktion\" class=\"cms_reaktion\"><img src=\"res/icons/gross/plus.png\">&nbsp;";
-    //     $code .= "<div id=\"cms_reaktionswahl\">";
-    //
-    //
-    //       foreach($reaktionen as $r)
-    //         $code .= "<img src=\"res/emoticons/gross/".$r["datei"]."\" data-reaktion=\"".$r["id"]."\" title=\"".$r["name"]."\"></img>";
-    //     $code .= "</div>";
-    //   $code .= "</div>";
-    // $code .= "</div>";
-    $code .= "<script>var cms_typ = '$typ'; var cms_id = $id;</script>";
+    $code .= "</div><script>var cms_typ = '$typ'; var cms_id = $id; var cms_gid = $gruppenid;</script>";
     return $code;
   }
 

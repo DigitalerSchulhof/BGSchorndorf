@@ -284,7 +284,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			}
 			$code .= $blogeintrag['text'];
 
-			$code .= "<br>".cms_artikel_reaktionen("b", $blogeintrag["id"]);
+			$code .= "<br>".cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
 
 			$code .= "</div></div>";
 

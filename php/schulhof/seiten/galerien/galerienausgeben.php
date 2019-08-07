@@ -173,7 +173,7 @@ function cms_galerie_ausgeben($dbs) {
 
 			$code .= "</div></div></div>";
 
-			$code .= "<br>".cms_artikel_reaktionen("g", $galerie["id"]);
+			$code .= "<br>".cms_artikel_reaktionen("g", $galerie["id"], "-");
 			$CMS_GALERIEID = $galerie["id"];
 			$code .= "<div class=\"cms_clear\"></div>";
 		}

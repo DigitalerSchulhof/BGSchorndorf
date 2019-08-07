@@ -335,7 +335,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$code .= "</div></div>";
 		}
 
-		$code .= cms_artikel_reaktionen("t", $termin["id"]);
+		$code .= cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
 
 
 		$code .= "<div class=\"cms_clear\"></div>";

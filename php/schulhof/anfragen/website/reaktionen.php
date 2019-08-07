@@ -8,6 +8,7 @@
 
   postLesen("typ");
   postLesen("id");
+  postLesen("gid");
   postLesen("reaktion");
 
   if(!in_array($typ, array("b", "t", "g")))
@@ -18,10 +19,10 @@
   if($reaktion == "undefined")
     die("FEHLER");
 
-  $sql = "SELECT von FROM reaktionen WHERE typ = ? AND id = ? AND emoticon = ?";
+  $sql = "SELECT von FROM reaktionen WHERE typ = ? AND id = ? AND gruppe = ? AND emoticon = ?";
   $dbs = cms_verbinden("s");
   $sql = $dbs->prepare($sql);
-  $sql->bind_param("sis", $typ, $id, $reaktion);
+  $sql->bind_param("siss", $typ, $id, $gid, $reaktion);
   $l = false;
   if($sql->execute()) {
     $sql->bind_result($ips);
@@ -43,14 +44,14 @@
   $ips = join(" ", $ips);
 
   if($l) {
-    $sql = "INSERT INTO `reaktionen` (`typ`, `id`, `emoticon`, `von`) VALUES (?, ?, ?, ?);";
+    $sql = "INSERT INTO `reaktionen` (`typ`, `id`, `gruppe`, `emoticon`, `von`) VALUES (?, ?, ?, ?, ?);";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("siss", $typ, $id, $reaktion, $ips);
+    $sql->bind_param("sisss", $typ, $id, $gid, $reaktion, $ips);
     $sql->execute();
   } else {
-    $sql = "UPDATE reaktionen SET von = ? WHERE typ = ? AND id = ? and emoticon = ?";
+    $sql = "UPDATE reaktionen SET von = ? WHERE typ = ? AND id = ? and gruppe = ? and emoticon = ?";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("ssis", $ips, $typ, $id, $reaktion);
+    $sql->bind_param("ssiss", $ips, $typ, $id, $gid, $reaktion);
     $sql->execute();
   }
 
