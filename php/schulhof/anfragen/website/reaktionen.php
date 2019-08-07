@@ -19,39 +19,40 @@
   if($reaktion == "undefined")
     die("FEHLER");
 
+  if(!cms_angemeldet())
+    die("FEHLER");
+
   $sql = "SELECT von FROM reaktionen WHERE typ = ? AND id = ? AND gruppe = ? AND emoticon = ?";
   $dbs = cms_verbinden("s");
   $sql = $dbs->prepare($sql);
   $sql->bind_param("siss", $typ, $id, $gid, $reaktion);
   $l = false;
   if($sql->execute()) {
-    $sql->bind_result($ips);
+    $sql->bind_result($von);
     $l = false;
-    if (!$sql->fetch()) {$ips = ""; $l = true;}
+    if (!$sql->fetch()) {$von = ""; $l = true;}
   }
 
-  $ips = explode(" ", $ips);
-
-  $ip = getUserIpAddr();
-  $ip = md5($ip);
+  $von = explode(" ", $von);
+  $bid = $_SESSION["BENUTZERID"];
 
   // Toggle
-  if(in_array($ip, $ips))
-    $ips = array_diff($ips, array($ip));
+  if(in_array($bid, $von))
+    $von = array_diff($von, array($bid));
   else
-    array_push($ips, $ip);
+    array_push($von, $bid);
 
-  $ips = join(" ", $ips);
+  $von = join(" ", $von);
 
   if($l) {
     $sql = "INSERT INTO `reaktionen` (`typ`, `id`, `gruppe`, `emoticon`, `von`) VALUES (?, ?, ?, ?, ?);";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("sisss", $typ, $id, $gid, $reaktion, $ips);
+    $sql->bind_param("sisss", $typ, $id, $gid, $reaktion, $von);
     $sql->execute();
   } else {
     $sql = "UPDATE reaktionen SET von = ? WHERE typ = ? AND id = ? and gruppe = ? and emoticon = ?";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("ssiss", $ips, $typ, $id, $gid, $reaktion);
+    $sql->bind_param("ssiss", $von, $typ, $id, $gid, $reaktion);
     $sql->execute();
   }
 

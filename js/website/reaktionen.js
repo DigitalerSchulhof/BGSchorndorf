@@ -1,17 +1,4 @@
 $(window).ready(function() {
-  // Liste an
-  $("#cms_neue_reaktion img").click(function() {
-    $("#cms_reaktionswahl").slideDown("fast", function() {
-      $(this).css("overflow-y", "scroll");
-    });
-  })
-
-  // Liste aus
-  $("body").click(function(e) {
-    if(!$(e.target).is($("#cms_neue_reaktion>img")))
-      $("#cms_reaktionswahl").css("overflow-y", "hidden").slideUp("fast");
-  })
-
   // Auswahl
   $(".cms_reaktion img").click(function() {
     cms_reaktion($(this).data("reaktion"));

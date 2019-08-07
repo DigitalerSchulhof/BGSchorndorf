@@ -191,7 +191,6 @@
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
-		echo "<script src=\"js/website/reaktionen.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
@@ -230,6 +229,7 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/zeitraeume.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
@@ -247,6 +247,7 @@
 			$code .= "<script src=\"js/website/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/boxen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/eventuebersicht.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/website/reaktionen.js?v=$CMS_VERSION\"></script>";
 
 			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";

@@ -1,7 +1,7 @@
 <?php
 function cms_mailsenden($empfaenger, $mailempfaenger, $betreff, $textHTML, $text) {
 	global $CMS_MAILHOST, $CMS_MAILSMTPAUTH, $CMS_MAILUSERNAME, $CMS_MAILPASSWORT, $CMS_MAILABSENDER, $CMS_SCHULE, $CMS_ORT, $CMS_WEBMASTER, $CMS_DOMAIN, $CMS_LOGO;
-
+	set_time_limit(0);
 	$umschlag = new PHPMailer();
 	$umschlag->CharSet  = 'utf-8';
 	$umschlag->IsSMTP();
@@ -35,7 +35,7 @@ function cms_mailsenden($empfaenger, $mailempfaenger, $betreff, $textHTML, $text
 
 	$HTML .= "</body>";
 	$HTML .= "</html>";
-	
+
 	$umschlag->Body = $HTML;
 	$umschlag->AltBody  =  $text;
 	return $mailerfolg = $umschlag->Send();

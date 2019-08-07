@@ -42,4 +42,21 @@
       max-height: 4*(35px);
     }
   }
+  & + .cms_notiz {
+    display: none;
+    & a:hover {
+      color: @schriftlink !important;
+    }
+  }
+  &.cms_noch_anmelden {
+    .cms_reaktion {
+      opacity: 0.4;
+      * {
+        cursor: not-allowed;
+      }
+    }
+    & + .cms_notiz {
+      display: block;
+    }
+  }
 }

@@ -642,18 +642,4 @@ function cms_listezuabsatz($liste) {
 function cms_generiere_hinweisicon($icon, $hinweis) {
   return "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
 }
-
-function getUserIpAddr(){
-  if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-      //ip from share internet
-      $ip = $_SERVER['HTTP_CLIENT_IP'];
-  }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-      //ip pass from proxy
-      $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-  }else{
-      $ip = $_SERVER['REMOTE_ADDR'];
-  }
-  return $ip;
-}
-
 ?>
