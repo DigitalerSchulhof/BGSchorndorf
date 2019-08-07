@@ -160,8 +160,8 @@ if (cms_angemeldet() && $zugriff) {
     $text = cms_texttrafo_e_db($text);
 		$jetzt = time();
   	// TERMIN EINTRAGEN
-    $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
-    $sql->bind_param("ssiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
+    $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, notifikationen = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+    $sql->bind_param("ssiiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $notifikationen, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
     $sql->execute();
     $sql->close();
 

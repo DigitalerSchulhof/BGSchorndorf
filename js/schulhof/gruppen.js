@@ -38,6 +38,7 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 	var meldung = '<p>Der Blogeintrag konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var genehmigt = document.getElementById('cms_blogeintrag_genehmigt').value;
+	var notifikationen = document.getElementById('cms_blogeintrag_notifikationen').value;
 	var aktiv = document.getElementById('cms_blogeintrag_aktiv').value;
 	var datumT = document.getElementById('cms_blogeintrag_datum_T').value;
 	var datumM = document.getElementById('cms_blogeintrag_datum_M').value;
@@ -64,6 +65,11 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 
 	if (!cms_check_toggle(genehmigt)) {
 		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für Notifikationen ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -163,6 +169,7 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 
 	if (!fehler) {
 		formulardaten.append("genehmigt",  			  genehmigt);
+		formulardaten.append("notifikationen",    notifikationen);
 		formulardaten.append("aktiv",  					  aktiv);
 		formulardaten.append("datumT",  				  datumT);
 		formulardaten.append("datumM",					  datumM);
@@ -185,6 +192,7 @@ function cms_termineintern_eingabenpruefen(modus) {
 	var meldung = '<p>Der Termin konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var genehmigt = document.getElementById('cms_termin_genehmigt').value;
+	var notifikationen = document.getElementById('cms_termin_notifikationen').value;
 	var aktiv = document.getElementById('cms_termin_aktiv').value;
 	var mehrtaegigt = document.getElementById('cms_termin_mehrtaegig').value;
 	var uhrzeitbt = document.getElementById('cms_termin_uhrzeitb').value;
@@ -221,6 +229,11 @@ function cms_termineintern_eingabenpruefen(modus) {
 
 	if (!cms_check_toggle(genehmigt)) {
 		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für die Notifikationen ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -302,6 +315,7 @@ function cms_termineintern_eingabenpruefen(modus) {
 
 	if (!fehler) {
 		formulardaten.append("genehmigt",  			genehmigt);
+		formulardaten.append("notifikationen",  notifikationen);
 		formulardaten.append("aktiv",  					aktiv);
 		formulardaten.append("mehrtaegigt", 		mehrtaegigt);
 		formulardaten.append("uhrzeitbt",  			uhrzeitbt);

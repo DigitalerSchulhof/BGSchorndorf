@@ -21,17 +21,18 @@ function cms_internerblogeintrag_details_laden($id, $gruppe, $gruppenid) {
   $genehmigt = 0;
   $oeffentlichkeit = 3;
   $text = '';
+  $notifikationen = 1;
   $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
   $zus = "";
 
   // Falls ein bestehender Blogeintrag geladen werden soll
   if (cms_check_ganzzahl($id)) {
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS zusammenfassung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM $gk"."blogeintraegeintern WHERE id = ?");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, notifikationen, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS zusammenfassung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM $gk"."blogeintraegeintern WHERE id = ?");
 
     $sql->bind_param("i", $id);
     // Schuljahr finden
     if ($sql->execute()) {
-      $sql->bind_result($bez, $datum, $genehmigt, $aktiv, $text, $zus, $autor);
+      $sql->bind_result($bez, $datum, $genehmigt, $aktiv, $text, $notifikationen, $zus, $autor);
       if (!$sql->fetch()) {$fehler = true;}
     }
     else {$fehler = true;}
@@ -74,6 +75,11 @@ function cms_internerblogeintrag_details_laden($id, $gruppe, $gruppenid) {
     $code .= "<tr><th>Zusammenfassung:</th><td><textarea rows=\"10\" name=\"cms_blogeintrag_zusammenfassung\" id=\"cms_blogeintrag_zusammenfassung\">$zus</textarea></td></tr>";
     $code .= "<tr><th>Autor:</th><td><input type=\"text\" name=\"cms_blogeintrag_autor\" id=\"cms_blogeintrag_autor\" value=\"$autor\"/></td></tr>";
 		$code .= "</table>";
+    $code .= "<h3>Erweiterte Optionen</h3>";
+    $code .= "<table class=\"cms_formular\">";
+    $code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('blogeintrag_notifikationen', $notifikationen)."</td></tr>";
+    $code .= "</table>";
+
 		$code .= "</div></div>";
 
     $code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";

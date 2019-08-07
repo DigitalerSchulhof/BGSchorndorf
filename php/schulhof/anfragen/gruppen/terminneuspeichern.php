@@ -179,8 +179,8 @@ if (cms_angemeldet() && $zugriff) {
 			// NÄCHSTE FREIE ID SUCHEN
 			$terminid = cms_generiere_kleinste_id($gk.'termineintern');
 			// TERMIN EINTRAGEN
-      $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ?, gruppe = ? WHERE id = ?");
-      $sql->bind_param("ssiiiiiiiisiiii", $bezeichnung, $ort, $BEGINN[$i], $ENDE[$i], $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $gruppenid, $terminid);
+      $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, notifikationen = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ?, gruppe = ? WHERE id = ?");
+      $sql->bind_param("ssiiiiiiiiisiiii", $bezeichnung, $ort, $BEGINN[$i], $ENDE[$i], $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $notifikationen, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $gruppenid, $terminid);
       $sql->execute();
       $sql->close();
 
