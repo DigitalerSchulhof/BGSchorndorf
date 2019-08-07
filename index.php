@@ -14,6 +14,7 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
+	include_once("php/schulhof/seiten/website/reaktionen.php");
 
 	session_start();
 
@@ -170,8 +171,11 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/reaktionen.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
+		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
+
     echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/generieren.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/reiter.js?v=$CMS_VERSION\"></script>";
@@ -187,10 +191,15 @@
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
+		echo "<script src=\"js/website/reaktionen.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
 			$code = "";
+			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";
+
 			$code .= "<script src=\"js/schulhof/nutzerkonto/profildaten.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/nutzerkonto/postfach.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/kalender.js?v=$CMS_VERSION\"></script>";
@@ -239,10 +248,6 @@
 			$code .= "<script src=\"js/website/boxen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/eventuebersicht.js?v=$CMS_VERSION\"></script>";
 
-			$code .= "<script src=\"js/summernote/jquery.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";

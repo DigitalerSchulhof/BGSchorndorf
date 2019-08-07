@@ -283,6 +283,9 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				else {$code .= "<p><img src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
 			}
 			$code .= $blogeintrag['text'];
+
+			$code .= "<br>".cms_artikel_reaktionen("b", $blogeintrag["id"]);
+
 			$code .= "</div></div>";
 
 			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0)) {

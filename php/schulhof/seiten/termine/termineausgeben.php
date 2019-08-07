@@ -335,6 +335,9 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$code .= "</div></div>";
 		}
 
+		$code .= cms_artikel_reaktionen("t", $termin["id"]);
+
+
 		$code .= "<div class=\"cms_clear\"></div>";
 		$CMS_TERMINID = $termin["id"];
 	}
