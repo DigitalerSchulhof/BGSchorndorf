@@ -512,7 +512,7 @@ echo $code;
 <div class="cms_spalte_i">
 
 <h2>Tagebuch</h2>
-<p class="cms_notiz">In Planung...</p>
+<p class="cms_notiz">In Planung</p>
 
 </div>
 </div>
@@ -522,7 +522,7 @@ echo $code;
 <div class="cms_spalte_i">
 
 <h2>Noten</h2>
-<p class="cms_notiz">In Planung in späteren Versionen</p>
+<p class="cms_notiz">In Planung</p>
 
 </div>
 </div>
