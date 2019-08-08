@@ -171,7 +171,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/reaktionen.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";

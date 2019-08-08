@@ -24,7 +24,6 @@ if (cms_angemeldet() && $zugriff) {
 		$fehler = true;
 
 	if (!$fehler) {
-			$weilreference0 = 0;
 			$dbs = cms_verbinden('s');
       $sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
   		$einstellungsname = "Reaktionen auf Blogeinträge";

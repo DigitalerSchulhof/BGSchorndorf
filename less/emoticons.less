@@ -1,4 +1,4 @@
-// out: ../css/reaktionen.css, sourcemap: false, compress: true, autoprefixer: true
+// out: ../css/emoticons.css, sourcemap: false, compress: true, autoprefixer: true
 @import "standard.less";
 
 #cms_reaktionen {
@@ -57,6 +57,25 @@
     }
     & + .cms_notiz {
       display: block;
+    }
+  }
+}
+
+.cms_emoticons_liste {
+  tr>td{
+    &:first-of-type{
+      img {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        float: left;
+        margin: 0 auto;
+      }
+    }
+    &:last-of-type {
+      &>span {
+        float: right;
+      }
     }
   }
 }
