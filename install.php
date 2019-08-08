@@ -567,6 +567,8 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auffälliges verwalten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Emoticons verwalten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 		/*$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Sprachen anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Sprachen bearbeiten', '$CMS_SCHLUESSEL'))";
@@ -671,6 +673,12 @@ if ($einstellungenplaetten) {
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Blogeinträge', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Termine', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	// Postfach
 	foreach ($personen as $p) {

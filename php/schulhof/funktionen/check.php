@@ -642,4 +642,14 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
   return false;
 }
 
+function postLesen($feld, $nullfehler = true) {
+	global $$feld;
+
+	if(isset($_POST[$feld]))
+		$$feld = $_POST[$feld];
+	else
+		if($nullfehler)
+			die("FEHLER");
+}
+
 ?>

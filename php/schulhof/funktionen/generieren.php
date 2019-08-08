@@ -642,4 +642,25 @@ function cms_listezuabsatz($liste) {
 function cms_generiere_hinweisicon($icon, $hinweis) {
   return "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
 }
+
+/**
+* Gültige SQL-Query braucht $tabelle, sonst kommt nur der select Teil
+**/
+function cms_sql_mit_aes($felder, $tabelle = "", $bedingung = "") {
+  global $CMS_SCHLUESSEL;
+  $sql = "";
+  if(strlen($tabelle))
+    $sql .= "SELECT ";
+
+  foreach($felder as $f)
+    $sql .= "AES_DECRYPT($f, '$CMS_SCHLUESSEL') as $f, ";
+
+  $sql = substr($sql, 0, -2);
+  if(strlen($tabelle)) {
+    $sql .= " FROM $tabelle";
+    if(strlen($bedingung))
+      $sql .= " WHERE $bedingung";
+  }
+  return $sql;
+}
 ?>

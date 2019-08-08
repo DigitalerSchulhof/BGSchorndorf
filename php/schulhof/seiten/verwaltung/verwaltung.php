@@ -441,6 +441,15 @@ if ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auff
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Website']['Emoticons verwalten']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_emoticons\" href=\"Schulhof/Website/Emoticons\">";
+			$code .=  "<h3>Emoticons</h3>";
+			$code .=  "<p>Emoticons verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 
 if ($tabzahl > 0) {
 	$code = "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
