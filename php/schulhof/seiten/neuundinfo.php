@@ -2,7 +2,7 @@
 <div class="cms_spalte_i">
 	<?php
 	$code = '<ul class="cms_systemvoraussetzung">';
-		$code .= '<li><img src="res/icons/gross/version.png"><br><b>'.s('schulhof.seite.anmeldung.hinweis.version', array("%v%" => $CMS_VERSION)).'</b></li>';
+		$code .= '<li><img src="res/icons/gross/version.png"><br><b>'.s('schulhof.seite.anmeldung.hinweis.version', array("%version%" => $CMS_VERSION)).'</b></li>';
 		$code .= '<li><img src="res/icons/gross/cookies.png"><br>'.s('schulhof.seite.anmeldung.hinweis.cookies').'</li>';
 		$code .= '<li><img src="res/icons/gross/javascript.png"><br>'.s('schulhof.seite.anmeldung.hinweis.javascript').'</li>';
 		$code .= '<li><img src="res/icons/gross/multinutzer.png"><br>'.s('schulhof.seite.anmeldung.hinweis.nutzer').'</li>';
@@ -53,7 +53,7 @@
 			foreach(s("schulhof.seite.anmeldung.neuerungen.version.".str_replace(".", "_", $version).".neuerungen") as $n)
 				$code .= "<li>$n</li>";
 		$code .= "</ul>";
-		return cms_toggleeinblenden_generieren ("cms_neuerungenverlaufknopf_".str_replace(".", "_", $version), s("schulhof.seite.anmeldung.neuerungen.einblenden.version", array("%v%" => $version)), s("schulhof.seite.anmeldung.neuerungen.ausblenden.version", array("%v%" => $version)), $code, $sichtbar);
+		return cms_toggleeinblenden_generieren ("cms_neuerungenverlaufknopf_".str_replace(".", "_", $version), s("schulhof.seite.anmeldung.neuerungen.einblenden.version", array("%version%" => $version)), s("schulhof.seite.anmeldung.neuerungen.ausblenden.version", array("%version%" => $version)), $code, $sichtbar);
 	}
 	?>
 	</div>

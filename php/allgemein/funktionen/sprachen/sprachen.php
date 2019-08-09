@@ -29,6 +29,12 @@ function s($key, $variablen = array(), $sprache = null) {
 }
 
 function cms_aktive_sprache() {
-  return $_COOKIE["sprache"] ?? "de-DE";
+  global $CMS_SPRACHEN;
+  $fallback = "de-DE";
+  return in_array(($_COOKIE["sprache"] ?? $fallback), $CMS_SPRACHEN) ? ($_COOKIE["sprache"] ?? $fallback) : $fallback;
+}
+
+function cms_js_strings() {
+  return json_encode(s("javascript"));
 }
 ?>

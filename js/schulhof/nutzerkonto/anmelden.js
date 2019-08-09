@@ -1,24 +1,24 @@
 // Funktion, die einen Benutzer anmeldet
 function cms_anmelden () {
-	cms_laden_an('Anmelden', 'Die eingegebenen Daten werden überprüft, die Anmeldung wird durchgeführt.');
+	cms_laden_an(s("schulhof.seite.anmeldung.anmeldung.laden.anmelden.kopf"), s("schulhof.seite.anmeldung.anmeldung.laden.anmelden.inhalt"));
 	var benutzername = document.getElementById('cms_schulhof_anmeldung_bentuzer').value;
 	var passwort = document.getElementById('cms_schulhof_anmeldung_passwort').value;
 
-	var meldung = '<p>Die Anmeldung wurde abgebrochen, denn ...</p><ul>';
+	var meldung = '<p>'+s("schulhof.seite.anmeldung.anmeldung.fehler.meldung")+'</p><ul>';
 	var fehler = false;
 
 	// Pflichteingaben prüfen
 	if (benutzername.length < 6) {
-		meldung += '<li>der Benutzername ist zu kurz.</li>';
+		meldung += '<li>'+s("schulhof.seite.anmeldung.anmeldung.fehler.benutzername")+'</li>';
 		fehler = true;
 	}
 	if (passwort.length < 2) {
-		meldung += '<li>das Passwort ist zu kurz.</li>';
+		meldung += '<li>'+s("schulhof.seite.anmeldung.anmeldung.fehler.passwort")+'</li>';
 		fehler = true;
 	}
 
 	if (fehler) {
-		cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		cms_meldung_an('fehler', s("schulhof.seite.anmeldung.anmeldung.meldung.fehler.kopf"), meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">'+s("schulhof.seite.anmeldung.anmeldung.meldung.fehler.aktion.zurueck")+'</span></p>');
 	}
 	else {
 		var formulardaten = new FormData();
@@ -28,10 +28,10 @@ function cms_anmelden () {
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "FEHLER") {
-				meldung += '<li>entweder wurde der Benutzername nicht gefunden</li>';
-				meldung += '<li>oder das Passwort passt nicht zum Benutzernamen</li>';
-				meldung += '<li>oder das Passwort ist nicht mehr gültig.</li>';
-				cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				s("schulhof.seite.anmeldung.anmeldung.rueckgabe.fehler").forEach(function(v) {
+					meldung += '<li>'+v+'</li>';
+				})
+				cms_meldung_an('fehler', s("schulhof.seite.anmeldung.anmeldung.meldung.fehler.kopf"), meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">'+s("schulhof.seite.anmeldung.anmeldung.meldung.fehler.aktion.zurueck")+'</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
 				if(location.pathname.includes("Schulhof/Anmeldung"))
@@ -50,25 +50,28 @@ function cms_anmelden () {
 // Funktion, die einen Benutzer fragt, ob er abgemeldet werden will
 function cms_abmelden_frage () {
 	var meldung;
-	if (CMS_BENUTZERART == "s") {meldung = '<p>Willst Du dich wirklich abmelden?</p>';}
-	else {meldung = '<p>Wollen Sie sich wirklich abmelden?</p>';}
+	if (CMS_BENUTZERART == "s") {meldung = s("schulhof.seite.nutzerkonto.abmeldung.meldung.bestaetigung.inhalt.du");}
+	else {meldung = s("schulhof.seite.nutzerkonto.abmeldung.meldung.bestaetigung.inhalt.sie");}
 
 	if (((CMS_BENUTZERART == 'l') || (CMS_BENUTZERART == 'v'))) {
 		if (CMS_IMLN) {
-			meldung += '<p><b>Bitte melden Sie sich nach der Abmeldung vom Schulhof auch aus gesicherten Netzen ab!</b></p>';
+			meldung += s("schulhof.seite.nutzerkonto.abmeldung.meldung.bestaetigung.inhalt.ln");
 		}
 	}
 
-	cms_meldung_an('warnung', 'Wirklich abmelden?', meldung, '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span> <span class="cms_button_nein" onclick="cms_abmelden();">Abmelden</span></p>');
+	cms_meldung_an('warnung', s("schulhof.seite.nutzerkonto.abmeldung.meldung.bestaetigung.kopf"), meldung, '<p><span class="cms_button" onclick="cms_meldung_aus();">'+s("schulhof.seite.nutzerkonto.abmeldung.meldung.bestaetigung.aktion.zurueck")+'</span> <span class="cms_button_nein" onclick="cms_abmelden();">'+s("schulhof.seite.nutzerkonto.abmeldung.meldung.bestaetigung.aktion.abmelden")+'</span></p>');
 }
 
 // Funktion, die einen Benutzer abmeldet
 function cms_abmelden(art) {
 	art = art || 'gewollt';
 	var meldung;
-	if (CMS_BENUTZERART == "s") {meldung = '<p>Du wirst abgemeldet...</p>';}
-	else {meldung = '<p>Sie werden abgemeldet...</p>';}
-	cms_laden_an('Abmelden', meldung);
+	if (CMS_BENUTZERART == "s")
+		meldung = s("schulhof.seite.nutzerkonto.abmeldung.laden.abmeldung.inhalt.du");
+	else
+		meldung = s("schulhof.seite.nutzerkonto.abmeldung.laden.abmeldung.inhalt.sie");
+
+	cms_laden_an(s("schulhof.seite.nutzerkonto.abmeldung.laden.abmeldung.kopf"), meldung);
 
 	// Die Person wird abgemeldet
 		var formulardaten = new FormData();
@@ -123,22 +126,27 @@ function cms_timeout_aktualisieren () {
   if (ende.getMinutes() < 10) {uhrzeit_ende += "0"+ende.getMinutes();}
   else {uhrzeit_ende += ende.getMinutes();}
 
+	var zeit = {"%ende%": uhrzeit_ende, "%minuten%": Math.floor(uebrig % 60), "%stunden%": Math.floor(uebrig / 60)};
+
+	var text = s("schulhof.seite.nutzerkonto.timeout.ende", zeit);
+
 	if(uebrig < 1)
-		var text = "aktiv bis "+uhrzeit_ende+" Uhr - die letzte Minute läuft";
+		text += s("schulhof.seite.nutzerkonto.timeout.minuten.letzte", zeit);
 	else if(uebrig < 2)
-		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minute";
+		text += s("schulhof.seite.nutzerkonto.timeout.minuten.eine", zeit);
 	else if(uebrig < 60)
-		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minuten";
+		text += s("schulhof.seite.nutzerkonto.timeout.minuten.default", zeit);
 	else {
 		var h = uebrig / 60;
 		var m = uebrig % 60;
-		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(h))+" Stunde";
-		if(h >= 2)
-			text += "n";
-		if(m >= 1)
-			text += " und "+(Math.floor(m))+" Minute";
-		if(m >= 2)
-			text += "n";
+		if(Math.floor(h) == 1)
+			text += s("schulhof.seite.nutzerkonto.timeout.stunden.basis.eine", zeit);
+		else
+			text += s("schulhof.seite.nutzerkonto.timeout.stunden.basis.default", zeit);
+		if(Math.floor(m) == 1)
+			text += s("schulhof.seite.nutzerkonto.timeout.stunden.minuten.eine", zeit);
+		else if(m > 1)
+			text += s("schulhof.seite.nutzerkonto.timeout.stunden.minuten.default", zeit);
 	}
 
 	if (aktiv_text) {aktiv_text.innerHTML = text;}
@@ -149,30 +157,31 @@ function cms_timeout_aktualisieren () {
 		cms_abmelden('auto');
 	}
 	else if (uebrig < 1) {
-		if (CMS_BENUTZERART == "s") {meldung = '<p>Die letzte Minute läuft. Du wirst aus Sicherheitsgründen bald abgemeldet! Verlängere jetzt deine Aktivitätszeit!</p>';}
-		else {meldung = '<p>Die letzte Minute läuft. Sie werden aus Sicherheitsgründen bald abgemeldet! Verlängern Sie jetzt Ihre Aktivitätszeit!</p>';}
-		cms_meldung_an('warnung', 'Die Zeit läuft ab!', meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">Verlängern</span>');
+		if (CMS_BENUTZERART == "s")
+			meldung = s("schulhof.seite.nutzerkonto.meldung.timeout.inhalt.du");
+		else
+			meldung = s("schulhof.seite.nutzerkonto.meldung.timeout.inhalt.sie");
+		cms_meldung_an('warnung', s("schulhof.seite.nutzerkonto.meldung.timeout.kopf"), meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">'+s("schulhof.seite.nutzerkonto.meldung.timeout.aktion.verlaengern")+'</span>');
 	}
 }
 
 // Aktivitätszeit verlängern
 function cms_timeout_verlaengern() {
-	cms_laden_an('Aktivitätszeit verlängern', 'Die Sitzung wird verlängert.');
+	cms_laden_an(s("schulhof.seite.nutzerkonto.laden.verlaengern.kopf"), s("schulhof.seite.nutzerkonto.laden.verlaengern.inhalt"));
+	var formulardaten = new FormData();
+	formulardaten.append("anfragenziel", 	'48');
 
-		var formulardaten = new FormData();
-		formulardaten.append("anfragenziel", 	'48');
-
-		function anfragennachbehandlung(rueckgabe) {
-			if (Number.isInteger(Number(rueckgabe))) {
-					CMS_SESSIONTIMEOUT = rueckgabe;
-					cms_timeout_aktualisieren();
-					cms_meldung_an('erfolg', 'Aktivitätszeit verlängern', '<p class="cms">Die Verlängerung wurde durchgeführt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span>');
-			}
-			else {
-				cms_fehlerbehandlung(rueckgabe);
-			}
+	function anfragennachbehandlung(rueckgabe) {
+		if (Number.isInteger(Number(rueckgabe))) {
+				CMS_SESSIONTIMEOUT = rueckgabe;
+				cms_timeout_aktualisieren();
+				cms_meldung_an('erfolg', s("schulhof.seite.nutzerkonto.meldung.verlaengern.kopf"), '<p class="cms">'+s("schulhof.seite.nutzerkonto.meldung.verlaengern.inhalt")+'</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">'+s("schulhof.seite.nutzerkonto.meldung.verlaengern.aktion.ok")+'</span>');
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
 
@@ -183,21 +192,21 @@ function cms_passwort_vergessen () {
 	var benutzername = document.getElementById('cms_schulhof_anmeldung_passwortvergessen_bentuzer').value;
 	var mail = document.getElementById('cms_schulhof_anmeldung_passwortvergessen_mail').value;
 
-	var meldung = '<p>Es wurde kein neues Passwort verschickt, denn ...</p><ul>';
+	var meldung = '<p>'+s("schulhof.seite.anmeldung.vergessen.fehler.meldung")+'</p><ul>';
 	var fehler = false;
 
 	// Pflichteingaben prüfen
 	if (benutzername.length < 6) {
-		meldung += '<li>der Benutzername ist zu kurz.</li>';
+		meldung += '<li>'+s("schulhof.seite.anmeldung.vergessen.fehler.benutzername")+'</li>';
 		fehler = true;
 	}
 	if (!cms_check_mail(mail)) {
-		meldung += '<li>es wurde keine gültige E-Mail-Adresse eingegeben.</li>';
+		meldung += '<li>'+s("schulhof.seite.anmeldung.vergessen.fehler.mail")+'</li>';
 		fehler = true;
 	}
 
 	if (fehler) {
-		cms_meldung_an('fehler', 'Neues Passwort zuschicken', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		cms_meldung_an('fehler', s("schulhof.seite.anmeldung.vergessen.meldung.fehler.kopf"), meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">'+s("schulhof.seite.anmeldung.vergessen.meldung.fehler.aktion.zurueck")+'</span></p>');
 	}
 	else {
 		var formulardaten = new FormData();
@@ -207,9 +216,10 @@ function cms_passwort_vergessen () {
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "FEHLER") {
-				meldung += '<li>entweder wurde der Benutzername nicht gefunden</li>';
-				meldung += '<li>oder die E-Mail-Adresse passt nicht zum Benutzernamen.</li>';
-				cms_meldung_an('fehler', 'Neues Passwort zuschicken', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				s("schulhof.seite.anmeldung.vergessen.rueckgabe.fehler").forEach(function(v) {
+					meldung += '<li>'+v+'</li>';
+				})
+				cms_meldung_an('fehler', s("schulhof.seite.anmeldung.vergessen.meldung.fehler.kopf"), meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">'+s("schulhof.seite.anmeldung.vergessen.meldung.fehler.aktion.zurueck")+'</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
 				cms_link('Schulhof/Anmeldung/Zugeschickt!');

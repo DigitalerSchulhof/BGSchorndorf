@@ -263,7 +263,7 @@
 
     <script><?php
 			$CMS_ONLOAD_EXTERN_EVENTS = "";
-			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\n";
+			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\nvar strings = '".cms_js_strings()."';\n";
 	    if ($CMS_ANGEMELDET) {
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
 					echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";

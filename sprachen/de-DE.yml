@@ -30,7 +30,7 @@ schulhof:
         erfolg: Anmelden
         vergessen: Passwort vergessen?
       hinweis:
-        version: Version %v%
+        version: Version %version%
         cookies: Cookies aktiv?
         javascript: JavaScript aktiv?
         nutzer: Nur ein Nutzer pro Browser zur selben Zeit!
@@ -48,10 +48,10 @@ schulhof:
       neuerungen:
         ueberschrift: Neuerungen
         einblenden:
-          version: Neuerungen in Version %v% einblenden
+          version: Neuerungen in Version %version% einblenden
           aeltere: Neuerungen älterer Versionen einblenden
         ausblenden:
-          version: Neuerungen in Version %v% ausblenden
+          version: Neuerungen in Version %version% ausblenden
           aeltere: Neuerungen älterer Versionen ausblenden
         version:
           0_5_3:
@@ -239,3 +239,88 @@ schulhof:
               - Auch gesendete Nachrichten können nach Empfänger durchsucht werden.
               - Die Menüführung wird auch für Tablets und hochauflösende Smartphones unterstützt.
               - Kleinere Änderungen an der Darstellung zur besseren Sichtbarkeit von Symbolen und Texten wurden durchgeführt.
+javascript:
+  schulhof:
+    seite:
+      anmeldung:
+        anmeldung:
+          laden:
+            anmelden:
+              kopf: Anmelden
+              inhalt: Die eingegebenen Daten werden überprüft, die Anmeldung wird durchgeführt.
+          fehler:
+            meldung: Die Anmeldung wurde abgebrochen, denn ...
+            benutzername: der Benutzername ist zu kurz.
+            passwort: das Passwort ist zu kurz.
+          meldung:
+            fehler:
+              kopf: Anmelden
+              aktion:
+                zurueck:  Zurück
+          rueckgabe:
+            fehler:
+              - entweder wurde der Benutzername nicht gefunden
+              - oder das Passwort passt nicht zum Benutzernamen
+              - oder das Passwort ist nicht mehr gültig.
+        vergessen:
+          fehler:
+            meldung: Es wurde kein neues Passwort verschickt, denn ...
+            benutzername: der Benutzername ist zu kurz.
+            mail: es wurde keine gültige E-Mail-Adresse eingegeben.
+          meldung:
+            fehler:
+              kopf: Neues Passwort zuschicken
+              aktion:
+                zurueck: Zurück
+          rueckgabe:
+            fehler:
+              - entweder wurde der Benutzername nicht gefunden
+              - oder die E-Mail-Adresse passt nicht zum Benutzernamen.
+      nutzerkonto:
+        abmeldung:
+          meldung:
+            bestaetigung:
+              kopf: Wirklich abmelden?
+              inhalt:
+                du: <p>Willst Du dich wirklich abmelden?</p>
+                sie: <p>Wollen Sie sich wirklich abmelden?</p>
+                ln: <p><b>Bitte melden Sie sich nach der Abmeldung vom Schulhof auch aus gesicherten Netzen ab!</b></p>
+              aktion:
+                zurueck: Zurück
+                abmelden: Abmelden
+          laden:
+            abmeldung:
+              kopf: abmelden
+              inhalt:
+                du: <p>Du wirst abgemeldet...</p>
+                sie: <p>Sie werden abgemeldet...</p>
+        timeout:
+          ende: "Aktiv bis %ende% Uhr - "
+          minuten:
+            letzte: die letzte Minute läuft!
+            eine: noch %minuten% Minute
+            default: noch %minuten% Minuten
+          stunden:
+            basis:
+              eine: noch %stunden% Stunde
+              default: noch %stunden% Stunden
+            minuten:
+              eine: " und %minuten% Minute"
+              default: " und %minuten% Minuten"
+        meldung:
+          timeout:
+            kopf: Die Zeit läuft ab!
+            inhalt:
+              du: <p>Die letzte Minute läuft. Du wirst aus Sicherheitsgründen bald abgemeldet! Verlängere jetzt deine Aktivitätszeit!</p>
+              sie: <p>Die letzte Minute läuft. Sie werden aus Sicherheitsgründen bald abgemeldet! Verlängern Sie jetzt Ihre Aktivitätszeit!</p>
+            aktion:
+              verlaengern: Verlängern
+          verlaengern:
+            kopf: Aktivitätszeit verlängern
+            inhalt: Die Verlängerung wurde durchgeführt.
+            aktion:
+              ok: OK
+        laden:
+          verlaengern:
+            kopf: Aktivitätszeit verlängern
+            inhalt: Die Sitzung wird verlängert.
