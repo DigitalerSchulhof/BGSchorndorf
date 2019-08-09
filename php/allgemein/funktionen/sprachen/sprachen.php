@@ -3,12 +3,16 @@
 require_once("php/allgemein/funktionen/sprachen/yaml.php");
 require_once("php/allgemein/funktionen/sprachen/functions.php");
 
-$CMS_STRINGS = yaml_load_file("sprachen/de_DE.yml");
+$CMS_SPRACHEN = array("de-DE", "en-GB");
 
-function s($key, $variablen = array()) {
+$CMS_STRINGS = array();
+
+function s($key, $variablen = array(), $sprache = null) {
   global $CMS_STRINGS;
+  $sprache = $sprache ?? cms_aktive_sprache();
+  $strings = $CMS_STRINGS[$sprache] ?? $CMS_STRINGS[$sprache] = yaml_load_file("sprachen/$sprache.yml");
   $keys = explode(".", $key);
-  $value = $CMS_STRINGS;
+  $value = $strings;
   while($k = array_shift($keys))
     if(isset($value[$k]))
       $value = $value[$k];
@@ -22,5 +26,9 @@ function s($key, $variablen = array()) {
     $value = str_replace($k, strval($v), $value);
 
   return $value;
+}
+
+function cms_aktive_sprache() {
+  return $_COOKIE["sprache"] ?? "de-DE";
 }
 ?>

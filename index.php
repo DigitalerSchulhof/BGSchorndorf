@@ -175,7 +175,8 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
-		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
+		echo "<script src=\"js/jquery/jquery.js?v=$CMS_VERSION\"></script>";
+		echo "<script src=\"js/jquery/cookie.js?v=$CMS_VERSION\"></script>";
 
     echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/generieren.js?v=$CMS_VERSION\"></script>";
@@ -187,6 +188,7 @@
     echo "<script src=\"js/allgemein/check.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/download.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/suche.js?v=$CMS_VERSION\"></script>";
+		echo "<script src=\"js/allgemein/sprachen.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/schulhof/nutzerkonto/anmelden.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/zugehoerig.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";

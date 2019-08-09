@@ -1,7 +1,7 @@
 <?php
 // Unterseiten einer bestimmten Seite ausgeben (ebene = s)
 function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = '', $untermenuebegonnen = false) {
-	global $CMS_URL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_ANGEMELDET;
+	global $CMS_URL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_ANGEMELDET, $CMS_SPRACHEN;
 	$code = "";
 	$finale = "";
 
@@ -87,6 +87,8 @@ function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = 
 		$code .= "<li><a href=\"Website/Impressum\">Impressum</a></li>";
 		if(($CMS_EINSTELLUNGEN['Feedback aktiv'] == "1" && ($CMS_EINSTELLUNGEN['Feedback Anmeldung notwendig'] == "0" || ($CMS_EINSTELLUNGEN['Feedback Anmeldung notwendig'] == "1" && $CMS_ANGEMELDET))) || ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] == "1" && ($CMS_EINSTELLUNGEN['Fehlermeldung Anmeldung notwendig'] == "0" || ($CMS_EINSTELLUNGEN['Fehlermeldung Anmeldung notwendig'] == "1" && $CMS_ANGEMELDET))))
 			$code .= "<li class=\"cms_footer_feedback\"><a href=\"Website/Feedback\">Fehler melden</a></li>";
+		foreach($CMS_SPRACHEN as $sprache)
+			$code .= "<li><a class=\"cms_button cms_sprachwahl\" data-sprache=\"$sprache\"><img src=\"res/icons/klein/sprache_$sprache.png\"> ".s("sprache", array(), $sprache)."</a></li>";
 	}
 
 	if (strlen($code) > 0) {
