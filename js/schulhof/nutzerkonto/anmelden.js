@@ -34,8 +34,7 @@ function cms_anmelden () {
 				cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
-				console.log(location.pathname);
-				if(location.pathname.endsWith("Schulhof/Anmeldung"))
+				if(location.pathname.includes("Schulhof/Anmeldung"))
 					cms_link('Schulhof/Nutzerkonto');
 				else
 					location.href = location.pathname;
