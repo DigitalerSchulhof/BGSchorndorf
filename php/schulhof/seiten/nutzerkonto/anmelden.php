@@ -5,20 +5,21 @@
 
 <div class="cms_spalte_3">
 <div class="cms_spalte_i">
-<h2>Anmeldung</h2>
+<!-- <h2>Anmeldung</h2> -->
+<h2><?php echo s('schulhof.seite.anmeldung.anmeldung.ueberschrift') ?></h2>
 
 <?php
 if (isset($CMS_URL[2])) {
 	if ($CMS_URL[2] == "Automatische_Abmeldung") {
-		$meldung = '<h4>Automatische Abmeldung nach Inaktivität</h4><p>Aus Sicherheitsgründen wurde nach langer Inaktivität eine Abmeldung durchgeführt.</p>';
+		$meldung = s('schulhof.seite.anmeldung.meldung.abmeldung.inaktivitaet.inhalt');
 		echo cms_meldung("info", $meldung);
 	}
 	if ($CMS_URL[2] == "Bis_bald!") {
-		$meldung = '<h4>Erfolgreiche Abmeldung</h4><p>Die Abmeldung war erfolgreich. Bis bald!</p>';
+		$meldung = s('schulhof.seite.anmeldung.meldung.abmeldung.manuell.inhalt');
 		echo cms_meldung("erfolg", $meldung);
 	}
 	if ($CMS_URL[2] == "Zugeschickt!") {
-		$meldung = '<h4>Neues Passwort</h4><p>Ein Passwort wurde an die hinterlegte E-Mail-Adresse geschickt. Dieses Passwort ist nur eine Stunde gültig. Das Passwort sollte direkt nach der Anmeldung geändert werden!</p>';
+		$meldung = s('schulhof.seite.anmeldung.meldung.passwort.neu.inhalt');
 		echo cms_meldung("info", $meldung);
 	}
 }
@@ -29,28 +30,28 @@ $code = "";
 $anmeldung_moeglich = true;
 if ($anmeldung_moeglich) {
 
-	//$meldung = "<h4>Bugs nach Update</h4>";
-	//$meldung .= "<p>Termine, Blogeinträge, Raumpläne und Leihgeräte funktionieren nach dem Update noch nicht vollständig. Diese Probleme werden in den nächsten Tagen aufgelöst.</p>";
-	//$code .= cms_meldung('info', $meldung);
+	// $meldung = s("schulhof.seite.anmeldung.meldung.bugs.kopf");
+	// $meldung .= s("schulhof.seite.anmeldung.meldung.bugs.inhalt");
+	// $code .= cms_meldung('info', $meldung);
 
-	$code .= "<p>Um den Schulhof zu betreten, ist eine Anmeldung nötig ...</p>";
+	$code .= s("schulhof.seite.anmeldung.anmeldung.vorwort");
 
 	$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr><th>Benutzername:</th><td><input name=\"cms_schulhof_anmeldung_bentuzer\" id=\"cms_schulhof_anmeldung_bentuzer\" type=\"text\"></td></tr>";
-		$code .= "<tr><th>Passwort:</th><td><input name=\"cms_schulhof_anmeldung_passwort\" id=\"cms_schulhof_anmeldung_passwort\" type=\"password\"></td></tr>";
+		$code .= "<tr><th>".s('schulhof.seite.anmeldung.anmeldung.formular.benutzername').":</th><td><input name=\"cms_schulhof_anmeldung_bentuzer\" id=\"cms_schulhof_anmeldung_bentuzer\" type=\"text\"></td></tr>";
+		$code .= "<tr><th>".s('schulhof.seite.anmeldung.anmeldung.formular.passwort').":</th><td><input name=\"cms_schulhof_anmeldung_passwort\" id=\"cms_schulhof_anmeldung_passwort\" type=\"password\"></td></tr>";
 	$code .= "</table>";
 
-	$code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet, als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
-	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird das Verwenden von Cookies und das Verarbeiten von persönlichen Daten akzeptiert.</p>";
+	$code .= "<p class=\"cms_notiz\">".s('schulhof.seite.anmeldung.anmeldung.datenschutzhinweis')."</p>";
+	$code .= "<p class=\"cms_notiz\">".s('schulhof.seite.anmeldung.anmeldung.cookies')."</p>";
 
-	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a></p>";
+	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">".s('schulhof.seite.anmeldung.anmeldung.erfolg')."</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">".s('schulhof.seite.anmeldung.anmeldung.vergessen')."</a></p>";
 }
 else {
 	$dbs = cms_verbinden('s');
 	$sql = "UPDATE nutzerkonten SET sessiontimeout = 0, sessionid = ''";
 	$dbs->query($sql);
-	$meldung = "<h4>Wartung des Schulhofs</h4>";
-	$meldung .= "<p>Der Schulhof wird momentan gewartet. Daher sind keine Anmeldungen möglich. Aktive Benutzer wurden abgemeldet.</p>";
+	$meldung = s('schulhof.seite.anmeldung.meldung.wartung.kopf');
+	$meldung .= s('schulhof.seite.anmeldung.meldung.wartung.inhalt');
 	$code .= cms_meldung('bauarbeiten', $meldung);
 }
 echo $code;

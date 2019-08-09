@@ -79,19 +79,6 @@ function cms_galerie_details_laden($id, $ziel) {
     $code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 		$code .= "<h3>Art der Galerie</h3>";
 		$code .= "<table class=\"cms_formular\">";
-/*    $code .= "<tr><th>Sichtbarkeit:</th><td><select id=\"cms_oeffentlichkeit\" name=\"cms_oeffentlichkeit\">";
-    $oeffentlichkeiten = array(
-      0 => "Mitglieder der zugeordneten Gruppen",
-      1 => "Lehrer",
-      2 => "Lehrer und Verwaltung",
-      3 => "Gesamter Schulhof",
-      4 => "Auf der Website und im Schulhof"
-    );
-    for ($i=0; $i < count($oeffentlichkeiten); $i++) {
-      if ($oeffentlichkeit == $i) {$selected = "selected";} else {$selected = "";}
-      $code .= "<option value=\"$i\" $selected>".$oeffentlichkeiten[$i]."</option>";
-    }
-    $code .= "</select></td></tr>";*/
     $code .= "<input type=\"hidden\" id=\"cms_oeffentlichkeit\" name=\"cms_oeffentlichkeit\" value=\"4\"></input>";
     if ($genehmigung) {
       $code .= "<tr><th>Genehmigt:</th><td>".cms_schieber_generieren('galerie_genehmigt', $genehmigt)."</td></tr>";

@@ -15,6 +15,7 @@
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
 	include_once("php/schulhof/seiten/website/reaktionen.php");
+	include_once("php/allgemein/funktionen/sprachen/sprachen.php");
 
 	session_start();
 
