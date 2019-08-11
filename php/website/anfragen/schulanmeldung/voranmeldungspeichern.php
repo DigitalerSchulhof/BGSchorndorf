@@ -15,7 +15,8 @@ if (isset($_SESSION['VORANMELDUNG_COOKIES'])) {$cookies = $_SESSION['VORANMELDUN
 
 if (isset($_POST['korrekt'])) {$korrekt = $_POST['korrekt'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['code'])) {$code = $_POST['code'];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION['SPAMSCHUTZ'])) {$codevergleich = $_SESSION['SPAMSCHUTZ'];} else {echo "FEHLER"; exit;}
+postLesen("uid");
+if (isset($_SESSION['SPAMSCHUTZ_'.$uid])) {$codevergleich = $_SESSION['SPAMSCHUTZ_'.$uid];} else {echo "FEHLER"; exit;}
 
 if (isset($_SESSION['VORANMELDUNG_S_NACHNAME'])) {$snachname = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_NACHNAME']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_S_VORNAME'])) {$svorname = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_VORNAME']);} else {echo "FEHLER"; exit;}

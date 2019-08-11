@@ -11,6 +11,7 @@
 	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
+	include_once("php/allgemein/funktionen/captcha.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
