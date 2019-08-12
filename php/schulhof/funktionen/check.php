@@ -57,9 +57,16 @@ function cms_check_pfad($pfad) {
 }
 
 function cms_check_ganzzahl($wert, $min = false, $max = false) {
+	if(is_array($wert)) {
+		$r = true;
+		foreach ($wert as $i => $w)
+			if(!cms_check_ganzzahl($w, $min, $max))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^-{0,1}[0-9]+$/", $wert) == 1) {
-		if ($min) {if ($wert < $min) {return false;}}
-		if ($max) {if ($wert > $max) {return false;}}
+		if ($min !== false) {if ($wert < $min) {return false;}}
+		if ($max !== false) {if ($wert > $max) {return false;}}
 		return true;
 	}
 	else {return false;}
