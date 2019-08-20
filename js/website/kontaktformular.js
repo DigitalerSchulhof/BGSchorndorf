@@ -310,6 +310,17 @@ function cms_kontaktformular_absenden(element) {
     meldung += '<li>die Sicherheitsabfrage wurde nicht eingegeben.</li>';
     fehler = true;
   }
+  var gr = 0;
+  if(anhang && anhang.length) {
+    for(var i = 0; i < anhang.length; i++) {
+      var a = anhang[i];
+      gr += a.size;
+    }
+  }
+  if(gr >= 8388608) {
+    meldung += '<li>die Anhänge sind zu groß.</li>';
+    fehler = true;
+  }
 
   if (fehler) {
     cms_meldung_an('fehler', 'Kontaktformular absenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
