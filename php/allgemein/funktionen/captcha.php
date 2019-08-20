@@ -10,10 +10,11 @@ function cms_zufallstext($laenge) {
   return($text);
 }
 
-function cms_captcha_generieren($id = "") {
+function cms_captcha_generieren($id = "", &$uuid = null) {
   do {
     $uid = uniqid();
   } while(isset($_SESSION["SPAMSCHUTZ_".$uid]));
+  $uuid = $uid;
   unset($_SESSION["SPAMSCHUTZ_".$uid]);
   $text = cms_zufallstext(5);
   $_SESSION["SPAMSCHUTZ_".$uid] = implode('', $text);
@@ -49,7 +50,7 @@ function cms_captcha_generieren($id = "") {
   ob_end_clean();
   $b64 = base64_encode($b64);
   imagedestroy($bild);
-  return "<img id=\"$id\" src=\"data:image/png;base64, $b64\" class=\"cms_spamschutz\" style=\"float: left; margin-right: 10px;\" data-uuid=\"$uid\">";
+  return "<img id=\"$id\" src=\"data:image/png;base64, $b64\" class=\"cms_spamschutz cms_spamschutz_$uid\" style=\"float: left; margin-right: 10px;\" data-uuid=\"$uid\">";
 }
 
 

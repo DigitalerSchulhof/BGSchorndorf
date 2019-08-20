@@ -1,7 +1,7 @@
 <?php
 // Stellt Verbindung zur SchulhofDatenbank her
 function cms_zur_db($host, $user, $pass, $db) {
-	$db = new mysqli($host, $user, $pass, $db);
+	$db = new mysqli($host, $user, $pass, $db, 1234);
 	$db -> set_charset("utf8");
 	return $db;
 }

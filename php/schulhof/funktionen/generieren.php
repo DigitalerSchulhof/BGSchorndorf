@@ -489,6 +489,18 @@ function cms_positionswahl_generieren($id, $position, $maxpos, $neu = false) {
   $code .= "</select>";
   return $code;
 }
+/**
+* $index: selected nach index festlegen?
+**/
+function cms_select_generieren($id, $klasse, $werte, $wert = null, $index = false) {
+  $code = "<select name=\"$id\", id=\"$id\" class=\"$klasse\">";
+  foreach ($werte as $i => $w) {
+    if (($index && $i == $wert) || (!$index && $w == $wert)) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+    $code .= "<option$zusatz value=\"".($index?$i:$w)."\">$w</option>";
+  }
+  $code .= "</select>";
+  return $code;
+}
 
 function cms_generiere_bilddaten($pfad) {
   $typ = pathinfo($pfad, PATHINFO_EXTENSION);
@@ -662,5 +674,38 @@ function cms_sql_mit_aes($felder, $tabelle = "", $bedingung = "") {
       $sql .= " WHERE $bedingung";
   }
   return $sql;
+}
+
+// Alt - Aktuell - Neu
+function cms_sql_aan($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_aan($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert."alt = $f, ".$wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
+}
+//  Aktuell - Neu
+function cms_sql_an($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_an($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
 }
 ?>
