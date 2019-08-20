@@ -592,15 +592,17 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
         else {
         $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
           $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
-          $code .= "<tr><th>Absender: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
-          $code .= "<tr><th>E-Mail-Adresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
-          $code .= "<tr><th>Betreff: </th><td><input type=\"text\" class=\"cms_kontaktformular_betreff\"></td></tr>";
-          $code .= "<tr><th>Nachricht: </th><td><textarea class=\"cms_kontaktformular_nachricht\"></textarea></td></tr>";
-          if($anhang)
-            $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple></td></tr>";
           $code .= "<tr><th>Empfänger: </th><td><select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
           while($sqld = $sql->fetch_assoc())
-            $code .= "<option value=\"".$sqld["id"]."\">".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."</option>";
+          $code .= "<option value=\"".$sqld["id"]."\">".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."</option>";
+          $code .= "</select></td></tr>";
+
+          $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
+          $code .= "<tr><th>E-Mail-Adresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
+          $code .= "<tr><th>Betreff: </th><td><input type=\"text\" class=\"cms_kontaktformular_betreff\"></td></tr>";
+          $code .= "<tr><th>Nachricht: </th><td><textarea rows=5 class=\"cms_kontaktformular_nachricht\"></textarea></td></tr>";
+          if($anhang)
+            $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple></td></tr>";
           if($kopie)
             $code .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
           $code .= "<tr><th>Sicherheitsabfrage zur Spamverhidnerung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
