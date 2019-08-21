@@ -527,7 +527,19 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
         if ($anfrage = $dbs->query($sql)) {
           include_once('php/schulhof/seiten/termine/termineausgeben.php');
           while ($daten = $anfrage->fetch_assoc()) {
-            $termincode .= cms_termin_link_ausgeben($dbs, $daten);;
+            $termincode .= cms_termin_link_ausgeben($dbs, $daten);
+          }
+          $anfrage->free();
+        }
+      }
+
+      $galeriecode = "";
+      if ($galerie == 1) {
+        $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE aktiv = 1 AND genehmigt = 1 ORDER BY datum ASC LIMIT 0,".$galerieanzahl;
+        if ($anfrage = $dbs->query($sql)) {
+          include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
+          while ($daten = $anfrage->fetch_assoc()) {
+            $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, "artikel");
           }
           $anfrage->free();
         }
@@ -538,6 +550,9 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
       }
       if (strlen($termincode) > 0) {
         $code .= "<div class=\"cms_eventuebersicht_box_a cms_eventuebersicht_box_termine\"><div class=\"cms_eventuebersicht_box_i\"><h2>Anstehende Termine</h2><ul class=\"cms_terminuebersicht\">".$termincode."</ul><p><a class=\"cms_button\" href=\"Website/Termine/".date('Y')."/".cms_monatsnamekomplett(date('m'))."\">Mehr Termine</a></p></div></div>";
+      }
+      if (strlen($galeriecode) > 0) {
+        $code .= "<div class=\"cms_eventuebersicht_box_a cms_eventuebersicht_box_galerien\"><div class=\"cms_eventuebersicht_box_i\"><h2>Galerien</h2><ul class=\"cms_galerieuebersicht_artikel\">".$galeriecode."</ul><p><a class=\"cms_button\" href=\"Website/Galerie/".date('Y')."/".cms_monatsnamekomplett(date('m'))."\">Mehr Galerien</a></p></div></div>";
       }
       $code .= "<div class=\"cms_clear\"></div>";
 
