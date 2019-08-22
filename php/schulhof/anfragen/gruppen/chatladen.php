@@ -54,19 +54,19 @@ if (cms_angemeldet() && $zugriff) {
           $sql->fetch();
           $name = cms_generiere_anzeigename($vorname, $nachname, $titel);
           $namecache[$p] = $name;
-          array_push($nachrichten, array($name, date("H:i", $d), $i, $m, $gv, $ga));
+          array_push($nachrichten, array($name, $d, $i, $m, $gv, $ga));
         }
     }
-    $_SESSION["LETZENACHRICHT_$g"]["$gid"] = array($p, $d);
+    $_SESSION["LETZENACHRICHT_$g"]["$gid"] = array($p??-1, $d??0);
+    $del = chr(29);
     /*
       Die Antwort wird als ","-getrennter String zurück gegeben.
-      Person, Datum, Meldestatus, Melder werden normal gehandelt, Inhalt wird URI enkodiert, danach base64 - Uri, weil js ein Problem damit hat, Umlaute etc zu base64-dekodieren.
       Falls Meldestatus 0 ist, werden Melder und Meldezeitpunkt ausgelassen und der nächste Eintrag beginnt.
     */
     foreach($nachrichten as $i => $v) {
-      echo $v[0].",".$v[1].",".base64_encode(urlencode($v[2])).",".$v[3].",";
+      echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del;
       if($v[3])
-        echo $v[4].",".$v[5].",";
+        echo $v[4].$del.$v[5].$del;
     }
 	}
 	else {echo "FEHLER";}

@@ -206,11 +206,24 @@
           }
           &[data-aktion=mehr] {
             cursor: pointer;
+            .cms_hinweis {
+              transition-delay: 0ms;
+              z-index: 5;
+              &.cms_hinweis_sichtbar {
+                max-height: 100px;
+                p {
+                  padding: 5px;
+                }
+              }
+            }
           }
           img {
             height: 16px;
             width: 16px;
           }
+        }
+        .cms_chat_nachricht_ts {
+          display: none;
         }
         .cms_chat_nachricht_autor {
           font-size: 90%;
@@ -218,7 +231,8 @@
         .cms_chat_nachricht_nachricht {
           padding-left: 5px;
           font-size: 110%;
-          white-space: pre;
+          white-space: pre-wrap;
+          word-break: break-word
         }
         .cms_chat_nachricht_zeit {
           float: right;
@@ -228,6 +242,21 @@
         .cms_chat_nachricht_innen {
           float: right;
           background-color: @chateigen;
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              display: none;
+              .cms_hinweis {
+                text-align: right;
+                left: unset;
+                right: 0;
+                p {
+                  &[data-mehr=melden] {
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
         }
       }
       &.cms_chat_nachricht_sendend {

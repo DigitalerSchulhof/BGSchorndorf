@@ -139,6 +139,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			if(!count($nachrichten))
 				$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
 			$letztesDatum = "blub";
+			$_SESSION["LETZENACHRICHT_$g"]["$gruppenid"] = array(-1, 0);
 			foreach($nachrichten as $i => $n) {
 				if(array_key_exists($n["person"], $namecache)) {
 					$name = $namecache[$n["person"]];
@@ -157,12 +158,13 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 					$letztesDatum = $tag;
 					$code .= "<div class=\"cms_chat_datum cms_notiz\">$tag</div>";
 				}
-				$code .= "<div class=\"cms_chat_nachricht_aussen ".($n["person"]==$CMS_BENUTZERID?"cms_chat_nachricht_eigen":"")."\">";
+				$code .= "<div class=\"cms_chat_nachricht_aussen".($n["person"]==$CMS_BENUTZERID?" cms_chat_nachricht_eigen":"")."\">";
 					$code .= "<div class=\"cms_chat_nachricht_innen\">";
+						$code .= "<div class=\"cms_chat_nachricht_ts\">".$n["datum"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"sendend\"><img src=\"res/laden/standard.gif\"></div>";
-						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;</div>";
+						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen()\">Nachricht melden</p></span></div>";
 						$code .= "<div class=\"cms_chat_nachricht_autor\">".$name."</div>";
-						$code .= "<div class=\"cms_chat_nachricht_nachricht\">".htmlentities($n["inhalt"])."</div>";
+						$code .= "<div class=\"cms_chat_nachricht_nachricht\">".$n["inhalt"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_zeit\">".date("H:i", $n["datum"])."</div>";
 					$code .= "</div>";
 				$code .= "</div>";

@@ -29,8 +29,8 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		$gk = cms_textzudb($g);
+		$nachricht = str_replace(chr(29), "", $nachricht);
     $nachricht = htmlentities($nachricht);
-
     $sql = "INSERT INTO $gk"."chat (gruppe, person, datum, inhalt, meldestatus, gemeldetvon, gemeldetam) VALUES (?, ?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), 0, '', 0);";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiis", $gid, $person, $jetzt, $nachricht);

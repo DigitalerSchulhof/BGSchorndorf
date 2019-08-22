@@ -607,19 +607,22 @@ function cms_chat_nachricht_senden(art, id) {
   var tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
   if(!chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()}).length)
     tag.appendTo(chat);
+  chat.find("#cms_chat_leer").remove();
 
   var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen cms_chat_nachricht_eigen cms_chat_nachricht_sendend"}).append(
     $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+      $("<div></div>", {class: "cms_chat_nachricht_ts"}).html(Date.now() / 1000 | 0),
       $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"})),
-      $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;"),
-      $("<div></div>", {class: "cms_chat_nachricht_autor"}).text(CMS_BENUTZERTITEL+" "+CMS_BENUTZERVORNAME+" "+CMS_BENUTZERNACHNAME),
+      $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen()\">Nachricht melden</p></span>"),
+      $("<div></div>", {class: "cms_chat_nachricht_autor"}).html(CMS_BENUTZERTITEL+" "+CMS_BENUTZERVORNAME+" "+CMS_BENUTZERNACHNAME),
       $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).text(nachricht),
-      $("<div></div>", {class: "cms_chat_nachricht_zeit"}).text(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
+      $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
     )
   ).appendTo(chat);
   chat.scrollTop(chat.prop("scrollHeight"));
 
   var formulardaten = new FormData();
+  console.log(nachricht);
 	formulardaten.append("nachricht", nachricht);
   formulardaten.append("gruppe", art);
 	formulardaten.append("gruppenid", id);
@@ -643,6 +646,13 @@ function cms_chat_nachricht_senden(art, id) {
 $(window).on("load", function() {
   var chat = $("#cms_chat_nachrichten");
   chat.scrollTop(chat.prop("scrollHeight"));
+  $(".cms_chat_nachricht_aktion").click(function() {
+    if($(this).data("aktion") == "mehr") {
+      var h = $(this).find(".cms_hinweis");
+      $(this).parents("#cms_chat_nachrichten").find(".cms_chat_nachricht_aktion[data-aktion=mehr] .cms_hinweis").not(function() {return $(this).is(h)}).removeClass("cms_hinweis_sichtbar");
+      h.toggleClass("cms_hinweis_sichtbar");
+    }
+  });
 });
 
 function cms_chat_enter(e, art, id) {
@@ -667,25 +677,32 @@ function cms_chat_aktualisieren(art, id) {
     else {
       if(!rueckgabe)
         return;
-      var r = rueckgabe.split(",");
+        console.log(rueckgabe)
+      var r = rueckgabe.split(String.fromCharCode(29));
       r.pop();
-      var p, d, i, m, gv, ga;
+      chat.find("#cms_chat_leer").remove();
+      var p, d, dt, i, m, gv, ga, tag, nachr;
       while(r.length) {
         p    = r.shift();
-        d    = r.shift();
-        i    = decodeURI(atob(r.shift()));
+        dt   = r.shift()
+        d    = new Date(dt*1000);
+        i    = r.shift();
         m    = r.shift();
         if(m == true) {
           gv = r.shift();
           ga = r.shift();
         }
-        var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(
+        tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
+        if(!chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()}).length)
+          tag.appendTo(chat);
+        nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(
           $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+            $("<div></div>", {class: "cms_chat_nachricht_ts"}).html(dt),
             $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"})),
-            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;"),
-            $("<div></div>", {class: "cms_chat_nachricht_autor"}).text(p),
-            $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).text(i),
-            $("<div></div>", {class: "cms_chat_nachricht_zeit"}).text(d)
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen()\">Nachricht melden</p></span>"),
+            $("<div></div>", {class: "cms_chat_nachricht_autor"}).html(p),
+            $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).html(i),
+            $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
           )
         ).appendTo(chat);
         chat.scrollTop(chat.prop("scrollHeight"));
@@ -696,4 +713,15 @@ function cms_chat_aktualisieren(art, id) {
   }
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+var cms_chat_zu_loeschen;
+function cms_chat_nachricht_melden_anzeigen() {
+  var p = $(this);
+  cms_chat_zu_loeschen = p.parents(".cms_nachricht_aussen");
+  cms_meldung_an('warnung', 'Nachricht melden', '<p>Soll die Nachricht wirklich gemeldet werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_nachricht_melden()">Melden</span></p>');
+}
+
+function cms_chat_nachricht_melden() {
+  alert("HI");
 }
