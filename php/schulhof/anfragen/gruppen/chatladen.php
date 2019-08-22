@@ -31,10 +31,10 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$gk = cms_textzudb($g);
 
-    $sql = "SELECT person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM $gk"."chat WHERE gruppe = ? AND datum >= ? ORDER BY datum ASC;";
+    $sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM $gk"."chat WHERE gruppe = ? AND datum >= ? ORDER BY datum ASC;";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("ii", $gid, $letzte[1]);
-    $sql->bind_result($p, $d, $i, $m, $gv, $ga);
+    $sql->bind_result($id, $p, $d, $i, $m, $gv, $ga);
     $sql->execute();
     $f = false;
     $nachrichten = array();
@@ -54,7 +54,7 @@ if (cms_angemeldet() && $zugriff) {
           $sql->fetch();
           $name = cms_generiere_anzeigename($vorname, $nachname, $titel);
           $namecache[$p] = $name;
-          array_push($nachrichten, array($name, $d, $i, $m, $gv, $ga));
+          array_push($nachrichten, array($id, $name, $d, $i, $m, $gv, $ga));
         }
     }
     $_SESSION["LETZENACHRICHT_$g"]["$gid"] = array($p??-1, $d??0);
@@ -64,9 +64,9 @@ if (cms_angemeldet() && $zugriff) {
       Falls Meldestatus 0 ist, werden Melder und Meldezeitpunkt ausgelassen und der nächste Eintrag beginnt.
     */
     foreach($nachrichten as $i => $v) {
-      echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del;
-      if($v[3])
-        echo $v[4].$del.$v[5].$del;
+      echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del.$v[4].$del;
+      if($v[4])
+        echo $v[5].$del.$v[6].$del;
     }
 	}
 	else {echo "FEHLER";}

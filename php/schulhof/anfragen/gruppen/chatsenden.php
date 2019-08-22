@@ -31,11 +31,13 @@ if (cms_angemeldet() && $zugriff) {
 		$gk = cms_textzudb($g);
 		$nachricht = str_replace(chr(29), "", $nachricht);
     $nachricht = htmlentities($nachricht);
-    $sql = "INSERT INTO $gk"."chat (gruppe, person, datum, inhalt, meldestatus, gemeldetvon, gemeldetam) VALUES (?, ?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), 0, '', 0);";
+		$id = cms_generiere_kleinste_id($gk."chat");
+		$sql = "UPDATE $gk"."chat SET gruppe = ?, person = ?, datum = ?, inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), meldestatus = 0, gemeldetvon = 0, gemeldetam = 0 WHERE id = ?";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("iiis", $gid, $person, $jetzt, $nachricht);
+    $sql->bind_param("iiisi", $gid, $person, $jetzt, $nachricht, $id);
     $sql->execute();
 		echo "ERFOLG";
+		echo $id;
 	}
 	else {echo "FEHLER";}
 }

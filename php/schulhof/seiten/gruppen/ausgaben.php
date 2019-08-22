@@ -129,12 +129,12 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 	$code = "";
 	$code .= "<div id=\"cms_chat\">";
 		$code .= "<div id=\"cms_chat_nachrichten\">";
-			$sql = "SELECT person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM sonstigegruppenchat WHERE gruppe = $gruppenid ORDER BY datum ASC";
+			$sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM sonstigegruppenchat WHERE gruppe = $gruppenid ORDER BY datum ASC";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_result($p, $d, $i, $m, $gv, $ga);
+			$sql->bind_result($id, $p, $d, $i, $m, $gv, $ga);
 			$sql->execute();
 			while($sql->fetch())
-				array_push($nachrichten, array("person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m, "gemeldetvon" => $gv, "gemeldetam" => $ga));
+				array_push($nachrichten, array("id" => $id, "person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m, "gemeldetvon" => $gv, "gemeldetam" => $ga));
 
 			if(!count($nachrichten))
 				$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
@@ -160,7 +160,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 				}
 				$code .= "<div class=\"cms_chat_nachricht_aussen".($n["person"]==$CMS_BENUTZERID?" cms_chat_nachricht_eigen":"")."\">";
 					$code .= "<div class=\"cms_chat_nachricht_innen\">";
-						$code .= "<div class=\"cms_chat_nachricht_ts\">".$n["datum"]."</div>";
+						$code .= "<div class=\"cms_chat_nachricht_id\">".$n["id"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"sendend\"><img src=\"res/laden/standard.gif\"></div>";
 						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen()\">Nachricht melden</p></span></div>";
 						$code .= "<div class=\"cms_chat_nachricht_autor\">".$name."</div>";
