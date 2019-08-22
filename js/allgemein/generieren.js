@@ -55,6 +55,33 @@ function cms_tagname(zahl) {
   else {return false;}
 }
 
+function cms_tagnamekomplett(zahl) {
+  if (zahl == 0) {return "Sonntag";}
+  if (zahl == 1) {return "Montag";}
+  if (zahl == 2) {return "Dienstag";}
+  if (zahl == 3) {return "Mittwoch";}
+  if (zahl == 4) {return "Donnerstag";}
+  if (zahl == 5) {return "Freitag";}
+  if (zahl == 6) {return "Samstag";}
+  else {return false;}
+}
+
+function cms_monatsnamekomplett(zahl) {
+  if (zahl == 1) {return 'Januar';}
+  else if (zahl == 2) {return 'Februar';}
+  else if (zahl == 3) {return 'März';}
+  else if (zahl == 4) {return 'April';}
+  else if (zahl == 5) {return 'Mai';}
+  else if (zahl == 6) {return 'Juni';}
+  else if (zahl == 7) {return 'Juli';}
+  else if (zahl == 8) {return 'August';}
+  else if (zahl == 9) {return 'September';}
+  else if (zahl == 10) {return 'Oktober';}
+  else if (zahl == 11) {return 'November';}
+  else if (zahl == 12) {return 'Dezember';}
+  else {return false;}
+}
+
 function cms_id_entfernen(feldid, id) {
   var feld = document.getElementById(feldid);
   var bisher = feld.value+'|';

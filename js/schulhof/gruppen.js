@@ -595,3 +595,105 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
+function cms_chat_nachricht_senden(art, id) {
+  var chat = $("#cms_chat_nachrichten");
+  var d = new Date();
+  var nachricht = $("#cms_chat_neue_nachricht").val();
+  $("#cms_chat_neue_nachricht").val("").focus();
+  if(!nachricht)
+    return;
+
+  var tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
+  if(!chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()}).length)
+    tag.appendTo(chat);
+
+  var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen cms_chat_nachricht_eigen cms_chat_nachricht_sendend"}).append(
+    $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+      $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"})),
+      $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;"),
+      $("<div></div>", {class: "cms_chat_nachricht_autor"}).text(CMS_BENUTZERTITEL+" "+CMS_BENUTZERVORNAME+" "+CMS_BENUTZERNACHNAME),
+      $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).text(nachricht),
+      $("<div></div>", {class: "cms_chat_nachricht_zeit"}).text(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
+    )
+  ).appendTo(chat);
+  chat.scrollTop(chat.prop("scrollHeight"));
+
+  var formulardaten = new FormData();
+	formulardaten.append("nachricht", nachricht);
+  formulardaten.append("gruppe", art);
+	formulardaten.append("gruppenid", id);
+	formulardaten.append("anfragenziel", 	'264');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+      nachr.removeClass("cms_chat_nachricht_sendend");
+		} else if(rueckgabe == "BERECHTIGUNG") {
+      nachr.remove();
+      cms_fehlerbehandlung(rueckgabe);
+    }
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+$(window).on("load", function() {
+  var chat = $("#cms_chat_nachrichten");
+  chat.scrollTop(chat.prop("scrollHeight"));
+});
+
+function cms_chat_enter(e, art, id) {
+  if(e.keyCode && e.keyCode === 10)
+    if(e.ctrlKey) {
+      cms_chat_nachricht_senden(art, id);
+      return false;
+    }
+  return true;
+}
+
+function cms_chat_aktualisieren(art, id) {
+  var formulardaten = new FormData();
+  formulardaten.append("gruppe", art);
+  formulardaten.append("gruppenid", id);
+  formulardaten.append("anfragenziel", 	'265');
+  var chat = $("#cms_chat_nachrichten");
+
+  function anfragennachbehandlung(rueckgabe) {
+    if(rueckgabe == "BERECHTIGUNG" || rueckgabe == "FEHLER")
+      cms_fehlerbehandlung(rueckgabe);
+    else {
+      if(!rueckgabe)
+        return;
+      var r = rueckgabe.split(",");
+      r.pop();
+      var p, d, i, m, gv, ga;
+      while(r.length) {
+        p    = r.shift();
+        d    = r.shift();
+        i    = decodeURI(atob(r.shift()));
+        m    = r.shift();
+        if(m == true) {
+          gv = r.shift();
+          ga = r.shift();
+        }
+        var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(
+          $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"})),
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;"),
+            $("<div></div>", {class: "cms_chat_nachricht_autor"}).text(p),
+            $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).text(i),
+            $("<div></div>", {class: "cms_chat_nachricht_zeit"}).text(d)
+          )
+        ).appendTo(chat);
+        chat.scrollTop(chat.prop("scrollHeight"));
+        gv = null;
+        ga = null;
+      }
+    }
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}

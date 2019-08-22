@@ -650,6 +650,11 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
 }
 
 function postLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			postLesen($f, $nullfehler);
+		return;
+	}
 	global $$feld;
 
 	if(isset($_POST[$feld]))
@@ -657,6 +662,18 @@ function postLesen($feld, $nullfehler = true) {
 	else
 		if($nullfehler)
 			die("FEHLER");
+}
+
+function sqlLesen($row, $feld) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			sqlLesen($row, $f);
+		return;
+	}
+	global $$feld;
+
+	if(isset($row[$feld]))
+		$$feld = $row[$feld];
 }
 
 ?>

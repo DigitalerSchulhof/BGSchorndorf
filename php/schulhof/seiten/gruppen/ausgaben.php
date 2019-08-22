@@ -120,4 +120,63 @@ function cms_gruppenbeschluesse_jahr_ausgeben($dbs, $gruppe, $gruppenid, $CMS_UR
 
 	return $code;
 }
+
+function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
+	GLOBAL $CMS_SCHLUESSEL, $CMS_BENUTZERID;
+	$namecache = array();
+	$nachrichten = array();
+
+	$code = "";
+	$code .= "<div id=\"cms_chat\">";
+		$code .= "<div id=\"cms_chat_nachrichten\">";
+			$sql = "SELECT person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM sonstigegruppenchat WHERE gruppe = $gruppenid ORDER BY datum ASC";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_result($p, $d, $i, $m, $gv, $ga);
+			$sql->execute();
+			while($sql->fetch())
+				array_push($nachrichten, array("person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m, "gemeldetvon" => $gv, "gemeldetam" => $ga));
+
+			if(!count($nachrichten))
+				$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
+			$letztesDatum = "blub";
+			foreach($nachrichten as $i => $n) {
+				if(array_key_exists($n["person"], $namecache)) {
+					$name = $namecache[$n["person"]];
+				} else {
+					$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id = ?";
+					$sql = $dbs->prepare($sql);
+					$sql->bind_param("i", $n["person"]);
+					$sql->bind_result($vorname, $nachname, $titel);
+					$sql->execute();
+					$sql->fetch();
+					$name = cms_generiere_anzeigename($vorname, $nachname, $titel);
+					$namecache[$n["person"]] = $name;
+				}
+				$tag = cms_tagnamekomplett(date("w", $n["datum"])) . ", den " . date("d", $n["datum"]) . " " . cms_monatsnamekomplett(date("n", $n["datum"]));
+				if($letztesDatum != $tag) {
+					$letztesDatum = $tag;
+					$code .= "<div class=\"cms_chat_datum cms_notiz\">$tag</div>";
+				}
+				$code .= "<div class=\"cms_chat_nachricht_aussen ".($n["person"]==$CMS_BENUTZERID?"cms_chat_nachricht_eigen":"")."\">";
+					$code .= "<div class=\"cms_chat_nachricht_innen\">";
+						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"sendend\"><img src=\"res/laden/standard.gif\"></div>";
+						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;</div>";
+						$code .= "<div class=\"cms_chat_nachricht_autor\">".$name."</div>";
+						$code .= "<div class=\"cms_chat_nachricht_nachricht\">".htmlentities($n["inhalt"])."</div>";
+						$code .= "<div class=\"cms_chat_nachricht_zeit\">".date("H:i", $n["datum"])."</div>";
+					$code .= "</div>";
+				$code .= "</div>";
+				$_SESSION["LETZENACHRICHT_$g"]["$gruppenid"] = array($n["person"], $n["datum"]);
+			}
+		$code .= "</div>";
+		if($rechte["chatten"] && $rechte["chattenab"] <= time()) {
+			$code .= "<div id=\"cms_chat_nachricht_verfassen\">";
+				$code .= "<label for=\"cms_chat_neue_nachricht\"><p class=\"cms_notiz\">Nachricht verfassen:</p></label>";
+				$code .= "<textarea data-gramm=\"false\" type=\"text\" id=\"cms_chat_neue_nachricht\" onkeypress=\"return cms_chat_enter(event, '$g', '$gruppenid');\"></textarea><div onclick=\"cms_chat_nachricht_senden('$g', '$gruppenid')\"><img src=\"res/icons/klein/senden.png\"></div>";
+			$code .= "</div>";
+		}
+	$code .= "</div>";
+	$code .= "<script>$(window).on(\"load\", function() {setInterval(function() {cms_chat_aktualisieren('$g', '$gruppenid')}, 333);});</script>";
+	return $code;
+}
 ?>

@@ -170,3 +170,98 @@
   width: 25%;
   border-right: 10px solid @hintergrundhell;
 }
+
+#cms_chat {
+  #cms_chat_nachrichten {
+    #cms_chat_leer {
+      text-align: center;
+    }
+    .cms_chat_datum {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    width: 100%;
+    padding: 5px 20px;
+    max-height: 500px;
+    overflow-y: scroll;
+    .cms_chat_nachricht_aussen {
+      width: 100%;
+      margin-bottom: 15px;
+      float: left;
+      .cms_chat_nachricht_innen {
+        position: relative;
+        min-width: 40%;
+        max-width: 60%;
+        background-color: @chatanderer;
+        border-radius: 3px;
+        float: left;
+        padding: 5px;
+        .cms_chat_nachricht_aktion {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: inherit;
+          &[data-aktion=sendend] {
+            display: none;
+          }
+          &[data-aktion=mehr] {
+            cursor: pointer;
+          }
+          img {
+            height: 16px;
+            width: 16px;
+          }
+        }
+        .cms_chat_nachricht_autor {
+          font-size: 90%;
+        }
+        .cms_chat_nachricht_nachricht {
+          padding-left: 5px;
+          font-size: 110%;
+          white-space: pre;
+        }
+        .cms_chat_nachricht_zeit {
+          float: right;
+        }
+      }
+      &.cms_chat_nachricht_eigen {
+        .cms_chat_nachricht_innen {
+          float: right;
+          background-color: @chateigen;
+        }
+      }
+      &.cms_chat_nachricht_sendend {
+        opacity: 0.8;
+        .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=sendend] {
+              display: block;
+            }
+            &[data-aktion=mehr] {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  #cms_chat_nachricht_verfassen {
+    width: 100%;
+    label {
+      cursor: pointer;
+    }
+    textarea {
+      width: 90%; // Fallback
+      width: ~"calc(100% - 26px)";
+    }
+    div {
+      display: inline-block;
+      float: right;
+      width: auto;
+      img {
+        padding: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
