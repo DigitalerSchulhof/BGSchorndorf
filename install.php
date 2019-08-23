@@ -290,6 +290,10 @@ if ($rechteplaetten) {
 			$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Gruppen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$g Listen sehen wenn Mitglied', '$CMS_SCHLUESSEL'))";
 			$dbs->query($sql); $id++;
 		}
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Gruppen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Chatmeldungen sehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Gruppen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Chatmeldungen verwalten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 
 		// ORGANISATION
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Organisation', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Blogeinträge genehmigen', '$CMS_SCHLUESSEL'))";

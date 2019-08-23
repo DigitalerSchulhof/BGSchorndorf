@@ -547,3 +547,19 @@ function cms_gruppe_personenausklassen() {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
+function cms_chatmeldung_loeschen(gruppe, id) {
+  cms_laden_an('Chatmeldung löschen', 'Informationen werden gesammelt.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("id",              id);
+  formulardaten.append("gruppe",          gruppe);
+  formulardaten.append("anfragenziel", 	  '272');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {cms_laden_aus();cms_link("Schulhof/Aufgaben/Chatmeldungen");}
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}

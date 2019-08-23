@@ -14,9 +14,6 @@ $gid = $gruppenid;
 if (isset($_SESSION['BENUTZERID'])) {$person = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($g)) {echo "FEHLER"; exit;}
 if (isset($_SESSION["LETZENACHRICHT_$g"]["$gid"])) {$letzte = $_SESSION["LETZENACHRICHT_$g"]["$gid"];} else {echo "FEHLER"; exit;}
-if(!$letzte || !is_array($letzte))
-  $fehler = true;
-
 $dbs = cms_verbinden('s');
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $g, $gid, $person);
@@ -31,17 +28,13 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$gk = cms_textzudb($g);
 
-    $sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM $gk"."chat WHERE gruppe = ? AND datum >= ? ORDER BY datum ASC;";
+    $sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus FROM $gk"."chat WHERE gruppe = ? AND id > ? ORDER BY id ASC;";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("ii", $gid, $letzte[1]);
-    $sql->bind_result($id, $p, $d, $i, $m, $gv, $ga);
+    $sql->bind_param("ii", $gid, $letzte);
+    $sql->bind_result($id, $p, $d, $i, $m);
     $sql->execute();
-    $f = false;
     $nachrichten = array();
     while($sql->fetch()) {
-      if($p == $letzte[0] && !$f)
-        $f = true;
-      else
         if($p != $person) {
           if(array_key_exists($p, $namecache))
             return $namecache[$p];
@@ -54,20 +47,16 @@ if (cms_angemeldet() && $zugriff) {
           $sql->fetch();
           $name = cms_generiere_anzeigename($vorname, $nachname, $titel);
           $namecache[$p] = $name;
-          array_push($nachrichten, array($id, $name, $d, $i, $m, $gv, $ga));
+          array_push($nachrichten, array($id, $name, $d, $i, $m));
         }
+        $_SESSION["LETZENACHRICHT_$g"]["$gid"] = $id??-1;
     }
-    $_SESSION["LETZENACHRICHT_$g"]["$gid"] = array($p??-1, $d??0);
     $del = chr(29);
     /*
       Die Antwort wird als ","-getrennter String zurück gegeben.
-      Falls Meldestatus 0 ist, werden Melder und Meldezeitpunkt ausgelassen und der nächste Eintrag beginnt.
     */
-    foreach($nachrichten as $i => $v) {
+    foreach($nachrichten as $i => $v)
       echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del.$v[4].$del;
-      if($v[4])
-        echo $v[5].$del.$v[6].$del;
-    }
 	}
 	else {echo "FEHLER";}
 }

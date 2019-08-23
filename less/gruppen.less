@@ -272,6 +272,20 @@
           }
         }
       }
+      &.cms_chat_nachricht_gemeldet {
+        opacity: 0.8;
+        .cms_chat_nachricht_innen {
+          background-color: mix(@fehlerhell, white);
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              [data-mehr=melden] {
+                opacity: 0.7;
+                cursor: default;
+              }
+            }
+          }
+        }
+      }
     }
   }
   #cms_chat_nachricht_verfassen {

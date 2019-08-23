@@ -292,6 +292,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Fehlermeldungen/Details']                     = 'php/schulhof/seiten/website/fehlermeldungen/details.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Emoticons']                                   = 'php/schulhof/seiten/website/emoticons/emoticons.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Fehler']                                              = 'php/schulhof/seiten/fehler/404.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Fehler/404']                                          = 'php/schulhof/seiten/fehler/404.php';

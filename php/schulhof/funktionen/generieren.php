@@ -442,6 +442,32 @@ function cms_auffaelliges_knopf($dbs) {
   return $code;
 }
 
+function cms_chatmeldungen_knopf($dbs) {
+  global $CMS_GRUPPEN;
+  $code = "";
+  $zusatz = "";
+  $sql = "";
+  foreach($CMS_GRUPPEN as $i => $g) {
+    $gk = cms_textzudb($g);
+    $sql .= " SELECT '$g' as gruppe, COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
+  }
+  $sql = substr($sql, 0, -5);
+  $anzahl = 0;
+  if ($anfrage = $dbs->query($sql)) {
+    while ($daten = $anfrage->fetch_assoc()) {
+      $anzahl += $daten["anzahl"];
+    }
+    $anfrage->free();
+  }
+  $zusatz = "";
+  if ($anzahl > 0) {
+    $zusatz = "cms_meldezahl_wichtig";
+    $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$anzahl."</span>";
+  }
+  $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen ".$anzahl."</a>";
+  return $code;
+}
+
 function cms_sonderrollen_generieren() {
 	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN;
 	$code = "";
@@ -466,6 +492,9 @@ function cms_sonderrollen_generieren() {
 	}
   if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
 		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
+	}
+  if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']) {
+		$code .= "<li>".cms_chatmeldungen_knopf($dbs)."</li> ";
 	}
 	cms_trennen($dbs);
 	return $code;

@@ -130,6 +130,16 @@ if ($CMS_RECHTE['Gruppen']['Sonstige Gruppen anlegen'] || $CMS_RECHTE['Gruppen']
 	$tabzahl++;
 }
 
+if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_chatmeldungen\" href=\"Schulhof/Aufgaben/Chatmeldungen\">";
+			$code .=  "<h3>Chatmeldungen</h3>";
+			$code .=  "<p>Chatmeldungen sehen".($CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']?" und verwalten":"").".</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+
 if ($tabzahl > 0) {
 	$code = "<h2>Personen und Gruppen</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }

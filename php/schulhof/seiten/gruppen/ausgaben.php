@@ -125,21 +125,22 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 	GLOBAL $CMS_SCHLUESSEL, $CMS_BENUTZERID;
 	$namecache = array();
 	$nachrichten = array();
+	$gk = cms_textzudb($g);
 
 	$code = "";
 	$code .= "<div id=\"cms_chat\">";
 		$code .= "<div id=\"cms_chat_nachrichten\">";
-			$sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus, gemeldetvon, gemeldetam FROM sonstigegruppenchat WHERE gruppe = $gruppenid ORDER BY datum ASC";
+			$sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus FROM $gk"."chat WHERE gruppe = $gruppenid ORDER BY datum ASC";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_result($id, $p, $d, $i, $m, $gv, $ga);
+			$sql->bind_result($id, $p, $d, $i, $m);
 			$sql->execute();
 			while($sql->fetch())
-				array_push($nachrichten, array("id" => $id, "person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m, "gemeldetvon" => $gv, "gemeldetam" => $ga));
+				array_push($nachrichten, array("id" => $id, "person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m));
 
 			if(!count($nachrichten))
 				$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
 			$letztesDatum = "blub";
-			$_SESSION["LETZENACHRICHT_$g"]["$gruppenid"] = array(-1, 0);
+			$_SESSION["LETZENACHRICHT_$g"]["$gruppenid"] = -1;
 			foreach($nachrichten as $i => $n) {
 				if(array_key_exists($n["person"], $namecache)) {
 					$name = $namecache[$n["person"]];
@@ -158,17 +159,24 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 					$letztesDatum = $tag;
 					$code .= "<div class=\"cms_chat_datum cms_notiz\">$tag</div>";
 				}
-				$code .= "<div class=\"cms_chat_nachricht_aussen".($n["person"]==$CMS_BENUTZERID?" cms_chat_nachricht_eigen":"")."\">";
+				$gemeldet = "false";
+				$sql = "SELECT 1 as r FROM $gk"."chatmeldungen WHERE nachricht = ? AND melder = ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("ii", $n["id"], $CMS_BENUTZERID);
+				$sql->bind_result($gemeldet);
+				$sql->execute();
+				$sql->fetch();
+				$code .= "<div class=\"cms_chat_nachricht_aussen".($n["person"]==$CMS_BENUTZERID?" cms_chat_nachricht_eigen":"").($gemeldet?" cms_chat_nachricht_gemeldet":"")."\">";
 					$code .= "<div class=\"cms_chat_nachricht_innen\">";
 						$code .= "<div class=\"cms_chat_nachricht_id\">".$n["id"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"sendend\"><img src=\"res/laden/standard.gif\"></div>";
-						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen()\">Nachricht melden</p></span></div>";
+						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '$g', '$gruppenid')\">Nachricht melden</p></span></div>";
 						$code .= "<div class=\"cms_chat_nachricht_autor\">".$name."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_nachricht\">".$n["inhalt"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_zeit\">".date("H:i", $n["datum"])."</div>";
 					$code .= "</div>";
 				$code .= "</div>";
-				$_SESSION["LETZENACHRICHT_$g"]["$gruppenid"] = array($n["person"], $n["datum"]);
+				$_SESSION["LETZENACHRICHT_$g"]["$gruppenid"] = $n["id"];
 			}
 		$code .= "</div>";
 		if($rechte["chatten"] && $rechte["chattenab"] <= time()) {
