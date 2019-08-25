@@ -686,12 +686,11 @@ function cms_chat_aktualisieren(art, id) {
       chat.find("#cms_chat_leer").remove();
       var id, p, d, dt, i, m, tag, nachr;
       while(r.length) {
-        id   = r.shift();
-        p    = r.shift();
-        dt   = r.shift()
-        d    = new Date(dt*1000);
-        i    = r.shift();
-        m    = r.shift();
+        id   = r.shift();         // Id
+        p    = r.shift();         // Person
+        dt   = r.shift()          // Datum
+        d    = new Date(dt*1000); // Datum als Date()
+        i    = r.shift();         // Inhalt
         tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
         if(!chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()}).length)
           tag.appendTo(chat);
@@ -740,6 +739,60 @@ function cms_chat_nachricht_melden(art, gid, id) {
     }
     else {
       cms_fehlerbehandlung(rueckgabe);
+    }
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_chat_nachrichten_nachladen(art, id, anzahl) {
+  cms_laden_an("Altere Nachrichten laden", "Nachrichten werden geladen")
+  var formulardaten = new FormData();
+  formulardaten.append("gruppe", art);
+  formulardaten.append("gruppenid", id);
+  formulardaten.append("anzahl", anzahl);
+  formulardaten.append("anfragenziel", 	'273');
+  var chat = $("#cms_chat_nachrichten");
+  var gid = id;
+
+  function anfragennachbehandlung(rueckgabe) {
+    if(rueckgabe == "BERECHTIGUNG" || rueckgabe == "FEHLER")
+      cms_fehlerbehandlung(rueckgabe);
+    else {
+      if(!rueckgabe)
+        return;
+      var r = rueckgabe.split(String.fromCharCode(29));
+      r.pop();
+      var id, p, d, dt, i, m, e, tag, nachr, mehr = r.shift();;
+      while(r.length) {
+        id   = r.shift();
+        p    = r.shift();
+        dt   = r.shift()
+        d    = new Date(dt*1000);
+        i    = r.shift();
+        m    = r.shift();
+        e    = r.shift();
+
+        tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
+        var anderet = chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()});  // Andere Datum Meldungen
+        anderet.remove();
+        nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen"+(e?" cms_chat_nachricht_eigen":"")}).append(
+          $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+            $("<div></div>", {class: "cms_chat_nachricht_id"}).html(id),
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"})),
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '"+art+"', '"+gid+"')\">Nachricht melden</p></span>"),
+            $("<div></div>", {class: "cms_chat_nachricht_autor"}).html(p),
+            $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).html(i),
+            $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
+          )
+        ).prependTo(chat).find(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+        tag.prependTo(chat);
+      }
+      if(mehr == true)
+        $("#cms_chat_nachrichten_nachladen").show().remove().prependTo(chat);
+      else
+        $("#cms_chat_nachrichten_nachladen").hide();
+      cms_laden_aus();
     }
   }
 

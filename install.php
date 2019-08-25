@@ -684,6 +684,8 @@ if ($einstellungenplaetten) {
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
 	// Postfach
 	foreach ($personen as $p) {
 		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen persönliche Termine anlegen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";

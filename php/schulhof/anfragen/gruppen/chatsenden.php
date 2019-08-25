@@ -24,7 +24,7 @@ $zugriff = $CMS_GRUPPENRECHTE['mitglied'] && $CMS_GRUPPENRECHTE["chatten"] && $C
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
-  if(!$nachricht)
+  if(!$nachricht && $nachricht != "0")
     $fehler = true;
 
 	if (!$fehler) {

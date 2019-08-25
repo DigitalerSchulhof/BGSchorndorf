@@ -557,7 +557,7 @@ function cms_chatmeldung_loeschen(gruppe, id) {
   formulardaten.append("anfragenziel", 	  '272');
 
   function anfragennachbehandlung(rueckgabe) {
-    if (rueckgabe == "ERFOLG") {cms_laden_aus();cms_link("Schulhof/Aufgaben/Chatmeldungen");}
+    if (rueckgabe == "ERFOLG") {cms_link("Schulhof/Aufgaben/Chatmeldungen");}
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 

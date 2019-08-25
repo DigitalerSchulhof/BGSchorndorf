@@ -118,6 +118,12 @@ function cms_einstellungen_gruppen_aendern() {
 		formulardaten.append('sichtbardownload', download);
 	}
 
+	var chatloeschen = document.getElementById('cms_chatloeschen').value;
+	if (!cms_check_ganzzahl(chatloeschen, 0, 365)) {fehler = true;}
+	else {
+		formulardaten.append('chatloeschen', chatloeschen);
+	}
+
 	var objekte = ['termine','blog'];
 
 	for (var p=0; p<personen.length; p++) {

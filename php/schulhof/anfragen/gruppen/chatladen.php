@@ -13,7 +13,7 @@ $g = $gruppe;
 $gid = $gruppenid;
 if (isset($_SESSION['BENUTZERID'])) {$person = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($g)) {echo "FEHLER"; exit;}
-if (isset($_SESSION["LETZENACHRICHT_$g"]["$gid"])) {$letzte = $_SESSION["LETZENACHRICHT_$g"]["$gid"];} else {echo "FEHLER"; exit;}
+if (isset($_SESSION["LETZTENACHRICHT_$g"]["$gid"])) {$letzte = $_SESSION["LETZTENACHRICHT_$g"]["$gid"];} else {echo "FEHLER"; exit;}
 $dbs = cms_verbinden('s');
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $g, $gid, $person);
@@ -49,14 +49,14 @@ if (cms_angemeldet() && $zugriff) {
           $namecache[$p] = $name;
           array_push($nachrichten, array($id, $name, $d, $i, $m));
         }
-        $_SESSION["LETZENACHRICHT_$g"]["$gid"] = $id??-1;
+        $_SESSION["LETZTENACHRICHT_$g"]["$gid"] = $id??-1;
     }
     $del = chr(29);
     /*
       Die Antwort wird als ","-getrennter String zurück gegeben.
     */
     foreach($nachrichten as $i => $v)
-      echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del.$v[4].$del;
+      echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del;
 	}
 	else {echo "FEHLER";}
 }

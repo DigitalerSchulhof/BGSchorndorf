@@ -52,6 +52,7 @@ foreach ($gruppen as $g) {
 }
 
 if (!isset($_POST['sichtbardownload'])) {echo "FEHLER";exit;}
+postLesen("chatloeschen");
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
@@ -79,6 +80,7 @@ if (cms_angemeldet() && $zugriff) {
 	}
 
 	if (!cms_check_toggle($_POST['sichtbardownload'])) {$fehler = true;}
+	if (!cms_check_ganzzahl($chatloeschen, 0, 365)) {$fehler = true;}
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
@@ -131,6 +133,9 @@ if (cms_angemeldet() && $zugriff) {
 
 		$sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT('Download aus sichtbaren Gruppen', '$CMS_SCHLUESSEL')");
 	  $sql->bind_param("s", $_POST['sichtbardownload']);
+	  $sql->execute();
+		$sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL')");
+	  $sql->bind_param("i", $chatloeschen);
 	  $sql->execute();
 	  $sql->close();
 
