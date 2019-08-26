@@ -144,7 +144,7 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
                      "Schulhof/Termine" => "Termine",
                      "Schulhof/Blog" => "Blog",
                      "Schulhof/Website" => "Website - Übersicht",
-                     "Schulhof" => "Sonstiges"
+                     u("kategorie.schulhof") => "Sonstiges"
                     );
         foreach($abk as $urlch => $name)
           if(substr($url, 0, strlen($urlch)) === $urlch) {
@@ -372,7 +372,7 @@ function cms_erfasse_click() {
   $url = $CMS_URLGANZ;
   $jahr = date("Y");
   $monat = date("m");
-  if($CMS_URL[0] == "Schulhof") {
+  if($CMS_URL[0] == u("kategorie.schulhof")) {
     if($CMS_ANGEMELDET) {
       $rolle = $CMS_BENUTZERART;
       $sql = "SELECT aufrufe FROM besucherstatistik_schulhof WHERE jahr = '$jahr' AND monat = '$monat' AND url = '$url' AND rolle = '$rolle'";
@@ -386,7 +386,7 @@ function cms_erfasse_click() {
     }
   }
   $tabelle = "";
-  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
+  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != u("kategorie.schulhof") && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
     $dbs->query("INSERT INTO urls (url) VALUES ('$CMS_URLGANZ')");
     $id = $CMS_SEITENDETAILS["id"];
     $tabelle = "besucherstatistik_website";

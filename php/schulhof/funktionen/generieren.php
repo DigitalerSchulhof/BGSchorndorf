@@ -290,12 +290,12 @@ function cms_geraeteverwalten_knopf($dbs) {
   }
   $zusatz = '';
   if ($anzahlneu > 0) {
-    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahldefekt</span>";
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\">".s("schulhof.element.sonderrollen.geraeteverwaltung.anzahl.neu", array("%anzahlneu%" => $anzahlneu, "%anzahldefekt" => $anzahldefekt))."</span>";
   }
   else if ($anzahldefekt > 0) {
-    $anzahl = " <span class=\"cms_meldezahl\">$anzahldefekt</span>";
+    $anzahl = " <span class=\"cms_meldezahl\">".s("schulhof.element.sonderrollen.geraeteverwaltung.anzahl.defekt", array("%anzahldefekt" => $anzahldefekt))."</span>";
   }
-  return "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten".$anzahl."</a>";
+  return "<a class=\"cms_button\" href=\"".u("schulhof.seiten.aufgaben.geraete.verwalten")."\">".s("schulhof.element.sonderrollen.geraeteverwaltung.knopf", array("%anzahl%" => $anzahl))."</a>";
 }
 
 function cms_terminegenehmigen_knopf($dbs) {
@@ -320,7 +320,7 @@ function cms_terminegenehmigen_knopf($dbs) {
         $zusatz = "cms_meldezahl_wichtig";
         $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
       }
-      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen".$anzahl."</a>";
+      $code .= "<a class=\"cms_button\" href=\"".u("schulhof.seiten.website.termine.genehmigungscenter")."\">".s("schulhof.element.sonderrollen.genehmigen.termine.knopf", array("%anzahl%" => $anzahl))."</a>";
     }
     $anfrage->free();
   }
@@ -349,7 +349,7 @@ function cms_blogeintraegegenehmigen_knopf($dbs) {
         $zusatz = "cms_meldezahl_wichtig";
         $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
       }
-      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen".$anzahl."</a>";
+      $code .= "<a class=\"cms_button\" href=\"".u("schulhof.seiten.website.blogeintraege.genehmigungscenter")."\">".s("schulhof.element.sonderrollen.genehmigen.blogeintraege.knopf", array("%anzahl%" => $anzahl))."</a>";
     }
     $anfrage->free();
   }
@@ -368,7 +368,7 @@ function cms_galeriengenehmigen_knopf($dbs) {
         $zusatz = "cms_meldezahl_wichtig";
         $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
       }
-      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">Galerien genehmigen".$anzahl."</a>";
+      $code .= "<a class=\"cms_button\" href=\"".u("schulhof.seiten.website.galerien.genehmigungscenter")."\">".s("schulhof.element.sonderrollen.genehmigen.galerien.knopf", array("%anzahl%" => $anzahl))."</a>";
     }
     $anfrage->free();
   }
@@ -387,7 +387,7 @@ function cms_identitaetsdiebstaehle_knopf($dbs) {
         $zusatz = "cms_meldezahl_wichtig";
         $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
       }
-      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\">Identitätsdiebstähle behandeln".$anzahl."</a>";
+      $code .= "<a class=\"cms_button\" href=\"".u("schulhof.seiten.aufgaben.identitaetsdiebstahl.identitaetsdiebstahl")."\">".s("schulhof.element.sonderrollen.identitaetsdiebstahl.knopf", array("%anzahl%" => $anzahl))."</a>";
     }
     $anfrage->free();
   }
@@ -420,7 +420,7 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   else if ($anzahlauftraege > 0) {
     $anzahl = " <span class=\"cms_meldezahl\">$anzahlauftraege</span>";
   }
-  return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a>";
+  return "<a class=\"cms_button\" href=\"".u("schulhof.seiten.hausmeister.auftraege")."\">".s("schulhof.element.sonderrollen.hausmeisterbuch.knopf", array("%anzahl%" => $anzahl))."</a>";
 }
 
 function cms_auffaelliges_knopf($dbs) {
@@ -435,7 +435,7 @@ function cms_auffaelliges_knopf($dbs) {
         $zusatz = "cms_meldezahl_wichtig";
         $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
       }
-      $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Neues auffälliges Verhalten ".$anzahl."</a>";
+      $code .= "<a class=\"cms_button\" href=\"".u("schulhof.seiten.auffaelliges.liste")."\">".s("schulhof.element.sonderrollen.auffaelliges.knopf", array("%anzahl%" => $anzahl))."</a>";
     }
     $anfrage->free();
   }

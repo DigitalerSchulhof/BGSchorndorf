@@ -109,7 +109,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
       if ($daten['sichtbar'] == 0) {$code .= "Mitglieder";}
       if ($daten['sichtbar'] == 1) {$code .= "Lehrer";}
       if ($daten['sichtbar'] == 2) {$code .= "Lehrer und Verwaltung";}
-      if ($daten['sichtbar'] == 3) {$code .= "Schulhof";}
+      if ($daten['sichtbar'] == 3) {$code .= u("kategorie.schulhof");}
 
       $code .= "</td><td>";
       if ($bearbeiten) {

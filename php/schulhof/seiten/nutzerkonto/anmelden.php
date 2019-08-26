@@ -1,11 +1,10 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
-<h1>Willkommen auf dem Schulhof des <?php echo $CMS_SCHULE_GENITIV;?>!</h1>
+<h1><?php echo s("schulhof.willkommen", array("%schule%" => $CMS_SCHULE_GENITIV));?></h1>
 </div>
 
 <div class="cms_spalte_3">
 <div class="cms_spalte_i">
-<!-- <h2>Anmeldung</h2> -->
 <h2><?php echo s('schulhof.seite.anmeldung.anmeldung.ueberschrift') ?></h2>
 
 <?php

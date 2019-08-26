@@ -35,7 +35,7 @@
 	echo "<h2>".s("schulhof.seite.anmeldung.neuerungen.ueberschrift")."</h2>";
 	$aeltere = "";
 
-	// Neuerungen einfach in die Sprachdatei einfügen!
+	// Neuerungen in die Sprachdatei einfügen!
 	// Der oberste Eintrag wird als aktuelle Version gewertet.
 
 	$versionen = s("schulhof.seite.anmeldung.neuerungen.version");

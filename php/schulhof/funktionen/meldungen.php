@@ -1,5 +1,20 @@
 <?php
-function cms_meldung ($art, $inhalt) {
+function cms_meldung ($art, $inhalt, $variablen = null) {
+	if(!is_null($variablen) || $variablen === true) {	// String gegeben
+		if(!is_array($variablen))
+			$variablen = array();
+		$key = $inhalt;
+		$kopf = s($key.".kopf", $variablen);
+		$inhalt = s($key.".inhalt", $variablen);
+		$inh = "";
+		if($kopf != "php.".$key.".kopf") {	// Nicht standard Meldung
+			$inh .= "<h4>".$kopf."</h4>";
+		}
+		if($inhalt != "php.".$key."inhalt") {	// Nicht standard Meldung
+			$inh .= "<p>".$inhalt."</p>";
+		}
+		$inhalt = $inh;
+	}
 	$code = "";
 	$code .= '<div class="cms_meldung cms_meldung_'.$art.'">';
 	$code .= $inhalt.'</div>';

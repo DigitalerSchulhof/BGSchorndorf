@@ -275,7 +275,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		}
 
 		$aktionen = "";
-		if ($CMS_URL[0] == "Schulhof") {
+		if ($CMS_URL[0] == u("kategorie.schulhof")) {
 			if ($termin['art'] == 'oe') {
 				$link = $CMS_URLGANZ;
 				$linkl = $CMS_URL[0]."/".$CMS_URL[1];

@@ -1,3 +1,16 @@
 # Values containg ":" must be enclosed with ""!
 
 sprache: "English"
+url:
+  kategorie:
+    schulhof: Schoolyard
+  schulhof:
+    seiten:
+      nutzerkonto:
+        nutzerkonto: Schoolyard/Account
+        passwort: Schoolyard/Account/My_Profile/Change_Password
+        identitaetsdiebstahl: Schoolyard/Account/My_Profile/Theft_of_Identity
+        stundenplan: Schoolyard/Account/My_Timetable
+        problememelden: Schoolyard/Account/Report_Problems
+        postfach:
+          posteingang: Schoolyard/Account/Mailbox/Inbox

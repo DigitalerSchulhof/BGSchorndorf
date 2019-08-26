@@ -280,7 +280,7 @@ if (!$fehler) {
   $code .= "<h3>Persönlich</h3>";
   $termincode = "";
   foreach ($termineansicht['P'] AS $t) {
-    $internvorlink = "Schulhof";
+    $internvorlink = u("kategorie.schulhof");
     if ($t['art'] == 'in') {
       $g = $t['gruppenart'];
       $gk = strtolower($g);

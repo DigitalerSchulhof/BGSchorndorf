@@ -53,13 +53,13 @@
 	if (isset($_GET['URL'])) {
 		$CMS_URL = explode('/', $_GET['URL']);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
-		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
+		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != u("kategorie.schulhof")) && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
 		}
-		else if (($CMS_URL[0] == "Schulhof") && (!isset($CMS_URL[1]))) {
+		else if (($CMS_URL[0] == u("kategorie.schulhof")) && (!isset($CMS_URL[1]))) {
 			$CMS_URL = array();
-			$CMS_URL[0] = "Schulhof";
+			$CMS_URL[0] = u("kategorie.schulhof");
 			$CMS_URL[1] = "Nutzerkonto";
 		}
 		else if (preg_match("/^Website(\/(Seiten|Bearbeiten)(\/(Aktuell|Neu|Alt)){0,1}){0,1}$/", $CMS_URLGANZ)) {
@@ -67,9 +67,9 @@
 			$CMS_URL[0] = "Website";
 		}
 
-		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Schulhof") && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen")))   {
+		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == u("kategorie.schulhof")) && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen")))   {
 			$CMS_URL = array();
-		  $CMS_URL[0] = "Schulhof";
+		  $CMS_URL[0] = u("kategorie.schulhof");
 		  $CMS_URL[1] = "Anmeldung";
 		}
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {

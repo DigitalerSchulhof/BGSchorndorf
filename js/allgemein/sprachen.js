@@ -1,7 +1,25 @@
 $(document).ready(function() {
   $(".cms_sprachwahl").click(function() {
-    Cookies.set("sprache", $(this).data("sprache"));
-    location.reload();
+    cms_laden_an(s("aendern.kopf"), s("aendern.inhalt"));
+    formulardaten = new FormData();
+    var sprache = $(this).data("sprache");
+    formulardaten.append("sprache",       sprache);
+    formulardaten.append("url",           window.location.href.replace(CMS_DOMAIN, "").substring(1));
+    formulardaten.append("anfragenziel",  274);
+
+
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe != "FEHLER") {
+
+        Cookies.set("sprache", sprache);
+        cms_link(rueckgabe);
+      }
+      else {
+        cms_fehlerbehandlung(rueckgabe);
+      }
+    }
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+
   });
 });
 

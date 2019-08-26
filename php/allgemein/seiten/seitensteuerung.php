@@ -50,7 +50,7 @@ else if ($CMS_URL[0] == 'Intern') {
   $CMS_VERFUEGBARE_SEITEN['Intern'] = 'php/lehrerzimmer/seiten/intern/intern.php';
   if (preg_match("/^Intern\/Gerätezustand(\/.*){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/geraetezustand.php';}
 }
-else if ($CMS_URL[0] == 'Schulhof') {
+else if ($CMS_URL[0] == u("kategorie.schulhof")) {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
   // SCHULHOF
   $CMS_VERFUEGBARE_SEITEN['Schulhof']                                                     = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
@@ -62,18 +62,18 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Passwort_vergessen']                                  = 'php/schulhof/seiten/nutzerkonto/passwortvergessen.php';
 
   // Nutzerkonto
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto']                                         = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/nutzerkonto");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil']                             = 'php/schulhof/seiten/nutzerkonto/profildaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Gespeicherte_Daten']          = 'php/schulhof/seiten/nutzerkonto/gespeichertedaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Meine_Rechte']                = 'php/schulhof/seiten/nutzerkonto/meinerechte.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Nutzerkonto_bearbeiten']      = 'php/schulhof/seiten/nutzerkonto/benutzerkonto.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Passwort_ändern']             = 'php/schulhof/seiten/nutzerkonto/passwort.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Identitätsdiebstahl']         = 'php/schulhof/seiten/nutzerkonto/identitaetsdiebstahl.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Stundenplan']                        = 'php/schulhof/seiten/nutzerkonto/stundenplan.php';
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/passwort");
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/identitaetsdiebstahl");
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/stundenplan");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Einstellungen']                           = 'php/schulhof/seiten/nutzerkonto/einstellungen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach']                                = 'php/schulhof/seiten/nutzerkonto/postfach/posteingang.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Neue_Nachricht']                 = 'php/schulhof/seiten/nutzerkonto/postfach/neuenachricht.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Posteingang']                    = 'php/schulhof/seiten/nutzerkonto/postfach/posteingang.php';
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/postfach/posteingang");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Entwürfe']                       = 'php/schulhof/seiten/nutzerkonto/postfach/entwuerfe.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Postausgang']                    = 'php/schulhof/seiten/nutzerkonto/postfach/postausgang.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Papierkorb']                     = 'php/schulhof/seiten/nutzerkonto/postfach/papierkorb.php';
@@ -82,17 +82,17 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Tag_bearbeiten']            = 'php/schulhof/seiten/nutzerkonto/postfach/tagbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Neuen_Tag_anlegen']         = 'php/schulhof/seiten/nutzerkonto/postfach/neuertag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/problememelden");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Umarmungen']                              = 'php/schulhof/seiten/nutzerkonto/umarmungen.php';
 
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten']                           = 'php/schulhof/seiten/aufgaben/geraete/verwalten.php';
+  cms_seite_registrieren("schulhof/seiten/aufgaben/geraete/verwalten");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten/Problembericht_bearbeiten'] = 'php/schulhof/seiten/aufgaben/geraete/problemberichtbearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Identitätsdiebstähle_behandeln']             = 'php/schulhof/seiten/aufgaben/identitaetsdiebstahl/identitaetsdiebstahl.php';
+  cms_seite_registrieren("schulhof/seiten/aufgaben/identitaetsdiebstahl/identitaetsdiebstahl");
   // Hausmeister
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister']                                         = 'php/schulhof/seiten/hausmeister/hausmeister.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge']                                = 'php/schulhof/seiten/hausmeister/auftraege.php';
+  cms_seite_registrieren("schulhof/seiten/hausmeister/auftraege");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge/Details']                        = 'php/schulhof/seiten/hausmeister/details.php';
   // Listen
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Listen']                                              = 'php/schulhof/seiten/listen/listen.php';
@@ -265,17 +265,17 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine']                                     = 'php/schulhof/seiten/website/termine/termine.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine/Neuer_Termin']                        = 'php/schulhof/seiten/website/termine/neuertermin.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine/Termin_bearbeiten']                   = 'php/schulhof/seiten/website/termine/terminbearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Termine_genehmigen']                         = 'php/schulhof/seiten/website/termine/genehmigungscenter.php';
+  cms_seite_registrieren("schulhof/seiten/website/termine/genehmigungscenter");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Blogeinträge']                                = 'php/schulhof/seiten/website/blogeintraege/blogeintraege.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Blogeinträge/Neuer_Blogeintrag']              = 'php/schulhof/seiten/website/blogeintraege/neuerblogeintrag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Blogeinträge/Blogeintrag_bearbeiten']         = 'php/schulhof/seiten/website/blogeintraege/blogeintragbearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Blogeinträge_genehmigen']                    = 'php/schulhof/seiten/website/blogeintraege/genehmigungscenter.php';
+  cms_seite_registrieren("schulhof/seiten/website/blogeintraege/genehmigungscenter");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien']                                    = 'php/schulhof/seiten/website/galerien/galerien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Neue_Galerie']                       = 'php/schulhof/seiten/website/galerien/neuegalerie.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Galerie_bearbeiten']                 = 'php/schulhof/seiten/website/galerien/galeriebearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Galerien_genehmigen']                        = 'php/schulhof/seiten/website/galerien/genehmigungscenter.php';
+  cms_seite_registrieren("schulhof/seiten/website/galerien/genehmigungscenter");
 
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Auffälliges']                                = 'php/schulhof/seiten/auffaelliges/liste.php';
+  cms_seite_registrieren("schulhof/seiten/auffaelliges/liste");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Auffälliges/Details']                        = 'php/schulhof/seiten/auffaelliges/details.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Besucherstatistiken']                         = 'php/schulhof/seiten/website/besucherstatistiken/besucherstatistiken.php';
@@ -303,10 +303,16 @@ if (!$ausnahme) {
   else {
     if (isset($CMS_URL[0])) {
       if ($CMS_URL[0] == "Website") {cms_fehler("Website", "404");}
-      else if ($CMS_URL[0] == "Problembehebung") {cms_fehler("Schulhof", "404");}
-      else if ($CMS_URL[0] == "Schulhof") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == "Problembehebung") {cms_fehler(u("kategorie.schulhof"), "404");}
+      else if ($CMS_URL[0] == u("kategorie.schulhof")) {cms_fehler(u("kategorie.schulhof"), "404");}
     }
     else {cms_fehler("Website", "404");}
   }
+}
+
+function cms_seite_registrieren($seite) {
+  global $CMS_VERFUEGBARE_SEITEN;
+  $url = u(str_replace("/", ".", $seite));
+  $CMS_VERFUEGBARE_SEITEN[$url] = "php/".$seite.".php";
 }
 ?>

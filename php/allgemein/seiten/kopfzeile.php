@@ -20,14 +20,14 @@
 						echo "<li><a class=\"cms_button\" href=\"Website\">Website</a></li>";
 					}
 
-					if (($CMS_URL[0] == "Schulhof") || ($CMS_URL[0] == "Lehrerzimmer")) {
-						echo "<li><a class=\"cms_button cms_button_aktiv\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></li>";
+					if (($CMS_URL[0] == u("kategorie.schulhof")) || ($CMS_URL[0] == "Lehrerzimmer")) {
+						echo "<li><a class=\"cms_button cms_button_aktiv\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".u("kategorie.schulhof")."</a></li>";
 					}
 					else {
-						echo "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></li>";
+						echo "<li><a class=\"cms_button\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".u("kategorie.schulhof")."</a></li>";
 					}
 				echo "</ul>";
-				echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN.($CMS_URL[0] == "Schulhof"?"/Schulhof/Nutzerkonto":"")."\">";
+				echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN.($CMS_URL[0] == u("kategorie.schulhof")?"/".u("schulhof.seiten.nutzerkonto.nutzerkonto"):"")."\">";
 				// <span id="cms_logo_bild">
 				// 	<span class="cms_logo_mauer" id="cms_logo_mauer_l"></span>
 				// 	<span class="cms_logo_mauer" id="cms_logo_mauer_r"></span>
@@ -54,7 +54,7 @@
 				echo "<div class=\"cms_clear\"></div>";
 				echo "</a>";
 
-			if ($CMS_ANGEMELDET && (($CMS_URL[0] == "Schulhof") || ($CMS_URL[0] == "Lehrerzimmer"))) {
+			if ($CMS_ANGEMELDET && (($CMS_URL[0] == u("kategorie.schulhof")) || ($CMS_URL[0] == "Lehrerzimmer"))) {
 				include_once('php/schulhof/seiten/navigation.php');
 			}
 			else {
