@@ -52,7 +52,7 @@ if (cms_angemeldet() && $zugriff) {
 			echo "0";
 		echo $del;
     /*
-      Die Antwort wird als ","-getrennter String zurück gegeben.
+      Die Antwort wird als $del-getrennter String zurück gegeben.
     */
     foreach($nachrichten as $i => $v)
       echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del.$v[4].$del.$v[5].$del;

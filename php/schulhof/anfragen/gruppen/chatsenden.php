@@ -32,7 +32,7 @@ if (cms_angemeldet() && $zugriff) {
 		$nachricht = str_replace(chr(29), "", $nachricht);
     $nachricht = htmlentities($nachricht);
 		$id = cms_generiere_kleinste_id($gk."chat");
-		$sql = "UPDATE $gk"."chat SET gruppe = ?, person = ?, datum = ?, inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), meldestatus = 0 WHERE id = ?";
+		$sql = "UPDATE $gk"."chat SET gruppe = ?, person = ?, datum = ?, inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), meldestatus = 0, fertig = 1 WHERE id = ?";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiisi", $gid, $person, $jetzt, $nachricht, $id);
     $sql->execute();

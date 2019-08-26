@@ -27,33 +27,22 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		$gk = cms_textzudb($g);
-
-    $sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus FROM $gk"."chat WHERE gruppe = ? AND id > ? ORDER BY id ASC;";
+    $sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL'), chat.meldestatus, AES_DECRYPT(person.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(person.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(person.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as person ON person.id = chat.person WHERE gruppe = ? AND chat.id > ? AND chat.fertig = 1 ORDER BY chat.id ASC;";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("ii", $gid, $letzte);
-    $sql->bind_result($id, $p, $d, $i, $m);
+    $sql->bind_result($id, $p, $d, $i, $m, $vorname, $nachname, $titel);
     $sql->execute();
     $nachrichten = array();
     while($sql->fetch()) {
         if($p != $person) {
-          if(array_key_exists($p, $namecache))
-            return $namecache[$p];
-          $sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id = ?";
-
-          $sql = $dbs->prepare($sql);
-          $sql->bind_param("i", $p);
-          $sql->bind_result($vorname, $nachname, $titel);
-          $sql->execute();
-          $sql->fetch();
-          $name = cms_generiere_anzeigename($vorname, $nachname, $titel);
-          $namecache[$p] = $name;
+					$name = cms_generiere_anzeigename($vorname, $nachname, $titel);
           array_push($nachrichten, array($id, $name, $d, $i, $m));
         }
         $_SESSION["LETZTENACHRICHT_$g"]["$gid"] = $id??-1;
     }
     $del = chr(29);
     /*
-      Die Antwort wird als ","-getrennter String zurück gegeben.
+      Die Antwort wird als $del-getrennter String zurück gegeben.
     */
     foreach($nachrichten as $i => $v)
       echo $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del;
