@@ -1,9 +1,10 @@
 <?php
 function cms_schulhofnavigation () {
-	$dbs = cms_verbinden('s');
-
 	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERART;
+
+	$dbs = cms_verbinden('s');
 	$nutzerkonto = cms_schulhofnavigation_nutzerkonto($dbs);
+
 	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$informationen = cms_schulhofnavigation_informationen($dbs);}
 	$gruppen = cms_schulhofnavigation_gruppen($dbs);
 	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$plaene = cms_schulhofnavigation_plaene($dbs);}
@@ -11,21 +12,23 @@ function cms_schulhofnavigation () {
 
 	$mobil = "<span id=\"cms_mobilnavigation\" onclick=\"cms_einblenden('cms_mobilmenue_a')\"><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span></span>";
 	$mobil .= "<div id=\"cms_mobilmenue_a\" style=\"display: none;\">";
-	$mobil .= "<div id=\"cms_mobilmenue_i\">";
-	$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button\" href=\"Website/Start\">Website</a> <a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></p>";
-	$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button_ja\" href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_mobilmenue_a')\">Schließen</span></p>";
-	$mobil .= "<h3>Aktivität</h3><p>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</p>";
-	$mobil .= "<div id=\"cms_maktivitaet_out\"><div id=\"cms_maktivitaet_in\"></div></div>";
-	$mobil .= "<p class=\"cms_notiz\" id=\"cms_maktivitaet_text\">Berechnung läuft ...</p>";
-	$mobil .= "<p><span class=\"cms_button_ja\" onclick=\"cms_timeout_verlaengern()\">Verlängern</span> <span class=\"cms_button_nein\" onclick=\"cms_abmelden_frage();\">Abmelden</span></p>";
-	$mobil .= "<div id=\"cms_mobilmenue_seiten\">";
-	$mobil .= $nutzerkonto['mobil'];
-	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$mobil .= $informationen['mobil'];}
-	$mobil .= $gruppen['mobil'];
-	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$mobil .= $plaene['mobil'];}
-	$mobil .= $verwaltung['mobil'];
-	$mobil .= "</div>";
-	$mobil .= "</div>";
+		$mobil .= "<div id=\"cms_mobilmenue_i\">";
+			$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button\" href=\"Website\">".s("navigation.website")."</a> <a class=\"cms_button\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".u("navigation.schulhof")."</a></p>";
+			$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button_ja\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto").".\">".s("navigation.nutzerkonto")."</a> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_mobilmenue_a')\">".s("navigation.schliessen")."</span></p>";
+			$mobil .= "<h3>Aktivität</h3><p>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</p>";
+			$mobil .= "<div id=\"cms_maktivitaet_out\"><div id=\"cms_maktivitaet_in\"></div></div>";
+			$mobil .= "<p class=\"cms_notiz\" id=\"cms_maktivitaet_text\">Berechnung läuft ...</p>";
+			$mobil .= "<p><span class=\"cms_button_ja\" onclick=\"cms_timeout_verlaengern()\">Verlängern</span> <span class=\"cms_button_nein\" onclick=\"cms_abmelden_frage();\">Abmelden</span></p>";
+			$mobil .= "<div id=\"cms_mobilmenue_seiten\">";
+				$mobil .= $nutzerkonto['mobil'];
+				if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l'))
+					$mobil .= $informationen['mobil'];
+				$mobil .= $gruppen['mobil'];
+				if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l'))
+					$mobil .= $plaene['mobil'];
+				$mobil .= $verwaltung['mobil'];
+			$mobil .= "</div>";
+		$mobil .= "</div>";
 	$mobil .= "</div>";
 
 	$pc = "<ul class=\"cms_hauptnavigation\" id=\"cms_hauptnavigation\">";
@@ -228,7 +231,6 @@ function cms_schulhofnavigation_informationen($dbs) {
 	$code['pc'] .= "</li>";
 	return $code;
 }
-
 
 function cms_schulhofnavigation_gruppen($dbs) {
 	global $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR;
@@ -743,116 +745,3 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 
 echo cms_schulhofnavigation();
 ?>
-
-	<!-- <li><span class="cms_kategorie1" onclick="cms_hauptnavigation_einblenden('aktivitaeten')">Aktivitäten</span>
-		<div class="cms_unternavigation_o" id="cms_hauptnavigation_aktivitaeten_o">
-		<div class="cms_unternavigation_m">
-			<div class="cms_unternavigation_i">
-				<span class="cms_unternavigation_schliessen cms_button_nein" id="cms_hauptnavigation_aktivitaeten_l" onclick="cms_hauptnavigation_ausblenden('aktivitaeten')">&times;</span>
-				<div class="cms_spalte_i">
-					<ul class="cms_reitermenue">
-						<li><span id="cms_reiter_aktivitaeten_0" class="cms_reiter_aktiv" onclick="cms_reiter('aktivitaeten', 0,5)">Arbeitsgemeinschaften</a></li>
-						<li><span id="cms_reiter_aktivitaeten_1" class="cms_reiter" onclick="cms_reiter('aktivitaeten', 1,5)">Arbeitskreise</a></li>
-						<li><span id="cms_reiter_aktivitaeten_2" class="cms_reiter" onclick="cms_reiter('aktivitaeten', 2,5)">Wettbewerbe</a></li>
-						<li><span id="cms_reiter_aktivitaeten_3" class="cms_reiter" onclick="cms_reiter('aktivitaeten', 3,5)">Schullandheime</a></li>
-						<li><span id="cms_reiter_aktivitaeten_4" class="cms_reiter" onclick="cms_reiter('aktivitaeten', 4,5)">Austausche</a></li>
-						<li><span id="cms_reiter_aktivitaeten_5" class="cms_reiter" onclick="cms_reiter('aktivitaeten', 5,5)">Studienfahrten</a></li>
-					</ul>
-
-					<div class="cms_reitermenue_o" id="cms_reiterfenster_aktivitaeten_0" style="display: block;">
-						<div class="cms_reitermenue_i">
-							<p class="cms_notiz">In Planung</p>
-							<ul>
-								<li><a class="cms_button">Basketball</a></li>
-								<li><a class="cms_button">Debating (ab 9)</a></li>
-								<li><a class="cms_button">Informatik</a></li>
-								<li><a class="cms_button">Jonglieren</a></li>
-								<li><a class="cms_button">Orchester</a></li>
-								<li><a class="cms_button">Sanitäter</a></li>
-								<li><a class="cms_button">Schach</a></li>
-								<li><a class="cms_button">Schüler-Eltern-Lehrer-Chor</a></li>
-								<li><a class="cms_button">Schüler-Eltern-Lehrer-Orchester</a></li>
-								<li><a class="cms_button">Theater (ab 9)</a></li>
-								<li><a class="cms_button">Theater (5/6)</a></li>
-								<li><a class="cms_button">UNESCO</a></li>
-								<li><a class="cms_button">Unterstufenchor</a></li>
-								<li><a class="cms_button">Volleyball</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="cms_reitermenue_o" id="cms_reiterfenster_aktivitaeten_1">
-						<div class="cms_reitermenue_i">
-							<p class="cms_notiz">In Planung</p>
-							<ul>
-								<li><a class="cms_button">Burg-Monokel</a></li>
-								<li><a class="cms_button">Fairer-Handel</a></li>
-								<li><a class="cms_button">Fest</a></li>
-								<li><a class="cms_button">Ghana</a></li>
-								<li><a class="cms_button">Grußkarten</a></li>
-								<li><a class="cms_button">Jahrbuch</a></li>
-								<li><a class="cms_button">Schule ohne Rassismus</a></li>
-								<li><a class="cms_button">SMV</a></li>
-								<li><a class="cms_button">Sport</a></li>
-								<li><a class="cms_button">UNESCO</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="cms_reitermenue_o" id="cms_reiterfenster_aktivitaeten_2">
-						<div class="cms_reitermenue_i">
-							<p class="cms_notiz">In Planung</p>
-							<ul>
-								<li><a class="cms_button">Känguru (Mathematik)</a></li>
-								<li><a class="cms_button">LW Deutsche Sprache und Kultur</a></li>
-								<li><a class="cms_button">LW Mathematik</a></li>
-								<li><a class="cms_button">BW Mathematik</a></li>
-								<li><a class="cms_button">Mathematik ohne Grenzen</a></li>
-								<li><a class="cms_button">Tema (Ghana)</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="cms_reitermenue_o" id="cms_reiterfenster_aktivitaeten_3">
-						<div class="cms_reitermenue_i">
-							<p class="cms_notiz">In Planung</p>
-							<ul>
-								<li><a class="cms_button">Port Lesney (Frankreich) 7a</a></li>
-								<li><a class="cms_button">Port Lesney (Frankreich) 7b</a></li>
-								<li><a class="cms_button">Port Lesney (Frankreich) 7c</a></li>
-								<li><a class="cms_button">Port Lesney (Frankreich) 7d</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="cms_reitermenue_o" id="cms_reiterfenster_aktivitaeten_4">
-						<div class="cms_reitermenue_i">
-							<p class="cms_notiz">In Planung</p>
-							<ul>
-								<li><a class="cms_button">Dimitrow (Russland)</a></li>
-								<li><a class="cms_button">Paris (Frankreich)</a></li>
-								<li><a class="cms_button">Folkstown (England)</a></li>
-								<li><a class="cms_button">Tema (Ghana)</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="cms_reitermenue_o" id="cms_reiterfenster_aktivitaeten_5">
-						<div class="cms_reitermenue_i">
-							<p class="cms_notiz">In Planung</p>
-							<ul>
-								<li><a class="cms_button">Dublin (Irland)</a></li>
-								<li><a class="cms_button">Hamburg (Deutschland)</a></li>
-								<li><a class="cms_button">Lissabon (Portugal)</a></li>
-								<li><a class="cms_button">Surfen (Franreich)</a></li>
-								<li><a class="cms_button">Taize (Frankreich)</a></li>
-								<li><a class="cms_button">Wien (Österreich)</a></li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		</div>
-	</li>-->

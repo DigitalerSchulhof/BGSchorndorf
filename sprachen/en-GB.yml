@@ -3,11 +3,26 @@
 sprache: "English"
 url:
   kategorie:
-    schulhof: Schoolyard
+    schulhof:
+      standard: Schoolyard
+    nutzerkonto:
+      standard: Account
+    anmeldung:
+      standard: Login
+      bis_bald: Bye-Bye!
+      passwort: Password_forgotten
+      automatisch: Automatic_Logoff
+      zugeschickt: Sent!
   schulhof:
     seiten:
       nutzerkonto:
         nutzerkonto: Schoolyard/Account
+        anmelden:
+          - Schoolyard/Login
+          - Schoolyard/Login/Bye-Bye!
+          - Schoolyard/Login/Automatic_Logoff
+          - Schoolyard/Login/Sent!
+          - Schoolyard/Password_forgotten
         passwort: Schoolyard/Account/My_Profile/Change_Password
         identitaetsdiebstahl: Schoolyard/Account/My_Profile/Theft_of_Identity
         stundenplan: Schoolyard/Account/My_Timetable

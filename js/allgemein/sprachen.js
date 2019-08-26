@@ -10,7 +10,6 @@ $(document).ready(function() {
 
     function anfragennachbehandlung(rueckgabe) {
       if (rueckgabe != "FEHLER") {
-
         Cookies.set("sprache", sprache);
         cms_link(rueckgabe);
       }

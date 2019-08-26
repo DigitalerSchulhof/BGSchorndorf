@@ -9,15 +9,15 @@
 
 <?php
 if (isset($CMS_URL[2])) {
-	if ($CMS_URL[2] == "Automatische_Abmeldung") {
+	if ($CMS_URL[2] == u("kategorie.anmeldung.automatisch")) {
 		$meldung = s('schulhof.seite.anmeldung.meldung.abmeldung.inaktivitaet.inhalt');
 		echo cms_meldung("info", $meldung);
 	}
-	if ($CMS_URL[2] == "Bis_bald!") {
+	if ($CMS_URL[2] == u("kategorie.anmeldung.bis_bald")) {
 		$meldung = s('schulhof.seite.anmeldung.meldung.abmeldung.manuell.inhalt');
 		echo cms_meldung("erfolg", $meldung);
 	}
-	if ($CMS_URL[2] == "Zugeschickt!") {
+	if ($CMS_URL[2] == u("kategorie.anmeldung.zugeschickt")) {
 		$meldung = s('schulhof.seite.anmeldung.meldung.passwort.neu.inhalt');
 		echo cms_meldung("info", $meldung);
 	}

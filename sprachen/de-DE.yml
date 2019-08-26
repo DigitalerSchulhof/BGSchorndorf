@@ -3,11 +3,28 @@
 sprache: Deutsch
 url:
   kategorie:
-    schulhof: Schulhof
+    website:
+      standard: Website
+    schulhof:
+      standard: Schulhof
+    nutzerkonto:
+      standard: Nutzerkonto
+    anmeldung:
+      standard: Anmeldung
+      bis_bald: Bis_bald!
+      passwort: Passwort_vergessen
+      automatisch: Automatische_Abmeldung
+      zugeschickt: Zugeschickt!
   schulhof:
     seiten:
       nutzerkonto:
         nutzerkonto: Schulhof/Nutzerkonto
+        anmelden:
+          - Schulhof/Anmeldung
+          - Schulhof/Anmeldung/Bis_bald!
+          - Schulhof/Anmeldung/Automatische_Abmeldung
+          - Schulhof/Anmeldung/Zugeschickt!
+          - Schulhof/Passwort_vergessen
         passwort: Schulhof/Nutzerkonto/Mein_Profil/Passwort_ändern
         identitaetsdiebstahl: Schulhof/Nutzerkonto/Mein_Profil/Identitätsdiebstahl
         stundenplan: Schulhof/Nutzerkonto/Mein_Stundenplan
@@ -20,6 +37,7 @@ url:
         geraete:
           verwalten: Schulhof/Aufgaben/Geräte_verwalten
       website:
+        website: Schulhof/Website
         termine:
           genehmigungscenter: Schulhof/Aufgaben/Termine_genehmigen
         blogeintraege:
@@ -31,6 +49,11 @@ url:
       hausmeister:
         auftraege: Schulhof/Hausmeister/Aufträge
 php:
+  navigation:
+    website: Website
+    schulhof: Schulhof
+    nutzerkonto: Nutzerkonto
+    schliessen: Schlierßen
   schulhof:
     willkommen: Willkommen auf dem Schulhof des %schule%!
     seite:

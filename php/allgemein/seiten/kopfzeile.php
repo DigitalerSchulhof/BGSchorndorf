@@ -1,11 +1,9 @@
 <div id="cms_kopfzeile_o">
-
 	<div id="cms_kopfzeile_m">
 		<div id="cms_kopfzeile_i">
-
 			<?php
 				echo "<ul class=\"cms_kopfnavigation\">";
-					if ($CMS_URL[0] == "Website") {
+					if ($CMS_URL[0] == u("kategorie.website.standard")) {
 						echo "<li><div class=\"cms_websitesuche\"><input type=\"text\" placeholder=\"Suchen ...\" name=\"cms_websitesuche_pc_suchbegriff\" id=\"cms_websitesuche_pc_suchbegriff\" onkeyup=\"cms_websuche_suchen('cms_websitesuche_pc_suchbegriff', 'cms_websitesuche_pc_ergebnisse')\">";
 
 						echo "<div id=\"cms_websitesuche_pc_ergebnisse\">";
@@ -14,20 +12,20 @@
 								echo "<p class=\"cms_notiz\">Bitte warten...</p>";
 							echo "</div>";
 						echo "</div></div></li>";
-						echo "<li><a class=\"cms_button cms_button_aktiv\" href=\"Website\">Website</a></li>";
+						echo "<li><a class=\"cms_button cms_button_aktiv\" href=\"Website\">".s("navigation.website")."</a></li>";
 					}
 					else {
-						echo "<li><a class=\"cms_button\" href=\"Website\">Website</a></li>";
+						echo "<li><a class=\"cms_button\" href=\"Website\">".s("navigation.website")."</a></li>";
 					}
 
-					if (($CMS_URL[0] == u("kategorie.schulhof")) || ($CMS_URL[0] == "Lehrerzimmer")) {
-						echo "<li><a class=\"cms_button cms_button_aktiv\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".u("kategorie.schulhof")."</a></li>";
+					if (($CMS_URL[0] == u("kategorie.schulhof.standard")) || ($CMS_URL[0] == "Lehrerzimmer")) {
+						echo "<li><a class=\"cms_button cms_button_aktiv\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".s("navigation.schulhof")."</a></li>";
 					}
 					else {
-						echo "<li><a class=\"cms_button\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".u("kategorie.schulhof")."</a></li>";
+						echo "<li><a class=\"cms_button\" href=\"".u("schulhof.seiten.nutzerkonto.nutzerkonto")."\">".s("navigation.schulhof")."</a></li>";
 					}
 				echo "</ul>";
-				echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN.($CMS_URL[0] == u("kategorie.schulhof")?"/".u("schulhof.seiten.nutzerkonto.nutzerkonto"):"")."\">";
+				echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN.($CMS_URL[0] == u("kategorie.schulhof.standard")?"/".u("schulhof.seiten.nutzerkonto.nutzerkonto"):"")."\">";
 				// <span id="cms_logo_bild">
 				// 	<span class="cms_logo_mauer" id="cms_logo_mauer_l"></span>
 				// 	<span class="cms_logo_mauer" id="cms_logo_mauer_r"></span>
@@ -54,7 +52,7 @@
 				echo "<div class=\"cms_clear\"></div>";
 				echo "</a>";
 
-			if ($CMS_ANGEMELDET && (($CMS_URL[0] == u("kategorie.schulhof")) || ($CMS_URL[0] == "Lehrerzimmer"))) {
+			if ($CMS_ANGEMELDET && (($CMS_URL[0] == u("kategorie.schulhof.standard")) || ($CMS_URL[0] == "Lehrerzimmer"))) {
 				include_once('php/schulhof/seiten/navigation.php');
 			}
 			else {

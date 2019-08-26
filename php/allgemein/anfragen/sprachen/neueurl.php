@@ -14,7 +14,9 @@ $urls = s("url", array(), null, false);
 $pfad = checkUrl($urls);
 
 $neueurl = u($pfad, array(), $sprache);
-
+$pf = explode(".", $pfad);
+if(array_pop($pf) == "0" && is_array($neueurl) && count($neueurl) > 1)
+  $neueurl = $neueurl[0];
 echo $neueurl ?? "FEHLER";
 
 function checkUrl($url) {

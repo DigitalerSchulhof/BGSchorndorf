@@ -53,24 +53,24 @@
 	if (isset($_GET['URL'])) {
 		$CMS_URL = explode('/', $_GET['URL']);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
-		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != u("kategorie.schulhof")) && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
+		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != u("kategorie.schulhof.standard")) && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
 		}
 		else if (($CMS_URL[0] == u("kategorie.schulhof")) && (!isset($CMS_URL[1]))) {
 			$CMS_URL = array();
-			$CMS_URL[0] = u("kategorie.schulhof");
-			$CMS_URL[1] = "Nutzerkonto";
+			$CMS_URL[0] = u("kategorie.schulhof.standard");
+			$CMS_URL[1] = u("kategorie.nutzerkonto.standard");
 		}
 		else if (preg_match("/^Website(\/(Seiten|Bearbeiten)(\/(Aktuell|Neu|Alt)){0,1}){0,1}$/", $CMS_URLGANZ)) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
 		}
 
-		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == u("kategorie.schulhof")) && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen")))   {
+		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == u("kategorie.schulhof.standard")) && (($CMS_URL[1] != u("kategorie.anmeldung.standard")) && ($CMS_URL[1] != u("kategorie.anmeldung.passwort"))))   {
 			$CMS_URL = array();
-		  $CMS_URL[0] = u("kategorie.schulhof");
-		  $CMS_URL[1] = "Anmeldung";
+		  $CMS_URL[0] = u("kategorie.schulhof.standard");
+		  $CMS_URL[1] = u("kategorie.anmeldung.standard");
 		}
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {
 			if (isset($CMS_URL[1])) {
@@ -137,7 +137,8 @@
 	<link type="image/png" href="res/logos/bglogo.png" rel="shortcut icon">
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT;?></title>
 
-	<?php echo "<base href=\"$CMS_BASE\">";
+	<?php
+		echo "<base href=\"$CMS_BASE\">";
 
 		// <!-- Einbindung der Stylesheets -->
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
@@ -259,9 +260,10 @@
 			echo $code;
 			$code = "";
 		}
-		?>
+	?>
 
-    <script><?php
+  <script>
+		<?php
 			$CMS_ONLOAD_EXTERN_EVENTS = "";
 			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\nvar strings = '".cms_js_strings()."';\n";
 	    if ($CMS_ANGEMELDET) {
@@ -270,12 +272,10 @@
 					if (isset($_SESSION['IMLN'])) {
 						if ($_SESSION['IMLN'] == 1) {
 			        echo "var CMS_IMLN = true;\n";
-						}
-						else {
+						} else {
 			        echo "var CMS_IMLN = false;\n";
 						}
-					}
-					else {
+					} else {
 						echo "var CMS_IMLN = false;\n";
 					}
 					echo "var CMS_NETZCHECK = setInterval('cms_netzcheck()', 30000);\n";
@@ -311,159 +311,148 @@
 				echo "var CMS_GRUPPEN = ['Gremien','Fachschaften','Klassen','Kurse','Stufen','Arbeitsgemeinschaften','Arbeitskreise','Fahrten','Wettbewerbe','Ereignisse','Sonstige Gruppen'];";
 	    }
     ?>
-    </script>
+  </script>
 </head>
-
 
 <?php
 	echo "<body class=\"cms_optimierung_".$CMS_GERAET."\">";
-	echo "<p style=\"display: none;\">Das Burg-Gymnasium ist ein allgemeinbildendes Gymnasium im Herzen der Stadt Schorndorf. Wir sind Mitglied des Netzwerks der UNESCO-Projektschulen. Neben den Sprachlichen Profilen Russisch und Französisch als dritte Fremdsprachen bieten wir im naturwissenschaftlichenbereich die Fächer NWT (Naturwissenschaft und Technik) und IMP (Informatik Mathematik Pysik) an.</p>";
+	echo "<p style=\"display: none;\">Das Burg-Gymnasium ist ein allgemeinbildendes Gymnasium im Herzen der Stadt Schorndorf. Wir sind Mitglied des Netzwerks der UNESCO-Projektschulen. Neben den Sprachlichen Profilen Russisch und Französisch als dritte Fremdsprachen bieten wir im naturwissenschaftlichen Bereich die Fächer NWT (Naturwissenschaft und Technik) und IMP (Informatik Mathematik Pysik) an.</p>";
 ?>
 
-
-	<?php
-		$dbs = cms_verbinden('s');
-		// Startseite laden
-		if ($CMS_URLGANZ == "Website") {
-			$CMS_SEITENDETAILS = cms_startseitendetails_erzeugen($dbs);
-			$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $CMS_SEITENDETAILS['id']);
-			$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
-		}
-		else if (preg_match("/^Website\/(Seiten|Bearbeiten)\/(Aktuell|Neu|Alt)(\/$CMS_LINKMUSTER)*$/", $CMS_URLGANZ)) {
-			$CMS_SEITENDETAILS = cms_seitendetails_erzeugen($dbs, array_slice($CMS_URL,3));
-			// Falls auf dieser Seite eine Weiterleitung besteht
-			if (isset($CMS_SEITENDETAILS['art'])) {
-				if ($CMS_SEITENDETAILS) {
-					if (($CMS_SEITENDETAILS['art'] == 'm') && ($CMS_EINSTELLUNGEN['Menüseiten weiterleiten'] == 1) && ($CMS_URL[1] != "Bearbeiten")) {
-						$weitergeleitet = false;
-						$sql = "SELECT * FROM seiten WHERE zuordnung = '".$CMS_SEITENDETAILS['id']."' ORDER BY position ASC";
-						if ($anfrage = $dbs->query($sql)) {
-							while ((!$weitergeleitet) && ($daten = $anfrage->fetch_assoc())) {
-								if ($daten['art'] != 'm') {
-									$weitergeleitet = true;
-									$CMS_SEITENDETAILS = $daten;
-									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
-									$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
-								}
+<?php
+	$dbs = cms_verbinden('s');
+	// Startseite laden
+	if ($CMS_URLGANZ == "Website") {
+		$CMS_SEITENDETAILS = cms_startseitendetails_erzeugen($dbs);
+		$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $CMS_SEITENDETAILS['id']);
+		$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
+	} else if (preg_match("/^Website\/(Seiten|Bearbeiten)\/(Aktuell|Neu|Alt)(\/$CMS_LINKMUSTER)*$/", $CMS_URLGANZ)) {
+		$CMS_SEITENDETAILS = cms_seitendetails_erzeugen($dbs, array_slice($CMS_URL,3));
+		// Falls auf dieser Seite eine Weiterleitung besteht
+		if (isset($CMS_SEITENDETAILS['art'])) {
+			if ($CMS_SEITENDETAILS) {
+				if (($CMS_SEITENDETAILS['art'] == 'm') && ($CMS_EINSTELLUNGEN['Menüseiten weiterleiten'] == 1) && ($CMS_URL[1] != "Bearbeiten")) {
+					$weitergeleitet = false;
+					$sql = "SELECT * FROM seiten WHERE zuordnung = '".$CMS_SEITENDETAILS['id']."' ORDER BY position ASC";
+					if ($anfrage = $dbs->query($sql)) {
+						while ((!$weitergeleitet) && ($daten = $anfrage->fetch_assoc())) {
+							if ($daten['art'] != 'm') {
+								$weitergeleitet = true;
+								$CMS_SEITENDETAILS = $daten;
+								$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
+								$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
 							}
-							$anfrage->free();
 						}
+						$anfrage->free();
 					}
-					else if (($CMS_SEITENDETAILS['art'] == 't') || ($CMS_SEITENDETAILS['art'] == 'b') || ($CMS_SEITENDETAILS['art'] == 'g')) {
-						$CMS_URL = array();
-						$CMS_URL[0] = "Website";
-						if ($CMS_SEITENDETAILS['art'] == 't') {$CMS_URL[1] = 'Termine';}
-						if ($CMS_SEITENDETAILS['art'] == 'b') {$CMS_URL[1] = 'Blog';}
-						if ($CMS_SEITENDETAILS['art'] == 'g') {$CMS_URL[1] = 'Galerien';}
-						$jetzt = time();
-						$CMS_URL[2] = date('Y', $jetzt);
-						$CMS_URL[3] = cms_monatsnamekomplett(date('n', $jetzt));
-					}
-					$CMS_SEITE = $CMS_SEITENDETAILS['bezeichnung'];
+				} else if (($CMS_SEITENDETAILS['art'] == 't') || ($CMS_SEITENDETAILS['art'] == 'b') || ($CMS_SEITENDETAILS['art'] == 'g')) {
+					$CMS_URL = array();
+					$CMS_URL[0] = "Website";
+					if ($CMS_SEITENDETAILS['art'] == 't') {$CMS_URL[1] = 'Termine';}
+					if ($CMS_SEITENDETAILS['art'] == 'b') {$CMS_URL[1] = 'Blog';}
+					if ($CMS_SEITENDETAILS['art'] == 'g') {$CMS_URL[1] = 'Galerien';}
+					$jetzt = time();
+					$CMS_URL[2] = date('Y', $jetzt);
+					$CMS_URL[3] = cms_monatsnamekomplett(date('n', $jetzt));
 				}
+				$CMS_SEITE = $CMS_SEITENDETAILS['bezeichnung'];
 			}
 		}
-
-		if (preg_match("/^Website\/(Termine|Blog|Galerien).*$/", $CMS_URLGANZ)) {
-			if ($CMS_URL[1] == 'Termine') {$art = 't';}
-			else if ($CMS_URL[1] == 'Blog') {$art = 'b';}
-			else if ($CMS_URL[1] == 'Galerien') {$art = 'g';}
-			$sql = "SELECT * FROM seiten WHERE art = '$art' ORDER BY position ASC";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					$CMS_SEITENDETAILS = $daten;
-					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
-					//$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
-					//print_r($CMS_URL);
-				}
-				$anfrage->free();
+	}
+	if (preg_match("/^Website\/(Termine|Blog|Galerien).*$/", $CMS_URLGANZ)) {
+		if ($CMS_URL[1] == 'Termine') {$art = 't';}
+		else if ($CMS_URL[1] == 'Blog') {$art = 'b';}
+		else if ($CMS_URL[1] == 'Galerien') {$art = 'g';}
+		$sql = "SELECT * FROM seiten WHERE art = '$art' ORDER BY position ASC";
+		if ($anfrage = $dbs->query($sql)) {
+			if ($daten = $anfrage->fetch_assoc()) {
+				$CMS_SEITENDETAILS = $daten;
+				$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
+				//$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
+				//print_r($CMS_URL);
 			}
-			if (!isset($CMS_URL[2])) {$CMS_URL[2] = date('Y');}
+			$anfrage->free();
 		}
-		$CMS_URLGANZ = implode('/', $CMS_URL);
-
-		include_once("php/allgemein/seiten/kopfzeile.php");
-		echo '<div id="cms_platzhalter_bild"></div>';
-		if ($CMS_URL[0] == "Website") {
-			$bildercode = "";
-			$code = "";
-
-			// Alle Titelbilder
-			$verzeichnis = scandir('dateien/titelbilder');
-			array_splice($verzeichnis, 0, 2);
-			$bilder = array();
-			foreach ($verzeichnis as $b) {
-				if ((is_file('dateien/titelbilder/'.$b)) && (getimagesize('dateien/titelbilder/'.$b))) {
-					array_push($bilder, $b);
-				}
-			}
-			$wahlknoepfe = "";
-			if (count($bilder) > 1) {
-				$TITELBILDERJS = "cms_titelbilder_starten();";
-				$bildercode .= "<li style=\"opacity: 1;\" id=\"cms_hauptbilder_0\"><img src=\"dateien/titelbilder/".$bilder[0]."\"></li>";
-				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_0\" class=\"cms_titelbild_knopf_aktiv\" onclick=\"cms_titelbild_zeigen('0')\"></span> ";
-			}
-			for ($i=1; $i<count($bilder); $i++) {
-				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_hauptbilder_$i\"><img src=\"dateien/titelbilder/".$bilder[$i]."\"></li>";
-				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_$i\" class=\"cms_titelbild_knopf\" onclick=\"cms_titelbild_zeigen('$i')\"></span> ";
-			}
-			if (strlen($bildercode) > 0) {
-				$code .= '<div id="cms_hauptbild_o">';
-					$code .= '<ul id="cms_hauptbilder_m">';
-					$code .= $bildercode;
-					$code .= '</ul>';
-					$code .= "<div class=\"cms_clear\"></div>";
-					$code .= "<input type=\"hidden\" id=\"cms_titelbilder_anzahl\" id=\"cms_titelbilder_azahl\" value=\"".(count($bilder))."\">";
-					$code .= "<input type=\"hidden\" id=\"cms_titelbilder_angezeigt\" id=\"cms_titelbilder_angezeigt\" value=\"0\">";
-					$code .= '<span class="cms_hauptbilder_voriges" onclick="cms_titelbild_voriges()"></span><span class="cms_hauptbilder_naechstes" onclick="cms_titelbild_naechstes()"></span>';
-					$code .= "<p class=\"cms_titelbilder_wahl\">$wahlknoepfe</p>";
-				$code .= '</div>';
-			}
-			echo $code;
-		}
-
-		if (($CMS_ANGEMELDET) && ($CMS_URL[0] == 'Website')) {
-			if ($CMS_RECHTE['Website']['Inhalte anlegen'] || $CMS_RECHTE['Website']['Inhalte bearbeiten'] || $CMS_RECHTE['Website']['Inhalte löschen']) {
-				include_once("php/website/seiten/bearbeiten.php");
+		if (!isset($CMS_URL[2])) {$CMS_URL[2] = date('Y');}
+	}
+	$CMS_URLGANZ = implode('/', $CMS_URL);
+	include_once("php/allgemein/seiten/kopfzeile.php");
+	echo '<div id="cms_platzhalter_bild"></div>';
+	if ($CMS_URL[0] == "Website") {
+		$bildercode = "";
+		$code = "";
+		// Alle Titelbilder
+		$verzeichnis = scandir('dateien/titelbilder');
+		array_splice($verzeichnis, 0, 2);
+		$bilder = array();
+		foreach ($verzeichnis as $b) {
+			if ((is_file('dateien/titelbilder/'.$b)) && (getimagesize('dateien/titelbilder/'.$b))) {
+				array_push($bilder, $b);
 			}
 		}
-	?>
-
-	<div id="cms_hauptteil_o">
-	<div id="cms_hauptteil_m">
-		<div id="cms_hauptteil_i">
-			<div id="cms_debug"></div>
-			<?php
+		$wahlknoepfe = "";
+		if (count($bilder) > 1) {
+			$TITELBILDERJS = "cms_titelbilder_starten();";
+			$bildercode .= "<li style=\"opacity: 1;\" id=\"cms_hauptbilder_0\"><img src=\"dateien/titelbilder/".$bilder[0]."\"></li>";
+			$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_0\" class=\"cms_titelbild_knopf_aktiv\" onclick=\"cms_titelbild_zeigen('0')\"></span> ";
+		}
+		for ($i=1; $i<count($bilder); $i++) {
+			$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_hauptbilder_$i\"><img src=\"dateien/titelbilder/".$bilder[$i]."\"></li>";
+			$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_$i\" class=\"cms_titelbild_knopf\" onclick=\"cms_titelbild_zeigen('$i')\"></span> ";
+		}
+		if (strlen($bildercode) > 0) {
+			$code .= '<div id="cms_hauptbild_o">';
+				$code .= '<ul id="cms_hauptbilder_m">';
+				$code .= $bildercode;
+				$code .= '</ul>';
+				$code .= "<div class=\"cms_clear\"></div>";
+				$code .= "<input type=\"hidden\" id=\"cms_titelbilder_anzahl\" id=\"cms_titelbilder_azahl\" value=\"".(count($bilder))."\">";
+				$code .= "<input type=\"hidden\" id=\"cms_titelbilder_angezeigt\" id=\"cms_titelbilder_angezeigt\" value=\"0\">";
+				$code .= '<span class="cms_hauptbilder_voriges" onclick="cms_titelbild_voriges()"></span><span class="cms_hauptbilder_naechstes" onclick="cms_titelbild_naechstes()"></span>';
+				$code .= "<p class=\"cms_titelbilder_wahl\">$wahlknoepfe</p>";
+			$code .= '</div>';
+		}
+		echo $code;
+	}
+	if (($CMS_ANGEMELDET) && ($CMS_URL[0] == 'Website')) {
+		if ($CMS_RECHTE['Website']['Inhalte anlegen'] || $CMS_RECHTE['Website']['Inhalte bearbeiten'] || $CMS_RECHTE['Website']['Inhalte löschen']) {
+			include_once("php/website/seiten/bearbeiten.php");
+		}
+	}
+?>
+<div id="cms_hauptteil_o">
+<div id="cms_hauptteil_m">
+	<div id="cms_hauptteil_i">
+		<div id="cms_debug"></div>
+		<?php
 			include_once("php/allgemein/seiten/seitensteuerung.php");
-			?>
+		?>
 		</div>
 	</div>
-	</div>
+</div>
 
+<?php
+	include_once("php/allgemein/seiten/fusszeile.php");
+	include_once("php/allgemein/seiten/blende.php");
+	cms_trennen($dbs);
+?>
+
+<div id="cms_javascript">
 	<?php
-		include_once("php/allgemein/seiten/fusszeile.php");
-		include_once("php/allgemein/seiten/blende.php");
-		cms_trennen($dbs);
-	?>
-
-	<div id="cms_javascript">
-		<?php
-		if ($CMS_ANGEMELDET) {
-			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EVENTS."\n";
-				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {echo "cms_netzcheck();\n";}
-				echo "};";
-			echo "</script>";
-		}
-		else if (($CMS_URL[0] == 'Website') || ($CMS_URL[0] == "Intern")) {
-			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EXTERN_EVENTS."};";
-			echo "</script>";
-		}
-		cms_erfasse_click();
-
-		?>
-	</div>
-
+	if ($CMS_ANGEMELDET) {
+		echo "<script type=\"text/javascript\">";
+			echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EVENTS."\n";
+			if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {echo "cms_netzcheck();\n";}
+			echo "};";
+		echo "</script>";
+	}
+	else if (($CMS_URL[0] == 'Website') || ($CMS_URL[0] == "Intern")) {
+		echo "<script type=\"text/javascript\">";
+		echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EXTERN_EVENTS."};";
+		echo "</script>";
+	}
+	cms_erfasse_click();
+?>
+</div>
 </body>
 </html>

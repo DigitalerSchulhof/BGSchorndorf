@@ -50,16 +50,12 @@ else if ($CMS_URL[0] == 'Intern') {
   $CMS_VERFUEGBARE_SEITEN['Intern'] = 'php/lehrerzimmer/seiten/intern/intern.php';
   if (preg_match("/^Intern\/Gerätezustand(\/.*){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/geraetezustand.php';}
 }
-else if ($CMS_URL[0] == u("kategorie.schulhof")) {
+else if ($CMS_URL[0] == u("kategorie.schulhof.standard")) {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
   // SCHULHOF
   $CMS_VERFUEGBARE_SEITEN['Schulhof']                                                     = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
   // Anmeldung
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung']                                           = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Bis_bald!']                                 = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Automatische_Abmeldung']                    = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Zugeschickt!']                              = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Passwort_vergessen']                                  = 'php/schulhof/seiten/nutzerkonto/passwortvergessen.php';
+  cms_seite_registrieren("schulhof/seiten/nutzerkonto/anmelden");
 
   // Nutzerkonto
   cms_seite_registrieren("schulhof/seiten/nutzerkonto/nutzerkonto");
@@ -255,7 +251,7 @@ else if ($CMS_URL[0] == u("kategorie.schulhof")) {
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/blogeintraege/blogansicht.php';}
 
   // Website
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website']                                             = 'php/schulhof/seiten/website/website.php';
+  cms_seite_registrieren("schulhof/seiten/website/website");
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Seiten']                                      = 'php/schulhof/seiten/website/seiten/seiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Seiten/Neue_Seite_anlegen']                   = 'php/schulhof/seiten/website/seiten/neueseite.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Seiten/Seite_bearbeiten']                     = 'php/schulhof/seiten/website/seiten/seitebearbeiten.php';
@@ -303,8 +299,8 @@ if (!$ausnahme) {
   else {
     if (isset($CMS_URL[0])) {
       if ($CMS_URL[0] == "Website") {cms_fehler("Website", "404");}
-      else if ($CMS_URL[0] == "Problembehebung") {cms_fehler(u("kategorie.schulhof"), "404");}
-      else if ($CMS_URL[0] == u("kategorie.schulhof")) {cms_fehler(u("kategorie.schulhof"), "404");}
+      else if ($CMS_URL[0] == "Problembehebung") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == u("kategorie.schulhof")) {cms_fehler("Schulhof", "404");}
     }
     else {cms_fehler("Website", "404");}
   }
@@ -313,6 +309,10 @@ if (!$ausnahme) {
 function cms_seite_registrieren($seite) {
   global $CMS_VERFUEGBARE_SEITEN;
   $url = u(str_replace("/", ".", $seite));
-  $CMS_VERFUEGBARE_SEITEN[$url] = "php/".$seite.".php";
+  if(is_array($url))
+    foreach($url as $k => $v)
+      $CMS_VERFUEGBARE_SEITEN[$v] = "php/".$seite.".php";
+  else
+    $CMS_VERFUEGBARE_SEITEN[$url] = "php/".$seite.".php";
 }
 ?>
