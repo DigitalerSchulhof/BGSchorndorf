@@ -69,7 +69,12 @@ function cms_box_style(id, farbe) {
     cms_klasse_weg('cms_boxen_box_'+id, 'cms_box_3');
     cms_klasse_weg('cms_boxen_box_'+id, 'cms_box_4');
     cms_klasse_weg('cms_boxen_box_'+id, 'cms_box_5');
+    var altefarbe = document.getElementById('cms_boxen_box_style_'+id).value;
+    cms_klasse_weg('cms_box_style_'+id+'_'+altefarbe, 'cms_farbbeispiel_aktiv');
+    cms_klasse_dazu('cms_box_style_'+id+'_'+altefarbe, 'cms_farbbeispiel');
     cms_klasse_dazu('cms_boxen_box_'+id, 'cms_box_'+farbe);
+    cms_klasse_weg('cms_box_style_'+id+'_'+farbe, 'cms_farbbeispiel');
+    cms_klasse_dazu('cms_box_style_'+id+'_'+farbe, 'cms_farbbeispiel_aktiv');
     document.getElementById('cms_boxen_box_style_'+id).value = farbe;
   }
 }
