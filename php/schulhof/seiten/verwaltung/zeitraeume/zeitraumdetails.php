@@ -77,7 +77,7 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 		$code .= "</td></tr>";
 	$code .= "</table>";
 
-	if ($id != '-') {
+	if ($zeitraumid != '-') {
 		$code .= cms_meldung('warnung', '<h4>Verringerung der Unterrichtstage und Wochenrythmen</h4><p>Eine Verringerung der Unterrichtstage oder Wochenrythmen führt dazu, dass alle Unterrichtsstunden gelöscht werden, die nicht mehr stattfindenden Unterrichtstagen oder Wochenrythmisierungen zugewiesen wurden.</p>');
 	}
 
