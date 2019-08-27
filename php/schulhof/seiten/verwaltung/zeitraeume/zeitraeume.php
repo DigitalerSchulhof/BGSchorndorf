@@ -10,10 +10,10 @@ if ($zugriff) {
   $sjfehler = true;
   if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {
     $SCHULJAHR = $_SESSION['ZEITRAUMSCHULJAHR'];
-    $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre WHERE id = ?");
+    $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM schuljahre WHERE id = ?");
     $sql->bind_param('i', $SCHULJAHR);
     if ($sql->execute()) {
-      $sql->bind_result($anzahl, $sjbez);
+      $sql->bind_result($anzahl);
       if ($sql->fetch()) {if ($anzahl == 1) {$sjfehler = false;}}
     }
     $sql->close();
@@ -21,15 +21,29 @@ if ($zugriff) {
 
 
   if (!$sjfehler) {
-    $code .= "<h1>Stundenplanzeiträume für das Schuljahr $sjbez</h1>";
+    $code .= "<h1>Stundenplanzeiträume</h1>";
+
+    $schuljahrwahlcode = "";
+    // Alle Schuljahre laden
+    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre ORDER BY beginn DESC");
+    if ($sql->execute()) {
+      $sql->bind_result($id, $sjbez);
+      while ($sql->fetch()) {
+        $klasse = "cms_button";
+        if ($id == $SCHULJAHR) {$klasse .= "_ja";}
+        $schuljahrwahlcode .= "<span class=\"$klasse\" onclick=\"cms_stundenplanzeitraeume_vorbereiten($id)\">$sjbez</span> ";
+      }
+    }
+    $sql->close();
+    $code .= "<p>".$schuljahrwahlcode."</p>";
 
     $zeilen = "";
     $code .= "<table class=\"cms_liste\">";
-      $code .= "<tr><th></th><th>Bezeichnung</th><th>Beginn</th><th>Ende</th><th>Schultage</th><th>Aktionen</th></tr>";
-      $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn, ende, mo, di, mi, do, fr, sa, so FROM zeitraeume WHERE schuljahr = ? ORDER BY beginn ASC");
+      $code .= "<tr><th></th><th>Bezeichnung</th><th>Beginn</th><th>Ende</th><th>Schultage</th><th>Rythmen</th><th>Aktionen</th></tr>";
+      $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn, ende, mo, di, mi, do, fr, sa, so, rythmen FROM zeitraeume WHERE schuljahr = ? ORDER BY beginn ASC");
       $sql->bind_param('i', $SCHULJAHR);
       if ($sql->execute()) {
-        $sql->bind_result($zid, $zbez, $zbeginn, $zende, $mo, $di, $mi, $do, $fr, $sa, $so);
+        $sql->bind_result($zid, $zbez, $zbeginn, $zende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen);
         while ($sql->fetch()) {
           $zeilen .= "<tr>";
             $zeilen .= "<td><img src=\"res/icons/klein/stundenplanzeitraeume.png\"></td>";
@@ -46,6 +60,7 @@ if ($zugriff) {
             if ($so == 1) {$schultage .= ", SO";}
             if (strlen($schultage) > 0) {$schultage = substr($schultage, 2);}
             $zeilen .= "<td>".$schultage."</td>";
+            $zeilen .= "<td>".$rythmen."</td>";
             $zeilen .= "<td>";
             if ($CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten']) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_bearbeiten_vorbereiten($zid);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
@@ -59,7 +74,7 @@ if ($zugriff) {
 
         if (strlen($zeilen) > 0) {$code .= $zeilen;}
         else {
-          $code .= "<tr><td class=\"cms_notiz\" colspan=\"6\">- keine Datensätze gefunden -</td></tr>";
+          $code .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
         }
       }
       $sql->close();

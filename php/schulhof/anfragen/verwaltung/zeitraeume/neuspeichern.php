@@ -22,6 +22,7 @@ if (isset($_POST['do'])) {$do = $_POST['do'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['fr'])) {$fr = $_POST['fr'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sa'])) {$sa = $_POST['sa'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['so'])) {$so = $_POST['so'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['rythmen'])) {$rythmen = $_POST['rythmen'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenanzahl'])) {$schulstundenanzahl = $_POST['schulstundenanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenids'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {$SCHULJAHR = $_SESSION['ZEITRAUMSCHULJAHR'];} else {echo "FEHLER";exit;}
@@ -48,6 +49,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_ganzzahl($endeT,1,31)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($endeM,1,12)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($endeJ,0)) {echo "FEHLER"; exit;}
+	if (!cms_check_ganzzahl($rythmen,1,26)) {echo "FEHLER"; exit;}
 
 	$beginn = mktime(0,0,0,$beginnM,$beginnT,$beginnJ);
 	$ende = mktime(23,59,59,$endeM,$endeT,$endeJ);
@@ -137,8 +139,8 @@ if (cms_angemeldet() && $zugriff) {
 		// NÄCHSTE FREIE ID SUCHEN
 		$id = cms_generiere_kleinste_id('zeitraeume');
 		// ZEITRAUM EINTRAGEN
-		$sql = $dbs->prepare("UPDATE zeitraeume SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ? WHERE id = ?");
-	  $sql->bind_param("isiiiiiiiiii", $SCHULJAHR, $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $id);
+		$sql = $dbs->prepare("UPDATE zeitraeume SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ?, rythmen = ? WHERE id = ?");
+	  $sql->bind_param("isiiiiiiiiiii", $SCHULJAHR, $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $id);
 	  $sql->execute();
 	  $sql->close();
 

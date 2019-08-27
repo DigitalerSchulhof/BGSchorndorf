@@ -62,7 +62,6 @@ if (!$fehler) {
       $code .= cms_togglebutton_generieren ('cms_kalender_gruppen_'.$gk, $g, $ansichtG[$g], "cms_kalender_neu('$url');")." ";
     }
     $code .= "</td></tr></table><table class=\"cms_liste\">";
-    $code .= "<tr><th>Legende:</th><td><table class=\"cms_kalenderuebersicht\"><td class=\"cms_kalender_tagzahl\"><a class=\"cms_kalenderzahl cms_kalenderzahl_gewaehlt\">Gewählt</a></td><td class=\"cms_kalender_tagzahl\"><a class=\"cms_kalenderzahl cms_kalenderzahl_oeffentlich\">Öffentlich</a></td><td class=\"cms_kalender_tagzahl\"><a class=\"cms_kalenderzahl cms_kalenderzahl_ferien\">Ferien</a></td></tr><tr><td class=\"cms_kalender_tagzahl\"><a class=\"cms_kalenderzahl cms_kalenderzahl_persoenlich\">Persönlich</a></td><td class=\"cms_kalender_tagzahl\"><a class=\"cms_kalenderzahl cms_kalenderzahl_heute\">Heute</a></td></table></td></tr>";
   $code .= "</table>";
   $code .= "</div></div>";
 

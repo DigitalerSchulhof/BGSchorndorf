@@ -32,6 +32,7 @@ function cms_zeitraeume_eingabencheck() {
   var fre = document.getElementById('cms_cms_zeitraeume_fr').value;
   var sam = document.getElementById('cms_cms_zeitraeume_sa').value;
   var son = document.getElementById('cms_cms_zeitraeume_so').value;
+  var rythmen = document.getElementById('cms_zeitraeume_rythmen').value;
 	var schulstundenanzahl = document.getElementById('cms_zeitraeume_schulstunden_anzahl').value;
 	var schulstundenids = document.getElementById('cms_zeitraeume_schulstunden_ids').value;
 
@@ -68,6 +69,11 @@ function cms_zeitraeume_eingabencheck() {
 
 	if (!cms_check_toggle(mon) || !cms_check_toggle(die) || !cms_check_toggle(mit) || !cms_check_toggle(don) || !cms_check_toggle(fre) || !cms_check_toggle(sam) || !cms_check_toggle(son)) {
 		meldung += '<li>Die Eingabe der Schultage ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(rythmen, 1,26)) {
+		meldung += '<li>Die Eingabe der Rythmen ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -142,6 +148,7 @@ function cms_zeitraeume_eingabencheck() {
 	formulardaten.append("fr", fre);
 	formulardaten.append("sa", sam);
 	formulardaten.append("so", son);
+	formulardaten.append("rythmen", rythmen);
 	formulardaten.append("schulstundenanzahl", schulstundenanzahl);
 	formulardaten.append("schulstundenids", schulstundenids);
 
@@ -258,7 +265,7 @@ function cms_zeitraeume_bearbeiten_speichern () {
 				cms_meldung_an('fehler', 'Neuen Zeitraum anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Zeitraum bearbeiten', '<p>Der Zeitraum <b>'+bezeichnung+'</b> wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Zeiträume\');">Zurück zur Übersicht</span></p>');
+				cms_meldung_an('erfolg', 'Zeitraum bearbeiten', '<p>Der Zeitraum <b>'+bezeichnung+'</b> wurde gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Zeiträume\');">Zurück zur Übersicht</span></p>');
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}

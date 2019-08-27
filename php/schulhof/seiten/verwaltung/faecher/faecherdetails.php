@@ -11,10 +11,10 @@ function cms_faecher_ausgeben ($id) {
 	$icon = "standard.png";
 
 	if ($id != "-") {
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM faecher WHERE id = ?");
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, farbe FROM faecher WHERE id = ?");
 		$sql->bind_param("i", $id);
 		if ($sql->execute()) {
-			$sql->bind_result($bezeichnung, $kuerzel);
+			$sql->bind_result($bezeichnung, $kuerzel, $icon, $farbe);
 			$sql->fetch();
 		}
 		$sql->close();
