@@ -45,7 +45,7 @@ if (isset($_SESSION['SPAMSCHUTZERLAUBNIS'])) {
     }
     imagepng($bild);
     imagedestroy($bild);
-    $_SESSION['SPAMSCHUTZERLAUBNIS'] = false;
+    unset($_SESSION['SPAMSCHUTZERLAUBNIS']);
   //}
 }
 ?>

@@ -1,6 +1,6 @@
 function cms_gruppen_listeausgeben(name, schuljahr) {
   var feld = document.getElementById('cms_gruppenliste');
-  feld.innerHTML = "<tr><td style=\"text-align: center;\" colspan=\"7\"><img src=\"res/laden/standard.gif\"><br><br>Daten werden geladen. Bitte warten...</td></tr>";
+  feld.innerHTML = "<tr><td style=\"text-align: center;\" colspan=\"7\">"+cms_ladeicon()+"<br><br>Daten werden geladen. Bitte warten...</td></tr>";
 
   cms_buttonwechsel('cms_gruppen_schuljahr', schuljahr);
 
@@ -476,7 +476,7 @@ function cms_gruppe_kursefaecher_laden() {
 }
 
 function cms_gruppe_klassen_laden() {
-  document.getElementById('cms_gruppe_klassen_F').innerHTML = '<div class=\"cms_meldung_laden\"><p><img src=\"res/laden/standard.gif\"></p><p class=\"cms_notiz\">Klassen dieses Schuljahres werden geladen</p></div>'
+  document.getElementById('cms_gruppe_klassen_F').innerHTML = '<div class=\"cms_meldung_laden\">'+cms_ladeicon()+'<p class=\"cms_notiz\">Klassen dieses Schuljahres werden geladen</p></div>'
   var schuljahr = document.getElementById('cms_gruppe_schuljahr').value;
   var stufe = document.getElementById('cms_gruppe_stufe').value;
 

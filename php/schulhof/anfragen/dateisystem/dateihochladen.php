@@ -127,7 +127,7 @@ if ($angemeldet && $zugriff) {
 					$fehler = !move_uploaded_file($temppfad, $pfad."/".$dateiname);
 				}
 
-				if (($pfadteile[0] != 'titelbilder') && ($pfadteile[0] != 'website')) && !$fehler) {
+				if (($pfadteile[0] != 'titelbilder') && ($pfadteile[0] != 'website') && !$fehler) {
 					cms_dateisystem_datei_verschluesseln($pfad."/".$dateiname);
 					cms_dateisystem_datei_verschluesseln_aufraeumen($pfad."/".$dateiname);
 				}

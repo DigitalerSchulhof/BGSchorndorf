@@ -392,7 +392,7 @@ function cms_termine_jahr_loeschen() {
 
 function cms_terminverwaltung(jahr, spalten, anfang, ende) {
   var feld = document.getElementById('cms_verwaltung_termine_jahr');
-  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\"><img src="res/laden/standard.gif"><br>Die Termine für das Jahr '+jahr+' werden geladen. Je nach Verbindung und Terminanzahl kann dies etwas dauern.</td></tr>';
+  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\">'+cms_ladeicon()+'<br>Die Termine für das Jahr '+jahr+' werden geladen. Je nach Verbindung und Terminanzahl kann dies etwas dauern.</td></tr>';
 
   for (var i=anfang; i<=ende; i++) {
     var toggle = document.getElementById('cms_verwaltung_termine_jahr_'+i);

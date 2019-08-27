@@ -32,8 +32,12 @@ if ($postfachordner) {
 	$sql = "SELECT id FROM personen";
 	if ($anfrage = $dbs->query($sql)) {
 		while ($daten = $anfrage->fetch_assoc()) {
-			if (!file_exists('dateien/schulhof/postfach/temp/'.$daten['id'])) {mkdir('dateien/schulhof/postfach/temp/'.$daten['id'], 0775);}
-			echo 'dateien/schulhof/postfach/temp/'.$daten['id']."<br>";
+			if (!file_exists('dateien/schulhof/personen/'.$daten['id'])) {mkdir('dateien/schulhof/personen/'.$daten['id'], 0775); echo $daten['id']." - Personenordner";}
+			if (!file_exists('dateien/schulhof/personen/'.$daten['id'].'/postfach')) {mkdir('dateien/schulhof/personen/'.$daten['id'].'/postfach', 0775); echo $daten['id']." - Postfachordner";}
+			if (!file_exists('dateien/schulhof/personen/'.$daten['id'].'/postfach/eingang')) {mkdir('dateien/schulhof/personen/'.$daten['id'].'/postfach/eingang', 0775); echo $daten['id']." - Eingang";}
+			if (!file_exists('dateien/schulhof/personen/'.$daten['id'].'/postfach/ausgang')) {mkdir('dateien/schulhof/personen/'.$daten['id'].'/postfach/ausgang', 0775); echo $daten['id']." - Ausgang";}
+			if (!file_exists('dateien/schulhof/personen/'.$daten['id'].'/postfach/entwuerfe')) {mkdir('dateien/schulhof/personen/'.$daten['id'].'/postfach/entwuerfe', 0775); echo $daten['id']." - Entwürfe";}
+			if (!file_exists('dateien/schulhof/personen/'.$daten['id'].'/postfach/temp')) {mkdir('dateien/schulhof/personen/'.$daten['id'].'/postfach/temp', 0775); echo $daten['id']." - Zwischenspeicher";}
 		}
 		$anfrage->free();
 	}
@@ -670,6 +674,8 @@ if ($einstellungenplaetten) {
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung an GitHub', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
 	// Postfach
 	foreach ($personen as $p) {
 		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen persönliche Termine anlegen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
@@ -739,6 +745,7 @@ if ($update) {
 	profile
 	profilfaecher
 	auffaelliges
+	galerien
 	$sql = "CREATE TABLE `dauerbrenner` (
 	  `id` bigint(255) UNSIGNED NOT NULL,
 	  `bezeichnung` varbinary(5000) NOT NULL,

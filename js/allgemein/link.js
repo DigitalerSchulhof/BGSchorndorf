@@ -13,7 +13,7 @@ function cms_mobinavi_aendern(id) {
 		var knopf = document.getElementById('cms_mobilmenue_knopf_'+id);
 		if (feld.style.display == 'none') {
 			feld.style.display = 'block';
-			feld.innerHTML = '<p class="cms_notiz"><img src="res/laden/standard.gif"></p>';
+			feld.innerHTML = '<p class="cms_notiz">'+cms_ladeicon()+'</p>';
 			var formulardaten = new FormData();
 			formulardaten.append("id", id);
 			formulardaten.append("anfragenziel", 	'1');

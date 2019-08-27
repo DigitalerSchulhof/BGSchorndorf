@@ -18,6 +18,10 @@ function cms_check_titel(titel) {
 	return titel.match(/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]+$/);
 }
 
+function cms_check_buchstaben(text) {
+	return text.match(/^[a-zA-ZÄÖÜäöüß]+$/);
+}
+
 function cms_check_toggle(wert) {
 	if ((wert != '1') && (wert != "0")) {return false;}
 	else {return true;}
@@ -245,4 +249,9 @@ function cms_tagname(t) {
   else if (t == 6) {return 'SA';}
   else if (t == 7) {return 'SO';}
   else {return false;}
+}
+
+function cms_check_idfeld(text) {
+	if (text == '') {return true;}
+	return text.match(/^(\|[0-9]+)+$/);
 }

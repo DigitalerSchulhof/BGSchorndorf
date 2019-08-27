@@ -1,6 +1,6 @@
 function cms_zuordnung_aktualisieren() {
 	var feld = document.getElementById('cms_zuordnungsauswahl_ergebnisse');
-	feld.innerHTML = '<img src="res/laden/standard.gif"><br><br>Gruppen werden geladen. Bitte warten...';
+	feld.innerHTML = cms_ladeicon()+'<br><br>Gruppen werden geladen. Bitte warten...';
 	feld.style.textAlign = 'center';
 	var gruppe = document.getElementById('cms_zuordnungsauswahl_gruppe').value;
 	var zugeordnet = document.getElementById('cms_zuorndung_zugeordnetegruppen_'+cms_textzudb(gruppe)).value;

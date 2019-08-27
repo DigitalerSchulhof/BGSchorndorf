@@ -65,7 +65,7 @@ if ($CMS_ANGEMELDET) {
 
 			if (count(explode('|',substr($POSTEMPFAENGER,1))) > 2) {$style = 'block';}
 			else {$style = 'none';}
-			$code .= "<div id=\"cms_bloghinweis\" style=\"display: $style;\">".cms_meldung('info', '<h4>Wirklich eine Nachricht?</h4><p>Blogeinträge sind leichert zu finden, verbrauchen für die Benutzer selbst keinen Speicherplatz und unterliegen keinem Speicherlimit.</p>')."</div>";
+			$code .= "<div id=\"cms_bloghinweis\" style=\"display: $style;\">".cms_meldung('info', '<h4>Wirklich eine Nachricht?</h4><p>Blogeinträge sind leichter zu finden, verbrauchen für die Benutzer selbst keinen Speicherplatz und unterliegen keinem Speicherlimit.</p>')."</div>";
 
 			$code .= "<h3>Nachricht</h3>";
 			$code .= cms_webeditor('cms_postfach_nachricht', $POSTNACHRICHT);

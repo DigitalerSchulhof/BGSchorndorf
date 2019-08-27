@@ -3,7 +3,7 @@ function cms_laden_an (titel, taetigkeit) {
 	var blende = '<div class="cms_spalte_i">';
 		blende += '<h2 id="cms_laden_ueberschrift">'+titel+'</h2>';
 		blende += '<p id="cms_laden_meldung_vorher">Bitte warten...</p>';
-		blende += '<img class="cms_laden" src="res/laden/standard.gif">';
+		blende += cms_ladeicon();
 		blende += '<p id="cms_laden_meldung_nachher">'+taetigkeit+'</p>';
 	blende += '</div>';
 
@@ -67,9 +67,32 @@ function cms_meldung_bastler() {
 	cms_meldung_an('warnung', 'Unvollständige Informationen', '<p>Diese Seite wurde nicht über einen Link im System aufgerufen, sondern durch direkte Eingabe. Daher sind nicht genügend Informationen vorhanden, um sie anzuzeigen. Aus Sicherheits- und Datenschutzgründen enthalten Links nicht alle Informationen, um Seiten mit sensiblen Informationen zu öffnen.</p><p>Bitte verwenden Sie die Benutzeroberfläche, um die gewünschten Seiten aufzurufen.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 }
 
+function cms_meldung_berechtigung_code() {
+	if (CMS_BENUTZERART == "s") {
+        meldung = '<p>Du bist nicht berechtigt, diese Aktion auszuführen!</p>';
+    }
+    else {
+        meldung = '<p>Sie sind nicht berechtigt, diese Aktion auszuführen!</p>';
+    }
+	return cms_meldung_code('fehler', 'Zugriff verweigert!', meldung);
+}
+
+function cms_meldung_firewall_code() {
+	meldung = '<p>Aus Diesem Netz kein kein Zugriff auf diese Daten erfolgen.</p>';
+	return cms_meldung_code('firewall', 'Zugriff verweigert!', meldung);
+}
+
+function cms_meldung_fehler_code() {
+	return cms_meldung_code('fehler', 'Unbekannter Fehler', '<p>Es ist ein unbekannter Fehler aufgetreten. Bitte den Administrator mit einem detailierten Bericht benachrichtigen, damit dieser Fehler behoben werden kann!</p>');
+}
+
+function cms_meldung_bastler_code() {
+	return cms_meldung_code('warnung', 'Unvollständige Informationen', '<p>Diese Seite wurde nicht über einen Link im System aufgerufen, sondern durch direkte Eingabe. Daher sind nicht genügend Informationen vorhanden, um sie anzuzeigen. Aus Sicherheits- und Datenschutzgründen enthalten Links nicht alle Informationen, um Seiten mit sensiblen Informationen zu öffnen.</p><p>Bitte verwenden Sie die Benutzeroberfläche, um die gewünschten Seiten aufzurufen.</p>');
+}
+
 function cms_meldung_laden(text) {
 	text = text || '';
-	var ergebnis = '<div class=\"cms_meldung_laden\"><p><img src="res/laden/standard.gif"></p>';
+	var ergebnis = '<div class=\"cms_meldung_laden\">'+cms_ladeicon();
 	if (text.length > 0) {ergebnis += '<p>'+text+'</p>';}
 	ergebnis += '</div>';
 	return ergebnis;

@@ -350,7 +350,7 @@ function cms_dateisystem_laden_an(feldid) {
 	var feld = document.getElementById(feldid+'_inhalt');
 	var code = '<div class="cms_dateisystem_laden">';
 		code += '<p id="cms_dateiladen_meldung_vorher">Bitte warten...</p>';
-		code += '<img class="cms_laden" src="res/laden/standard.gif">';
+		code += cms_ladeicon();
 		code += '<p id="cms_dateiladen_meldung_nachher">Dateien werden geladen</p>';
 	code += '</div>';
 	feld.innerHTML = code;

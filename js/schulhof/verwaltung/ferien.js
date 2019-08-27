@@ -187,7 +187,7 @@ function cms_ferien_jahr_loeschen() {
 
 function cms_ferienverwaltung(jahr, spalten, anfang, ende) {
   var feld = document.getElementById('cms_verwaltung_ferien_jahr');
-  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\"><img src="res/laden/standard.gif"><br>Die Ferien für das Jahr '+jahr+' werden geladen.</td></tr>';
+  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\">'+cms_ladeicon()+'<br>Die Ferien für das Jahr '+jahr+' werden geladen.</td></tr>';
 
   for (var i=anfang; i<=ende; i++) {
     var toggle = document.getElementById('cms_verwaltung_ferien_jahr_'+i);

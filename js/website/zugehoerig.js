@@ -1,6 +1,6 @@
 function cms_zugehoerig_laden (jahr, anfang, ende, gruppe, gruppenid) {
   var feld = document.getElementById('cms_zugehoerig_jahr');
-  feld.innerHTML = '<div class="cms_zugehoerig_spalte_a1"><div class="cms_zugehoerig_spalte_i"><p class="cms_notiz"><img src="res/laden/standard.gif"><br>Die zugehörigen Inhalte für das Jahr '+jahr+' werden geladen.</p></div></div>';
+  feld.innerHTML = '<div class="cms_zugehoerig_spalte_a1"><div class="cms_zugehoerig_spalte_i"><p class="cms_notiz">'+cms_ladeicon()+'<br>Die zugehörigen Inhalte für das Jahr '+jahr+' werden geladen.</p></div></div>';
 
   for (var i=anfang; i<=ende; i++) {
     var toggle = document.getElementById('cms_zugehoerig_jahr_'+i);

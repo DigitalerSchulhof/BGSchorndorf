@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 	include_once("php/allgemein/funktionen/sql.php");
 	include_once("php/website/seiten/seitenauswertung.php");
@@ -121,8 +120,32 @@
 	}
 
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-?>
 
+	$CMS_SEITENTITEL = "";
+	if (count($CMS_URL) > 0) {
+		if ($CMS_URL[0] == "Website") {
+			if (count($CMS_URL) > 1) {
+				if ($CMS_URL[1] == "Termine") {$CMS_SEITENTITEL = "Termine";}
+				else if ($CMS_URL[1] == "Ferien") {$CMS_SEITENTITEL = "Ferien";}
+				else if ($CMS_URL[1] == "Blog") {$CMS_SEITENTITEL = "Blog";}
+				else if ($CMS_URL[1] == "Galerien") {$CMS_SEITENTITEL = "Galerien";}
+				else {
+					if (count($CMS_URL) > 3) {
+						$CMS_SEITENTITEL = cms_linkzutext($CMS_URL[count($CMS_URL)-1]);
+					}
+					else {
+						$CMS_SEITENTITEL = "Website";
+					}
+				}
+			}
+			else {$CMS_SEITENTITEL = "Startseite";}
+		}
+		else {
+			$CMS_SEITENTITEL = "Schulhof";
+		}
+	}
+?>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -133,7 +156,7 @@
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link type="image/png" href="res/logos/bglogo.png" rel="shortcut icon">
-	<title><?php echo $CMS_SCHULE." ".$CMS_ORT;?></title>
+	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 
@@ -170,6 +193,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
     echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";

@@ -33,8 +33,6 @@ else {$fehler = true;}
 
 
 if (!$fehler) {
-	include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
-	include_once('php/schulhof/seiten/gruppen/ausgaben.php');
 	$code = "";
 	$code .= "<div class=\"cms_spalte_i\">";
 		$code .= "<p class=\"cms_brotkrumen\">";

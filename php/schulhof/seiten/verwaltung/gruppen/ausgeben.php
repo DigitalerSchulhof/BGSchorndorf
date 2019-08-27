@@ -28,7 +28,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       $sichtbar = 1;
       if (!$CMS_IMLN) {
         $ausgabe .= cms_meldung_eingeschraenkt();
-        $ausgabe .= "<p><a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/".$name."\">Abbrechen</a></p>";
+        $ausgabe .= "<p><a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Gruppen/".$name."\">Abbrechen</a></p>";
         return cms_meldung_eingeschraenkt();
       }
     }
@@ -366,7 +366,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     if ($id == '-') {$event = "cms_gruppen_neu_speichern('$name');";}
     else {$event = "cms_gruppen_bearbeiten_speichern('$name');";}
     $ausgabe .= "<p><span class=\"cms_button\" onclick=\"$event\">Speichern</span> ";
-    $ausgabe .= "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/".str_replace(' ', '_', $name)."\">Abbrechen</a></p>";
+    $ausgabe .= "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Gruppen/".str_replace(' ', '_', $name)."\">Abbrechen</a></p>";
 	}
 	else {
 		$ausgabe .= cms_meldung_berechtigung();

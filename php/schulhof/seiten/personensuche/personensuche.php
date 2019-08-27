@@ -189,10 +189,12 @@ function cms_personensuche_personhinzu_generieren($dbs, $id, $erlaubt, $gewaehlt
     $code .= "<p id=\"$id"."_F\">";
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
+      $gewaehlt = "";
       $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x WHERE art IN $sqlart ORDER BY nachname ASC, vorname ASC";
       if ($anfrage = $dbs->query($sql)) {
         while ($daten = $anfrage->fetch_assoc()) {
           $anzeige = "<img src=\"\">";
+          $gewaehlt .= '|'.$daten['id'];
           if ($daten['art'] == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
           else if ($daten['art'] == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
           else if ($daten['art'] == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}

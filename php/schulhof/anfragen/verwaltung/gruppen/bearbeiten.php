@@ -122,8 +122,14 @@ if (cms_angemeldet() && $zugriff) {
 		// Prüfen, ob es in diesem Schuljahr schon eine Gruppe mit dieser Bezeichnung gibt
 		$bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND id != ?");
-		$sql->bind_param("si", $bezeichnung, $id);
+		if ($schuljahr == '-') {
+			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND id != ? AND schuljahr IS NULL");
+			$sql->bind_param("si", $bezeichnung, $id);
+		}
+		else {
+			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND id != ? AND schuljahr = ?");
+			$sql->bind_param("sii", $bezeichnung, $id, $schuljahr);
+		}
 		if ($sql->execute()) {
 			$sql->bind_result($anzahl);
 			if ($sql->fetch()) {if ($anzahl != 0) {echo "DOPPELT"; $fehler = true;}}

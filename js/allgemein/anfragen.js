@@ -22,6 +22,13 @@ function cms_fehlerbehandlung(rueckgabe) {
 	else {cms_fehlerausgabe(rueckgabe);}
 }
 
+function cms_fehlerbehandlungfeld(feld, rueckgabe) {
+	if (rueckgabe == "BERECHTIGUNG") {feld.innerHTML = cms_meldung_berechtigung_code();}
+	else if (rueckgabe == "BASTLER") {feld.innerHTML = cms_meldung_bastler_code();}
+	else if (rueckgabe == "FEHLER") {feld.innerHTML = cms_meldung_fehler_code();}
+	else {cms_fehlerausgabe(rueckgabe);}
+}
+
 function cms_debug(anfrage) {
 	document.getElementById('cms_debug').innerHTML = anfrage.responseText;
 	document.getElementById('cms_debug').style.display = 'block';

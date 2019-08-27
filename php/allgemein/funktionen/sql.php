@@ -13,8 +13,8 @@ function cms_verbinden($art = 's') {
 		return cms_zur_db($CMS_DBS_HOST, $CMS_DBS_USER, $CMS_DBS_PASS, $CMS_DBS_DB);
 	}
 	else if ($art == 'p') {
-		global $CMS_DBS_HOST, $CMS_DBS_USER, $CMS_DBS_PASS, $CMS_DBP_DB;
-		return cms_zur_db($CMS_DBS_HOST, $CMS_DBS_USER, $CMS_DBS_PASS, $CMS_DBP_DB);
+		global $CMS_DBP_HOST, $CMS_DBP_USER, $CMS_DBP_PASS, $CMS_DBP_DB;
+		return cms_zur_db($CMS_DBP_HOST, $CMS_DBP_USER, $CMS_DBP_PASS, $CMS_DBP_DB);
 	}
 	else if ($art == 'l') {
 		global $CMS_DBL_HOST, $CMS_DBL_USER, $CMS_DBL_PASS, $CMS_DBL_DB;

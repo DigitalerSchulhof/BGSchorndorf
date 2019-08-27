@@ -38,7 +38,7 @@ function cms_zeitraum_schulstunden_entfernen(id) {
 function cms_zeitraum_jahr_laden(jahr, spalten) {
   var feld = document.getElementById('cms_zeitraum_schulstunden_jahr');
 	var jahrids = (document.getElementById('cms_zeitraum_ids').value).split('|');
-  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\"><img src="res/laden/standard.gif"><br>Die Zeiträume werden geladen.</td></tr>';
+  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\">'+cms_ladeicon()+'<br>Die Zeiträume werden geladen.</td></tr>';
 
   for (var i=1; i<jahrids.length; i++) {
     var toggle = document.getElementById('cms_zeitraum_'+jahrids[i]);
@@ -518,9 +518,9 @@ function cms_stundenplan_kurse_laden() {
 
 
 function cms_stundenplan_neuestundenplaene() {
-	document.getElementById('cms_stundenplanung_lehrerslot').innerHTML = '<p class="cms_stundenplan_laden"><img src="res/laden/standard.gif"><br>Der Stundenplan wird aktualisiert.</p>';
-	document.getElementById('cms_stundenplanung_raumslot').innerHTML = '<p class="cms_stundenplan_laden"><img src="res/laden/standard.gif"><br>Der Stundenplan wird aktualisiert.</p>';
-	document.getElementById('cms_stundenplanung_klassenslot').innerHTML = '<p class="cms_stundenplan_laden"><img src="res/laden/standard.gif"><br>Der Stundenplan wird aktualisiert.</p>';
+	document.getElementById('cms_stundenplanung_lehrerslot').innerHTML = '<p class="cms_stundenplan_laden">'+cms_ladeicon()+'<br>Der Stundenplan wird aktualisiert.</p>';
+	document.getElementById('cms_stundenplanung_raumslot').innerHTML = '<p class="cms_stundenplan_laden">'+cms_ladeicon()+'<br>Der Stundenplan wird aktualisiert.</p>';
+	document.getElementById('cms_stundenplanung_klassenslot').innerHTML = '<p class="cms_stundenplan_laden">'+cms_ladeicon()+'<br>Der Stundenplan wird aktualisiert.</p>';
 
 	cms_stundenplan_neuerstundenplan('l', 'nein');
 	cms_stundenplan_neuerstundenplan('r', 'nein');

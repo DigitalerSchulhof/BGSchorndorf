@@ -271,7 +271,7 @@ function cms_blogeintraege_jahr_loeschen() {
 
 function cms_blogeintragverwaltung(jahr, spalten, anfang, ende) {
   var feld = document.getElementById('cms_verwaltung_blogeintraege_jahr');
-  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\"><img src="res/laden/standard.gif"><br>Die Blogeinträge für das Jahr '+jahr+' werden geladen. Je nach Verbindung und Blogeintraganzahl kann dies etwas dauern.</td></tr>';
+  feld.innerHTML = '<tr><td colspan="'+spalten+'" class=\"cms_notiz\">'+cms_ladeicon()+'<br>Die Blogeinträge für das Jahr '+jahr+' werden geladen. Je nach Verbindung und Blogeintraganzahl kann dies etwas dauern.</td></tr>';
 
   for (var i=anfang; i<=ende; i++) {
     var toggle = document.getElementById('cms_verwaltung_blogeintraege_jahr_'+i);

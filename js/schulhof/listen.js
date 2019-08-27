@@ -1,6 +1,6 @@
 function cms_listen_personenliste_laden(art) {
   var tabelle = document.getElementById('cms_personenliste');
-  tabelle.innerHTML = '<tr><td class="cms_notiz"><img src="res/laden/standard.gif"><br><br>Die Suche läuft. Bitte warten ...</td></tr>';
+  tabelle.innerHTML = '<tr><td class="cms_notiz">'+cms_ladeicon()+'<br><br>Die Suche läuft. Bitte warten ...</td></tr>';
 
   var postfach = document.getElementById('cms_personenliste_postfach').value;
   var leer = document.getElementById('cms_personenliste_leer').value;
@@ -53,7 +53,7 @@ function cms_listen_personenliste_laden(art) {
 
 function cms_listen_gruppenliste_laden(gruppe, gruppenid) {
   var tabelle = document.getElementById('cms_gruppenliste');
-  tabelle.innerHTML = '<p class="cms_notiz cms_zentriert"><img src="res/laden/standard.gif"><br><br>Die Suche läuft. Bitte warten ...</p>';
+  tabelle.innerHTML = '<p class="cms_notiz cms_zentriert">'+cms_ladeicon()+'<br><br>Die Suche läuft. Bitte warten ...</p>';
 
   var postfach = document.getElementById('cms_gruppenliste_postfach').value;
   var leer = document.getElementById('cms_gruppenliste_leer').value;

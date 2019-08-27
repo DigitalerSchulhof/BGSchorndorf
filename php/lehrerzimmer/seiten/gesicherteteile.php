@@ -34,8 +34,8 @@ function cms_gesicherteinhalte($feldid, $netz, $aktion) {
     // ALTER KRUSCHT!! NOCH NICHT GENERISCH!!
 		// GREMIEN » Beschlüsse
 
-		$code .= "<p class=\"cms_zentriert\"><img src=\"res/laden/standard.gif\"></p>";
-		$code .= "<p class=\"cms_zentriert\">Bitte warten...</p>";
+		$code .= cms_ladeicon();
+		$code .= "<p>Bitte warten...</p>";
 		$code .= "</div>";
 	}
 	else {
@@ -56,9 +56,9 @@ function cms_gesichert($feldid, $netz) {
 
 	if (in_array($feldid, $ohnenetz)) {
 		$code .= "<div class=\"cms_gesichertedaten\" id=\"$feldid\">";
-		$code .= "<p class=\"cms_zentriert\">Es wird versucht, geschützte Inhalte abzurufen.</p>";
-		$code .= "<p class=\"cms_zentriert\"><img src=\"res/laden/standard.gif\"></p>";
-		$code .= "<p class=\"cms_zentriert\">Bitte warten...</p>";
+		$code .= "<p>Es wird versucht, geschützte Inhalte abzurufen.</p>";
+		$code .= cms_ladeicon();
+		$code .= "<p>Bitte warten...</p>";
 
 		if (($netz == "l") && ($feldid == "intern")) {$CMS_ONLOAD_EXTERN_EVENTS .= "var CMS_BEARBEITUNGSART = window.setInterval('cms_intern_laden()', 300000);";}
 		if (($netz == "l") && ($feldid == "interngeraete")) {$CMS_ONLOAD_EXTERN_EVENTS .= "var CMS_BEARBEITUNGSART = window.setInterval('cms_interngeraete_laden()', 300000);";}
@@ -100,8 +100,8 @@ function cms_gesichert($feldid, $netz) {
     // ALTER KRUSCHT!! NOCH NICHT GENERISCH!!
 		// GREMIEN » Beschlüsse
 
-		$code .= "<p class=\"cms_zentriert\"><img src=\"res/laden/standard.gif\"></p>";
-		$code .= "<p class=\"cms_zentriert\">Bitte warten...</p>";
+		$code .= cms_ladeicon();
+		$code .= "<p>Bitte warten...</p>";
 		$code .= "</div>";
 	}
 	else {

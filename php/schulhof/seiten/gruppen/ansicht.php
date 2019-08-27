@@ -104,8 +104,14 @@ if (!$fehler) {
 				if ($GRUPPENRECHTE['bearbeiten']) {
 					$code .= "<li><a class=\"cms_button\" onclick=\"cms_gruppen_bearbeiten_vorbereiten('$g', '$gruppenid', '$CMS_URLGANZ')\">Gruppe bearbeiten</a> </li> ";
 				}
-				if ($GRUPPENRECHTE['termine']) {$code .= "<li><a class=\"cms_button_ja\" href=\"$CMS_URLGANZ/Termine/Neuer_Termin\">+ Neuer interner Termin</a> </li> </li> ";}
-				if ($GRUPPENRECHTE['blogeintraege']) {$code .= "<li><a class=\"cms_button_ja\" href=\"$CMS_URLGANZ/Blog/Neuer_Blogeintrag\">+ Neuer interner Blogeintrag</a> </li> ";}
+
+				$interntermine = cms_internterminvorschlag($GRUPPENRECHTE);
+				$internblog = cms_internblogvorschlag($GRUPPENRECHTE);
+
+				if ($interntermine)	{$code .= "<li><a class=\"cms_button_ja\" href=\"$CMS_URLGANZ/Termine/Neuer_Termin\">+ Neuer interner Termin</a> </li> </li> ";}
+
+				if ($internblog) {$code .= "<li><a class=\"cms_button_ja\" href=\"$CMS_URLGANZ/Blog/Neuer_Blogeintrag\">+ Neuer interner Blogeintrag</a> </li> ";}
+
 				if ($CMS_RECHTE['Website']['Termine anlegen']) {
 					$code .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('$CMS_URLGANZ')\">+ Neuer öffentlicher Termin</span></li> ";
 				}

@@ -44,110 +44,109 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 
 		// Zugeordnete Personen laden
 		// Schulleiter
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Schulleitung', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Schulleitung', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$schulleiterhidden .= "|".$daten['id'];
+				$schulleiterhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Stellvertrender Schulleiter
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Stellvertretende Schulleitung', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Stellvertretende Schulleitung', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$stellschulleiterhidden .= "|".$daten['id'];
+				$stellschulleiterhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Abteilungsleiter
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Abteilungsleitung', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Abteilungsleitung', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$abteilungsleiterhidden .= "|".$daten['id'];
+				$abteilungsleiterhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Sekretariat
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Sekretariat', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Sekretariat', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$sekretariathidden .= "|".$daten['id'];
+				$sekretariathidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Vertretungsplanung
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Vertretungsplanung', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Vertretungsplanung', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$vertretungsplanunghidden .= "|".$daten['id'];
+				$vertretungsplanunghidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Schulsozialarbeit
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Sozialarbeit', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Sozialarbeit', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$sozialarbeithidden .= "|".$daten['id'];
+				$sozialarbeithidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Oberstufenberatung
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Oberstufenberatung', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Oberstufenberatung', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$oberstufenberaterhidden .= "|".$daten['id'];
+				$oberstufenberaterhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Beratungslehrer
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Beratungslehrkräfte', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Beratungslehrkräfte', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$beratungslehrerhidden .= "|".$daten['id'];
+				$beratungslehrerhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Verbindungslehrer
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Verbindungslehrkräfte', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Verbindungslehrkräfte', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$verbindungslehrerhidden .= "|".$daten['id'];
+				$verbindungslehrerhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Schülersprecher
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Schülersprecher', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Schülersprecher', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$schuelersprecherhidden .= "|".$daten['id'];
+				$schuelersprecherhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Elternbeirat
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Elternbeiratsvorsitzende', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Elternbeiratsvorsitzende', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$elternbeirathidden .= "|".$daten['id'];
+				$elternbeirathidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Datenschutz
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Datenschutzbeauftragter', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Datenschutzbeauftragter', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$datenschutzhidden .= "|".$daten['id'];
+				$datenschutzhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
 		// Hausmeister
-		$sql = "SELECT * FROM (SELECT DISTINCT id FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
+		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL')";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$hausmeisterhidden .= "|".$daten['id'];
+				$hausmeisterhidden .= "|".$daten['person'];
 			}
 			$anfrage->free();
 		}
-
 
 	}
 

@@ -372,7 +372,7 @@ function cms_postfach_nachricht_taggen(anschalten, tagid) {
 
 function cms_postfach_nachrichten_laden(modus, papierkorb, id) {
 	var tabbody = document.getElementById('cms_postfach_'+modus+'_liste');
-	tabbody.innerHTML = '<tr><td class=\"cms_notiz\" colspan=\"6\"><img src="res/laden/standard.gif"><br>Die Suche wird verarbeitet. Je nach Verbindung und Schulgröße kann dies etwas dauern.</td></tr>';
+	tabbody.innerHTML = '<tr><td class=\"cms_notiz\" colspan=\"6\">'+cms_ladeicon()+'<br>Die Suche wird verarbeitet. Je nach Verbindung und Schulgröße kann dies etwas dauern.</td></tr>';
 
 	var nachname   	= document.getElementById('cms_postfach_filter_nachname'+id).value;
 	var vorname     = document.getElementById('cms_postfach_filter_vorname'+id).value;

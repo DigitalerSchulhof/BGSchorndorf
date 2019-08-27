@@ -68,7 +68,7 @@
 	<?php
 	$aeltere = "";
 
-	$code = "<h4>Version 0.5.3 - Samstag, den 22. Juni 2019</h4>";
+	$code = "<h4>Version 0.5.3 - Samstag, den 31. August 2019</h4>";
 	$code .= "<ul>";
 		$code .= "<li>Die Dateiverschlüsselung wurde erheblich verbessert.</li>";
 		$code .= "<li>Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.</li>";
@@ -80,6 +80,7 @@
 		$code .= "<li>Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für intern).</li>";
 		$code .= "<li>In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat einNutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button).</li>";
 		$code .= "<li>Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können.</li>";
+		$code .= "<li>Tab-Titel im Browser wurden um den Seitentitel ergänzt.</li>";
 	$code .= "</ul>";
 	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_3', 'Neuerungen in Version 0.5.3 einblenden', 'Neuerungen in Version 0.5.3 ausblenden', $code, 1);
 

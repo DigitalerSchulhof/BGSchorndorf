@@ -49,7 +49,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['termine'];
+$zugriff = cms_internterminvorschlag($CMS_GRUPPENRECHTE);
 
 if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppentermine genehmigen'])) {$genehmigt = '0';}
 

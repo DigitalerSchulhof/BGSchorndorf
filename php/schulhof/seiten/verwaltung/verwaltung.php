@@ -68,7 +68,7 @@ if ($CMS_RECHTE['Gruppen']['Kurse anlegen'] || $CMS_RECHTE['Gruppen']['Kurse bea
 }
 if ($CMS_RECHTE['Gruppen']['Stufen anlegen'] || $CMS_RECHTE['Gruppen']['Stufen bearbeiten'] || $CMS_RECHTE['Gruppen']['Stufen löschen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_klassenstufen\" href=\"Schulhof/Verwaltung/Gruppen/Klassenstufen\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_klassenstufen\" href=\"Schulhof/Verwaltung/Gruppen/Stufen\">";
 			$code .=  "<h3>Klassenstufen</h3>";
 			$code .=  "<p>Klassenstufen anlegen, bearbeiten und löschen.</p>";
 		$code .=  "</a>";
@@ -180,7 +180,7 @@ if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile
 	$code .=  "</li>";
 	$tabzahl++;
 }
-if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+/*if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"\">";
 			$code .=  "<h3>Schienen</h3>";
@@ -188,10 +188,10 @@ if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schien
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
-}
+}*/
 if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR)\"\">";
 			$code .=  "<h3>Stundenplanung</h3>";
 			$code .=  "<p>Regelstundenpläne eingeben und ändern.</p>";
 		$code .=  "</a>";

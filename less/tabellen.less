@@ -6,9 +6,17 @@ td.cms_notiz {
   color: @standarddunkel;
 }
 
-th.cms_zwischenueberschrift {
+th.cms_zwischenueberschrift,
+th.cms_zwischenueberschrift *  {
   text-align: center !important;
   color: @standarddunkel;
+  font-weight: bold;
+}
+
+table .cms_senkrecht {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: inherit;
 }
 
 .cms_formular {

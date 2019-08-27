@@ -642,4 +642,15 @@ function cms_listezuabsatz($liste) {
 function cms_generiere_hinweisicon($icon, $hinweis) {
   return "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
 }
+
+function cms_generiere_sqlidliste($idliste) {
+  return "(".str_replace('|', ',', substr($idliste, 1)).")";
+}
+
+function cms_generiere_idlisteanzahl($idliste) {
+  if ($idliste == "()") {return false;}
+  return count(explode(',', $idliste));
+}
+
+function cms_ladicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
 ?>

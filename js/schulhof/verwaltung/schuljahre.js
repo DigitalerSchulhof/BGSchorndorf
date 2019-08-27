@@ -1,4 +1,3 @@
-/* ROLLE WIRD GESPEICHERT */
 function cms_schulhof_schuljahr_neu_speichern() {
 	cms_laden_an('Neues Schuljahr anlegen', 'Die Eingaben werden überprüft.');
 	var bezeichnung = document.getElementById('cms_schulhof_schuljahr_bezeichnung').value;

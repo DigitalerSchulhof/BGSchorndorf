@@ -1,6 +1,6 @@
 function cms_personensuche(id, art, gruppe) {
   var meldung = document.getElementById(id+'_suchergebnis');
-  meldung.innerHTML = '<img src="res/laden/standard.gif"><br><br>Die Suche läuft. Bitte warten ...';
+  meldung.innerHTML = cms_ladeicon()+'<br><br>Die Suche läuft. Bitte warten ...';
   document.getElementById(id+'_suchergebnis').style.textAlign = 'center';
 
   var vorname = document.getElementById(id+'_personensuche_vorname').value;
@@ -189,7 +189,7 @@ function cms_personenprofil(id) {
 
 function cms_personensuche_mail(id) {
   var meldung = document.getElementById(id+'_suchergebnis');
-  meldung.innerHTML = '<img src="res/laden/standard.gif"><br><br>Die Suche läuft. Bitte warten ...';
+  meldung.innerHTML = cms_ladeicon()+'<br><br>Die Suche läuft. Bitte warten ...';
   document.getElementById(id+'_suchergebnis').style.textAlign = 'center';
 
   var vorname = document.getElementById(id+'_personensuche_vorname').value;
@@ -300,7 +300,7 @@ function cms_personensuche_entfernen_mail(id, personenid) {
 
 function cms_personenliste_laden() {
 	var tabbody = document.getElementById('cms_personenliste');
-	tabbody.innerHTML = '<tr><td class=\"cms_notiz\" colspan=\"8\"><img src="res/laden/standard.gif"><br>Die Suche wird verarbeitet. Je nach Verbindung und Schulgröße kann dies etwas dauern.</td></tr>';
+	tabbody.innerHTML = '<tr><td class=\"cms_notiz\" colspan=\"8\">'+cms_ladeicon()+'<br>Die Suche wird verarbeitet. Je nach Verbindung und Schulgröße kann dies etwas dauern.</td></tr>';
 	var schueler   = document.getElementById('cms_personenliste_s').value;
 	var eltern     = document.getElementById('cms_personenliste_e').value;
 	var lehrer     = document.getElementById('cms_personenliste_l').value;
@@ -334,7 +334,7 @@ function cms_personenliste_laden() {
 
 function cms_personensuche_schuljahr(id) {
   var meldung = document.getElementById(id+'_suchergebnis');
-  meldung.innerHTML = '<img src="res/laden/standard.gif"><br><br>Die Suche läuft. Bitte warten ...';
+  meldung.innerHTML = cms_ladeicon()+'<br><br>Die Suche läuft. Bitte warten ...';
   document.getElementById(id+'_suchergebnis').style.textAlign = 'center';
 
   var vorname    = document.getElementById(id+'_personensuche_vorname').value;

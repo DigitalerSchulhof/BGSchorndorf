@@ -40,7 +40,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'];
+$zugriff = cms_internblogvorschlag($CMS_GRUPPENRECHTE);
 
 if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'])) {$genehmigt = '0';}
 

@@ -35,11 +35,11 @@ if (cms_angemeldet() && $zugriff) {
 	if (!preg_match('/l/', $erlaubt)) {$lehrer = 0;}
 	if (!preg_match('/v/', $erlaubt)) {$verwaltung = 0;}
 	if (!preg_match('/x/', $erlaubt)) {$extern = 0;}
-	if (preg_match('/e/', $erlaubt)) {$sqlarterlaubt = "'e',";}
-	if (preg_match('/s/', $erlaubt)) {$sqlarterlaubt = "'s',";}
-	if (preg_match('/l/', $erlaubt)) {$sqlarterlaubt = "'l',";}
-	if (preg_match('/v/', $erlaubt)) {$sqlarterlaubt = "'v',";}
-	if (preg_match('/x/', $erlaubt)) {$sqlarterlaubt = "'x',";}
+	if (preg_match('/e/', $erlaubt)) {$sqlarterlaubt .= "'e',";}
+	if (preg_match('/s/', $erlaubt)) {$sqlarterlaubt .= "'s',";}
+	if (preg_match('/l/', $erlaubt)) {$sqlarterlaubt .= "'l',";}
+	if (preg_match('/v/', $erlaubt)) {$sqlarterlaubt .= "'v',";}
+	if (preg_match('/x/', $erlaubt)) {$sqlarterlaubt .= "'x',";}
 
 	if (strlen($sqlarterlaubt) > 0) {
 		$sqlarterlaubt = "AND art IN (".substr($sqlarterlaubt,0,-1).")";

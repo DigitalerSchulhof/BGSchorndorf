@@ -101,3 +101,5 @@ function cms_farbbeispiel_waehlen(nr, id) {
 	document.getElementById('cms_farbbeispiel_'+nr).className = "cms_farbbeispiel_aktiv cms_farbbeispiel_"+nr;
 	document.getElementById(id).value = nr;
 }
+
+function cms_ladeicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
