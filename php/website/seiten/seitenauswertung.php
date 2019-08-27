@@ -83,18 +83,8 @@ function cms_pfad_aufloesen ($dbs, $pfad) {
     }
     else {$fehler = true;}
     $sql->close();
-    /*$sql = "";
-    if ($anfrage = $dbs->query($sql)) {
-      if ($daten = $anfrage->fetch_assoc()) {
-        $zuordnung = $daten['id'];
-        $zuordnungstest = "zuordnung = '$zuordnung'";
-      }
-      else {$fehler = true;}
-      $anfrage->free();
-    }
-    else {$fehler = true;}*/
   }
-  if ($zuordnung == '-') {$fehler = true;}
+  if ($zuordnung === '-') {$fehler = true;}
 
   if ($fehler) {return '-';}
   else {return $zuordnung;}
@@ -103,7 +93,7 @@ function cms_pfad_aufloesen ($dbs, $pfad) {
 function cms_seitendetails_erzeugen($dbs, $pfad) {
   $seite = array();
   $seitenid = cms_pfad_aufloesen($dbs, $pfad);
-  if ($seitenid != '-') {
+  if ($seitenid !== '-') {
     $sql = "SELECT * FROM seiten WHERE id = $seitenid";
     if ($anfrage = $dbs->query($sql)) {
       if ($daten = $anfrage->fetch_assoc()) {
