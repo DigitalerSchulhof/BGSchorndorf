@@ -481,7 +481,7 @@ function cms_schieber_generieren($id, $wert, $zusatzaktion = '') {
 
 function cms_positionswahl_generieren($id, $position, $maxpos, $neu = false) {
   if ($neu) {$maxpos++;}
-  $code = "<select name=\"$id\", id=\"$id\">";
+  $code = "<select name=\"$id\" id=\"$id\">";
   for ($i=1; $i<=$maxpos; $i++) {
     if ($i == $position) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
     $code .= "<option$zusatz value=\"$i\">$i</option>";

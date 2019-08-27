@@ -15,7 +15,6 @@ if (isset($_POST['titel'])) {$titel = $_POST['titel'];} else {echo "FEHLER"; exi
 if (isset($_POST['beschreibung'])) {$beschreibung = $_POST['beschreibung'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['dateiname'])) {$dateiname = $_POST['dateiname'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['dateigroesse'])) {$dateigroesse = $_POST['dateigroesse'];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION['ELEMENTPOSITION'])) {$position = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
