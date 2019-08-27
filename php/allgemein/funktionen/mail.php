@@ -4,7 +4,7 @@ function cms_mailsenden($empfaenger, $mailempfaenger, $betreff, $textHTML, $text
 	$umschlag = new PHPMailer();
 	$umschlag->CharSet  = 'utf-8';
 	$umschlag->IsSMTP();
-    $umschlag->Host     = $CMS_MAILHOST;
+  $umschlag->Host     = $CMS_MAILHOST;
 	$umschlag->SMTPAuth = $CMS_MAILSMTPAUTH;
 	$umschlag->Username = $CMS_MAILUSERNAME;
 	$umschlag->Password = $CMS_MAILPASSWORT;

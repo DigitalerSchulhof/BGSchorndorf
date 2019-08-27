@@ -103,6 +103,9 @@ function cms_dsgvo_datenschutz() {
 
 	anzeige.parentNode.removeChild(anzeige);
 	document.getElementById('cms_geraetewahl').innerHTML = "Anzeige optimieren für: <a href=\"javascript:cms_geraet_aendern('P');\">Computer</a>, <a href=\"javascript:cms_geraet_aendern('T');\">Tablets</a> oder <a href=\"javascript:cms_geraet_aendern('H');\">Smartphones</a>.";
+
+	if($(".cms_kontaktformular").length)
+		location.reload();
 }
 
 

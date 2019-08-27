@@ -239,6 +239,7 @@ function cms_spalte_ausgeben($dbs, $spalte) {
         if ($element == 'downloads') {$elementcode[$e['position']] = cms_downloads_ausgeben($e);}
         if ($element == 'boxenaussen') {$elementcode[$e['position']] = cms_boxenaussen_ausgeben($dbs, $e);}
         if ($element == 'eventuebersichten') {$elementcode[$e['position']] = cms_eventuebersichten_ausgeben($dbs, $e);}
+        if ($element == 'kontaktformulare') {$elementcode[$e['position']] = cms_kontaktformulare_ausgeben($dbs, $e);}
       }
       $anfrage->free();
     }
@@ -274,6 +275,7 @@ function cms_neues_element($spalte, $position, $version) {
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_download\" onclick=\"cms_downloads_anzeigen($parameter)\">+ Neuer Download</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_website_schliessen\" onclick=\"cms_ausblenden('cms_website_neu_menue_$spalte"."_$position')\">Menü schließen</span> ";
     $code .= "</p>";
     $code .= "<div class=\"cms_website_neu_element\" id=\"cms_website_neu_element_$spalte"."_$position\"></div>";
@@ -566,6 +568,78 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
   }
 }
 
+function cms_kontaktformulare_ausgeben($dbs, $k) {
+  global $CMS_SCHLUESSEL, $CMS_URL;
+  // Inaktiv für den Benutzer
+  if (($CMS_URL[1] == 'Seiten') && ($k['aktiv'] == '0')) {
+    return "";
+  }
+  else {
+    $code = "";
+    $zusatz = strtolower($CMS_URL[2]);
+    $zusatzklasse = "";
+    $betreff = $k['betreff'.$zusatz];
+    $kopie = $k['kopie'.$zusatz] == "2";
+    $anhang = $k['anhang'.$zusatz];
+    $aktiv = $k['aktiv'];
+
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= cms_element_bearbeiten($k, 'kontaktformulare', $CMS_URL[2]);
+    }
+
+    $sql = "SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ".$k['id'];
+    $sql = $dbs->query($sql);
+
+    if(!$sql)
+      return "<p class=\"cms_notiz\">Für das Formular sind keine Empfänger hinterlegt.</p>";
+
+    $aussenklasse = " cms_kontaktformular_aussen_";
+
+    $code .= "<div class=\"cms_kontaktformular cms_kontaktfomular$aussenklasse\">";
+      $jetzt = time();
+
+
+      $felder = 0;
+
+      $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\"><h2>Kontakt</h2>";
+        if(!isset($_SESSION["DSGVO_COOKIESAKZEPTIERT"]))
+          $code .= cms_meldung("fehler", "<h4>Cookies</h4>Für die Verwendung des Kontaktformulars muss der Verwendung von Cookies zugestimmt werden!");
+        else {
+        $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
+          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
+          $code .= "<tr><th>Empfänger: </th><td><select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
+          while($sqld = $sql->fetch_assoc())
+          $code .= "<option value=\"".$sqld["id"]."\">".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."</option>";
+          $code .= "</select></td></tr>";
+
+          $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
+          $code .= "<tr><th>E-Mail-Adresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
+          $code .= "<tr><th>Betreff: </th><td><input type=\"text\" class=\"cms_kontaktformular_betreff\"></td></tr>";
+          $code .= "<tr><th>Nachricht: </th><td><textarea rows=5 class=\"cms_kontaktformular_nachricht\"></textarea></td></tr>";
+          if($anhang)
+            $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
+          if($kopie)
+            $code .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
+          $code .= "<tr><th>Sicherheitsabfrage zur Spamverhidnerung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
+          $code .= "<tr></tr>";
+          $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
+          $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_kontaktformular_absenden(this)\">Absenden</span></td></tr>";
+        $code .= "</table>";
+        }
+
+      $code .= "</div></div>";
+
+      $code .= "<div class=\"cms_clear\"></div>";
+
+      if (($felder == 0) && ($CMS_URL[1] == 'Bearbeiten')) {$code .= '<p class="cms_notiz">Aktuell gibt es keine Inhalte für dieses Element.</p>';}
+
+    $code .= "</div>";
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= "</div>";
+    }
+    return $code;
+  }
+}
 
 
 function cms_zeitabhaengig_aus_schulhof() {
