@@ -1,4 +1,6 @@
 function cms_eventuebersichten_anzeigen (id, spalte, position, modus, zusatz) {
+  cms_laden_an('Editor laden', 'Andere Bearbeitungen werden abgebrochen.');
+  cms_menuebearbeiten_ausblenden(spalte);
   cms_laden_an('Eventübersicht laden', 'Eventübersicht wird geladen.');
   if (id == '-') {var feld = 'neu';}
   else {var feld = 'bearbeiten';}
