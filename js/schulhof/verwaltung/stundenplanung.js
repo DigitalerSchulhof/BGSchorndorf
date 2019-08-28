@@ -110,7 +110,6 @@ function cms_stundenplanung_modus(modus) {
 
 function cms_stundenplanung_stufewaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -133,7 +132,6 @@ function cms_stundenplanung_stufewaehlen(id) {
 
 function cms_stundenplanung_klassewaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -156,7 +154,6 @@ function cms_stundenplanung_klassewaehlen(id) {
 
 function cms_stundenplanung_kurswaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -179,7 +176,6 @@ function cms_stundenplanung_kurswaehlen(id) {
 
 function cms_stundenplanung_lehrerwaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -202,7 +198,6 @@ function cms_stundenplanung_lehrerwaehlen(id) {
 
 function cms_stundenplanung_raumwaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -232,7 +227,6 @@ function cms_stundenplan_neuestundenplaene() {
 
 function cms_stundenplanung_rythmuswaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -255,7 +249,6 @@ function cms_stundenplanung_rythmuswaehlen(id) {
 
 function cms_stundenplanung_rythmuswaehlen(id) {
   cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-	var vollbild = document.getElementById('cms_stundenplanung_vollbild_wert').value;
 
 	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
 		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
