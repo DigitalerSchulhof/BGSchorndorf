@@ -171,7 +171,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     // Fächer und Klassen laden
     if ($namek == 'kurse') {
       $klassen = array();
-      if ($stufe != '-') {$stufetest = " AND stufe = $stufe";} else {$stufetest = "";}
+      if (($stufe != '-') && (!is_null($stufe))) {$stufetest = " AND stufe = $stufe";} else {$stufetest = "";}
       $sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr $schuljahrwert"."$stufetest) AS x ORDER BY reihenfolge ASC, bez ASC";
       if ($anfrage = $dbs->query($sql)) {
         while ($daten = $anfrage->fetch_assoc()) {
@@ -216,13 +216,13 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       $ausgabe .= "<tr><th>Kurzbezeichnung:</th><td><input class=\"cms_klein\" type=\"text\" name=\"cms_gruppe_kurzbezeichnung\" id=\"cms_gruppe_kurzbezeichnung\" value=\"$kurzbezeichnung\"></td></tr>";
     }
     $ausgabe .= "<tr><th>Sichtbarkeit:</th><td><select name=\"cms_gruppe_sichtbar\" id=\"cms_gruppe_sichtbar\">";
-      if ($sichtbar == 0) {$selected = " selected=\"selected\"";} else {$selected = "";}
+      if ($sichtbar === 0) {$selected = " selected=\"selected\"";} else {$selected = "";}
       $ausgabe .= "<option$selected value=\"0\">Nur für Mitglieder</option>";
-      if ($sichtbar == 1) {$selected = " selected=\"selected\"";} else {$selected = "";}
+      if ($sichtbar === 1) {$selected = " selected=\"selected\"";} else {$selected = "";}
       $ausgabe .= "<option$selected value=\"1\">Nur für Lehrer</option>";
-      if ($sichtbar == 2) {$selected = " selected=\"selected\"";} else {$selected = "";}
+      if ($sichtbar === 2) {$selected = " selected=\"selected\"";} else {$selected = "";}
       $ausgabe .= "<option$selected value=\"2\">Nur für Lehrer und die Verwaltung</option>";
-      if ($sichtbar == 3) {$selected = " selected=\"selected\"";} else {$selected = "";}
+      if ($sichtbar === 3) {$selected = " selected=\"selected\"";} else {$selected = "";}
       $ausgabe .= "<option$selected value=\"3\">Für den ganzen Schulhof</option>";
     $ausgabe .= "</select></td></tr>";
     $ausgabe .= "<tr><th>Chat aktivieren:</th><td>".cms_schieber_generieren('gruppe_chat', $chat)."</td></tr>";
@@ -256,10 +256,10 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       }
       else {$ausgabe .= "<tr><th>Stufe:</th><td><select name=\"cms_gruppe_stufe\" id=\"cms_gruppe_stufe\" disabled=\"disabled\">";}
       foreach ($stufen AS $s) {
-        if ($stufe == $s['id']) {$wahl = " selected=\"selected\";";} else {$wahl = "";}
+        if ($stufe === $s['id']) {$wahl = " selected=\"selected\";";} else {$wahl = "";}
         $ausgabe .= "<option value=\"".$s['id']."\"$wahl>".$s['bez']."</option>";
       }
-      if ($stufe == '-') {$wahl = " selected=\"selected\";";} else {$wahl = "";}
+      if (($stufe === '-') || (is_null($stufe))) {$wahl = " selected=\"selected\";";} else {$wahl = "";}
       $ausgabe .= "<option value=\"-\"$wahl>stufenübergreifend</option>";
       $ausgabe .= "</select></td></tr>";
     }

@@ -191,7 +191,11 @@ if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schien
 }
 if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 	$code .=  "<li>";
+<<<<<<< HEAD
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"\">";
+=======
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
+>>>>>>> [NEU] Stundenplanung Benutzeroberfläche
 			$code .=  "<h3>Stundenplanung</h3>";
 			$code .=  "<p>Regelstundenpläne eingeben und ändern.</p>";
 		$code .=  "</a>";

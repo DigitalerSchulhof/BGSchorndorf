@@ -109,36 +109,12 @@ function cms_dsgvo_datenschutz() {
 }
 
 
-function cms_vollbild_oeffnen(id) {
-	feld = document.getElementById(id);
-	feld.style.display = 'block';
-	feld.style.position = 'fixed';
-	feld.style.width = '100%';
-	feld.style.height = '100%';
-	feld.style.paddingBottom = '15px';
-	feld.style.left = '0px';
-	feld.style.top = '0px';
-	feld.style.zIndex = '20';
-	feld.style.overflow = 'scroll';
-	button = document.getElementById(id+'_schliessen');
-	button.style.display = "block";
-	button = document.getElementById(id+'_oeffnen');
-	button.style.display = "none";
-}
-
-function cms_vollbild_schliessen (id) {
-	feld = document.getElementById(id);
-	feld.style.display = '';
-	feld.style.position = '';
-	feld.style.width = '';
-	feld.style.height = '';
-	feld.style.paddingBottom = '';
-	feld.style.left = '';
-	feld.style.top = '';
-	feld.style.zIndex = '';
-	feld.style.overflow = '';
-	button = document.getElementById(id+'_schliessen');
-	button.style.display = "none";
-	button = document.getElementById(id+'_oeffnen');
-	button.style.display = "inline-block";
+function cms_vollbild(id) {
+	var feld = document.getElementById(id+'_wert');
+	if (feld) {
+		if (cms_check_toggle(feld.value)) {
+			if (feld.value == 1) {cms_klasse_dazu(id, 'cms_vollbild');}
+			else {cms_klasse_weg(id, 'cms_vollbild');}
+		}
+	}
 }
