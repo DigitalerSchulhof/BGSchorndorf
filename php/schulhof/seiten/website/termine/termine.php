@@ -8,8 +8,7 @@ include_once('php/schulhof/seiten/website/termine/terminsuche.php');
 
 $bearbeiten = $CMS_RECHTE['Website']['Termine bearbeiten'];
 $loeschen = $CMS_RECHTE['Website']['Termine löschen'];
-$anlegen = $CMS_RECHTE['Website']['Termine anlegen'];
-$anzeigen = $bearbeiten || $loeschen || $anlegen;
+$anzeigen = $bearbeiten || $loeschen;
 
 if ($anzeigen) {
   $canlegen = '';
