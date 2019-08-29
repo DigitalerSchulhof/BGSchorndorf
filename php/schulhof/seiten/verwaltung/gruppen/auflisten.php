@@ -116,7 +116,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
       $code .= "</td>";
       if ($name == "Stufen") {
         $code .= "<td>";
-          if ($daten['tagebuch'] == 1) {$code .= cms_generiere_hinweisicon('tagebuch.png', 'Tagebuch angelegt');}
+          if ($daten['tagebuch'] == 1) {$code .= cms_generiere_hinweisicon('tagebuch', 'Tagebuch angelegt');}
         $code .= "</td>";
       }
       $code .= "<td>";
