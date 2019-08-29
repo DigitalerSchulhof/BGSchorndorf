@@ -184,6 +184,7 @@ function cms_gruppen_eingabenpruefung(art) {
   var aufsicht = document.getElementById('cms_gruppe_aufsicht_personensuche_gewaehlt').value;
   if (art == 'Stufen') {
     var reihenfolge = document.getElementById('cms_gruppe_reihenfolge').value;
+    var tagebuch = document.getElementById('cms_gruppe_tagebuch').value;
   }
   if (art == 'Klassen') {
     var stundenplanextern = document.getElementById('cms_gruppe_stundenplan_extern').value;
@@ -216,6 +217,10 @@ function cms_gruppen_eingabenpruefung(art) {
     if (!cms_check_ganzzahl(reihenfolge)) {
       fehler = true;
       meldung += '<li>Die Eingabe für die Reihenfolge ist ungültig.</li>';
+    }
+    if (!cms_check_toggle(tagebuch)) {
+      fehler = true;
+      meldung += '<li>Die Eingabe für das Anlegen von Tagebüchern ist ungültig.</li>';
     }
   }
 
@@ -286,6 +291,7 @@ function cms_gruppen_eingabenpruefung(art) {
     formulardaten.append('aufsicht', aufsicht);
     if (art == 'Stufen') {
       formulardaten.append('reihenfolge', reihenfolge);
+      formulardaten.append('tagebuch', tagebuch);
     }
     if (art == 'Klassen') {
       formulardaten.append('stundenplanextern', stundenplanextern);

@@ -22,6 +22,7 @@ if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
 if ($art == 'Stufen') {
 	if (isset($_POST['reihenfolge'])) {$reihenfolge = $_POST['reihenfolge'];} else {echo "FEHLER"; exit;}
+	if (isset($_POST['tagebuch'])) {$tagebuch = $_POST['tagebuch'];} else {echo "FEHLER"; exit;}
 }
 if ($art == 'Klassen') {
 	if (isset($_POST['stundenplanextern'])) {$stundenplanextern = $_POST['stundenplanextern'];} else {echo "FEHLER"; exit;}
@@ -54,6 +55,10 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Pflichteingaben prüfen
 	if ($art == 'Kurse') {if (!cms_check_titel($kurzbezeichnung)) {$fehler = true;}}
+	if ($art == 'Stufen') {
+		if (!cms_check_ganzzahl($reihenfolge,1)) {$fehler = true;}
+		if (!cms_check_toggle($tagebuch)) {$fehler = true;}
+	}
 
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
@@ -341,8 +346,8 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->execute();
 			$sql->close();
 
-			$sql = $dbs->prepare("UPDATE stufen SET reihenfolge = ? WHERE id = ?");
-			$sql->bind_param("i", $reihenfolge, $id);
+			$sql = $dbs->prepare("UPDATE stufen SET reihenfolge = ?, tagebuch = ? WHERE id = ?");
+			$sql->bind_param("iii", $reihenfolge, $tagebuch, $id);
 			$sql->execute();
 			$sql->close();
 		}
@@ -402,29 +407,32 @@ if (cms_angemeldet() && $zugriff) {
 
     if (strlen($mitglieder) > 0) {
       // Mitglieder eintragen
-			$sql1 = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$sql = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       foreach ($M as $i) {
-				$sql1->bind_param("iiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
-				$sql1->execute();
-
-				if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
-					$sql2 = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					foreach ($faecherkurse as $k) {
-						$sql2->bind_param("iiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
-						$sql2->execute();
-					}
-					$sql2->close();
-				}
-      }
-			$sql1->close();
-
-      // Vorsitz eintragen
-			$sql = $dbs->prepare("INSERT INTO $artk"."vorsitz (gruppe, person) VALUES (?, ?)");
-			foreach ($VOR as $i) {
-				$sql->bind_param("ii", $id, $i);
+				$sql->bind_param("iiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
 				$sql->execute();
       }
 			$sql->close();
+			if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
+				$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				foreach ($M as $i) {
+					foreach ($faecherkurse as $k) {
+						$sql->bind_param("iiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
+						$sql->execute();
+					}
+				}
+				$sql->close();
+      }
+
+      // Vorsitz eintragen
+			if (strlen($vorsitz) > 0) {
+				$sql = $dbs->prepare("INSERT INTO $artk"."vorsitz (gruppe, person) VALUES (?, ?)");
+				foreach ($VOR as $i) {
+					$sql->bind_param("ii", $id, $i);
+					$sql->execute();
+	      }
+				$sql->close();
+			}
     }
 
     if (strlen($aufsicht) > 0) {
