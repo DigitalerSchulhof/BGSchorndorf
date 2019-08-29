@@ -70,7 +70,7 @@ if ($anzeigen) {
   $code .= $canzeigen;
 
 
-  if ($anlegen) {
+  if ($CMS_RECHTE['Website']['Termine anlegen']) {
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('Schulhof/Website/Termine')\">+ Neuer öffentlicher Termin</span></p>";
   }
 }
