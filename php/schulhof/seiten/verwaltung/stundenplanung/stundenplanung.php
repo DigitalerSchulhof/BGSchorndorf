@@ -236,6 +236,21 @@ if ($zugriff) {
       if ((count($LEHRER) > 0) && ($lehrergewaehlt === 'x')) {$lehrergewaehlt = $LEHRER[0]['id'];}
       if (count($LEHRER) == 0) {$lehrergewaehlt = '-';}
 
+      // Zugeordnete Lehrer suchen
+      $lehrerok = false;
+      if (($kursgewaehlt."" != '-') && ($lehrergewaehlt."" != '-')) {
+        $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM kursevorsitz WHERE gruppe = ? AND person = ?");
+        $sql->bind_param("ii", $kursgewaehlt, $lehrergewaehlt);
+        if ($sql->execute()) {
+          $sql->bind_result($anzahl);
+          if ($sql->fetch()) {
+            if ($anzahl == 1) {$lehrerok = true;}
+          }
+        }
+        $sql->close();
+      }
+
+
       // Räume laden
       $RAEUME = array();
       $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM raeume WHERE verfuegbar = '1') AS x ORDER BY bez");
@@ -267,7 +282,7 @@ if ($zugriff) {
       $wert = 0;
       if ($rythmusgewaehlt == '0') {$wert = 1;}
       $einzelcode .= cms_togglebutton_generieren('cms_stundenplanung_rythmen_ue', 'immer', $wert, "cms_stundenplanung_rythmuswaehlen('0')");
-      $code .= "<p>$einzelcode<input type=\"hidden\" id=\"cms_stundenplanung_rythmus\" name=\"cms_stundenplanung_rythmus\" value=\"$rythmusgewaehlt\"></p>";
+      $code .= "<p>$einzelcode</p>";
 
       $code .= "<h2>Stufen</h2>";
       $einzelcode = "";
@@ -279,7 +294,7 @@ if ($zugriff) {
       $wert = 0;
       if ($stufegewaehlt === '-') {$wert = 1;}
       $einzelcode .= cms_togglebutton_generieren('cms_stundenplanung_stufen_ue', 'stufenübergreifend', $wert, "cms_stundenplanung_stufewaehlen('-')");
-      $code .= "<p>$einzelcode<input type=\"hidden\" id=\"cms_stundenplanung_stufe\" name=\"cms_stundenplanung_stufe\" value=\"$stufegewaehlt\"></p>";
+      $code .= "<p>$einzelcode</p>";
 
       $code .= "<h2>Klassen</h2>";
       $einzelcode = "";
@@ -292,7 +307,7 @@ if ($zugriff) {
       $wert = 0;
       if ($klassegewaehlt === '-') {$wert = 1;}
       $einzelcode .= cms_togglebutton_generieren('cms_stundenplanung_klassen_ue', 'klassenübergreifend', $wert, "cms_stundenplanung_klassewaehlen('-')");
-      $code .= "<p>$einzelcode<input type=\"hidden\" id=\"cms_stundenplanung_klasse\" name=\"cms_stundenplanung_klasse\" value=\"$klassegewaehlt\"></p>";
+      $code .= "<p>$einzelcode</p>";
       $code .= "</div></div>";
 
       $code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
@@ -303,7 +318,7 @@ if ($zugriff) {
         if ($e['id']."" == $kursgewaehlt."") {$wert = 1;}
         $einzelcode .= cms_togglebutton_generieren('cms_stundenplanung_kurse_'.$e['id'], $e['bez'], $wert, "cms_stundenplanung_kurswaehlen(".$e['id'].")")." ";
       }
-      $code .= "<p>$einzelcode<input type=\"hidden\" id=\"cms_stundenplanung_kurs\" name=\"cms_stundenplanung_kurs\" value=\"$kursgewaehlt\"></p>";
+      $code .= "<p>$einzelcode</p>";
 
       $code .= "<h2>Lehrer</h2>";
       $einzelcode = "";
@@ -312,7 +327,7 @@ if ($zugriff) {
         if ($e['id']."" == $lehrergewaehlt."") {$wert = 1;}
         $einzelcode .= cms_togglebutton_generieren('cms_stundenplanung_lehrer_'.$e['id'], $e['name'], $wert, "cms_stundenplanung_lehrerwaehlen(".$e['id'].")")." ";
       }
-      $code .= "<p>$einzelcode<input type=\"hidden\" id=\"cms_stundenplanung_kurs\" name=\"cms_stundenplanung_kurs\" value=\"$kursgewaehlt\"></p>";
+      $code .= "<p>$einzelcode</p>";
       $code .= "</div></div>";
 
       $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
@@ -323,7 +338,7 @@ if ($zugriff) {
         if ($e['id']."" == $raumgewaehlt."") {$wert = 1;}
         $einzelcode .= cms_togglebutton_generieren('cms_stundenplanung_raume_'.$e['id'], $e['bez'], $wert, "cms_stundenplanung_raumwaehlen(".$e['id'].")")." ";
       }
-      $code .= "<p>$einzelcode<input type=\"hidden\" id=\"cms_stundenplanung_raum\" name=\"cms_stundenplanung_raum\" value=\"$raumgewaehlt\"></p>";
+      $code .= "<p>$einzelcode</p>";
       $code .= "</div></div>";
       $code .= "<div class=\"cms_clear\"></div>";
       $code .= "<div class=\"cms_spalte_i\">";
@@ -334,7 +349,7 @@ if ($zugriff) {
         $KLASSENUNTERRICHT = array();
         $LEHRERUNTERRICHT = array();
         $RAUMUNTERRICHT = array();
-        foreach($SCHULTAGE as $t) {
+        for ($t=1; $t<=7; $t++) {
           $KLASSENUNTERRICHT[$t] = array();
           $LEHRERUNTERRICHT[$t] = array();
           $RAUMUNTERRICHT[$t] = array();
@@ -345,8 +360,8 @@ if ($zugriff) {
           }
         }
         // UNTERRICHT IM RAUM LADEN
-        if ($raumgewaehlt != '-') {
-          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, kurs, lehrer, raum, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id WHERE raum = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+        if ($raumgewaehlt."" != '-') {
+          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, kurs, lehrer, raum, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id WHERE raum = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
           $sql->bind_param('iii', $raumgewaehlt, $ZEITRAUM, $rythmusgewaehlt);
           if ($sql->execute()) {
             $sql->bind_result($eid, $esstd, $etag, $eryth, $ekurs, $elehrer, $eraum, $ekbez, $elbez, $erbez, $efarbe);
@@ -366,8 +381,10 @@ if ($zugriff) {
           }
           $sql->close();
         }
-        if ($lehrergewaehlt != '-') {
-          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, kurs, lehrer, raum, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id WHERE lehrer = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+        // UNTERRICHT DES LEHRERS LADEN
+        if ($lehrergewaehlt."" != '-') {
+          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, kurs, lehrer, raum, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id WHERE lehrer = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+
           $sql->bind_param('iii', $lehrergewaehlt, $ZEITRAUM, $rythmusgewaehlt);
           if ($sql->execute()) {
             $sql->bind_result($eid, $esstd, $etag, $eryth, $ekurs, $elehrer, $eraum, $ekbez, $elbez, $erbez, $efarbe);
@@ -382,25 +399,25 @@ if ($zugriff) {
               $stunde['raumid'] = $eraum;
               $stunde['raumbez'] = $erbez;
               $stunde['farbe'] = $efarbe;
-              array_push($RAUMUNTERRICHT[$etag][$esstd], $stunde);
+              array_push($LEHRERUNTERRICHT[$etag][$esstd], $stunde);
             }
           }
           $sql->close();
         }
         if (($stufegewaehlt === '-') && ($klassegewaehlt === '-')) {
-          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id LEFT JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe IS NULL AND klasse IS NULL AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id LEFT JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe IS NULL AND klasse IS NULL AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
           $sql->bind_param("ii", $ZEITRAUM, $rythmusgewaehlt);
         }
         else if (($stufegewaehlt === '-') && ($klassegewaehlt !== '-')) {
-          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe IS NULL AND klasse = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe IS NULL AND klasse = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
           $sql->bind_param("iii", $klassegewaehlt, $ZEITRAUM, $rythmusgewaehlt);
         }
         else if (($stufegewaehlt !== '-') && ($klassegewaehlt === '-')) {
-          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id LEFT JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe = ? AND klasse IS NULL AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id LEFT JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe = ? AND klasse IS NULL AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
           $sql->bind_param("iii", $stufegewaehlt, $ZEITRAUM, $rythmusgewaehlt);
         }
         else {
-          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe = ? AND klasse = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
+          $sql = $dbs->prepare("SELECT * FROM (SELECT regelunterricht.id AS id, schulstunde, tag, rythmus, regelunterricht.kurs, lehrer, raum, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS kbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS lbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS rbez, farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer ON regelunterricht.lehrer = lehrer.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN kurseklassen ON kurse.id = kurseklassen.kurs JOIN faecher ON kurse.fach = faecher.id WHERE stufe = ? AND klasse = ? AND zeitraum = ? AND (rythmus = 0 OR rythmus = ?)) AS x ORDER BY kbez, lbez, rbez");
           $sql->bind_param("iiii", $stufegewaehlt, $klassegewaehlt, $ZEITRAUM, $rythmusgewaehlt);
         }
         if ($sql->execute()) {
@@ -437,7 +454,24 @@ if ($zugriff) {
 
         $spaltenbreite = 100/(count($SCHULTAGE)*3+1);
 
-        $code = "<div class=\"cms_stundenplan_box\" style=\"height: $sphoehe"."px\">";
+        $code = "";
+        if ((($kursgewaehlt."" == '-') || ($lehrergewaehlt."" == '-') || ($raumgewaehlt."" == '-')) && ($modusgewaehlt == 'P')) {
+          $code .= cms_meldung('warnung', '<h4>Ungültige Auswahl</h4><p>Um Stunden zu platzieren, müssen ein Kurs gemeinsam mit einem Lehrer und einem Raum ausgewählt sein.</p>');
+        }
+        if (($kursgewaehlt."" != '-') && ($lehrergewaehlt."" != '-') && ($modusgewaehlt == 'P') && (!$lehrerok)) {
+          $code .= cms_meldung('info', '<h4>Falsche Zuordnung?</h4><p>Diese Lehrkraft ist in dem gewählten Kurs nicht hinterlegt.</p>');
+        }
+
+        $_SESSION['STUNDENPLANUNGKURSE'] = $kursgewaehlt;
+        $_SESSION['STUNDENPLANUNGLEHRER'] = $lehrergewaehlt;
+        $_SESSION['STUNDENPLANUNGRAUM'] = $raumgewaehlt;
+        $_SESSION['STUNDENPLANUNGRYTHMUS'] = $rythmusgewaehlt;
+
+        if (($kursgewaehlt."" != '-') && ($lehrergewaehlt."" != '-') && ($raumgewaehlt."" != '-') && ($rythmusgewaehlt."" != '-') && ($modusgewaehlt == 'P')) {
+          $modusgewaehlt = "K";
+        }
+
+        $code .= "<div class=\"cms_stundenplan_box\" style=\"height: $sphoehe"."px\">";
           foreach ($SCHULSTUNDENIDS as $s) {
             $code .= "<span class=\"cms_stundenplan_zeitliniebeginn\" style=\"top: ".$SCHULSTUNDEN[$s]['beginny']."px;\"><span class=\"cms_stundenplan_zeitlinietext\">".cms_fuehrendenull($SCHULSTUNDEN[$s]['beginns']).":".cms_fuehrendenull($SCHULSTUNDEN[$s]['beginnm'])."</span></span>";
               $code .= "<span class=\"cms_stundenplan_zeitliniebez\" style=\"top: ".$SCHULSTUNDEN[$s]['beginny']."px;line-height: ".($SCHULSTUNDEN[$s]['endey']-$SCHULSTUNDEN[$s]['beginny'])."px;\">".$SCHULSTUNDEN[$s]['bez']."</span>";
@@ -453,10 +487,11 @@ if ($zugriff) {
             $code .= "<div class=\"cms_stundenplan_spalte\" style=\"width: $spaltenbreite%;\">";
             $code .= "<span class=\"cms_stundenplan_spaltentitel\">".cms_tagname($t)."</span>";
             foreach ($SCHULSTUNDENIDS as $s) {
-              $events = "onclick=\"cms_stundeplatzieren('$t', '".$SCHULSTUNDEN[$s]['id']."')\" onmouseover=\"cms_stundemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\" onmouseout=\"cms_stundedemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\"";
+              $events = "onmouseover=\"cms_stundemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\" onmouseout=\"cms_stundedemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\"";
+              if ($modusgewaehlt == 'K') {$events .= " onclick=\"cms_stundeplatzieren('$t', '".$SCHULSTUNDEN[$s]['id']."')\"";}
               $code .= "<span class=\"cms_stundenplanung_stundenfeld\" id=\"cms_stunde_k_".$t."_".$SCHULSTUNDEN[$s]['id']."\"style=\"top: ".$SCHULSTUNDEN[$s]['beginny']."px;height: ".($SCHULSTUNDEN[$s]['endey']-$SCHULSTUNDEN[$s]['beginny'])."px;\" $events>";
               foreach ($KLASSENUNTERRICHT[$t][$s] AS $std) {
-                $code .= cms_generiere_unterrichtsstunde($std);
+                $code .= cms_generiere_unterrichtsstunde($std, $modusgewaehlt);
               }
               $code .= "</span>";
             }
@@ -467,10 +502,11 @@ if ($zugriff) {
             $code .= "<div class=\"cms_stundenplan_spalte\" style=\"width: $spaltenbreite%;\">";
             $code .= "<span class=\"cms_stundenplan_spaltentitel\">".cms_tagname($t)."</span>";
             foreach ($SCHULSTUNDENIDS as $s) {
-              $events = "onclick=\"cms_stundeplatzieren('$t', '".$SCHULSTUNDEN[$s]['id']."')\" onmouseover=\"cms_stundemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\" onmouseout=\"cms_stundedemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\"";
+              $events = "onmouseover=\"cms_stundemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\" onmouseout=\"cms_stundedemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\"";
+              if ($modusgewaehlt == 'K') {$events .= " onclick=\"cms_stundeplatzieren('$t', '".$SCHULSTUNDEN[$s]['id']."')\"";}
               $code .= "<span class=\"cms_stundenplanung_stundenfeld\" id=\"cms_stunde_l_".$t."_".$SCHULSTUNDEN[$s]['id']."\"style=\"top: ".$SCHULSTUNDEN[$s]['beginny']."px;height: ".($SCHULSTUNDEN[$s]['endey']-$SCHULSTUNDEN[$s]['beginny'])."px;\" $events>";
               foreach ($LEHRERUNTERRICHT[$t][$s] AS $std) {
-                $code .= cms_generiere_unterrichtsstunde($std);
+                $code .= cms_generiere_unterrichtsstunde($std, $modusgewaehlt);
               }
               $code .= "</span>";
             }
@@ -481,10 +517,11 @@ if ($zugriff) {
             $code .= "<div class=\"cms_stundenplan_spalte\" style=\"width: $spaltenbreite%;\">";
             $code .= "<span class=\"cms_stundenplan_spaltentitel\">".cms_tagname($t)."</span>";
             foreach ($SCHULSTUNDENIDS as $s) {
-              $events = "onclick=\"cms_stundeplatzieren('$t', '".$SCHULSTUNDEN[$s]['id']."')\" onmouseover=\"cms_stundemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\" onmouseout=\"cms_stundedemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\"";
+              $events = "onmouseover=\"cms_stundemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\" onmouseout=\"cms_stundedemarkieren('$t', '".$SCHULSTUNDEN[$s]['id']."');\"";
+              if ($modusgewaehlt == 'K') {$events .= " onclick=\"cms_stundeplatzieren('$t', '".$SCHULSTUNDEN[$s]['id']."')\"";}
               $code .= "<span class=\"cms_stundenplanung_stundenfeld\" id=\"cms_stunde_r_".$t."_".$SCHULSTUNDEN[$s]['id']."\"style=\"top: ".$SCHULSTUNDEN[$s]['beginny']."px;height: ".($SCHULSTUNDEN[$s]['endey']-$SCHULSTUNDEN[$s]['beginny'])."px;\" $events>";
               foreach ($RAUMUNTERRICHT[$t][$s] AS $std) {
-                $code .= cms_generiere_unterrichtsstunde($std);
+                $code .= cms_generiere_unterrichtsstunde($std, $modusgewaehlt);
               }
               $code .= "</span>";
             }
@@ -513,10 +550,12 @@ else {
   $code .= "<h1>Stundenplanung</h1>".cms_meldung_berechtigung();
 }
 
-function cms_generiere_unterrichtsstunde($stunde) {
-  $code = "<span class=\"cms_stundenplanung_stunde cms_farbbeispiel_".$std['farbe']."\" onclick=\"cms_stundenplanung_loeschen(".$std['id'].")\"><span class=\"cms_stundenplanung_stundeinfo\">".$std['kursbez']."<br>".$std['lehrerbez']."<br>".$std['raumbez']."";
-  if ($std['rythmus'].'' != '0') {
-    $code .= "<br>".chr(64+$std['rythmus']);
+function cms_generiere_unterrichtsstunde($stunde, $modus) {
+  $event = "";
+  if ($modus == 'L') {$event = " onclick=\"cms_stundeloeschen(".$stunde['id'].")\"";}
+  $code = "<span class=\"cms_stundenplanung_stunde cms_farbbeispiel_".$stunde['farbe']."\"$event><span class=\"cms_stundenplanung_stundeinfo\">".$stunde['kursbez']."<br>".$stunde['lehrerbez']."<br>".$stunde['raumbez']."";
+  if ($stunde['rythmus'].'' != '0') {
+    $code .= "<br>".chr(64+$stunde['rythmus'])." Woche";
   }
   $code .= "</span></span>";
   return $code;

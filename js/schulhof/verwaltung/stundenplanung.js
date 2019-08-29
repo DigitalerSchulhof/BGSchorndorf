@@ -280,3 +280,51 @@ function cms_stundedemarkieren(tag, stunde) {
 	cms_klasse_weg('cms_stunde_l_'+tag+'_'+stunde, 'cms_stundenplanung_markiert');
 	cms_klasse_weg('cms_stunde_r_'+tag+'_'+stunde, 'cms_stundenplanung_markiert');
 }
+
+function cms_stundeplatzieren(tag, stunde) {
+  cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(tag,1,7) || !cms_check_ganzzahl(stunde,0)) {
+		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('tag', tag);
+	  formulardaten.append('stunde', stunde);
+	  formulardaten.append("anfragenziel", 	'163');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+	    }
+      else if (rueckgabe == "DOPPELTFEHLER") {
+        cms_meldung_an('fehler', 'Stunde eintragen', '<p>Diese Stunde existiert bereits.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+      }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_stundeloeschen(id) {
+  cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0)) {
+		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'164');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
