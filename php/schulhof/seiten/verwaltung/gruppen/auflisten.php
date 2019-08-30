@@ -70,7 +70,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
 
   if ($namek == 'stufen') {
     $sortierkriterium = "reihenfolge ASC,";
-    $zusatzspalten = "reihenfolge, tagebuch,";
+    $zusatzspalten = "reihenfolge, tagebuch, gfs, ";
   }
   else {
     $sortierkriterium = "";
@@ -116,7 +116,8 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
       $code .= "</td>";
       if ($name == "Stufen") {
         $code .= "<td>";
-          if ($daten['tagebuch'] == 1) {$code .= cms_generiere_hinweisicon('tagebuch', 'Tagebuch angelegt');}
+          if ($daten['tagebuch'] == 1) {$code .= cms_generiere_hinweisicon('tagebuch', 'Tagebuch aktiv')." ";}
+            if ($daten['gfs'] == 1) {$code .= cms_generiere_hinweisicon('gfs', 'GFS-Verwaltung aktiv');}
         $code .= "</td>";
       }
       $code .= "<td>";

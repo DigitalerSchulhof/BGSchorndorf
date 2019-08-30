@@ -85,11 +85,13 @@
 }
 
 .cms_stundenplanung_stundenfeld {
-  height: 50px;
+  display: flex;
+  height: 100%;
   position: absolute;
   top: 30px;
   width: 100%;
   transition: 250ms ease-in-out;
+  overflow-x: scroll;
 }
 
 .cms_stundenplanung_markiert {
@@ -105,7 +107,7 @@
   width: 10px;
   background: @standardhell;
   height: 100%;
-  margin-left: 1px;
+  margin-right: 1px;
   text-align: center;
   position: relative;
   opacity: .75;

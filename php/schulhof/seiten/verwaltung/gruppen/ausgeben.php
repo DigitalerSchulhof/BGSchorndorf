@@ -22,7 +22,6 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     $vorsitz = "";
     $aufsicht = "";
     $schuljahre = array();
-    if ($namek == "stufen") {$tagebuch = "";}
 
     // Bestimmte Gruppen können nur im Lehrernetz angelegt werden
     if ((($namek == "gremien") || ($namek == "fachschaften")) && ($id == '-')) {
@@ -44,6 +43,8 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     else if ($namek == "stufen") {
       $reihenfolge = '';
       $stufenanzahl = 0;
+      $tagebuch = 0;
+      $gfs = 0;
     }
     else if ($namek == "kurse") {
       $stufe = '-';
@@ -62,7 +63,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
         $sqlzusatz = ", AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplanextern, AES_DECRYPT(stufenbezextern, '$CMS_SCHLUESSEL') AS stufenbezextern, AES_DECRYPT(klassenbezextern, '$CMS_SCHLUESSEL') AS klassenbezextern, stufe";
       }
       else if ($namek == "stufen") {
-        $sqlzusatz = ", reihenfolge, tagebuch";
+        $sqlzusatz = ", reihenfolge, tagebuch, gfs";
       }
       else if ($namek == "kurse") {
         $sqlzusatz = ", stufe, fach, AES_DECRYPT(kursbezextern, '$CMS_SCHLUESSEL') AS kursbezextern, AES_DECRYPT(kurzbezeichnung, '$CMS_SCHLUESSEL') AS kurzbezeichnung";
@@ -86,6 +87,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
           else if ($namek == "stufen") {
             $reihenfolge = $daten['reihenfolge'];
             $tagebuch = $daten['tagebuch'];
+            $gfs = $daten['gfs'];
           }
           else if ($namek == "kurse") {
             $stufe = $daten['stufe'];
@@ -250,7 +252,8 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       }
       if ($id == '-') {$ausgabe .= "<option value=\"$i\">$i</option>";}
       $ausgabe .= "</select></td></tr>";
-      $ausgabe .= "<tr><th>Tagebuch anlegen:</th><td>".cms_schieber_generieren('gruppe_tagebuch', $tagebuch)."</td></tr>";
+      $ausgabe .= "<tr><th>Tagebuch:</th><td>".cms_schieber_generieren('gruppe_tagebuch', $tagebuch)."</td></tr>";
+      $ausgabe .= "<tr><th>GFS-Veraltung:</th><td>".cms_schieber_generieren('gruppe_gfs', $gfs)."</td></tr>";
     }
     if (($namek == 'klassen') || ($namek == 'kurse')) {
       if ($id == '-') {
