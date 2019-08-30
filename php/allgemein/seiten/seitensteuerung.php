@@ -187,7 +187,8 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_rythmisieren']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumrythmisieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_rythmisieren']  = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumrythmisieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_klonen']        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumklonen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile']                          = 'php/schulhof/seiten/verwaltung/profile/profile.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Neues_Profil_anlegen']     = 'php/schulhof/seiten/verwaltung/profile/neuesprofil.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Profil_bearbeiten']        = 'php/schulhof/seiten/verwaltung/profile/profilbearbeiten.php';

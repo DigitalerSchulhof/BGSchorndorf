@@ -67,9 +67,22 @@ if (cms_angemeldet() && $zugriff) {
     if ($sql->fetch()) {
 			if ($anzahl != 1) {$fehler = true;}
 			if (($beginn < $sjbeginn) || ($ende > $sjende)) {echo "ZEIT"; $fehler = true;}
-		}
+		} else {$fehler = true;}
   } else {$fehler = true;}
   $sql->close();
+
+	if (!$fehler) {
+		// Prüfen, ob sich die Zeiträume überschneiden
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM zeitraeume WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?) WHERE id != ?");
+		$sql->bind_param("iiiiiii", $beginn, $ende, $beginn, $ende, $beginn, $ende, $zeitraumid);
+		if ($sql->execute()) {
+	    $sql->bind_result($anzahl);
+	    if ($sql->fetch()) {
+				if ($anzahl != 0) {$fehler = true; echo "DOPPELT";}
+			} else {$fehler = true;}
+	  } else {$fehler = true;}
+	  $sql->close();
+	}
 
 	if (!$fehler) {
 

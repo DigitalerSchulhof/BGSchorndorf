@@ -184,6 +184,10 @@ function cms_zeitraeume_neu_speichern() {
 				meldung += '<li>dieser Zeitraum liegt ganz oder teilweise außerhalb des gewählten Schuljahres.</li>';
 				cms_meldung_an('fehler', 'Neuen Zeitraum anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
+			else if (rueckgabe.match(/DOPPELT/)) {
+				meldung += '<li>dieser Zeitraum überschneidet sich mit anderen Zeiträumen in diesem Schuljahr.</li>';
+				cms_meldung_an('fehler', 'Neuen Zeitraum anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
 			else if (rueckgabe.match(/STUNDEN/)) {
 				meldung += '<li>Schulstunden dieses Zeitraumes überschneiden sich.</li>';
 				cms_meldung_an('fehler', 'Neuen Zeitraum anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -258,6 +262,10 @@ function cms_zeitraeume_bearbeiten_speichern () {
 		function anfragennachbehandlung(rueckgabe) {
       if (rueckgabe.match(/ZEIT/)) {
 				meldung += '<li>dieser Zeitraum liegt ganz oder teilweise außerhalb des gewählten Schuljahres.</li>';
+				cms_meldung_an('fehler', 'Neuen Zeitraum anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
+			else if (rueckgabe.match(/DOPPELT/)) {
+				meldung += '<li>dieser Zeitraum überschneidet sich mit anderen Zeiträumen in diesem Schuljahr.</li>';
 				cms_meldung_an('fehler', 'Neuen Zeitraum anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe.match(/STUNDEN/)) {
@@ -396,6 +404,96 @@ function cms_zeitraeume_rythmisierung_speichern() {
 		function anfragennachbehandlung(rueckgabe) {
       if (rueckgabe == "ERFOLG") {
 				cms_meldung_an('erfolg', 'Zeitraumrythmisierung speichern', '<p>Die neue Rythmisierung wurde übernommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Zeiträume\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+
+function cms_zeitraeume_klonen_vorbereiten (id) {
+	cms_laden_an('Zeitraum klonen', 'Die Berechtigung wird geprüft.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", id);
+	formulardaten.append("anfragenziel", 	'291');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_klonen');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+
+
+
+function cms_zeitraeume_klonen_speichern() {
+  cms_laden_an('Zeitraum klonen', 'Die Eingaben werden überprüft.');
+  var bezeichnung = document.getElementById('cms_zeitraeume_bezeichnung').value;
+  var beginnT = document.getElementById('cms_zeitraeume_beginn_T').value;
+  var beginnM = document.getElementById('cms_zeitraeume_beginn_M').value;
+  var beginnJ = document.getElementById('cms_zeitraeume_beginn_J').value;
+  var endeT = document.getElementById('cms_zeitraeume_ende_T').value;
+  var endeM = document.getElementById('cms_zeitraeume_ende_M').value;
+  var endeJ = document.getElementById('cms_zeitraeume_ende_J').value;
+	var meldung = '<p>Der Zeitraum konnte nicht geändert werden, denn ...</p><ul>';
+
+  var formulardaten = new FormData();
+	var meldung = '';
+  var fehler = false;
+  var datumfehler = false;
+
+	if (!cms_check_titel(bezeichnung)) {
+		meldung += '<li>Die Bezeichnung des Zeitraums enthält ungültige Zeichen.</li>';
+		fehler = true;
+	}
+
+  if (!cms_check_ganzzahl(beginnT, 1, 31) || !cms_check_ganzzahl(beginnM, 1, 12) || !cms_check_ganzzahl(beginnJ, 0)) {
+		fehler = true;
+    datumfehler = true;
+		meldung += '<li>Das eingegebene Beginn-Datum ist ungültig.</li>';
+	}
+  if (!cms_check_ganzzahl(endeT, 1, 31) || !cms_check_ganzzahl(endeM, 1, 12) || !cms_check_ganzzahl(endeJ, 0)) {
+		fehler = true;
+    datumfehler = true;
+		meldung += '<li>Das eingegebene End-Datum ist ungültig.</li>';
+	}
+
+	if (!datumfehler) {
+		var beginn = new Date(beginnJ, beginnM-1, beginnT, 0,0,0,0);
+		var ende = new Date(endeJ, endeM-1, endeT, 23,59,59,999);
+		if (ende <= beginn) {
+			fehler = true;
+			meldung += '<li>Das End-Datum darf nicht vor dem Beginn-Datum liegen.</li>';
+		}
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Zeitraum klonen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Zeitraum klonen', 'Der Zeitraum wird geklont');
+
+    formulardaten.append("bezeichnung", bezeichnung);
+    formulardaten.append("beginnT", 	beginnT);
+  	formulardaten.append("beginnM", 	beginnM);
+  	formulardaten.append("beginnJ",   beginnJ);
+  	formulardaten.append("endeT", 	endeT);
+  	formulardaten.append("endeM", 	endeM);
+  	formulardaten.append("endeJ",   endeJ);
+		formulardaten.append("anfragenziel", 	'292');
+
+		function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Zeitraum klonen', '<p>Der Zeitraum wurde erfolgreich geklont.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Zeiträume\');">Zurück zur Übersicht</span></p>');
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}

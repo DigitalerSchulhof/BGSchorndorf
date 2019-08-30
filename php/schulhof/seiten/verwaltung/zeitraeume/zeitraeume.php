@@ -62,6 +62,9 @@ if ($zugriff) {
             $zeilen .= "<td>".$schultage."</td>";
             $zeilen .= "<td>".$rythmen."</td>";
             $zeilen .= "<td>";
+            if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen']) {
+              $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_klonen_vorbereiten($zid);\"><span class=\"cms_hinweis\">Zeitraum klonen</span><img src=\"res/icons/klein/stundenplanzeitraeumeklonen.png\"></span> ";
+            }
             if ($CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten']) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_bearbeiten_vorbereiten($zid);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
             }

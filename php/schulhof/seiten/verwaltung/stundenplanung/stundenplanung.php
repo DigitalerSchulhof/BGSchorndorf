@@ -440,7 +440,7 @@ if ($zugriff) {
 
         $minpp = 1.25;
         $yakt = 40;
-        $zende = $SCHULSTUNDEN[0]['beginn'];
+        $zende = $SCHULSTUNDEN[$SCHULSTUNDENIDS[0]]['beginn'];
         foreach ($SCHULSTUNDENIDS AS $s) {
           $spdauer = $SCHULSTUNDEN[$s]['ende'] - $SCHULSTUNDEN[$s]['beginn'];
           // Abstand zur letzten Stunde berechnen
