@@ -314,3 +314,92 @@ function cms_zeitraeume_schulstunden_entfernen(id) {
 	neueids = neueids.substr(0, neueids.length-1);
 	ids.value = neueids;
 }
+
+function cms_zeitraeume_rythmisieren_vorbereiten (id) {
+	cms_laden_an('Zeitraum bearbeiten', 'Die Berechtigung wird geprüft.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", id);
+	formulardaten.append("anfragenziel", 	'165');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_rythmisieren');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_zeitraeume_rythmisierung_speichern() {
+  cms_laden_an('Zeitraumrythmisierung speichern', 'Die Eingaben werden überprüft.');
+	var beginnjahr = document.getElementById('cms_rythmisierung_beginnjahr').value;
+	var beginnkw = document.getElementById('cms_rythmisierung_beginnkw').value;
+	var endejahr = document.getElementById('cms_rythmisierung_endejahr').value;
+	var endekw = document.getElementById('cms_rythmisierung_endekw').value;
+	var meldung = '<p>Der Zeitraum konnte nicht geändert werden, denn ...</p><ul>';
+
+  var formulardaten = new FormData();
+	var meldung = '';
+	var fehler = false;
+
+	if (!cms_check_ganzzahl(beginnjahr, 0)) {
+		meldung += '<li>Das Jahr des Beginns des Zeitraums ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(beginnkw, 1,52)) {
+		meldung += '<li>Die Kalenderwoche des Beginns des Zeitraums ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(endejahr, 0)) {
+		meldung += '<li>Das Jahr des Endes des Zeitraums ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(endekw, 1,52)) {
+		meldung += '<li>Die Kalenderwoche des Beginns des Zeitraums ist ungültig.</li>';
+		fehler = true;
+	}
+
+  if ((beginnjahr > endejahr) || ((beginnjahr == endejahr) && (beginnkw > endekw))) {
+    meldung += '<li>Der Zeitraum ist ungültig.</li>';
+		fehler = true;
+  }
+
+  if (!fehler) {
+    var feldfehler = false;
+    var jahr = beginnjahr;
+    var kw = beginnkw;
+    var ende = false;
+    while (!ende) {
+      if ((kw == endekw) && (jahr == endejahr)) {ende = true;}
+      var feld = document.getElementById('cms_rythmus_'+jahr+'_'+kw);
+      if (feld) {
+        if (cms_check_ganzzahl(feld.value,1,26)) {formulardaten.append(jahr+'_'+kw, feld.value);}
+      } else {feldfehler = true;}
+      kw++;
+      if (kw > 52) {kw = 1; jahr++;}
+    }
+  }
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Zeitraumrythmisierung speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Zeitraumrythmisierung speichern', 'Der Zeitraum wird bearbeitet');
+
+		formulardaten.append("anfragenziel", 	'290');
+
+		function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Zeitraumrythmisierung speichern', '<p>Die neue Rythmisierung wurde übernommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Zeiträume\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}

@@ -138,3 +138,18 @@
 .cms_stundenplanung_stunde:hover .cms_stundenplanung_stundeinfo {height: auto; opacity: 1;}
 
 .cms_stundenplanung_stunde:hover {opacity: 1;}
+
+.cms_wochentag_rythmus, .cms_wochentag_rythmus_schulfrei,
+.cms_wochentag_rythmus_ferien, .cms_wochentag_rythmus_leer {
+  padding: 2px 5px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+  border: 2px solid @standarddunkel;
+}
+
+.cms_wochentag_rythmus_leer {background: @standardhell; border-color: @standardhell;}
+.cms_wochentag_rythmus {background: @hintergrundhell;}
+.cms_wochentag_rythmus_schulfrei {background: @infohell;}
+.cms_wochentag_rythmus_ferien {background: @erfolghell;}

@@ -48,8 +48,8 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     // Termine laden
     $jetzt = time();
     $TERMINENEU = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende > ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?)) ORDER BY beginn ASC");
-    $sql->bind_param("iiiiiii", $oeffentlichkeit, $gruppenid, $jetzt, $jbeginn, $jende, $jbeginn, $jende);
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende > ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?)) ORDER BY beginn ASC");
+    $sql->bind_param("iiiiiiiii", $oeffentlichkeit, $gruppenid, $jetzt, $jbeginn, $jende, $jbeginn, $jende, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
       while ($sql->fetch()) {
@@ -62,8 +62,8 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     $sql->close();
     $jetzt = time();
     $TERMINEALT = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende <= ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?)) ORDER BY beginn DESC");
-    $sql->bind_param("iiiiiii", $oeffentlichkeit, $gruppenid, $jetzt, $jbeginn, $jende, $jbeginn, $jende);
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende <= ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?)) ORDER BY beginn DESC");
+    $sql->bind_param("iiiiiiiii", $oeffentlichkeit, $gruppenid, $jetzt, $jbeginn, $jende, $jbeginn, $jende, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
       while ($sql->fetch()) {
