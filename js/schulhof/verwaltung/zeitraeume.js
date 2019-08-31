@@ -33,6 +33,7 @@ function cms_zeitraeume_eingabencheck() {
   var sam = document.getElementById('cms_cms_zeitraeume_sa').value;
   var son = document.getElementById('cms_cms_zeitraeume_so').value;
   var rythmen = document.getElementById('cms_zeitraeume_rythmen').value;
+  var aktiv = document.getElementById('cms_zeitraeume_aktiv').value;
 	var schulstundenanzahl = document.getElementById('cms_zeitraeume_schulstunden_anzahl').value;
 	var schulstundenids = document.getElementById('cms_zeitraeume_schulstunden_ids').value;
 
@@ -74,6 +75,11 @@ function cms_zeitraeume_eingabencheck() {
 
 	if (!cms_check_ganzzahl(rythmen, 1,26)) {
 		meldung += '<li>Die Eingabe der Rythmen ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(aktiv)) {
+		meldung += '<li>Die Eingabe der Aktivität ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -149,6 +155,7 @@ function cms_zeitraeume_eingabencheck() {
 	formulardaten.append("sa", sam);
 	formulardaten.append("so", son);
 	formulardaten.append("rythmen", rythmen);
+	formulardaten.append("aktiv", aktiv);
 	formulardaten.append("schulstundenanzahl", schulstundenanzahl);
 	formulardaten.append("schulstundenids", schulstundenids);
 

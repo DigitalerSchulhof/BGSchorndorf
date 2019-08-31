@@ -465,6 +465,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	}
 	// PLANUNG
 	$VERplanung = "";
+	if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schuljahrfabrik_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Schuljahrfabrik</a></li> ";
+	}
 	if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanzeiträume</a></li> ";
 	}
@@ -472,7 +475,19 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_faecher_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Fächer</a></li> ";
 	}
 	if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
-		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanung</a></li> ";
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Profile</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stundenplanung</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">Vertretungsplan</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";
 	}
 	// ORGANISATION
 	$VERorganisation = "";

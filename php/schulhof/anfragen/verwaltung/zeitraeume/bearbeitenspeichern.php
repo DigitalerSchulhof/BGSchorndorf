@@ -23,6 +23,7 @@ if (isset($_POST['fr'])) {$fr = $_POST['fr'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sa'])) {$sa = $_POST['sa'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['so'])) {$so = $_POST['so'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['rythmen'])) {$rythmen = $_POST['rythmen'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['aktiv'])) {$aktiv = $_POST['aktiv'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenanzahl'])) {$schulstundenanzahl = $_POST['schulstundenanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenids'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMBEARBEITEN'])) {$zeitraumid = $_SESSION['ZEITRAUMBEARBEITEN'];} else {echo "FEHLER";exit;}
@@ -43,6 +44,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_toggle($fr)) {echo "FEHLER"; exit;}
 	if (!cms_check_toggle($sa)) {echo "FEHLER"; exit;}
 	if (!cms_check_toggle($so)) {echo "FEHLER"; exit;}
+	if (!cms_check_toggle($aktiv)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnT,1,31)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnM,1,12)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnJ,0)) {echo "FEHLER"; exit;}
@@ -73,7 +75,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// Prüfen, ob sich die Zeiträume überschneiden
-		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM zeitraeume WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?) WHERE id != ?");
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM zeitraeume WHERE ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?)) AND id != ?");
 		$sql->bind_param("iiiiiii", $beginn, $ende, $beginn, $ende, $beginn, $ende, $zeitraumid);
 		if ($sql->execute()) {
 	    $sql->bind_result($anzahl);
@@ -149,8 +151,8 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// ZEITRAUM EINTRAGEN
-		$sql = $dbs->prepare("UPDATE zeitraeume SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ?, rythmen = ? WHERE id = ?");
-	  $sql->bind_param("siiiiiiiiiii", $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $zeitraumid);
+		$sql = $dbs->prepare("UPDATE zeitraeume SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ?, rythmen = ?, aktiv = ? WHERE id = ?");
+	  $sql->bind_param("siiiiiiiiiiii", $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv, $zeitraumid);
 	  $sql->execute();
 	  $sql->close();
 

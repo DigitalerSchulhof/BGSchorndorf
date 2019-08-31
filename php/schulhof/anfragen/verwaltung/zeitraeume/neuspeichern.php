@@ -22,6 +22,7 @@ if (isset($_POST['do'])) {$do = $_POST['do'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['fr'])) {$fr = $_POST['fr'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sa'])) {$sa = $_POST['sa'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['so'])) {$so = $_POST['so'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['aktiv'])) {$aktiv = $_POST['aktiv'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['rythmen'])) {$rythmen = $_POST['rythmen'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenanzahl'])) {$schulstundenanzahl = $_POST['schulstundenanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenids'];} else {echo "FEHLER"; exit;}
@@ -43,6 +44,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_toggle($fr)) {echo "FEHLER"; exit;}
 	if (!cms_check_toggle($sa)) {echo "FEHLER"; exit;}
 	if (!cms_check_toggle($so)) {echo "FEHLER"; exit;}
+	if (!cms_check_toggle($aktiv)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnT,1,31)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnM,1,12)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnJ,0)) {echo "FEHLER"; exit;}
@@ -152,8 +154,8 @@ if (cms_angemeldet() && $zugriff) {
 		// NÄCHSTE FREIE ID SUCHEN
 		$id = cms_generiere_kleinste_id('zeitraeume');
 		// ZEITRAUM EINTRAGEN
-		$sql = $dbs->prepare("UPDATE zeitraeume SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ?, rythmen = ? WHERE id = ?");
-	  $sql->bind_param("isiiiiiiiiiii", $SCHULJAHR, $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $id);
+		$sql = $dbs->prepare("UPDATE zeitraeume SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ?, rythmen = ?, aktiv = ? WHERE id = ?");
+	  $sql->bind_param("isiiiiiiiiiiii", $SCHULJAHR, $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv, $id);
 	  $sql->execute();
 	  $sql->close();
 

@@ -328,3 +328,21 @@ function cms_stundeloeschen(id) {
 	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
+
+
+function cms_stundenerzeugen_vorbereiten(sjid) {
+  cms_laden_an('Stundenplanung vorbereiten', 'Der Stundenplan des Zeitraums wird geladen ...');
+
+  var formulardaten = new FormData();
+  formulardaten.append('sjid', sjid);
+  formulardaten.append("anfragenziel", 	'293');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_link('Schulhof/Verwaltung/Planung/Stunden_und_Tagebücher_erzeugen');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}

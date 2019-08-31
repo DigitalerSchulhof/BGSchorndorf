@@ -39,11 +39,11 @@ if ($zugriff) {
 
     $zeilen = "";
     $code .= "<table class=\"cms_liste\">";
-      $code .= "<tr><th></th><th>Bezeichnung</th><th>Beginn</th><th>Ende</th><th>Schultage</th><th>Rythmen</th><th>Aktionen</th></tr>";
-      $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn, ende, mo, di, mi, do, fr, sa, so, rythmen FROM zeitraeume WHERE schuljahr = ? ORDER BY beginn ASC");
+      $code .= "<tr><th></th><th>Bezeichnung</th><th>Beginn</th><th>Ende</th><th>Schultage</th><th>Rythmen</th><th></th><th>Aktionen</th></tr>";
+      $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn, ende, mo, di, mi, do, fr, sa, so, rythmen, aktiv FROM zeitraeume WHERE schuljahr = ? ORDER BY beginn ASC");
       $sql->bind_param('i', $SCHULJAHR);
       if ($sql->execute()) {
-        $sql->bind_result($zid, $zbez, $zbeginn, $zende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen);
+        $sql->bind_result($zid, $zbez, $zbeginn, $zende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv);
         while ($sql->fetch()) {
           $zeilen .= "<tr>";
             $zeilen .= "<td><img src=\"res/icons/klein/stundenplanzeitraeume.png\"></td>";
@@ -61,6 +61,9 @@ if ($zugriff) {
             if (strlen($schultage) > 0) {$schultage = substr($schultage, 2);}
             $zeilen .= "<td>".$schultage."</td>";
             $zeilen .= "<td>".$rythmen."</td>";
+            if ($aktiv == 1) {$zeilen .= "<td>".cms_generiere_hinweisicon('gruen', 'Aktiv')."</td>";}
+            else {$zeilen .= "<td>".cms_generiere_hinweisicon('rot', 'Inaktiv')."</td>";}
+
             $zeilen .= "<td>";
             if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen']) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_klonen_vorbereiten($zid);\"><span class=\"cms_hinweis\">Zeitraum klonen</span><img src=\"res/icons/klein/stundenplanzeitraeumeklonen.png\"></span> ";

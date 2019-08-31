@@ -15,15 +15,16 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 	$fr = 1;
 	$sa = 0;
 	$so = 0;
+	$aktiv = 0;
 	$rythmen = 1;
 	$schulstunden = array();
 
 	if ($zeitraumid != "-") {
 
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende, mo, di, mi, do, fr, sa, so, rythmen FROM zeitraeume WHERE id = ?");
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende, mo, di, mi, do, fr, sa, so, rythmen, aktiv FROM zeitraeume WHERE id = ?");
 	  $sql->bind_param("i", $zeitraumid);
 	  if ($sql->execute()) {
-	    $sql->bind_result($bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen);
+	    $sql->bind_result($bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv);
 	    $sql->fetch();
 	  }
 	  $sql->close();
@@ -74,6 +75,7 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 				$code .= "<option value=\"$i\"$zusatz>$buchstaben</option>";
 			}
 			$code .= "</select>";
+			$code .= "<tr><th>".cms_generiere_hinweisinformation("Aktiv", "Inaktive Zeiträume sind nicht öffentlich und werden beim Erzeugen von Tagebüchern und Stunden nicht berücksichtigt.")."</th><td colspan=\"7\">".cms_schieber_generieren('zeitraeume_aktiv', $aktiv)."</td></tr>";
 		$code .= "</td></tr>";
 	$code .= "</table>";
 
