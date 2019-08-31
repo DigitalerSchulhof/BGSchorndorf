@@ -118,10 +118,10 @@ function cms_einstellungen_gruppen_aendern() {
 		formulardaten.append('sichtbardownload', download);
 	}
 
-	var chatloeschen = document.getElementById('cms_chatloeschen').value;
-	if (!cms_check_ganzzahl(chatloeschen, 0, 365)) {fehler = true;}
+	var nachrichtloeschen = document.getElementById('cms_nachrichtloeschen').value;
+	if (!cms_check_ganzzahl(nachrichtloeschen, 0, 365)) {fehler = true;}
 	else {
-		formulardaten.append('chatloeschen', chatloeschen);
+		formulardaten.append('nachrichtloeschen', nachrichtloeschen);
 	}
 
 	var objekte = ['termine','blog'];

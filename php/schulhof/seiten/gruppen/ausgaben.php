@@ -122,7 +122,7 @@ function cms_gruppenbeschluesse_jahr_ausgeben($dbs, $gruppe, $gruppenid, $CMS_UR
 }
 
 function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
-	GLOBAL $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_EINSTELLUNGEN;
+	GLOBAL $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
 	$limit = 20;
 	$namecache = array();
 	$nachrichten = array();
@@ -136,45 +136,60 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 		$sql->execute();
 	}
 
+	$sql = "UPDATE $gk"."mitglieder SET chatbannbis = 0 WHERE chatbannbis < ".time();
+	$sql = $dbs->prepare($sql);
+	$sql->execute();
+
+	$gebannt = 1;
+	// Stummschaltung prüfen
+	$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis = 0";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("ii", $CMS_BENUTZERID, $gruppenid);
+	$sql->bind_result($gebannt);
+	$sql->execute();
+	$sql->fetch();
+	$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
+
 	$code = "";
 	$code .= "<div id=\"cms_chat\">";
 		$code .= "<div id=\"cms_chat_nachrichten\">";
+			/*
+				Löschstatus:
+				0: Nichts
+				1: Gemeldet & Gelöscht
+				2: Direkt gelöscht
+			*/
+
 			// Nachrichten laden
-			$sql = "SELECT id, person, datum, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') as inhalt, meldestatus FROM $gk"."chat WHERE gruppe = $gruppenid ORDER BY id DESC LIMIT ".($limit+1);
+			$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person WHERE gruppe = $gruppenid ORDER BY chat.id DESC LIMIT ".($limit+1);
 			$sql = $dbs->prepare($sql);
-			$sql->bind_result($id, $p, $d, $i, $m);
+			$sql->bind_result($id, $p, $d, $i, $m, $gl, $v, $n, $t);
 			$sql->execute();
 			while($sql->fetch())
-				array_push($nachrichten, array("id" => $id, "person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m));
+				array_push($nachrichten, array("id" => $id, "person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m, "name" => cms_generiere_anzeigename($v, $n, $t), "geloescht" => $gl));
 
 			if(!count($nachrichten))
 				$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
 			else if(count($nachrichten) > $limit)
 				$code .= "<div id=\"cms_chat_nachrichten_nachladen\" class=\"cms_notiz\" onclick=\"cms_chat_nachrichten_nachladen('$g', '$gruppenid', $limit);\">Ältere Nachrichten laden</div>";
 
-			$_SESSION["LETZTENACHRICHT_$g"]["$gruppenid"] = -1;
+			$_SESSION["LETZTENACHRICHT_$g"]["$gruppenid"] = -1;	// Fürs Aktualisieren genutzt
 			$letztesDatum = "blub";	// Dummy
 			$tag = "blub";					// Dummy
 			$ccode = $code;	// Rest-Code
 			$ncode = "";	// Nachrichten Code
 
+			echo "<script>var chat_rechte = [";
+			if($rechte["nachrichtloeschen"])
+			echo "\"nachrichtloeschen\",";
+			if($rechte["nutzerstummschalten"])
+			echo "\"nutzerstummschalten\",";
+			echo "];</script>";
+
 			foreach($nachrichten as $i => $n) {		// Nachrichten von unten nach oben (Neuste zu Älteste)
 				if($i >= $limit)	//	Limit an zu ladenden Nachrichten überschritten. Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
 					break;
 				$code = "";	// Code der aktuellen Nachricht
-
-				if(array_key_exists($n["person"], $namecache)) {	// Name des Senders finden, ggf. im Cache (array)
-					$name = $namecache[$n["person"]];
-				} else {
-					$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id = ?";
-					$sql = $dbs->prepare($sql);
-					$sql->bind_param("i", $n["person"]);
-					$sql->bind_result($vorname, $nachname, $titel);
-					$sql->execute();
-					$sql->fetch();
-					$name = cms_generiere_anzeigename($vorname, $nachname, $titel);
-					$namecache[$n["person"]] = $name;
-				}
 
 				$tag = cms_tagnamekomplett(date("w", $n["datum"])) . ", den " . date("d", $n["datum"]) . " " . cms_monatsnamekomplett(date("n", $n["datum"]));
 
@@ -193,12 +208,40 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 					$sql->execute();
 					$sql->fetch();
 				}
-				$code .= "<div class=\"cms_chat_nachricht_aussen".($n["person"]==$CMS_BENUTZERID?" cms_chat_nachricht_eigen":"").($gemeldet?" cms_chat_nachricht_gemeldet":"")."\">";
+
+				$eigen = $n["person"]==$CMS_BENUTZERID;
+
+				$extraklassen = "";
+				if($gemeldet)
+					$extraklassen .= " cms_chat_nachricht_gemeldet";
+				if($eigen)
+					$extraklassen .= " cms_chat_nachricht_eigen";
+				if($n["geloescht"])
+					$extraklassen .= " cms_chat_nachricht_geloescht";
+
+				if($n["geloescht"])
+					$n["inhalt"] = "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht";
+
+				$code .= "<div class=\"cms_chat_nachricht_aussen$extraklassen\">";
 					$code .= "<div class=\"cms_chat_nachricht_innen\">";
 						$code .= "<div class=\"cms_chat_nachricht_id\">".$n["id"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"sendend\"><img src=\"res/laden/standard.gif\"></div>";
-						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_hinweis\"><p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '$g', '$gruppenid')\">Nachricht melden</p></span></div>";
-						$code .= "<div class=\"cms_chat_nachricht_autor\">".$name."</div>";
+
+						$aktionen = "";
+
+						if(!$eigen) {
+							$aktionen .= "<p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '$g', '$gruppenid')\">Nachricht melden</p>";
+							if($rechte["nachrichtloeschen"])
+								$aktionen .= "<p data-mehr=\"loeschen\" onclick=\"cms_chat_nachricht_loeschen_anzeigen(this, '$g', '$gruppenid')\">Nachricht löschen</p>";
+							if($rechte["nutzerstummschalten"])
+								$aktionen .= "<p data-mehr=\"bannen\" onclick=\"cms_chat_nutzer_stummschalten_anzeigen(this, '$g', '$gruppenid')\">Sender stummschalten</p>";
+						}
+						if($n["geloescht"])
+							$aktionen = "";
+
+						if(strlen($aktionen) > 0)
+							$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_chat_aktion\">$aktionen</span></div>";
+						$code .= "<div class=\"cms_chat_nachricht_autor\">".$n["name"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_nachricht\">".$n["inhalt"]."</div>";
 						$code .= "<div class=\"cms_chat_nachricht_zeit\">".date("H:i", $n["datum"])."</div>";
 					$code .= "</div>";
@@ -221,10 +264,14 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 		$code .= $ncode;
 		$code .= "</div>";
 
-		if($rechte["chatten"] && $rechte["chattenab"] <= time()) {	// Schreibrecht
-			$code .= "<div id=\"cms_chat_nachricht_verfassen\">";
+		if($rechte["chatten"]) {	// Schreibrecht
+			$code .= "<div id=\"cms_chat_nachricht_verfassen\" class=\"".($gebannt?"cms_chat_gebannt":"")."\">";
 				$code .= "<label for=\"cms_chat_neue_nachricht\"><p class=\"cms_notiz\">Nachricht verfassen:</p></label>";
 				$code .= "<textarea data-gramm=\"false\" type=\"text\" id=\"cms_chat_neue_nachricht\" onkeypress=\"return cms_chat_enter(event, '$g', '$gruppenid');\"></textarea><div onclick=\"cms_chat_nachricht_senden('$g', '$gruppenid')\"><img src=\"res/icons/klein/senden.png\"></div>";
+				if($CMS_BENUTZERART == 's')
+				$code .= cms_meldung("fehler", "<h4>Du wurdest stummgeschalten</h4><p>Dir wurde vorläufig das Recht des Schreibens genommen!</p>");
+				else
+				$code .= cms_meldung("fehler", "<h4>Sie wurden stummgeschalten</h4><p>Ihnen wurde vorläufig das Recht des Schreibens genommen!</p>");
 			$code .= "</div>";
 		}
 	$code .= "</div>";

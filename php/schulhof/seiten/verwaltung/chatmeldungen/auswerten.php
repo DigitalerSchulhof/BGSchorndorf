@@ -28,8 +28,10 @@
           $liste .= "<td>".cms_generiere_anzeigename($sendervorname, $sendernachname, $sendertitel)."</td>";
           $liste .= "<td>".$nachricht."</td>";
           $liste .= '<td>';
-            if ($CMS_RECHTE['Gruppen']['Chatmeldungen verwalten'])
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_chatmeldung_loeschen('".$gruppe."', '".$id."');\"><span class=\"cms_hinweis\">Meldungen dieser Nachricht löschen</span><img src=\"res/icons/klein/auffaelliges_loeschen.png\"></span> ";
+          if ($CMS_RECHTE['Gruppen']['Chatmeldungen verwalten'])
+            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_chatmeldung_loeschen('".$gruppe."', '".$id."');\"><span class=\"cms_hinweis\">Meldungen dieser Nachricht löschen</span><img src=\"res/icons/klein/auffaelliges_loeschen.png\"></span> ";
+          if ($CMS_RECHTE['Gruppen']['Chatmeldungen verwalten'])
+            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_chatmeldung_nachricht_loeschen('".$gruppe."', '".$id."');\"><span class=\"cms_hinweis\">Nachricht in der Gruppe löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
           $liste .= '</td>';
           $liste .= '</tr>';
         }

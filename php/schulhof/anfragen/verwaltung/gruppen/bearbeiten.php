@@ -264,9 +264,15 @@ if (cms_angemeldet() && $zugriff) {
             $M[$anzahl]['chatten'] = $_POST['mitglieder'.$i.'chatten'];
           } else {$fehler = true;}
         } else {$fehler = true;}
-        if (isset($_POST['mitglieder'.$i.'chattenabT']) && isset($_POST['mitglieder'.$i.'chattenabM']) && isset($_POST['mitglieder'.$i.'chattenabJ']) &&
-          isset($_POST['mitglieder'.$i.'chattenabs']) && isset($_POST['mitglieder'.$i.'chattenabm'])) {
-          $M[$anzahl]['chattenab'] = mktime($_POST['mitglieder'.$i.'chattenabs'], $_POST['mitglieder'.$i.'chattenabm'],0,$_POST['mitglieder'.$i.'chattenabM'],$_POST['mitglieder'.$i.'chattenabT'],$_POST['mitglieder'.$i.'chattenabJ']);
+				if (isset($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
+          if (cms_check_toggle($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
+            $M[$anzahl]['nachrichtloeschen'] = $_POST['mitglieder'.$i.'nachrichtloeschen'];
+          } else {$fehler = true;}
+        } else {$fehler = true;}
+				if (isset($_POST['mitglieder'.$i.'nutzerstummschalten'])) {
+          if (cms_check_toggle($_POST['mitglieder'.$i.'nutzerstummschalten'])) {
+            $M[$anzahl]['nutzerstummschalten'] = $_POST['mitglieder'.$i.'nutzerstummschalten'];
+          } else {$fehler = true;}
         } else {$fehler = true;}
         $anzahl++;
       }
@@ -361,9 +367,9 @@ if (cms_angemeldet() && $zugriff) {
 
     if (strlen($mitglieder) > 0) {
       // Mitglieder eintragen
-			$sql = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$sql = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       foreach ($M as $i) {
-				$sql->bind_param("iiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
+				$sql->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
 				$sql->execute();
       }
 			$sql->close();

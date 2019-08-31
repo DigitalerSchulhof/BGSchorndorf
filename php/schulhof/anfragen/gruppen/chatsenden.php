@@ -19,7 +19,20 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $g, $gid, $person);
 $jetzt = time();
 
-$zugriff = $CMS_GRUPPENRECHTE['mitglied'] && $CMS_GRUPPENRECHTE["chatten"] && $CMS_GRUPPENRECHTE["chattenab"] <= $jetzt;
+$gk = cms_textzudb($g);
+
+$gebannt = 1;
+// Stummschaltung prüfen
+$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis < ".time();
+$sql = $dbs->prepare($sql);
+$sql->bind_param("ii", $person, $gid);
+$sql->bind_result($gebannt);
+$sql->execute();
+$sql->fetch();
+$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
+
+
+$zugriff = $CMS_GRUPPENRECHTE['mitglied'] && $CMS_GRUPPENRECHTE["chatten"] && !$gebannt;
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
@@ -28,11 +41,10 @@ if (cms_angemeldet() && $zugriff) {
     $fehler = true;
 
 	if (!$fehler) {
-		$gk = cms_textzudb($g);
 		$nachricht = str_replace(chr(29), "", $nachricht);
     $nachricht = htmlentities($nachricht);
 		$id = cms_generiere_kleinste_id($gk."chat");
-		$sql = "UPDATE $gk"."chat SET gruppe = ?, person = ?, datum = ?, inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), meldestatus = 0, fertig = 1 WHERE id = ?";
+		$sql = "UPDATE $gk"."chat SET gruppe = ?, person = ?, datum = ?, inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), meldestatus = 0, loeschstatus = 0, fertig = 1 WHERE id = ?";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiisi", $gid, $person, $jetzt, $nachricht, $id);
     $sql->execute();

@@ -30,7 +30,7 @@ function cms_meldung_an (art, titel, text, nachher) {
 	cms_einblenden('cms_blende_o');
 
 	if ((art == 'erfolg') && (nachher.match(/onclick=\"cms_meldung_aus/))) {
-		var aus = setTimeout(function() {cms_meldung_aus ();}, 1000);
+		var aus = setTimeout(function() {cms_meldung_aus ();}, 3000);
 	}
 
 }

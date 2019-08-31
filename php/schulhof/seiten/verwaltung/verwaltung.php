@@ -634,7 +634,7 @@ echo $code;
 	<li>
 		<a class="cms_uebersicht_verwaltung_backup" href="Schulhof/Verwaltung/Backup/">
 			<h3>Manuelles Backup</h3>
-			<p>Sichert Datenbank und Webserver manuell. Generiert Archive zum Download.</p>
+			<p>Sichert Datenbank und Webserver manuell. Generiert Archiv zum Download.</p>
 		</a>
 	</li>
 	<li>
@@ -646,7 +646,7 @@ echo $code;
 	<li>
 		<a class="cms_uebersicht_verwaltung_verschluesselung" href="Schulhof/Verwaltung/Verschlüsselung/">
 			<h3>Verschlüsselung</h3>
-			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer config-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
+			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer Konfigurations-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
 		</a>
 	</li>
 </ul> -->

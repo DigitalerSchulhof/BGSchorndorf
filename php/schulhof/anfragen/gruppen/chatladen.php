@@ -21,6 +21,7 @@ $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $g, $gid, $person);
 $zugriff = $CMS_GRUPPENRECHTE['mitglied'];
 
 $namecache = array();
+$stati = array();
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
@@ -40,7 +41,23 @@ if (cms_angemeldet() && $zugriff) {
         }
         $_SESSION["LETZTENACHRICHT_$g"]["$gid"] = $id??-1;
     }
+
+		$gebannt = 1;
+		// Stummschaltung prüfen
+		$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis < ".time();
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ii", $person, $gid);
+		$sql->bind_result($gebannt);
+		$sql->execute();
+		$sql->fetch();
+		$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
+		if($gebannt)
+			array_push($stati, "s");
+		foreach($stati as $i => $s)
+			echo $s.",";
+
     $del = chr(29);
+		echo $del;
     /*
       Die Antwort wird als $del-getrennter String zurück gegeben.
     */

@@ -252,17 +252,10 @@ function cms_gruppen_eingabenpruefung(art) {
       if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'blogeintraege', wert);} else {mfehler = true;}} else {mfehler = true;}
       wert = document.getElementById('cms_cms_gruppe_mitglieder_personensuche_mitglieder_chatten_'+mit[i]).value;
       if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'chatten', wert);} else {mfehler = true;}} else {mfehler = true;}
-
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_T').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabT', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_M').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabM', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_J').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabJ', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_h').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabs', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_m').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabm', wert)} else {mfehler = true;}
+      wert = document.getElementById('cms_cms_gruppe_mitglieder_personensuche_mitglieder_chat_loeschen_'+mit[i]).value;
+      if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'nachrichtloeschen', wert);} else {mfehler = true;}} else {mfehler = true;}
+      wert = document.getElementById('cms_cms_gruppe_mitglieder_personensuche_mitglieder_chat_bannen_'+mit[i]).value;
+      if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'nutzerstummschalten', wert);} else {mfehler = true;}} else {mfehler = true;}
     }
   }
 
@@ -555,6 +548,22 @@ function cms_chatmeldung_loeschen(gruppe, id) {
   formulardaten.append("id",              id);
   formulardaten.append("gruppe",          gruppe);
   formulardaten.append("anfragenziel", 	  '272');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {cms_link("Schulhof/Aufgaben/Chatmeldungen");}
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_chatmeldung_nachricht_loeschen(gruppe, id) {
+  cms_laden_an('Nachricht löschen', 'Informationen werden gesammelt.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("id",              id);
+  formulardaten.append("gruppe",          gruppe);
+  formulardaten.append("anfragenziel", 	  '275');
 
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {cms_link("Schulhof/Aufgaben/Chatmeldungen");}

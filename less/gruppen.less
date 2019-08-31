@@ -212,14 +212,27 @@
           }
           &[data-aktion=mehr] {
             cursor: pointer;
-            .cms_hinweis {
-              transition-delay: 0ms;
+            .cms_chat_aktion {
+              // .cms_hinweis
+              color: @schriftfarbehell !important;
+              background: rgba(0, 0, 0, 0.75);
+              padding: 0px 5px 0px 5px;
+              position: absolute;
+              font-family: 'robl';
+              font-weight: normal !important;
+              display: none;
+              border-radius: 3px;
+              z-index: 50;
+              width: 150px;
+              overflow: visible;
+              left: 0px;
+              bottom: 25px;
+              overflow: hidden;
+              text-align: left;
+
               z-index: 5;
-              &.cms_hinweis_sichtbar {
-                max-height: 100px;
-                p {
-                  padding: 5px;
-                }
+              p {
+                padding: 5px;
               }
             }
           }
@@ -251,15 +264,10 @@
           .cms_chat_nachricht_aktion {
             &[data-aktion=mehr] {
               display: none;
-              .cms_hinweis {
+              .cms_chat_aktion {
                 text-align: right;
                 left: unset;
                 right: 0;
-                p {
-                  &[data-mehr=melden] {
-                    display: none;
-                  }
-                }
               }
             }
           }
@@ -292,6 +300,15 @@
           }
         }
       }
+      &.cms_chat_nachricht_geloescht {
+        opacity: 0.7;
+        .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_nachricht {
+            font-style: italic;
+            font-size: 90%;
+          }
+        }
+      }
     }
   }
   #cms_chat_nachricht_verfassen {
@@ -303,7 +320,18 @@
       width: 90%; // Fallback
       width: ~"calc(100% - 26px)";
     }
-    div {
+    .cms_meldung_fehler {
+      display: none;
+    }
+    &.cms_chat_gebannt {
+      > * {
+        display: none !important;
+      }
+      .cms_meldung_fehler {
+        display: block !important;
+      }
+    }
+    div:not(.cms_meldung_fehler) {
       display: inline-block;
       float: right;
       width: auto;

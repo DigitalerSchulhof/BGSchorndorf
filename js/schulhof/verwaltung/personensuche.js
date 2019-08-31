@@ -107,16 +107,14 @@ function cms_personensuche_wahl_mitglieder(id, personenid, personenart, personen
   tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_termine_'+personenid,  0)+"</td>";
   tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_blogeintraege_'+personenid,  0)+"</td>";
   tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chatten_'+personenid,  1)+"</td>";
-  tabellencode += "<td>"+cms_datum_eingabe(id+'_personensuche_mitglieder_chattenab_'+personenid)+" – ";
-  tabellencode += cms_uhrzeit_eingabe(id+'_personensuche_mitglieder_chattenab_'+personenid)+"</td>";
+  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chat_loeschen_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chat_bannen_'+personenid,  0)+"</td>";
   tabellencode += "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('"+id+"', '"+personenid+"', '"+gruppe+"')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
   tabellencode += "</tr>";
 
   cms_id_eintragen(id+'_personensuche_gewaehlt', personenid);
   tabelleF.innerHTML += tabellencode;
   vorsitzF.innerHTML += vorsitzcode;
-  cms_datumcheck(id+'_personensuche_mitglieder_chattenab_'+personenid);
-  cms_uhrzeitcheck(id+'_personensuche_mitglieder_chattenab_'+personenid);
   cms_personensuche(id, 'mitglieder', gruppe);
 }
 
