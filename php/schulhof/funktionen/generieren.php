@@ -462,9 +462,11 @@ function cms_chatmeldungen_knopf($dbs) {
   $zusatz = "";
   if ($anzahl > 0) {
     $zusatz = "cms_meldezahl_wichtig";
-    $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$anzahl."</span>";
-  }
-  $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen ".$anzahl."</a>";
+    $anzahl = " <span class=\"cms_meldezahl $zusatz\">".$anzahl."</span>";
+  } else
+    $anzahl = "";
+
+  $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen".$anzahl."</a>";
   return $code;
 }
 
