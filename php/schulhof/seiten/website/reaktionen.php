@@ -12,7 +12,7 @@
     if(!$CMS_EINSTELLUNGEN["Reaktionen auf $typp"])
       return "";
     $dbs = cms_verbinden("s");
-    $code = "<div id=\"cms_reaktionen\" class=\"".(cms_angemeldet()?"":"cms_noch_anmelden")."\">";
+    $code = "<div id=\"cms_reaktionen\" class=\"".(cms_angemeldet()?"":"cms_noch_anmelden ")."cms_spalte_i\">";
 
     foreach($CMS_EMOTICONS as $r) {
       if(!$r["aktiv"])

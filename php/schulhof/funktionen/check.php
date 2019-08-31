@@ -164,18 +164,21 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 		if ($CMS_BENUTZERART == 's') {
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Schüler dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 		}
 		else if ($CMS_BENUTZERART == 'e') {
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Eltern dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 		}
 		else if ($CMS_BENUTZERART == 'l') {
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 			$CMS_RECHTE['Technik']['Geräte-Probleme melden'];
@@ -193,6 +196,7 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 		else if ($CMS_BENUTZERART == 'v') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 			$CMS_RECHTE['Technik']['Geräte-Probleme melden'];
@@ -209,6 +213,7 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 		else if ($CMS_BENUTZERART == 'x') {
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Externe dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 		}

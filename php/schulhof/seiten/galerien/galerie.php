@@ -14,29 +14,29 @@ $code .= "<div class=\"cms_spalte_i\">";
 	$code .= "<p class=\"cms_brotkrumen\">";
 	$code .= cms_brotkrumen($CMS_URL);
 	$code .= "</p>";
-	$code .= "<h1>Blog</h1>";
+	$code .= "<h1>Galerien</h1>";
 
-	$bloglink = implode('/', array_slice($CMS_URL,0,2)).'/';
+	$galerielink = implode('/', array_slice($CMS_URL,0,2)).'/';
 
 	$code .= "<p>";
-		$code .= "<a class=\"cms_button\" href=\"$bloglink".($jahr-1)."\">".($jahr-1)."</a> ";
+		$code .= "<a class=\"cms_button\" href=\"$galerielink".($jahr-1)."\">".($jahr-1)."</a> ";
 		for ($i = 1; $i<=12; $i++) {
 			$monatsname = cms_monatsnamekomplett($i);
 			if ($i == $monat) {$zusatz = "_ja";} else {$zusatz = "";}
-			$code .= "<a class=\"cms_button$zusatz\" href=\"$bloglink"."$jahr/".$monatsname."\">".$monatsname."</a> ";
+			$code .= "<a class=\"cms_button$zusatz\" href=\"$galerielink"."$jahr/".$monatsname."\">".$monatsname."</a> ";
 		}
-		$code .= "<a class=\"cms_button\" href=\"$bloglink".($jahr+1)."\">".($jahr+1)."</a> ";
+		$code .= "<a class=\"cms_button\" href=\"$galerielink".($jahr+1)."\">".($jahr+1)."</a> ";
 	$code .= "</p>";
 
 	$zwischenurl = implode('/', array_slice($CMS_URL,0,1));
-	$blogcode = cms_blogeintraege_monat_ausgeben($dbs, 'artikel', $zwischenurl, $monat, $jahr);
-	if (strlen($blogcode) > 0) {$code .= "<ul class=\"cms_bloguebersicht_artikel\">".$blogcode."</ul>";}
-	else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Blogeinträge vorhanden.</p>";}
+	$galeriecode = cms_galerien_monat_ausgeben($dbs, 'artikel', $zwischenurl, $monat, $jahr);
+	if (strlen($galeriecode) > 0) {$code .= "<ul class=\"cms_galerieuebersicht_artikel\">".$galeriecode."</ul>";}
+	else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Galerien vorhanden.</p>";}
 $code .= "</div>";
 
 echo $code;
 
-function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jahr) {
+function cms_galerien_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jahr) {
 	global $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERID, $CMS_BENUTZERART;
 	$code = "";
 
@@ -44,27 +44,10 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
     $beginn = mktime (0, 0, 0, $monat, 1, $jahr);
     $ende = mktime(0,0,0,$monat+1,1,$jahr)-1;
 
-		$mitgliedschaftenblogs = array();
-
-		$sqlm = "";
-		foreach ($CMS_GRUPPEN as $g) {
-			$gk = cms_textzudb($g);
-			$sqlm .= " UNION (SELECT DISTINCT blogeintrag AS id FROM $gk"."blogeintraege WHERE gruppe IN (SELECT DISTINCT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID))";
-		}
-		$sqlm = substr($sqlm, 7);
-		$sqlm = "SELECT DISTINCT id FROM ($sqlm) AS x";
-
-		if ($CMS_BENUTZERART == 'l') {$oelimit = 1;}
-		else if ($CMS_BENUTZERART == 'v') {$oelimit = 2;}
-		else {$oelimit = 3;}
-
-		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art FROM blogeintraege WHERE (id IN ($sqlm) OR oeffentlichkeit >= $oelimit) AND (datum BETWEEN $beginn AND $ende)";
-		$sql = "SELECT * FROM ($sqloe) AS x ORDER BY datum DESC, bezeichnung ASC";
-
-		// Blogausgabe erzeugen
+		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE (datum BETWEEN $beginn AND $ende)";
 		if ($anfrage = $dbs->query($sql)) {
 			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
+				$code .= cms_galerie_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
 			}
 			$anfrage->free();
 		}
