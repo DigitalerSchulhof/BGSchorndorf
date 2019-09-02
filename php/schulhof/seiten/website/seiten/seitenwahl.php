@@ -25,7 +25,7 @@ function cms_seitenwahl_seiten ($dbs, $id, $oberseite, $sichtbar = false) {
 			$code .= cms_seitenwahl_seiten ($dbs, $id, $daten['id']);
 			$code .= "</li>";
 		}
-		if ($anzahl == 0) {$code .= "<li class=\"cms_notiz\">keine Seiten</li>";}
+		if ($anzahl == 0) {$code .= "<li class=\"cms_notiz\">Keine Seiten</li>";}
 		$code .= "</ul>";
 		$anfrage->free();
 	}

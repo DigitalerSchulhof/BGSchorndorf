@@ -295,7 +295,7 @@ function cms_personaldaten_ausgeben($id) {
 
 
 				if (strlen($code) == 0) {
-					echo "<p class=\"cms_notiz\">keine Schuljahre angelegt</p>";
+					echo "<p class=\"cms_notiz\">Keine Schuljahre angelegt</p>";
 				}
 				else {
 					if (!$sjwahl) {

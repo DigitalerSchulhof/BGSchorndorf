@@ -18,7 +18,7 @@ function cms_schulhof_lehrer_links_anzeigen () {
     cms_trennen($dbs);
 
     if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-    else {$ausgabe = '<p class="cms_notiz">keine Lehrkräfte angelegt</p>';}
+    else {$ausgabe = '<p class="cms_notiz">Keine Lehrkräfte angelegt</p>';}
   }
   else {
     $ausgabe = cms_meldung_berechtigung();

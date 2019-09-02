@@ -54,7 +54,7 @@ if ($zugriff) {
   cms_trennen($dbs);
 
   if (strlen($schuljahrcode) > 0) {$schuljahrcode = "<p>".$schuljahrcode;}
-  else {$schuljahrcode = "<p class=\"cms_notiz\">keine Schuljahre angelegt.";}
+  else {$schuljahrcode = "<p class=\"cms_notiz\">Keine Schuljahre angelegt.";}
   $code .= $schuljahrcode."<input type=\"hidden\" name=\"cms_zeitraum_ids\" id=\"cms_zeitraum_ids\" value=\"$alleids\"></p>";
 
   if (strlen($jahrescode) > 0) {

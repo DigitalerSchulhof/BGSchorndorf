@@ -109,7 +109,7 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
     }
     $code .= "</td></tr>";
     $code .= "<tr><th>Zweite Staatsangehörigkeit:</th><td><select name=\"cms_voranmeldung_schueler_land2\" id=\"cms_voranmeldung_schueler_land2\">";
-    $code .= "<option value=\"\">keine</option>";
+    $code .= "<option value=\"\">Keine</option>";
     foreach ($laender as $l) {
       if ($l['wert'] == $land2) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
       $code .= "<option value=\"".$l['wert']."\"$zusatz>".$l['bezeichnung']."</option>";

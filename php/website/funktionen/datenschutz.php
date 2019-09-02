@@ -201,7 +201,7 @@ function cms_schulhof_datenschutz() {
             $code .= "<td>SchG</td>";
             $code .= "<td>Information der gesamten Lehrerschaft über die Abläufe an der Schule</td>";
             $code .= "<td>Mitglieder der jeweiligen Gremien</td>";
-            $code .= "<td>kein Automatismus</td>";
+            $code .= "<td>Kein Automatismus</td>";
           $code .= "</tr>";
         $code .= "</table>";
       }
@@ -285,7 +285,7 @@ function cms_schulhof_rechte() {
     $anfrage->free();
   }
   if (strlen($datenschutz) == 0) {
-    $code .= "<p class=\"cms_notiz\">keine Datenschutzbeauftragte benannt</p>";
+    $code .= "<p class=\"cms_notiz\">Keine Datenschutzbeauftragte benannt</p>";
   }
   else {
     $code .= "<p>$datenschutz</p>";
@@ -306,7 +306,7 @@ function cms_schulhof_rechte() {
   cms_trennen($dbs);
 
   if (strlen($admin) == 0) {
-    $code .= "<p class=\"cms_notiz\">keine Administratoren benannt</p>";
+    $code .= "<p class=\"cms_notiz\">Keine Administratoren benannt</p>";
   }
   else {
     $code .= "<p>$admin</p>";

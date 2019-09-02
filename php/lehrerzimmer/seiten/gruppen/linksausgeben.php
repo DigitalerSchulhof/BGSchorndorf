@@ -32,7 +32,7 @@ function cms_lehrerzimmer_gruppen_links_anzeigen ($gruppe) {
   }
 
   if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-  else {$ausgabe = '<p class="cms_notiz">keine '.$gruppe.' angelegt</p>';}
+  else {$ausgabe = '<p class="cms_notiz">Keine '.$gruppe.' angelegt</p>';}
 
   return $ausgabe;
 }

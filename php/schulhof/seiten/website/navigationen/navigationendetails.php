@@ -79,7 +79,7 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 				$code .= "</td>";
 			$code .= "</tr>";
 
-			$swahl = "<i>keine gewählt</i>";
+			$swahl = "<i>Keine gewählt</i>";
 			if ($ebenenzusatzs != '-') {
 				$sql = "SELECT * FROM seiten WHERE id = $ebenenzusatzs";
 				if ($anfrage = $dbs->query($sql)) {

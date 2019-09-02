@@ -63,7 +63,7 @@ function cms_dateisystem_uploadliste_erneuern(feldid) {
 	}
 
 	if (code.length == 0) {
-		code = '<li>keine Datein ausgewählt</li>';
+		code = '<li>Keine Datein ausgewählt</li>';
 	}
 
 	liste.innerHTML = code;
@@ -108,7 +108,7 @@ function cms_dateisystem_aktionen_hochladen_fertig(netz, bereich, id, pfad, feld
 	var gesamt = document.getElementById(feldid+'_aktionen_hochladen_gesamtgroesse');
 	var urheberrecht = document.getElementById(feldid+'_hochladen_urheberrecht');
 	cms_ausblenden(feldid+'_aktionen_hochladen');
-	liste.innerHTML = '<li>keine Datein ausgewählt</li>';
+	liste.innerHTML = '<li>Keine Datein ausgewählt</li>';
 	gesamt.innerHTML = 'Gesamtgröße: '+cms_groesse_umrechnen(UP_gesamtgesamt)+' • Anzahl Dateien: '+CMS_UPLOADDATEIEN[feldid].length;
 	var schieberid = feldid+'_hochladen_urheberrecht';
 	if (urheberrecht.value != 0) {cms_schieber(schieberid.substr(4));}

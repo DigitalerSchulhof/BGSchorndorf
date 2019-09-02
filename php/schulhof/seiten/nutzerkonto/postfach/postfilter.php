@@ -227,7 +227,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 							$name->free();
 						}
 					}
-					else {$anzeigename = "<i>keiner</i>";}
+					else {$anzeigename = "<i>Keiner</i>";}
 					if (strlen($anzeigename) == 0) {$anzeigename = "<i>existiert nicht mehr</i>";}
 				}
 

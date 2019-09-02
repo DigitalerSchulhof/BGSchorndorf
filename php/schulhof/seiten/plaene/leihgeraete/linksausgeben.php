@@ -21,7 +21,7 @@ function cms_schulhof_leihgeraete_links_anzeigen () {
     }
 
     if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-    else {$ausgabe = '<p class="cms_notiz">keine Leihgeräte angelegt</p>';}
+    else {$ausgabe = '<p class="cms_notiz">Keine Leihgeräte angelegt</p>';}
   }
   else {
     $ausgabe = cms_meldung_berechtigung();

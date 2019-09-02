@@ -18,7 +18,7 @@ function cms_schulhof_stufen_links_anzeigen () {
     cms_trennen($dbs);
 
     if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-    else {$ausgabe = '<p class="cms_notiz">keine Klassenstufen angelegt</p>';}
+    else {$ausgabe = '<p class="cms_notiz">Keine Klassenstufen angelegt</p>';}
   }
   else {
     $ausgabe = cms_meldung_berechtigung();

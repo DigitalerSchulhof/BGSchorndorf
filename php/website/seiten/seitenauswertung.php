@@ -438,7 +438,7 @@ function cms_boxenaussen_ausgeben($dbs, $e) {
     foreach ($boxxen as $boxen) {
       $boxcode .= cms_box_ausgeben($boxen, $ausrichtung, $breite, $zusatz);
     }
-    if ((strlen($boxcode) == 0) && ($CMS_URL[1] == 'bearbeiten')) {$boxcode = '<p class=\"cms_notiz\">keine Boxen angelegt</p>';}
+    if ((strlen($boxcode) == 0) && ($CMS_URL[1] == 'bearbeiten')) {$boxcode = '<p class=\"cms_notiz\">Keine Boxen angelegt</p>';}
     $code .= $boxcode;
     $code .= "<div class=\"cms_clear\"></div>";
     $code .= "</div>";
@@ -678,7 +678,7 @@ function cms_zeitabhaengig_aus_schulhof() {
           if(strlen($termincode) > 0) {
             $code .= "<ul class=\"cms_terminuebersicht\">".$termincode."</ul>";
           }
-          else {$code .= "<p class=\"cms_notiz\">keine Termine</p>";}
+          else {$code .= "<p class=\"cms_notiz\">Keine Termine</p>";}
         }
       }
       else if ($CMS_URL[1] == "Blog") {
@@ -704,7 +704,7 @@ function cms_zeitabhaengig_aus_schulhof() {
           if(strlen($blogcode) > 0) {
             $code .= "<ul class=\"cms_bloguebersicht_artikel\">".$blogcode."</ul>";
           }
-          else {$code .= "<p class=\"cms_notiz\">keine Blogeinträge</p>";}
+          else {$code .= "<p class=\"cms_notiz\">Keine Blogeinträge</p>";}
         }
       }
       else if ($CMS_URL[1] == "Galerien") {
@@ -729,7 +729,7 @@ function cms_zeitabhaengig_aus_schulhof() {
           if(strlen($galeriecode) > 0) {
             $code .= "<ul class=\"cms_galerieuebersicht_artikel\">".$galeriecode."</ul>";
           }
-          else {$code .= "<p class=\"cms_notiz\">keine Galerien</p>";}
+          else {$code .= "<p class=\"cms_notiz\">Keine Galerien</p>";}
         }
       }
 
