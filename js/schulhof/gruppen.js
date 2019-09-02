@@ -691,7 +691,7 @@ function cms_chat_aktualisieren(art, id) {
       var status = r.shift().split(",");
       if(status.includes("s")) // Stummschaltung
         $("#cms_chat_nachricht_verfassen").addClass("cms_chat_gebannt");
-      else
+      if(status.includes("u"))
         $("#cms_chat_nachricht_verfassen").removeClass("cms_chat_gebannt");
 
       chat.find("#cms_chat_leer").remove();
@@ -873,9 +873,9 @@ function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
   bannbis = '<p>Bis wann soll der Nutzer stummgeschalten werden?</p>'+bannbis;
   bannbis = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_0" style="display: block"><div class="cms_reitermenue_i">'+bannbis+'</div></div>';
 
-  var banndauer  = '<input class="cms_input_T" type="text" name="cms_banndauer_T" id="cms_banndauer_T" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 1)) {t.value = 1;}$(\'#cms_banndauer_T_tage\').html(\'Tag\'+(t.value == 1?\'\':\'e\'))};a(this)" value="1"> <span id="cms_banndauer_T_tage">Tag</span>  ';
-  banndauer += '<input class="cms_input_h" type="text" name="cms_banndauer_h" id="cms_banndauer_h" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 1)) {t.value = 1;}$(\'#cms_banndauer_h_stunden\').html(\'Stunde\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_h_stunden">Stunde</span>  ';
-  banndauer += '<input class="cms_input_m" type="text" name="cms_banndauer_m" id="cms_banndauer_m" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 1)) {t.value = 1;}$(\'#cms_banndauer_m_minuten\').html(\'Minute\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_m_minuten">Minute</span>  ';
+  var banndauer  = '<input class="cms_input_T" type="text" name="cms_banndauer_T" id="cms_banndauer_T" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 0)) {t.value = 0;}$(\'#cms_banndauer_T_tage\').html(\'Tag\'+(t.value == 1?\'\':\'e\'))};a(this)" value="1"> <span id="cms_banndauer_T_tage">Tag</span>  ';
+  banndauer += '<input class="cms_input_h" type="text" name="cms_banndauer_h" id="cms_banndauer_h" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 0)) {t.value = 0;}$(\'#cms_banndauer_h_stunden\').html(\'Stunde\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_h_stunden">Stunde</span>  ';
+  banndauer += '<input class="cms_input_m" type="text" name="cms_banndauer_m" id="cms_banndauer_m" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 0)) {t.value = 0;}$(\'#cms_banndauer_m_minuten\').html(\'Minute\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_m_minuten">Minute</span>  ';
   banndauer = '<p>Wie lange soll der Nutzer stummgeschalten werden?</p>'+banndauer;
   banndauer = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_1"><div class="cms_reitermenue_i">'+banndauer+'</div></div>';
 

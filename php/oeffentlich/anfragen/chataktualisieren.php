@@ -31,9 +31,10 @@ if (cms_angemeldet() && $zugriff) {
 	while (true) {
 		$nachrichten = array();
 		$jetzt = time();
-		$ausgegeben = false;
+		$stati_s = $nachr_s = false;
 		$e = "";
 		$stati = array();
+		$del = chr(29);
 
 		$sql = $dbs->prepare($sqlnachrq);
 		$sql->bind_param("ii", $gid, $letzte);
@@ -63,33 +64,35 @@ if (cms_angemeldet() && $zugriff) {
 		// Stati setzen
 		if($gebannt)
 			array_push($stati, "s");
+		else
+			array_push($stati, "us");
 
 		// Stati laden und mit den Letzten vergleichen
 		$lstati = $_SESSION["LETZTESTATI_$g"]["$gid"]??array();
-
-		if($lstati != $stati)
+		if($lstati != $stati) {
 			foreach($stati as $i => $s) {
 				$e .= $s.",";
-				$ausgegeben = true;
-				session_start();
-				$_SESSION["LETZTESTATI_$g"]["$gid"] = $stati;
-				session_write_close();
+				$stati_s = true;
 			}
+			session_start();
+			$_SESSION["LETZTESTATI_$g"]["$gid"] = $stati;
+			session_write_close();
+			$e .= $del;
+		}
 
-		$lstati = $stati;
-
-
-    $del = chr(29);
     /*
       Die Antwort wird als $del-getrennter String zurück gegeben.
     */
     foreach($nachrichten as $i => $v) {
       $e .= $v[0].$del.$v[1].$del.$v[2].$del.$v[3].$del;
-			$ausgegeben = true;
+			$nachr_s = true;
 		}
 
-		if($ausgegeben)
-			die($del . $e);
+		if($nachr_s && !$stati_s)
+			$e = $del.$e;	// Stati faken
+
+		if($stati_s || $nachr_s)
+			die($e);
 
 		time_nanosleep(0, 300 * 1000);	// 300 ms
 	}
