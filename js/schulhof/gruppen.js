@@ -343,7 +343,6 @@ function cms_termineintern_eingabenpruefen(modus) {
 	return rueckgabe;
 }
 
-
 function cms_blogeintraegeintern_neu_speichern(ziel) {
 	cms_laden_an('Neuen Blogeintrag anlegen', 'Die Eingaben werden überprüft.');
 
@@ -471,7 +470,6 @@ function cms_blogeintraegeintern_loeschen(id, gruppe, gruppenid, ziel) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-
 function cms_termineintern_neu_speichern(ziel) {
 	cms_laden_an('Neuen Termin anlegen', 'Die Eingaben werden überprüft.');
 
@@ -595,7 +593,7 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
+/* Nachricht senden */
 function cms_chat_nachricht_senden(art, id) {
   if($("#cms_chat_nachricht_verfassen").hasClass("cms_chat_gebannt"))
     return;
@@ -644,13 +642,13 @@ function cms_chat_nachricht_senden(art, id) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
+/* Chat scrollen, Aktion listener setzen */
 $(window).on("load", function() {
   var chat = $("#cms_chat_nachrichten");
   chat.scrollTop(chat.prop("scrollHeight"));
   $(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
 });
-
+/* Mehr gedrückt */
 function cms_chat_aktion() {
   if($(this).data("aktion") == "mehr") {
     var h = $(this).find(".cms_chat_aktion");
@@ -658,7 +656,7 @@ function cms_chat_aktion() {
     h.slideToggle();
   }
 }
-
+/* Tastendruck */
 function cms_chat_enter(e, art, id) {
   if(e.keyCode && e.keyCode === 10)
     if(e.ctrlKey) {
@@ -667,12 +665,11 @@ function cms_chat_enter(e, art, id) {
     }
   return true;
 }
-
+/* Chat mit Long Polling aktualisieren */
 function cms_chat_aktualisieren(art, id) {
   var formulardaten = new FormData();
   formulardaten.append("gruppe", art);
   formulardaten.append("gruppenid", id);
-  formulardaten.append("anfragenziel", 	'270');
   var chat = $("#cms_chat_nachrichten");
   var gid = id;
 
@@ -725,9 +722,23 @@ function cms_chat_aktualisieren(art, id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
-}
+  var anf = new XMLHttpRequest();
 
+  var rek = function() {
+    if(anf.readyState == 4) {                     // Kein PHP Fehler
+      if(anf.responseText && !anf.responseText.startsWith("<br />"))
+        anfragennachbehandlung(anf.responseText);
+      anf = new XMLHttpRequest();
+      anf.onreadystatechange = rek;
+      anf.open("POST", "php/oeffentlich/anfragen/chataktualisieren.php");
+      anf.send(formulardaten);
+    }
+  }
+  anf.onreadystatechange = rek;
+  anf.open("POST", "php/oeffentlich/anfragen/chataktualisieren.php");
+  anf.send(formulardaten);
+}
+/* Nachricht melden - Bestätigung */
 function cms_chat_nachricht_melden_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   if(p.hasClass("cms_chat_nachricht_gemeldet")) {
@@ -737,7 +748,7 @@ function cms_chat_nachricht_melden_anzeigen(t, art, gid) {
   var id = p.find(".cms_chat_nachricht_id").html();
   cms_meldung_an('warnung', 'Nachricht melden', '<p>Soll die Nachricht wirklich gemeldet werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nachricht_melden(\''+art+'\', \''+gid+'\', \''+id+'\')">Melden</span></p>');
 }
-
+/* Nachricht melden - Senden */
 function cms_chat_nachricht_melden(art, gid, id) {
   cms_laden_an("Nachricht melden", "Die Nachricht wird gemeldet.");
   var formulardaten = new FormData();
@@ -760,7 +771,7 @@ function cms_chat_nachricht_melden(art, gid, id) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
+/* Nachrichten nachladen */
 function cms_chat_nachrichten_nachladen(art, id, anzahl) {
   cms_laden_an("Altere Nachrichten laden", "Nachrichten werden geladen")
   var formulardaten = new FormData();
@@ -822,7 +833,7 @@ function cms_chat_nachrichten_nachladen(art, id, anzahl) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
+/* Nachricht löschen - Bestätigung */
 function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   if(p.hasClass("cms_chat_nachricht_geloescht")) {
@@ -832,8 +843,7 @@ function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
   var id = p.find(".cms_chat_nachricht_id").html();
   cms_meldung_an('warnung', 'Nachricht löschen', '<p>Soll die Nachricht wirklich für alle gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nachricht_loeschen(\''+art+'\', \''+gid+'\', \''+id+'\')">Löschen</span></p>');
 }
-
-
+/* Nachricht löschen - Senden */
 function cms_chat_nachricht_loeschen(gruppe, gid, id) {
   cms_laden_an('Nachricht löschen', 'Informationen werden gesammelt.');
 
@@ -852,7 +862,7 @@ function cms_chat_nachricht_loeschen(gruppe, gid, id) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
+/* Nutzer stummschalten - Bestätigung */
 function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   var id = p.find(".cms_chat_nachricht_id").html();
@@ -860,8 +870,7 @@ function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
   dauerwahl += cms_datum_eingabe("cms_bannbis") + " - " + cms_uhrzeit_eingabe("cms_bannbis", new Date().getHours()+1);
   cms_meldung_an('warnung', 'Nutzer stummschalten', '<p>Bis wann soll der Nutzer stummgeschalten werden?</p>'+dauerwahl, '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nutzer_stummschalten(\''+art+'\', \''+gid+'\', \''+id+'\')">Stummschalten</span></p>');
 }
-
-
+/* Nutzer stummschalten - Senden */
 function cms_chat_nutzer_stummschalten(gruppe, gid, id) {
   var banndauer, bannbis = null;
   bannbis = Math.floor(new Date($("#cms_bannbis_J").val(), $("#cms_bannbis_M").val()-1, $("#cms_bannbis_T").val(), $("#cms_bannbis_h").val(), $("#cms_bannbis_m").val(), 0).getTime()/1000);

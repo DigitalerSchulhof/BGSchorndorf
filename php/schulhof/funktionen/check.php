@@ -668,6 +668,21 @@ function postLesen($feld, $nullfehler = true) {
 			die("FEHLER");
 }
 
+function getLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			getLesen($f, $nullfehler);
+		return;
+	}
+	global $$feld;
+
+	if(isset($_GET[$feld]))
+		$$feld = $_GET[$feld];
+	else
+		if($nullfehler)
+			die("FEHLER");
+}
+
 function sqlLesen($row, $feld) {
 	if(is_array($feld)) {
 		foreach($feld as $i => $f)

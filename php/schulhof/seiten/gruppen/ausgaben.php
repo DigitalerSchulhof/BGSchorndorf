@@ -161,7 +161,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			*/
 
 			// Nachrichten laden
-			$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person WHERE gruppe = $gruppenid ORDER BY chat.id DESC LIMIT ".($limit+1);
+			$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person WHERE chat.gruppe = $gruppenid AND chat.fertig = 1 ORDER BY chat.id DESC LIMIT ".($limit+1);
 			$sql = $dbs->prepare($sql);
 			$sql->bind_result($id, $p, $d, $i, $m, $gl, $v, $n, $t);
 			$sql->execute();
@@ -275,7 +275,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			$code .= "</div>";
 		}
 	$code .= "</div>";
-	$code .= "<script>$(window).on(\"load\", function() {setInterval(function() {cms_chat_aktualisieren('$g', '$gruppenid')}, 333);});</script>";
+	$code .= "<script>$(window).on(\"load\", function() {cms_chat_aktualisieren('$g', '$gruppenid')});</script>";
 	return $code;
 }
 ?>
