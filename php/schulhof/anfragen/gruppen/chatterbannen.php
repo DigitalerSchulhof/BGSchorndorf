@@ -11,7 +11,6 @@ session_start();
 postLesen(array("gruppe", "gruppenid", "id"));
 $bannbis = $banndauer = -1;
 postLesen(array("bannbis", "banndauer"), false);
-$banndauer = 60;
 if (isset($_SESSION['BENUTZERID'])) {$person = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 $g = $gruppe;
 $gid = $gruppenid;

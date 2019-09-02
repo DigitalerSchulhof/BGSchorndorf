@@ -866,24 +866,37 @@ function cms_chat_nachricht_loeschen(gruppe, gid, id) {
 function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   var id = p.find(".cms_chat_nachricht_id").html();
-  var dauerwahl = "";
-  dauerwahl += cms_datum_eingabe("cms_bannbis") + " - " + cms_uhrzeit_eingabe("cms_bannbis", new Date().getHours()+1);
-  cms_meldung_an('warnung', 'Nutzer stummschalten', '<p>Bis wann soll der Nutzer stummgeschalten werden?</p>'+dauerwahl, '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nutzer_stummschalten(\''+art+'\', \''+gid+'\', \''+id+'\')">Stummschalten</span></p>');
+
+  var menue = '<ul class="cms_reitermenue"><li><span id="cms_reiter_bann_0" class="cms_reiter cms_reiter_aktiv" onclick="cms_reiter(\'bann\', 0, 1)">Nach Datum stummschalten</span></li> <li><span id="cms_reiter_bann_1" class="cms_reiter" onclick="cms_reiter(\'bann\', 1, 1)">Nach Dauer stummschalten</span></li></ul>';
+
+  var bannbis = cms_datum_eingabe("cms_bannbis") + " - " + cms_uhrzeit_eingabe("cms_bannbis", new Date().getHours()+1);
+  bannbis = '<p>Bis wann soll der Nutzer stummgeschalten werden?</p>'+bannbis;
+  bannbis = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_0" style="display: block"><div class="cms_reitermenue_i">'+bannbis+'</div></div>';
+
+  var banndauer  = '<input class="cms_input_T" type="text" name="cms_banndauer_T" id="cms_banndauer_T" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 1)) {t.value = 1;}$(\'#cms_banndauer_T_tage\').html(\'Tag\'+(t.value == 1?\'\':\'e\'))};a(this)" value="1"> <span id="cms_banndauer_T_tage">Tag</span>  ';
+  banndauer += '<input class="cms_input_h" type="text" name="cms_banndauer_h" id="cms_banndauer_h" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 1)) {t.value = 1;}$(\'#cms_banndauer_h_stunden\').html(\'Stunde\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_h_stunden">Stunde</span>  ';
+  banndauer += '<input class="cms_input_m" type="text" name="cms_banndauer_m" id="cms_banndauer_m" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 1)) {t.value = 1;}$(\'#cms_banndauer_m_minuten\').html(\'Minute\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_m_minuten">Minute</span>  ';
+  banndauer = '<p>Wie lange soll der Nutzer stummgeschalten werden?</p>'+banndauer;
+  banndauer = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_1"><div class="cms_reitermenue_i">'+banndauer+'</div></div>';
+
+  cms_meldung_an('warnung', 'Nutzer stummschalten', menue+bannbis+banndauer, '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nutzer_stummschalten(\''+art+'\', \''+gid+'\', \''+id+'\')">Stummschalten</span></p>');
 }
 /* Nutzer stummschalten - Senden */
 function cms_chat_nutzer_stummschalten(gruppe, gid, id) {
   var banndauer, bannbis = null;
   bannbis = Math.floor(new Date($("#cms_bannbis_J").val(), $("#cms_bannbis_M").val()-1, $("#cms_bannbis_T").val(), $("#cms_bannbis_h").val(), $("#cms_bannbis_m").val(), 0).getTime()/1000);
-  cms_laden_an('Nutzer stummschalten', 'Informationen werden gesammelt.');
+  banndauer = ($("#cms_banndauer_T").val() * 24*60*60 + $("#cms_banndauer_h").val() * 60 * 60 + $("#cms_banndauer_m").val() * 60);
   var formulardaten = new FormData();
   formulardaten.append("id",              id);
   formulardaten.append("gruppe",          gruppe);
   formulardaten.append("gruppenid",       gid);
-  if(bannbis)
+  if(bannbis && $("#cms_reiter_bann_0").hasClass("cms_reiter_aktiv"))
     formulardaten.append("bannbis",       bannbis);
-  if(banndauer)
+  if(banndauer && $("#cms_reiter_bann_1").hasClass("cms_reiter_aktiv"))
     formulardaten.append("banndauer",     banndauer);
   formulardaten.append("anfragenziel", 	  '277');
+
+  cms_laden_an('Nutzer stummschalten', 'Informationen werden gesammelt.');
 
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {

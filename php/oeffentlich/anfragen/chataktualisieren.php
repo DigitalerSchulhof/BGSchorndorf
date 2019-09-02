@@ -22,7 +22,6 @@ $zugriff = $CMS_GRUPPENRECHTE['mitglied'];
 $gk = cms_textzudb($g);
 
 $namecache = array();
-$lstati = $stati = array();
 
 
 $sqlnachrq = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL'), chat.meldestatus, AES_DECRYPT(person.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(person.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(person.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as person ON person.id = chat.person WHERE gruppe = ? AND chat.id > ? AND chat.fertig = 1 ORDER BY chat.id ASC;";
@@ -34,6 +33,7 @@ if (cms_angemeldet() && $zugriff) {
 		$jetzt = time();
 		$ausgegeben = false;
 		$e = "";
+		$stati = array();
 
 		$sql = $dbs->prepare($sqlnachrq);
 		$sql->bind_param("ii", $gid, $letzte);
@@ -60,13 +60,20 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 		$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
 
+		// Stati setzen
 		if($gebannt)
 			array_push($stati, "s");
+
+		// Stati laden und mit den Letzten vergleichen
+		$lstati = $_SESSION["LETZTESTATI_$g"]["$gid"]??array();
 
 		if($lstati != $stati)
 			foreach($stati as $i => $s) {
 				$e .= $s.",";
 				$ausgegeben = true;
+				session_start();
+				$_SESSION["LETZTESTATI_$g"]["$gid"] = $stati;
+				session_write_close();
 			}
 
 		$lstati = $stati;
