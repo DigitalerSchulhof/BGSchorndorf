@@ -52,9 +52,9 @@ if (cms_angemeldet() && $zugriff) {
   if(!$sql->execute() || !$sql->fetch() || $p == -1)
     die("FEHLER");
 
-  $sql = "UPDATE $gk"."mitglieder SET chatbannbis = ? WHERE person = ? AND gruppe = ?";
+  $sql = "UPDATE $gk"."mitglieder SET chatbannbis = ?, chatbannvon = ? WHERE person = ? AND gruppe = ?";
   $sql = $dbs->prepare($sql);
-  $sql->bind_param("iii", $bannbis, $p, $gid);
+  $sql->bind_param("iiii", $bannbis, $person, $p, $gid);
   $sql->execute();
 
   echo "ERFOLG";
