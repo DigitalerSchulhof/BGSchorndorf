@@ -7,7 +7,10 @@ function cms_ajaxanfrage (fehler, formulardaten, wennrichtig, host) {
 				wennrichtig(anfrage.responseText);
 			}
 		};
-		anfrage.open("POST",host+"php/oeffentlich/anfragen/anfrage.php",true);
+		var ziel;
+		if(ziel = formulardaten.get("anfragenziel"))
+			formulardaten.delete("anfragenziel");
+		anfrage.open("POST",host+"php/oeffentlich/anfragen/anfrage.php?ziel="+ziel,true);
 		anfrage.send(formulardaten);
 	}
 	else {
