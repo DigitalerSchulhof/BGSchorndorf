@@ -1,10 +1,39 @@
-function cms_link (ziel, neuerTab) {
+function cms_link (ziel, neuerTab, ersetzen) {
 	neuerTab = neuerTab || false;	// False -> False, True -> True
-	if(!neuerTab)
-		window.location.href = CMS_DOMAIN+'/'+ziel;
+	if(ersetzen !== false)
+		ersetzen = true;
+	if(!neuerTab) {
+		ziel = CMS_DOMAIN+'/'+ziel;
+		if(ersetzen) {
+			cms_laden_an("Seite laden", "Die neue Seite wird geladen");
+			$.get(ziel, function(m) {
+				var s = /<body( |)(class="cms_optimierung_(.)"|)>/
+				var e = "</body>";
+		 		 	 is = m.search(s);
+			     ie = m.search(e);
+				var	b = m.substring(m.search(s)+(s.exec(m)[0].length), ie);
+				$("body").html(b);
+				cms_laden_aus();
+				window.history.pushState({}, m.substring(m.search("<title>")+"<title>".length, m.search("</title>	")), ziel);
+			});
+		} else {
+			window.location.href = ziel;
+		}
+	}
 	else
 		window.open(CMS_DOMAIN+"/"+ziel, '_blank');
 }
+
+// Links umwandeln
+$(document).on("click", "a", function(e) {
+	if($(this).is("[data-cms_refresh]"))
+		return;
+	var href = $(this).attr("href");
+	if(/javascript:/g.test(href) || /(http(s|)|www.):/g.test(href))
+		return;
+	e.preventDefault();
+	cms_link(href, false);
+})
 
 function cms_bezzulink(bezeichnung) {
 	bezeichnung = bezeichnung.replace(/\s/g, '_');

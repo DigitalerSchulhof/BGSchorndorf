@@ -35,7 +35,7 @@ function cms_anmelden () {
 			}
 			else if (rueckgabe == "ERFOLG") {
 				if(location.pathname.includes("Schulhof/Anmeldung"))
-					cms_link('Schulhof/Nutzerkonto');
+					cms_link('Schulhof/Nutzerkonto', false, false);
 				else
 					location.href = location.pathname;
 			}

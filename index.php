@@ -193,7 +193,7 @@
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
 
-		// Skripte, die nur für angemeldete notwendig sind
+		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
 			$code = "";
 			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
