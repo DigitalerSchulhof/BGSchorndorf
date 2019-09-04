@@ -1,5 +1,12 @@
 <?php
 function cms_check_mail($mail) {
+	if(is_array($mail)) {
+		$r = true;
+		foreach ($mail as $i => $m)
+			if(!cms_check_mail($m))
+				$r = false;
+		return $r;
+	}
 	if (preg_match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}^', $mail) != 1) {
 		return false;
 	}
@@ -7,6 +14,13 @@ function cms_check_mail($mail) {
 }
 
 function cms_check_titel($titel) {
+	if(is_array($titel)) {
+		$r = true;
+		foreach ($titel as $i => $t)
+			if(!cms_check_titel($t))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]+$/", $titel) != 1) {
 		return false;
 	}
@@ -24,6 +38,13 @@ function cms_check_dateiname($datei) {
 }
 
 function cms_check_nametitel($titel) {
+	if(is_array($titel)) {
+		$r = true;
+		foreach ($titel as $i => $t)
+			if(!cms_check_nametitel($t))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
@@ -31,6 +52,13 @@ function cms_check_nametitel($titel) {
 }
 
 function cms_check_name($name) {
+	if(is_array($name)) {
+		$r = true;
+		foreach ($name as $i => $n)
+			if(!cms_check_name($n))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ ]+$/", $name) != 1) {
 		return false;
 	}
@@ -655,6 +683,11 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
 }
 
 function postLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			postLesen($f, $nullfehler);
+		return;
+	}
 	global $$feld;
 
 	if(isset($_POST[$feld]))
@@ -662,6 +695,18 @@ function postLesen($feld, $nullfehler = true) {
 	else
 		if($nullfehler)
 			die("FEHLER");
+}
+
+function sqlLesen($row, $feld) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			sqlLesen($row, $f);
+		return;
+	}
+	global $$feld;
+
+	if(isset($row[$feld]))
+		$$feld = $row[$feld];
 }
 
 ?>

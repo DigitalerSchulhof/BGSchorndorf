@@ -13,33 +13,24 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 	$art = "s";
 	$styles = "";
 	$klassen = "";
-	$zuordnung = $zuordnung;
 
 	if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$status = "a";}
 
 	if ($id != "-") {
-		$sql = "SELECT * FROM seiten WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$bezeichnung = $daten['bezeichnung'];
-				$beschreibung = $daten['beschreibung'];
-				$sidebar = $daten['sidebar'];
-				$status = $daten['status'];
-				$position = $daten['position'];
-				$art = $daten['art'];
-				$styles = $daten['styles'];
-				$klassen = $daten['klassen'];
-				$zuordnung = $zuordnung;
-			}
-			$anfrage->free();
-		}
+		$sql = $dbs->prepare("SELECT bezeichnung, beschreibung, sidebar, status, position, art, styles, klassen FROM seiten WHERE id = ?");
+		$sql->bind_param("i", $id);
+		$sql->bind_result($bezeichnung, $beschreibung, $sidebar, $status, $position, $art, $styles, $klassen);
+	  if ($sql->execute()) {
+	    $sql->fetch();
+	  }
+		$sql->close();
 	}
 
-	if (cms_check_ganzzahl($zuordnung)) {$zuordnung = "zuordnung = $zuordnung";}
-	else if (is_null($zuordnung) || ($zuordnung == '-')) {$zuordnung = "zuordnung IS NULL";}
+	if (cms_check_ganzzahl($zuordnung)) {$sqlzuordnung = "zuordnung = $zuordnung";}
+	else if (is_null($zuordnung) || ($zuordnung == '-')) {$sqlzuordnung = "zuordnung IS NULL";}
 	else {$zuordnung = "";}
 
-	$sql = "SELECT MAX(position) AS max FROM seiten WHERE $zuordnung";
+	$sql = "SELECT MAX(position) AS max FROM seiten WHERE $sqlzuordnung";
 	if ($anfrage = $dbs->query($sql)) {
 		if ($daten = $anfrage->fetch_assoc()) {
 			$maxpos = $daten['max'];

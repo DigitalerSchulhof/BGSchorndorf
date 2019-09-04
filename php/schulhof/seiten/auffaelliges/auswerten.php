@@ -176,7 +176,7 @@
 
     $id = cms_generiere_kleinste_id('auffaelliges');
 
-    $CMS_BENUTZERID = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
+    $CMS_BENUTZERID = $_SESSION["BENUTZERID"] ?? -1;
 
     $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
     $file = str_replace("\\", "/", $trace[1]["file"]);

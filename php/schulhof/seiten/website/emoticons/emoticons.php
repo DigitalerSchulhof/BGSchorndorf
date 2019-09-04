@@ -2,6 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <h1>Emoticons</h1>
+
 <?php
 include_once("php/schulhof/funktionen/emoticons.php");
 $zugriff = $CMS_RECHTE['Website']['Emoticons verwalten'];
@@ -10,7 +11,7 @@ $code = "";
 $sql = cms_sql_mit_aes(array("id", "aktiv"), "emoticons");
 $sql = $dbs->query($sql);
 if ($zugriff) {
-  $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+  $code .= "</div><div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
     $code .= "<h2>Reaktionen auf Artikel</h2>";
     $code .= "<table class=\"cms_formular\">";
       $code .= "<tr>";
@@ -31,7 +32,7 @@ if ($zugriff) {
 
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
     $code .= "<h2>Aktive Emoticons</h2>";
-    $code .= "<table class=\"cms_liste cms_emoticons_liste\">";
+    $code .= "<table class=\"cms_formular\">";
       $code .= "<tr><th>Icon</th><th>Name</th><th>Id</th><th>Aktiv</th></tr>";
         foreach($CMS_EMOTICONS as $e)
           $code .= "<tr data-emoticon=\"".$e["id"]."\" id=\"cms_emoticons_liste_".$e["id"]."\"><td class=\"min\"><img src=\"res/emoticons/gross/".$e["datei"]."\"></td><td>".$e["name"]."</td><td class=\"min\">".$e["id"]."</td><td class=\"min\">".cms_schieber_generieren("emoticon_".$e["id"], $e["aktiv"])."</tr>";

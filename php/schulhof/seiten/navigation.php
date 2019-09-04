@@ -41,7 +41,7 @@ function cms_schulhofnavigation () {
 }
 
 function cms_schulhofnavigation_nutzerkonto($dbs) {
-	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL;
+	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 	$sql = "SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;";
 	$anzahl['-'] = 0;
 	$anzahl[1] = 0;
@@ -59,6 +59,19 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 	else if ($gesamt > 0) {
 		$meldezahl = "<span class=\"cms_meldezahl\">$gesamt</span>";
 	}
+
+	// Gruppen anzeigen
+	$meinegruppenpc = "";
+	include_once('php/schulhof/seiten/gruppen/mitgliedschaftenausgeben.php');
+	foreach ($CMS_GRUPPEN as $g) {
+		$gruppencode = cms_gruppen_mitgliedschaften_anzeigen($dbs, $g, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR);
+		if (strlen($gruppencode) > 0) {
+			$gruppencode = str_replace('<ul>', '', $gruppencode);
+			$gruppencode = str_replace('</ul>', '', $gruppencode);
+			$meinegruppenpc .= $gruppencode;
+		}
+	}
+	$meinegruppenmobil = str_replace('class="cms_button"', '', $meinegruppenpc);
 
 	$aufgabenpc = "";
 	$aufgabenmobil = "";
@@ -87,11 +100,12 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['mobil'] .= "</ul>";
 				$code['mobil'] .= "</div>";
 			$code['mobil'] .= "</li>";
-			if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
+			if ((($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) && (strlen($meinegruppenmobil) > 0)) {
 				$code['mobil'] .= "<li><a href=\"Schulhof/Gruppen\">Gruppen</a><span id=\"cms_mobilmenue_knopf_n_gruppen\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('n_gruppen')\">&#8628;</span>";
 					$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_n_gruppen\" style=\"display:none;\">";
+
 						$code['mobil'] .= "<ul>";
-							$code['mobil'] .= "<li>kommt noch ...</li>";
+							$code['mobil'] .= $meinegruppenmobil;
 						$code['mobil'] .= "</ul>";
 					$code['mobil'] .= "</div>";
 				$code['mobil'] .= "</li>";
@@ -136,7 +150,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
 					$code['pc'] .= "<h3>Gruppen</h3>";
 					$code['pc'] .= "<ul>";
-						$code['pc'] .= "<li>kommt noch</li>";
+						$code['pc'] .= $meinegruppenpc;
 					$code['pc'] .= "</ul>";
 					}
 				$code['pc'] .= "</div>";

@@ -10,10 +10,10 @@ if ($zugriff) {
   $sjfehler = true;
   if (isset($_SESSION['PROFILSCHULJAHR'])) {
     $SCHULJAHR = $_SESSION['PROFILSCHULJAHR'];
-    $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre WHERE id = ?");
+    $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM schuljahre WHERE id = ?");
     $sql->bind_param('i', $SCHULJAHR);
     if ($sql->execute()) {
-      $sql->bind_result($anzahl, $sjbez);
+      $sql->bind_result($anzahl);
       if ($sql->fetch()) {if ($anzahl == 1) {$sjfehler = false;}}
     }
     $sql->close();
@@ -21,7 +21,21 @@ if ($zugriff) {
 
 
   if (!$sjfehler) {
-    $code .= "<h1>Profile für das Schuljahr $sjbez</h1>";
+    $code .= "<h1>Profile</h1>";
+
+    $schuljahrwahlcode = "";
+    // Alle Schuljahre laden
+    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre ORDER BY beginn DESC");
+    if ($sql->execute()) {
+      $sql->bind_result($id, $sjbez);
+      while ($sql->fetch()) {
+        $klasse = "cms_button";
+        if ($id == $SCHULJAHR) {$klasse .= "_ja";}
+        $schuljahrwahlcode .= "<span class=\"$klasse\" onclick=\"cms_profile_vorbereiten($id)\">$sjbez</span> ";
+      }
+    }
+    $sql->close();
+    $code .= "<p>".$schuljahrwahlcode."</p>";
 
     $zeilen = "";
     $code .= "<table class=\"cms_liste\">";

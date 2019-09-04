@@ -192,6 +192,7 @@
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
+		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {

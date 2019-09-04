@@ -63,8 +63,14 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// Prüfen, ob die Position nicht über max+1 liegt
-		$sql = $dbs->prepare("SELECT MAX(position) AS maxpos FROM seiten WHERE zuordnung = ?");
-	  $sql->bind_param("s", $zuordnung);
+		if ($zuordnung != '-') {
+			$sql = $dbs->prepare("SELECT MAX(position) AS maxpos FROM seiten WHERE zuordnung = ?");
+		  $sql->bind_param("i", $zuordnung);
+		}
+		else {
+			$sql = $dbs->prepare("SELECT MAX(position) AS maxpos FROM seiten WHERE zuordnung IS NULL");
+		}
+
 	  if ($sql->execute()) {
 	    $sql->bind_result($maxpos);
 	    if ($sql->fetch()) {if ($position > $maxpos+1) {echo "MAXPOS"; $fehler = true;}}
@@ -76,8 +82,14 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Prüfen, ob es bereits eine Seite mit dieser Bezeichnung gibt
 	if (!$fehler) {
-		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM seiten WHERE zuordnung = ? AND bezeichnung = ?");
-	  $sql->bind_param("ss", $zuordnung, $bezeichnung);
+		if ($zuordnung != '-') {
+			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM seiten WHERE zuordnung = ? AND bezeichnung = ?");
+		  $sql->bind_param("is", $zuordnung, $bezeichnung);
+		}
+		else {
+			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM seiten WHERE zuordnung IS NULL AND bezeichnung = ?");
+		  $sql->bind_param("s", $bezeichnung);
+		}
 	  if ($sql->execute()) {
 	    $sql->bind_result($anzahl);
 	    if ($sql->fetch()) {if ($anzahl > 0) {echo "DOPPELT"; $fehler = true;}}
@@ -95,8 +107,14 @@ if (cms_angemeldet() && $zugriff) {
 		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		// Nachfolgende Seiten aufrutschen lassen
-		$sql = $dbs->prepare("UPDATE seiten SET position = position + 1 WHERE zuordnung = ? AND position >= ?");
-	  $sql->bind_param("si", $zuordnung, $position);
+		if ($zuordnung != '-') {
+			$sql = $dbs->prepare("UPDATE seiten SET position = position + 1 WHERE zuordnung = ? AND position >= ?");
+		  $sql->bind_param("ii", $zuordnung, $position);
+		}
+		else {
+			$sql = $dbs->prepare("UPDATE seiten SET position = position + 1 WHERE zuordnung IS NULL AND position >= ?");
+			$sql->bind_param("i", $position);
+		}
 	  $sql->execute();
 	  $sql->close();
 
@@ -112,8 +130,15 @@ if (cms_angemeldet() && $zugriff) {
 		  $sql->close();
 		}
 		// Neue Seite einfügen
-		$sql = $dbs->prepare("UPDATE seiten SET bezeichnung = ?, beschreibung = ?, art = ?, position = ?, zuordnung = ?, sidebar = ?, status = ?, styles = ?, klassen = ? WHERE id = ?");
-		$sql->bind_param("sssisssssi", $bezeichnung, $beschreibung, $art, $position, $zuordnung, $sidebar, $status, $styles, $klassen, $id);
+		if ($zuordnung != '-') {
+			$sql = $dbs->prepare("UPDATE seiten SET bezeichnung = ?, beschreibung = ?, art = ?, position = ?, zuordnung = ?, sidebar = ?, status = ?, styles = ?, klassen = ? WHERE id = ?");
+			$sql->bind_param("sssiissssi", $bezeichnung, $beschreibung, $art, $position, $zuordnung, $sidebar, $status, $styles, $klassen, $id);
+		}
+		else {
+			$sql = $dbs->prepare("UPDATE seiten SET bezeichnung = ?, beschreibung = ?, art = ?, position = ?, zuordnung = NULL, sidebar = ?, status = ?, styles = ?, klassen = ? WHERE id = ?");
+			$sql->bind_param("sssissssi", $bezeichnung, $beschreibung, $art, $position, $sidebar, $status, $styles, $klassen, $id);
+		}
+
 		$sql->execute();
 		$sql->close();
 
