@@ -3,3 +3,8 @@
 /php/schulhof/funktionen/config.php
 /php/schulhof/funktionen/configbackup.php
 /dateien/*
+/prepared.php
+/encrypt.php
+/cms_lehrerzimmer.sql
+/cms_schulhof.sql
+/GitFlow.md

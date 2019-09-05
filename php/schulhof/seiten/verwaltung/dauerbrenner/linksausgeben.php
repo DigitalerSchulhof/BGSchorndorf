@@ -22,7 +22,7 @@ function cms_dauerbrenner_links_anzeigen () {
 	}
   cms_trennen($dbs);
   if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-  else {$ausgabe = '<p class="cms_notiz">keine Dauerbrenner angelegt</p>';}
+  else {$ausgabe = '<p class="cms_notiz">Keine Dauerbrenner angelegt</p>';}
 
   return $ausgabe;
 }

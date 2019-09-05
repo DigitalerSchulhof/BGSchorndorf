@@ -72,7 +72,6 @@ if (isset($_SESSION['VORANMELDUNG_A2_HANDY1'])) {$ahandy12 = $_SESSION['VORANMEL
 if (isset($_SESSION['VORANMELDUNG_A2_MAIL'])) {$amail2 = $_SESSION['VORANMELDUNG_A2_MAIL'];} else {$fehler = true;}
 
 if (!$fehler) {
-  $_SESSION['SPAMSCHUTZERLAUBNIS'] = true;
   $code .= "</div>";
 
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
@@ -171,7 +170,7 @@ if (!$fehler) {
   $code .= "<div class=\"cms_spalte_i\">";
   $code .= "<table class=\"cms_formular\">";
   $code .= "<tr><th>Korrekt und Vollständig</th><td>".cms_schieber_generieren('korrekt', 0)."</td><td>Ich vesichere, dass die gemachten Angaben nach bestem Wissen und Gewissen korrekt und vollständig sind.</td></tr>";
-  $code .= "<tr><th>Sicherheitsabfrage zur Spamverhidnerung:</th><td colspan=\"2\"><img src=\"res/captcha/captcha.php\" class=\"cms_spamschutz\" style=\"float: left; margin-right: 10px;\"> Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</td></tr>";
+  $code .= "<tr><th>Sicherheitsabfrage zur Spamverhidnerung:</th><td colspan=\"2\">".cms_captcha_generieren()." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</td></tr>";
   $code .= "<tr><th></th><td colspan=\"2\"></td></tr>";
   $code .= "<tr><th></th><td colspan=\"2\"><input type=\"text\" name=\"cms_spamverhinderung\" id=\"cms_spamverhinderung\"></td></tr>";
   $code .= "<tr><th></th><td colspan=\"2\"><span class=\"cms_button_ja\" onclick=\"cms_voranmeldung_speichern()\">Anmeldung abschicken</span> <span class=\"cms_button_nein\" onclick=\"cms_voranmeldung_abbrechen_anzeigen()\">Anmeldung abbrechen und eingegebene Daten löschen</span></td></tr>";

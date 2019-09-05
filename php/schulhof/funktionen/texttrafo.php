@@ -8,17 +8,11 @@ function cms_texttrafo_e_event($string) {
 
 function cms_texttrafo_e_db($string) {
 	$string = str_replace("<br></p>", "</p>", $string);
-	//$string = cms_texttrafo_e_event($string);
 	if(cms_boesartig($string)) {
 		include_once "../../../php\schulhof\seiten\auffaelliges\auswerten.php";
 		cms_auffaelliges_speichern(2);
 		die("BÖSE");
 	}
-	return $string;
-	// Alt
-	$string = preg_replace('/<script.*<\/script>/', "", $string);
-	$string = preg_replace('/on[a-zA-Z]*=\"[^\"]*\"/', "", $string);
-	$string = preg_replace('/\"javascript:[^\"]*\"/', "", $string);
 	return $string;
 }
 
@@ -60,7 +54,7 @@ function cms_boesartig($string) {
 		"/ [oO][nN][a-zA-Z]* *=[^\\\\]*/",																																																																// onevent=
 		"/(.[^ ])*[jJ](&.*;)*[aA](&.*;)*[vV](&.*;)*[aA](&.*;)*[sS](&.*;)*[cC](&.*;)*[rR](&.*;)*[iI](&.*;)*[pP](&.*;)*[tT](&.*;)*(:|;[cC][oO][lL][oO][nN])/",							// javascript:
 		"/<[sS][cC][rR][iI][pP][tT].*>/",																																																																	// <script>
-		"/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/",		// data:x/y
+		"/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg\+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/",	// data:x/y
 	);
 	foreach($regex as $r)
 		if(preg_match($r, $string))

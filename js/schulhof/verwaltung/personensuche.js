@@ -107,16 +107,14 @@ function cms_personensuche_wahl_mitglieder(id, personenid, personenart, personen
   tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_termine_'+personenid,  0)+"</td>";
   tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_blogeintraege_'+personenid,  0)+"</td>";
   tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chatten_'+personenid,  1)+"</td>";
-  tabellencode += "<td>"+cms_datum_eingabe(id+'_personensuche_mitglieder_chattenab_'+personenid)+" – ";
-  tabellencode += cms_uhrzeit_eingabe(id+'_personensuche_mitglieder_chattenab_'+personenid)+"</td>";
+  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chat_loeschen_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chat_bannen_'+personenid,  0)+"</td>";
   tabellencode += "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('"+id+"', '"+personenid+"', '"+gruppe+"')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
   tabellencode += "</tr>";
 
   cms_id_eintragen(id+'_personensuche_gewaehlt', personenid);
   tabelleF.innerHTML += tabellencode;
   vorsitzF.innerHTML += vorsitzcode;
-  cms_datumcheck(id+'_personensuche_mitglieder_chattenab_'+personenid);
-  cms_uhrzeitcheck(id+'_personensuche_mitglieder_chattenab_'+personenid);
   cms_personensuche(id, 'mitglieder', gruppe);
 }
 
@@ -185,7 +183,61 @@ function cms_personenprofil(id) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+// 0 = bereit, 1 = countdown, 2 = gesandt
+var cms_umarmen_s = 0;
+var countdown;
+function cms_umarmen(id, anonym) {
+  var k = $("#cms_umarmen");
+  // Muss gesetzt sein
+  if(anonym === true || anonym === false) {
+    cms_laden_an('Die Person wird umarmt', 'Die Eingaben werden überprüft.');
+    var formulardaten = new FormData();
+    formulardaten.append("person",   		   id);
+    formulardaten.append("anonym",   		   anonym);
+    formulardaten.append("anfragenziel", 	 '340');
 
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == 'ERFOLG') {
+        // Nichts tun :)
+        cms_laden_aus();
+      }
+      else if(rueckgabe == "HALT") {
+        cms_laden_aus();
+        cms_meldung_an('warnung', 'Nicht so schnell', '<p>Es sind zu schnell Anfragen eingegangen</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Okay</span></p>');
+      }
+      else {cms_fehlerbehandlung(rueckgabe);}
+    }
+
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    k.html("Umarmt! (>‿♡)");
+    k.removeClass("cms_button_anonymFragezeichen");
+    k.click(function() {
+      // [E]
+      console.log("Da freut sich nun jemand!");
+    })
+    cms_umarmen_s = 2;
+    return;
+  }
+  if(cms_umarmen_s == 1) {
+    // Anonym
+    clearInterval(countdown);
+    cms_umarmen(id, true);
+  } else if(cms_umarmen_s == 0) {
+    cms_umarmen_s = 1;
+    var anonym = 3;
+
+    k.html("Anonym umarmen? 3");
+    k.addClass("cms_button_anonymFragezeichen");
+
+    countdown = setInterval(function() {
+      k.html("Anonym umarmen? " + --anonym);
+      if(anonym == 0) {
+        clearInterval(countdown);
+        cms_umarmen(id, false);
+      }
+    }, 1000);
+  }
+}
 
 function cms_personensuche_mail(id) {
   var meldung = document.getElementById(id+'_suchergebnis');

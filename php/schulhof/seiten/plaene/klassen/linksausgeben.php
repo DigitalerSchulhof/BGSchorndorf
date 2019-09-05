@@ -19,7 +19,7 @@ function cms_schulhof_klassen_links_anzeigen () {
     cms_trennen($dbs);
 
     if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-    else {$ausgabe = '<p class="cms_notiz">keine Klassen angelegt</p>';}
+    else {$ausgabe = '<p class="cms_notiz">Keine Klassen angelegt</p>';}
   }
   else {
     $ausgabe = cms_meldung_berechtigung();

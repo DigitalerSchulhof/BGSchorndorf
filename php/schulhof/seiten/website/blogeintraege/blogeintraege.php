@@ -8,8 +8,7 @@ include_once('php/schulhof/seiten/website/blogeintraege/blogeintragsuche.php');
 
 $bearbeiten = $CMS_RECHTE['Website']['Blogeinträge bearbeiten'];
 $loeschen = $CMS_RECHTE['Website']['Blogeinträge löschen'];
-$anlegen = $CMS_RECHTE['Website']['Blogeinträge anlegen'];
-$anzeigen = $bearbeiten || $loeschen || $anlegen;
+$anzeigen = $bearbeiten || $loeschen;
 
 if ($anzeigen) {
   $canlegen = '';
@@ -71,7 +70,7 @@ if ($anzeigen) {
   $code .= $canzeigen;
 
 
-  if ($anlegen) {
+  if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_neuer_blogeintrag('Schulhof/Website/Blogeinträge')\">+ Neuer öffentlicher Blogeintrag</span></p>";
   }
 }

@@ -18,7 +18,7 @@
 	</tr>
 </table>
 
-<p><span class="cms_button" onclick="cms_schulhof_nutzerkonto_passwort_aendern();">Änderungen speichern</span> <a class="cms_button_nein" href="Schulhof/Nutzerkonto/Mein_Profil/">Zurück</a></p>
+<p><span class="cms_button" onclick="cms_schulhof_nutzerkonto_passwort_aendern();">Änderungen speichern</span> <a class="cms_button_nein" href="Schulhof/Nutzerkonto/Mein_Profil">Zurück</a></p>
 
 </div>
 

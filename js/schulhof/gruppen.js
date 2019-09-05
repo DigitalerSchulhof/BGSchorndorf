@@ -38,6 +38,7 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 	var meldung = '<p>Der Blogeintrag konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var genehmigt = document.getElementById('cms_blogeintrag_genehmigt').value;
+	var notifikationen = document.getElementById('cms_blogeintrag_notifikationen').value;
 	var aktiv = document.getElementById('cms_blogeintrag_aktiv').value;
 	var datumT = document.getElementById('cms_blogeintrag_datum_T').value;
 	var datumM = document.getElementById('cms_blogeintrag_datum_M').value;
@@ -64,6 +65,11 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 
 	if (!cms_check_toggle(genehmigt)) {
 		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für Notifikationen ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -163,6 +169,7 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 
 	if (!fehler) {
 		formulardaten.append("genehmigt",  			  genehmigt);
+		formulardaten.append("notifikationen",    notifikationen);
 		formulardaten.append("aktiv",  					  aktiv);
 		formulardaten.append("datumT",  				  datumT);
 		formulardaten.append("datumM",					  datumM);
@@ -185,6 +192,7 @@ function cms_termineintern_eingabenpruefen(modus) {
 	var meldung = '<p>Der Termin konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
 	var genehmigt = document.getElementById('cms_termin_genehmigt').value;
+	var notifikationen = document.getElementById('cms_termin_notifikationen').value;
 	var aktiv = document.getElementById('cms_termin_aktiv').value;
 	var mehrtaegigt = document.getElementById('cms_termin_mehrtaegig').value;
 	var uhrzeitbt = document.getElementById('cms_termin_uhrzeitb').value;
@@ -221,6 +229,11 @@ function cms_termineintern_eingabenpruefen(modus) {
 
 	if (!cms_check_toggle(genehmigt)) {
 		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(notifikationen)) {
+		meldung += '<li>Die Eingabe für die Notifikationen ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -302,6 +315,7 @@ function cms_termineintern_eingabenpruefen(modus) {
 
 	if (!fehler) {
 		formulardaten.append("genehmigt",  			genehmigt);
+		formulardaten.append("notifikationen",  notifikationen);
 		formulardaten.append("aktiv",  					aktiv);
 		formulardaten.append("mehrtaegigt", 		mehrtaegigt);
 		formulardaten.append("uhrzeitbt",  			uhrzeitbt);
@@ -328,7 +342,6 @@ function cms_termineintern_eingabenpruefen(modus) {
 	var rueckgabe = [meldung, fehler, formulardaten];
 	return rueckgabe;
 }
-
 
 function cms_blogeintraegeintern_neu_speichern(ziel) {
 	cms_laden_an('Neuen Blogeintrag anlegen', 'Die Eingaben werden überprüft.');
@@ -457,7 +470,6 @@ function cms_blogeintraegeintern_loeschen(id, gruppe, gruppenid, ziel) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-
 function cms_termineintern_neu_speichern(ziel) {
 	cms_laden_an('Neuen Termin anlegen', 'Die Eingaben werden überprüft.');
 
@@ -580,4 +592,317 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 	}
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+/* Nachricht senden */
+function cms_chat_nachricht_senden(art, id) {
+  if($("#cms_chat_nachricht_verfassen").hasClass("cms_chat_gebannt"))
+    return;
+  var chat = $("#cms_chat_nachrichten");
+  var d = new Date();
+  var nachricht = $("#cms_chat_neue_nachricht").val();
+  $("#cms_chat_neue_nachricht").val("").focus();
+  if(!nachricht)
+    return;
+
+  var tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
+  if(!chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()}).length)
+    tag.appendTo(chat);
+  chat.find("#cms_chat_leer").remove();
+
+  var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen cms_chat_nachricht_eigen cms_chat_nachricht_sendend"}).append(
+    $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+      $("<div></div>", {class: "cms_chat_nachricht_id"}),
+      $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"})),
+      $("<div></div>", {class: "cms_chat_nachricht_autor"}).html(CMS_BENUTZERTITEL+" "+CMS_BENUTZERVORNAME+" "+CMS_BENUTZERNACHNAME),
+      $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).text(nachricht),
+      $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
+    )
+  ).appendTo(chat);
+  nachr.find(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+  chat.scrollTop(chat.prop("scrollHeight"));
+
+  var formulardaten = new FormData();
+	formulardaten.append("nachricht", nachricht);
+  formulardaten.append("gruppe", art);
+	formulardaten.append("gruppenid", id);
+	formulardaten.append("anfragenziel", 	'269');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe.startsWith("ERFOLG")) {
+      nachr.removeClass("cms_chat_nachricht_sendend");
+      nachr.find(".cms_chat_nachricht_id").html(rueckgabe.replace("ERFOLG", ""));
+		} else if(rueckgabe == "BERECHTIGUNG") {
+      nachr.remove();
+      cms_fehlerbehandlung(rueckgabe);
+    }
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+/* Chat scrollen, Aktion listener setzen */
+$(window).on("load", function() {
+  var chat = $("#cms_chat_nachrichten");
+  chat.scrollTop(chat.prop("scrollHeight"));
+  $(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+});
+/* Mehr gedrückt */
+function cms_chat_aktion() {
+  if($(this).data("aktion") == "mehr") {
+    var h = $(this).find(".cms_chat_aktion");
+    $(this).parents("#cms_chat_nachrichten").find(".cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion").not(function() {return $(this).is(h)}).slideUp();
+    h.slideToggle();
+  }
+}
+/* Tastendruck */
+function cms_chat_enter(e, art, id) {
+  if(e.keyCode && e.keyCode === 10)
+    if(e.ctrlKey) {
+      cms_chat_nachricht_senden(art, id);
+      return false;
+    }
+  return true;
+}
+/* Chat mit Long Polling aktualisieren */
+function cms_chat_aktualisieren(art, id) {
+  var formulardaten = new FormData();
+  formulardaten.append("gruppe", art);
+  formulardaten.append("gruppenid", id);
+  var chat = $("#cms_chat_nachrichten");
+  var gid = id;
+
+  var aktionen = "";
+  aktionen += "<p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '"+art+"', '"+gid+"')\">Nachricht melden</p>";
+  if(chat_rechte.includes("nachrichtloeschen"))
+    aktionen += "<p data-mehr=\"loeschen\" onclick=\"cms_chat_nachricht_loeschen_anzeigen(this, '"+art+"', '"+gid+"')\">Nachricht löschen</p>";
+  if(chat_rechte.includes("nutzerstummschalten"))
+    aktionen += "<p data-mehr=\"bannen\" onclick=\"cms_chat_nutzer_stummschalten_anzeigen(this, '"+art+"', '"+gid+"')\">Sender stummschalten</p>";
+
+  function anfragennachbehandlung(rueckgabe) {
+    if(rueckgabe == "BERECHTIGUNG" || rueckgabe == "FEHLER") {
+
+    } else {
+      if(!rueckgabe)
+        return;
+      var r = rueckgabe.split(String.fromCharCode(29));
+      r.pop();
+      var status = r.shift().split(",");
+      if(status.includes("s")) // Stummschaltung
+        $("#cms_chat_nachricht_verfassen").addClass("cms_chat_gebannt");
+      if(status.includes("u"))
+        $("#cms_chat_nachricht_verfassen").removeClass("cms_chat_gebannt");
+
+      chat.find("#cms_chat_leer").remove();
+      var id, p, d, dt, i, m, tag, innen;
+      while(r.length) {
+        id   = r.shift();         // Id
+        p    = r.shift();         // Person
+        dt   = r.shift()          // Datum
+        d    = new Date(dt*1000); // Datum als Date()
+        i    = r.shift();         // Inhalt
+        tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
+        if(!chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()}).length)
+          tag.appendTo(chat);
+        innen = $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+            $("<div></div>", {class: "cms_chat_nachricht_id"}).html(id),
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"}))
+          );
+        if(aktionen)
+          innen.append($("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_chat_aktion\">"+aktionen+"</span>"));
+        innen.append(
+            $("<div></div>", {class: "cms_chat_nachricht_autor"}).html(p),
+            $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).html(i),
+            $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
+          );
+         $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(innen).appendTo(chat).find(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+        chat.scrollTop(chat.prop("scrollHeight"));
+      }
+    }
+  }
+
+  var anf = new XMLHttpRequest();
+
+  var rek = function() {
+    if(anf.readyState == 4) {                     // Kein PHP Fehler
+      if(anf.responseText && !anf.responseText.startsWith("<br />"))
+        anfragennachbehandlung(anf.responseText);
+      anf = new XMLHttpRequest();
+      anf.onreadystatechange = rek;
+      anf.open("POST", "php/oeffentlich/anfragen/chataktualisieren.php");
+      anf.send(formulardaten);
+    }
+  }
+  anf.onreadystatechange = rek;
+  anf.open("POST", "php/oeffentlich/anfragen/chataktualisieren.php");
+  anf.send(formulardaten);
+}
+/* Nachricht melden - Bestätigung */
+function cms_chat_nachricht_melden_anzeigen(t, art, gid) {
+  var p = $(t).parents(".cms_chat_nachricht_aussen");
+  if(p.hasClass("cms_chat_nachricht_gemeldet")) {
+    cms_meldung_an("warnung", "Nachricht gemeldet", "<p>Diese Nachricht wurde schon gemeldet.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span>');
+    return;
+  }
+  var id = p.find(".cms_chat_nachricht_id").html();
+  cms_meldung_an('warnung', 'Nachricht melden', '<p>Soll die Nachricht wirklich gemeldet werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nachricht_melden(\''+art+'\', \''+gid+'\', \''+id+'\')">Melden</span></p>');
+}
+/* Nachricht melden - Senden */
+function cms_chat_nachricht_melden(art, gid, id) {
+  cms_laden_an("Nachricht melden", "Die Nachricht wird gemeldet.");
+  var formulardaten = new FormData();
+  formulardaten.append("id", id);
+  formulardaten.append("gruppe", art);
+  formulardaten.append("gruppenid", gid);
+  formulardaten.append("anfragenziel", 	'271');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_laden_aus();
+      $("#cms_chat").find(".cms_chat_nachricht_id").filter(function () {return $(this).html() == id}).parents(".cms_chat_nachricht_aussen").addClass("cms_chat_nachricht_gemeldet");
+    } else if(rueckgabe == "BERECHTIGUNG") {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+    else {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+/* Nachrichten nachladen */
+function cms_chat_nachrichten_nachladen(art, id, anzahl) {
+  cms_laden_an("Altere Nachrichten laden", "Nachrichten werden geladen")
+  var formulardaten = new FormData();
+  formulardaten.append("gruppe", art);
+  formulardaten.append("gruppenid", id);
+  formulardaten.append("anzahl", anzahl);
+  formulardaten.append("anfragenziel", 	'273');
+  var chat = $("#cms_chat_nachrichten");
+  var gid = id;
+
+  var aktionen = "";
+  aktionen += "<p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '"+art+"', '"+gid+"')\">Nachricht melden</p>";
+  if(chat_rechte.includes("nachrichtloeschen"))
+    aktionen += "<p data-mehr=\"loeschen\" onclick=\"cms_chat_nachricht_loeschen_anzeigen(this, '"+art+"', '"+gid+"')\">Nachricht löschen</p>";
+  if(chat_rechte.includes("nutzerstummschalten"))
+    aktionen += "<p data-mehr=\"bannen\" onclick=\"cms_chat_nutzer_stummschalten_anzeigen(this, '"+art+"', '"+gid+"')\">Sender stummschalten</p>";
+
+  function anfragennachbehandlung(rueckgabe) {
+    if(rueckgabe == "BERECHTIGUNG" || rueckgabe == "FEHLER")
+      cms_fehlerbehandlung(rueckgabe);
+    else {
+      if(!rueckgabe)
+        return;
+      var r = rueckgabe.split(String.fromCharCode(29));
+      r.pop();
+      var id, p, d, dt, i, m, e, tag, innen, mehr = r.shift();;
+      while(r.length) {
+        id   = r.shift();
+        p    = r.shift();
+        dt   = r.shift()
+        d    = new Date(dt*1000);
+        i    = r.shift();
+        m    = r.shift();
+        e    = r.shift();
+
+        tag = $("<div></div>", {class: "cms_chat_datum cms_notiz"}).html(cms_tagnamekomplett(d.getDay())+", den "+cms_datumzweistellig(d.getDate())+" "+cms_monatsnamekomplett(d.getMonth()+1));
+        var anderet = chat.find(".cms_chat_datum").filter(function() {return $(this).html() == tag.html()});  // Andere Datum Meldungen
+        anderet.remove();
+        innen = $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
+            $("<div></div>", {class: "cms_chat_nachricht_id"}).html(id),
+            $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "sendend"}).html($("<img></img>", {src: "res/laden/standard.gif"}))
+          );
+        if(aktionen)
+          innen.append($("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_chat_aktion\">"+aktionen+"</span>"));
+        innen.append(
+            $("<div></div>", {class: "cms_chat_nachricht_autor"}).html(p),
+            $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).html(i),
+            $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
+          );
+         $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(innen).prependTo(chat).find(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+      }
+      if(mehr == true)
+        $("#cms_chat_nachrichten_nachladen").show().remove().prependTo(chat);
+      else
+        $("#cms_chat_nachrichten_nachladen").hide();
+      cms_laden_aus();
+    }
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+/* Nachricht löschen - Bestätigung */
+function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
+  var p = $(t).parents(".cms_chat_nachricht_aussen");
+  if(p.hasClass("cms_chat_nachricht_geloescht")) {
+    cms_meldung_an("warnung", "Nachricht gelöscht", "<p>Diese Nachricht wurde schon gelöscht.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span>');
+    return;
+  }
+  var id = p.find(".cms_chat_nachricht_id").html();
+  cms_meldung_an('warnung', 'Nachricht löschen', '<p>Soll die Nachricht wirklich für alle gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nachricht_loeschen(\''+art+'\', \''+gid+'\', \''+id+'\')">Löschen</span></p>');
+}
+/* Nachricht löschen - Senden */
+function cms_chat_nachricht_loeschen(gruppe, gid, id) {
+  cms_laden_an('Nachricht löschen', 'Informationen werden gesammelt.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("id",              id);
+  formulardaten.append("gruppe",          gruppe);
+  formulardaten.append("gruppenid",       gid);
+  formulardaten.append("anfragenziel", 	  '276');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      $("#cms_chat").find(".cms_chat_nachricht_id").filter(function () {return $(this).html() == id}).parents(".cms_chat_nachricht_aussen").addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html("<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht").parents(".cms_chat_nachricht_aussen").find(".cms_chat_nachricht_aktion").remove();
+      cms_laden_aus();
+    } else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+/* Nutzer stummschalten - Bestätigung */
+function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
+  var p = $(t).parents(".cms_chat_nachricht_aussen");
+  var id = p.find(".cms_chat_nachricht_id").html();
+
+  var menue = '<ul class="cms_reitermenue"><li><span id="cms_reiter_bann_0" class="cms_reiter cms_reiter_aktiv" onclick="cms_reiter(\'bann\', 0, 1)">Nach Datum stummschalten</span></li> <li><span id="cms_reiter_bann_1" class="cms_reiter" onclick="cms_reiter(\'bann\', 1, 1)">Nach Dauer stummschalten</span></li></ul>';
+
+  var bannbis = cms_datum_eingabe("cms_bannbis") + " - " + cms_uhrzeit_eingabe("cms_bannbis", new Date().getHours()+1);
+  bannbis = '<p>Bis wann soll der Nutzer stummgeschalten werden?</p>'+bannbis;
+  bannbis = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_0" style="display: block"><div class="cms_reitermenue_i">'+bannbis+'</div></div>';
+
+  var banndauer  = '<input class="cms_input_T" type="text" name="cms_banndauer_T" id="cms_banndauer_T" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 0)) {t.value = 0;}$(\'#cms_banndauer_T_tage\').html(\'Tag\'+(t.value == 1?\'\':\'e\'))};a(this)" value="1"> <span id="cms_banndauer_T_tage">Tag</span>  ';
+  banndauer += '<input class="cms_input_h" type="text" name="cms_banndauer_h" id="cms_banndauer_h" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 0)) {t.value = 0;}$(\'#cms_banndauer_h_stunden\').html(\'Stunde\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_h_stunden">Stunde</span>  ';
+  banndauer += '<input class="cms_input_m" type="text" name="cms_banndauer_m" id="cms_banndauer_m" onkeyup="function a(t) {if(!cms_check_ganzzahl(t.value, 0)) {t.value = 0;}$(\'#cms_banndauer_m_minuten\').html(\'Minute\'+(t.value == 1?\'\':\'n\'))};a(this)" value="1"> <span id="cms_banndauer_m_minuten">Minute</span>  ';
+  banndauer = '<p>Wie lange soll der Nutzer stummgeschalten werden?</p>'+banndauer;
+  banndauer = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_1"><div class="cms_reitermenue_i">'+banndauer+'</div></div>';
+
+  cms_meldung_an('warnung', 'Nutzer stummschalten', menue+bannbis+banndauer, '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nutzer_stummschalten(\''+art+'\', \''+gid+'\', \''+id+'\')">Stummschalten</span></p>');
+}
+/* Nutzer stummschalten - Senden */
+function cms_chat_nutzer_stummschalten(gruppe, gid, id) {
+  var banndauer, bannbis = null;
+  bannbis = Math.floor(new Date($("#cms_bannbis_J").val(), $("#cms_bannbis_M").val()-1, $("#cms_bannbis_T").val(), $("#cms_bannbis_h").val(), $("#cms_bannbis_m").val(), 0).getTime()/1000);
+  banndauer = ($("#cms_banndauer_T").val() * 24*60*60 + $("#cms_banndauer_h").val() * 60 * 60 + $("#cms_banndauer_m").val() * 60);
+  var formulardaten = new FormData();
+  formulardaten.append("id",              id);
+  formulardaten.append("gruppe",          gruppe);
+  formulardaten.append("gruppenid",       gid);
+  if(bannbis && $("#cms_reiter_bann_0").hasClass("cms_reiter_aktiv"))
+    formulardaten.append("bannbis",       bannbis);
+  if(banndauer && $("#cms_reiter_bann_1").hasClass("cms_reiter_aktiv"))
+    formulardaten.append("banndauer",     banndauer);
+  formulardaten.append("anfragenziel", 	  '277');
+
+  cms_laden_an('Nutzer stummschalten', 'Informationen werden gesammelt.');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_meldung_an('erfolg', 'Nutzer stummschalten', '<p>Der Nutzer wurde erfolgreich stummgeschalten.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+    } else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }

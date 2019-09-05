@@ -237,7 +237,7 @@ function cms_schulhof_verwaltung_person_loeschen_anzeige(anzeigename, id) {
 
 
 function cms_schulhof_verwaltung_person_loeschen(anzeigename, id) {
-	cms_laden_an('Person löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kan einen Moment dauern. Danach wird die Person über die Löschung per e-Mail informiert.');
+	cms_laden_an('Person löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kan einen Moment dauern. Danach wird die Person über die Löschung per E-Mail informiert.');
 
 	var formulardaten = new FormData();
 	formulardaten.append("id",     		id);
@@ -616,7 +616,7 @@ function cms_schulhof_verwaltung_nutzerkonto_neu_speichern() {
 		fehler = true;
 	}
 	if (!cms_check_mail(email)) {
-		meldung += '<li>es wurde keine gültige e-Mail Adresse eingegeben.</li>';
+		meldung += '<li>es wurde keine gültige E-Mail-Adresse eingegeben.</li>';
 		fehler = true;
 	}
 
@@ -654,7 +654,7 @@ function cms_schulhof_verwaltung_nutzerkonto_loeschen_anzeige(anzeigename, id) {
 
 
 function cms_schulhof_verwaltung_nutzerkonto_loeschen(anzeigename, id) {
-	cms_laden_an('Nutzerkonto löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kan einen Moment dauern. Danach wird die Person über die Löschung per e-Mail informiert.');
+	cms_laden_an('Nutzerkonto löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kan einen Moment dauern. Danach wird die Person über die Löschung per E-Mail informiert.');
 
 	var formulardaten = new FormData();
 	formulardaten.append("id",     		id);

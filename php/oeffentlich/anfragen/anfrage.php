@@ -1,6 +1,6 @@
 <?php
 // Variablen einlesen, falls übergeben
-if (isset($_POST['anfragenziel'])) {$anfragenziel = $_POST['anfragenziel'];}
+if (isset($_GET['ziel'])) {$anfragenziel = $_GET['ziel'];}
 else {$anfragenziel = '';}
 
 include_once('../../schulhof/anfragen/ziele.php');

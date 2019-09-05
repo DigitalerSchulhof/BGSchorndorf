@@ -207,9 +207,9 @@ if ($zugriff) {
     $code .= "<div class=\"cms_spalte_i\">";
     $code .= "<div id=\"cms_vertretungsplan_verfuegbar\" style=\"display: none;\">";
       $code .= "<h3>Verfügbare Kollegen</h3>";
-      $code .= "<p class=\"cms_notiz\">keine</p>";
+      $code .= "<p class=\"cms_notiz\">Keine</p>";
       $code .= "<h3>Verfügbare Räume</h3>";
-      $code .= "<p class=\"cms_notiz\">keine</p>";
+      $code .= "<p class=\"cms_notiz\">Keine</p>";
     $code .= "</div>";
     $code .= "</div>";
     $code .= "</div>";

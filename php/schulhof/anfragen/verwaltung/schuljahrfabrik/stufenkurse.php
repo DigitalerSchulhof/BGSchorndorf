@@ -236,6 +236,21 @@ if (cms_angemeldet() && $zugriff) {
 	}
 
 	if (!$fehler) {
+		// Dateisystem alter Kurse löschen
+		$sql = $dbs->prepare("SELECT id FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT id FROM klassen WHERE schuljahr = ?))");
+		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
+		if ($sql->execute()) {
+			$sql->bind_result($kursid);
+			while ($sql-fetch()) {
+				// Dateisystem erzeugen
+				$pfad = '../../../dateien/schulhof/gruppen/kurse/'.$kursid;
+				if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+				mkdir($pfad);
+				chmod($pfad, 0775);
+			}
+		}
+		$sql->close();
+
 		// Alte Kurse löschen
 		$sql = $dbs->prepare("DELETE FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT id FROM klassen WHERE schuljahr = ?))");
 		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);

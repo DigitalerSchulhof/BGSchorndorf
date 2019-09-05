@@ -442,6 +442,34 @@ function cms_auffaelliges_knopf($dbs) {
   return $code;
 }
 
+function cms_chatmeldungen_knopf($dbs) {
+  global $CMS_GRUPPEN;
+  $code = "";
+  $zusatz = "";
+  $sql = "";
+  foreach($CMS_GRUPPEN as $i => $g) {
+    $gk = cms_textzudb($g);
+    $sql .= " SELECT '$g' as gruppe, COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
+  }
+  $sql = substr($sql, 0, -5);
+  $anzahl = 0;
+  if ($anfrage = $dbs->query($sql)) {
+    while ($daten = $anfrage->fetch_assoc()) {
+      $anzahl += $daten["anzahl"];
+    }
+    $anfrage->free();
+  }
+  $zusatz = "";
+  if ($anzahl > 0) {
+    $zusatz = "cms_meldezahl_wichtig";
+    $anzahl = " <span class=\"cms_meldezahl $zusatz\">".$anzahl."</span>";
+  } else
+    $anzahl = "";
+
+  $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen".$anzahl."</a>";
+  return $code;
+}
+
 function cms_sonderrollen_generieren() {
 	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN;
 	$code = "";
@@ -467,6 +495,9 @@ function cms_sonderrollen_generieren() {
   if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
 		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
 	}
+  if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']) {
+		$code .= "<li>".cms_chatmeldungen_knopf($dbs)."</li> ";
+	}
 	cms_trennen($dbs);
 	return $code;
 }
@@ -481,10 +512,22 @@ function cms_schieber_generieren($id, $wert, $zusatzaktion = '') {
 
 function cms_positionswahl_generieren($id, $position, $maxpos, $neu = false) {
   if ($neu) {$maxpos++;}
-  $code = "<select name=\"$id\", id=\"$id\">";
+  $code = "<select name=\"$id\" id=\"$id\">";
   for ($i=1; $i<=$maxpos; $i++) {
     if ($i == $position) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
     $code .= "<option$zusatz value=\"$i\">$i</option>";
+  }
+  $code .= "</select>";
+  return $code;
+}
+/**
+* $index: selected nach index festlegen?
+**/
+function cms_select_generieren($id, $klasse, $werte, $wert = null, $index = false) {
+  $code = "<select name=\"$id\", id=\"$id\" class=\"$klasse\">";
+  foreach ($werte as $i => $w) {
+    if (($index && $i == $wert) || (!$index && $w == $wert)) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+    $code .= "<option$zusatz value=\"".($index?$i:$w)."\">$w</option>";
   }
   $code .= "</select>";
   return $code;
@@ -643,6 +686,11 @@ function cms_generiere_hinweisicon($icon, $hinweis) {
   return "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
 }
 
+function cms_generiere_hinweisinformation($text, $hinweis) {
+  return "<span class=\"cms_hinweis_aussen\">$text:<span class=\"cms_hinweis\">$hinweis</span>";
+}
+
+
 function cms_generiere_sqlidliste($idliste) {
   return "(".str_replace('|', ',', substr($idliste, 1)).")";
 }
@@ -652,5 +700,59 @@ function cms_generiere_idlisteanzahl($idliste) {
   return count(explode(',', $idliste));
 }
 
-function cms_ladicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
+function cms_ladeicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
+
+/**
+* Gültige SQL-Query braucht $tabelle, sonst kommt nur der select Teil
+**/
+function cms_sql_mit_aes($felder, $tabelle = "", $bedingung = "") {
+  global $CMS_SCHLUESSEL;
+  $sql = "";
+  if(strlen($tabelle))
+    $sql .= "SELECT ";
+
+  foreach($felder as $f)
+    $sql .= "AES_DECRYPT($f, '$CMS_SCHLUESSEL') as $f, ";
+
+  $sql = substr($sql, 0, -2);
+  if(strlen($tabelle)) {
+    $sql .= " FROM $tabelle";
+    if(strlen($bedingung))
+      $sql .= " WHERE $bedingung";
+  }
+  return $sql;
+}
+
+// Alt - Aktuell - Neu
+function cms_sql_aan($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_aan($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert."alt = $f, ".$wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
+}
+//  Aktuell - Neu
+function cms_sql_an($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_an($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
+}
 ?>

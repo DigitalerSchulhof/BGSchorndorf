@@ -184,6 +184,8 @@ function cms_gruppen_eingabenpruefung(art) {
   var aufsicht = document.getElementById('cms_gruppe_aufsicht_personensuche_gewaehlt').value;
   if (art == 'Stufen') {
     var reihenfolge = document.getElementById('cms_gruppe_reihenfolge').value;
+    var tagebuch = document.getElementById('cms_gruppe_tagebuch').value;
+    var gfs = document.getElementById('cms_gruppe_gfs').value;
   }
   if (art == 'Klassen') {
     var stundenplanextern = document.getElementById('cms_gruppe_stundenplan_extern').value;
@@ -216,6 +218,14 @@ function cms_gruppen_eingabenpruefung(art) {
     if (!cms_check_ganzzahl(reihenfolge)) {
       fehler = true;
       meldung += '<li>Die Eingabe für die Reihenfolge ist ungültig.</li>';
+    }
+    if (!cms_check_toggle(tagebuch)) {
+      fehler = true;
+      meldung += '<li>Die Eingabe für das Anlegen von Tagebüchern ist ungültig.</li>';
+    }
+    if (!cms_check_toggle(gfs)) {
+      fehler = true;
+      meldung += '<li>Die Eingabe für das Anlegen von GFSen ist ungültig.</li>';
     }
   }
 
@@ -252,17 +262,10 @@ function cms_gruppen_eingabenpruefung(art) {
       if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'blogeintraege', wert);} else {mfehler = true;}} else {mfehler = true;}
       wert = document.getElementById('cms_cms_gruppe_mitglieder_personensuche_mitglieder_chatten_'+mit[i]).value;
       if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'chatten', wert);} else {mfehler = true;}} else {mfehler = true;}
-
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_T').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabT', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_M').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabM', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_J').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabJ', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_h').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabs', wert)} else {mfehler = true;}
-      wert = document.getElementById('cms_gruppe_mitglieder_personensuche_mitglieder_chattenab_'+mit[i]+'_m').value;
-      if (wert) {formulardaten.append('mitglieder'+mit[i]+'chattenabm', wert)} else {mfehler = true;}
+      wert = document.getElementById('cms_cms_gruppe_mitglieder_personensuche_mitglieder_chat_loeschen_'+mit[i]).value;
+      if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'nachrichtloeschen', wert);} else {mfehler = true;}} else {mfehler = true;}
+      wert = document.getElementById('cms_cms_gruppe_mitglieder_personensuche_mitglieder_chat_bannen_'+mit[i]).value;
+      if (wert) {if (cms_check_toggle(wert)) {formulardaten.append('mitglieder'+mit[i]+'nutzerstummschalten', wert);} else {mfehler = true;}} else {mfehler = true;}
     }
   }
 
@@ -286,6 +289,8 @@ function cms_gruppen_eingabenpruefung(art) {
     formulardaten.append('aufsicht', aufsicht);
     if (art == 'Stufen') {
       formulardaten.append('reihenfolge', reihenfolge);
+      formulardaten.append('tagebuch', tagebuch);
+      formulardaten.append('gfs', gfs);
     }
     if (art == 'Klassen') {
       formulardaten.append('stundenplanextern', stundenplanextern);
@@ -542,6 +547,38 @@ function cms_gruppe_personenausklassen() {
       }
       cms_meldung_aus();
     }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_chatmeldung_loeschen(gruppe, id) {
+  cms_laden_an('Chatmeldung löschen', 'Informationen werden gesammelt.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("id",              id);
+  formulardaten.append("gruppe",          gruppe);
+  formulardaten.append("anfragenziel", 	  '272');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {cms_link("Schulhof/Aufgaben/Chatmeldungen");}
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_chatmeldung_nachricht_loeschen(gruppe, id) {
+  cms_laden_an('Nachricht löschen', 'Informationen werden gesammelt.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("id",              id);
+  formulardaten.append("gruppe",          gruppe);
+  formulardaten.append("anfragenziel", 	  '275');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {cms_link("Schulhof/Aufgaben/Chatmeldungen");}
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 

@@ -64,7 +64,7 @@ if (!$fehler) {
 	}
 
 	if ($rollencode == "") {
-		$$rollencode = "<p class=\"cms_notiz\">keine Rollen verfügbar</p>";
+		$$rollencode = "<p class=\"cms_notiz\">Keine Rollen verfügbar</p>";
 	}
 
 	echo $rollencode;
@@ -95,7 +95,7 @@ if (!$fehler) {
 	}
 
 	if ($rechtecode == "") {
-		$rechtecode = "<p class=\"cms_notiz\">keine Rollen zugeordnet</p>";
+		$rechtecode = "<p class=\"cms_notiz\">Keine Rollen zugeordnet</p>";
 	}
 
 	echo $rechtecode;
@@ -129,7 +129,7 @@ if (!$fehler) {
 	}
 
 	if ($rechtecode == "") {
-		$rechtecode = "<p class=\"cms_notiz\">keine zusätzlichen Rechte verfügbar</p>";
+		$rechtecode = "<p class=\"cms_notiz\">Keine zusätzlichen Rechte verfügbar</p>";
 	}
 
 	echo $rechtecode;

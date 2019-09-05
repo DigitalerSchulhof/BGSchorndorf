@@ -137,7 +137,6 @@ if ($angemeldet && $zugriff) {
 		}
 
 	}
-
 	if (!$fehler) {
 		if (($skalieren == 1) && (!$skaliert)) {echo "UNSKALIERT";}
 		else {echo "ERFOLG";}

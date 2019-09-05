@@ -4,6 +4,7 @@ include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
 include_once("../../schulhof/funktionen/generieren.php");
+include_once("../../schulhof/funktionen/dateisystem.php")
 session_start();
 
 // Variablen einlesen, falls übergeben
@@ -474,6 +475,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('gremien');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/gremien/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -483,6 +490,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('fachschaften');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/fachschaften/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -492,6 +505,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('stufen');
 			$sql->bind_param("issiiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $e['reihenfolge'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/stufen/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 			for ($i = 0; $i<count($NEUEKLASSEN); $i++) {
 				if ($NEUEKLASSEN[$i]['stufe'] == $e['alteid']) {
 					$NEUEKLASSEN[$i]['stufe'] = $eid;
@@ -508,6 +527,12 @@ if (cms_angemeldet() && $zugriff) {
 				$eid = cms_generiere_kleinste_id('klassen');
 				$sql->bind_param("issiiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $e['stufe'], $eid);
 				$sql->execute();
+
+				// Dateisystem erzeugen
+				$pfad = '../../../dateien/schulhof/gruppen/klassen/'.$eid;
+				if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+				mkdir($pfad);
+				chmod($pfad, 0775);
 			}
 		}
 		$sql->close();
@@ -518,6 +543,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('arbeitsgemeinschaften');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/arbeitsgemeinschaften/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -527,6 +558,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('arbeitskreise');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/arbeitskreise/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -536,6 +573,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('fahrten');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/fahrten/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -545,6 +588,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('wettbewerbe');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/wettbewerbe/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -554,15 +603,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('ereignisse');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
-		}
-		$sql->close();
 
-		// Wettbewerbe übertragen
-		$sql = $dbs->prepare("UPDATE wettbewerbe SET schuljahr = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sichtbar = ?, chataktiv = ? WHERE id = ?");
-		foreach ($NEUEWETTBEWERBE AS $e) {
-			$eid = cms_generiere_kleinste_id('wettbewerbe');
-			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
-			$sql->execute();
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/ereignisse/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 
@@ -572,6 +618,12 @@ if (cms_angemeldet() && $zugriff) {
 			$eid = cms_generiere_kleinste_id('sonstigegruppen');
 			$sql->bind_param("issiii", $id, $e['bezeichnung'], $e['icon'], $e['sichtbar'], $e['chataktiv'], $eid);
 			$sql->execute();
+
+			// Dateisystem erzeugen
+			$pfad = '../../../dateien/schulhof/gruppen/sonstigegruppen/'.$eid;
+			if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+			mkdir($pfad);
+			chmod($pfad, 0775);
 		}
 		$sql->close();
 

@@ -36,8 +36,7 @@
     }
 
     $zeit = time();
-    $benutzer = is_null($_SESSION["BENUTZERID"])?-1:$_SESSION["BENUTZERID"];
-
+    $benutzer = isset($_SESSION["BENUTZERID"])?$_SESSION["BENUTZERID"]:-1;    
     // Einspeichern
     $sql = "INSERT INTO `fehlermeldungen_daten` (`id`, `benutzer`, `url`, `header`, `session`, `zeitstempel`) VALUES (?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?);";
     $sql = $dbs->prepare($sql);

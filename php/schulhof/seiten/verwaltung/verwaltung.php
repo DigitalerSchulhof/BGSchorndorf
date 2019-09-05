@@ -130,6 +130,16 @@ if ($CMS_RECHTE['Gruppen']['Sonstige Gruppen anlegen'] || $CMS_RECHTE['Gruppen']
 	$tabzahl++;
 }
 
+if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_chatmeldungen\" href=\"Schulhof/Aufgaben/Chatmeldungen\">";
+			$code .=  "<h3>Chatmeldungen</h3>";
+			$code .=  "<p>Chatmeldungen sehen".($CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']?" und verwalten":"").".</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+
 if ($tabzahl > 0) {
 	$code = "<h2>Personen und Gruppen</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
@@ -191,16 +201,25 @@ if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile
 }*/
 if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR)\"\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
 			$code .=  "<h3>Stundenplanung</h3>";
 			$code .=  "<p>Regelstundenpläne eingeben und ändern.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenerzeugen\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
+			$code .=  "<h3>Stunden und Tagebücher erzeugen</h3>";
+			$code .=  "<p>Erzeugt aus den Regelstunden Unterrichtsstunden für die einzelnen Unterrichtstage unter Berücksichtigung der angelegten Rythmen und Ferien.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">";
 			$code .=  "<h3>Vertretungsplan</h3>";
 			$code .=  "<p>Schulstunden ändern, verschieben oder entfallen lassen.</p>";
 		$code .=  "</a>";
@@ -209,7 +228,7 @@ if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
 }
 if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_ausplanung\" href=\"\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_ausplanung\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">";
 			$code .=  "<h3>Ausplanungen durchführen</h3>";
 			$code .=  "<p>Räume, Lehrer, Klassen und Kurse ausplanen.</p>";
 		$code .=  "</a>";
@@ -441,6 +460,15 @@ if ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auff
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Website']['Emoticons verwalten']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_emoticons\" href=\"Schulhof/Website/Emoticons\">";
+			$code .=  "<h3>Emoticons</h3>";
+			$code .=  "<p>Emoticons verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 
 if ($tabzahl > 0) {
 	$code = "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
@@ -503,7 +531,7 @@ echo $code;
 <div class="cms_spalte_i">
 
 <h2>Tagebuch</h2>
-<p class="cms_notiz">In Planung...</p>
+<p class="cms_notiz">In Planung</p>
 
 </div>
 </div>
@@ -513,7 +541,7 @@ echo $code;
 <div class="cms_spalte_i">
 
 <h2>Noten</h2>
-<p class="cms_notiz">In Planung in späteren Versionen</p>
+<p class="cms_notiz">In Planung</p>
 
 </div>
 </div>
@@ -615,7 +643,7 @@ echo $code;
 	<li>
 		<a class="cms_uebersicht_verwaltung_backup" href="Schulhof/Verwaltung/Backup/">
 			<h3>Manuelles Backup</h3>
-			<p>Sichert Datenbank und Webserver manuell. Generiert Archive zum Download.</p>
+			<p>Sichert Datenbank und Webserver manuell. Generiert Archiv zum Download.</p>
 		</a>
 	</li>
 	<li>
@@ -627,7 +655,7 @@ echo $code;
 	<li>
 		<a class="cms_uebersicht_verwaltung_verschluesselung" href="Schulhof/Verwaltung/Verschlüsselung/">
 			<h3>Verschlüsselung</h3>
-			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer config-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
+			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer Konfigurations-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
 		</a>
 	</li>
 </ul> -->

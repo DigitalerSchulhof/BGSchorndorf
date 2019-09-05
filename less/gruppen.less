@@ -170,3 +170,175 @@
   width: 25%;
   border-right: 10px solid @hintergrundhell;
 }
+
+#cms_chat {
+  #cms_chat_nachrichten {
+    #cms_chat_leer {
+      text-align: center;
+    }
+    #cms_chat_nachrichten_nachladen {
+      text-align: center;
+      color: @schriftlink;
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+    .cms_chat_datum {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    width: 100%;
+    padding: 5px 20px;
+    max-height: 500px;
+    overflow-y: scroll;
+    .cms_chat_nachricht_aussen {
+      width: 100%;
+      margin-bottom: 15px;
+      float: left;
+      .cms_chat_nachricht_innen {
+        position: relative;
+        min-width: 40%;
+        max-width: 60%;
+        background-color: @chatanderer;
+        border-radius: 3px;
+        float: left;
+        padding: 5px;
+        .cms_chat_nachricht_aktion {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: inherit;
+          &[data-aktion=sendend] {
+            display: none;
+          }
+          &[data-aktion=mehr] {
+            cursor: pointer;
+            .cms_chat_aktion {
+              // .cms_hinweis
+              color: @schriftfarbehell !important;
+              background: rgba(0, 0, 0, 0.75);
+              padding: 0px 5px 0px 5px;
+              position: absolute;
+              font-family: 'robl';
+              font-weight: normal !important;
+              display: none;
+              border-radius: 3px;
+              z-index: 50;
+              width: 150px;
+              overflow: visible;
+              left: 0px;
+              bottom: 25px;
+              overflow: hidden;
+              text-align: left;
+
+              z-index: 5;
+              p {
+                padding: 5px;
+              }
+            }
+          }
+          img {
+            height: 16px;
+            width: 16px;
+          }
+        }
+        .cms_chat_nachricht_id {
+          display: none;
+        }
+        .cms_chat_nachricht_autor {
+          font-size: 90%;
+        }
+        .cms_chat_nachricht_nachricht {
+          padding-left: 5px;
+          font-size: 110%;
+          white-space: pre-wrap;
+          word-break: break-word
+        }
+        .cms_chat_nachricht_zeit {
+          float: right;
+        }
+      }
+      &.cms_chat_nachricht_eigen {
+        .cms_chat_nachricht_innen {
+          float: right;
+          background-color: @chateigen;
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              display: none;
+              .cms_chat_aktion {
+                text-align: right;
+                left: unset;
+                right: 0;
+              }
+            }
+          }
+        }
+      }
+      &.cms_chat_nachricht_sendend {
+        opacity: 0.8;
+        .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=sendend] {
+              display: block;
+            }
+            &[data-aktion=mehr] {
+              display: none;
+            }
+          }
+        }
+      }
+      &.cms_chat_nachricht_gemeldet {
+        opacity: 0.8;
+        .cms_chat_nachricht_innen {
+          background-color: mix(@fehlerhell, white);
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              [data-mehr=melden] {
+                opacity: 0.7;
+                cursor: default;
+              }
+            }
+          }
+        }
+      }
+      &.cms_chat_nachricht_geloescht {
+        opacity: 0.7;
+        .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_nachricht {
+            font-style: italic;
+            font-size: 90%;
+          }
+        }
+      }
+    }
+  }
+  #cms_chat_nachricht_verfassen {
+    width: 100%;
+    label {
+      cursor: pointer;
+    }
+    textarea {
+      width: 90%; // Fallback
+      width: ~"calc(100% - 26px)";
+    }
+    .cms_meldung_fehler {
+      display: none;
+    }
+    &.cms_chat_gebannt {
+      > * {
+        display: none !important;
+      }
+      .cms_meldung_fehler {
+        display: block !important;
+      }
+    }
+    div:not(.cms_meldung_fehler) {
+      display: inline-block;
+      float: right;
+      width: auto;
+      img {
+        padding: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}

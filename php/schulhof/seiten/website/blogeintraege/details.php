@@ -14,6 +14,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
   $aktiv = 1;
   $genehmigt = 0;
   $oeffentlichkeit = 3;
+  $notifikationen = 1;
   $text = '';
   $zgruppen = "";
   $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
@@ -28,11 +29,11 @@ function cms_blogeintrag_details_laden($id, $ziel) {
   // Falls ein bestehender Blogeintrag geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS zusammenfassung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE id = ?");
+	  $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, notifikationen, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS zusammenfassung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE id = ?");
 
     $sql->bind_param("i", $id);
     if ($sql->execute()) {
-      $sql->bind_result($bez, $datum, $genehmigt, $aktiv, $oeffentlichkeit, $text, $zus, $vorschaubild, $autor);
+      $sql->bind_result($bez, $datum, $genehmigt, $aktiv, $oeffentlichkeit, $notifikationen, $text, $zus, $vorschaubild, $autor);
       if (!$sql->fetch()) {$fehler = true;}
     }
     else {$fehler = true;}
@@ -103,6 +104,10 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     $code .= "<tr><th>Vorschaubild:</th><td>".cms_dateiwahl_knopf('website', 'cms_blogeintrag_vorschaubild', 's', 'website', '-', 'vorschaubild', $vorschaubild)."</td></tr>";
     $code .= "<tr><th>Zusammenfassung:</th><td><textarea rows=\"10\" name=\"cms_blogeintrag_zusammenfassung\" id=\"cms_blogeintrag_zusammenfassung\">$zus</textarea></td></tr>";
     $code .= "<tr><th>Autor:</th><td><input type=\"text\" name=\"cms_blogeintrag_autor\" id=\"cms_blogeintrag_autor\" value=\"$autor\"/></td></tr>";
+		$code .= "</table>";
+    $code .= "<h3>Erweiterte Optionen</h3>";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('blogeintrag_notifikationen', $notifikationen)."</td></tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";
 

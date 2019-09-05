@@ -38,8 +38,11 @@ if (isset($_SESSION['PERSONENPROFIL'])) {
       if ($person != $CMS_BENUTZERID) {
         $schreiben = cms_schreibeberechtigung($dbs, $person);
         if ($schreiben) {
-
-          $aktionscode .= "<li><a class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('vorgabe', '', '', '$person')\">Nachricht schreiben</a></li> ";
+          $aktionscode .= "<li><a class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('vorgabe', '', '', '$person')\">Nachricht schreiben</a></li><br>";
+        }
+        $umarmen = true;
+        if ($umarmen) {
+          $aktionscode .= "<li><a class=\"cms_button\" id=\"cms_umarmen\" onclick=\"cms_umarmen('$person')\">Umarmen ( ＾◡＾)っ ♡</a></li> ";
         }
       }
 

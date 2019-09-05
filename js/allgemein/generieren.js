@@ -55,6 +55,33 @@ function cms_tagname(zahl) {
   else {return false;}
 }
 
+function cms_tagnamekomplett(zahl) {
+  if (zahl == 0) {return "Sonntag";}
+  if (zahl == 1) {return "Montag";}
+  if (zahl == 2) {return "Dienstag";}
+  if (zahl == 3) {return "Mittwoch";}
+  if (zahl == 4) {return "Donnerstag";}
+  if (zahl == 5) {return "Freitag";}
+  if (zahl == 6) {return "Samstag";}
+  else {return false;}
+}
+
+function cms_monatsnamekomplett(zahl) {
+  if (zahl == 1) {return 'Januar';}
+  else if (zahl == 2) {return 'Februar';}
+  else if (zahl == 3) {return 'März';}
+  else if (zahl == 4) {return 'April';}
+  else if (zahl == 5) {return 'Mai';}
+  else if (zahl == 6) {return 'Juni';}
+  else if (zahl == 7) {return 'Juli';}
+  else if (zahl == 8) {return 'August';}
+  else if (zahl == 9) {return 'September';}
+  else if (zahl == 10) {return 'Oktober';}
+  else if (zahl == 11) {return 'November';}
+  else if (zahl == 12) {return 'Dezember';}
+  else {return false;}
+}
+
 function cms_id_entfernen(feldid, id) {
   var feld = document.getElementById(feldid);
   var bisher = feld.value+'|';
@@ -103,3 +130,26 @@ function cms_farbbeispiel_waehlen(nr, id) {
 }
 
 function cms_ladeicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
+function cms_neue_captcha(uid) {
+  cms_laden_an("Sicherheitsabfrage aktualisieren", "Die Daten werden neu geladen.")
+  var img = $(".cms_spamschutz_"+uid);
+  var box = $("#cms_spamverhinderung_"+uid);
+  box.val("");
+  var formulardaten = new FormData();
+
+  formulardaten.append("alteuuid",      uid);
+  formulardaten.append("anfragenziel",  '268');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if(rueckgabe == "FEHLER")
+    cms_meldung_an('fehler', 'Neue Captcha', '<p>Bei der Erstellung einer neuen Sicherheitsabfrage ist ein unbekannter Fehler aufgetreten.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Korrigieren</span></p>');
+    else {
+      var r = $(rueckgabe);
+      img.replaceWith(r);
+      box.attr("id", "cms_spamverhinderung_"+r.data("uuid"));
+    }
+    cms_laden_aus();
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}

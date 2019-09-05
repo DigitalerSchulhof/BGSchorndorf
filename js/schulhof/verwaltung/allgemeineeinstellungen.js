@@ -118,6 +118,12 @@ function cms_einstellungen_gruppen_aendern() {
 		formulardaten.append('sichtbardownload', download);
 	}
 
+	var nachrichtloeschen = document.getElementById('cms_nachrichtloeschen').value;
+	if (!cms_check_ganzzahl(nachrichtloeschen, 0, 365)) {fehler = true;}
+	else {
+		formulardaten.append('nachrichtloeschen', nachrichtloeschen);
+	}
+
 	var objekte = ['termine','blog'];
 
 	for (var p=0; p<personen.length; p++) {

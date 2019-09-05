@@ -22,6 +22,8 @@ if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
 if ($art == 'Stufen') {
 	if (isset($_POST['reihenfolge'])) {$reihenfolge = $_POST['reihenfolge'];} else {echo "FEHLER"; exit;}
+	if (isset($_POST['tagebuch'])) {$tagebuch = $_POST['tagebuch'];} else {echo "FEHLER"; exit;}
+	if (isset($_POST['gfs'])) {$gfs = $_POST['gfs'];} else {echo "FEHLER"; exit;}
 }
 if ($art == 'Klassen') {
 	if (isset($_POST['stundenplanextern'])) {$stundenplanextern = $_POST['stundenplanextern'];} else {echo "FEHLER"; exit;}
@@ -54,6 +56,11 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Pflichteingaben prüfen
 	if ($art == 'Kurse') {if (!cms_check_titel($kurzbezeichnung)) {$fehler = true;}}
+	if ($art == 'Stufen') {
+		if (!cms_check_ganzzahl($reihenfolge,1)) {$fehler = true;}
+		if (!cms_check_toggle($tagebuch)) {$fehler = true;}
+		if (!cms_check_toggle($gfs)) {$fehler = true;}
+	}
 
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
@@ -303,14 +310,20 @@ if (cms_angemeldet() && $zugriff) {
             $M[$anzahl]['blogeintraege'] = $_POST['mitglieder'.$i.'blogeintraege'];
           } else {$fehler = true;}
         } else {$fehler = true;}
-        if (isset($_POST['mitglieder'.$i.'chatten'])) {
+				if (isset($_POST['mitglieder'.$i.'chatten'])) {
           if (cms_check_toggle($_POST['mitglieder'.$i.'chatten'])) {
             $M[$anzahl]['chatten'] = $_POST['mitglieder'.$i.'chatten'];
           } else {$fehler = true;}
         } else {$fehler = true;}
-        if (isset($_POST['mitglieder'.$i.'chattenabT']) && isset($_POST['mitglieder'.$i.'chattenabM']) && isset($_POST['mitglieder'.$i.'chattenabJ']) &&
-          isset($_POST['mitglieder'.$i.'chattenabs']) && isset($_POST['mitglieder'.$i.'chattenabm'])) {
-          $M[$anzahl]['chattenab'] = mktime($_POST['mitglieder'.$i.'chattenabs'], $_POST['mitglieder'.$i.'chattenabm'],0,$_POST['mitglieder'.$i.'chattenabM'],$_POST['mitglieder'.$i.'chattenabT'],$_POST['mitglieder'.$i.'chattenabJ']);
+				if (isset($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
+          if (cms_check_toggle($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
+            $M[$anzahl]['nachrichtloeschen'] = $_POST['nachrichtloeschen'.$i.'nachrichtloeschen'];
+          } else {$fehler = true;}
+        } else {$fehler = true;}
+				if (isset($_POST['mitglieder'.$i.'nutzerstummschalten'])) {
+          if (cms_check_toggle($_POST['mitglieder'.$i.'nutzerstummschalten'])) {
+            $M[$anzahl]['nutzerstummschalten'] = $_POST['mitglieder'.$i.'nutzerstummschalten'];
+          } else {$fehler = true;}
         } else {$fehler = true;}
         $anzahl++;
       }
@@ -341,8 +354,8 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->execute();
 			$sql->close();
 
-			$sql = $dbs->prepare("UPDATE stufen SET reihenfolge = ? WHERE id = ?");
-			$sql->bind_param("i", $reihenfolge, $id);
+			$sql = $dbs->prepare("UPDATE stufen SET reihenfolge = ?, tagebuch = ?, gfs = ? WHERE id = ?");
+			$sql->bind_param("iiii", $reihenfolge, $tagebuch, $gfs, $id);
 			$sql->execute();
 			$sql->close();
 		}
@@ -402,29 +415,30 @@ if (cms_angemeldet() && $zugriff) {
 
     if (strlen($mitglieder) > 0) {
       // Mitglieder eintragen
-			$sql1 = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$sql1 = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       foreach ($M as $i) {
-				$sql1->bind_param("iiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
+				$sql1->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
 				$sql1->execute();
 
 				if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
-					$sql2 = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					$sql2 = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 					foreach ($faecherkurse as $k) {
-						$sql2->bind_param("iiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['chattenab']);
+						$sql2->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
 						$sql2->execute();
 					}
-					$sql2->close();
 				}
+				$sql->close();
       }
-			$sql1->close();
 
       // Vorsitz eintragen
-			$sql = $dbs->prepare("INSERT INTO $artk"."vorsitz (gruppe, person) VALUES (?, ?)");
-			foreach ($VOR as $i) {
-				$sql->bind_param("ii", $id, $i);
-				$sql->execute();
-      }
-			$sql->close();
+			if (strlen($vorsitz) > 0) {
+				$sql = $dbs->prepare("INSERT INTO $artk"."vorsitz (gruppe, person) VALUES (?, ?)");
+				foreach ($VOR as $i) {
+					$sql->bind_param("ii", $id, $i);
+					$sql->execute();
+	      }
+				$sql->close();
+			}
     }
 
     if (strlen($aufsicht) > 0) {

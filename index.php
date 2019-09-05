@@ -13,6 +13,7 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
+	include_once("php/schulhof/seiten/website/reaktionen.php");
 
 	session_start();
 
@@ -149,7 +150,6 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="descriptopn" content="Das Burg-Gymnasium ist ein allgemeinbildendes Gymnasium im Herzen der Stadt Schorndorf.">
 	<meta name="format-detection" content="address=no">
 	<meta name="format-detection" content="date=no">
 	<meta name="format-detection" content="email=no">
@@ -194,8 +194,15 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
+<<<<<<< HEAD
+=======
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
+>>>>>>> develop
 
     //<!-- Einbindung der JavaScripts -->
+		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
+
     echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/generieren.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/reiter.js?v=$CMS_VERSION\"></script>";
@@ -215,6 +222,10 @@
 		// Skripte, die nur für angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
 			$code = "";
+			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";
+
 			$code .= "<script src=\"js/schulhof/nutzerkonto/profildaten.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/nutzerkonto/postfach.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/kalender.js?v=$CMS_VERSION\"></script>";
@@ -245,6 +256,7 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/zeitraeume.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
@@ -262,11 +274,8 @@
 			$code .= "<script src=\"js/website/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/boxen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/eventuebersicht.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/website/reaktionen.js?v=$CMS_VERSION\"></script>";
 
-			$code .= "<script src=\"js/summernote/jquery.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
@@ -332,7 +341,6 @@
 
 <?php
 	echo "<body class=\"cms_optimierung_".$CMS_GERAET."\">";
-	echo "<p style=\"display: none;\">Das Burg-Gymnasium ist ein allgemeinbildendes Gymnasium im Herzen der Stadt Schorndorf. Wir sind Mitglied des Netzwerks der UNESCO-Projektschulen. Neben den Sprachlichen Profilen Russisch und Französisch als dritte Fremdsprachen bieten wir im naturwissenschaftlichenbereich die Fächer NWT (Naturwissenschaft und Technik) und IMP (Informatik Mathematik Pysik) an.</p>";
 ?>
 
 

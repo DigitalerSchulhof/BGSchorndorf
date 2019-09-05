@@ -18,7 +18,7 @@ if (isset($_POST['gruppe'])) {$gruppe = $_POST['gruppe'];} else {echo "FEHLER"; 
 if (!cms_valide_gruppe($gruppe) && ($gruppe != 'Blogeinträge')) {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
-$gk = strtolower($gruppe);
+$gk = cms_textzudb($gruppe);
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = false;

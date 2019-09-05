@@ -28,7 +28,9 @@ function cms_gruppen_verwaltung_listeausgeben($name, $anlegen, $bearbeiten, $loe
 
     $ausgabe .= "<table class=\"cms_liste\">";
       $ausgabe .= "<thead>";
-        $ausgabe .= "<tr><th></th><th>Bezeichnung</th><th>Mitglieder</th><th>Vorsitz</th><th>Aufsicht</th><th>Sichtbar</th><th>Aktionen</th></tr>";
+        $ausgabe .= "<tr><th></th><th>Bezeichnung</th><th>Mitglieder</th><th>Vorsitz</th><th>Aufsicht</th><th>Sichtbar</th>";
+        if ($name == "Stufen") {$ausgabe .= "<th></th>";}
+        $ausgabe .= "<th>Aktionen</th></tr>";
       $ausgabe .= "</thead>";
       $ausgabe .= "<tbody id=\"cms_gruppenliste\">";
       $ausgabe .= cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten, $loeschen, "-");
@@ -68,7 +70,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
 
   if ($namek == 'stufen') {
     $sortierkriterium = "reihenfolge ASC,";
-    $zusatzspalten = "reihenfolge,";
+    $zusatzspalten = "reihenfolge, tagebuch, gfs, ";
   }
   else {
     $sortierkriterium = "";
@@ -111,7 +113,14 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
       if ($daten['sichtbar'] == 2) {$code .= "Lehrer und Verwaltung";}
       if ($daten['sichtbar'] == 3) {$code .= "Schulhof";}
 
-      $code .= "</td><td>";
+      $code .= "</td>";
+      if ($name == "Stufen") {
+        $code .= "<td>";
+          if ($daten['tagebuch'] == 1) {$code .= cms_generiere_hinweisicon('tagebuch', 'Tagebuch aktiv')." ";}
+            if ($daten['gfs'] == 1) {$code .= cms_generiere_hinweisicon('gfs', 'GFS-Verwaltung aktiv');}
+        $code .= "</td>";
+      }
+      $code .= "<td>";
       if ($bearbeiten) {
         $code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_gruppen_bearbeiten_vorbereiten('$name', ".$daten['id'].")\"><span class=\"cms_hinweis\">Gruppe bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
       }
@@ -129,7 +138,9 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
     $anfrage->free();
   }
 
-  if (strlen($code) == 0) {$code = "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";}
+  $spalten = 7;
+  if ($name == "Stufen") {$spalten++;}
+  if (strlen($code) == 0) {$code = "<tr><td class=\"cms_notiz\" colspan=\"$spalten\">- keine Datensätze gefunden -</td></tr>";}
 
   return $code;
 }

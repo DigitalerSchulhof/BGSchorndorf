@@ -66,8 +66,8 @@ if (($zugriff) && ($angemeldet)) {
     $_SESSION['ELEMENTSPALTE'] = $spalte;
     $_SESSION['ELEMENTID'] = $id;
 
-    if ($id == '-') {$code = "<h3>Neue Eventuebersicht</h3>";}
-    else {$code = "<h3>Eventuebersicht bearbeiten</h3>";}
+    if ($id == '-') {$code = "<h3>Neue Eventübersicht</h3>";}
+    else {$code = "<h3>Eventübersicht bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
     if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_eventuebersicht_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_eventuebersicht_aktiv\" name=\"website_element_eventuebersicht_aktiv\" value=\"0\"></td></tr>";}

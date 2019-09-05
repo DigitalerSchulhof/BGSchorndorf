@@ -32,7 +32,7 @@ if ($CMS_ANGEMELDET) {
 		}
 		echo "</p>";
 
-		echo "<p class=\"cms_notiz\">Die verwendeten Icons stammen von <a href=\"http://www.fatcow.com/free-icons\" target=\"_blank\">Fatcow</a> und wurden unter der <a href=\"http://creativecommons.org/licenses/by/3.0/us/\">Lizenz Creative Commons Attribution 3.0</a> veröffentlicht. Die verwendete Schriftart Roboto stammt von <a href=\"https://github.com/google/roboto\" target=\"_blank\">Google</a> und wurden unter der Lizenz <a href=\"https://github.com/google/roboto/blob/master/LICENSE\">Apache License 2.0</a> veröffentlicht.</p>";;
+		echo "<p class=\"cms_notiz\">Die verwendeten Icons stammen von <a href=\"http://www.fatcow.com/free-icons\" target=\"_blank\">Fatcow</a> und wurden unter der Lizenz <a href=\"http://creativecommons.org/licenses/by/3.0/us/\">Creative Commons Attribution 3.0</a> veröffentlicht. Die verwendete Schriftart Roboto stammt von <a href=\"https://github.com/google/roboto\" target=\"_blank\">Google</a> und wurden unter der Lizenz <a href=\"https://github.com/google/roboto/blob/master/LICENSE\">Apache License 2.0</a> veröffentlicht.</p>";
 		?>
 	</div>
 </div>

@@ -15,15 +15,15 @@ if ($zugriff) {
 	$einstellungen = cms_einstellungen_laden();
 
 	$code .= "<ul class=\"cms_reitermenue\">";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('einstellungen', 0,5)\">Rechte</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1,5)\">Postfach</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2,5)\">Gruppen</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3,5)\">Stundenpläne</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4,5)\">Website</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5,5)\">Geräteverwaltung</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 0, 5, true)\">Rechte</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1, 5, true)\">Postfach</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2, 5, true)\">Gruppen</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3, 5, true)\">Stundenpläne</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4, 5, true)\">Website</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5, 5, true)\">Geräteverwaltung</span></li> ";
 	$code .= "</ul>";
 
-	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: block;\">";
+	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Rechte</h2></div>";
 
@@ -212,6 +212,16 @@ if ($zugriff) {
 		$code .= "<td>".cms_schieber_generieren('sichtbardownload',$einstellungen['Download aus sichtbaren Gruppen'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
+		$code .= "</table>";
+
+		$code .= "<h3>Gruppenchat</h3>";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr>";
+		$code .= "<th>Nachrichten löschen nach (0 für nie)</th>";
+		$code .= "<td><input type=\"number\" class=\"cms_klein\" min=\"0\" max=\"1000\" step=\"1\" name=\"cms_nachrichtloeschen\" id=\"cms_nachrichtloeschen\" value=\"".$einstellungen['Chat Nachrichten löschen nach']."\" onchange=\"cms_nur_ganzzahl('cms_nachrichtloeschen', 365)\"> Tagen</td>";
+		$code .= "</tr>";
+		$code .= "</table>";
+
 		$code .= "</div></div>";
 
 		$code .= "<div class=\"cms_spalte_i cms_clear\">";
@@ -337,19 +347,22 @@ if ($zugriff) {
 		$code .= "<h3>Nutzerfeedback</h3>";
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
-		$code .= "<th>Fehlermeldungen Aktiv:</th>";
+		$code .= "<th>Fehlermeldungen sind aktiv:</th>";
 		$code .= "<td>".cms_schieber_generieren('fehlermeldungenaktiv',$einstellungen['Fehlermeldung aktiv'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
-		$code .= "<th>Fehlermeldungen Anmeldung notwendig:</th>";
+		$code .= "<th>Fehlermeldungen benötigen Anmeldung:</th>";
 		$code .= "<td>".cms_schieber_generieren('fehlermeldungenangemeldet',$einstellungen['Fehlermeldung Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
+		$code .= "<th>Fehlermeldungen ans Entwicklerteam weiterleiten:</th>";
+		$code .= "<td>".cms_schieber_generieren('fehlermeldungengithub',$einstellungen['Fehlermeldung an GitHub'])."</td>";
+		$code .= "</tr>";
 		$code .= "<tr>";
-		$code .= "<th>Feedback Aktiv:</th>";
+		$code .= "<th>Feedback ist aktiv:</th>";
 		$code .= "<td>".cms_schieber_generieren('feedbackaktiv',$einstellungen['Feedback aktiv'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
-		$code .= "<th>Feedback Anmeldung notwendig:</th>";
+		$code .= "<th>Feedback benötigt Anmeldung:</th>";
 		$code .= "<td>".cms_schieber_generieren('feedbackangemeldet',$einstellungen['Feedback Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
@@ -476,6 +489,7 @@ if ($zugriff) {
 
 	$code .= "</div>";
 
+	$code .= "<script>cms_reiter_laden(\"einstellungen\");</script>";
 
 	echo $code;
 }

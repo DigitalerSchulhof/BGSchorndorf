@@ -1,5 +1,9 @@
-function cms_link (ziel) {
-	window.location.href = CMS_DOMAIN+'/'+ziel;
+function cms_link (ziel, neuerTab) {
+	neuerTab = neuerTab || false;	// False -> False, True -> True
+	if(!neuerTab)
+		window.location.href = CMS_DOMAIN+'/'+ziel;
+	else
+		window.open(CMS_DOMAIN+"/"+ziel, '_blank');
 }
 
 function cms_bezzulink(bezeichnung) {

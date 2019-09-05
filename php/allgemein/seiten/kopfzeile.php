@@ -27,7 +27,7 @@
 						echo "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></li>";
 					}
 				echo "</ul>";
-				echo "<a id=\"cms_logo\" href=\"$CMS_DOMAIN\">";
+				echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN.($CMS_URL[0] == "Schulhof"?"/Schulhof/Nutzerkonto":"")."\">";
 				// <span id="cms_logo_bild">
 				// 	<span class="cms_logo_mauer" id="cms_logo_mauer_l"></span>
 				// 	<span class="cms_logo_mauer" id="cms_logo_mauer_r"></span>
@@ -62,6 +62,7 @@
 			}
 			?>
 
+			<div class="cms_clear"></div>
 		</div>
 	</div>
 </div>

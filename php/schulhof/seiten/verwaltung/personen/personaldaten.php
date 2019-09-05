@@ -31,16 +31,23 @@ function cms_personaldaten_ausgeben($id) {
 				$profildaten_schuljahr = $daten['schuljahr'];
 				$profildaten_letzteanmeldung = $daten['letzteanmeldung'];
 				$profildaten_vorletzteanmeldung = $daten['vorletzteanmeldung'];
+
+				$sql = "SELECT von, anonym FROM umarmungen WHERE an=$id";
+				$umarmungen_s = $dbs->query($sql);
+				$umarmungen = array();
+				while($daten = $umarmungen_s->fetch_assoc()) {
+					array_push($umarmungen, array("von" => $daten["von"], "anonym" => $daten["anonym"]));
+				}
 				$anzeigename = cms_generiere_anzeigename($profildaten_vorname, $profildaten_nachname, $profildaten_titel);
 
 				if ($profildaten_letzteanmeldung > 0) {
 					$letzteanzeige = (date("d.m.Y", $profildaten_letzteanmeldung))." um ".(date("H:i", $profildaten_letzteanmeldung))." Uhr";
 				}
-				else {$letzteanzeige = "hat noch nicht stattgefunden";}
+				else {$letzteanzeige = "Hat noch nicht stattgefunden";}
 				if ($profildaten_vorletzteanmeldung > 0) {
 					$vorletzteanzeige = (date("d.m.Y", $profildaten_vorletzteanmeldung))." um ".(date("H:i", $profildaten_vorletzteanmeldung))." Uhr";
 				}
-				else {$vorletzteanzeige = "hat noch nicht stattgefunden";}
+				else {$vorletzteanzeige = "Hat noch nicht stattgefunden";}
 
 
 				if ($profildaten_art == "l") {
@@ -92,7 +99,7 @@ function cms_personaldaten_ausgeben($id) {
 					else if ($profildaten_geschlecht == "u") {echo '&#x26a5;';}
 				echo "</td></tr>";
 				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Personen bearbeiten'])) {
-					echo "<tr><th>e-Mail Adresse:</th><td>$profildaten_email</td></tr>";
+					echo "<tr><th>E-Mail-Adresse:</th><td>$profildaten_email</td></tr>";
 				}
 
 					if ($detailansicht) {
@@ -203,6 +210,11 @@ function cms_personaldaten_ausgeben($id) {
 				}
 			}
 			else {
+
+				$umarmungen_c = count($umarmungen);
+
+				echo "<br><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Umarmungen\">$umarmungen_c Umarmung".($umarmungen_c != 1?"en":"").($umarmungen_c > 0?" ( ＾◡＾)っ ♡":"")."</a>";
+
 				echo "<h3>Daten ändern</h3>";
 				echo "<ul class=\"cms_aktionen_liste\">";
 					echo "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil/Nutzerkonto_bearbeiten\">Benutzerkonto bearbeiten</a></li> ";
@@ -283,7 +295,7 @@ function cms_personaldaten_ausgeben($id) {
 
 
 				if (strlen($code) == 0) {
-					echo "<p class=\"cms_notiz\">keine Schuljahre angelegt</p>";
+					echo "<p class=\"cms_notiz\">Keine Schuljahre angelegt</p>";
 				}
 				else {
 					if (!$sjwahl) {
@@ -543,7 +555,7 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 				}
 				echo "</tr>";
 				echo "<tr>";
-					echo "<th>e-Mail Adresse:</th>";
+					echo "<th>E-Mail-Adresse:</th>";
 					echo "<td><input type=\"mail\" value=\"$profildaten_email\" ";
 
 					if ($verwaltung) {
@@ -930,7 +942,7 @@ function cms_personaldaten_einstellungen_aendern($id) {
 			$code .= "<div class=\"cms_clear\"></div>";
 
 			$code .= "<div class=\"cms_spalte_i\">";
-			$code .= cms_meldung('info', "<p>Die gesamte Kommunikation im Schulhof wird verschlüsselt. Gewöhnliche e-Mails sind unverschlüsselt. Darum können im Schulhof eintreffende Nachrichten und Notifikationen nicht direkt als e-Mail weitergeleitet, sondern nur als Benachrichtigung über neue Nachrichten und Notifikationen versendet werden.</p>");
+			$code .= cms_meldung('info', "<p>Die gesamte Kommunikation im Schulhof wird verschlüsselt. Gewöhnliche E-Mails sind unverschlüsselt. Darum können im Schulhof eintreffende Nachrichten und Notifikationen nicht direkt als E-Mail weitergeleitet, sondern nur als Benachrichtigung über neue Nachrichten und Notifikationen versendet werden.</p>");
 
 			$code .= "<p><span class=\"cms_button\" onclick=\"cms_schulhof_".$idname."_einstellungen_aendern();\">Änderungen speichern</span> ";
 			$link = "Schulhof/Verwaltung/Personen/Details";

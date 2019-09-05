@@ -28,12 +28,14 @@ function cms_check_toggle(wert) {
 }
 
 function cms_check_ganzzahl(wert, min, max) {
-	min = min || false;
-	max = max || false;
+	if(!(min || min === 0))
+		min = false;
+	if(!(max || max === 0))
+		max = false;
 	wert = wert.toString();
 	if (wert.match(/^-{0,1}[0-9]+$/)) {
-		if (min) {if (parseInt(wert) < min) {return false;}}
-		if (max) {if (parseInt(wert) > max) {return false;}}
+		if (min !== false) {if (parseInt(wert) < min) {return false;}}
+		if (max !== false) {if (parseInt(wert) > max) {return false;}}
 		return true;
 	}
 	else {return false;}

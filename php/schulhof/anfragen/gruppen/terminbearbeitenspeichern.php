@@ -12,6 +12,7 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 $zugeordnet = array();
+if (isset($_POST['notifikationen']))  {$notifikationen = $_POST['notifikationen'];}   else {echo "FEHLER";exit;}
 if (isset($_POST['genehmigt'])) 			{$genehmigt = $_POST['genehmigt'];} 						else {echo "FEHLER";exit;}
 if (isset($_POST['aktiv'])) 			    {$aktiv = $_POST['aktiv'];} 						        else {echo "FEHLER";exit;}
 if (isset($_POST['mehrtaegigt'])) 		{$mehrtaegigt = $_POST['mehrtaegigt'];} 				else {echo "FEHLER";exit;}
@@ -89,6 +90,7 @@ if (cms_angemeldet() && $zugriff) {
 
   if (!cms_check_toggle($genehmigt)) {$fehler = true;}
   if (!cms_check_toggle($aktiv)) {$fehler = true;}
+  if (!cms_check_toggle($notifikationen)) {$fehler = true;}
 
 	// Pflichteingaben prüfen
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
@@ -158,8 +160,8 @@ if (cms_angemeldet() && $zugriff) {
     $text = cms_texttrafo_e_db($text);
 		$jetzt = time();
   	// TERMIN EINTRAGEN
-    $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
-    $sql->bind_param("ssiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
+    $sql = $dbs->prepare("UPDATE $gk"."termineintern SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mehrtaegigt = ?, uhrzeitbt = ?, uhrzeitet = ?, ortt = ?, genehmigt = ?, notifikationen = ?, aktiv = ?, text = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+    $sql->bind_param("ssiiiiiiiiisiii", $bezeichnung, $ort, $BEGINN, $ENDE, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $notifikationen, $aktiv, $text, $CMS_BENUTZERID, $jetzt, $terminid);
     $sql->execute();
     $sql->close();
 
@@ -190,7 +192,8 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $BEGINN))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Gruppen/$gruppensj/".cms_textzulink($gruppe)."/$gruppenbez/Termine/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+		if($notifikationen)
+    	cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";
 	}

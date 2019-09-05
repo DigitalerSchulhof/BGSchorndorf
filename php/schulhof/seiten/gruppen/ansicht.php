@@ -70,10 +70,12 @@ if (!$fehler) {
 				if (strlen($beschlusscode) > 0) {$code .= "<ul class=\"cms_beschlussuebersicht\">".$beschlusscode."</ul>";}
 				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Beschlüsse vorhanden.</p>";}
 			$code .= "</div></div>";
-			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
-				$code .= "<h2>Chat</h2>";
-				$code .= cms_meldung('info', '<h4>In Planung</h4><p>Diese Funktion steht in Kürze zur Verfügung!</p>');
-			$code .= "</div></div>";
+			if($GRUPPENRECHTE["mitglied"]) {
+				$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+					$code .= "<h2>Chat</h2>";
+					$code .= cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
+				$code .= "</div></div>";
+			}
 			$code .= "<div class=\"cms_clear\"></div>";
 			$code .= "<div class=\"cms_spalte_i\">";
 				$code .= "<h2>Dateien</h2>";

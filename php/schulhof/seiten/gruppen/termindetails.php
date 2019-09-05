@@ -25,14 +25,15 @@ function cms_internertermin_details_laden($id, $gruppe, $gruppenid) {
   $aktiv = 1;
   $ortt = 0;
   $genehmigt = 0;
+  $notifikationen = 1;
   $text = '';
 
   // Falls ein bestehender Termin geladen werden soll
   if (cms_check_ganzzahl($id)) {
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM $gk"."termineintern WHERE id = ?");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, notifikationen, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM $gk"."termineintern WHERE id = ?");
     $sql->bind_param("i", $id);
     if ($sql->execute()) {
-      $sql->bind_result($bez, $ort, $beginn, $ende, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $aktiv, $text);
+      $sql->bind_result($bez, $ort, $beginn, $ende, $mehrtaegigt, $uhrzeitbt, $uhrzeitet, $ortt, $genehmigt, $notifikationen, $aktiv, $text);
       if (!$sql->fetch()) {$fehler = true;}
     }
     else {$fehler = true;}
@@ -114,6 +115,12 @@ function cms_internertermin_details_laden($id, $gruppe, $gruppenid) {
       $code .= "</td></tr>";
     }
 		$code .= "</table>";
+    $code .= "<h3>Erweiterte Optionen</h3>";
+    $code .= "<table class=\"cms_formular\">";
+    $code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('termin_notifikationen', $notifikationen)."</td></tr>";
+    $code .= "</table>";
+
+
 		$code .= "</div></div>";
 
     $code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";

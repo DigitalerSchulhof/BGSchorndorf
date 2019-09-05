@@ -14,6 +14,8 @@ if (isset($_POST['start'])) {$start = $_POST['start'];} else {echo "FEHLER";exit
 if (isset($_POST['ende'])) {$ende = $_POST['ende'];} else {echo "FEHLER";exit;}
 if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {$modus = '';}
 if (isset($_POST['typ'])) {$typ = $_POST['typ'];} else {echo "FEHLER";exit;}
+if (isset($_POST['geloescht'])) {$geloescht = $_POST['geloescht'];} else {echo "FEHLER";exit;}
+if (isset($_POST['startseite'])) {$startseite = $_POST['startseite'];} else {echo "FEHLER";exit;}
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = true;
 
@@ -26,8 +28,8 @@ if (cms_angemeldet() && $zugriff) {
     } else {
 			$gesamt = $modus == "gesamt";
 			echo cms_besucherstatistik_website($typ, "gesamtaufrufe_linie", json_decode($start, true), json_decode($ende, true), $gesamt);
-			echo cms_besucherstatistik_website($typ, "bereiche_balken", json_decode($start, true), json_decode($ende, true), $gesamt);
-    }
+			echo cms_besucherstatistik_website($typ, "bereiche_balken", json_decode($start, true), json_decode($ende, true), $gesamt, $geloescht, $startseite);
+		}
   }
 	else {
 		echo "FEHLER";

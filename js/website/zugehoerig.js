@@ -1,11 +1,7 @@
-function cms_zugehoerig_laden (jahr, anfang, ende, gruppe, gruppenid) {
-  var feld = document.getElementById('cms_zugehoerig_jahr');
-  feld.innerHTML = '<div class="cms_zugehoerig_spalte_a1"><div class="cms_zugehoerig_spalte_i"><p class="cms_notiz">'+cms_ladeicon()+'<br>Die zugehörigen Inhalte für das Jahr '+jahr+' werden geladen.</p></div></div>';
-
-  for (var i=anfang; i<=ende; i++) {
-    var toggle = document.getElementById('cms_zugehoerig_jahr_'+i);
-    toggle.className = 'cms_toggle';
-  }
+function cms_zugehoerig_laden (feldid, jahr, gruppe, gruppenid, url) {
+  var feld = document.getElementById(feldid);
+  feld.innerHTML = cms_ladeicon()+'<p class="cms_notiz">Die zugehörigen Inhalte für das Jahr '+jahr+' werden geladen.</p>';
+  feld.style.opacity = 1;
 
   var fehler = false;
 
@@ -14,22 +10,23 @@ function cms_zugehoerig_laden (jahr, anfang, ende, gruppe, gruppenid) {
   }
 
 	if (fehler) {
-    feld.innerHTML = '<div class="cms_zugehoerig_spalte_a1"><div class="cms_zugehoerig_spalte_i"><p class="cms_notiz">– ungültige Anfrage –</p></div></div>';
+    feld.innerHTML = '<p class="cms_notiz">– ungültige Anfrage –</p>';
   }
   else {
     var formulardaten = new FormData();
+    formulardaten.append("url",       url)
+    formulardaten.append("feldid",    feldid)
   	formulardaten.append("jahr",      jahr);
   	formulardaten.append("gruppe",    gruppe);
   	formulardaten.append("gruppenid", gruppenid);
   	formulardaten.append("anfragenziel", 	'44');
 
     function anfragennachbehandlung(rueckgabe) {
-      if (rueckgabe.slice(0,4) == '<div') {
-        var toggle = document.getElementById('cms_zugehoerig_jahr_'+jahr);
-        toggle.className = 'cms_toggle_aktiv';
+      if (rueckgabe.slice(0,3) == '<h3>') {
         feld.innerHTML = rueckgabe;
       }
-  		else {cms_fehlerbehandlung(rueckgabe);}
+  		else {feld.innerHTML = rueckgabe;}
+  		//else {feld.innerHTML = '<p class="cms_notiz">– ungültige Anfrage –</p>';}
   	}
 
   	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

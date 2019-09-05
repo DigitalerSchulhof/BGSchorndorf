@@ -21,7 +21,7 @@ function cms_schulhof_raeume_links_anzeigen () {
     }
 
     if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
-    else {$ausgabe = '<p class="cms_notiz">keine Räume angelegt</p>';}
+    else {$ausgabe = '<p class="cms_notiz">Keine Räume angelegt</p>';}
   }
   else {
     $ausgabe = cms_meldung_berechtigung();

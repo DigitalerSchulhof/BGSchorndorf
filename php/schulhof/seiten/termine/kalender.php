@@ -61,7 +61,7 @@ if (!$fehler) {
       $gk = cms_textzudb($g);
       $code .= cms_togglebutton_generieren ('cms_kalender_gruppen_'.$gk, $g, $ansichtG[$g], "cms_kalender_neu('$url');")." ";
     }
-    $code .= "</td></tr>";
+    $code .= "</td></tr></table><table class=\"cms_liste\">";
   $code .= "</table>";
   $code .= "</div></div>";
 
@@ -282,7 +282,7 @@ if (!$fehler) {
     $internvorlink = "Schulhof";
     if ($t['art'] == 'in') {
       $g = $t['gruppenart'];
-      $gk = strtolower($g);
+      $gk = cms_textzudb($g);
       $gid = $t['id'];
       $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = $gid";
       if ($anfrage2 = $dbs->query($sql)) {

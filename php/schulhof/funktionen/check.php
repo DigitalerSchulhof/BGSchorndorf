@@ -1,5 +1,12 @@
 <?php
 function cms_check_mail($mail) {
+	if(is_array($mail)) {
+		$r = true;
+		foreach ($mail as $i => $m)
+			if(!cms_check_mail($m))
+				$r = false;
+		return $r;
+	}
 	if (preg_match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}^', $mail) != 1) {
 		return false;
 	}
@@ -7,6 +14,13 @@ function cms_check_mail($mail) {
 }
 
 function cms_check_titel($titel) {
+	if(is_array($titel)) {
+		$r = true;
+		foreach ($titel as $i => $t)
+			if(!cms_check_titel($t))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]+$/", $titel) != 1) {
 		return false;
 	}
@@ -24,6 +38,13 @@ function cms_check_dateiname($datei) {
 }
 
 function cms_check_nametitel($titel) {
+	if(is_array($titel)) {
+		$r = true;
+		foreach ($titel as $i => $t)
+			if(!cms_check_nametitel($t))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
@@ -31,6 +52,13 @@ function cms_check_nametitel($titel) {
 }
 
 function cms_check_name($name) {
+	if(is_array($name)) {
+		$r = true;
+		foreach ($name as $i => $n)
+			if(!cms_check_name($n))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ ]+$/", $name) != 1) {
 		return false;
 	}
@@ -64,9 +92,16 @@ function cms_check_pfad($pfad) {
 }
 
 function cms_check_ganzzahl($wert, $min = false, $max = false) {
+	if(is_array($wert)) {
+		$r = true;
+		foreach ($wert as $i => $w)
+			if(!cms_check_ganzzahl($w, $min, $max))
+				$r = false;
+		return $r;
+	}
 	if (preg_match("/^-{0,1}[0-9]+$/", $wert) == 1) {
-		if ($min) {if ($wert < $min) {return false;}}
-		if ($max) {if ($wert > $max) {return false;}}
+		if ($min !== false) {if ($wert < $min) {return false;}}
+		if ($max !== false) {if ($wert > $max) {return false;}}
 		return true;
 	}
 	else {return false;}
@@ -168,55 +203,60 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 	if ($CMS_BENUTZERART != "") {
 		if ($CMS_BENUTZERART == 's') {
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Termine vorschlagen'] == '1') {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Blogeinträge vorschlagen'] == '1') {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Termine anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Notizen anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Schüler dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Schüler dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Schüler dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 		}
 		else if ($CMS_BENUTZERART == 'e') {
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Termine vorschlagen'] == '1') {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Blogeinträge vorschlagen'] == '1') {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Termine anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Notizen anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Eltern dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Eltern dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Eltern dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 		}
 		else if ($CMS_BENUTZERART == 'l') {
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen'] == '1') {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen'] == '1') {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
-			$CMS_RECHTE['Personen']['Personen sehen'] = true;
-			$CMS_RECHTE['Zugriffe']['Lehrernetz'] = true;
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Räume sehen'] = true;
-			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
+			$CMS_RECHTE['Technik']['Geräte-Probleme melden'];
+			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'];
+			$CMS_RECHTE['Planung']['Buchungen vornehmen'];
+			$CMS_RECHTE['Personen']['Personen sehen'];
+			$CMS_RECHTE['Zugriffe']['Lehrernetz'];
+			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Räume sehen'];
+			$CMS_RECHTE['Planung']['Raumpläne sehen'];
+			$CMS_RECHTE['Planung']['Leihgeräte sehen'];
 		}
 		else if ($CMS_BENUTZERART == 'v') {
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen'] == '1') {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Blogeinträge vorschlagen'] == '1') {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
-			$CMS_RECHTE['Personen']['Personen sehen'] = true;
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Räume sehen'] = true;
-			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
+			$CMS_RECHTE['Technik']['Geräte-Probleme melden'];
+			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'];
+			$CMS_RECHTE['Planung']['Buchungen vornehmen'];
+			$CMS_RECHTE['Personen']['Personen sehen'];
+			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
+			$CMS_RECHTE['Planung']['Räume sehen'];
+			$CMS_RECHTE['Planung']['Raumpläne sehen'];
+			$CMS_RECHTE['Planung']['Leihgeräte sehen'];
 		}
 		else if ($CMS_BENUTZERART == 'x') {
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen'] == '1') {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Blogeinträge vorschlagen'] == '1') {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Termine anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Notizen anlegen'] == '1') {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Externe dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Externe dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
+			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
 		}
 	}
 
@@ -258,7 +298,8 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	$CMS_RECHTE['termine'] = false;
 	$CMS_RECHTE['blogeintraege'] = false;
 	$CMS_RECHTE['chatten'] = false;
-	$CMS_RECHTE['chattenab'] = false;
+	$CMS_RECHTE['nachrichtloeschen'] = false;
+	$CMS_RECHTE['nutzerstummschalten'] = false;
 	$CMS_RECHTE['mitglied'] = false;
 	$CMS_RECHTE['sichtbar'] = false;
 	$CMS_RECHTE['bearbeiten'] = false;
@@ -282,7 +323,8 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 					$CMS_RECHTE['termine'] = true;
 					$CMS_RECHTE['blogeintraege'] = true;
 					$CMS_RECHTE['chatten'] = true;
-					$CMS_RECHTE['chattenab'] = true;
+					$CMS_RECHTE['nachrichtloeschen'] = true;
+					$CMS_RECHTE['nutzerstummschalten'] = true;
 					$CMS_RECHTE['mitglied'] = true;
 					$CMS_RECHTE['sichtbar'] = true;
 					$CMS_RECHTE['bearbeiten'] = true;
@@ -294,10 +336,10 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		// Falls kein Vorsitz oder keine Aufsicht vorliegt, prüfe weiter
 		if (!$CMS_RECHTE['bearbeiten']) {
 			// Mitgliedschaft prüfen
-			$sql = $dbs->prepare("SELECT dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab FROM $gk"."mitglieder WHERE gruppe = ? AND person = ?");
+			$sql = $dbs->prepare("SELECT dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten FROM $gk"."mitglieder WHERE gruppe = ? AND person = ?");
 			$sql->bind_param("ii", $gruppenid, $benutzer);
 			if ($sql->execute()) {
-		    $sql->bind_result($dateiupload, $dateidownload, $dateiloeschen, $dateiumbenennen, $termine, $blogeintraege, $chatten, $chattenab);
+		    $sql->bind_result($dateiupload, $dateidownload, $dateiloeschen, $dateiumbenennen, $termine, $blogeintraege, $chatten, $nachrichtloeschen, $nutzerstummschalten);
 		    if ($sql->fetch()) {
 					if ($dateiupload == '1') {$CMS_RECHTE['dateiupload'] = true;}
 					if ($dateidownload == '1') {$CMS_RECHTE['dateidownload'] = true;}
@@ -306,9 +348,10 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 					if ($termine == '1') {$CMS_RECHTE['termine'] = true;}
 					if ($blogeintraege == '1') {$CMS_RECHTE['blogeintraege'] = true;}
 					if ($chatten == '1') {$CMS_RECHTE['chatten'] = true;}
+					if ($nachrichtloeschen == '1') {$CMS_RECHTE['nachrichtloeschen'] = true;}
+					if ($nutzerstummschalten == '1') {$CMS_RECHTE['nutzerstummschalten'] = true;}
 					$CMS_RECHTE['mitglied'] = true;
 					$CMS_RECHTE['sichtbar'] = true;
-					$CMS_RECHTE['chattenab'] = $chattenab;
 				}
 		  }
 		  $sql->close();
@@ -325,7 +368,8 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 				else if ($sichtbar == 3) {$CMS_RECHTE['sichtbar'] = true;}
 				if ($chataktiv == 0) {
 					$CMS_RECHTE['chatten'] = false;
-					$CMS_RECHTE['chattenab'] = false;
+					$CMS_RECHTE['nachrichtloeschen'] = false;
+					$CMS_RECHTE['nutzerstummschalten'] = false;
 				}
 			}
 	  }
@@ -653,6 +697,48 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
   }
 
   return false;
+}
+
+function postLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			postLesen($f, $nullfehler);
+		return;
+	}
+	global $$feld;
+
+	if(isset($_POST[$feld]))
+		$$feld = $_POST[$feld];
+	else
+		if($nullfehler)
+			die("FEHLER");
+}
+
+function getLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			getLesen($f, $nullfehler);
+		return;
+	}
+	global $$feld;
+
+	if(isset($_GET[$feld]))
+		$$feld = $_GET[$feld];
+	else
+		if($nullfehler)
+			die("FEHLER");
+}
+
+function sqlLesen($row, $feld) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			sqlLesen($row, $f);
+		return;
+	}
+	global $$feld;
+
+	if(isset($row[$feld]))
+		$$feld = $row[$feld];
 }
 
 ?>

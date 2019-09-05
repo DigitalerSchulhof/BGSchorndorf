@@ -1,11 +1,10 @@
 <?php
 function cms_mailsenden($empfaenger, $mailempfaenger, $betreff, $textHTML, $text) {
 	global $CMS_MAILHOST, $CMS_MAILSMTPAUTH, $CMS_MAILUSERNAME, $CMS_MAILPASSWORT, $CMS_MAILABSENDER, $CMS_SCHULE, $CMS_ORT, $CMS_WEBMASTER, $CMS_DOMAIN, $CMS_LOGO;
-
 	$umschlag = new PHPMailer();
 	$umschlag->CharSet  = 'utf-8';
 	$umschlag->IsSMTP();
-    $umschlag->Host     = $CMS_MAILHOST;
+  $umschlag->Host     = $CMS_MAILHOST;
 	$umschlag->SMTPAuth = $CMS_MAILSMTPAUTH;
 	$umschlag->Username = $CMS_MAILUSERNAME;
 	$umschlag->Password = $CMS_MAILPASSWORT;
@@ -22,8 +21,8 @@ function cms_mailsenden($empfaenger, $mailempfaenger, $betreff, $textHTML, $text
 		$HTML .= "<a style=\"display:inline-block;text-decoration:none;font-size:inherit; text-align: left;\" href=\"$CMS_DOMAIN\">";
 		  $HTML .= "<img style=\"float:left;padding-right:10px; color: #000000;\" src=\"$CMS_DOMAIN/res/logos/$CMS_LOGO\"/>";
 	    $HTML .= "<span style=\"float:left;display:block; color: #000000;\">";
-	      $HTML .= "<span style=\"font-weight:bold;font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">Burg-Gymnasium</span>";
-	      $HTML .= "<span style=\"font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">Schorndorf</span>";
+	      $HTML .= "<span style=\"font-weight:bold;font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">$CMS_SCHULE</span>";
+	      $HTML .= "<span style=\"font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">$CMS_ORT</span>";
 	    $HTML .= "</span>";
 			$HTML .= "<div style=\"clear:both\"></div>";
 	  $HTML .= "</a>";
@@ -35,7 +34,7 @@ function cms_mailsenden($empfaenger, $mailempfaenger, $betreff, $textHTML, $text
 
 	$HTML .= "</body>";
 	$HTML .= "</html>";
-	
+
 	$umschlag->Body = $HTML;
 	$umschlag->AltBody  =  $text;
 	return $mailerfolg = $umschlag->Send();

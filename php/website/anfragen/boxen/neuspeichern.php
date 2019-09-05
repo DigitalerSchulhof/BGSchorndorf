@@ -13,7 +13,6 @@ if (isset($_POST['ausrichtung'])) {$ausrichtung = $_POST['ausrichtung'];} else {
 if (isset($_POST['breite'])) {$breite = $_POST['breite'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['boxenanzahl'])) {$boxenanzahl = $_POST['boxenanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['boxenids'])) {$boxenids = $_POST['boxenids'];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION['ELEMENTPOSITION'])) {$position = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();

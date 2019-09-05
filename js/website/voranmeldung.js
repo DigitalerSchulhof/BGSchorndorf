@@ -495,7 +495,7 @@ function cms_voranmeldung_speichern() {
 
 	var korrekt = document.getElementById('cms_korrekt').value;
 	var code = document.getElementById('cms_spamverhinderung').value;
-
+	var uid = $("img.cms_spamschutz").data("uuid");
 	var meldung = '<p>Die Ansprechpartner konnten nicht gespeichert werden, denn ...</p><ul>';
 	var fehler = false;
 	var jetzt = new Date();
@@ -512,8 +512,9 @@ function cms_voranmeldung_speichern() {
 
 	if (!fehler) {
 		var formulardaten = new FormData();
-		formulardaten.append("code", code);
+		formulardaten.append("code", 		code);
 		formulardaten.append("korrekt", korrekt);
+		formulardaten.append("uid", 		uid);
 		formulardaten.append("anfragenziel", '246');
 
 		function anfragennachbehandlung(rueckgabe) {

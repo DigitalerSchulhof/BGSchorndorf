@@ -191,7 +191,7 @@ function cms_schuljahrfabrik_grundlagen() {
 		formulardaten.append("wettbewerbegewaehlt",	wettbewerbegewaehlt);
 		formulardaten.append("ereignissegewaehlt",	ereignissegewaehlt);
 		formulardaten.append("sonstigegruppengewaehlt",	sonstigegruppengewaehlt);
-		formulardaten.append("anfragenziel", 	'270');
+		formulardaten.append("anfragenziel", 	'342');
 
 		function anfragennachbehandlung(rueckgabe) {
       var nachfehler = false;
@@ -237,7 +237,7 @@ function cms_schuljahrfabrik_profile() {
 
 		var formulardaten = new FormData();
 		formulardaten.append("profilegewaehlt",	profilegewaehlt);
-		formulardaten.append("anfragenziel", 	'271');
+		formulardaten.append("anfragenziel", 	'343');
 
 		function anfragennachbehandlung(rueckgabe) {
       var nachfehler = false;
@@ -272,7 +272,7 @@ function cms_schuljahrfabrik_schueleruebernehmen(feldid, bestandsid, gruppe, gru
 		formulardaten.append("gruppenid",	gruppenid);
 		formulardaten.append("bestand",	bestand);
 		formulardaten.append("feldid",	bestandsid);
-		formulardaten.append("anfragenziel", 	'272');
+		formulardaten.append("anfragenziel", 	'344');
 
 		function anfragennachbehandlung(rueckgabe) {
       var nachfehler = false;
@@ -383,7 +383,7 @@ function cms_schuljahrfabrik_schueleringruppen() {
 		cms_laden_an('Schuljahrfabrik – Schüler in Gruppen', 'Eingaben werden geprüft.');
 
     formulardaten.append("loeschen",	loeschen);
-		formulardaten.append("anfragenziel", 	'273');
+		formulardaten.append("anfragenziel", 	'345');
 
 		function anfragennachbehandlung(rueckgabe) {
       var nachfehler = false;
@@ -513,7 +513,7 @@ function cms_schuljahrfabrik_klassenkurse() {
       if (rueckgabe.match(/^ERFOLG/)) {
         var formulardateninnen = new FormData();
         formulardateninnen.append("uebertragungsid", rueckgabe.substr(6));
-        formulardateninnen.append("anfragenziel", 	'275');
+        formulardateninnen.append("anfragenziel", 	'346');
 
         function anfragennachbehandlunginnen(rueckgabe) {
           var nachfehler = false;
@@ -575,7 +575,7 @@ function cms_schuljahrfabrik_stufenkurse() {
     formulardaten.append("stufen", stufen);
     formulardaten.append("altestufen", altestufen);
     formulardaten.append("faecher", faecher);
-    formulardaten.append("anfragenziel", 	'276');
+    formulardaten.append("anfragenziel", 	'347');
 
     // Senden vorbereiten: Kurse nach Stufen
     var faecherprostufe = false;
@@ -682,7 +682,7 @@ function cms_schuljahrfabrik_personeninkursen() {
   var formulardaten = new FormData();
   if (!fehler) {
     formulardaten.append("kurse", kurse);
-    formulardaten.append("anfragenziel", 	'277');
+    formulardaten.append("anfragenziel", 	'348');
 
     // Senden vorbereiten: Personen in Kursen
     var personenfehler = false;
