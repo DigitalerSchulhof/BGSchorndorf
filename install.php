@@ -1,8 +1,8 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = false;
-$einstellungenplaetten = false;
-$zulaessigedateienplaetten = false;
+$rechteplaetten = true;
+$einstellungenplaetten = true;
+$zulaessigedateienplaetten = true;
 $gremienklassen = false;
 $postfachordner = false;
 $update = false;
@@ -444,15 +444,13 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stufenstundenpläne sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stunden anlegen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stunden löschen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanzeiträume anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanzeiträume bearbeiten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanzeiträume löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanzeiträume rythmisieren', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -460,13 +458,9 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen anlegen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen bearbeiten', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen löschen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanung durchführen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stunden und Tagebücher erzeugen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Vertretungsplanung durchführen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -755,6 +749,11 @@ if ($update) {
 	profile
 	profilfaecher
 	auffaelliges
+	galerien
+	regelunterricht
+	zeitraeume
+	stufen
+	rythmisierung
 	$sql = "CREATE TABLE `dauerbrenner` (
 	  `id` bigint(255) UNSIGNED NOT NULL,
 	  `bezeichnung` varbinary(5000) NOT NULL,

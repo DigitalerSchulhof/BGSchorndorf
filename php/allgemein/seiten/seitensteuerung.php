@@ -187,12 +187,16 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_rythmisieren']  = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumrythmisieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_klonen']        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumklonen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile']                          = 'php/schulhof/seiten/verwaltung/profile/profile.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Neues_Profil_anlegen']     = 'php/schulhof/seiten/verwaltung/profile/neuesprofil.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Profil_bearbeiten']        = 'php/schulhof/seiten/verwaltung/profile/profilbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer']                           = 'php/schulhof/seiten/verwaltung/faecher/faecher.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen']        = 'php/schulhof/seiten/verwaltung/faecher/neuesfach.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Fach_bearbeiten']           = 'php/schulhof/seiten/verwaltung/faecher/fachbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Stundenplanung']                   = 'php/schulhof/seiten/verwaltung/stundenplanung/stundenplanung.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Stunden_und_Tagebücher_erzeugen']  = 'php/schulhof/seiten/verwaltung/stundenplanung/stundenerzeugen.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume']                                    = 'php/schulhof/seiten/verwaltung/raeume/raeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume/Neuen_Raum_anlegen']                 = 'php/schulhof/seiten/verwaltung/raeume/neuerraum.php';

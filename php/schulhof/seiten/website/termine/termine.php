@@ -8,8 +8,7 @@ include_once('php/schulhof/seiten/website/termine/terminsuche.php');
 
 $bearbeiten = $CMS_RECHTE['Website']['Termine bearbeiten'];
 $loeschen = $CMS_RECHTE['Website']['Termine löschen'];
-$anlegen = $CMS_RECHTE['Website']['Termine anlegen'];
-$anzeigen = $bearbeiten || $loeschen || $anlegen;
+$anzeigen = $bearbeiten || $loeschen;
 
 if ($anzeigen) {
   $canlegen = '';
@@ -71,7 +70,7 @@ if ($anzeigen) {
   $code .= $canzeigen;
 
 
-  if ($anlegen) {
+  if ($CMS_RECHTE['Website']['Termine anlegen']) {
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('Schulhof/Website/Termine')\">+ Neuer öffentlicher Termin</span></p>";
   }
 }

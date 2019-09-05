@@ -23,6 +23,8 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 
 if ($art == 'Stufen') {
 	if (isset($_POST['reihenfolge'])) {$reihenfolge = $_POST['reihenfolge'];} else {echo "FEHLER"; exit;}
+	if (isset($_POST['tagebuch'])) {$tagebuch = $_POST['tagebuch'];} else {echo "FEHLER"; exit;}
+	if (isset($_POST['gfs'])) {$gfs = $_POST['gfs'];} else {echo "FEHLER"; exit;}
 }
 if ($art == 'Klassen') {
 	if (isset($_POST['stundenplanextern'])) {$stundenplanextern = $_POST['stundenplanextern'];} else {echo "FEHLER"; exit;}
@@ -51,6 +53,13 @@ if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
+	if ($art == 'Kurse') {if (!cms_check_titel($kurzbezeichnung)) {$fehler = true;}}
+	if ($art == 'Stufen') {
+		if (!cms_check_ganzzahl($reihenfolge,1)) {$fehler = true;}
+		if (!cms_check_toggle($tagebuch)) {$fehler = true;}
+		if (!cms_check_toggle($gfs)) {$fehler = true;}
+	}
+
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
 	if (!cms_check_toggle($chat)) {$fehler = true;}
@@ -313,8 +322,8 @@ if (cms_angemeldet() && $zugriff) {
 				$sql->execute();
 				$sql->close();
 
-				$sql = $dbs->prepare("UPDATE stufen SET reihenfolge = ? WHERE id = ?");
-				$sql->bind_param("ii", $reihenfolge, $id);
+				$sql = $dbs->prepare("UPDATE stufen SET reihenfolge = ?, tagebuch = ?, gfs = ? WHERE id = ?");
+				$sql->bind_param("iiii", $reihenfolge, $tagebuch, $gfs, $id);
 				$sql->execute();
 				$sql->close();
 			}
@@ -374,13 +383,15 @@ if (cms_angemeldet() && $zugriff) {
       }
 			$sql->close();
 
-      // Vorsitz eintragen
-			$sql = $dbs->prepare("INSERT INTO $artk"."vorsitz (gruppe, person) VALUES (?, ?)");
-      foreach ($VOR as $i) {
-				$sql->bind_param("ii", $id, $i);
-				$sql->execute();
-      }
-			$sql->close();
+			if (strlen($vorsitz) > 0) {
+	      // Vorsitz eintragen
+				$sql = $dbs->prepare("INSERT INTO $artk"."vorsitz (gruppe, person) VALUES (?, ?)");
+	      foreach ($VOR as $i) {
+					$sql->bind_param("ii", $id, $i);
+					$sql->execute();
+	      }
+				$sql->close();
+			}
     }
 
     if (strlen($aufsicht) > 0) {

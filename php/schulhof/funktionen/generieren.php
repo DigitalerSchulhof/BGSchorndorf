@@ -512,10 +512,22 @@ function cms_schieber_generieren($id, $wert, $zusatzaktion = '') {
 
 function cms_positionswahl_generieren($id, $position, $maxpos, $neu = false) {
   if ($neu) {$maxpos++;}
-  $code = "<select name=\"$id\", id=\"$id\">";
+  $code = "<select name=\"$id\" id=\"$id\">";
   for ($i=1; $i<=$maxpos; $i++) {
     if ($i == $position) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
     $code .= "<option$zusatz value=\"$i\">$i</option>";
+  }
+  $code .= "</select>";
+  return $code;
+}
+/**
+* $index: selected nach index festlegen?
+**/
+function cms_select_generieren($id, $klasse, $werte, $wert = null, $index = false) {
+  $code = "<select name=\"$id\", id=\"$id\" class=\"$klasse\">";
+  foreach ($werte as $i => $w) {
+    if (($index && $i == $wert) || (!$index && $w == $wert)) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+    $code .= "<option$zusatz value=\"".($index?$i:$w)."\">$w</option>";
   }
   $code .= "</select>";
   return $code;
@@ -674,6 +686,22 @@ function cms_generiere_hinweisicon($icon, $hinweis) {
   return "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
 }
 
+function cms_generiere_hinweisinformation($text, $hinweis) {
+  return "<span class=\"cms_hinweis_aussen\">$text:<span class=\"cms_hinweis\">$hinweis</span>";
+}
+
+
+function cms_generiere_sqlidliste($idliste) {
+  return "(".str_replace('|', ',', substr($idliste, 1)).")";
+}
+
+function cms_generiere_idlisteanzahl($idliste) {
+  if ($idliste == "()") {return false;}
+  return count(explode(',', $idliste));
+}
+
+function cms_ladeicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
+
 /**
 * Gültige SQL-Query braucht $tabelle, sonst kommt nur der select Teil
 **/
@@ -693,5 +721,38 @@ function cms_sql_mit_aes($felder, $tabelle = "", $bedingung = "") {
       $sql .= " WHERE $bedingung";
   }
   return $sql;
+}
+
+// Alt - Aktuell - Neu
+function cms_sql_aan($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_aan($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert."alt = $f, ".$wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
+}
+//  Aktuell - Neu
+function cms_sql_an($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_an($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
 }
 ?>

@@ -15,14 +15,16 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 	$fr = 1;
 	$sa = 0;
 	$so = 0;
+	$aktiv = 0;
+	$rythmen = 1;
 	$schulstunden = array();
 
 	if ($zeitraumid != "-") {
 
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende, mo, di, mi, do, fr, sa, so FROM zeitraeume WHERE id = ?");
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende, mo, di, mi, do, fr, sa, so, rythmen, aktiv FROM zeitraeume WHERE id = ?");
 	  $sql->bind_param("i", $zeitraumid);
 	  if ($sql->execute()) {
-	    $sql->bind_result($bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so);
+	    $sql->bind_result($bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv);
 	    $sql->fetch();
 	  }
 	  $sql->close();
@@ -63,7 +65,23 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_sa', $sa)."</td>";
 		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_so', $so)."</td>";
 		$code .= "</tr>";
+		$code .= "<tr><th>Wochenrythmen:</th><td colspan=\"7\"><select name=\"cms_zeitraeume_rythmen\" id=\"cms_zeitraeume_rythmen\">";
+			if ($rythmen == 1) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+			$code .= "<option value=\"1\"$zusatz>keine</option>";
+			$buchstaben = "A";
+			for ($i=2; $i<=26; $i++) {
+				if ($rythmen == $i) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+				$buchstaben .= ", ".chr(64+$i);
+				$code .= "<option value=\"$i\"$zusatz>$buchstaben</option>";
+			}
+			$code .= "</select>";
+			$code .= "<tr><th>".cms_generiere_hinweisinformation("Aktiv", "Inaktive Zeiträume sind nicht öffentlich und werden beim Erzeugen von Tagebüchern und Stunden nicht berücksichtigt.")."</th><td colspan=\"7\">".cms_schieber_generieren('zeitraeume_aktiv', $aktiv)."</td></tr>";
+		$code .= "</td></tr>";
 	$code .= "</table>";
+
+	if ($zeitraumid != '-') {
+		$code .= cms_meldung('warnung', '<h4>Verringerung der Unterrichtstage und Wochenrythmen</h4><p>Eine Verringerung der Unterrichtstage oder Wochenrythmen führt dazu, dass alle Unterrichtsstunden gelöscht werden, die nicht mehr stattfindenden Unterrichtstagen oder Wochenrythmisierungen zugewiesen wurden.</p>');
+	}
 
 	$code .= "</div></div>";
 

@@ -14,7 +14,8 @@ function cms_seitenwahl_generieren($dbs, $id) {
 
 function cms_seitenwahl_seiten ($dbs, $id, $oberseite, $sichtbar = false) {
 	$code = "";
-	$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung = '$oberseite' ORDER BY position";
+	if ($oberseite == '-') {$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung IS NULL ORDER BY position";}
+	else {$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung = '$oberseite' ORDER BY position";}
 	if ($anfrage = $dbs->query($sql)) {
 		if (!$sichtbar) {$style = " style=\"display: none;\"";} else {$style = "";}
 		$code .= "<ul$style class=\"$id"."_wahl_gruppe_".$oberseite."\">";

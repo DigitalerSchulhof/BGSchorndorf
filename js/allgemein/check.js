@@ -24,8 +24,10 @@ function cms_check_toggle(wert) {
 }
 
 function cms_check_ganzzahl(wert, min, max) {
-	min = !min && min !== 0 ? false : min;
-	max = !max && max !== 0 ? false : max;
+	if(!(min || min === 0))
+		min = false;
+	if(!(max || max === 0))
+		max = false;
 	wert = wert.toString();
 	if (wert.match(/^-{0,1}[0-9]+$/)) {
 		if (min !== false) {if (parseInt(wert) < min) {return false;}}

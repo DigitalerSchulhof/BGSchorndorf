@@ -22,6 +22,8 @@ if (isset($_POST['do'])) {$do = $_POST['do'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['fr'])) {$fr = $_POST['fr'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sa'])) {$sa = $_POST['sa'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['so'])) {$so = $_POST['so'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['rythmen'])) {$rythmen = $_POST['rythmen'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['aktiv'])) {$aktiv = $_POST['aktiv'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenanzahl'])) {$schulstundenanzahl = $_POST['schulstundenanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenids'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMBEARBEITEN'])) {$zeitraumid = $_SESSION['ZEITRAUMBEARBEITEN'];} else {echo "FEHLER";exit;}
@@ -42,12 +44,14 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_toggle($fr)) {echo "FEHLER"; exit;}
 	if (!cms_check_toggle($sa)) {echo "FEHLER"; exit;}
 	if (!cms_check_toggle($so)) {echo "FEHLER"; exit;}
+	if (!cms_check_toggle($aktiv)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnT,1,31)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnM,1,12)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($beginnJ,0)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($endeT,1,31)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($endeM,1,12)) {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($endeJ,0)) {echo "FEHLER"; exit;}
+	if (!cms_check_ganzzahl($rythmen,1,26)) {echo "FEHLER"; exit;}
 
 	$beginn = mktime(0,0,0,$beginnM,$beginnT,$beginnJ);
 	$ende = mktime(23,59,59,$endeM,$endeT,$endeJ);
@@ -65,9 +69,22 @@ if (cms_angemeldet() && $zugriff) {
     if ($sql->fetch()) {
 			if ($anzahl != 1) {$fehler = true;}
 			if (($beginn < $sjbeginn) || ($ende > $sjende)) {echo "ZEIT"; $fehler = true;}
-		}
+		} else {$fehler = true;}
   } else {$fehler = true;}
   $sql->close();
+
+	if (!$fehler) {
+		// Prüfen, ob sich die Zeiträume überschneiden
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM zeitraeume WHERE ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?)) AND id != ?");
+		$sql->bind_param("iiiiiii", $beginn, $ende, $beginn, $ende, $beginn, $ende, $zeitraumid);
+		if ($sql->execute()) {
+	    $sql->bind_result($anzahl);
+	    if ($sql->fetch()) {
+				if ($anzahl != 0) {$fehler = true; echo "DOPPELT";}
+			} else {$fehler = true;}
+	  } else {$fehler = true;}
+	  $sql->close();
+	}
 
 	if (!$fehler) {
 
@@ -134,8 +151,8 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// ZEITRAUM EINTRAGEN
-		$sql = $dbs->prepare("UPDATE zeitraeume SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ? WHERE id = ?");
-	  $sql->bind_param("siiiiiiiiii", $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $zeitraumid);
+		$sql = $dbs->prepare("UPDATE zeitraeume SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ?, ende = ?, mo = ?, di = ?, mi = ?, do = ?, fr = ?, sa = ?, so = ?, rythmen = ?, aktiv = ? WHERE id = ?");
+	  $sql->bind_param("siiiiiiiiiiii", $bezeichnung, $beginn, $ende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv, $zeitraumid);
 	  $sql->execute();
 	  $sql->close();
 
@@ -164,23 +181,30 @@ if (cms_angemeldet() && $zugriff) {
 		$sidsvorhanden = $sidsvorhanden."|";
 
 		$sids = explode('|', $schulstundenids);
-		$sqlneu = $dbs->prepare("UPDATE schulstunden SET zeitraum = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginns = ?, beginnm = ?, endes = ?, endem = ? WHERE id = ?");
-		$sqlalt = $dbs->prepare("UPDATE schulstunden SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginns = ?, beginnm = ?, endes = ?, endem = ? WHERE id = ?");
+		$sql = $dbs->prepare("UPDATE schulstunden SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginns = ?, beginnm = ?, endes = ?, endem = ? WHERE id = ?");
 		for ($i=1; $i<count($sids); $i++) {
 			// Nicht neu hinzugefügt
 			if (substr($sids[$i], 0,4) != 'temp') {
-				$sqlalt->bind_param("siiiii", $schulstunden[$i]['bez'], $schulstunden[$i]['beginns'], $schulstunden[$i]['beginnm'], $schulstunden[$i]['endes'], $schulstunden[$i]['endem'], $sids[$i]);
-				$sqlalt->execute();
+				$sql->bind_param("siiiii", $schulstunden[$i]['bez'], $schulstunden[$i]['beginns'], $schulstunden[$i]['beginnm'], $schulstunden[$i]['endes'], $schulstunden[$i]['endem'], $sids[$i]);
+				$sql->execute();
+				$sidsvorhanden = str_replace('|'.$sids[$i].'|', '|', $sidsvorhanden);
 			}
-			else {
+		}
+		$sql->close();
+
+
+		$sql = $dbs->prepare("UPDATE schulstunden SET zeitraum = ?, bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginns = ?, beginnm = ?, endes = ?, endem = ? WHERE id = ?");
+		for ($i=1; $i<count($sids); $i++) {
+			// Nicht neu hinzugefügt
+			if (substr($sids[$i], 0,4) == 'temp') {
 				$sid = cms_generiere_kleinste_id('schulstunden');
-				$sqlneu->bind_param("isiiiii", $zeitraumid, $schulstunden[$i]['bez'], $schulstunden[$i]['beginns'], $schulstunden[$i]['beginnm'], $schulstunden[$i]['endes'], $schulstunden[$i]['endem'], $sid);
-				$sqlneu->execute();
+				$sql->bind_param("isiiiii", $zeitraumid, $schulstunden[$i]['bez'], $schulstunden[$i]['beginns'], $schulstunden[$i]['beginnm'], $schulstunden[$i]['endes'], $schulstunden[$i]['endem'], $sid);
+				$sql->execute();
+				$sidsvorhanden = str_replace('|'.$sids[$i].'|', '|', $sidsvorhanden);
 			}
 			$sidsvorhanden = str_replace('|'.$sids[$i].'|', '|', $sidsvorhanden);
 		}
-		$sqlneu->close();
-		$sqlalt->close();
+		$sql->close();
 
 		// Übrige GIDSVORHANDEN löschen
 		if (strlen($sidsvorhanden) > 1) {

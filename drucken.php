@@ -19,7 +19,6 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="descriptopn" content="Das Burg-Gymnasium ist ein allgemeinbildendes Gymnasium im Herzen der Stadt Schorndorf.">
 	<meta name="format-detection" content="address=no">
 	<meta name="format-detection" content="date=no">
 	<meta name="format-detection" content="email=no">
@@ -43,8 +42,8 @@
 			$code .= "<span id=\"cms_logo\">";
 				$code .= "<img id=\"cms_logo_bild\" src=\"res/logos/bglogodruck.png\">";
 				$code .= "<span id=\"cms_logo_schrift\">";
-					$code .= "<span id=\"cms_logo_o\">Burg-Gymnasium</span>";
-					$code .= "<span id=\"cms_logo_u\">Schorndorf</span>";
+					$code .= "<span id=\"cms_logo_o\">$CMS_SCHULE</span>";
+					$code .= "<span id=\"cms_logo_u\">$CMS_ORT</span>";
 				$code .= "</span><div class=\"cms_clear\">";
 				$code .= "</div>";
 			$code .= "</span>";

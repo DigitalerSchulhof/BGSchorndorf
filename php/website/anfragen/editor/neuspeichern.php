@@ -11,7 +11,6 @@ session_start();
 if (isset($_POST['aktiv'])) {$aktiv = $_POST['aktiv'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['position'])) {$position = $_POST['position'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['inhalt'])) {$inhalt = $_POST['inhalt'];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION['ELEMENTPOSITION'])) {$position = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();

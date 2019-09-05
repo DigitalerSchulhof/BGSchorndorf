@@ -128,3 +128,27 @@ function cms_farbbeispiel_waehlen(nr, id) {
 	document.getElementById('cms_farbbeispiel_'+nr).className = "cms_farbbeispiel_aktiv cms_farbbeispiel_"+nr;
 	document.getElementById(id).value = nr;
 }
+
+function cms_neue_captcha(uid) {
+  cms_laden_an("Sicherheitsabfrage aktualisieren", "Die Daten werden neu geladen.")
+  var img = $(".cms_spamschutz_"+uid);
+  var box = $("#cms_spamverhinderung_"+uid);
+  box.val("");
+  var formulardaten = new FormData();
+
+  formulardaten.append("alteuuid",      uid);
+  formulardaten.append("anfragenziel",  '268');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if(rueckgabe == "FEHLER")
+    cms_meldung_an('fehler', 'Neue Captcha', '<p>Bei der Erstellung einer neuen Sicherheitsabfrage ist ein unbekannter Fehler aufgetreten.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Korrigieren</span></p>');
+    else {
+      var r = $(rueckgabe);
+      img.replaceWith(r);
+      box.attr("id", "cms_spamverhinderung_"+r.data("uuid"));
+    }
+    cms_laden_aus();
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}

@@ -41,7 +41,7 @@ function cms_schulhofnavigation () {
 }
 
 function cms_schulhofnavigation_nutzerkonto($dbs) {
-	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL;
+	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 	$sql = "SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;";
 	$anzahl['-'] = 0;
 	$anzahl[1] = 0;
@@ -59,6 +59,19 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 	else if ($gesamt > 0) {
 		$meldezahl = "<span class=\"cms_meldezahl\">$gesamt</span>";
 	}
+
+	// Gruppen anzeigen
+	$meinegruppenpc = "";
+	include_once('php/schulhof/seiten/gruppen/mitgliedschaftenausgeben.php');
+	foreach ($CMS_GRUPPEN as $g) {
+		$gruppencode = cms_gruppen_mitgliedschaften_anzeigen($dbs, $g, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR);
+		if (strlen($gruppencode) > 0) {
+			$gruppencode = str_replace('<ul>', '', $gruppencode);
+			$gruppencode = str_replace('</ul>', '', $gruppencode);
+			$meinegruppenpc .= $gruppencode;
+		}
+	}
+	$meinegruppenmobil = str_replace('class="cms_button"', '', $meinegruppenpc);
 
 	$aufgabenpc = "";
 	$aufgabenmobil = "";
@@ -87,11 +100,12 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['mobil'] .= "</ul>";
 				$code['mobil'] .= "</div>";
 			$code['mobil'] .= "</li>";
-			if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
+			if ((($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) && (strlen($meinegruppenmobil) > 0)) {
 				$code['mobil'] .= "<li><a href=\"Schulhof/Gruppen\">Gruppen</a><span id=\"cms_mobilmenue_knopf_n_gruppen\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_zeigen('n_gruppen')\">&#8628;</span>";
 					$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_n_gruppen\" style=\"display:none;\">";
+
 						$code['mobil'] .= "<ul>";
-							$code['mobil'] .= "<li>kommt noch ...</li>";
+							$code['mobil'] .= $meinegruppenmobil;
 						$code['mobil'] .= "</ul>";
 					$code['mobil'] .= "</div>";
 				$code['mobil'] .= "</li>";
@@ -136,7 +150,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
 					$code['pc'] .= "<h3>Gruppen</h3>";
 					$code['pc'] .= "<ul>";
-						$code['pc'] .= "<li>kommt noch</li>";
+						$code['pc'] .= $meinegruppenpc;
 					$code['pc'] .= "</ul>";
 					}
 				$code['pc'] .= "</div>";
@@ -455,6 +469,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	}
 	// PLANUNG
 	$VERplanung = "";
+	if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schuljahrfabrik_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Schuljahrfabrik</a></li> ";
+	}
 	if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanzeiträume</a></li> ";
 	}
@@ -462,7 +479,19 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_faecher_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Fächer</a></li> ";
 	}
 	if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
-		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanung</a></li> ";
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Profile</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stundenplanung</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">Vertretungsplan</a></li> ";
+	}
+	if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";
 	}
 	// ORGANISATION
 	$VERorganisation = "";

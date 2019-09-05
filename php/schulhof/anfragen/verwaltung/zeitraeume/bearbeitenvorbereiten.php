@@ -7,7 +7,7 @@ include_once("../../schulhof/funktionen/check.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
+if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'];

@@ -62,6 +62,7 @@
 			}
 			?>
 
+			<div class="cms_clear"></div>
 		</div>
 	</div>
 </div>

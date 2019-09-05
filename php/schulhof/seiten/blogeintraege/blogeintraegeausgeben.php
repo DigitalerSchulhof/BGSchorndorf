@@ -284,8 +284,6 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			}
 			$code .= $blogeintrag['text'];
 
-			$code .= "<br>".cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
-
 			$code .= "</div></div>";
 
 			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0)) {
@@ -328,7 +326,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 }
 
 function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
-	global $CMS_GRUPPEN, $CMS_SCHLUESSEL;
+	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_URL;
 	$code = "<h3>".$daten['bezeichnung']."</h3><ul class=\"cms_termindetails\">";
 	$code .= "<li>".cms_blogeintrag_dauerdetail($daten, $zeiten)."<li>";
 
@@ -346,19 +344,24 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 		$sql = "";
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
-			$sqlsolo =
-			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ".$daten['id'].")";
+			$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ?)";
 		}
 		$sql = substr($sql, 7);
-		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($gruppen = $anfrage->fetch_assoc()) {
-				$verknuepfung .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$gruppen['icon']."')\">".$gruppen['bezeichnung']."</span></li>";
+		$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
+		$sql->bind_param("iiiiiiiiiii", $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id']);
+		if (count($CMS_URL)>0) {$link = $CMS_URL[0];}
+		else {$link = "Website";}
+		if ($sql->execute()) {
+			$sql->bind_result($gid, $ggruppe, $gbez, $gicon);
+			while ($sql->fetch()) {
+				$event = " onclick=\"cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahr']."', '$ggruppe', '$gid', '$link')\"";
+				$verknuepfung .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$gicon')\"$event>$gbez</span></li>";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		if (strlen($verknuepfung) > 0) {
 			$code .= "<h3>Zugehörige Gruppen</h3><ul class=\"cms_termindetails\">$verknuepfung</ul>";
+			$code .= "<div class=\"cms_zugehoerig\" id=\"cms_zugehoerig_".$daten['id']."\"></div>";
 		}
 	}
 

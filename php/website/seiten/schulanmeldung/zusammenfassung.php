@@ -72,7 +72,6 @@ if (isset($_SESSION['VORANMELDUNG_A2_HANDY1'])) {$ahandy12 = $_SESSION['VORANMEL
 if (isset($_SESSION['VORANMELDUNG_A2_MAIL'])) {$amail2 = $_SESSION['VORANMELDUNG_A2_MAIL'];} else {$fehler = true;}
 
 if (!$fehler) {
-  $_SESSION['SPAMSCHUTZERLAUBNIS'] = true;
   $code .= "</div>";
 
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
