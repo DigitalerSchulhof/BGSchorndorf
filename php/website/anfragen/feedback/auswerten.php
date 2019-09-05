@@ -26,12 +26,8 @@ $feedbackzugriff = $feedbackaktiv && $feedbackanmeldung;
 if($titel != "") {
   if ($fehlerzugriff) {
     $dbs = cms_verbinden("s");
-    $sql = "SELECT MAX(id) as idM FROM fehlermeldungen";
-    $anfrage = $dbs->query($sql);
-    if(!$sqld = $anfrage->fetch_assoc())
-      $idM = 0;
-    else
-      $idM = $sqld["idM"]+1;
+
+    $idM = cms_generiere_kleinste_id("fehlermeldungen");
 
     $ersteller = "";
     if(isset($_SESSION["BENUTZERID"]))
@@ -54,18 +50,15 @@ if($titel != "") {
     $sql->close();
 
 
-    $sql = $dbs->prepare("INSERT INTO fehlermeldungen (id, ersteller, url, titel, beschreibung, header, session, zeitstempel, status, sichtbar) VALUES (?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?,'$CMS_SCHLUESSEL'), AES_ENCRYPT(?,'$CMS_SCHLUESSEL'), ?, ?, ?)");
-    $weilreference0 = 0;
-    $weilreference1 = 1;
+    $sql = $dbs->prepare("UPDATE fehlermeldungen SET ".cms_sql_set_fragezeichen(array("id", "ersteller"), false).cms_sql_set_fragezeichen(array("url", "titel", "beschreibung", "header", "session"), true)."zeitstempel = ?, status = 0");
     $weilreferencetime = time();
-    $sql->bind_param("issssssiii", $idM, $ersteller, $url, $titel, $beschreibung, $header, $session, $weilreferencetime, $weilreference0, $weilreference1);
+    $sql->bind_param("issssssi", $idM, $ersteller, $url, $titel, $beschreibung, $header, $session, $weilreferencetime);
     $sql->execute();
     $sql->close();
 
     if($CMS_EINSTELLUNGEN["Fehlermeldung an GitHub"]) {
-      // GitHub Aπ
+      // GitHub API
       $api = "https://api.github.com/repos/oxydon/BGSchorndorf/issues";
-      $api = "https://api.github.com/repos/jeengbe/IssueTest/issues";
 
       $data = array(
         "title" => $titel,
@@ -107,16 +100,11 @@ if($titel != "") {
 } elseif($name != "") {
   if($feedbackzugriff) {
     $dbs = cms_verbinden("s");
-    $sql = "SELECT MAX(id) as idM FROM feedback";
-    $anfrage = $dbs->query($sql);
-    if(!$sqld = $anfrage->fetch_assoc())
-      $idM = 0;
-    else
-      $idM = $sqld["idM"]+1;
-    $sql = $dbs->prepare("INSERT INTO feedback (id, name, feedback, zeitstempel, sichtbar) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?, ?)");
-    $weilreference1 = 1;
+    $idM = cms_generiere_kleinste_id("feedback");
+
+    $sql = $dbs->prepare("UPDATE feedback SET id = ?, name = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), feedback = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ? WHERE id = ?");
     $weilreferencetime = time();
-    $sql->bind_param("issii", $idM, $name, $feedback, $weilreferencetime, $weilreference1);
+    $sql->bind_param("issii", $idM, $name, $feedback, $weilreferencetime, $idM);
     $sql->execute();
     $sql->close();
     echo "ERFOLG";

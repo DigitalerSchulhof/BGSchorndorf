@@ -387,7 +387,7 @@ function cms_termine_jahr_loeschen() {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == 'ERFOLG') {
-			cms_meldung_an('erfolg', 'Termine des Jahres '+jahr+' löschen', '<p>Die Termine wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Website/Termine\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Termine des Jahres '+jahr+' löschen', '<p>Die Termine wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Website/Termine\');">OK</span></p>');
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);

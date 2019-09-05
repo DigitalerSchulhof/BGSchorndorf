@@ -676,9 +676,7 @@ if ($einstellungenplaetten) {
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-<<<<<<< HEAD
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung an GitHub', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
-=======
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Blogeinträge', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Termine', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
@@ -686,7 +684,6 @@ if ($einstellungenplaetten) {
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
->>>>>>> develop
 	$dbs->query($sql); $id++;
 	// Postfach
 	foreach ($personen as $p) {
@@ -758,13 +755,10 @@ if ($update) {
 	profilfaecher
 	auffaelliges
 	galerien
-<<<<<<< HEAD
-=======
 	regelunterricht
 	zeitraeume
 	stufen
 	rythmisierung
->>>>>>> develop
 	$sql = "CREATE TABLE `dauerbrenner` (
 	  `id` bigint(255) UNSIGNED NOT NULL,
 	  `bezeichnung` varbinary(5000) NOT NULL,

@@ -283,6 +283,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				else {$code .= "<p><img src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
 			}
 			$code .= $blogeintrag['text'];
+			$code .= "<br><br>".cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
 
 			$code .= "</div></div>";
 
@@ -309,6 +310,8 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				}
 				$code .= "</div></div>";
 			}
+
+
 			$CMS_BLOGID = $blogeintrag["id"];
 			$code .= "<div class=\"cms_clear\"></div>";
 		}
@@ -334,7 +337,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 		$code .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/icons/oegruppen/autor.png')\">".$daten['autor']."</span></li>";
 	}
 	if ($daten['genehmigt'] == 0) {
-		$code .= "<li class=\"cms_genehmigungausstehend\">!! ACHTUNG !! <br> Der Termin ist noch nicht genehmigt!</li>";
+		$code .= "<li class=\"cms_genehmigungausstehend\">!! ACHTUNG !! <br> Der Blogeintrag ist noch nicht genehmigt!</li>";
 	}
 	$code .= "</ul>";
 

@@ -35,7 +35,6 @@ function cms_galerie_bearbeiten_vorbereiten(id, ziel) {
 function cms_galerie_eingabenpruefen() {
 	var meldung = '<p>Die Galerie konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
-	var oeffentlichkeit = document.getElementById('cms_oeffentlichkeit').value;
 	var notifikationen = document.getElementById('cms_galerie_notifikationen').value;
 	var genehmigt = document.getElementById('cms_galerie_genehmigt').value;
 	var aktiv = document.getElementById('cms_galerie_aktiv').value;
@@ -60,11 +59,6 @@ function cms_galerie_eingabenpruefen() {
 	// Pflichteingaben prüfen
 	if (!cms_check_titel(bezeichnung)) {
 		meldung += '<li>Bezeichnungen dürfen nur aus lateinischen Buchtaben, Umlauten, Ziffern, Leerzeichen und »-« bestehen und müssen mindestens ein Zeichen lang sein.</li>';
-		fehler = true;
-	}
-
-	if ((oeffentlichkeit != 0) && (oeffentlichkeit != 1) && (oeffentlichkeit != 2) && (oeffentlichkeit != 3) && (oeffentlichkeit != 4)) {
-		meldung += '<li>Die Eingabe für die Öffentlichkeit ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -109,7 +103,6 @@ function cms_galerie_eingabenpruefen() {
 	}
 
 	if (!fehler) {
-		formulardaten.append("oeffentlichkeit", oeffentlichkeit);
 		formulardaten.append("notifikationen", 	notifikationen);
 		formulardaten.append("genehmigt",  			genehmigt);
 		formulardaten.append("aktiv",  					aktiv);

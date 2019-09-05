@@ -8,7 +8,7 @@
       $ausgabe .= "<tbody>";
 
       $dbs = cms_verbinden('s');
-      $sql = "SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback WHERE sichtbar = '1' ORDER BY zeitstempel DESC";
+      $sql = "SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback ORDER BY zeitstempel DESC";
       $liste = "";
       if ($anfrage = $dbs->query($sql)) {
         while ($daten = $anfrage->fetch_assoc()) {
@@ -43,9 +43,8 @@
   function cms_feedback_details($id) {
     global $CMS_SCHLUESSEL, $CMS_RECHTE;
     $dbs = cms_verbinden("s");
-    $weilreference1 = 1;
-    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback WHERE id = ? AND sichtbar = ?");
-    $sql->bind_param("ii", $id, $weilreference1);
+    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback WHERE id = ?");
+    $sql->bind_param("i", $id);
     if ($sql->execute()) {
       if(is_null($sqld = $sql->get_result()->fetch_assoc()))
         return cms_meldung_bastler();

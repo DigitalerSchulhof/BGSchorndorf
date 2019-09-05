@@ -10,7 +10,6 @@ include_once("../../schulhof/seiten/nutzerkonto/postfach/postfilter.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-
 if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER";exit;}
 if (isset($_POST['papierkorb'])) {$papierkorb = $_POST['papierkorb'];} else {echo "FEHLER";exit;}
 if (isset($_POST['vorname'])) {$vorname = $_POST['vorname'];} else {echo "FEHLER";exit;}
@@ -34,9 +33,9 @@ $zugriff = true;
 if (cms_angemeldet()) {
 	$fehler = false;
 	if (!cms_check_ganzzahl($CMS_BENUTZERID)) {$fehler = true;}
-	if (!cms_check_name($vorname)) {$fehler = true;}
-	if (!cms_check_name($nachname)) {$fehler = true;}
-	if (!cms_check_name($betreff)) {$fehler = true;}
+	if (!cms_check_name($vorname) && (strlen($vorname) != 0)) {$fehler = true;}
+	if (!cms_check_name($nachname) && (strlen($vorname) != 0)) {$fehler = true;}
+	if (!cms_check_name($betreff) && (strlen($vorname) != 0)) {$fehler = true;}
 	if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {$fehler = true;}
 
 	if (!$fehler) {

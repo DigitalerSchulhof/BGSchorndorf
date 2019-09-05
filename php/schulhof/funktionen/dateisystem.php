@@ -259,12 +259,13 @@ function cms_dateisystem_ordner_verschluesseln($pfad) {
   $ordner = "";
   $groesse = 0;
   if (is_dir ($pfad)) {
+		chmod($pfad, 0777);
     $verzeichnis = scandir($pfad);
     // einlesen der Verzeichnisses
 		foreach ($verzeichnis as $v) {
 			if (($v != "..") && ($v != ".")) {
 				if (is_file($pfad."/".$v)) {
-					echo "verschlüssle ".$pfad."/".$v;
+					echo "verschlüssle ".$pfad."/".$v."<br>";
           cms_dateisystem_datei_verschluesseln($pfad."/".$v);
 	        cms_dateisystem_datei_verschluesseln_aufraeumen($pfad."/".$v);
         }
@@ -273,6 +274,7 @@ function cms_dateisystem_ordner_verschluesseln($pfad) {
         }
 			}
 		}
+		chmod($pfad, 0775);
 		return true;
   }
   return false;
@@ -292,6 +294,7 @@ function cms_dateisystem_datei_verschluesseln($quelle) {
   $ivektor = openssl_random_pseudo_bytes(16);
 	$fehler = false;
 
+	chmod($quelle, 0777);
 	if ($zieldatei = fopen($ziel, 'w')) {
 		// Vektor an den Anfang der verschlüsselten Datei schreiebn
 		fwrite($zieldatei, $ivektor);
@@ -311,6 +314,7 @@ function cms_dateisystem_datei_verschluesseln($quelle) {
 		fclose($zieldatei);
 	}
 	else {$fehler = true;}
+	chmod($quelle, 0775);
 
 	if ($fehler) {return false;}
 	else {return $ziel;}
@@ -320,7 +324,10 @@ function cms_dateisystem_datei_entschluesseln($quelle, $ziel) {
 	global $CMS_SCHLUESSEL;
   $schluessel = substr(sha1($CMS_SCHLUESSEL, true), 0, 16);
 	$fehler = false;
+	$quellarray = explode('/', $quelle);
+	$quellpfad = implode('/', array_slice($quellarray,0,count($quellarray)-1));
 
+	chmod($quelle, 0777);
 	if ($zieldatei = fopen($ziel, 'w')) {
     if ($quelldatei = fopen($quelle, 'rb')) {
       // Vektor laden
@@ -339,6 +346,7 @@ function cms_dateisystem_datei_entschluesseln($quelle, $ziel) {
 		// Entschlüsselte Datei schließen
     fclose($zieldatei);
   } else {$fehler = true;}
+	chmod($quelle, 0775);
 
 	if ($fehler) {return false;}
 	else {return $ziel;}
@@ -361,8 +369,8 @@ function cms_dateisystem_ordner_kopieren($ursprung, $ziel) {
         if (is_file($ursprung."/".$datei)) {
           chmod($ursprung."/".$datei, 0777);
 					copy($ursprung."/".$datei, $ziel."/".$datei);
-					chmod($ziel."/".$datei, 0777);
-          chmod($ursprung."/".$datei, 0777);
+					chmod($ziel."/".$datei, 0775);
+          chmod($ursprung."/".$datei, 0775);
         }
         if (is_dir($ursprung."/".$datei)) {
 					mkdir($ziel."/".$datei, 777);
@@ -370,7 +378,7 @@ function cms_dateisystem_ordner_kopieren($ursprung, $ziel) {
         }
       }
     }
-	  chmod($ursprung, 0777);
+	  chmod($ursprung, 0775);
 		return true;
   }
   return false;

@@ -14,6 +14,7 @@
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
 	include_once("php/schulhof/seiten/website/reaktionen.php");
+	include_once("php/allgemein/funktionen/captcha.php");
 
 	session_start();
 
@@ -33,8 +34,8 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.2";
+	//$CMS_VERSION = rand(0,1000000);
+	$CMS_VERSION = "0.5.4";
 	$TITELBILDERJS = "";
 	$CMS_STUNDENDAUER = 45;
 
@@ -194,11 +195,8 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
-<<<<<<< HEAD
-=======
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
->>>>>>> develop
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";

@@ -70,7 +70,15 @@ if (!$fehler) {
 				if (strlen($beschlusscode) > 0) {$code .= "<ul class=\"cms_beschlussuebersicht\">".$beschlusscode."</ul>";}
 				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Beschlüsse vorhanden.</p>";}
 			$code .= "</div></div>";
-			if($GRUPPENRECHTE["mitglied"]) {
+
+			$sql = $dbs->prepare("SELECT chataktiv FROM $gk WHERE id = ?");
+			$sql->bind_param("i", $gruppenid);
+			$sql->bind_result($chataktiv);
+			$sql->execute();
+			$sql->fetch();
+			$sql->close();
+
+			if($GRUPPENRECHTE["mitglied"] && $chataktiv) {
 				$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 					$code .= "<h2>Chat</h2>";
 					$code .= cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);

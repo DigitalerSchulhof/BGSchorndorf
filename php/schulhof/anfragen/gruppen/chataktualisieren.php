@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 include_once("../../schulhof/funktionen/texttrafo.php");
 include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");

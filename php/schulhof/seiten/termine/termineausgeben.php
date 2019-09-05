@@ -315,6 +315,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		$code .= "<div class=\"cms_spalte_$spaltenart\"><div class=\"cms_spalte_i\">";
 		$code .= "<h1>".$termin['bezeichnung']."</h1>";
 		$code .= $termin['text'];
+		$code .= "<br><br>".cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
 		$code .= "</div></div>";
 
 		if ((count($downloads) > 0) || (strlen($aktionen) > 0)) {

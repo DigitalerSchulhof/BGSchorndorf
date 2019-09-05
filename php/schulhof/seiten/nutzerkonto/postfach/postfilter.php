@@ -10,7 +10,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 	$code = "";
 
 	// Filter ein und ausblenden
-	$code .= "<p><span id=\"cms_postfach_filterknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_postfach_filter', 'cms_postfach_filterknopf', 'Nachrichten filtern', 'Filter auslblenden')\">Nachrichten filtern</span></p>";
+	$code .= "<p><span id=\"cms_postfach_filterknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_postfach_filter', 'cms_postfach_filterknopf', 'Nachrichten filtern', 'Filter ausblenden')\">Nachrichten filtern</span></p>";
 	$code .= "<div class=\"cms_filter_ein\" id=\"cms_postfach_filter\" style=\"display: none;\">";
 	// Tags laden, falls sie existieren
 	$tagcode = "";

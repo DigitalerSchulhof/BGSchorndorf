@@ -14,7 +14,7 @@
       $ausgabe .= "<tbody>";
 
       $dbs = cms_verbinden('s');
-      $sql = "SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen WHERE sichtbar = '1' ORDER BY status ASC, zeitstempel DESC";
+      $sql = "SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen ORDER BY status ASC, zeitstempel DESC";
       $liste = "";
       if ($anfrage = $dbs->query($sql)) {
         while ($daten = $anfrage->fetch_assoc()) {
@@ -57,8 +57,6 @@
 
         $anfrage->free();
         if (strlen($liste) == 0) {
-//          $liste .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Fehler vorhanden --</td></tr>";
-//                                                                                Doch, es gibt immer noch viele!
           $liste .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Fehler gemeldet --</td></tr>";
         }
         $ausgabe .= $liste;
@@ -72,9 +70,8 @@
   function cms_fehlermeldung_details($id) {
     global $CMS_SCHLUESSEL, $CMS_RECHTE;
     $dbs = cms_verbinden("s");
-    $weilreference1 = 1;
-    $sql = $dbs->prepare("SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(header, '$CMS_SCHLUESSEL') AS header, AES_DECRYPT(session, '$CMS_SCHLUESSEL') AS session, AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel, status FROM fehlermeldungen WHERE id = ? AND sichtbar = ?");
-    $sql->bind_param("ii", $id, $weilreference1);
+    $sql = $dbs->prepare("SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(header, '$CMS_SCHLUESSEL') AS header, AES_DECRYPT(session, '$CMS_SCHLUESSEL') AS session, AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel, status FROM fehlermeldungen WHERE id = ?");
+    $sql->bind_param("i", $id);
     if ($sql->execute()) {
       if(is_null($sqld = $sql->get_result()->fetch_assoc()))
         return cms_meldung_bastler();

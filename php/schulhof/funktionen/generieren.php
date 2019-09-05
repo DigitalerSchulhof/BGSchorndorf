@@ -38,7 +38,7 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     $sql = "SET FOREIGN_KEY_CHECKS = 0";
     $anfrage = $db->query($sql);
 
-    $sql = $db->prepare("INSERT INTO $tabelle (id, idvon, idzeit) SELECT id, idvon, idzeit FROM (SELECT IFNULL(id*0,0)+? AS idvon, IFNULL(id*0,0)+? AS idzeit, IFNULL(MIN(id)+1,0) AS id FROM $tabelle WHERE id+1 NOT IN (SELECT id FROM $tabelle)) AS vorherigeid");
+    $sql = $db->prepare("INSERT INTO $tabelle (id, idvon, idzeit) SELECT id, idvon, idzeit FROM (SELECT IFNULL(id*0,0)+? AS idvon, IFNULL(id*0,0)+? AS idzeit, IFNULL(MIN(id)+1,1) AS id FROM $tabelle WHERE id+1 NOT IN (SELECT id FROM $tabelle)) AS vorherigeid");
   	$sql->bind_param("ii", $benutzer, $jetzt);
   	$sql->execute();
   	$sql->close();
@@ -752,6 +752,22 @@ function cms_sql_an($wert, $aes = false) {
     else
       $f = "?";
     $r = $wert."aktuell = $f, ".$wert."neu = $f,";
+  }
+  return $r;
+}
+
+function cms_sql_set_fragezeichen($wert, $aes = false) {
+  global $CMS_SCHLUESSEL;
+  $r = "";
+  if(is_array($wert))
+    foreach($wert as $i => $w)
+      $r .= cms_sql_set_fragezeichen($w, $aes);
+  else {
+    if($aes)
+      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    else
+      $f = "?";
+    $r = $wert." = $f, ";
   }
   return $r;
 }

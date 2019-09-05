@@ -14,16 +14,14 @@ if (isset($_POST['anonym'])) {$anonym = $_POST['anonym'];} else {echo "FEHLER"; 
 $dbs = cms_verbinden('s');
 $anonym = $anonym === "true";
 $CMS_RECHTE = cms_rechte_laden();
+
 $fehler = true;
 
-$sql = "SELECT id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = $person";
-if ($anfrage = $dbs->query($sql)) {
-  if ($daten = $anfrage->fetch_assoc()) {
-    $art = $daten['art'];
-    $fehler = false;
-  }
-  $anfrage->free();
-}
+$sql = $dbs->prepare("SELECT 0 FROM personen WHERE id = ?");
+$sql->bind_param("i", $person);
+$sql->bind_result($fehler);
+$sql->execute() && $sql->fetch();
+
 if($fehler)
   exit("FEHLER");
 
@@ -33,21 +31,23 @@ if (cms_angemeldet() && $zugriff) {
 
   $von = $_SESSION["BENUTZERID"];
 
-  $sql = "SELECT COUNT(*) as c FROM umarmungen WHERE von=$von AND an=$person AND wann BETWEEN ".(time()-5*60)." AND ".time();
-  $sql = $dbs->query($sql);
   $letzte = 0;
-  if($sql)
-    if($sql = $sql->fetch_assoc())
-      $letzte = $sql["c"];
+  $sql = "SELECT COUNT(*) FROM umarmungen WHERE von=? AND an=? AND wann BETWEEN ".(time()-10*60)." AND ".time();
+  $sql = $dbs->prepare($sql);
+  $sql->bind_param("ii", $von, $person);
+  $sql->bind_result($letzte);
+  $sql->execute();
+  $sql->fetch();
+  $sql->close();
 
-  if($letzte > 5)
+  if($letzte > 3) // Mehr als (n+1) Umarmungen in den letzten m Minuten
     die("HALT");
 
-	$sql = $dbs->prepare("INSERT INTO umarmungen (von, an, anonym, wann, gesehen) VALUES(?, ?, ?, ?, ?)");
+  $id = cms_generiere_kleinste_id("umarmungen");
   $jetzt = time();
-  $null = 0;
-  $sql->bind_param("iiiii", $von, $person, $anonym, $jetzt, $null);
 
+  $sql = $dbs->prepare("UPDATE umarmungen SET von = ?, an = ?, anonym = ?, wann = ? WHERE id = ?");
+  $sql->bind_param("iiiii", $von, $person, $anonym, $jetzt, $id);
   $sql->execute();
 
   $sql->close();

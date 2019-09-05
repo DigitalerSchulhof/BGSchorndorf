@@ -13,7 +13,6 @@ session_start();
 // Variablen einlesen, falls übergeben
 $zugeordnet = array();
 
-if (isset($_POST['oeffentlichkeit'])) {$oeffentlichkeit = cms_texttrafo_e_db($_POST['oeffentlichkeit']);}  else {echo "FEHLER";exit;}
 if (isset($_POST['notifikationen']))  {$notifikationen = cms_texttrafo_e_db($_POST['notifikationen']);}    else {echo "FEHLER";exit;}
 if (isset($_POST['genehmigt'])) 			{$genehmigt = cms_texttrafo_e_db($_POST['genehmigt']);} 						 else {echo "FEHLER";exit;}
 if (isset($_POST['aktiv'])) 			    {$aktiv = cms_texttrafo_e_db($_POST['aktiv']);} 						         else {echo "FEHLER";exit;}
@@ -117,8 +116,8 @@ if (cms_angemeldet() && $zugriff) {
 
   	// NÄCHSTE FREIE ID SUCHEN
 		$galerieid = cms_generiere_kleinste_id('galerien');
-    $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = ?, genehmigt = ?, aktiv = ?, notifikationen = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-    $sql->bind_param("sissiiiissi", $bezeichnung, $datum, $beschreibung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
+    $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = 4, genehmigt = ?, aktiv = ?, notifikationen = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
+    $sql->bind_param("sissiiissi", $bezeichnung, $datum, $beschreibung, $vorschaubild, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
     $sql->execute();
     $sql->close();
 
@@ -150,7 +149,7 @@ if (cms_angemeldet() && $zugriff) {
     $jahr = date('Y', $datum);
     $tag = date('d', $datum);
     $eintrag['gruppe']    = "Galerien";
-    $eintrag['gruppenid'] = $oeffentlichkeit;
+    $eintrag['gruppenid'] = 4;
     $eintrag['zielid']    = $galerieid;
     $eintrag['status']    = "n";
     $eintrag['art']       = "g";

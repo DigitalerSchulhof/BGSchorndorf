@@ -28,7 +28,7 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 
 	if ((($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] == '1') && ($CMS_BENUTZERART == 'l')) ||
 	 		(($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '1') && ($CMS_BENUTZERART == 's'))) {
-
+		$stundenplan = "";
 		if ($CMS_BENUTZERART == 'l') {
 			$sql = "SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = $CMS_BENUTZERID";
 			if ($anfrage = $dbs->query($sql)) {

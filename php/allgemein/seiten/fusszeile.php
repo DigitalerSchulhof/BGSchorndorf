@@ -50,10 +50,12 @@ if (!$CMS_DSGVO_COOKIESAKZEPTIERT) {
 	$code .= "<div id=\"cms_dsgvo_datenschutz\">";
   $meldung = "";
   $meldung .= "<h4>Datenschutzhinweis</h4>";
-	$meldung .= "<p>Diese Seite speichert Cookies zu statistischen Zwecken und zur Verkürzung von Ladezeiten. Durch die Nutzung dieser Seite erklären Sie sich damit einverstanden.</p><p><a href=\"javascript:cms_einblenden('cms_dsgvo_datenschutz_ausfuehrlich')\">Mehr Informationen ...</a></p>";
+	$meldung .= "<p>Diese Seite speichert Cookies zu statistischen Zwecken und zur Verkürzung von Ladezeiten. Aus technischen Gründen werden weitere Daten erhoben, die keinen unmittelbaren Rückschluss auf Sie zulassen. Durch die Nutzung dieser Seite erklären Sie sich damit einverstanden.</p><p><a href=\"javascript:cms_einblenden('cms_dsgvo_datenschutz_ausfuehrlich')\">Mehr Informationen ...</a></p>";
 	$meldung .= "<div id=\"cms_dsgvo_datenschutz_ausfuehrlich\" style=\"display: none;\">";
 	$meldung .= "<p>Gespeichert werden folgende Informationen:</p><ul>";
 	$meldung .= "<li>Es werden die Zugriffe auf das Websiteangebot gezählt. Gespeichert wird die Anzahl der Zugriffe auf einzelne Seiten und Downloads pro Monat. Da der Zeitraum vergleichsweise groß ist und keine IP-Adressen gespeichert werden, sind Rückschlüsse auf Personen nicht möglich.</li>";
+	$meldung .= "<li>Aus technischen Gründen werden Informationen über Ihr System geloggt.</li>";
+	$meldung .= "<li>Für die Benutzung von Newslettern und Kontaktformularen gelten besondere <a href=\"Website/Datenschutz\">Datenschutzhinweise</a>.</li>";
 	$meldung .= "<li>Es werden Cookies verwendet, um zu prüfen, ob diese Meldung bereits gelesen wurde und um Downloads sicherer zu gestalten. Bei der Verwendung des Schulhofes werden weitere Daten gespeichert, die zur Zugriffskontrolle und damit zur Datensicherheit beitragen. Mehr Informationen unter <a href=\"Website/Datenschutz\">Datenschutz</a>.</li>";
 	$meldung .= "</ul>";
 	$meldung .= "</div>";

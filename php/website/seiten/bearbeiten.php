@@ -82,9 +82,9 @@
       $code .= "</tr></table>";
     }
     else if (($CMS_URL[1] == 'Datenschutz') || ($CMS_URL[1] == 'Impressum')) {
-      $code = cms_meldung('info', '<h4>Generierte Seite</h4><p>Diese Seite ist gesetzlich vorgeschrieben und wird automatisch durch das System generiert. Auf diese Weise enthält sie alle Informationen, die auch gesetzlich vorgeschrieben sind, sodass unfreiwilliger Rechtsbruch verhindert wird.</p><p>Voraussetzung für die Verhinderung des Rechtsbruchs ist eine aktuelle Version des Schulhofs. Für die Aktualisierung des Schulhofs muss selbst sorge getragen werden.</p>');
+      $code = cms_meldung('info', '<h4>Generierte Seite</h4><p>Diese Seite ist gesetzlich vorgeschrieben und wird automatisch durch das System generiert. Auf diese Weise enthält sie alle Informationen, die auch gesetzlich vorgeschrieben sind, sodass unfreiwilliger Rechtsbruch verhindert wird.</p><p>Voraussetzung für die Verhinderung des Rechtsbruchs ist eine aktuelle Version des Schulhofs. Für die Aktualisierung des Schulhofs muss selbst Sorge getragen werden.</p>');
     }
-    else if (($CMS_URL[1] == 'Blog') || ($CMS_URL[1] == 'Galerie') || ($CMS_URL[1] == 'Termine') || ($CMS_URL[1] == 'Voranmeldung') || ($CMS_URL[1] == 'Ferien')) {
+    else if (($CMS_URL[1] == 'Blog') || ($CMS_URL[1] == 'Galerien') || ($CMS_URL[1] == 'Termine') || ($CMS_URL[1] == 'Voranmeldung') || ($CMS_URL[1] == 'Ferien')) {
       $code = cms_meldung('info', '<h4>Generierte Seite</h4><p>Diese Seite wird aus den Inhalten des Schulhofs generiert. Um den hier angezeigten Inhalt zu bearbeiten müssen die Daten im Schulhof verändert werden.</p>');
     }
     else {

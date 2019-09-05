@@ -19,6 +19,7 @@ if (cms_angemeldet()) {
 	if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {$fehler = true;}
 
 	if (!$fehler) {
+
 		$_SESSION["POSTLESENID"] = $id;
 		$_SESSION["POSTLESENMODUS"] = $modus;
 

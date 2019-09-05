@@ -6,10 +6,7 @@
   include_once("../../schulhof/funktionen/generieren.php");
   session_start();
 
-  postLesen("typ");
-  postLesen("id");
-  postLesen("gid");
-  postLesen("reaktion");
+  postLesen(array("typ", "id", "gid", "reaktion"));
 
   if(!in_array($typ, array("b", "t", "g")))
     die("FEHLER");
@@ -22,37 +19,26 @@
   if(!cms_angemeldet())
     die("FEHLER");
 
-  $sql = "SELECT von FROM reaktionen WHERE typ = ? AND id = ? AND gruppe = ? AND emoticon = ?";
+  $bid = $_SESSION["BENUTZERID"];
+  $sql = "SELECT 1 FROM reaktionen WHERE typ = ? AND id = ? AND gruppe = ? AND emoticon = ? AND von = ?";
   $dbs = cms_verbinden("s");
   $sql = $dbs->prepare($sql);
-  $sql->bind_param("siss", $typ, $id, $gid, $reaktion);
-  $l = false;
-  if($sql->execute()) {
-    $sql->bind_result($von);
-    $l = false;
-    if (!$sql->fetch()) {$von = ""; $l = true;}
+  $sql->bind_param("sissi", $typ, $id, $gid, $reaktion, $bid);
+  $sql->bind_result($check);
+  $l = true; // Lein tun
+  if($sql->execute() && $sql->fetch() && $check == 1) {
+    $l = false;  // Lein tun
   }
-
-  $von = explode(" ", $von);
-  $bid = $_SESSION["BENUTZERID"];
-
   // Toggle
-  if(in_array($bid, $von))
-    $von = array_diff($von, array($bid));
-  else
-    array_push($von, $bid);
-
-  $von = join(" ", $von);
-
   if($l) {
     $sql = "INSERT INTO `reaktionen` (`typ`, `id`, `gruppe`, `emoticon`, `von`) VALUES (?, ?, ?, ?, ?);";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("sisss", $typ, $id, $gid, $reaktion, $von);
+    $sql->bind_param("sisss", $typ, $id, $gid, $reaktion, $bid);
     $sql->execute();
   } else {
-    $sql = "UPDATE reaktionen SET von = ? WHERE typ = ? AND id = ? and gruppe = ? and emoticon = ?";
+    $sql = "DELETE FROM reaktionen WHERE von = ? AND typ = ? AND id = ? AND gruppe = ? AND emoticon = ?";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("ssiss", $von, $typ, $id, $gid, $reaktion);
+    $sql->bind_param("ssiss", $bid, $typ, $id, $gid, $reaktion);
     $sql->execute();
   }
 

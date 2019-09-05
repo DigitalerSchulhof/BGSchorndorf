@@ -183,7 +183,6 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Profile']                                             = 'php/schulhof/seiten/personensuche/personenprofil.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung']                                  = 'php/schulhof/seiten/verwaltung/verwaltung.php';
-<<<<<<< HEAD
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik']                  = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/grundlagen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Grundlagen']         = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/grundlagen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Profile']            = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/profile.php';
@@ -192,9 +191,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Stufenkurse']        = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/stufenkurse.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Personen_in_Kursen'] = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/kursepersonen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Lehraufträge']       = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/lehrauftraege.php';
-=======
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik']                  = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/schuljahrfabrik.php';
->>>>>>> develop
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';

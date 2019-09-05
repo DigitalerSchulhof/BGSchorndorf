@@ -33,13 +33,9 @@ if (cms_angemeldet() && $zugriff) {
 			}
 			$weilreference0 = 0;
 			$dbs = cms_verbinden('s');
-			if($status == "-1") {
+			if($status == "0") {
 				$sql = $dbs->prepare("DELETE FROM feedback WHERE id = ?;");
 				$sql->bind_param("i", $id);
-			} else {
-				$sql = $dbs->prepare("UPDATE feedback SET sichtbar = ? WHERE id = ?;");
-				$weilreference0 = 0;
-				$sql->bind_param("ii", $weilreference0, $id);
 			}
 			$sql->execute();
 			$sql->close();

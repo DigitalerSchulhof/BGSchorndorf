@@ -10,10 +10,10 @@ include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['bereich'])) {$bereich = $_POST['bereich'];} else {$bereich = '';}
-if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
-if (isset($_POST['pfad'])) {$pfad = $_POST['pfad'];} else {$pfad = '';}
-if (isset($_POST['feldid'])) {$feldid = $_POST['feldid'];} else {$feldid = '';}
+if (isset($_POST['bereich'])) {$bereich = $_POST['bereich'];} else {echo "FEHLER";exit;}
+if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
+if (isset($_POST['pfad'])) {$pfad = $_POST['pfad'];} else {echo "FEHLER";exit;}
+if (isset($_POST['feldid'])) {$feldid = $_POST['feldid'];} else {echo "FEHLER";exit;}
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 

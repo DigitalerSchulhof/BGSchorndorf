@@ -134,11 +134,13 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 		$sql = "DELETE FROM $gk"."chat WHERE datum < ".(time()-$loeschen);
 		$sql = $dbs->prepare($sql);
 		$sql->execute();
+		$sql->close();
 	}
 
 	$sql = "UPDATE $gk"."mitglieder SET chatbannbis = 0 WHERE chatbannbis < ".time();
 	$sql = $dbs->prepare($sql);
 	$sql->execute();
+	$sql->close();
 
 	$gebannt = 1;
 	// Stummschaltung prüfen
@@ -148,6 +150,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 	$sql->bind_result($gebannt);
 	$sql->execute();
 	$sql->fetch();
+	$sql->close();
 	$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
 
 	$code = "";
@@ -161,7 +164,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			*/
 
 			// Nachrichten laden
-			$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person WHERE chat.gruppe = $gruppenid AND chat.fertig = 1 ORDER BY chat.id DESC LIMIT ".($limit+1);
+			$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person WHERE chat.gruppe = $gruppenid AND chat.meldestatus = 0 ORDER BY chat.id DESC LIMIT ".($limit+1);
 			$sql = $dbs->prepare($sql);
 			$sql->bind_result($id, $p, $d, $i, $m, $gl, $v, $n, $t);
 			$sql->execute();

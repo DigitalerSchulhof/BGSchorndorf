@@ -6,8 +6,8 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
   if ($anzeigegruppe == "Sonstigegruppen") {$anzeigegruppe = "Sontige Gruppen";}
 
   $fehler = false;
-  if (!cms_valide_kgruppe($gruppe)) {$fehler = true; echo 1;}
-  if (!cms_check_ganzzahl($jahr)) {$fehler = true; echo 2;}
+  if (!cms_valide_kgruppe($gruppe)) {$fehler = true;}
+  if (!cms_check_ganzzahl($jahr)) {$fehler = true;}
 
   $oeffentlichkeit = 4;
   $CMS_ANGEMELDET = cms_angemeldet();
@@ -22,17 +22,18 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
   $sql->bind_param("i", $gruppenid);
   if ($sql->execute()) {
     $sql->bind_result($anzahl, $gruppenname, $gruppenicon);
-    if ($sql->fetch()) {if ($anzahl != 1) {$fehler = true; echo 3;}}
-    else {$fehler = true; echo 4;}
-  } else {$fehler = true; echo 5;}
+    if ($sql->fetch()) {if ($anzahl != 1) {$fehler = true;}}
+    else {$fehler = true;}
+  } else {$fehler = true;}
   $sql->close();
 
   if (!$fehler) {
     $jbeginn = mktime (0, 0, 0, 1, 1, $jahr);
     $jende = mktime (0, 0, 0, 1, 1, $jahr+1)-1;
+
     // Blogeinträge laden
     $BLOGEINTRAEGE = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM blogeintraege WHERE oeffentlichkeit > ? AND id IN (SELECT blogeintrag FROM $gruppe"."blogeintraege WHERE gruppe = ?) AND datum BETWEEN ? AND ? ORDER BY datum DESC");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM blogeintraege WHERE oeffentlichkeit >= ? AND id IN (SELECT blogeintrag FROM $gruppe"."blogeintraege WHERE gruppe = ?) AND datum BETWEEN ? AND ? ORDER BY datum DESC");
     $sql->bind_param("iiii", $oeffentlichkeit, $gruppenid, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
@@ -75,9 +76,8 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     }
     $sql->close();
 
-    // Galerien laden
     $GALERIEN = array();
-    /*$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM galerien WHERE oeffentlichkeit > ? AND id IN (SELECT galerie FROM $gruppe"."galerien WHERE gruppe = ?) AND datum BETWEEN ? AND ? ORDER BY datum DESC");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM galerien WHERE oeffentlichkeit > ? AND id IN (SELECT galerie FROM $gruppe"."galerien WHERE gruppe = ?) AND datum BETWEEN ? AND ? ORDER BY datum DESC");
     $sql->bind_param("iiii", $oeffentlichkeit, $gruppenid, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
@@ -85,10 +85,10 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
         $einzeln = array();
         $einzeln['bez'] = $ebez;
         $einzeln['dat'] = $edatum;
-        array_push($TERMINE, $einzeln);
+        array_push($GALERIEN, $einzeln);
       }
     }
-    $sql->close();*/
+    $sql->close();
 
     $code = "<h3><img id=\"cms_zugehoerig_icon\" src=\"res/gruppen/klein/$gruppenicon\"> $anzeigegruppe » $gruppenname</h3>";
     $code .= "<table><tr><td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr-1)."', '$gruppe', '$gruppenid')\"\">«</span></td>";

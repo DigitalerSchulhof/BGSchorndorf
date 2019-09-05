@@ -25,8 +25,6 @@ $personengruppen[2] = 'schueler';
 $personengruppen[3] = 'eltern';
 $personengruppen[4] = 'externe';
 
-print_r($_POST);
-
 foreach ($personengruppen as $p) {
 	foreach ($postgruppen as $post) {
 		if (!isset($_POST[$p.$post])) {echo "FEHLER";exit;}

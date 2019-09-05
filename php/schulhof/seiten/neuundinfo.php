@@ -35,10 +35,16 @@
 	<?php
 	$aeltere = "";
 
-	$code = "<h4>Version 0.5.3 - Samstag, den 31. August 2019</h4>";
+	$code = "<h4>Version 0.5.4 - Freitag, den 06. September 2019</h4>";
+	$code .= "<ul>";
+		$code .= "<li>Behebung diverser kleiner Fehler und Inkomatibilitäten.</li>";
+	$code .= "</ul>";
+	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_4', 'Neuerungen in Version 0.5.4 einblenden', 'Neuerungen in Version 0.5.4 ausblenden', $code, 1);
+
+	$code = "<h4>Version 0.5.3 - Freitag, den 06. September 2019</h4>";
 	$code .= "<ul>";
 		$code .= "<li>Die Dateiverschlüsselung wurde erheblich verbessert.</li>";
-		// $code .= "<li>Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.</li>";
+		$code .= "<li>Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.</li>";
 		$code .= "<li>Der Benutzertyp »extern« wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister).</li>";
 		$code .= "<li>Das Hausmeister-Auftragsbuch bietet die Möglichkeit, online Mängel und Wünsche an die Hausmeister zu richten.</li>";
 		$code .= "<li>An Pinnwänden können Zettel auf bestimmte Zeit angepinnt werden.</li>";
@@ -49,7 +55,7 @@
 		$code .= "<li>Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können.</li>";
 		$code .= "<li>Tab-Titel im Browser wurden um den Seitentitel ergänzt.</li>";
 	$code .= "</ul>";
-	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_3', 'Neuerungen in Version 0.5.3 einblenden', 'Neuerungen in Version 0.5.3 ausblenden', $code, 1);
+	$aeltere .= cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_3', 'Neuerungen in Version 0.5.3 einblenden', 'Neuerungen in Version 0.5.3 ausblenden', $code, 0);
 
 	$code = "<h4>Version 0.5.2 - Dienstag, den 12. März 2019</h4>";
 	$code .= "<ul>";

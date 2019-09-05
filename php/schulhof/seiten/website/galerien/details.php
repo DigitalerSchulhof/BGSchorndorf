@@ -98,7 +98,7 @@ function cms_galerie_details_laden($id, $ziel) {
 		$code .= "<tr><th>Datum:</th><td>".cms_datum_eingabe('cms_galerie_datum', $gtag, $gmonat, $gjahr)."</td></tr>";
     $code .= "<tr><th>Bezeichnung:</th><td><input type=\"text\" name=\"cms_galerie_bezeichnung\" id=\"cms_galerie_bezeichnung\" value=\"$bezeichnung\"/></td></tr>";
     $code .= "<tr><th>Beschreibung:</th><td><textarea rows=\"10\" name=\"cms_galerie_beschreibung\" id=\"cms_galerie_beschreibung\">$beschreibung</textarea></td></tr>";
-    $code .= "<tr><th>Vorschaubild:</th><td>".cms_dateiwahl_knopf('galerien', 'cms_galerie_vorschaubild', 's', 'galerien', '-', 'vorschaubild', $vorschaubild)."</td></tr>";
+    $code .= "<tr><th>Vorschaubild:</th><td>".cms_dateiwahl_knopf('website', 'cms_galerie_vorschaubild', 's', 'website', '-', 'vorschaubild', $vorschaubild)."</td></tr>";
     $code .= "<tr><th>Autor:</th><td><input type=\"text\" name=\"cms_galerie_autor\" id=\"cms_galerie_autor\" value=\"$autor\"/></td></tr>";
 		$code .= "</table>";
     $code .= "<h3>Erweiterte Optionen</h3>";
@@ -111,7 +111,7 @@ function cms_galerie_details_laden($id, $ziel) {
     $code .= "<h3>Bilder auswählen</h3>";
 
     $rechte = cms_websitedateirechte_laden();
-    $code .= cms_dateiwaehler_generieren('galerien', 'galerien', 'cms_galerien_dateien', 's', 'galerien', '-');
+    $code .= cms_dateiwaehler_generieren('website', 'website', 'cms_galerien_dateien', 's', 'website', '-');
 
     $code .= "<div id=\"cms_bilder\">";
 
@@ -122,7 +122,7 @@ function cms_galerie_details_laden($id, $ziel) {
       $ids .= "|temp$anzahl";
       $bcode = "<table class=\"cms_formular\" id=\"cms_bildtemp$anzahl\"";
         $bcode .= "<tr><th>Datei:</th><td colspan=\"4\"><input id=\"cms_bild_datei_temp$anzahl\" type=\"hidden\" value=\"".$bild["pfad"]."\"><p class=\"cms_notiz cms_vorschau\" id=\"cms_bild_datei_temp".$anzahl."_vorschau\">";
-        $bcode .= "<img src=\"".$bild["pfad"]."\"></p><p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'galerien', '-', 'galerien', 'cms_bild_datei_temp$anzahl', 'vorschaubild', '-', '-')\">Bild auswählen</span></p>";
+        $bcode .= "<img src=\"".$bild["pfad"]."\"></p><p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'website', '-', 'website', 'cms_bild_datei_temp$anzahl', 'vorschaubild', '-', '-')\">Bild auswählen</span></p>";
         $bcode .= "<p id=\"cms_bild_datei_temp".$anzahl."_verzeichnis\"></p></td></tr>";
 
         $bcode .= "<tr><th>Beschreibung: </th><td colspan=\"4\"><textarea name=\"cms_bild_beschreibung_temp$anzahl\" id=\"cms_bild_beschreibung_temp$anzahl\">".$bild["beschreibung"]."</textarea></td></tr>";

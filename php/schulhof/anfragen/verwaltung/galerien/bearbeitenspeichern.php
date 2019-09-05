@@ -13,7 +13,6 @@ session_start();
 // Variablen einlesen, falls übergeben
 $zugeordnet = array();
 
-if (isset($_POST['oeffentlichkeit'])) {$oeffentlichkeit = $_POST['oeffentlichkeit'];} else {echo "FEHLER";exit;}
 if (isset($_POST['notifikationen']))  {$notifikationen = $_POST['notifikationen'];}   else {echo "FEHLER";exit;}
 if (isset($_POST['genehmigt'])) 			{$genehmigt = $_POST['genehmigt'];} 						else {echo "FEHLER";exit;}
 if (isset($_POST['aktiv'])) 			    {$aktiv = $_POST['aktiv'];} 						        else {echo "FEHLER";exit;}
@@ -118,8 +117,8 @@ if (cms_angemeldet() && $zugriff) {
     $beschreibung = cms_texttrafo_e_db($beschreibung);
 
   	// GALERIE EINTRAGEN
-    $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = ?, genehmigt = ?, aktiv = ?, notifikationen = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
-    $sql->bind_param("sissiiiisii", $bezeichnung, $datum, $beschreibung, $vorschaubild, $oeffentlichkeit, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
+    $sql = $dbs->prepare("UPDATE galerien SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), datum = ?, beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschaubild = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichkeit = 4, genehmigt = ?, aktiv = ?, notifikationen = ?, autor = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ? WHERE id = ?");
+    $sql->bind_param("sissiiisii", $bezeichnung, $datum, $beschreibung, $vorschaubild, $genehmigt, $aktiv, $notifikationen, $autor, $CMS_BENUTZERID, $galerieid);
     $sql->execute();
     $sql->close();
 
@@ -161,7 +160,7 @@ if (cms_angemeldet() && $zugriff) {
     $jahr = date('Y', $datum);
     $tag = date('d', $datum);
     $eintrag['gruppe']    = "Galerien";
-    $eintrag['gruppenid'] = $oeffentlichkeit;
+    $eintrag['gruppenid'] = 4;
     $eintrag['zielid']    = $galerieid;
     $eintrag['status']    = "b";
     $eintrag['art']       = "g";

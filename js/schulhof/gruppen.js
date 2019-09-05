@@ -670,6 +670,7 @@ function cms_chat_aktualisieren(art, id) {
   var formulardaten = new FormData();
   formulardaten.append("gruppe", art);
   formulardaten.append("gruppenid", id);
+  formulardaten.append("anfragenziel", 280);
   var chat = $("#cms_chat_nachrichten");
   var gid = id;
 
@@ -725,17 +726,34 @@ function cms_chat_aktualisieren(art, id) {
   var anf = new XMLHttpRequest();
 
   var rek = function() {
-    if(anf.readyState == 4) {                     // Kein PHP Fehler
-      if(anf.responseText && !anf.responseText.startsWith("<br />"))
-        anfragennachbehandlung(anf.responseText);
-      anf = new XMLHttpRequest();
-      anf.onreadystatechange = rek;
-      anf.open("POST", "php/oeffentlich/anfragen/chataktualisieren.php");
-      anf.send(formulardaten);
+    if(anf.readyState == 4) {
+      if(anf.status == 200) {
+        if(anf.responseText)
+          if(!anf.responseText.startsWith("<br />")) {
+            anfragennachbehandlung(anf.responseText);
+            anf = new XMLHttpRequest();
+            anf.onreadystatechange = rek;
+            anf.open("POST", "php/oeffentlich/anfragen/anfrage.php");
+            anf.send(formulardaten);
+          } else
+            setTimeout(function() {
+              anf = new XMLHttpRequest();
+              anf.onreadystatechange = rek;
+              anf.open("POST", "php/oeffentlich/anfragen/anfrage.php");
+              anf.send(formulardaten);
+            }, 10000);
+      } else {
+        setTimeout(function() {
+          anf = new XMLHttpRequest();
+          anf.onreadystatechange = rek;
+          anf.open("POST", "php/oeffentlich/anfragen/anfrage.php");
+          anf.send(formulardaten);
+        }, 10000);  // 10 Sek warten bei Fehler
+      }
     }
   }
   anf.onreadystatechange = rek;
-  anf.open("POST", "php/oeffentlich/anfragen/chataktualisieren.php");
+  anf.open("POST", "php/oeffentlich/anfragen/anfrage.php");
   anf.send(formulardaten);
 }
 /* Nachricht melden - Bestätigung */
@@ -821,7 +839,7 @@ function cms_chat_nachrichten_nachladen(art, id, anzahl) {
             $("<div></div>", {class: "cms_chat_nachricht_nachricht"}).html(i),
             $("<div></div>", {class: "cms_chat_nachricht_zeit"}).html(("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2))
           );
-         $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(innen).prependTo(chat).find(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+         $("<div></div>", {class: "cms_chat_nachricht_aussen"+(e?" cms_chat_nachricht_eigen":"")}).append(innen).prependTo(chat).find(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
       }
       if(mehr == true)
         $("#cms_chat_nachrichten_nachladen").show().remove().prependTo(chat);

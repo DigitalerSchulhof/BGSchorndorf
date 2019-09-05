@@ -34,12 +34,9 @@ if (cms_angemeldet() && $zugriff) {
 			}
 			$weilreference0 = 0;
 			$dbs = cms_verbinden('s');
-			if($status == "-2") {
+			if($status == "-1") {
 				$sql = $dbs->prepare("DELETE FROM fehlermeldungen WHERE id = ?;");
 				$sql->bind_param("i", $id);
-			} else if($status == "-1") {
-				$sql = $dbs->prepare("UPDATE fehlermeldungen SET sichtbar = ? WHERE id = ?;");
-				$sql->bind_param("ii", $weilreference0, $id);
 			} else {
 				$sql = $dbs->prepare("UPDATE fehlermeldungen SET status = ? WHERE id = ?;");
 				$sql->bind_param("ii", $status, $id);
