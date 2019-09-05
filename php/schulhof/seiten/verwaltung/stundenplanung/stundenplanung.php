@@ -466,6 +466,7 @@ if ($zugriff) {
         $_SESSION['STUNDENPLANUNGLEHRER'] = $lehrergewaehlt;
         $_SESSION['STUNDENPLANUNGRAUM'] = $raumgewaehlt;
         $_SESSION['STUNDENPLANUNGRYTHMUS'] = $rythmusgewaehlt;
+        $_SESSION['STUNDENPLANUNGZEITRAUM'] = $ZEITRAUM;
 
         if (($kursgewaehlt."" != '-') && ($lehrergewaehlt."" != '-') && ($raumgewaehlt."" != '-') && ($rythmusgewaehlt."" != '-') && ($modusgewaehlt == 'P')) {
           $modusgewaehlt = "K";

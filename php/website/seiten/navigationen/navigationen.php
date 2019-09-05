@@ -207,7 +207,8 @@ function cms_navigationsebene_ausgeben($dbs, $pfad, $gesamtpfad, $oberseite, $ti
 
 	$code = "";
 	$finale = "";
-	$sql = "SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung = '$oberseite' $sqlzusatz ORDER BY position";
+	if ($oberseite == '-') {$sql = "SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung IS NULL $sqlzusatz ORDER BY position";}
+	else {$sql = "SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung = '$oberseite' $sqlzusatz ORDER BY position";}
 	if ($anfrage = $dbs->query($sql)) {
 		while ($daten = $anfrage->fetch_assoc()) {
 			$untermneueneubegonnen = false;

@@ -8,23 +8,23 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['tag'])) 												{$tag = $_POST['tag'];} 															else {echo "FEHLER";exit;}
-if (isset($_POST['stunde'])) 											{$stunde = $_POST['stunde'];} 												else {echo "FEHLER";exit;}
-if (isset($_SESSION["STUNDENPLANUNGSCHULJAHR"])) 	{$schuljahr = $_SESSION["STUNDENPLANUNGSCHULJAHR"];} 	else {echo "FEHLER";exit;}
-if (isset($_SESSION["STUNDENPLANUNGZEITRAUM"])) 	{$zeitraum = $_SESSION["STUNDENPLANUNGZEITRAUM"];} 		else {echo "FEHLER";exit;}
-if (isset($_SESSION['STUNDENPLANUNGKURSE'])) 			{$kurs = $_SESSION['STUNDENPLANUNGKURSE'];} 					else {echo "FEHLER";exit;}
-if (isset($_SESSION['STUNDENPLANUNGLEHRER'])) 		{$lehrer = $_SESSION['STUNDENPLANUNGLEHRER'];} 				else {echo "FEHLER";exit;}
-if (isset($_SESSION['STUNDENPLANUNGRAUM'])) 			{$raum = $_SESSION['STUNDENPLANUNGRAUM'];} 						else {echo "FEHLER";exit;}
-if (isset($_SESSION['STUNDENPLANUNGRYTHMUS'])) 		{$rythmus = $_SESSION['STUNDENPLANUNGRYTHMUS'];} 			else {echo "FEHLER";exit;}
+if (isset($_POST['tag'])) 												{$tag = $_POST['tag'];} 															else {echo "FEHLER1";exit;}
+if (isset($_POST['stunde'])) 											{$stunde = $_POST['stunde'];} 												else {echo "FEHLER2";exit;}
+if (isset($_SESSION["STUNDENPLANUNGSCHULJAHR"])) 	{$schuljahr = $_SESSION["STUNDENPLANUNGSCHULJAHR"];} 	else {echo "FEHLER3";exit;}
+if (isset($_SESSION["STUNDENPLANUNGZEITRAUM"])) 	{$zeitraum = $_SESSION["STUNDENPLANUNGZEITRAUM"];} 		else {echo "FEHLER4";exit;}
+if (isset($_SESSION['STUNDENPLANUNGKURSE'])) 			{$kurs = $_SESSION['STUNDENPLANUNGKURSE'];} 					else {echo "FEHLER5";exit;}
+if (isset($_SESSION['STUNDENPLANUNGLEHRER'])) 		{$lehrer = $_SESSION['STUNDENPLANUNGLEHRER'];} 				else {echo "FEHLER6";exit;}
+if (isset($_SESSION['STUNDENPLANUNGRAUM'])) 			{$raum = $_SESSION['STUNDENPLANUNGRAUM'];} 						else {echo "FEHLER7";exit;}
+if (isset($_SESSION['STUNDENPLANUNGRYTHMUS'])) 		{$rythmus = $_SESSION['STUNDENPLANUNGRYTHMUS'];} 			else {echo "FEHLER8";exit;}
 
-if (!cms_check_ganzzahl($tag,1,7)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($stunde,0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($schuljahr,0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($zeitraum,0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($kurs,0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($lehrer,0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($raum,0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($rythmus,0,26)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($tag,1,7)) {echo "FEHLER9";exit;}
+if (!cms_check_ganzzahl($stunde,0)) {echo "FEHLER0";exit;}
+if (!cms_check_ganzzahl($schuljahr,0)) {echo "FEHLER10";exit;}
+if (!cms_check_ganzzahl($zeitraum,0)) {echo "FEHLER11";exit;}
+if (!cms_check_ganzzahl($kurs,0)) {echo "FEHLER12";exit;}
+if (!cms_check_ganzzahl($lehrer,0)) {echo "FEHLER13";exit;}
+if (!cms_check_ganzzahl($raum,0)) {echo "FEHLER14";exit;}
+if (!cms_check_ganzzahl($rythmus,0,26)) {echo "FEHLER15";exit;}
 
 
 $CMS_RECHTE = cms_rechte_laden();

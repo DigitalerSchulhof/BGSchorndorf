@@ -72,8 +72,14 @@ if ($zugriff) {
       $jetzt = $zbeginn;
       $tag = 60*60*24;
 
-      $fb = $FERIEN[0]['b'];
-      $fe = $FERIEN[0]['e'];
+      if (count($FERIEN) > 0) {
+        $fb = $FERIEN[0]['b'];
+        $fe = $FERIEN[0]['e'];
+      }
+      else {
+        $fb = 0;
+        $fe = 0;
+      }
       $fnid = 1;
       $geradef = false;
       $ffertig = false;

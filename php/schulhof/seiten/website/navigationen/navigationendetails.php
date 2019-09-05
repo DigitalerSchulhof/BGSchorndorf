@@ -1,7 +1,8 @@
 <?php
 function cms_anzahl_navigationsebenen($dbs, $ausgang, $max = 0) {
 	$gefunden = false;
-	$sql = "SELECT id FROM seiten WHERE zuordnung = '$ausgang'";
+	if ($ausgang == '-') {$sql = "SELECT id FROM seiten WHERE zuordnung IS NULL";}
+	else {$sql = "SELECT id FROM seiten WHERE zuordnung = '$ausgang'";}
 	$neuesmax = $max;
 	if ($anfrage = $dbs->query($sql)) {
 		while ($daten = $anfrage->fetch_assoc()) {
