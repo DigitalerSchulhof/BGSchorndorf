@@ -13,7 +13,6 @@ function cms_galerie_details_laden($id, $ziel) {
   $datum = time();
   $aktiv = 1;
   $genehmigt = 0;
-  $oeffentlichkeit = 4;
   $notifikationen = 1;
   $beschreibung = '';
   $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
@@ -27,14 +26,13 @@ function cms_galerie_details_laden($id, $ziel) {
   // Falls eine bestehende Galerie geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, oeffentlichkeit, notifikationen, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = $id";
+	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, notifikationen, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = $id";
 		if ($anfrage = $dbs->query($sql)) {
 			if ($daten = $anfrage->fetch_assoc()) {
 				$bezeichnung = $daten['bezeichnung'];
   			$datum = $daten['datum'];
       	$genehmigt = $daten['genehmigt'];
         $aktiv = $daten['aktiv'];
-        $oeffentlichkeit = $daten['oeffentlichkeit'];
         $notifikationen = $daten['notifikationen'];
         $beschreibung = $daten['beschreibung'];
         $vorschaubild = $daten['vorschaubild'];
@@ -79,20 +77,6 @@ function cms_galerie_details_laden($id, $ziel) {
     $code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 		$code .= "<h3>Art der Galerie</h3>";
 		$code .= "<table class=\"cms_formular\">";
-/*    $code .= "<tr><th>Sichtbarkeit:</th><td><select id=\"cms_oeffentlichkeit\" name=\"cms_oeffentlichkeit\">";
-    $oeffentlichkeiten = array(
-      0 => "Mitglieder der zugeordneten Gruppen",
-      1 => "Lehrer",
-      2 => "Lehrer und Verwaltung",
-      3 => "Gesamter Schulhof",
-      4 => "Auf der Website und im Schulhof"
-    );
-    for ($i=0; $i < count($oeffentlichkeiten); $i++) {
-      if ($oeffentlichkeit == $i) {$selected = "selected";} else {$selected = "";}
-      $code .= "<option value=\"$i\" $selected>".$oeffentlichkeiten[$i]."</option>";
-    }
-    $code .= "</select></td></tr>";*/
-    $code .= "<input type=\"hidden\" id=\"cms_oeffentlichkeit\" name=\"cms_oeffentlichkeit\" value=\"4\"></input>";
     if ($genehmigung) {
       $code .= "<tr><th>Genehmigt:</th><td>".cms_schieber_generieren('galerie_genehmigt', $genehmigt)."</td></tr>";
     }

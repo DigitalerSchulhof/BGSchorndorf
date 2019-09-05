@@ -130,6 +130,16 @@ if ($CMS_RECHTE['Gruppen']['Sonstige Gruppen anlegen'] || $CMS_RECHTE['Gruppen']
 	$tabzahl++;
 }
 
+if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_chatmeldungen\" href=\"Schulhof/Aufgaben/Chatmeldungen\">";
+			$code .=  "<h3>Chatmeldungen</h3>";
+			$code .=  "<p>Chatmeldungen sehen".($CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']?" und verwalten":"").".</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
+
 if ($tabzahl > 0) {
 	$code = "<h2>Personen und Gruppen</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 }
@@ -624,7 +634,7 @@ echo $code;
 	<li>
 		<a class="cms_uebersicht_verwaltung_backup" href="Schulhof/Verwaltung/Backup/">
 			<h3>Manuelles Backup</h3>
-			<p>Sichert Datenbank und Webserver manuell. Generiert Archive zum Download.</p>
+			<p>Sichert Datenbank und Webserver manuell. Generiert Archiv zum Download.</p>
 		</a>
 	</li>
 	<li>
@@ -636,7 +646,7 @@ echo $code;
 	<li>
 		<a class="cms_uebersicht_verwaltung_verschluesselung" href="Schulhof/Verwaltung/Verschlüsselung/">
 			<h3>Verschlüsselung</h3>
-			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer config-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
+			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer Konfigurations-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
 		</a>
 	</li>
 </ul> -->

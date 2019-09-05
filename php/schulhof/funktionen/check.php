@@ -257,7 +257,8 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	$CMS_RECHTE['termine'] = false;
 	$CMS_RECHTE['blogeintraege'] = false;
 	$CMS_RECHTE['chatten'] = false;
-	$CMS_RECHTE['chattenab'] = false;
+	$CMS_RECHTE['nachrichtloeschen'] = false;
+	$CMS_RECHTE['nutzerstummschalten'] = false;
 	$CMS_RECHTE['mitglied'] = false;
 	$CMS_RECHTE['sichtbar'] = false;
 	$CMS_RECHTE['bearbeiten'] = false;
@@ -281,7 +282,8 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 					$CMS_RECHTE['termine'] = true;
 					$CMS_RECHTE['blogeintraege'] = true;
 					$CMS_RECHTE['chatten'] = true;
-					$CMS_RECHTE['chattenab'] = true;
+					$CMS_RECHTE['nachrichtloeschen'] = true;
+					$CMS_RECHTE['nutzerstummschalten'] = true;
 					$CMS_RECHTE['mitglied'] = true;
 					$CMS_RECHTE['sichtbar'] = true;
 					$CMS_RECHTE['bearbeiten'] = true;
@@ -293,10 +295,10 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		// Falls kein Vorsitz oder keine Aufsicht vorliegt, prüfe weiter
 		if (!$CMS_RECHTE['bearbeiten']) {
 			// Mitgliedschaft prüfen
-			$sql = $dbs->prepare("SELECT dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab FROM $gk"."mitglieder WHERE gruppe = ? AND person = ?");
+			$sql = $dbs->prepare("SELECT dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten FROM $gk"."mitglieder WHERE gruppe = ? AND person = ?");
 			$sql->bind_param("ii", $gruppenid, $benutzer);
 			if ($sql->execute()) {
-		    $sql->bind_result($dateiupload, $dateidownload, $dateiloeschen, $dateiumbenennen, $termine, $blogeintraege, $chatten, $chattenab);
+		    $sql->bind_result($dateiupload, $dateidownload, $dateiloeschen, $dateiumbenennen, $termine, $blogeintraege, $chatten, $nachrichtloeschen, $nutzerstummschalten);
 		    if ($sql->fetch()) {
 					if ($dateiupload == '1') {$CMS_RECHTE['dateiupload'] = true;}
 					if ($dateidownload == '1') {$CMS_RECHTE['dateidownload'] = true;}
@@ -305,9 +307,10 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 					if ($termine == '1') {$CMS_RECHTE['termine'] = true;}
 					if ($blogeintraege == '1') {$CMS_RECHTE['blogeintraege'] = true;}
 					if ($chatten == '1') {$CMS_RECHTE['chatten'] = true;}
+					if ($nachrichtloeschen == '1') {$CMS_RECHTE['nachrichtloeschen'] = true;}
+					if ($nutzerstummschalten == '1') {$CMS_RECHTE['nutzerstummschalten'] = true;}
 					$CMS_RECHTE['mitglied'] = true;
 					$CMS_RECHTE['sichtbar'] = true;
-					$CMS_RECHTE['chattenab'] = $chattenab;
 				}
 		  }
 		  $sql->close();
@@ -324,7 +327,8 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 				else if ($sichtbar == 3) {$CMS_RECHTE['sichtbar'] = true;}
 				if ($chataktiv == 0) {
 					$CMS_RECHTE['chatten'] = false;
-					$CMS_RECHTE['chattenab'] = false;
+					$CMS_RECHTE['nachrichtloeschen'] = false;
+					$CMS_RECHTE['nutzerstummschalten'] = false;
 				}
 			}
 	  }
@@ -655,6 +659,11 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
 }
 
 function postLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			postLesen($f, $nullfehler);
+		return;
+	}
 	global $$feld;
 
 	if(isset($_POST[$feld]))
@@ -662,6 +671,33 @@ function postLesen($feld, $nullfehler = true) {
 	else
 		if($nullfehler)
 			die("FEHLER");
+}
+
+function getLesen($feld, $nullfehler = true) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			getLesen($f, $nullfehler);
+		return;
+	}
+	global $$feld;
+
+	if(isset($_GET[$feld]))
+		$$feld = $_GET[$feld];
+	else
+		if($nullfehler)
+			die("FEHLER");
+}
+
+function sqlLesen($row, $feld) {
+	if(is_array($feld)) {
+		foreach($feld as $i => $f)
+			sqlLesen($row, $f);
+		return;
+	}
+	global $$feld;
+
+	if(isset($row[$feld]))
+		$$feld = $row[$feld];
 }
 
 ?>

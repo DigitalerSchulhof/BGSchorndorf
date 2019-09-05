@@ -449,6 +449,10 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 			$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($g)."\">$g</a></li> ";
 		}
 	}
+	$zugriff = ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']);
+	if ($zugriff) {
+		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen</a></li> ";
+	}
 	// PLANUNG
 	$VERplanung = "";
 	if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
@@ -527,6 +531,10 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	$zugriff = ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten']);
 	if ($zugriff) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
+	}
+	$zugriff = ($CMS_RECHTE['Website']['Emoticons verwalten']);
+	if ($zugriff) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Emoticons\">Emoticons</a></li> ";
 	}
 
 	// WEBSITE

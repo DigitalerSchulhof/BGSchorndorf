@@ -212,6 +212,16 @@ if ($zugriff) {
 		$code .= "<td>".cms_schieber_generieren('sichtbardownload',$einstellungen['Download aus sichtbaren Gruppen'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
+		$code .= "</table>";
+
+		$code .= "<h3>Gruppenchat</h3>";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr>";
+		$code .= "<th>Nachrichten löschen nach (0 für nie)</th>";
+		$code .= "<td><input type=\"number\" class=\"cms_klein\" min=\"0\" max=\"1000\" step=\"1\" name=\"cms_nachrichtloeschen\" id=\"cms_nachrichtloeschen\" value=\"".$einstellungen['Chat Nachrichten löschen nach']."\" onchange=\"cms_nur_ganzzahl('cms_nachrichtloeschen', 365)\"> Tagen</td>";
+		$code .= "</tr>";
+		$code .= "</table>";
+
 		$code .= "</div></div>";
 
 		$code .= "<div class=\"cms_spalte_i cms_clear\">";

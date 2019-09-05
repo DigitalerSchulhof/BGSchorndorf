@@ -18,7 +18,7 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
     $code .= "<h4>Mitglieder</h4>";
     $code .= "<table class=\"cms_formular\">";
     $code .= "<thead><tr><th rowspan=\"2\"></th><th rowspan=\"2\">Person</th><th colspan=\"4\">Dateien</th><th colspan=\"2\">Vorschlagen</th><th colspan=\"2\">Chat</th><th></th></tr>";
-    $code .= "<tr><th><img src=\"res/icons/klein/upload.png\"></th><th><img src=\"res/icons/klein/download.png\"></th><th><img src=\"res/icons/klein/loeschen.png\"></th><th><img src=\"res/icons/klein/umbenennen.png\"></th><th><img src=\"res/icons/klein/termine.png\"></th><th><img src=\"res/icons/klein/blog.png\"></th><th><img src=\"res/icons/klein/chat.png\"></th><th>schreiben erlaubt ab</th><th></th></tr></thead>";
+    $code .= "<tr><th><img src=\"res/icons/klein/upload.png\"><span class=\"cms_hinweis\">Dateien hochladen</span></th><th><img src=\"res/icons/klein/download.png\"><span class=\"cms_hinweis\">Dateien herunterladen</span></th><th><img src=\"res/icons/klein/loeschen.png\"><span class=\"cms_hinweis\">Dateien löschen</span></th><th><img src=\"res/icons/klein/umbenennen.png\"><span class=\"cms_hinweis\">Dateien umbenennen</span></th><th><img src=\"res/icons/klein/termine.png\"><span class=\"cms_hinweis\">Interne Termine vorschlagen</span></th><th><img src=\"res/icons/klein/blog.png\"><span class=\"cms_hinweis\">Interne Blogeinträge vorschlagen</span></th><th><img src=\"res/icons/klein/chat.png\"><span class=\"cms_hinweis\">Chatten</span></th><th><img src=\"res/icons/klein/loeschen.png\"><span class=\"cms_hinweis\">Chatnachrichten löschen</span></th><th><img src=\"res/icons/klein/stumm.png\"><span class=\"cms_hinweis\">Mitglieder stummschalten</span><span class=\"cms_hinweis\">Mitglieder stummschalten</span></th><th></th></tr></thead>";
     $code .= "<tbody id=\"$id"."_F\">";
     $vorsitzcode = "";
     $vorsitzarray = explode('|', substr($gewaehlt2,1));
@@ -33,11 +33,6 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
           else if ($daten['art'] == 'v') {$icon = 'verwaltung.png';}
           else if ($daten['art'] == 'x') {$icon = 'extern.png';}
           else {$icon = 'schueler.png';}
-          $chattenabT = date('d', $daten['chattenab']);
-          $chattenabM = date('m', $daten['chattenab']);
-          $chattenabJ = date('Y', $daten['chattenab']);
-          $chattenabs = date('H', $daten['chattenab']);
-          $chattenabm = date('i', $daten['chattenab']);
           $pname = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
           $code .= "<td><span class=\"cms_tabellenicon\"><img src=\"res/icons/klein/$icon\"></span></td>";
           $code .= "<td>".$pname."</td>";
@@ -48,8 +43,8 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
           $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_termine_'.$daten['id'],  $daten['termine'])."</td>";
           $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_blogeintraege_'.$daten['id'],  $daten['blogeintraege'])."</td>";
           $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chatten_'.$daten['id'],  $daten['chatten'])."</td>";
-          $code .= "<td>".cms_datum_eingabe($id.'_personensuche_mitglieder_chattenab_'.$daten['id'], $chattenabT, $chattenabM, $chattenabJ)." – ";
-          $code .= cms_uhrzeit_eingabe($id.'_personensuche_mitglieder_chattenab_'.$daten['id'],$chattenabs, $chattenabm)."</td>";
+          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chat_loeschen_'.$daten['id'],  $daten['nachrichtloeschen'])."</td>";
+          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chat_bannen_'.$daten['id'],  $daten['nutzerstummschalten'])."</td>";
           $code .= "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('$id', '".$daten['id']."', '".$gruppe."')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
           $code .= "</tr>";
           $vorsitzwert = 0;
