@@ -251,8 +251,8 @@ function cms_schulhof_rechte() {
     $code .= "<li>Die gespeicherten Daten dienen alle einem jeweiligen Zweck. Auch dieser Zweck ist unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> ersichtlich. Eine Verarbeitung zu anderen Zwecken wird nicht durchgeführt. Es besteht eine Informationspflicht, wenn sich die Gründe der Datenerhebung verändern.</li>";
     $code .= "<li>Es werden nicht mehr Daten gespeichert als für die Verarbeitung notwendig. Die gespeicherten Daten sind nur für die Personengruppen sichtbar, die zum Zugriff auf diese Daten berechtigt sind.</li>";
     $code .= "<li>Die hinterlegten Daten müssen sachlich korrekt und aktuell sein.</li>";
-    $code .= "<li>Keine der hinterlegten Daten werden für immer gespeichert sondern sind an Fristen gebunden. Wie lange die jeweiligen Daten gespeichert werden, bzw. wann sie gelöscht werden ist unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> einsehbar.</li>";
-    $code .= "<li>Es wurden Maßnahmen ergriffen, um die Sicherheit der Daten zu gewährleisten. So liegen zum Beispiel alle gespeicherten Daten auf Servern der Stadt Schorndorf. Die Verbindung zum Server ist SSL-verschlüsselt, sodass sie auch während der Übertragung nicht lesbar sind. Ferner sind die Daten in verschlüsselter Form auf den Servern der Stadt Schorndorf gespeichert. Darüberhinaus sind die persönlichen Daten in Sicherheitskategorien eingeteilt. Je nach Sicherheitskategorie sind die Daten aus dem Internet verfügbar, oder in einem abgeschlossenen Bereich gespeichert, der nicht aus Internet, sondern nur aus einem lokalen Schulnetzwerk erreichbar ist.</li>";
+    $code .= "<li>Keine der hinterlegten Daten werden für immer gespeichert sondern sind an Fristen gebunden. Wie lange die jeweiligen Daten gespeichert werden, bzw. wann sie gelöscht werden, ist unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> einsehbar.</li>";
+    $code .= "<li>Es wurden Maßnahmen ergriffen, um die Sicherheit der Daten zu gewährleisten. So liegen zum Beispiel alle gespeicherten Daten auf Servern der Stadt Schorndorf. Die Verbindung zum Server ist SSL-verschlüsselt, sodass sie auch während der Übertragung nicht lesbar sind. Ferner sind die Daten in verschlüsselter Form auf den Servern der Stadt Schorndorf gespeichert. Darüber hinaus sind persönliche Daten in Sicherheitskategorien eingeteilt. Je nach Sicherheitskategorie sind die Daten aus dem Internet verfügbar, oder in einem abgeschlossenen Bereich gespeichert, der nicht aus Internet, sondern nur aus einem lokalen Schulnetzwerk erreichbar ist.</li>";
   $code .= "</ol>";
 
   $code .= "<p>Aus den genannten Grundsätzen ergeben sich die nebenstehenden Rechte.</p>";
@@ -267,7 +267,7 @@ function cms_schulhof_rechte() {
   $code .= "<p>Die Schule muss nachweisen können, dass für die gespeicherten Daten entweder eine rechtliche Grundlage besteht, oder dass in die Speicherung eingewilligt wurde. Ferner ist die Schule in der Verantwortung die Daten so sicher wie möglich zu speichern.</p>";
 
   $code .= "<h3>Auskunftspflicht</h3>";
-  $code .= "<p>Unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> kann jederzeit eingesehen werden, welche Daten gespeichert werden, wer sie sieht, auf welcher Grundlage (Einwilligung oder Gesetz) die Daten gespeichert werden und zu welchem Zweck sie gespeichert sind. Entstehen darüber hinaus Fragen ist die Schule verpflichtet, über die Datenhaltung und die gespeicherten personenbezogenen Daten Auskunft zu geben.</p>";
+  $code .= "<p>Unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> kann jederzeit eingesehen werden, welche Daten gespeichert werden, wer sie sieht, auf welcher Grundlage (Einwilligung oder Gesetz) die Daten gespeichert werden und zu welchem Zweck sie gespeichert sind. Entstehen darüber hinaus Fragen, ist die Schule verpflichtet, über die Datenhaltung und die gespeicherten personenbezogenen Daten Auskunft zu geben.</p>";
   $code .= "<p>Die Ansprechpartner dafür sind die Datenschutzbeauftragten der Schule:</p>";
 
   // Datenschutzbeauftragten laden
@@ -291,7 +291,7 @@ function cms_schulhof_rechte() {
     $code .= "<p>$datenschutz</p>";
   }
 
-  $code .= "<p>Für technische Fragen kann einer der Administrator des Schulhofs kontaktiert werden:</p>";
+  $code .= "<p>Für technische Fragen kann einer der Administratoren des Schulhofs kontaktiert werden:</p>";
 
   $admin = "";
   $sql = "SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN rollenzuordnung ON personen.id = rollenzuordnung.person WHERE rolle = 0";
@@ -321,7 +321,7 @@ function cms_schulhof_rechte() {
   $code .= "<p>In den $linkanzeige können alle Benutzerdaten gelöscht werden, die auf der Einwilligung in die Speicherung beruhen. Damit ist der Widerruf der Einwilligung in die Speicherung von personenbezogenen Daten automatisch gewährleistet. Sie kann bei erneuter Kontoanlegung wieder erteilt werden.</p>";
 
   $code .= "<h3>Frist</h3>";
-  $code .= "<p>Die Schule ist verpflichtet binnen einem Monat Anfragen, Berichtigungen oder Löschungen nachzukommen.</p>";
+  $code .= "<p>Die Schule ist verpflichtet, binnen einem Monat Anfragen, Berichtigungen oder Löschungen nachzukommen.</p>";
   $code .= "</div>";
   $code .= "</div>";
 

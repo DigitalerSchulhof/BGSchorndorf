@@ -16,7 +16,7 @@ if (strlen($benutzername) < 6) {$fehler = true;}
 if (!cms_check_mail($mail)) {$fehler = true;}
 
 $dbs = cms_verbinden('s');
-// Prüfen, ob Benutzername und eMail zusammen passen
+// Prüfen, ob Benutzername und E-Mail zusammen passen
 $jetzt = time();
 $benutzername_db = cms_texttrafo_e_db($benutzername);
 

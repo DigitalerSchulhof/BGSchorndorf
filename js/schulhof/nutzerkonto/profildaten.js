@@ -13,7 +13,7 @@ function cms_schulhof_nutzerkonto_benutzerkonto_aendern () {
 		fehler = true;
 	}
 	if (!cms_check_mail(mail)) {
-		meldung += '<li>die eingegebene eMail-Adresse ist ungültig.</li>';
+		meldung += '<li>die eingegebene E-Mail-Adresse ist ungültig.</li>';
 		fehler = true;
 	}
 
