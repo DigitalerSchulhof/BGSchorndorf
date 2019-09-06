@@ -60,7 +60,7 @@ function cms_configaendern() {
 	$text .= '$CMS_MAILWH[0] = "'.cms_dateischreiben_vorbereiten($CMS_MAILWH[0]).'";'."\r\n";
 	$text .= '$CMS_MAILWH[1] = "'.cms_dateischreiben_vorbereiten($CMS_MAILWH[1]).'";'."\r\n";
 	$text .= "\r\n";
-	$text .= '$CMS_MAILSIGNATUR[0] = "Es grüßt das IT-Team des '.cms_dateischreiben_vorbereiten($CMS_SCHULE_GENITIV).' '.cms_dateischreiben_vorbereiten($CMS_ORT).'\\r\\n\\r\\nHinweis: Diese E-Mail wurde automatisch erstellt. Auf Antworten wird nicht reagiert.\\r\\n\\r\\n\\r\\n-------------------------------------------\\r\\n'.cms_dateischreiben_vorbereiten($CMS_SCHULE).'\\r\\n'.cms_dateischreiben_vorbereiten($CMS_STRASSE).'\\r\\n'.cms_dateischreiben_vorbereiten($CMS_PLZORT).'\\r\\n'.cms_dateischreiben_vorbereiten($CMS_DOMAIN).'";'."\r\n";
+	$text .= '$CMS_MAILSIGNATUR[0] = "Es grüßt das IT-Team des '.cms_dateischreiben_vorbereiten($CMS_SCHULE_GENITIV).' '.cms_dateischreiben_vorbereiten($CMS_ORT).'\\r\\n\\r\\nHinweis: Diese eMail wurde automatisch erstellt. Auf Antworten wird nicht reagiert.\\r\\n\\r\\n\\r\\n-------------------------------------------\\r\\n'.cms_dateischreiben_vorbereiten($CMS_SCHULE).'\\r\\n'.cms_dateischreiben_vorbereiten($CMS_STRASSE).'\\r\\n'.cms_dateischreiben_vorbereiten($CMS_PLZORT).'\\r\\n'.cms_dateischreiben_vorbereiten($CMS_DOMAIN).'";'."\r\n";
 	$text .= '$CMS_MAILSIGNATUR[1] = str_replace("\\r\\n", "<br>", $CMS_MAILSIGNATUR[0]);'."\r\n";
 	$text .= '?>';
 	return $text;

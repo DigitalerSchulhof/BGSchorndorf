@@ -18,7 +18,7 @@ if (isset($CMS_URL[2])) {
 		echo cms_meldung("erfolg", $meldung);
 	}
 	if ($CMS_URL[2] == "Zugeschickt!") {
-		$meldung = '<h4>Neues Passwort</h4><p>Ein Passwort wurde an die hinterlegte E-Mail-Adresse geschickt. Dieses Passwort ist nur eine Stunde gültig. Das Passwort sollte direkt nach der Anmeldung geändert werden!</p>';
+		$meldung = '<h4>Neues Passwort</h4><p>Ein Passwort wurde an die hinterlegte eMailadresse geschickt. Dieses Passwort ist nur eine Stunde gültig. Das Passwort sollte direkt nach der Anmeldung geändert werden!</p>';
 		echo cms_meldung("info", $meldung);
 	}
 }

@@ -96,7 +96,7 @@ if (!$fehler) {
     if (strlen($stelefon2) > 0) {$kontakt .= "<br>Telefon: $stelefon2";}
     if (strlen($shandy1) > 0) {$kontakt .= "<br>Handy: $shandy1";}
     if (strlen($shandy2) > 0) {$kontakt .= "<br>Handy: $shandy2";}
-    if (strlen($smail) > 0) {$kontakt .= "<br>E-Mail: $smail";}
+    if (strlen($smail) > 0) {$kontakt .= "<br>eMail: $smail";}
     $code .= substr($kontakt, 4)."</td></tr>";
     $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Alte Schule</th></tr>";
     $code .= "<tr><th>Name</th><td>$svorigeschule</td></tr>";
@@ -122,7 +122,7 @@ if (!$fehler) {
     if (strlen($atelefon11) > 0) {$kontakt .= "<br>Telefon: $atelefon11";}
     if (strlen($atelefon21) > 0) {$kontakt .= "<br>Telefon: $atelefon21";}
     if (strlen($ahandy11) > 0) {$kontakt .= "<br>Handy: $ahandy11";}
-    if (strlen($amail1) > 0) {$kontakt .= "<br>E-Mail: $amail1";}
+    if (strlen($amail1) > 0) {$kontakt .= "<br>eMail: $amail1";}
     $code .= substr($kontakt, 4)."</td></tr>";
     $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Berechtigungen</th></tr>";
     $code .= "<tr><th>Sorgerecht</th><td>";
@@ -149,7 +149,7 @@ if (!$fehler) {
       if (strlen($atelefon12) > 0) {$kontakt .= "<br>Telefon: $atelefon12";}
       if (strlen($atelefon22) > 0) {$kontakt .= "<br>Telefon: $atelefon22";}
       if (strlen($ahandy12) > 0) {$kontakt .= "<br>Handy: $ahandy12";}
-      if (strlen($amail2) > 0) {$kontakt .= "<br>E-Mail: $amail2";}
+      if (strlen($amail2) > 0) {$kontakt .= "<br>eMail: $amail2";}
       $code .= substr($kontakt, 4)."</td></tr>";
       $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Berechtigungen</th></tr>";
       $code .= "<tr><th>Sorgerecht</th><td>";

@@ -92,7 +92,7 @@ function cms_kontaktformulare_neu_speichern(zusatz) {
 
   $.each(mails, function(i, n) {
     if(!cms_check_mail(n)  || !n) {
-      meldung += '<li>die E-Mail-Adresse eines Empfängers ist ungültig.</li>';
+      meldung += '<li>die eMailadresse eines Empfängers ist ungültig.</li>';
       fehler = true;
       return false;
     }
@@ -203,7 +203,7 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
 
   $.each(mails, function(i, n) {
     if(!cms_check_mail(n)  || !n) {
-      meldung += '<li>die E-Mail-Adresse eines Empfängers ist ungültig.</li>';
+      meldung += '<li>die eMailadresse eines Empfängers ist ungültig.</li>';
       fehler = true;
       return false;
     }
@@ -248,7 +248,7 @@ function cms_kontaktformular_empfaenger_hinzufuegen() {
 
   var form = $("<table></table>", {class: "cms_formular"})
     .append("<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_name\"></td></tr>")
-    .append("<tr><th>E-Mail-Adresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_mail\"></td></tr>")
+    .append("<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_mail\"></td></tr>")
     .append("<tr><th>Beschreibung: </th><td><textarea class=\"cms_kontaktformular_empfaenger_beschreibung\"></textarea></td></tr>")
     .append("<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_kontaktformular_empfaenger_loeschen(this);\">- Empfänger löschen</span></td></tr>");
 
@@ -287,7 +287,7 @@ function cms_kontaktformular_absenden(element) {
   }
 
   if(!cms_check_mail(mail)) {
-    meldung += '<li>die E-Mail-Adresse ungültig.</li>';
+    meldung += '<li>die eMailadresse ungültig.</li>';
     fehler = true;
   }
 

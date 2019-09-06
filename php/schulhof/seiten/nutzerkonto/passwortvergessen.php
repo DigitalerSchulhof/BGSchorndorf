@@ -10,9 +10,9 @@
 
 <table class="cms_formular">
 	<tr><th>Benutzername:</th><td><input name="cms_schulhof_anmeldung_passwortvergessen_bentuzer" id="cms_schulhof_anmeldung_passwortvergessen_bentuzer" type="text"></td></tr>
-	<tr><th>E-Mail-Adresse:</th><td><input name="cms_schulhof_anmeldung_passwortvergessen_mail" id="cms_schulhof_anmeldung_passwortvergessen_mail" type="text" onkeyup="cms_check_mail_wechsel('anmeldung_passwortvergessen_mail');"></td><td><span class="cms_eingabe_icon" id="cms_schulhof_anmeldung_passwortvergessen_mail_icon"></span></td></tr>
+	<tr><th>eMailadresse:</th><td><input name="cms_schulhof_anmeldung_passwortvergessen_mail" id="cms_schulhof_anmeldung_passwortvergessen_mail" type="text" onkeyup="cms_check_mail_wechsel('anmeldung_passwortvergessen_mail');"></td><td><span class="cms_eingabe_icon" id="cms_schulhof_anmeldung_passwortvergessen_mail_icon"></span></td></tr>
 	<tr><td colspan="3">
-		<p class="cms_notiz">Die E-Mail-Adresse, die auch im Schulhof hinterlegt ist.</p>
+		<p class="cms_notiz">Die eMailadresse, die auch im Schulhof hinterlegt ist.</p>
 		<?php
 		echo cms_meldung('info', '<h4>Bitte beachten:</h4><p>Das versendete Kennwort ist nur eine Stunde lang gültig und sollte daher sofort nach der Verwendung geändert werden.</p>')
 		?>

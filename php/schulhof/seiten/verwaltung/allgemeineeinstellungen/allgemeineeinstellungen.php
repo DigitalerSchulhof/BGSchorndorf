@@ -424,7 +424,7 @@ if ($zugriff) {
 		$code .= "<td colspan=\"2\"><input type=\"text\" name=\"cms_externegeraete1_nachname\" id=\"cms_externegeraete1_nachname\" value=\"".$einstellungen['Externe Geräteverwaltung1 Nachname']."\"></td>";
 		$code .= "</tr>";
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung1_mailF\" style=\"$style\">";
-		$code .= "<th>E-Mail-Adresse:</th>";
+		$code .= "<th>eMailadresse:</th>";
 		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete1_mail\" id=\"cms_schulhof_externegeraete1_mail\" value=\"".$einstellungen['Externe Geräteverwaltung1 Mail']."\" onkeyup=\"cms_check_mail_wechsel('externegeraete1_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete1_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";
@@ -474,7 +474,7 @@ if ($zugriff) {
 		$code .= "<td colspan=\"2\"><input type=\"text\" name=\"cms_externegeraete2_nachname\" id=\"cms_externegeraete2_nachname\" value=\"".$einstellungen['Externe Geräteverwaltung2 Nachname']."\"></td>";
 		$code .= "</tr>";
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung2_mailF\" style=\"$style\">";
-		$code .= "<th>E-Mail-Adresse:</th>";
+		$code .= "<th>eMailadresse:</th>";
 		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete2_mail\" id=\"cms_schulhof_externegeraete2_mail\" value=\"".$einstellungen['Externe Geräteverwaltung2 Mail']."\" onkeyup=\"cms_check_mail_wechsel('externegeraete2_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete2_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";

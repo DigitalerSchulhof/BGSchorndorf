@@ -144,7 +144,7 @@
 					    if (strlen($stelefon2) > 0) {$kontakt .= "<br>Telefon: $stelefon2";}
 					    if (strlen($shandy1) > 0) {$kontakt .= "<br>Handy: $shandy1";}
 					    if (strlen($shandy2) > 0) {$kontakt .= "<br>Handy: $shandy2";}
-					    if (strlen($smail) > 0) {$kontakt .= "<br>E-Mail: $smail";}
+					    if (strlen($smail) > 0) {$kontakt .= "<br>eMail: $smail";}
 					    $code .= substr($kontakt, 4)."</td></tr>";
 					    $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Alte Schule</th></tr>";
 					    $code .= "<tr><th>Name</th><td>$svorigeschule</td></tr>";
@@ -170,7 +170,7 @@
 					    if (strlen($ansprechpartner['eins']['telefon1']) > 0) {$kontakt .= "<br>Telefon: ".$ansprechpartner['eins']['telefon1'];}
 					    if (strlen($ansprechpartner['eins']['telefon2']) > 0) {$kontakt .= "<br>Telefon: ".$ansprechpartner['eins']['telefon2'];}
 					    if (strlen($ansprechpartner['eins']['handy']) > 0) {$kontakt .= "<br>Handy: ".$ansprechpartner['eins']['handy'];}
-					    if (strlen($ansprechpartner['eins']['mail']) > 0) {$kontakt .= "<br>E-Mail: ".$ansprechpartner['eins']['mail'];}
+					    if (strlen($ansprechpartner['eins']['mail']) > 0) {$kontakt .= "<br>eMail: ".$ansprechpartner['eins']['mail'];}
 					    $code .= substr($kontakt, 4)."</td></tr>";
 					    $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Berechtigungen</th></tr>";
 					    $code .= "<tr><th>Sorgerecht</th><td>";
@@ -197,7 +197,7 @@
 					      if (strlen($ansprechpartner['zwei']['telefon1']) > 0) {$kontakt .= "<br>Telefon: ".$ansprechpartner['zwei']['telefon1'];}
 					      if (strlen($ansprechpartner['zwei']['telefon2']) > 0) {$kontakt .= "<br>Telefon: ".$ansprechpartner['zwei']['telefon2'];}
 					      if (strlen($ansprechpartner['zwei']['handy']) > 0) {$kontakt .= "<br>Handy: ".$ansprechpartner['zwei']['handy'];}
-					      if (strlen($ansprechpartner['zwei']['mail']) > 0) {$kontakt .= "<br>E-Mail: ".$ansprechpartner['zwei']['mail'];}
+					      if (strlen($ansprechpartner['zwei']['mail']) > 0) {$kontakt .= "<br>eMail: ".$ansprechpartner['zwei']['mail'];}
 					      $code .= substr($kontakt, 4)."</td></tr>";
 					      $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Berechtigungen</th></tr>";
 					      $code .= "<tr><th>Sorgerecht</th><td>";

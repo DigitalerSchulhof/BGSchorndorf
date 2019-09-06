@@ -16,7 +16,7 @@ if (strlen($benutzername) < 6) {$fehler = true;}
 if (!cms_check_mail($mail)) {$fehler = true;}
 
 $dbs = cms_verbinden('s');
-// Prüfen, ob Benutzername und E-Mail zusammen passen
+// Prüfen, ob Benutzername und eMail zusammen passen
 $jetzt = time();
 $benutzername_db = cms_texttrafo_e_db($benutzername);
 
@@ -57,8 +57,8 @@ if (!$fehler) {
 		$text[$i] = $text[$i].'Es wurde ein neues Passwort generiert. Hier sind die Zugangsdaten:'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 		$text[$i] = $text[$i].'Benutzername: '.$benutzername.$CMS_MAILZ[$i];
 		$text[$i] = $text[$i].'Passwort: '.$passwort.$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].'E-Mail-Adresse: '.$mail.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].$CMS_MAILWV[$i].'Achtung!'.$CMS_MAILWH[$i].' Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur '.$CMS_MAILWV[$i].'eine Stunde'.$CMS_MAILWH[$i].' gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über '.$CMS_MAILHV[$i].'Passwort vergessen?'.$CMS_MAILHH[$i].' ein neues Passwort angefordert werden. Dazu werden die Angaben '.$CMS_MAILHV[$i].'Benutzername'.$CMS_MAILHH[$i].' und '.$CMS_MAILHV[$i].'E-Mail-Adresse'.$CMS_MAILHH[$i].' benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+		$text[$i] = $text[$i].'eMailadresse: '.$mail.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+		$text[$i] = $text[$i].$CMS_MAILWV[$i].'Achtung!'.$CMS_MAILWH[$i].' Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur '.$CMS_MAILWV[$i].'eine Stunde'.$CMS_MAILWH[$i].' gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über '.$CMS_MAILHV[$i].'Passwort vergessen?'.$CMS_MAILHH[$i].' ein neues Passwort angefordert werden. Dazu werden die Angaben '.$CMS_MAILHV[$i].'Benutzername'.$CMS_MAILHH[$i].' und '.$CMS_MAILHV[$i].'eMailadresse'.$CMS_MAILHH[$i].' benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 		$text[$i] = $text[$i].$CMS_MAILWV[$i].'Kurz:'.$CMS_MAILWH[$i].' Das Passwort sollte sobald wie möglich geändert werden!!'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 		$text[$i] = $text[$i].'Viel Spaß mit dem neuen Zugang!'.$CMS_MAILZ[$i];
 		$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];

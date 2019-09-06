@@ -93,7 +93,7 @@ if (($zugriff) && ($angemeldet)) {
         $code .= "<table class=\"cms_formular\">";
           $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_empfaenger_id\" value=\"".$ids[$i]."\"></th></tr>";
           $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_name\" value=\"".$namen[$i]."\"></td></tr>";
-          $code .= "<tr><th>E-Mail-Adresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_mail\" value=\"".$mails[$i]."\"></td></tr>";
+          $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_mail\" value=\"".$mails[$i]."\"></td></tr>";
           $code .= "<tr><th>Beschreibung: </th><td><textarea class=\"cms_kontaktformular_empfaenger_beschreibung\">".$beschreibungen[$i]."</textarea></td></tr>";
           $code .= "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_kontaktformular_empfaenger_loeschen(this);\">- Empfänger löschen</span></td></tr>";
         $code .= "</table>";

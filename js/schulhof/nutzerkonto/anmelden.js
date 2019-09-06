@@ -192,7 +192,7 @@ function cms_passwort_vergessen () {
 		fehler = true;
 	}
 	if (!cms_check_mail(mail)) {
-		meldung += '<li>es wurde keine gültige E-Mail-Adresse eingegeben.</li>';
+		meldung += '<li>es wurde keine gültige eMailadresse eingegeben.</li>';
 		fehler = true;
 	}
 
@@ -208,7 +208,7 @@ function cms_passwort_vergessen () {
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "FEHLER") {
 				meldung += '<li>entweder wurde der Benutzername nicht gefunden</li>';
-				meldung += '<li>oder die E-Mail-Adresse passt nicht zum Benutzernamen.</li>';
+				meldung += '<li>oder die eMailadresse passt nicht zum Benutzernamen.</li>';
 				cms_meldung_an('fehler', 'Neues Passwort zuschicken', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {

@@ -40,7 +40,7 @@
 
       <h3>Ihre Recht</h3>
       <h4>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h4>
-      <p>Einige Angebote dieser Website sind ohne Ihrer ausdrücklichen Einwilligung zur Datenverarbeitung nicht möglich. Diese mit der Nutzung der Seite erteilte Einwilligung kann jederzeit widerrufen werden. Es genügt eine formlose Mitteilung per E-Mail. Die Rechtmäßigkeit der Verarbeitung Ihrer Daten bis zum Widerruf bleibt unberührt.</p>
+      <p>Einige Angebote dieser Website sind ohne Ihrer ausdrücklichen Einwilligung zur Datenverarbeitung nicht möglich. Diese mit der Nutzung der Seite erteilte Einwilligung kann jederzeit widerrufen werden. Es genügt eine formlose Mitteilung per eMail. Die Rechtmäßigkeit der Verarbeitung Ihrer Daten bis zum Widerruf bleibt unberührt.</p>
 
       <h4>Beschwerde</h4>
       <p>Bei Verstößen gegen den Datenschutz haben Sie das Recht, Beschwerde bei der zuständigen Aufsichtsbehörde einzureichen. Zuständig ist der Datenschutzbeauftragte des Landes Baden-Württemberg.</p>
@@ -55,10 +55,10 @@
 
       <h3>Angebote mit besonderen Datenschutzmerkmalen</h3>
       <h4>Kontaktformular</h4>
-      <p>Alle im Kontaktformular angegeben Daten werden nicht über die Nachricht selbst hinaus zwischengespeichert, sondern per E-Mail an den gewünschten Empfänger und auf Wunsch an Sie selbst geschickt. Diese Informationen werden nicht ohne Ihre ausdrückliche Zustimmung an Dritte weitergeben. Mit der Nutzung des Kontaktfomulars willigen Sie ein, dass Ihre Daten per E-Mail versendet werden (Art. 6 Abs. 1 lit. a DSGVO). Sie sind berechtigt, diese Einwilligung formlos zu widerrufen. Eine Nutzung der Daten bis zum Widerruf ist rechtmäßig.</p>
+      <p>Alle im Kontaktformular angegeben Daten werden nicht über die Nachricht selbst hinaus zwischengespeichert, sondern per eMail an den gewünschten Empfänger und auf Wunsch an Sie selbst geschickt. Diese Informationen werden nicht ohne Ihre ausdrückliche Zustimmung an Dritte weitergeben. Mit der Nutzung des Kontaktfomulars willigen Sie ein, dass Ihre Daten per eMail versendet werden (Art. 6 Abs. 1 lit. a DSGVO). Sie sind berechtigt, diese Einwilligung formlos zu widerrufen. Eine Nutzung der Daten bis zum Widerruf ist rechtmäßig.</p>
 
       <h4>Newsletter</h4>
-      <p>Die Anmeldung zu unserem Newsletter erfolgt absolut freiwillig und ausschließlich auf Ihre Initiative hin. Erhoben wird zu diesem Zweck Ihr voller Name sowie Ihre E-Mail-Adresse. Grundlage für die Erhebung dieser Daten ist daher Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Die angegeben Daten werden ausschließlich zum Versand des Newsletters verwendet und nicht an Dritte weitergegeben.</p>
+      <p>Die Anmeldung zu unserem Newsletter erfolgt absolut freiwillig und ausschließlich auf Ihre Initiative hin. Erhoben wird zu diesem Zweck Ihr voller Name sowie Ihre eMailadresse. Grundlage für die Erhebung dieser Daten ist daher Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Die angegeben Daten werden ausschließlich zum Versand des Newsletters verwendet und nicht an Dritte weitergegeben.</p>
 
       <p>Ein Widerruf Ihrer bereits erteilten Einwilligung ist jederzeit möglich. Nutzen Sie dazu bitte den Link zur Abmeldung vom Newsletter, der in jedem Newsletter ganz unten enthalten ist. Mit der Abmeldung vom Newsletter ist die automatische Löscung der Daten verbunden, die zum Zweck des Newsletterversands erhoben wurden.</p>
 

@@ -99,7 +99,7 @@ function cms_personaldaten_ausgeben($id) {
 					else if ($profildaten_geschlecht == "u") {echo '&#x26a5;';}
 				echo "</td></tr>";
 				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Personen bearbeiten'])) {
-					echo "<tr><th>E-Mail-Adresse:</th><td>$profildaten_email</td></tr>";
+					echo "<tr><th>eMailadresse:</th><td>$profildaten_email</td></tr>";
 				}
 
 					if ($detailansicht) {
@@ -555,7 +555,7 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 				}
 				echo "</tr>";
 				echo "<tr>";
-					echo "<th>E-Mail-Adresse:</th>";
+					echo "<th>eMailadresse:</th>";
 					echo "<td><input type=\"mail\" value=\"$profildaten_email\" ";
 
 					if ($verwaltung) {
@@ -942,7 +942,7 @@ function cms_personaldaten_einstellungen_aendern($id) {
 			$code .= "<div class=\"cms_clear\"></div>";
 
 			$code .= "<div class=\"cms_spalte_i\">";
-			$code .= cms_meldung('info', "<p>Die gesamte Kommunikation im Schulhof wird verschlüsselt. Gewöhnliche E-Mails sind unverschlüsselt. Darum können im Schulhof eintreffende Nachrichten und Notifikationen nicht direkt als E-Mail weitergeleitet, sondern nur als Benachrichtigung über neue Nachrichten und Notifikationen versendet werden.</p>");
+			$code .= cms_meldung('info', "<p>Die gesamte Kommunikation im Schulhof wird verschlüsselt. Gewöhnliche eMails sind unverschlüsselt. Darum können im Schulhof eintreffende Nachrichten und Notifikationen nicht direkt als eMail weitergeleitet, sondern nur als Benachrichtigung über neue Nachrichten und Notifikationen versendet werden.</p>");
 
 			$code .= "<p><span class=\"cms_button\" onclick=\"cms_schulhof_".$idname."_einstellungen_aendern();\">Änderungen speichern</span> ";
 			$link = "Schulhof/Verwaltung/Personen/Details";

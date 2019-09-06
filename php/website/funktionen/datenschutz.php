@@ -61,9 +61,9 @@ function cms_schulhof_datenschutz() {
         $code .= "<td>Verlassen der Schule</td>";
       $code .= "</tr>";
       $code .= "<tr>";
-        $code .= "<td>E-Mail-Adresse</td>";
+        $code .= "<td>eMailadresse</td>";
         $code .= "<td>Einwilligung</td>";
-        $code .= "<td>Zur Nutzung des Schulhofs nötig. Benachrichtigungen werden auf Wunsch versendet, vergessene Passwörter können per E-Mail geändert werden.</td>";
+        $code .= "<td>Zur Nutzung des Schulhofs nötig. Benachrichtigungen werden auf Wunsch versendet, vergessene Passwörter können per eMail geändert werden.</td>";
         $code .= "<td>Verwalter von Personen</td>";
         $code .= "<td>Verlassen der Schule / Löschung des Nutzerkontos</td>";
       $code .= "</tr>";

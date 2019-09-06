@@ -113,7 +113,7 @@
 	$HTML .= "<div style=\"width:100%;padding: 10px;margin-bottom: 10px;box-sizing: border-box;\">";
     $HTML .= "<table style=\"width: 80%\">";
       $HTML .= "<tr><td>Absender: </td><td>$absender</td></tr>";
-      $HTML .= "<tr><td>E-Mail-Adresse: </td><td>$mail</td></tr>";
+      $HTML .= "<tr><td>eMailadresse: </td><td>$mail</td></tr>";
       $HTML .= "<tr><td>Betreff: </td><td>$b</td></tr>";
       $HTML .= "<tr><td>Kopie wurde an den Absender gesandt: </td><td>".($kopie?'Ja':'Nein')."</td></tr>";
       $HTML .= "<tr><td></td></tr>";  // Ganz kleine Lücke
@@ -125,14 +125,14 @@
 	$HTML .= "</html>";
   $mailer->Body = $HTML;
   $ALT = "Absender: $absender\n";
-  $ALT .= "E-Mail-Adresse: $mail\n";
+  $ALT .= "eMailadresse: $mail\n";
   $ALT .= "Betreff: $b\n";
   $ALT .= "Kopie wurde an den Absender gesandt: ".($kopie?'Ja':'Nein')."\n";
   $ALT .= "\n";
   $ALT .= "Nachricht: $nachricht";
   $mailer->AltBody = $ALT;
   $mailer->send();
-  if($kopie) {    // Anti-E-Mail-Adresse-Leak
+  if($kopie) {    // Anti-eMailadresse-Leak
     $mailer->Subject = "Kopie von: ".$betreff. " ".$b;
     $mailer->ClearAllRecipients();
     $mailer->AddAddress($mail, $absender);
