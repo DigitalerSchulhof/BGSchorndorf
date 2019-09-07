@@ -103,23 +103,27 @@ if ($zugriff) {
       }
 
       $code .= "<table class=\"cms_formular\">";
-        $code .= "<tr><th>KW</th><th>Jahr</th><th>Wochenbeginn</th><th>Tage</th><th>Rythmisierung</th></tr>";
-        $code .= "<tr><td>$kalenderwoche</td><td>$jahr</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
+        $code .= "<tr><th>KW</th><th>Wochenbeginn</th><th>Tage</th><th>Rythmisierung</th></tr>";
+        $code .= "<tr><td>$kalenderwoche</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
         for ($i=1; $i<$wochentag; $i++) {$code .= cms_wochentagfeld(false, false, $TAGE);}
       $woche = 0;
-      $wochenbeginn = $jetzt;
+      
+      $wochenbeginn = $zbeginn;
       while ($jetzt <= $zende) {
         if ($wochentag > 7) {
           $woche++;
-          if (isset($RYTH[$wochenbeginn][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$wochenbeginn][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
+
+          echo $wochenbeginn."-".$kalenderwoche."-".$RYTH[$wochenbeginn][$kalenderwoche]."<br>";
+          if (isset($RYTH[$wochenbeginn][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$wochenbeginn][$kalenderwoche]];}
+          else {$opt = $OPTIONEN[1];}
           $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
           $wochentag = 1;
           $kalenderwoche++;
           if ($kalenderwoche > 52) {
             $kalenderwoche = 1;
-            $jahr++;
           }
-          $code .= "<tr><td>$kalenderwoche</td><td>$jahr</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
+          $wochenbeginn = mktime(0,0,0,date('m',$wochenbeginn), date('d', $wochenbeginn)+(7-date('N', $wochenbeginn)+1), date('Y', $wochenbeginn));
+          $code .= "<tr><td>$kalenderwoche</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
         }
 
         while (($jetzt > $fe) && ($fnid < $fanzahl)) {
@@ -131,7 +135,7 @@ if ($zugriff) {
         if (($jetzt > $fb) && (!$ffertig)) {$geradef = true;} else {$geradef = false;}
 
         $code .= cms_wochentagfeld($wochentag, $geradef, $TAGE);
-        $jetzt += mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+1, date('Y',$jetzt));
+        $jetzt = mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+1, date('Y',$jetzt));
         $wochentag++;
       }
       if ($tag != 1) {

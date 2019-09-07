@@ -40,16 +40,15 @@ if (cms_angemeldet() && $zugriff) {
 			$RYTHMEN[$wochen]['beginn'] = $jetzt;
 			$RYTHMEN[$wochen]['kw'] = date('W', $jetzt);
 			$RYTHMEN[$wochen]['rythmus'] = null;
-			$jetzt += (7-$bwtag+1)*$tagdauer;
+			$jetzt = mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+(7-$bwtag+1), date('Y', $jetzt));
+			echo date('N', $jetzt);
 		}
 		while ($jetzt <= $zende) {
 			$wochen++;
-			if (date('N', $jetzt) > 1) {$jetzt += 3600;}
-			$jetzt = mktime(0,0,0,date('n', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 			$RYTHMEN[$wochen]['beginn'] = $jetzt;
 			$RYTHMEN[$wochen]['kw'] = date('W', $jetzt);
 			$RYTHMEN[$wochen]['rythmus'] = null;
-			$jetzt += 7*$tagdauer;
+			$jetzt = mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+7, date('Y', $jetzt));
 		}
 
 		// Wocheneingaben prüfen
