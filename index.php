@@ -18,8 +18,6 @@
 
 	session_start();
 
-	test
-
 	$CMS_ANGEMELDET = cms_angemeldet();
 	$CMS_LINKMUSTER = "[\.\-a-zA-Z0-9äöüßÄÖÜ()_]+";
 

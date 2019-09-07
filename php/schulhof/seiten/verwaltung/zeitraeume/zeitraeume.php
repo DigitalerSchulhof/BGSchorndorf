@@ -83,7 +83,7 @@ if ($zugriff) {
 
         if (strlen($zeilen) > 0) {$code .= $zeilen;}
         else {
-          $code .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
+          $code .= "<tr><td class=\"cms_notiz\" colspan=\"8\">- keine Datensätze gefunden -</td></tr>";
         }
       }
       $sql->close();

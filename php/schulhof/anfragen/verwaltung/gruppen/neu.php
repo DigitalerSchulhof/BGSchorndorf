@@ -8,6 +8,8 @@ include_once("../../schulhof/funktionen/dateisystem.php");
 include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 session_start();
 
+print_r($_POST);
+
 // Variablen einlesen, falls übergeben
 if (isset($_POST['bezeichnung'])) {$bezeichnung = $_POST['bezeichnung'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sichtbar'])) {$sichtbar = $_POST['sichtbar'];} else {echo "FEHLER"; exit;}
@@ -113,7 +115,7 @@ if (cms_angemeldet() && $zugriff) {
 				$faechertext = "(".implode(',', $faecher).")";
 				if (cms_check_idliste($faechertext)) {
 					$faecher = array();
-					$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM faecher WHERE id IN $faechertext";
+					$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest";
 		  		if ($anfrage = $dbs->query($sql)) {
 		  			while ($daten = $anfrage->fetch_assoc()) {
 		  				array_push($faecher, $daten);
@@ -375,11 +377,12 @@ if (cms_angemeldet() && $zugriff) {
 				$kursid = cms_generiere_kleinste_id('kurse');
 				array_push($faecherkurse, $kursid);
 				$kursbezeichnung = $bezeichnung." ".$f['bezeichnung'];
+				$kursicon = $f['icon'];
 				$kurskurzbezeichnung = $bezeichnung." ".$f['kuerzel'];
 				$kursbezextern = $f['kuerzel'];
 				$kursfach = $f['id'];
-				$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT('kurse.png', '$CMS_SCHLUESSEL'), sichtbar = ?, schuljahr = $schuljahrsetzen, chataktiv = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kursbezextern = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, stufe = $stufe WHERE id = ?");
-				$sql->bind_param("siissii", $kursbezeichnung, $sichtbar, $chat, $kurskurzbezeichnung, $kursbezextern, $kursfach, $kursid);
+				$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT('?', '$CMS_SCHLUESSEL'), sichtbar = ?, schuljahr = $schuljahrsetzen, chataktiv = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kursbezextern = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, stufe = $stufe WHERE id = ?");
+				$sql->bind_param("ssiissii", $kursbezeichnung, $kursicon, $sichtbar, $chat, $kurskurzbezeichnung, $kursbezextern, $kursfach, $kursid);
 				$sql->execute();
 				$sql->close();
 
@@ -415,20 +418,13 @@ if (cms_angemeldet() && $zugriff) {
 
     if (strlen($mitglieder) > 0) {
       // Mitglieder eintragen
-			$sql1 = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$sql = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       foreach ($M as $i) {
-				$sql1->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
-				$sql1->execute();
-
-				if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
-					$sql2 = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					foreach ($faecherkurse as $k) {
-						$sql2->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
-						$sql2->execute();
-					}
-				}
-				$sql->close();
+				echo "INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES ($id, ".$i['id'].", ".$i['dateiupload'].", ".$i['dateidownload'].", ".$i['dateiloeschen'].", ".$i['dateiumbenennen'].", ".$i['termine'].", ".$i['blogeintraege'].", ".$i['chatten'].", ".$i['nachrichtloeschen'].", ".$i['nutzerstummschalten'].");<br><br>";
+				$sql->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
+				$sql->execute();
       }
+			$sql->close();
 
       // Vorsitz eintragen
 			if (strlen($vorsitz) > 0) {
@@ -437,6 +433,15 @@ if (cms_angemeldet() && $zugriff) {
 					$sql->bind_param("ii", $id, $i);
 					$sql->execute();
 	      }
+				$sql->close();
+			}
+
+			if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
+				$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				foreach ($faecherkurse as $k) {
+					$sql->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
+					$sql->execute();
+				}
 				$sql->close();
 			}
     }
