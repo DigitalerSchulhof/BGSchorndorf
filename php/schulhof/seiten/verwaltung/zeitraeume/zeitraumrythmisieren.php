@@ -37,17 +37,15 @@ if ($zugriff) {
 
       // Rythmen laden
       $RYTHMEN = array();
-      $sql = $dbs->prepare("SELECT jahr, kw, rythmus FROM rythmisierung WHERE zeitraum = ? ORDER BY jahr, kw");
+      $sql = $dbs->prepare("SELECT beginn, kw, rythmus FROM rythmisierung WHERE zeitraum = ? ORDER BY beginn, kw");
       $sql->bind_param("i", $_SESSION['ZEITRAUMRYTHMISIEREN']);
       if ($sql->execute()) {
-        $sql->bind_result($rjahr, $rkw, $rr);
+        $sql->bind_result($rbeginn, $rkw, $rr);
         while ($sql->fetch()) {
-          $RYTHMEN[$rjahr][$rkw] = $rr;
+          $RYTHMEN[$rbeginn][$rkw] = $rr;
         }
       }
       $sql->close();
-
-
 
       $TAGE = array();
       $TAGE[1] = $mo;
@@ -108,10 +106,12 @@ if ($zugriff) {
         $code .= "<tr><th>KW</th><th>Jahr</th><th>Wochenbeginn</th><th>Tage</th><th>Rythmisierung</th></tr>";
         $code .= "<tr><td>$kalenderwoche</td><td>$jahr</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
         for ($i=1; $i<$wochentag; $i++) {$code .= cms_wochentagfeld(false, false, $TAGE);}
+      $woche = 0;
       while ($jetzt <= $zende) {
         if ($wochentag > 7) {
+          $woche++;
           if (isset($RYTHMEN[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTHMEN[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
-          $code .= "</td><td><select name=\"cms_rythmus_$jahr"."_$kalenderwoche\" id=\"cms_rythmus_$jahr"."_$kalenderwoche\">$opt</select></td></tr>";
+          $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
           $wochentag = 1;
           $kalenderwoche++;
           if ($kalenderwoche > 52) {
@@ -134,11 +134,12 @@ if ($zugriff) {
         $wochentag++;
       }
       if ($tag != 1) {
+        $woche++;
         if (isset($RYTHMEN[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTHMEN[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
-        $code .= "</td><td><select name=\"cms_rythmus_$jahr"."_$kalenderwoche\" id=\"cms_rythmus_$jahr"."_$kalenderwoche\">$opt</select></td></tr>";
+        $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
       }
       $code .= "</tr></table>";
-      $code .= "<p><input type=\"hidden\" name=\"cms_rythmisierung_endejahr\" id=\"cms_rythmisierung_endejahr\" value=\"$jahr\"><input type=\"hidden\" name=\"cms_rythmisierung_endekw\" id=\"cms_rythmisierung_endekw\" value=\"$kalenderwoche\"></p>";
+      $code .= "<p><input type=\"hidden\" name=\"cms_rythmisierung_wochenzahl\" id=\"cms_rythmisierung_wochenzahl\" value=\"$woche\"></p>";
 
 
   		$code .= "<p><span class=\"cms_button\" onclick=\"cms_zeitraeume_rythmisierung_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung/Zeiträume\">Abbrechen</a></p>";

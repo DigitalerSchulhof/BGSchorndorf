@@ -28,28 +28,37 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Rythmen laden
 	if (($rythmen > 1) && (!$fehler)) {
-		$bjahr = date('Y', $zbeginn);
-		$bkw = date('W', $zbeginn);
-		$ejahr = date('Y', $zende);
-		$ekw = date('W', $zende);
-
-		$jahr = $bjahr;
-    $kw = $bkw;
-    $ende = false;
+		// Anzahl an Wochene ermitteln
+		$jetzt = $zbeginn;
+		// Dauer eines Tages
+		$tagdauer = 86400;
+		$wochen = 0;
+		$bwtag = date('N', $zbeginn);
 		$RYTHMEN = array();
-    while (!$ende) {
-      if (($kw == $ekw) && ($jahr == $ejahr)) {$ende = true;}
-      if (isset($_POST[$jahr."_".$kw])) {
-        if (cms_check_ganzzahl($_POST[$jahr."_".$kw],1,$rythmen)) {
-					$r = array();
-					$r['jahr'] = $jahr;
-					$r['kw'] = $kw;
-					$r['rythmus'] = $_POST[$jahr."_".$kw];
-					array_push($RYTHMEN, $r);
-				}
+		if ($bwtag != 1) {
+			$wochen ++;
+			$RYTHMEN[$wochen]['beginn'] = $jetzt;
+			$RYTHMEN[$wochen]['kw'] = date('W', $jetzt);
+			$RYTHMEN[$wochen]['rythmus'] = null;
+			$jetzt += (7-$bwtag+1)*$tagdauer;
+		}
+		while ($jetzt <= $zende) {
+			$wochen++;
+			if (date('N', $jetzt) > 1) {$jetzt += 3600;}
+			$jetzt = mktime(0,0,0,date('n', $jetzt), date('d', $jetzt), date('Y', $jetzt));
+			$RYTHMEN[$wochen]['beginn'] = $jetzt;
+			$RYTHMEN[$wochen]['kw'] = date('W', $jetzt);
+			$RYTHMEN[$wochen]['rythmus'] = null;
+			$jetzt += 7*$tagdauer;
+		}
+
+		// Wocheneingaben prüfen
+    for ($w = 1; $w <= $wochen; $w++) {
+			if (isset($_POST["woche_".$w])) {
+        if (cms_check_ganzzahl($_POST["woche_".$w],1,$rythmen)) {
+					$RYTHMEN[$w]['rythmus'] = $_POST["woche_".$w];
+				} else {$fehler = true;}
       } else {$fehler = true;}
-      $kw++;
-      if ($kw > 52) {$kw = 1; $jahr++;}
     }
 	}
 
@@ -61,9 +70,9 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 
 		// Neue Rythmen eintragen
-		$sql = $dbs->prepare("INSERT INTO rythmisierung (zeitraum, jahr, kw, rythmus) VALUES (?, ?, ?, ?)");
+		$sql = $dbs->prepare("INSERT INTO rythmisierung (zeitraum, beginn, kw, rythmus) VALUES (?, ?, ?, ?)");
 		foreach($RYTHMEN AS $r) {
-			$sql->bind_param("iiii", $zeitraum, $r['jahr'], $r['kw'], $r['rythmus']);
+			$sql->bind_param("iiii", $zeitraum, $r['beginn'], $r['kw'], $r['rythmus']);
 			$sql->execute();
 		}
 		$sql->close();

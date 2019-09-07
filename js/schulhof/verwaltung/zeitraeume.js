@@ -351,8 +351,7 @@ function cms_zeitraeume_rythmisierung_speichern() {
   cms_laden_an('Zeitraumrythmisierung speichern', 'Die Eingaben werden überprüft.');
 	var beginnjahr = document.getElementById('cms_rythmisierung_beginnjahr').value;
 	var beginnkw = document.getElementById('cms_rythmisierung_beginnkw').value;
-	var endejahr = document.getElementById('cms_rythmisierung_endejahr').value;
-	var endekw = document.getElementById('cms_rythmisierung_endekw').value;
+	var wochenanzahl = document.getElementById('cms_rythmisierung_wochenzahl').value;
 	var meldung = '<p>Der Zeitraum konnte nicht geändert werden, denn ...</p><ul>';
 
   var formulardaten = new FormData();
@@ -369,34 +368,18 @@ function cms_zeitraeume_rythmisierung_speichern() {
 		fehler = true;
 	}
 
-	if (!cms_check_ganzzahl(endejahr, 0)) {
-		meldung += '<li>Das Jahr des Endes des Zeitraums ist ungültig.</li>';
+	if (!cms_check_ganzzahl(wochenanzahl,0)) {
+		meldung += '<li>Die Anzahl an Klaenderwochen istist ungültig.</li>';
 		fehler = true;
 	}
-
-	if (!cms_check_ganzzahl(endekw, 1,52)) {
-		meldung += '<li>Die Kalenderwoche des Beginns des Zeitraums ist ungültig.</li>';
-		fehler = true;
-	}
-
-  if ((beginnjahr > endejahr) || ((beginnjahr == endejahr) && (beginnkw > endekw))) {
-    meldung += '<li>Der Zeitraum ist ungültig.</li>';
-		fehler = true;
-  }
 
   if (!fehler) {
     var feldfehler = false;
-    var jahr = beginnjahr;
-    var kw = beginnkw;
-    var ende = false;
-    while (!ende) {
-      if ((kw == endekw) && (jahr == endejahr)) {ende = true;}
-      var feld = document.getElementById('cms_rythmus_'+jahr+'_'+kw);
+    for (w=1;w<=wochenanzahl;w++) {
+      var feld = document.getElementById('cms_rythmus_'+w);
       if (feld) {
-        if (cms_check_ganzzahl(feld.value,1,26)) {formulardaten.append(jahr+'_'+kw, feld.value);}
+        if (cms_check_ganzzahl(feld.value,1,26)) {formulardaten.append('woche_'+w, feld.value);}
       } else {feldfehler = true;}
-      kw++;
-      if (kw > 52) {kw = 1; jahr++;}
     }
   }
 
