@@ -107,10 +107,11 @@ if ($zugriff) {
         $code .= "<tr><td>$kalenderwoche</td><td>$jahr</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
         for ($i=1; $i<$wochentag; $i++) {$code .= cms_wochentagfeld(false, false, $TAGE);}
       $woche = 0;
+      $wochenbeginn = $jetzt;
       while ($jetzt <= $zende) {
         if ($wochentag > 7) {
           $woche++;
-          if (isset($RYTH[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
+          if (isset($RYTH[$wochenbeginn][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$wochenbeginn][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
           $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
           $wochentag = 1;
           $kalenderwoche++;
@@ -130,7 +131,7 @@ if ($zugriff) {
         if (($jetzt > $fb) && (!$ffertig)) {$geradef = true;} else {$geradef = false;}
 
         $code .= cms_wochentagfeld($wochentag, $geradef, $TAGE);
-        $jetzt += $tag;
+        $jetzt += mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+1, date('Y',$jetzt));
         $wochentag++;
       }
       if ($tag != 1) {
