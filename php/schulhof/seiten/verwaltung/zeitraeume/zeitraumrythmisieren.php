@@ -36,13 +36,13 @@ if ($zugriff) {
       $sql->close();
 
       // Rythmen laden
-      $RYTHMEN = array();
+      $RYTH = array();
       $sql = $dbs->prepare("SELECT beginn, kw, rythmus FROM rythmisierung WHERE zeitraum = ? ORDER BY beginn, kw");
       $sql->bind_param("i", $_SESSION['ZEITRAUMRYTHMISIEREN']);
       if ($sql->execute()) {
         $sql->bind_result($rbeginn, $rkw, $rr);
         while ($sql->fetch()) {
-          $RYTHMEN[$rbeginn][$rkw] = $rr;
+          $RYTH[$rbeginn][$rkw] = $rr;
         }
       }
       $sql->close();
@@ -110,7 +110,7 @@ if ($zugriff) {
       while ($jetzt <= $zende) {
         if ($wochentag > 7) {
           $woche++;
-          if (isset($RYTHMEN[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTHMEN[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
+          if (isset($RYTH[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
           $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
           $wochentag = 1;
           $kalenderwoche++;
@@ -135,7 +135,7 @@ if ($zugriff) {
       }
       if ($tag != 1) {
         $woche++;
-        if (isset($RYTHMEN[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTHMEN[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
+        if (isset($RYTH[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
         $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
       }
       $code .= "</tr></table>";
