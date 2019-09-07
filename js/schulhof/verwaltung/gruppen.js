@@ -42,7 +42,7 @@ function cms_gruppen_neu_speichern (art) {
       cms_laden_an('Neue Gruppe anlegen', 'Die Gruppe wird angelegt.');
 
       function anfragennachbehandlung(rueckgabe) {
-    		if (rueckgabe.match(/ERFOLG/)) {
+    		if (rueckgabe.match(/^ERFOLG|[0-9]+$/)) {
           if ((art == 'Fachschaften') || (art == 'Gremien')) {
             id = rueckgabe.split('|');
             cms_laden_an('Neue Gruppe anlegen', 'Die Gruppe wird im gesicherten Bereich angelegt.');

@@ -8,8 +8,6 @@ include_once("../../schulhof/funktionen/dateisystem.php");
 include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 session_start();
 
-print_r($_POST);
-
 // Variablen einlesen, falls übergeben
 if (isset($_POST['bezeichnung'])) {$bezeichnung = $_POST['bezeichnung'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sichtbar'])) {$sichtbar = $_POST['sichtbar'];} else {echo "FEHLER"; exit;}
@@ -319,7 +317,7 @@ if (cms_angemeldet() && $zugriff) {
         } else {$fehler = true;}
 				if (isset($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
           if (cms_check_toggle($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
-            $M[$anzahl]['nachrichtloeschen'] = $_POST['nachrichtloeschen'.$i.'nachrichtloeschen'];
+            $M[$anzahl]['nachrichtloeschen'] = $_POST['mitglieder'.$i.'nachrichtloeschen'];
           } else {$fehler = true;}
         } else {$fehler = true;}
 				if (isset($_POST['mitglieder'.$i.'nutzerstummschalten'])) {
@@ -381,7 +379,8 @@ if (cms_angemeldet() && $zugriff) {
 				$kurskurzbezeichnung = $bezeichnung." ".$f['kuerzel'];
 				$kursbezextern = $f['kuerzel'];
 				$kursfach = $f['id'];
-				$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT('?', '$CMS_SCHLUESSEL'), sichtbar = ?, schuljahr = $schuljahrsetzen, chataktiv = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kursbezextern = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, stufe = $stufe WHERE id = ?");
+				$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sichtbar = ?, schuljahr = $schuljahrsetzen, chataktiv = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kursbezextern = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, stufe = $stufe WHERE id = ?");
+
 				$sql->bind_param("ssiissii", $kursbezeichnung, $kursicon, $sichtbar, $chat, $kurskurzbezeichnung, $kursbezextern, $kursfach, $kursid);
 				$sql->execute();
 				$sql->close();
@@ -420,7 +419,6 @@ if (cms_angemeldet() && $zugriff) {
       // Mitglieder eintragen
 			$sql = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       foreach ($M as $i) {
-				echo "INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES ($id, ".$i['id'].", ".$i['dateiupload'].", ".$i['dateidownload'].", ".$i['dateiloeschen'].", ".$i['dateiumbenennen'].", ".$i['termine'].", ".$i['blogeintraege'].", ".$i['chatten'].", ".$i['nachrichtloeschen'].", ".$i['nutzerstummschalten'].");<br><br>";
 				$sql->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
 				$sql->execute();
       }
@@ -439,8 +437,10 @@ if (cms_angemeldet() && $zugriff) {
 			if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
 				$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				foreach ($faecherkurse as $k) {
-					$sql->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
-					$sql->execute();
+					foreach ($M as $i) {
+						$sql->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
+						$sql->execute();
+		      }
 				}
 				$sql->close();
 			}
