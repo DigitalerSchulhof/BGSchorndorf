@@ -8,7 +8,6 @@ include_once("../../website/funktionen/positionen.php");
 session_start();
 // Variablen einlesen, falls übergeben
 postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "namen", "mails", "beschreibungen"));
-if (isset($_SESSION['ELEMENTPOSITION'])) {$position = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
 $namen = explode(",", $namen);
