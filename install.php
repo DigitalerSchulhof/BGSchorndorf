@@ -578,6 +578,8 @@ if ($rechteplaetten) {
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Sprachen löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Seiten verschiedener Sprachen verknüpfen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;*/
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter erstellen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter schreiben', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -591,7 +593,6 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Kontakt löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		*/
 
 		// ZUGRIFFE
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Zugriffe', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Lehrernetz', '$CMS_SCHLUESSEL'))";
@@ -605,7 +606,7 @@ if ($rechteplaetten) {
 			$dbs->query($sql);
 		}
 
-		$sql = "INSERT INTO rollenzuordnung (rolle, person) VALUES (0, 0)";
+		$sql = "INSERT INTO rollenzuordnung (rolle, person) VALUES (0, 2)";
 		$dbs->query($sql);
 
 	}

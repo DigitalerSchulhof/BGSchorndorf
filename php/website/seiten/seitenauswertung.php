@@ -230,6 +230,7 @@ function cms_spalte_ausgeben($dbs, $spalte) {
         if ($element == 'boxenaussen') {$elementcode[$e['position']] = cms_boxenaussen_ausgeben($dbs, $e);}
         if ($element == 'eventuebersichten') {$elementcode[$e['position']] = cms_eventuebersichten_ausgeben($dbs, $e);}
         if ($element == 'kontaktformulare') {$elementcode[$e['position']] = cms_kontaktformulare_ausgeben($dbs, $e);}
+        if ($element == 'newsletter') {$elementcode[$e['position']] = cms_newsletter_ausgeben($dbs, $e);}
       }
       $anfrage->free();
     }
@@ -266,6 +267,7 @@ function cms_neues_element($spalte, $position, $version) {
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_newsletter\" onclick=\"cms_newsletter_anzeigen($parameter)\">+ Neuer Newsletter</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_website_schliessen\" onclick=\"cms_ausblenden('cms_website_neu_menue_$spalte"."_$position')\">Menü schließen</span> ";
     $code .= "</p>";
     $code .= "<div class=\"cms_website_neu_element\" id=\"cms_website_neu_element_$spalte"."_$position\"></div>";

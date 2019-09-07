@@ -521,7 +521,7 @@ function cms_positionswahl_generieren($id, $position, $maxpos, $neu = false) {
   return $code;
 }
 /**
-* $index: selected nach index festlegen?
+* $index: bei true: selected nach index festlegen, ansonsten nach value
 **/
 function cms_select_generieren($id, $klasse, $werte, $wert = null, $index = false) {
   $code = "<select name=\"$id\", id=\"$id\" class=\"$klasse\">";
