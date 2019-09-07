@@ -27,9 +27,9 @@ if ($zugriff) {
 	if ($CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten']) {
 		$mail .= "<table class=\"cms_formular\">";
 		$mail .= "<tr><th>Adresse des Absenders:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_absender\" id=\"cms_schulhof_schulmail_absender\" value=\"$CMS_MAILABSENDER\"></td></tr>";
-		$mail .= "<tr><th>Host der Mailadresse:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_host\" id=\"cms_schulhof_schulmail_host\" value=\"$CMS_MAILHOST\"></td></tr>";
-		$mail .= "<tr><th>Benutzername der Mailadresse:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_benutzer\" id=\"cms_schulhof_schulmail_benutzer\" value=\"$CMS_MAILUSERNAME\"></td></tr>";
-		$mail .= "<tr><th>Passwort der Mailadresse:</th><td><input type=\"password\" name=\"cms_schulhof_schulmail_passwort\" id=\"cms_schulhof_schulmail_passwort\" value=\"$CMS_MAILPASSWORT\"></td></tr>";
+		$mail .= "<tr><th>Host der eMailadresse:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_host\" id=\"cms_schulhof_schulmail_host\" value=\"$CMS_MAILHOST\"></td></tr>";
+		$mail .= "<tr><th>Benutzername der eMailadresse:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_benutzer\" id=\"cms_schulhof_schulmail_benutzer\" value=\"$CMS_MAILUSERNAME\"></td></tr>";
+		$mail .= "<tr><th>Passwort der eMailadresse:</th><td><input type=\"password\" name=\"cms_schulhof_schulmail_passwort\" id=\"cms_schulhof_schulmail_passwort\" value=\"$CMS_MAILPASSWORT\"></td></tr>";
 		$mail .= "<tr><th>SMTP-Authentifizierung:</th><td>";
 		$vorsilbe = "in";
 		$wert = 0;
@@ -61,7 +61,7 @@ if ($zugriff) {
 	$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 	$code .= "<h2>Mailadresse des Schulhofs</h2>";
 	if ($CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten']) {$code .= $mail;}
-	else {$code .= cms_meldung('info', '<h4>Keine Berechtigung</h4><p>Keine Berechtigung zur Änderung der Mailadresse des Schulhofs.</p>');}
+	else {$code .= cms_meldung('info', '<h4>Keine Berechtigung</h4><p>Keine Berechtigung zur Änderung der eMailadresse des Schulhofs.</p>');}
 	$code .= "</div></div>";
 	$code .= "<div class=\"cms_clear\"></div>";
 

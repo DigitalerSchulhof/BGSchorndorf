@@ -465,7 +465,7 @@ function cms_schulanmeldung_eingabenpruefen() {
 	if (mail.length) {
 		if (!cms_check_mail(mail)) {
 			fehler = true;
-			meldung += '<li>Die eingegebene Mailadresse ist ungültig.</li>';
+			meldung += '<li>Die eingegebene eMailadresse ist ungültig.</li>';
 		}
 	}
 
@@ -543,7 +543,7 @@ function cms_schulanmeldung_eingabenpruefen() {
 	if (mail1.length) {
 		if (!cms_check_mail(mail1)) {
 			fehler = true;
-			meldung += '<li>Die eingegebene Mailadresse des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>Die eingegebene eMailadresse des ersten Ansprechpartners ist ungültig.</li>';
 		}
 	}
 
@@ -606,7 +606,7 @@ function cms_schulanmeldung_eingabenpruefen() {
 		if (mail2.length) {
 			if (!cms_check_mail(mail2)) {
 				fehler = true;
-				meldung += '<li>Die eingegebene Mailadresse des zweiten Ansprechpartners ist ungültig.</li>';
+				meldung += '<li>Die eingegebene eMailadresse des zweiten Ansprechpartners ist ungültig.</li>';
 			}
 		}
 	}

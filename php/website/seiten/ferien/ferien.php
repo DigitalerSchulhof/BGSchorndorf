@@ -28,7 +28,7 @@ $code = "<div class=\"cms_spalte_i\">";
     while ($daten = $anfrage->fetch_assoc()) {
       // 86400 Sekunden hat ein Tag
       for ($i = $daten['beginn']; $i <= $daten['ende']; $i = $i + 86400) {
-        array_push($freietage, $i);
+        array_push($freietage, mktime(0,0,0,date('m', $i), date('d', $i), date('Y', $i)));
       }
     }
     $anfrage->free();

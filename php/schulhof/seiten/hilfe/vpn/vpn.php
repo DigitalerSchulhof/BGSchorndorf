@@ -60,14 +60,14 @@ $code .= "<div class=\"cms_einblendebox\" id=\"cms_einblendebox_vpn_herunterlade
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_win\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_win')\">Anleitung für Windows ausblenden</span></p>";
 $code .= "<h3>Windows</h3>";
 $code .= "<ol>";
-$code .= "<li>Öffnen Sie das Online-Portal der Stadt Schorndorf unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem digitalen Lehrerzimmer!</p>');
 $code .= "</li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/vpnmenue.png');
 $code .= "<li><p>In der oberen Menüzeile klicken Sie bitte auf <br>Fernzugriff</b>.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/windows/installieren.png');
-$code .= "<li><p>Nun erscheint eine Tabelle mit vier Einträgen. Wählen Sie bitte <b>den obersten</b> Eintrag. Nun wird eine Installationsdatei *.exe heruntergeladen, die bereits die gesammte Konfiguration des VPN-Programms enthält. Melden Sie sich im Online-Portal der Stadt Schorndorf ab und installieren Sie dieses Programm. Gegebenenfalls müssen Sie vorher zustimmen, dass Sie diesem Programm vertrauen.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
+$code .= "<li><p>Nun erscheint eine Tabelle mit vier Einträgen. Wählen Sie bitte <b>den obersten</b> Eintrag. Nun wird eine Installationsdatei *.exe heruntergeladen, die bereits die gesammte Konfiguration des VPN-Programms enthält. Melden Sie sich im Online-Portal der $CMS_HOSTINGPARTNERIN ab und installieren Sie dieses Programm. Gegebenenfalls müssen Sie vorher zustimmen, dass Sie diesem Programm vertrauen.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $code .= "<li>Sobald das Programm fertig installiert ist, ist bereits alles eingerichtet, und Sie können bei Schritt II weiterlesen.</li>";
 $code .= "</ol>";
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_win\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_win')\">Anleitung für Windows ausblenden</span></p>";
@@ -85,13 +85,13 @@ $code .= "<div class=\"cms_einblendebox\" id=\"cms_einblendebox_vpn_herunterlade
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_mac\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_mac')\">Anleitung für MacOS ausblenden</span></p>";
 $code .= "<h3>MacOS</h3>";
 $code .= "<ol>";
-$code .= "<li>Öffnen Sie das Online-Portal der Stadt Schorndorf unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem digitalen Lehrerzimmer!</p>');
 $code .= "</li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/vpnmenue.png');
 $code .= "<li><p>In der oberen Menüzeile klicken Sie bitte auf <br>Fernzugriff</b>.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
-$code .= "<li>Nun erscheint eine Tabelle mit vier Einträgen. Wählen Sie bitte <b>den dritten</b> Eintrag. Nun wird eine Konfigurationsdatei mit der Endung *.ovpn heruntergeladen. Melden Sie sich im Online-Portal der Stadt Schorndorf ab.</li>";
+$code .= "<li>Nun erscheint eine Tabelle mit vier Einträgen. Wählen Sie bitte <b>den dritten</b> Eintrag. Nun wird eine Konfigurationsdatei mit der Endung *.ovpn heruntergeladen. Melden Sie sich im Online-Portal der $CMS_HOSTINGPARTNERIN ab.</li>";
 $code .= "<li>Für MacOS wird leider keine Software mitgeliefert. Die App <b>Tunnelblick</b> ist geeignet. Weitere sind bestimmt ebenfalls möglich. Laden Sie also bitte eine geeignete App (z.B. <a href=\"https://tunnelblick.net/downloads.html\">Tunnelblick</a> - nicht im App Store erhältlich) herunter. Im Folgenden wird davon ausgegangen, dass Tunnelblick verwendet wird.</li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/macos/konfig.png');
 $code .= "<li><p>Starten Sie Tunnelblick. Auf der linken Seite finden Sie eine Übersicht aller VPN-Konfigurationen. In diesem Fall ist sie leer. Ziehen Sie die heruntergeladene *.ovpn-Datei per Drag'n'Drop in dieses Feld.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
@@ -115,13 +115,13 @@ $code .= "<div class=\"cms_einblendebox\" id=\"cms_einblendebox_vpn_herunterlade
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_tux\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_tux')\">Anleitung für Linux ausblenden</span></p>";
 $code .= "<h3>Linux</h3>";
 $code .= "<ol>";
-$code .= "<li>Öffnen Sie das Online-Portal der Stadt Schorndorf unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem digitlen Lehrerzimmer!</p>');
 $code .= "</li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/vpnmenue.png');
 $code .= "<li><p>In der oberen Menüzeile klicken Sie bitte auf <br>Fernzugriff</b>.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
-$code .= "<li>Nun erscheint eine Tabelle mit vier Einträgen. Wählen Sie bitte <b>den dritten</b> Eintrag. Nun wird eine Konfigurationsdatei mit der Endung *.ovpn heruntergeladen. Speichern Sie diese Datei an einem Ort, an dem Sie sie wiederfinden! Melden Sie sich im Online-Portal der Stadt Schorndorf ab.</li>";
+$code .= "<li>Nun erscheint eine Tabelle mit vier Einträgen. Wählen Sie bitte <b>den dritten</b> Eintrag. Nun wird eine Konfigurationsdatei mit der Endung *.ovpn heruntergeladen. Speichern Sie diese Datei an einem Ort, an dem Sie sie wiederfinden! Melden Sie sich im Online-Portal der $CMS_HOSTINGPARTNERIN ab.</li>";
 $code .= "<li><p>Für Linux wird leider keine Software mitgeliefert. Führen Sie zunächst im Terminal die folgende Anweisung aus:</p><p class=\"cms_konsole\">sudo apt-get install openvpn</p></li>";
 $code .= "<li><p>OpenVPN ist nun installiert und bereit für Schritt II.</p></li>";
 $code .= "</ol>";
@@ -142,7 +142,7 @@ $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_ios\" style=\"$stylebutto
 $code .= "<div class=\"cms_einblendebox\" id=\"cms_einblendebox_vpn_herunterladen_ios\" style=\"$stylefeld\">";
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_aui\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_ios')\">Anleitung für iOS ausblenden</span></p>";$code .= "<h3>iOS</h3>";
 $code .= "<ol>";
-$code .= "<li>Öffnen Sie das Online-Portal der Stadt Schorndorf unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem Schulhof!</p>');
 $code .= "</li>";
@@ -150,7 +150,7 @@ $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/vpnmenue.png
 $code .= "<li><p>In der oberen Menüzeile klicken Sie bitte auf <br>Fernzugriff</b>.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/vpnauswahl.png');
 $code .= "<li><p>Zunächst wird eine App benötigt, mit der der Fernzugriff erfolgen kann. Um eine geeignete App zu installieren, wählen Sie bitte im <b>vierten Eintrag</b> den Link <b>App Store</b> und installieren Sie die App, zu der Sie geführt werden (OpenVPN Connect).</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
-$code .= "<li>Anschließend wählen Sie bitte im vierten Eintrag im Online-Portal der Stadt Schorndorf <b>Intallieren</b>. Nun wird eine Konfigurationsdatei heruntergeladen. Diese Datei öffnen Sie mit der eben installieren App.</li>";
+$code .= "<li>Anschließend wählen Sie bitte im vierten Eintrag im Online-Portal der $CMS_HOSTINGPARTNERIN <b>Intallieren</b>. Nun wird eine Konfigurationsdatei heruntergeladen. Diese Datei öffnen Sie mit der eben installieren App.</li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/ios/konfig.png');
 $code .= "<li><p>Im nächsten Schritt werden Sie gefragt, ob die Konfigurationsdatei ihren VPN-Verbindungen hinzugefügt werden soll. Bestätigen Sie das mit dem <b>grünen +</b>.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/ios/konfigerlauben.png');
@@ -172,7 +172,7 @@ $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_and\" style=\"$stylebutto
 $code .= "<div class=\"cms_einblendebox\" id=\"cms_einblendebox_vpn_herunterladen_and\" style=\"$stylefeld\">";
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_and\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_and')\">Anleitung für Android ausblenden</span></p>";$code .= "<h3>Android</h3>";
 $code .= "<ol>";
-$code .= "<li>Öffnen Sie das Online-Portal der Stadt Schorndorf unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem Schulhof!</p>');
 $code .= "</li>";
@@ -183,7 +183,7 @@ $code .= "<li><p>Zunächst wird eine App benötigt, mit der der Fernzugriff erfo
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/android/installieren.png');
 $code .= "<p class=\"cms_bild\"><img src=\"$daten\"></p></li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/android/konfigimportieren.png');
-$code .= "<li><p>Anschließend wählen Sie bitte im vierten Eintrag im Online-Portal der Stadt Schorndorf <b>Intallieren</b>. Nun wird eine Konfigurationsdatei heruntergeladen. Diese Datei öffnen Sie direkt nach dem Download und ein etwas kryptisches Fenster erscheint, das Sie dennoch einfach mit dem Haken oben rechts bestätigen können. Damit wird die Konfigurationsdatei hinzugefügt.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
+$code .= "<li><p>Anschließend wählen Sie bitte im vierten Eintrag im Online-Portal der $CMS_HOSTINGPARTNERIN <b>Intallieren</b>. Nun wird eine Konfigurationsdatei heruntergeladen. Diese Datei öffnen Sie direkt nach dem Download und ein etwas kryptisches Fenster erscheint, das Sie dennoch einfach mit dem Haken oben rechts bestätigen können. Damit wird die Konfigurationsdatei hinzugefügt.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $code .= "<li>Die VPN-Verbindung wurde eingerichtet. Um die Verbindung herzustellen lesen Sie bitte bei Schritt II weiter.</li>";
 $code .= "</ol>";
 $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_and\"><span class=\"cms_button\" onclick=\"cms_einblendebox_aus('vpn_herunterladen_and')\">Anleitung für Android ausblenden</span></p>";
@@ -339,7 +339,7 @@ $code .= "<h3>Evtl. Schritt III (je nach Browser und Einstellung):</h3>";
 $code .= "<h4>Mit VPN eingewählt, aber der untere Balken in diesem Fenster wird nicht gelb?</h4>";
 $code .= "<p>Wir arbeiten mit der Stadt gerade daran, dass dies nicht vorkommt. Bis auf Weiteres lässt sich das Problem aber relativ einfach lösen. Klicken Sie auf den nachfolgenden Link und akzeptieren Sie das Zertifikat.</p>";
 $code .= "<p><a class=\"cms_button\" target=\"_blank\" href=\"$CMS_LN_DA"."index.php\">zum Zertifikiat</a></p>";
-$code .= "<p>Es ist gut möglich, dass ihr Browser dieses Zertifikat für nicht vertraueswürdig hält, obwohl es das ist, da es nicht international registriert wurde, sondern »nur« von der Stadt Schorndorf erstellt wurde.</p>";
+$code .= "<p>Es ist gut möglich, dass ihr Browser dieses Zertifikat für nicht vertraueswürdig hält, obwohl es das ist, da es nicht international registriert wurde, sondern »nur« von der $CMS_HOSTINGPARTNERIN erstellt wurde.</p>";
 
 $code .= "</div></div>";
 

@@ -132,7 +132,7 @@ if (cms_angemeldet() && $zugriff) {
 					$ausgabe .= "<td>";
 					if (strlen($daten['titel']) > 0) {$anzeigename = $daten['titel']."_".$daten['vorname']."_".$daten['nachname'];}
 					else {$anzeigename = $daten['vorname']."_".$daten['nachname'];}
-					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\"><span class=\"cms_hinweis\">Nachricht schreiben</span><img src=\"res/icons/klein/nachricht.png\"></span> ";
+					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\"><span class=\"cms_hinweis\">Nachricht schreiben</span><img src=\"res/icons/klein/nachricht.png\"></span> ";
 
 					$zugriff = $CMS_RECHTE['Personen']['Persönliche Daten sehen'];
 					if ($zugriff) {

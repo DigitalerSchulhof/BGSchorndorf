@@ -263,7 +263,7 @@
 
 	$code = "<h4>Version 0.2.2 - Sonntag, den 08. April 2018</h4>";
 	$code .= "<ul>";
-		$code .= "<li>Mehr Datenschutz: Onlinezeiten können nur von explizit dazu berechtigten Personen eingesehen werden. Benutzername und Mailadresse kann nur von den Personen eingesehen werden, die sie auch bearbeiten können.</li>";
+		$code .= "<li>Mehr Datenschutz: Onlinezeiten können nur von explizit dazu berechtigten Personen eingesehen werden. Benutzername und eMailadresse kann nur von den Personen eingesehen werden, die sie auch bearbeiten können.</li>";
 		$code .= "<li>Postfach: Probleme mit Nachrichten an mehr als eine Person behoben.</li>";
 		$code .= "<li>Der gesicherte Lehrerbereich ist jetzt erreichbar.</li>";
 		$code .= "<li>In Gremien können Blogeinträge und Beschlüsse erstellt werden und diese nach Schuljahr und Datum sortiert gesucht werden.</li>";

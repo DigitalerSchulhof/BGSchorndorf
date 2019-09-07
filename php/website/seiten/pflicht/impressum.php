@@ -6,23 +6,29 @@
 <h2>Ansprechpartner</h2>
 <h3>Herausgeber</h3>
 <p>Land Baden-Württemberg vertreten durch</p>
-<p>Burg-Gymnasium Schorndorf<br>
-  Hinter der Burg 6<br>
-  73614 Schorndorf<br>
-  Telefon: 07181 / 602 9302<br>
-  Fax: 07181 / 602 9399<br>
-  <a href="mailto:schule@bg-schorndorf.de">schule@bg-schorndorf.de</a></p>
+<?php
+  echo "<p>$CMS_SCHULE<br>";
+  echo "$CMS_STRASSE<br>";
+  echo "$CMS_PLZORT";
+  if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
+  if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
+  if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
+  echo "</p>";
+?>
 
 <h3>Vertretungsberechtigter</h3>
-<p>Jürgen Hohloch, OStD</p>
+<?php echo "<p>$CMS_NAMESCHULLEITER</p>"; ?>
 
 <h3>Datenschutzbeauftragter</h3>
-<p>Dietmar Herde<br>
-  Burg-Gymnasium Schorndorf<br>
-  Hinter der Burg 6<br>
-  73614 Schorndorf<br>
-  Telefon: 07181 / 602 9302<br>
-  Fax: 07181 / 602 9399</p>
+<?php
+  echo "<p>$CMS_NAMEDATENSCHUTZ<br>$CMS_SCHULE<br>";
+  echo "$CMS_STRASSE<br>";
+  echo "$CMS_PLZORT";
+  if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
+  if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
+  if (strlen($CMS_MAILDATENSCHUTZ) > 0) {echo "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
+  echo "</p>";
+?>
 
 
 <h2>Rechtliche Hinweise</h2>

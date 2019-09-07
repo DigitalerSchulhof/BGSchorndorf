@@ -21,7 +21,7 @@ if ($CMS_ANGEMELDET) {
 
 		echo "<div class=\"cms_auszeichnung\">";
 		echo "<a href=\"https://www.unesco.de/bildung/unesco-projektschulen\" target=\"_blank\" class=\"cms_unescotempel\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescotempel.png\"/></p><p>Organisation<br>der Vereinten Nationen<br>für Bildung, Wirtschaft<br>und Kultur</p></a>";
-		echo "<a href=\"https://bg.schorndorf.de/Website/Seiten/Aktuell/Startseite/Schulprofil/UNESCO-Projektschule\" class=\"cms_unescoprojektschule\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescoprojektschule.png\"/></p><p>Burg-Gymnasium<br>Schornorf<br>Mitglied des Netzwerks der<br>UNESCO-Projektschulen</p></a>";
+		echo "<a href=\"https://bg.schorndorf.de/Website/Seiten/Aktuell/Startseite/Schulprofil/UNESCO-Projektschule\" class=\"cms_unescoprojektschule\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescoprojektschule.png\"/></p><p>Burg-Gymnasium<br>Schorndorf<br>Mitglied des Netzwerks der<br>UNESCO-Projektschulen</p></a>";
 		echo "</div>";
 
 		echo "<p class=\"cms_notiz\" id=\"cms_geraetewahl\">";

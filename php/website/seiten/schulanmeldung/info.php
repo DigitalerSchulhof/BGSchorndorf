@@ -29,7 +29,7 @@ if ($rueckgabe['zulaessig']) {
         $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
         if ($daten['geschlecht'] == 'w') {$person = "die Datenschutzbeauftragte";}
         else {$person = "der Datenschutzbeauftragte";}
-        $datenschutz .= "<p>Für Nachfragen steht $person der Schule gerne für Sie zur Verfügung:</p><p><a class=\"cms_button\" href=\"mailto:datenschutz@bg-schorndorf.de\">$name</a></p>";
+        $datenschutz .= "<p>Für Nachfragen steht $CMS_NAMEDATENSCHUTZ der Schule gerne für Sie zur Verfügung:</p><p><a class=\"cms_button\" href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_NAMEDATENSCHUTZ</a></p>";
       }
       $anfrage->free();
     }
@@ -41,7 +41,7 @@ if ($rueckgabe['zulaessig']) {
     $code .= "<li><b>Anmeldezeitraum Online:</b> ".cms_tagnamekomplett(date('w', $CMS_VORANMELDUNG['Anmeldung von'])).", den ".date('d.m.Y H:i', $CMS_VORANMELDUNG['Anmeldung von'])." bis ".cms_tagnamekomplett(date('w', $CMS_VORANMELDUNG['Anmeldung bis'])).", den ".date('d.m.Y H:i', $CMS_VORANMELDUNG['Anmeldung bis']);
     $code .= "<br><b>Voraussichtliche Online-Löschung</b> bis ".date('d.m.Y H:i', $CMS_VORANMELDUNG['Anmeldung bis'] + $CMS_VORANMELDUNG['Anmeldung Überhang Tage']*24*60*60)." oder früher";
     $code .= "<br><b>Anmeldezeitraum Persönlich:</b> ".cms_tagnamekomplett(date('w', $CMS_VORANMELDUNG['Anmeldung persönlich von'])).", den ".date('d.m.Y', $CMS_VORANMELDUNG['Anmeldung persönlich von'])." bis ".cms_tagnamekomplett(date('w', $CMS_VORANMELDUNG['Anmeldung persönlich bis'])).", den ".date('d.m.Y', $CMS_VORANMELDUNG['Anmeldung persönlich bis'])."</li>";
-    $code .= "<li>Die Daten werden bis zur vollständigen Anmeldung an der Schule gemäß dem aktuellen Stand der Verschlüsselungstechnik und unter höchsten Sicherheitsvorkehrungen bezüglich der Zugriffskontrolle verschlüsselt auf Servern der Stadt Schorndorf gespeichert, die aus dem Internet zugänglich sind. Die Daten von Schülerinnen und Schülern, die nicht an der Schule aufgenommen werden, werden nach dem Abschluss der Anmeldung gelöscht. Die Daten von aufgenommenen Schülerinnen und Schülern werden nach dem Abschluss der Anmeldung online gelöscht und auf lokale Schulserver übertragen. Vorname, Nachname und Geschlecht von angemeldeten Schülerinnen und Schülern werden in den digitalen Schulhof übertragen. Sämtliche personenbezogenen Daten werden von allen Speichermedien gelöscht, wenn die Schülerin oder der Schüler die Schule verlässt.</li>";
+    $code .= "<li>Die Daten werden bis zur vollständigen Anmeldung an der Schule gemäß dem aktuellen Stand der Verschlüsselungstechnik und unter höchsten Sicherheitsvorkehrungen bezüglich der Zugriffskontrolle verschlüsselt auf Servern der $CMS_HOSTINGPARTNEREX gespeichert, die aus dem Internet zugänglich sind. Die Daten von Schülerinnen und Schülern, die nicht an der Schule aufgenommen werden, werden nach dem Abschluss der Anmeldung gelöscht. Die Daten von aufgenommenen Schülerinnen und Schülern werden nach dem Abschluss der Anmeldung online gelöscht und auf lokale Schulserver übertragen. Vorname, Nachname und Geschlecht von angemeldeten Schülerinnen und Schülern werden in den digitalen Schulhof übertragen. Sämtliche personenbezogenen Daten werden von allen Speichermedien gelöscht, wenn die Schülerin oder der Schüler die Schule verlässt.</li>";
     $code .= "<li>Mit der Verwendung dieser Online-Voranmeldung willigen Sie ein, dass die Daten wie oben genannt verarbeitet werden.</li>";
     $code .= "<li>Sie verfügen über die folgenden Rechte:";
       $code .= "<ul>";

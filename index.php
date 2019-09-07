@@ -34,8 +34,8 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	//$CMS_VERSION = rand(0,1000000);
-	$CMS_VERSION = "0.5.4";
+	$CMS_VERSION = rand(0,1000000);
+	//$CMS_VERSION = "0.5.4";
 	$TITELBILDERJS = "";
 	$CMS_STUNDENDAUER = 45;
 
@@ -156,7 +156,7 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link type="image/png" href="res/logos/bglogo.png" rel="shortcut icon">
+	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">";?>
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
@@ -216,6 +216,7 @@
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
+		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {

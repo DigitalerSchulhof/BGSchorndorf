@@ -353,7 +353,7 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 		}
 
 		if (!cms_check_mail(extmail1)) {
-			meldung += '<li>die Mailadresse des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>die eMailadresse des ersten Ansprechpartners ist ungültig.</li>';
 			fehler = true;
 		}
 	}
@@ -385,7 +385,7 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 		}
 
 		if (!cms_check_mail(extmail2)) {
-			meldung += '<li>die Mailadresse des zwieten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>die eMailadresse des zwieten Ansprechpartners ist ungültig.</li>';
 			fehler = true;
 		}
 	}

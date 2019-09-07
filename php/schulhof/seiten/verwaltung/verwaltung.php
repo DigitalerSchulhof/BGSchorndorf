@@ -595,7 +595,7 @@ if (($CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten']) || ($CMS
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails\" href=\"Schulhof/Verwaltung/Schuldetails\">";
 			$code .=  "<h3>Schuldetails</h3>";
-			$code .=  "<p>Einstellungen der Mailadresse des Schulhofs, der Adresse und des Webmasters.</p>";
+			$code .=  "<p>Einstellungen der eMailadresse des Schulhofs, der Adresse und des Webmasters.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;

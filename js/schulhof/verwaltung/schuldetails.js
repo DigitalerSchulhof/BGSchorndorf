@@ -13,7 +13,7 @@ function cms_schulhof_verwaltung_adressen() {
 	var fehler = false;
 
 	if (!cms_check_mail(webmaster)) {
-		meldung += '<li>die Mailadresse des Webmasters ist ungültig.</li>';
+		meldung += '<li>die eMailadresse des Webmasters ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -54,11 +54,11 @@ function cms_schulhof_verwaltung_schulmail() {
 	var smtpauth = document.getElementById('cms_schulhof_schulmail_smtpauth').value;
 
 
-	var meldung = '<p>Die Mailadresse des Schulhofs konnte nicht geändert werden, denn ...</p><ul>';
+	var meldung = '<p>Die eMailadresse des Schulhofs konnte nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
 
 	if (!cms_check_mail(absender)) {
-		meldung += '<li>die Mailadresse des Absenders ist ungültig.</li>';
+		meldung += '<li>die eMailadresse des Absenders ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -83,7 +83,7 @@ function cms_schulhof_verwaltung_schulmail() {
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Mailadresse des Schulhofs ändern', '<p>Die Mailadresse des Schulhofs wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schuldetails\');">OK</span></p>');
+				cms_meldung_an('erfolg', 'Mailadresse des Schulhofs ändern', '<p>Die eMailadresse des Schulhofs wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schuldetails\');">OK</span></p>');
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
@@ -106,7 +106,7 @@ function cms_schulhof_verwaltung_testmail() {
 	var fehler = false;
 
 	if (!cms_check_mail(absender)) {
-		meldung += '<li>die Mailadresse des Absenders ist ungültig.</li>';
+		meldung += '<li>die eMailadresse des Absenders ist ungültig.</li>';
 		fehler = true;
 	}
 

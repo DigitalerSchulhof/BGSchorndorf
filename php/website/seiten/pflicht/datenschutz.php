@@ -17,28 +17,33 @@
       <h3>Verwantwortliche Personen</h3>
       <h4>Herausgeber</h4>
       <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
-      <p>Burg-Gymnasium Schorndorf<br>
-        Hinter der Burg 6<br>
-        73614 Schorndorf<br>
-        Telefon: 07181 / 602 9302<br>
-        Fax: 07181 / 602 9399<br>
-        <a href="mailto:schule@bg-schorndorf.de">schule@bg-schorndorf.de</a></p>
+      <?php
+        echo "<p>$CMS_SCHULE<br>";
+        echo "$CMS_STRASSE<br>";
+        echo "$CMS_PLZORT";
+        if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
+        if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
+        if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
+        echo "</p>";
+      ?>
 
       <h4>Vertretungsberechtigter</h4>
-      <p>Jürgen Hohloch, OStD</p>
+      <?php echo "<p>$CMS_NAMESCHULLEITER</p>"; ?>
       <p>Der Vertretungsberechtigte entscheidet, ggf. mit Rücksprache anderer, über den Zweck der Verarbeitung von personenbezogenen Daten und welche Mittel dazu eingesetzt werden.</p>
 
       <h4>Datenschutzbeauftragter</h4>
-      <p>Dietmar Herde<br>
-        Burg-Gymnasium Schorndorf<br>
-        Hinter der Burg 6<br>
-        73614 Schorndorf<br>
-        Telefon: 07181 / 602 9302<br>
-        Fax: 07181 / 602 9399<br>
-        <a href="mailto:datenschutz@bg-schorndorf.de">datenschutz@bg-schorndorf.de</a></p>
+      <?php
+        echo "<p>$CMS_NAMEDATENSCHUTZ<br>$CMS_SCHULE<br>";
+        echo "$CMS_STRASSE<br>";
+        echo "$CMS_PLZORT";
+        if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
+        if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
+        if (strlen($CMS_MAILDATENSCHUTZ) > 0) {echo "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
+        echo "</p>";
+      ?>
 
 
-      <h3>Ihre Recht</h3>
+      <h3>Ihre Rechte</h3>
       <h4>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h4>
       <p>Einige Angebote dieser Website sind ohne Ihrer ausdrücklichen Einwilligung zur Datenverarbeitung nicht möglich. Diese mit der Nutzung der Seite erteilte Einwilligung kann jederzeit widerrufen werden. Es genügt eine formlose Mitteilung per eMail. Die Rechtmäßigkeit der Verarbeitung Ihrer Daten bis zum Widerruf bleibt unberührt.</p>
 
@@ -73,7 +78,7 @@
       <p>Jede Übertragung von Daten zwischen dieser Seite und Ihnen erfolgt grundsätzlich verschlüsselt, damit diese Daten während der Übertragung nicht von Dritten eingesehen werden können. Verschlüsselte Verbindungen erkennen Sie an dem Präfix »https://« in der Adresszeile Ihres Browsers. Oft wird dazu ein Schlosssymbol angezeigt.</p>
 
       <h4>Server-Log-Dateien</h4>
-      <p>Der Provider dieser Seite (Stadt Schorndorf) speichert beim Aufruf einer Seite automatisch den Zugriff. Ihr Browser übermittelt dabei folgende Daten:</p>
+      <p>Der Provider dieser Seite (<?php echo $CMS_HOSTINGPARTNEREX; ?>) speichert beim Aufruf einer Seite automatisch den Zugriff. Ihr Browser übermittelt automatisch folgende Daten:</p>
       <ul>
         <li>besuchte Seiten dieser Domain</li>
         <li>Datum und Uhrzeit des Zugriffs auf die jeweilige Seite</li>

@@ -222,17 +222,18 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'];
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'];
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'];
-			$CMS_RECHTE['Personen']['Personen sehen'];
-			$CMS_RECHTE['Zugriffe']['Lehrernetz'];
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
-			$CMS_RECHTE['Planung']['Räume sehen'];
-			$CMS_RECHTE['Planung']['Raumpläne sehen'];
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'];
+			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
+			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
+			$CMS_RECHTE['Planung']['Buchungen sehen'] = true;
+			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
+			$CMS_RECHTE['Personen']['Personen sehen'] = true;
+			$CMS_RECHTE['Zugriffe']['Lehrernetz'] = true;
+			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Räume sehen'] = true;
+			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'v') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
@@ -240,16 +241,17 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'];
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'];
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'];
-			$CMS_RECHTE['Personen']['Personen sehen'];
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
-			$CMS_RECHTE['Planung']['Räume sehen'];
-			$CMS_RECHTE['Planung']['Raumpläne sehen'];
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'];
+			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
+			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
+			$CMS_RECHTE['Planung']['Buchungen sehen'] = true;
+			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
+			$CMS_RECHTE['Personen']['Personen sehen'] = true;
+			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Räume sehen'] = true;
+			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
+			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'x') {
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}

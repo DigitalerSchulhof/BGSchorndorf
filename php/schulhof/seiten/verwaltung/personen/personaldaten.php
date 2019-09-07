@@ -856,7 +856,7 @@ function cms_personaldaten_einstellungen_aendern($id) {
 			$code .= "<div class=\"cms_spalte_2\">";
 			$code .= "<div class=\"cms_spalte_i\">";
 
-			$code .= "<h3>Per Mail benachrichtigen, wenn:</h3>";
+			$code .= "<h3>Per eMail benachrichtigen, wenn:</h3>";
 			$code .= "<table class=\"cms_formular\">";
 				$code .= "<tr>";
 					$code .= "<th>neue Nachrichten eingehen</th>";
@@ -890,7 +890,7 @@ function cms_personaldaten_einstellungen_aendern($id) {
 					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_blogoeffentlich", $oeffentlicherblog)."</td>";
 				$code .= "</tr>";
 				$code .= "<tr>";
-					$code .= "<th>ein öffentliche Galerie erstellt wurde</th>";
+					$code .= "<th>eine öffentliche Galerie erstellt wurde</th>";
 					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_galerieoeffentlich", $oeffentlichegalerie)."</td>";
 				$code .= "</tr>";
 			$code .= "</table>";
