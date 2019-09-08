@@ -579,19 +579,21 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Seiten verschiedener Sprachen verknüpfen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;*/
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter erstellen', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter schreiben', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter bearbeiten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Mailingliste sehen', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter schreiben', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Kontakt anlegen', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Empfängerliste sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Kontakt bearbeiten', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Empfänger anlegen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Kontakt löschen', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Empfänger bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Newsletter Empfänger löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 
 		// ZUGRIFFE

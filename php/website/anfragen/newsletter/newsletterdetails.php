@@ -86,9 +86,9 @@ if (($zugriff) && ($angemeldet)) {
       if(count($typen) < 1)
         if($CMS_RECHTE["Website"]["Newsletter erstellen"]) {
           if($benutzertyp == "s")
-            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Leg im <a href=\"Schulhof/Verwaltung/Newsletter/Neuer_Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
+            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Leg im <a href=\"Schulhof/Website/Newsletter/Neuer_Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
           else
-            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Legen Sie im <a href=\"Schulhof/Verwaltung/Newsletter/Neuer_Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
+            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Legen Sie im <a href=\"Schulhof/Website/Newsletter/Neuer_Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
         } else {
           if($benutzertyp == "s")
             $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Bitte einen Adrministrator, einen Neuen anzulegen.</p>")."</tr>";
