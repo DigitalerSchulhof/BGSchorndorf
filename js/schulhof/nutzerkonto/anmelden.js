@@ -123,11 +123,11 @@ function cms_timeout_aktualisieren () {
   if (ende.getMinutes() < 10) {uhrzeit_ende += "0"+ende.getMinutes();}
   else {uhrzeit_ende += ende.getMinutes();}
 
-	if(uebrig < 1)
+	if (uebrig < 1)
 		var text = "aktiv bis "+uhrzeit_ende+" Uhr - die letzte Minute läuft";
-	else if(uebrig < 2)
+	else if (uebrig < 2)
 		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minute";
-	else if(uebrig < 60)
+	else if (uebrig < 60)
 		var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minuten";
 	else {
 		var h = uebrig / 60;
@@ -149,9 +149,56 @@ function cms_timeout_aktualisieren () {
 		cms_abmelden('auto');
 	}
 	else if (uebrig < 1) {
-		if (CMS_BENUTZERART == "s") {meldung = '<p>Die letzte Minute läuft. Du wirst aus Sicherheitsgründen bald abgemeldet! Verlängere jetzt deine Aktivitätszeit!</p>';}
-		else {meldung = '<p>Die letzte Minute läuft. Sie werden aus Sicherheitsgründen bald abgemeldet! Verlängern Sie jetzt Ihre Aktivitätszeit!</p>';}
-		cms_meldung_an('warnung', 'Die Zeit läuft ab!', meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">Verlängern</span>');
+		// Neue Daten laden
+		var formulardaten = new FormData();
+		formulardaten.append("anfragenziel", 	'295');
+		function anfragennachbehandlung(rueckgabe) {
+			if (cms_check_ganzzahl(rueckgabe,0)) {
+				CMS_SESSIONTIMEOUT = rueckgabe;
+				uebrig = (CMS_SESSIONTIMEOUT - jetzt)/60;
+
+				if (uebrig < 1) {
+					if (CMS_BENUTZERART == "s") {meldung = '<p>Die letzte Minute läuft. Du wirst aus Sicherheitsgründen bald abgemeldet! Verlängere jetzt deine Aktivitätszeit!</p>';}
+					else {meldung = '<p>Die letzte Minute läuft. Sie werden aus Sicherheitsgründen bald abgemeldet! Verlängern Sie jetzt Ihre Aktivitätszeit!</p>';}
+					cms_meldung_an('warnung', 'Die Zeit läuft ab!', meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">Verlängern</span>');
+				}
+				else {
+					prozent = uebrig/CMS_SESSIONAKTIVITAET*100;
+				  if (aktiv_innen) {aktiv_innen.style.width = prozent+"%";}
+				  if (aktiv_innen_mobil) {aktiv_innen_mobil.style.width = prozent+"%";}
+				  if (aktiv_innen_profil) {aktiv_innen_profil.style.width = prozent+"%";}
+
+					if (uebrig < 1)
+						var text = "aktiv bis "+uhrzeit_ende+" Uhr - die letzte Minute läuft";
+					else if (uebrig < 2)
+						var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minute";
+					else if (uebrig < 60)
+						var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(uebrig))+" Minuten";
+					else {
+						var h = uebrig / 60;
+						var m = uebrig % 60;
+						var text = "aktiv bis "+uhrzeit_ende+" Uhr - noch "+(Math.floor(h))+" Stunde";
+						if(h >= 2)
+							text += "n";
+						if(m >= 1)
+							text += " und "+(Math.floor(m))+" Minute";
+						if(m >= 2)
+							text += "n";
+					}
+
+					if (aktiv_text) {aktiv_text.innerHTML = text;}
+					if (aktiv_text_mobil) {aktiv_text_mobil.innerHTML = text;}
+					if (aktiv_text_profil) {aktiv_text_profil.innerHTML = text;}
+				}
+			}
+			else if (rueckgabe == "BERECHTIGUNG") {
+				cms_abmelden('auto');
+			}
+			else {
+				cms_fehlerbehandlung(rueckgabe);
+			}
+		}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -167,6 +214,9 @@ function cms_timeout_verlaengern() {
 					CMS_SESSIONTIMEOUT = rueckgabe;
 					cms_timeout_aktualisieren();
 					cms_meldung_an('erfolg', 'Aktivitätszeit verlängern', '<p class="cms">Die Verlängerung wurde durchgeführt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span>');
+			}
+			else if (rueckgabe.length == 0) {
+				cms_abmelden('auto');
 			}
 			else {
 				cms_fehlerbehandlung(rueckgabe);

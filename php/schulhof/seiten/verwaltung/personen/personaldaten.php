@@ -866,7 +866,6 @@ function cms_personaldaten_einstellungen_aendern($id) {
 					$code .= "<tr>";
 						$code .= "<th>neue Vertretungen eingehen</th>";
 						$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_vertretungsmail", $vertretungsmail)."</td>";
-						$code .= "<td><span class=\"cms_schieber_o_".$vorsilbe."aktiv\" id=\"cms_schieber_schulhof_".$idname."_einstellungen_vertretungsmail\" onclick=\"cms_schieber('schulhof_".$idname."_einstellungen_vertretungsmail')\"><span class=\"cms_schieber_i\"></span></span></td>";
 					$code .= "</tr>";
 				}
 				$code .= "<tr>";
