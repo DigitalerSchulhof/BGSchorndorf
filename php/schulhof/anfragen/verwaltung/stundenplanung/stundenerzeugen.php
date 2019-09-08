@@ -162,11 +162,6 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->execute();
 		$sql->close();
 
-		echo "<textarea rows=\"50\" cols=\"500\">";
-		print_r($REGELUNTERRICHT);
-		print_r($SCHULSTUNDEN);
-		echo "</textarea>";
-
 		// Anfang der Stundenerzeugung festlegen
 		if ($zbeginn > $jetzt) {$jetzt = $zbeginn;}
 		$ferienzeiger = 0;
@@ -205,13 +200,19 @@ if (cms_angemeldet() && $zugriff) {
 			$wochentag = date('N', $jetzt);
 
 			// Alle Stunden dieses Ryhtmus an diesem Wochentag anlegen
+			if ($aktry != 0) {
+				foreach ($REGELUNTERRICHT[0][$wochentag] AS $ru) {
+					$uid = cms_generiere_kleinste_id('unterricht');
+					$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
+					$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
+					$sql->bind_param("iiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
+					$sql->execute();
+				}
+			}
 			foreach ($REGELUNTERRICHT[$aktry][$wochentag] AS $ru) {
 				$uid = cms_generiere_kleinste_id('unterricht');
 				$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 				$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
-
-				echo "UPDATE unterricht SET kurs = ".$ru['kurs'].", pbeginn = $ubeginn, pende = $uende, plehrer = ".$ru['lehrer'].", praum = ".$ru['raum'].", tbeginn = $ubeginn, tende = $uende, tlehrer = ".$ru['lehrer'].", traum = ".$ru['raum'].", vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = $uid";
-
 				$sql->bind_param("iiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
 				$sql->execute();
 			}
