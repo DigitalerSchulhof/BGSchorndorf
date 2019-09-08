@@ -15,10 +15,10 @@ $zugriff = $CMS_RECHTE['Website']['Newsletter Empfänger löschen'];
 
 if (cms_angemeldet() && $zugriff) {
   $dbs = cms_verbinden("s");
-  $sql = "DELETE FROM newsletterempfaenger WHERE id = ?";
+  $sql = "DELETE FROM newsletterempfaenger WHERE newsletter = ?";
   $sql = $dbs->prepare($sql);
   $sql->bind_param("i", $id);
-  if(!$sql->execute())
+  if(!$sql->execute() || !$sql->affected_rows)
     die("FEHLER");
 	echo "ERFOLG";
 }

@@ -6,8 +6,6 @@ include_once("../../schulhof/funktionen/check.php");
 include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../schulhof/anfragen/notifikationen/notifikationen.php");
 include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
-include_once("../../allgemein/funktionen/mail.php");
-require_once '../../phpmailer/PHPMailerAutoload.php';
 
 session_start();
 

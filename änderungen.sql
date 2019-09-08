@@ -44,6 +44,7 @@ CREATE TABLE `newsletterempfaenger` (
  `name` varbinary(5000) NOT NULL,
  `email` varbinary(5000) NOT NULL,
  `newsletter` bigint(255) unsigned NOT NULL,
+ `token` varbinary(5000) NOT NULL,
  `idvon` bigint(255) unsigned DEFAULT NULL,
  `idzeit` bigint(255) unsigned DEFAULT NULL,
  KEY `newsletterempfaengernewsletter` (`newsletter`),

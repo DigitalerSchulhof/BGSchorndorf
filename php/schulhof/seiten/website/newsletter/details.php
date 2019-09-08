@@ -100,11 +100,27 @@ function cms_newsletter_details_laden($id, $ziel) {
       if($CMS_RECHTE["Website"]["Newsletter Empfänger anlegen"])
         $codea .= "<span class=\"cms_button_ja\" onclick=\"cms_newsletter_empfaenger_anlegen($id)\">+ Empfänger hinzufügen</span> ";
       if($CMS_RECHTE["Website"]["Newsletter Empfänger löschen"])
-        $codea .= "<span class=\"cms_button_nein\" onclick=\"cms_newsletter_empfaenger_loeschen_alle_vorbereiten()\">Alle Empfänger entfernen</span> ";
+        $codea .= "<span class=\"cms_button_nein\" onclick=\"cms_newsletter_empfaenger_loeschen_alle_vorbereiten($id)\">Alle Empfänger entfernen</span> ";
 
       if(strlen($codea)) {
         $code .= "<p id=\"cms_empfaenger_aktionen\">".substr($codea, 0, -1)."</p>";
       }
+    $code .= "</div>";
+  }
+
+  if($sehen && !$neu) {
+    $num = 0;
+    $sql = "SELECT COUNT(*) FROM newsletterempfaenger WHERE newsletter = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $id);
+    $sql->bind_result($num);
+    $sql->execute();
+    $sql->fetch();
+
+    $code .= "<div class=\"cms_spalte_i\">";
+      $code .= "<h3>Schreiben</h3>";
+      $code .= "<textarea id=\"cms_newsletter_text\"></textarea>";
+      $code .= "<span class=\"cms_button_ja\" onclick=\"cms_newsletter_senden($id)\">An alle Empfänger ($num) senden</span>";
     $code .= "</div>";
   }
 

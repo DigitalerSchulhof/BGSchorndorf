@@ -58,7 +58,7 @@ function cms_newsletter_empfaenger_anlegen(id) {
 	$("#cms_empfaenger_aktionen").hide();
 
 	var r = $("<tr></tr>").append(	// #jQuery
-		$("<td></td>").html($("<img></img>", {src: "res/icons/klein/neuerempfaenger.png"})),
+		$("<td></td>").html($("<img></img>", {src: "res/icons/klein/hinzufuegen.png"})),
 		$("<td></td>").html($("<input>", {id: "cms_newsletter_empfaenger_neu_name"})),
 		$("<td></td>").html($("<input>", {id: "cms_newsletter_empfaenger_neu_email"})),
 		$("<td></td>").html(
@@ -211,6 +211,28 @@ function cms_newsletter_empfaenger_loeschen(id) {
 
 }
 
+function cms_newsletter_empfaenger_loeschen_alle_vorbereiten(id) {
+	cms_meldung_an("warnung", "Alle Empfänger entfernen", "<p>Sollen alle Empfänger wirklich entfernt werden?", '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_newsletter_empfaenger_loeschen_alle('+id+')">Entfernen</span></p>');
+}
+
+function cms_newsletter_empfaenger_loeschen_alle(id) {
+	cms_laden_an("Alle Empfänger entfernen", "Daten werden gesammelt");
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", 					  id);
+	formulardaten.append("anfragenziel", '364');
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			location.reload();
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+
+}
+
 function cms_newsletter_eingabenpruefen() {
 	var meldung = '<p>Der Newsletter konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -343,5 +365,27 @@ function cms_newsletter_alle_loeschen() {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_newsletter_senden(id) {
+	cms_laden_an("Newsletter schreiben", "Daten werden gesammelt");
+
+	var text = $("#cms_newsletter_text").val();
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", 						id);
+	formulardaten.append("text", 					text);
+	formulardaten.append("anfragenziel", 	'363');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Newsletter schreiben', '<p>Der Newsletter wurde gesandt.</p>', '<p><span class="cms_button" onclick="location.reload();">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }

@@ -26,11 +26,18 @@ $sql->bind_param("si", $mail, $id);
 if(!$sql->execute() || $sql->fetch())
   die("MAIL");
 
+$pool = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+$token = "";
+srand ((double)microtime()*1000000);
+for($i = 0; $i < 64; $i++) {
+    $token .= substr($pool,(rand()%(strlen ($pool))), 1);
+}
+
 // Einfügen
 $eid = cms_generiere_kleinste_id("newsletterempfaenger", "s", '0');
-$sql = "UPDATE newsletterempfaenger SET name = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), email = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), newsletter = ? WHERE id = ?";
+$sql = "UPDATE newsletterempfaenger SET name = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), email = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), newsletter = ?, token = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
 $sql = $dbs->prepare($sql);
-$sql->bind_param("ssii", $name, $mail, $id, $eid);
+$sql->bind_param("ssisi", $name, $mail, $id, $token, $eid);
 $sql->execute();
 
 echo "ERFOLG";
