@@ -63,22 +63,28 @@ if (cms_angemeldet() && $zugriff) {
 		$sids = cms_generiere_sqlidliste($schuelerids);
 		$lids = cms_generiere_sqlidliste($lehrerids);
 
-		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN $sids AND art != AES_ENCRYPT('s', '$CMS_SCHLUESSEL')");
-		if ($sql->execute()) {
-		  $sql->bind_result($anzahl);
-		  if ($sql->fetch()) {if ($anzahl > 0) {$personenfehler = true;}}
-		} else {$personenfehler = true;}
-		$sql->close();
+		if (strlen($sids) > 2) {
+			$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN $sids AND art != AES_ENCRYPT('s', '$CMS_SCHLUESSEL')");
+			if ($sql->execute()) {
+			  $sql->bind_result($anzahl);
+			  if ($sql->fetch()) {if ($anzahl > 0) {$personenfehler = true;}}
+			} else {$personenfehler = true;}
+			$sql->close();
+		}
 
-		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN $lids AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL')");
-		if ($sql->execute()) {
-		  $sql->bind_result($anzahl);
-		  if ($sql->fetch()) {if ($anzahl > 0) {$personenfehler = true;}}
-		} else {$personenfehler = true;}
-		$sql->close();
+		if (strlen($lids) > 2) {
+			$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN $lids AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL')");
+			if ($sql->execute()) {
+			  $sql->bind_result($anzahl);
+			  if ($sql->fetch()) {if ($anzahl > 0) {$personenfehler = true;}}
+			} else {$personenfehler = true;}
+			$sql->close();
+		}
 
 		if ($personenfehler) {$fehler = true; echo "PERSONEN";}
 	}
+
+	//echo "<textarea cols=\"500\" rows=\"50\">";print_r($KURSE);echo "</textarea>";
 
 	if (!$fehler) {
 
@@ -94,23 +100,23 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		$jetzt = time();
-		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, 0, 1, 0, 0, 0, 0, 0, ?)");
+		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) VALUES (?, ?, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
 		foreach ($KURSE as $k) {
 			if (strlen($k['schueler']) > 0) {
-				$personen = explode("|", substr($k['lehrer'], 1));
+				$personen = explode("|", substr($k['schueler'], 1));
 				foreach ($personen as $p) {
-					$sql->bind_param("iii", $k['id'], $p, $jetzt);
+					$sql->bind_param("ii", $k['id'], $p);
 					$sql->execute();
 				}
 			}
 		}
 		$sql->close();
-		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, ?)");
+		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0)");
 		foreach ($KURSE as $k) {
 			if (strlen($k['lehrer']) > 0) {
 				$personen = explode("|", substr($k['lehrer'], 1));
 				foreach ($personen as $p) {
-					$sql->bind_param("iii", $k['id'], $p, $jetzt);
+					$sql->bind_param("ii", $k['id'], $p);
 					$sql->execute();
 				}
 			}
@@ -130,8 +136,8 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 
 		// Personen der Kurse in die jeweilige Stufen übernehmen
-		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, ? FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
-		$sql->bind_param("iii", $jetzt, $neuschuljahr, $neuschuljahr);
+		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
+		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
 		$sql->execute();
 		$sql->close();
 

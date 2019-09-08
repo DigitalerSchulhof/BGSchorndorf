@@ -296,7 +296,7 @@ function cms_stundenerzeugen_vorbereiten(sjid) {
 function cms_stundenerzeugen_speichern() {
   cms_laden_an('Stunden und Tagebücher erzeugen', 'Die Erzeugung wird vorbereitet ...');
   var stufen = document.getElementById('cms_stufen').value;
-  var zeitraume = document.getElementById('cms_zeitraeume').value;
+  var zeitraeume = document.getElementById('cms_zeitraeume').value;
   var schuljahr = document.getElementById('cms_schuljahr').value;
 
   var meldung = '<p>Die Stunden und Tagebücher konnten nicht erzeugt werden, denn ...</p><ul>';
@@ -319,28 +319,98 @@ function cms_stundenerzeugen_speichern() {
 
   zeitraeume = zeitraeume.substr(1);
   var zt = zeitraeume.split('|');
-  stufen = '-'+stufen;
-  var st = stufen.split('|');
+  var st = (stufen.substr(1)).split('|');
+  // Falls keine Stufen angelegt
+  if ((st.length == 1) && (st[0].length == 0)) {st = new Array();}
 
-  var stanlegen = 0;
-  var stanzahl = st.length;
-  var ztanlegen = 0;
-  var ztanzahl = zt.length;
+  // Prüfen, welche Zeiträume erstellt werden sollen
+  var ztanlegen = new Array();
+  var ztindex = 0;
+  var zeitraumfehler = false;
+  for (var z = 0; z < zt.length; z++) {
+    if (zt[z].length > 0) {
+      var feld = document.getElementById('cms_zeitraum_erzeugen_'+zt[z]);
+      if (feld) {
+        if (!cms_check_toggle(feld.value)) {zeitraumfehler = true;}
+        else {if (feld.value == 1) {ztanlegen[ztindex] = zt[z]; ztindex++;}}
+      }
+      else {zeitraumfehler = true;}
+    }
+  }
+
+  if (zeitraumfehler) {
+    meldung += '<li>die Auswahl der Zeiträume ist ungültig.</li>'
+    fehler = true;
+  }
 
   if (fehler) {
     cms_meldung_an('fehler', 'Stunden und Tagebücher erzeugen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
   }
   else {
-    var formulardaten = new FormData();
-    formulardaten.append("anfragenziel", 	'294');
+    var anzstufen = st.length;
+    var anzzeitraeume = ztanlegen.length;
+    var stufennr = 0;
+    var zeitraumnr = 0;
 
-    function anfragennachbehandlung(rueckgabe) {
-      /*if (rueckgabe == "ERFOLG") {
-        cms_link('Schulhof/Verwaltung/Planung/Stunden_und_Tagebücher_erzeugen');
+    if ((anzzeitraeume > 0) || (st.length == 0)) {
+      var feld = document.getElementById('cms_blende_i');
+      var neuemeldung = '<div class="cms_spalte_i">';
+      neuemeldung += '<h2 id="cms_laden_ueberschrift">Stunden und Tagebücher erzeugen</h2>';
+      neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
+      neuemeldung += '<h4>Gesamtfortschritt</h4>';
+      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
+        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
+      neuemeldung += '</div>';
+      neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Zeiträume: <span id="cms_stundnerezeugen_ztaktuell">0</span>/'+anzzeitraeume+' abgeschlossen</p>';
+      neuemeldung += '<div id="cms_hochladen_aktuelledatei" style="display: block;">';
+        neuemeldung += '<h4>Fortschritt in diesem Zeitraum</h4>';
+        neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
+          neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_hochladen_balken_aktuell" style="width: 0%;"></div>';
+        neuemeldung += '</div>'
+        neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Stufe: <span id="cms_stundnerezeugen_staktuell">0</span>/'+anzstufen+' abgeschlossen</p>';
+      neuemeldung += '</div></div>';
+      feld.innerHTML = neuemeldung;
+
+      var formulardaten = new FormData();
+      formulardaten.append("stufe", st[stufennr]);
+      formulardaten.append("zeitraum", 	ztanlegen[zeitraumnr]);
+      formulardaten.append("schuljahr", 	schuljahr);
+      formulardaten.append("anfragenziel", 	'294');
+
+      function anfragennachbehandlung(rueckgabe) {
+        if (rueckgabe == "ERFOLG") {
+          // Abgeschlossene ids erhöhen:
+          stufennr++;
+          if (stufennr == anzstufen) {stufennr = 0; zeitraumnr++;}
+          // Anzeige aktualisieren
+          document.getElementById('cms_stundnerezeugen_ztaktuell').innerHTML = zeitraumnr;
+          document.getElementById('cms_stundnerezeugen_staktuell').innerHTML = stufennr;
+          document.getElementById('cms_hochladen_balken_gesamt').style.width = (100*zeitraumnr)/anzzeitraeume+'%';
+          document.getElementById('cms_hochladen_balken_aktuell').style.width = (100*stufennr)/anzstufen+'%';
+
+          if (zeitraumnr == anzzeitraeume) {
+            cms_meldung_an('erfolg', 'Stunden und Tagebücher erzeugen', '<p>Die Unterrichtsstunden und Tagebücher wurden erzeugt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung\');">OK</span></p>');
+          }
+          else {
+            // Nächste Stufe/Zeitraum starten
+            var formulardaten = new FormData();
+            formulardaten.append("stufe", st[stufennr]);
+            formulardaten.append("zeitraum", 	ztanlegen[zeitraumnr]);
+            formulardaten.append("schuljahr", 	schuljahr);
+            formulardaten.append("anfragenziel", 	'294');
+
+            cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+          }
+        }
+        else {cms_fehlerbehandlung(rueckgabe);}
       }
-      else {cms_fehlerbehandlung(rueckgabe);}*/
+
+      cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    }
+    else {
+      cms_meldung_an('erfolg', 'Stunden und Tagebücher erzeugen', '<p>Es war nichts zu erzeugen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung\');">OK</span></p>');
     }
 
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+
   }
 }

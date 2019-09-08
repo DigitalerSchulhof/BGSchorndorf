@@ -440,15 +440,17 @@ function cms_schuljahrfabrik_klassenkurse() {
 
   var formulardaten = new FormData();
   var klassenfehler = false;
+
   for (var s=0; s<sid.length; s++) {
-    sinfo[0] = new Array();
-    sinfo[0][0] = sid[s];
+
+    sinfo[s] = new Array();
+    sinfo[s][0] = sid[s];
     if (sid[s].length > 0) {
       var klassenids = document.getElementById('cms_sjfabrik_stufen_'+sid[s]+'_klassen');
       if (klassenids) {
         if (!cms_check_idfeld(klassenids.value)) {klassenfehler = true;}
         else {
-          sinfo[0][1] = ((klassenids.value).substr(1)).split('|');
+          sinfo[s][1] = ((klassenids.value).substr(1)).split('|');
           formulardaten.append('stufenklassen_'+sid[s], klassenids.value);
         }
       }
@@ -468,7 +470,7 @@ function cms_schuljahrfabrik_klassenkurse() {
     formulardaten.append("anfragenziel", 	'274');
 
     // Senden vorbereiten - Fächer pro Klasse
-    var faecherproklassefehler = false;
+    faecherproklassefehler = false;
     for (var s=0; s<sinfo.length; s++) {
       for (var k=0; k<sinfo[s][1].length; k++) {
         if (sinfo[s][1][k].length > 0) {
