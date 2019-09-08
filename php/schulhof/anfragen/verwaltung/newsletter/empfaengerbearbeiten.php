@@ -21,7 +21,7 @@ if (cms_angemeldet() && $zugriff) {
   $sql = "UPDATE newsletterempfaenger SET name = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), email = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
   $sql = $dbs->prepare($sql);
   $sql->bind_param("ssi", $name, $mail, $id);
-  if(!$sql->execute() || !$sql->affected_rows)
+  if(!$sql->execute() || !$dbs->affected_rows)
     die("FEHLER");
 	echo "ERFOLG";
 }

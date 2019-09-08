@@ -36,7 +36,7 @@ if (cms_angemeldet() && $zugriff) {
 	if(!$sql->execute())
 		die("FEHLER");
 	while($sql->fetch())
-		cms_mailsenden($empfn, $empfm, "$CMS_SCHULE $CMS_ORT $bez", cms_textaustextfeld_anzeigen($text."\n\n\n<div style=\"font-size: 9px\">Newsletter abbestellen: <a href=\"$CMS_DOMAIN/Newsletter_abbesellen?i=$id&t=$token\">$CMS_DOMAIN/Newsletter_abbesellen?i=$id&t=$token</a></div>"), $text."\n\n\Newsletter abbestellen: $CMS_DOMAIN/Newsletter_abbesellen?i=$id&t=$token");
+		cms_mailsenden($empfn, $empfm, "$CMS_SCHULE $CMS_ORT $bez", cms_textaustextfeld_anzeigen($text."\n\n\n<div style=\"font-size: 9px\">Newsletter abbestellen: <a href=\"$CMS_DOMAIN/Website/Newsletter_abbestellen/$id/$token\">$CMS_DOMAIN/Website/Newsletter_abbestellen/$id/$token</a></div>"), $text."\n\n\Newsletter abbestellen: $CMS_DOMAIN/Website/Newsletter_abbestellen/$id/$token");
 	cms_trennen($dbs);
 
 	echo "ERFOLG";

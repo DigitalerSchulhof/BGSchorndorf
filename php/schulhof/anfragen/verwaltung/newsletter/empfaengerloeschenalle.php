@@ -18,7 +18,7 @@ if (cms_angemeldet() && $zugriff) {
   $sql = "DELETE FROM newsletterempfaenger WHERE newsletter = ?";
   $sql = $dbs->prepare($sql);
   $sql->bind_param("i", $id);
-  if(!$sql->execute() || !$sql->affected_rows)
+  if(!$sql->execute() || !$dbs->affected_rows)
     die("FEHLER");
 	echo "ERFOLG";
 }

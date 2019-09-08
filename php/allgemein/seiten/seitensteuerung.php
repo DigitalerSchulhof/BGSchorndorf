@@ -9,6 +9,8 @@ if ($CMS_URL[0] == 'Website') {
   // WEBSITE
   $CMS_VERFUEGBARE_SEITEN['Website/Datenschutz']                                        = 'php/website/seiten/pflicht/datenschutz.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Impressum']                                          = 'php/website/seiten/pflicht/impressum.php';
+  if(preg_match("/^Website\/Newsletter_abbestellen\/[0-9]*\/[a-zA-Z0-9]{64}$/", $CMS_URLGANZ))
+    {include("php/website/seiten/newsletter/abbestellen.php"); $ausnahme = true;}
   $CMS_VERFUEGBARE_SEITEN['Website/Feedback']                                           = 'php/website/seiten/feedback/geben.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Feedback/Danke!']                                    = 'php/website/seiten/feedback/danke.php';
   if (preg_match("/^Website\/(Termine|Galerien|Blog)$/", $CMS_URLGANZ))
