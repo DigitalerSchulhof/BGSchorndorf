@@ -3,6 +3,7 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
+include_once("../../schulhof/funktionen/generieren.php");
 
 session_start();
 
@@ -63,7 +64,7 @@ if (cms_angemeldet() && $zugriff) {
 	// FERIEN in diesem Zeitraum laden
 	if (!$fehler) {
 		$FERIEN = array();
-		$sql = "SELECT beginn, ende FROM ferien WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?)";
+		$sql = "SELECT beginn, ende FROM ferien WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?) ORDER BY beginn ASC, ende DESC";
 		$sql = $dbs->prepare($sql);
 		$sql->bind_param("iiiiii", $zbeginn, $zende, $zbeginn, $zende, $zbeginn, $zende);
 		if ($sql->execute()) {
@@ -81,14 +82,12 @@ if (cms_angemeldet() && $zugriff) {
 	// SCHULSTUNDEN in diesem Zeitraum laden
 	if (!$fehler) {
 		$SCHULSTUNDEN = array();
-		$SCHULSTUNDENIDS = array();
-		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginns, beginnm, endes, endem FROM schulstunden WHERE zeitraeume = ? ORDER BY beginns, beginnm";
+		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginns, beginnm, endes, endem FROM schulstunden WHERE zeitraum = ? ORDER BY beginns, beginnm";
 		$sql = $dbs->prepare($sql);
 		$sql->bind_param("i", $zeitraum);
 		if ($sql->execute()) {
 			$sql->bind_result($stdid, $stdbez, $stdbeginns, $stdbeginnm, $stdendes, $stdendem);
 			while ($sql->fetch()) {
-				array_push($SCHULSTUNDENIDS, $stdid)
 				$SCHULSTUNDEN[$stdid]['bez'] = $stdbez;
 				$SCHULSTUNDEN[$stdid]['beginns'] = $stdbeginns;
 				$SCHULSTUNDEN[$stdid]['beginnm'] = $stdbeginnm;
@@ -99,22 +98,53 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 	}
 
-	// REGELUNTERRICHT LADEN
+	// REGELUNTERRICHT[RYTHMEN][WOCHENTAG][...] LADEN
+	if (!$fehler) {
+		// Rythmen im Regelunterricht vorbereiten
+		$REGELUNTERRICHT[0] = array();
+		if ($zrythmen != 1) {
+			for ($r=1; $r<=$zrythmen; $r++) {
+				$REGELUNTERRICHT[$r] = array();
+			}
+		}
+		// Tage im Regelunterricht vorbereiten
+		for ($r=0; $r<COUNT($REGELUNTERRICHT); $r++) {
+			for ($t = 1; $t<= 7; $t++) {
+				$REGELUNTERRICHT[$r][$t] = array();
+			}
+		}
+		$sql = "SELECT schulstunde, tag, rythmus, kurs, lehrer, raum FROM regelunterricht WHERE kurs IN (SELECT id FROM kurse WHERE schuljahr = ? AND stufe = ?)";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ii", $schuljahr, $stufe);
+		if ($sql->execute()) {
+			$sql->bind_result($rustd, $rutag, $rury, $ruku, $rule, $rura);
+			while ($sql->fetch()) {
+				$ru = array();
+				$ru['schulstunde'] = $rustd;
+				$ru['kurs'] = $ruku;
+				$ru['lehrer'] = $rule;
+				$ru['raum'] = $rura;
+				array_push($REGELUNTERRICHT[$rury][$rutag], $ru);
+			}
+		} else {$fehler = true;}
+		$sql->close();
+	}
 
+	// RYTHMEN DES ZEITRAUMS LADEN
 	if (!$fehler) {
 		$RYTHMEN = array();
 		if ($zrythmen > 1) {
 			// Rythemn in diesem Zeitraum laden
-			$sql = "SELECT beginn, kw, rythmus FROM rythmisierung WHERE zeitraum = ?";
+			$sql = "SELECT beginn, rythmus FROM rythmisierung WHERE zeitraum = ? ORDER BY beginn";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("i", $zeitraum);
 			if ($sql->execute()) {
-				$sql->bind_result($rbeginn, $rkw, $rrythmus);
+				$sql->bind_result($rbeginn, $rrythmus);
 				while ($sql->fetch()) {
 					$r = array();
 					$r['beginn'] = $rbeginn;
-					$r['kw'] = $rkw;
-					$r['rathmus'] = $rrythmus;
+					$r['ende'] = mktime(23,59,59,date('m', $rbeginn), date('d', $rbeginn)+(7-date('N', $rbeginn)), date('Y', $rbeginn));
+					$r['rythmus'] = $rrythmus;
 					array_push($RYTHMEN, $r);
 				}
 			} else {$fehler = true;}
@@ -133,10 +163,72 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 
 		echo "<textarea rows=\"50\" cols=\"500\">";
-		print_r($FERIEN);
-		print_r($RYTHMEN);
+		print_r($REGELUNTERRICHT);
+		print_r($SCHULSTUNDEN);
 		echo "</textarea>";
 
+		// Anfang der Stundenerzeugung festlegen
+		if ($zbeginn > $jetzt) {$jetzt = $zbeginn;}
+		$ferienzeiger = 0;
+		$ryzeiger = 0;
+		$aktry = 0;
+		// Falls in diesem Zeitraum Ferien existieren
+		if ($ferienzeiger < count($FERIEN)) {
+			// Falls gerade Ferien sind, auf Zeit nach Ferien einstellen
+			if (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
+				$jetzt = mktime(0,0,0,date('m', $FERIEN[$ferienzeiger]['ende']),date('d', $FERIEN[$ferienzeiger]['ende'])+1,date('Y', $FERIEN[$ferienzeiger]['ende']));
+				$ferienzeiger++;
+			}
+		}
+
+		// Solange Stunden erzeugen, bis der Zeitraum überschritten ist
+		$sql = $dbs->prepare("UPDATE unterricht SET kurs = ?, pbeginn = ?, pende = ?, plehrer = ?, praum = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = ?");
+		while ($jetzt < $zende) {
+			// Aktuellen Rythmus finden
+			// Wenn das aktuelle Datum nach dem Ende des Rythmus liegt
+			// Suche im nächsten weiter, falls er existiert
+			while (($ryzeiger < count($RYTHMEN)) && ($jetzt > $RYTHMEN[$ryzeiger]['ende'])) {
+				$ryzeiger++;
+				// Falls noch ein Rythmus kommt, nehmen, falls nicht, kein Rythmus
+				if ($ryzeiger < count($RYTHMEN)) {
+					// Falls der nächsten Rythmus den jetzigen Zeitpunkt enthält
+					// Übernehme den nächsten Rythmus, andernfalls kein Rythmus
+					if (($jetzt >= $RYTHMEN[$ryzeiger]['beginn']) && ($jetzt <= $RYTHMEN[$ryzeiger]['ende'])) {
+						$aktry = $RYTHMEN[$ryzeiger]['rythmus'];
+					}
+					else {$aktry = 0;}
+				}
+				else {$aktry = 0;}
+			}
+
+			// Aktuellen Wochentag bestimmen
+			$wochentag = date('N', $jetzt);
+
+			// Alle Stunden dieses Ryhtmus an diesem Wochentag anlegen
+			foreach ($REGELUNTERRICHT[$aktry][$wochentag] AS $ru) {
+				$uid = cms_generiere_kleinste_id('unterricht');
+				$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
+				$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
+
+				echo "UPDATE unterricht SET kurs = ".$ru['kurs'].", pbeginn = $ubeginn, pende = $uende, plehrer = ".$ru['lehrer'].", praum = ".$ru['raum'].", tbeginn = $ubeginn, tende = $uende, tlehrer = ".$ru['lehrer'].", traum = ".$ru['raum'].", vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = $uid";
+
+				$sql->bind_param("iiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
+				$sql->execute();
+			}
+
+			// Nächsten Tag bestimmen
+			$jetzt = mktime(0,0,0,date('m', $jetzt),date('d', $jetzt)+1,date('Y', $jetzt));
+
+			// Falls in diesem Zeitraum Ferien existieren
+			if ($ferienzeiger < count($FERIEN)) {
+				// Falls gerade Ferien sind, auf Zeit nach Ferien einstellen
+				if (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
+					$jetzt = mktime(0,0,0,date('m', $FERIEN[$ferienzeiger]['ende']),date('d', $FERIEN[$ferienzeiger]['ende'])+1,date('Y', $FERIEN[$ferienzeiger]['ende']));
+					$ferienzeiger++;
+				}
+			}
+		}
+		$sql->close();
 
 		echo "ERFOLG";
 	}

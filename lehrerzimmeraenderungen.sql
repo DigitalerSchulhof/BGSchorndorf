@@ -1,4 +1,0 @@
--- Format:
---
--- <Commit Hash, seit dem die SQL notwendig ist>:
--- <SQL Änderungen>
