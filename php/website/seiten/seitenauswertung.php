@@ -230,7 +230,7 @@ function cms_spalte_ausgeben($dbs, $spalte) {
         if ($element == 'boxenaussen') {$elementcode[$e['position']] = cms_boxenaussen_ausgeben($dbs, $e);}
         if ($element == 'eventuebersichten') {$elementcode[$e['position']] = cms_eventuebersichten_ausgeben($dbs, $e);}
         if ($element == 'kontaktformulare') {$elementcode[$e['position']] = cms_kontaktformulare_ausgeben($dbs, $e);}
-        if ($element == 'newsletter') {$elementcode[$e['position']] = cms_newsletter_ausgeben($dbs, $e);}
+        if ($element == 'wnewsletter') {$elementcode[$e['position']] = cms_newsletter_ausgeben($dbs, $e);}
       }
       $anfrage->free();
     }
@@ -267,7 +267,7 @@ function cms_neues_element($spalte, $position, $version) {
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
-    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_newsletter\" onclick=\"cms_newsletter_anzeigen($parameter)\">+ Neuer Newsletter</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_newsletter\" onclick=\"cms_wnewsletter_anzeigen($parameter)\">+ Neues Newsletteranmeldeformular</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_website_schliessen\" onclick=\"cms_ausblenden('cms_website_neu_menue_$spalte"."_$position')\">Menü schließen</span> ";
     $code .= "</p>";
     $code .= "<div class=\"cms_website_neu_element\" id=\"cms_website_neu_element_$spalte"."_$position\"></div>";
@@ -633,6 +633,51 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
   }
 }
 
+function cms_newsletter_ausgeben($dbs, $k) {
+  global $CMS_SCHLUESSEL, $CMS_URL;
+  // Inaktiv für den Benutzer
+  if (($CMS_URL[1] == 'Seiten') && ($k['aktiv'] == '0')) {
+    return "";
+  }
+  else {
+    $code = "";
+    $zusatz = strtolower($CMS_URL[2]);
+    $zusatzklasse = "";
+    $bezeichnung = $k['bezeichnung'.$zusatz];
+    $beschreibung = $k['beschreibung'.$zusatz];
+    $aktiv = $k['aktiv'];
+
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= cms_element_bearbeiten($k, 'wnewsletter', $CMS_URL[2]);
+    }
+
+    $aussenklasse = " cms_newsletter_aussen_";
+
+    $code .= "<div class=\"cms_newsletter cms_newsletter$aussenklasse\">";
+      $jetzt = time();
+
+      $code .= "<div class=\"cms_newsletter_box_a\"><div class=\"cms_newsletter_box_i\"><h2>$bezeichnung</h2>";
+        if($beschreibung)
+          $code .= "<p>$beschreibung</p>";
+        $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
+          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_newsletter_id\" value=\"".$k["id"]."\"></th></tr>";
+          $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_newsletter_name\" autocomplete=\"name\"></td></tr>";
+          $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_newsletter_mail\" autocomplete=\"email\"></td></tr>";
+          $code .= "<tr></tr>";
+          $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
+        $code .= "</table>";
+
+      $code .= "</div></div>";
+
+      $code .= "<div class=\"cms_clear\"></div>";
+
+    $code .= "</div>";
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= "</div>";
+    }
+    return $code;
+  }
+}
 
 function cms_zeitabhaengig_aus_schulhof() {
   global $CMS_URL, $CMS_SEITENDETAILS, $CMS_SCHLUESSEL, $CMS_GERAET;

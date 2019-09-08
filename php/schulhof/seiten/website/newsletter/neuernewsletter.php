@@ -6,12 +6,14 @@
 <?php
   if(!$CMS_RECHTE["Website"]["Newsletter anlegen"])
     echo cms_meldung_berechtigung();
-  else {
-    include_once("php/schulhof/seiten/website/newsletter/details.php");
-    include_once("php/schulhof/seiten/verwaltung/gruppen/zuordnungen.php");
+  else if(!isset($_SESSION["NEWSLETTERID"]) || !isset($_SESSION["NEWSLETTERZIEL"]))
+      echo cms_meldung_bastler();
+    else {
+      include_once("php/schulhof/seiten/website/newsletter/details.php");
+      include_once("php/schulhof/seiten/verwaltung/gruppen/zuordnungen.php");
 
-    echo cms_newsletter_details_laden($_SESSION["NEWSLETTERID"], $_SESSION["NEWSLETTERZIEL"]);
-  }
+      echo cms_newsletter_details_laden($_SESSION["NEWSLETTERID"], $_SESSION["NEWSLETTERZIEL"]);
+    }
 ?>
 
 

@@ -12,7 +12,7 @@ CREATE TABLE `newslettertypen` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
-CREATE TABLE `newsletter` (
+CREATE TABLE `wnewsletter` (
  `id` bigint(255) unsigned NOT NULL,
  `spalte` bigint(255) unsigned NOT NULL,
  `position` bigint(255) unsigned NOT NULL,
@@ -34,9 +34,9 @@ CREATE TABLE `newsletter` (
  KEY `newslettertypenaktuell` (`typaktuell`),
  KEY `newslettertypenneu` (`typneu`),
  CONSTRAINT `newsletterspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT `newslettertypenaktuell` FOREIGN KEY (`typaktuell`) REFERENCES `newsletter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT `newslettertypenalt` FOREIGN KEY (`typalt`) REFERENCES `newsletter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
- CONSTRAINT `newslettertypenneu` FOREIGN KEY (`typneu`) REFERENCES `newsletter` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+ CONSTRAINT `newslettertypenaktuell` FOREIGN KEY (`typaktuell`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `newslettertypenalt` FOREIGN KEY (`typalt`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `newslettertypenneu` FOREIGN KEY (`typneu`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
 CREATE TABLE `newsletterempfaenger` (

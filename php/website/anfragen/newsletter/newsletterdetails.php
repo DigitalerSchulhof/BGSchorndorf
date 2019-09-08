@@ -27,8 +27,8 @@ if (($zugriff) && ($angemeldet)) {
   $benutzertyp = $_SESSION["BENUTZERART"];
 
   $neu = true;
-  $bezeichnung = 'Neuer Newsletter';
-  $beschreibung = 'Beschreibung des Newsletters';
+  $bezeichnung = 'Anmeldung zum Newsletter';
+  $beschreibung = 'Beschreibung des Anmeldeformulars';
   $typ = null;
 
   if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
@@ -37,7 +37,7 @@ if (($zugriff) && ($angemeldet)) {
     $neu = false;
     $dbs = cms_verbinden('s');
     $modusk = strtolower($modus);
-    $sql = "SELECT * FROM newsletter WHERE id = $id";
+    $sql = "SELECT * FROM wnewsletter WHERE id = $id";
     if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
       if ($anfrage = $dbs->query($sql)) {
         if ($daten = $anfrage->fetch_assoc()) {
@@ -60,9 +60,9 @@ if (($zugriff) && ($angemeldet)) {
     $_SESSION['ELEMENTID'] = $id;
 
     if ($id == '-')
-      $code = "<h3>Neuer Newsletter</h3>";
+      $code = "<h3>Neues Newsletteranmeldeformular</h3>";
     else
-      $code = "<h3>Newsletter bearbeiten</h3>";
+      $code = "<h3>Newsletteranmeldeformular bearbeiten</h3>";
 
     $code .= "<table class=\"cms_formular\">";
 
@@ -84,11 +84,11 @@ if (($zugriff) && ($angemeldet)) {
 
       $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_newsletter_position', $position, $maxpos, $neu)."</td></tr>";
       if(count($typen) < 1)
-        if($CMS_RECHTE["Website"]["Newsletter erstellen"]) {
+        if($CMS_RECHTE["Website"]["Newsletter anlegen"]) {
           if($benutzertyp == "s")
-            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Leg im <a href=\"Schulhof/Website/Newsletter/Neuer_Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
+            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Leg im <a href=\"Schulhof/Website/Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
           else
-            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Legen Sie im <a href=\"Schulhof/Website/Newsletter/Neuer_Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
+            $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Legen Sie im <a href=\"Schulhof/Website/Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
         } else {
           if($benutzertyp == "s")
             $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Bitte einen Adrministrator, einen Neuen anzulegen.</p>")."</tr>";
@@ -96,19 +96,19 @@ if (($zugriff) && ($angemeldet)) {
             $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Bitten Sie einen Adrministrator, einen Neuen anzulegen.</p>")."</tr>";
         }
       else
-        $code .= "<tr><th>Art des Newsletter:</th><td>".cms_select_generieren('cms_website_element_newsletter_typ', '', $typen, $typ, true)."</td></tr>";
+        $code .= "<tr><th>Newsletter:</th><td>".cms_select_generieren('cms_website_element_newsletter_typ', '', $typen, $typ, true)."</td></tr>";
       $code .= "<tr><th>Überschrift:</th><td><input id=\"cms_website_element_newsletter_bezeichnung\" value=\"$bezeichnung\"></td>";
-      $code .= "<tr><th>Beschreibung:</th><td><input id=\"cms_website_element_newsletter_beschreibung\" value=\"$beschreibung\"></td>";
+      $code .= "<tr><th>Beschreibung:</th><td><textarea id=\"cms_website_element_newsletter_beschreibung\">$beschreibung</textarea></td>";
     $code .= "</table>";
 
     $code .= "</div><br>";
     $code .= "<p>";
       if ($id == '-') {
         if(count($typen))
-          $code .= "<span class=\"cms_button\" onclick=\"cms_newsletter_neu_speichern('$zusatz')\">Speichern</span> ";
+          $code .= "<span class=\"cms_button\" onclick=\"cms_wnewsletter_neu_speichern('$zusatz')\">Speichern</span> ";
       } else
-        $code .= "<span class=\"cms_button\" onclick=\"cms_newsletter_bearbeiten_speichern('$zusatz')\">Änderungen speichern</span> ";
-      $code .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_menuebearbeiten_ausblenden('$spalte')\">Abbrechen</span> ";
+        $code .= "<span class=\"cms_button\" onclick=\"cms_wnewsletter_bearbeiten_speichern('$zusatz')\">Änderungen speichern</span> ";
+      $code .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_wmenuebearbeiten_ausblenden('$spalte')\">Abbrechen</span> ";
     $code .= "</p>";
     echo $code;
   }

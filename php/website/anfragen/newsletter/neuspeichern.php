@@ -7,17 +7,8 @@ include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../website/funktionen/positionen.php");
 session_start();
 // Variablen einlesen, falls übergeben
-postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "namen", "mails", "beschreibungen"));
+postLesen(array("aktiv", "position", "typ", "bezeichnung", "beschreibung"));
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
-
-$namen = explode(",", $namen);
-$mails = explode(",", $mails);
-$beschreibungen = explode(",", $beschreibungen);
-$bes = array();
-foreach ($beschreibungen as $i => $b) {
-	array_push($bes, urldecode(base64_decode($b)));
-}
-$beschreibungen = $bes;
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
 
@@ -26,20 +17,8 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Pflichteingaben prüfen
 	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true;}
-	if (($kopie != 0) && ($kopie != 1) && ($kopie != 2)) {$fehler = true;}
-	if (($anhang != 0) && ($anhang != 1)) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
-
-	if(!((count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
-		$fehler = true;
-
-
-	foreach($namen as $i => $n)
-		if(!cms_check_nametitel($n))
-			$fehler = true;
-	foreach($mails as $i => $m)
-		if(!cms_check_mail($m))
-			$fehler = true;
+	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
 	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
 
@@ -47,44 +26,36 @@ if (cms_angemeldet() && $zugriff) {
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
 	if ($position > $maxpos+1) {$fehler = true;}
 
+	$dbs = cms_verbinden('s');
+	// Typ prüfen
+	$sql = "SELECT * FROM newslettertypen WHERE id = ?";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("i", $typ);
+	if(!$sql->execute() || !$sql->fetch())
+		$fehler = true;
+
 	if (!$fehler) {
 		// NÄCHSTE FREIE ID SUCHEN
-		$id = cms_generiere_kleinste_id('kontaktformulare');
+		$id = cms_generiere_kleinste_id('wnewsletter');
 		if ($id == '-') {$fehler = true;}
 	}
 
+
 	if (!$fehler) {
-		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
 
 		// Formular eintragen
-		$sql = "UPDATE kontaktformulare SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
-		$sql .= cms_sql_aan(array("betreff", "kopie", "anhang"));
+		$sql = "UPDATE wnewsletter SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
+		$sql .= cms_sql_aan(array("bezeichnung", "beschreibung", "typ"));
 		$sql = substr($sql, 0, -1)." ";
 		$sql .= "WHERE id = $id";
 		$sql = $dbs->prepare($sql);
 
-		$betreff = cms_texttrafo_e_db($betreff);
+		$beschreibung = cms_texttrafo_e_db($beschreibung);
 
-		$sql->bind_param("sssiiiiii", $betreff, $betreff, $betreff, $kopie, $kopie, $kopie, $anhang, $anhang, $anhang);
+		$sql->bind_param("ssssssiii", $bezeichnung, $bezeichnung, $bezeichnung, $beschreibung, $beschreibung, $beschreibung, $typ, $typ, $typ);
 		$sql->execute();
 
-		// Empfänger eintragen
-		$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = $id, ";
-		$sql .= cms_sql_aan(array("name", "beschreibung", "mail"));
-		$sql = substr($sql, 0, -1)." ";
-		$sql .= "WHERE id = ?";
-		$sql = $dbs->prepare($sql);
-
-		$sql->bind_param("sssssssssi", $name, $name, $name, $beschreibung, $beschreibung, $beschreibung, $mail, $mail, $mail, $empfid);
-		for ($i=0; $i < count($namen); $i++) {
-			$name = $namen[$i];
-			$mail = $mails[$i];
-			$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
-			$empfid = cms_generiere_kleinste_id('kontaktformulareempfaenger');
-
-			$sql->execute();
-		}
 		echo "ERFOLG";
 	}
 	else {

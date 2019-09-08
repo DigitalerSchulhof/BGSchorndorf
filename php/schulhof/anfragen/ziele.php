@@ -353,4 +353,6 @@ $CMS_ZIELE[349] = 'php/schulhof/anfragen/verwaltung/newsletter/loeschen.php';
 $CMS_ZIELE[350] = 'php/schulhof/anfragen/verwaltung/gruppen/klassenfaecherladen.php';
 $CMS_ZIELE[351] = 'php/schulhof/anfragen/verwaltung/gruppen/kursefaecherladen.php';
 $CMS_ZIELE[360] = 'php/schulhof/anfragen/verwaltung/newsletter/loeschenalle.php';
+$CMS_ZIELE[361] = 'php/website/anfragen/newsletter/neuspeichern.php';
+$CMS_ZIELE[362] = 'php/website/anfragen/newsletter/bearbeitenspeichern.php';
 ?>

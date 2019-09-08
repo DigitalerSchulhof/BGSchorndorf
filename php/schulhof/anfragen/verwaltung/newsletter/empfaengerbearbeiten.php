@@ -8,6 +8,9 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 postLesen(array("name", "mail", "id"));
+if(!cms_check_name($name) || !cms_check_mail($mail))
+  die("FEHLER");
+
 $CMS_RECHTE = cms_rechte_laden();
 
 // Zugriffssteuerung je nach Gruppe
