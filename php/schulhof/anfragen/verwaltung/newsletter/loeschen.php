@@ -17,45 +17,18 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Galerien löschen'];
+$zugriff = $CMS_RECHTE['Website']['Newsletter löschen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
-	$fehler = false;
 
-	$sql = $dbs->prepare("SELECT datum, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM galerien WHERE id = ?");
+	$sql = $dbs->prepare("DELETE FROM newslettertypen WHERE id = ?");
   $sql->bind_param("i", $id);
-  if ($sql->execute()) {
-    $sql->bind_result($datum, $oeffentlichkeit, $bezeichnung);
-    if (!$sql->fetch()) {$fehler = true;}
-  }
-  else {$fehler = true;}
+  $sql->execute();
   $sql->close();
 
-	if (!$fehler) {
-		$monatsname = cms_monatsnamekomplett(date('m', $datum));
-		$jahr = date('Y', $datum);
-		$tag = date('d', $datum);
-		$eintrag['gruppe']    = "Galerien";
-		$eintrag['gruppenid'] = $oeffentlichkeit;
-		$eintrag['zielid']    = $id;
-		$eintrag['status']    = "l";
-		$eintrag['art']       = "g";
-		$eintrag['titel']     = $bezeichnung;
-		$eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
-		$eintrag['link']      = "";
-		cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+	echo "ERFOLG";
 
-		$sql = $dbs->prepare("DELETE FROM galerien WHERE id = ?");
-	  $sql->bind_param("i", $id);
-	  $sql->execute();
-	  $sql->close();
-
-		echo "ERFOLG";
-	}
-	else {
-		echo "FEHLER";
-	}
 	cms_trennen($dbs);
 }
 else {

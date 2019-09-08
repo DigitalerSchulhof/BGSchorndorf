@@ -469,6 +469,15 @@ if ($CMS_RECHTE['Website']['Emoticons verwalten']) {
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE["Newsletter bearbeiten"]) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">";
+			$code .=  "<h3>Newsletter</h3>";
+			$code .=  "<p>Newsletter und Mailinglisten verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 
 if ($tabzahl > 0) {
 	$code = "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";

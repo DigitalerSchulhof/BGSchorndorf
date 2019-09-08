@@ -83,7 +83,7 @@ function cms_newsletter_details_laden($id, $ziel) {
           $sql->bind_result($eid, $name, $mail);
           $sql->execute();
           while($sql->fetch())
-            $code .= "<tr id=\"cms_empfaenger_$id\"><td><img src=\"res/icons/klein/newsletterempfaenger.png\"></td><td>$name</td><td>$mail</td><td>".(function() use ($CMS_RECHTE, $eid) {
+            $code .= "<tr id=\"cms_newsletter_empfaenger_$eid\"><td><img src=\"res/icons/klein/newsletterempfaenger.png\"></td><td class=\"cms_newsletter_empfaenger_name\">$name</td><td class=\"cms_newsletter_empfaenger_mail\">$mail</td><td class=\"cms_newsletter_empfaenger_aktionen\">".(function() use ($CMS_RECHTE, $eid) {
               $aktionen = "";
               if($CMS_RECHTE["Website"]["Newsletter Empfänger bearbeiten"])
                 $aktionen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_newsletter_empfaenger_bearbeiten('".($eid)."')\"><span class=\"cms_hinweis\">Empfänger bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
