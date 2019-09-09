@@ -6,12 +6,12 @@ function cms_schulhof_stufen_links_anzeigen () {
   if ($CMS_RECHTE['Gruppen']['Stufen Listen sehen']) {
 
     $dbs = cms_verbinden('s');
-    $sql = "SELECT id, stufe, reihenfolge FROM (SELECT id, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM klassenstufen WHERE schuljahr = $CMS_BENUTZERSCHULJAHR) AS x ORDER BY reihenfolge ASC";
+    $sql = "SELECT id, stufe, reihenfolge FROM (SELECT id, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM stufen WHERE schuljahr = $CMS_BENUTZERSCHULJAHR) AS x ORDER BY reihenfolge ASC";
     if ($anfrage = $dbs->query($sql)) {
       while ($daten = $anfrage->fetch_assoc()) {
         $anzeigename = $daten['stufe'];
         $anzeigenamelink = cms_textzulink($anzeigename);
-        $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Stufen/$anzeigenamelink\">".$anzeigename."</span></li> ";
+        $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Stufen/$anzeigenamelink\">".$anzeigename."</a></li> ";
       }
       $anfrage->free();
     }

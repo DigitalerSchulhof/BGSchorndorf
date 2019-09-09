@@ -76,6 +76,14 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->bind_param("ss", $lehrerstundenplaene, $einstellungsname);
 		$sql->execute();
 
+		$einstellungsname = "Stundenplan Raum extern";
+		$sql->bind_param("ss", $raumstundenplaene, $einstellungsname);
+		$sql->execute();
+
+		$einstellungsname = "Stundenplan Klassen extern";
+		$sql->bind_param("ss", $klassenstundenplaene, $einstellungsname);
+		$sql->execute();
+
 		$einstellungsname = "Stundenplan Buchungsbeginn Stunde";
 		$sql->bind_param("ss", $buchungsbeginnS, $einstellungsname);
 		$sql->execute();

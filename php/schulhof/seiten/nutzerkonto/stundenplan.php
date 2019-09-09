@@ -53,23 +53,31 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 					}
 				}
 				$sql->close();
+				if (strlen($zeitraumwahl) == 0) {"<p class=\"cms_notiz\">Keine Zeiträume gefunden</p>";}
+					else {$zeitraumwahl = "<p>".$zeitraumwahl."</p>";}
+				$code .= "</div>";
 
 				if (strlen($zeitraumwahl) > 0) {
-					$code .= "<p>".$zeitraumwahl."</p></div>";
 					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 					if ($CMS_BENUTZERART == 'l') {
 						$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
-						//$code .= cms_lehrerregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+						$code .= "<h3>Stundenplan für die nächsten beiden Tage</h3>";
+						$code .= cms_meldung('info', "<h4>In Kürze</h4><p>Diese Funktion wird bald ergänzt!</p>");
+						//$code .= cms_lehreraktuellplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
 						$code .= "</div></div>";
 						$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
-						$code .= cms_lehrerregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+							$code .= $zeitraumwahl;
+							$code .= cms_lehrerregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
 						$code .= "</div></div>";
 					}
 					else {
 						$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
-						//$code .= cms_personenregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+						$code .= "<h3>Stundenplan für die nächsten beiden Tage</h3>";
+						$code .= cms_meldung('info', "<h4>In Kürze</h4><p>Diese Funktion wird bald ergänzt!</p>");
+						//$code .= cms_personenaktuellplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
 						$code .= "</div></div>";
 						$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+						$code .= $zeitraumwahl;
 						$code .= cms_personenregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
 						$code .= "</div></div>";
 					}

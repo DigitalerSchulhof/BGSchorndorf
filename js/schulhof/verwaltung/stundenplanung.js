@@ -438,6 +438,10 @@ function cms_stundenplan_vorbereiten(art, id, zeitraum) {
     function anfragennachbehandlung(rueckgabe) {
       if (rueckgabe == "ERFOLG") {
         if (art == 'm') {cms_link('Schulhof/Nutzerkonto/Mein_Stundenplan');}
+        if (art == 'l') {location.reload();}
+        if (art == 'r') {location.reload();}
+        if (art == 'k') {location.reload();}
+        if (art == 't') {location.reload();}
       }
       else {cms_fehlerbehandlung(rueckgabe);}
     }

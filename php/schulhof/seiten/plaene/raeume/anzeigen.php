@@ -54,9 +54,8 @@ if ($angemeldet && $zugriff) {
 		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 
 		if ($CMS_RECHTE['Planung']['Raumpläne sehen']) {
-			$code .= "<h3>Regulärer Raumplan</h3>";
 			if ($CMS_EINSTELLUNGEN['Stundenplan Raum extern'] == '1') {
-
+				$code .= "<h3>Regulärer Raumplan</h3>";
 				if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
 				else {
 					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
@@ -65,16 +64,30 @@ if ($angemeldet && $zugriff) {
 			}
 			else {
 				include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
-				if ($zeitraum != '-') {
-					$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'r', $id, false);
+				if (isset($_SESSION['RAUMSTUNDENPLANZEITRAUM'])) {$zeitraum = $_SESSION['RAUMSTUNDENPLANZEITRAUM'];}
+				else {$zeitraum = '-';}
+
+				$zeitraumwahl = "";
+				// Alle aktiven Zeiträume dieses Schuljahres laden
+				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 ORDER BY beginn DESC";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+				if ($sql->execute()) {
+					$sql->bind_result($zid, $zbez);
+					while ($sql->fetch()) {
+						if ($zeitraum == '-') {$zeitraum = $zid;}
+						if ($zeitraum == $zid) {$wert = 1;} else {$wert = 0;}
+						$zeitraumwahl .= cms_togglebutton_generieren ('cms_zeitraumwahl_'.$zid, $zbez, $wert, "cms_stundenplan_vorbereiten('r', '$raumid', '$zid')")." ";
+					}
 				}
-				else {
-					$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
-				}
+				$sql->close();
+				if (strlen($zeitraumwahl) == 0) {"<p class=\"cms_notiz\">Keine Zeiträume gefunden</p>";}
+					else {$zeitraumwahl = "<p>".$zeitraumwahl."</p>";}
+				$code .= $zeitraumwahl;
+				$code .= cms_raumregelplan_aus_db($dbs, $raumid, $zeitraum);
 			}
 		}
 		else {
-			$code .= cms_meldung('info', '<h4>Raumplan nicht verfügbar</h4><p>Auf den Raumplan ist kein Zugriff möglich.</p>');
 		}
 
 		$jetzt = time();

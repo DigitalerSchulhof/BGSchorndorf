@@ -2,60 +2,67 @@
 $code = "";
 $code .= "<div class=\"cms_spalte_i\">";
 $code .= "<p class=\"cms_brotkrumen\">";
-$code .= cms_brotkrumen($CMS_STUFEN);
+$code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
-$code .= "<h1>Stundenplan der Stufe ".(str_replace('_', ' ', $CMS_ZUSATZ[0]))."</h1>";
+$stufenbezeichnung = $CMS_URL[3];
+$code .= "<h1>Stundenplan der Stufe ".(str_replace('_', ' ', $stufenbezeichnung))."</h1>";
 
-if (isset($_SESSION["STUFENPLANANZEIGEN"])) {$id = $_SESSION["STUFENPLANANZEIGEN"];} else {$id = '-';}
+$zugriff = $CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
+$fehler = false;
 
-if ($id != "-") {
-	$zugriff = $CMS_RECHTE['Gruppen']['Stufen Listen sehen'];
-	$fehler = false;
+if ($fehler) {$zugriff = false;}
+$angemeldet = cms_angemeldet();
 
-	if ($fehler) {$zugriff = false;}
-	$angemeldet = cms_angemeldet();
+if ($angemeldet && $zugriff) {
+	$dbs = cms_verbinden('s');
 
-	if ($angemeldet && $zugriff) {
-		$dbs = cms_verbinden('s');
-		// Aktuellen Zeitraum laden
-		$jetzt = time();
-		$zeitraum = "-";
-		$sql = "SELECT id FROM zeitraeume WHERE beginn < $jetzt AND ende > $jetzt AND aktiv = 1";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$zeitraum = $daten['id'];
-			}
-			$anfrage->free();
-		}
+	// Stufenplan
+	include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
+	// Stufe laden
+	$sql = "SELECT id FROM stufen WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr = ?";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("si", $stufenbezeichnung, $CMS_BENUTZERSCHULJAHR);
+	if ($sql->execute()) {
+		$sql->bind_result($sid);
+		$sql->fetch();
+	}
+	$sql->close();
 
-		// Raumplan
-		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
+	if ($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '1') {
 		$code .= "<h3>Regulärer Stundenplan</h3>";
-		if ($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == 'extern') {
-			$code .= cms_meldung('info', '<h4>Nicht verfügbar</h4><p>Bei externer Stundenplanverwaltung stehen im Moment noch keine Stundenpläne zur Verfügung.</p>');
-		}
-		else {
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
-			if ($zeitraum != '-') {
-				$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'stufe', $id, false);
-			}
-			else {
-				$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
-			}
-		}
-		cms_trennen($dbs);
-
-			$code .= "</div>";
-
-
+		$code .= cms_meldung("info", "<h4>Kein Stundenplan verfügbar</h4><p>Für diese Stufe wurde kein Stundenplan hinterlegt.</p>");
 	}
 	else {
-		$code .= cms_meldung_berechtigung();
-		$code .= "</div>";
+		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
+		if (isset($_SESSION['STUFENSTUNDENPLANZEITRAUM'])) {$zeitraum = $_SESSION['STUFENSTUNDENPLANZEITRAUM'];}
+		else {$zeitraum = '-';}
+
+		$zeitraumwahl = "";
+		// Alle aktiven Zeiträume dieses Schuljahres laden
+		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 ORDER BY beginn DESC";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+		if ($sql->execute()) {
+			$sql->bind_result($zid, $zbez);
+			while ($sql->fetch()) {
+				if ($zeitraum == '-') {$zeitraum = $zid;}
+				if ($zeitraum == $zid) {$wert = 1;} else {$wert = 0;}
+				$zeitraumwahl .= cms_togglebutton_generieren ('cms_zeitraumwahl_'.$zid, $zbez, $wert, "cms_stundenplan_vorbereiten('t', '$sid', '$zid')")." ";
+			}
+		}
+		$sql->close();
+
+		if (strlen($zeitraumwahl) == 0) {"<p class=\"cms_notiz\">Keine Zeiträume gefunden</p>";}
+			else {$zeitraumwahl = "<p>".$zeitraumwahl."</p>";}
+		$code .= $zeitraumwahl;
+		$code .= cms_stufenregelplan_aus_db($dbs, $sid, $zeitraum);
 	}
+	cms_trennen($dbs);
+
+	$code .= "</div>";
 }
 else {
-	$code .= cms_meldung_bastler();
+	$code .= cms_meldung_berechtigung();
 	$code .= "</div>";
 }
 

@@ -39,7 +39,7 @@ else {
 		}
 	}
 	else if ($art == 'l') {
-		if (cms_angemeldet() && $CMS_RECHTE['Personen']['Lehrerstundenpläne sehen']) {
+		if (cms_angemeldet() && $CMS_RECHTE['Planung']['Lehrerstundenpläne sehen']) {
 			$_SESSION['LEHRERSTUNDENPLANID'] = $id;
 			$_SESSION['LEHRERSTUNDENPLANZEITRAUM'] = $zeitraum;
 			echo "ERFOLG";
