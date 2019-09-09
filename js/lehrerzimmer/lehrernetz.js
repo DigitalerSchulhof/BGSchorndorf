@@ -1,12 +1,5 @@
-function cms_gesichertedaten_inhalte(feld, inhalt) {
-	cms_gesichert_normalisieren(feld);
-	feld.innerHTML = inhalt;
-}
-
-function cms_gesichert_normalisieren(feld) {
-	feld.style.border = 'none';
-	feld.style.padding = '0px';
-	feld.style.background = 'none';
+function cms_entfernt_laden(id) {
+	document.getElementById(id).innerHTML = '<div class=\"cms_meldung_laden\">'+cms_ladeicon()+'<p>Entfernte Inhalte werden geladen...</p></div>';
 }
 
 function cms_lehrerdatenbankzugangsdaten_schicken(formulardaten) {
@@ -26,7 +19,6 @@ function cms_lehrerzimmer_laden(id, datei, entitaet) {
 
 	var formulardaten = new FormData();
 	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-	//formulardaten.append("anfragenziel", datei);
 	formulardaten.append("id", entitaet);
 
 	function anfragennachbehandlung(rueckgabe) {
@@ -52,13 +44,19 @@ function cms_netzcheck() {
 				lzfeld.innerHTML = ", Lehrerzimmer";
 				feld.style.backgroundColor = "#ffd95a";
 				CMS_IMLN = true;
-				return true;
+				var formulardaten = new FormData();
+				formulardaten.append("anfragenziel", '169');
+				formulardaten.append("status", '1');
+				cms_ajaxanfrage (false, formulardaten, null);
 			}
 			else if (anfrage.readyState==4) {
 				lzfeld.innerHTML = "";
 				feld.style.backgroundColor = "#94d1ff";
 				CMS_IMLN = false;
-				return false;
+				var formulardaten = new FormData();
+				formulardaten.append("anfragenziel", '169');
+				formulardaten.append("status", '0');
+				cms_ajaxanfrage (false, formulardaten, null);
 			}
 		};
 		anfrage.open("POST",CMS_LN_DA+"php/oeffentlich/anfragen/echo.php",true);

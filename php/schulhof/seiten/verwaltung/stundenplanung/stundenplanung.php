@@ -35,7 +35,6 @@ if ($zugriff) {
 
   if (!isset($_SESSION['STUNDENPLANUNGSTUFEN']) || !isset($_SESSION['STUNDENPLANUNGKLASSEN']) || !isset($_SESSION['STUNDENPLANUNGKURSE']) || !isset($_SESSION['STUNDENPLANUNGLEHRER']) || !isset($_SESSION['STUNDENPLANUNGVOLLBILD']) || !isset($_SESSION['STUNDENPLANUNGRAUM']) || !isset($_SESSION['STUNDENPLANUNGMODUS']) || !isset($_SESSION['STUNDENPLANUNGRYTHMUS'])) {
     $sjfehler = true;
-    echo 1;
   }
   else {
     $stufegewaehlt = $_SESSION['STUNDENPLANUNGSTUFEN'];

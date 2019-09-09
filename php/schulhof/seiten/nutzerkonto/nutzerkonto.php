@@ -9,7 +9,6 @@ include_once('php/schulhof/seiten/termine/termineausgeben.php');
 include_once('php/schulhof/seiten/notifikationen/notifikationen.php');
 
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
-
 $dbs = cms_verbinden('s');
 $jetzt = time();
 $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= $jetzt AND ende >= $jetzt";

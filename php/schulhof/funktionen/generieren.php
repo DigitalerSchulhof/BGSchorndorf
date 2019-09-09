@@ -771,4 +771,8 @@ function cms_sql_set_fragezeichen($wert, $aes = false) {
   }
   return $r;
 }
+
+function cms_generiere_nachladen($id, $script) {
+  return "<div id=\"$id\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Entfernte Inhalte werden geladen...</p><script>$script</script></div></div>";
+}
 ?>

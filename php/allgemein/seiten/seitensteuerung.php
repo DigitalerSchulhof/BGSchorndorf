@@ -205,6 +205,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Fach_bearbeiten']           = 'php/schulhof/seiten/verwaltung/faecher/fachbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Stundenplanung']                   = 'php/schulhof/seiten/verwaltung/stundenplanung/stundenplanung.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Stunden_und_Tagebücher_erzeugen']  = 'php/schulhof/seiten/verwaltung/stundenplanung/stundenerzeugen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Ausplanungen']                     = 'php/schulhof/seiten/verwaltung/vertretungsplanung/ausplanungen.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume']                                    = 'php/schulhof/seiten/verwaltung/raeume/raeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume/Neuen_Raum_anlegen']                 = 'php/schulhof/seiten/verwaltung/raeume/neuerraum.php';

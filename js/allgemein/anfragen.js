@@ -4,7 +4,7 @@ function cms_ajaxanfrage (fehler, formulardaten, wennrichtig, host) {
 		var anfrage = new XMLHttpRequest();
 		anfrage.onreadystatechange = function() {
 			if (anfrage.readyState==4 && anfrage.status==200) {
-				wennrichtig(anfrage.responseText);
+				if (wennrichtig !== null) {wennrichtig(anfrage.responseText);}
 			}
 		};
 		anfrage.open("POST",host+"php/oeffentlich/anfragen/anfrage.php",true);
