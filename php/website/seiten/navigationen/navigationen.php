@@ -131,9 +131,11 @@ function cms_zeitnavigation_ausgeben($dbs, $art) {
 	}
 	if ($anfrage = $dbs->query($sql)) {
 		if ($daten = $anfrage->fetch_assoc()) {
-			$minjahr = date('Y', $daten['min']);
-			$maxjahr = date('Y', $daten['max']);
-			$gefunden = true;
+			if($daten["max"] != NULL && $daten["min"] != NULL) {
+				$minjahr = date('Y', $daten['min']);
+				$maxjahr = date('Y', $daten['max']);
+				$gefunden = true;
+			}
 		}
 		$anfrage->free();
 	}

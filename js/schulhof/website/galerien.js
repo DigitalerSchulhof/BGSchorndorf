@@ -63,18 +63,18 @@ function cms_galerie_eingabenpruefen() {
 	}
 
 	if (!cms_check_toggle(notifikationen)) {
-		meldung += '<li>Die Eingabe für Notifikationen ist ungültig.</li>';
+		meldung += '<li>die Eingabe für Notifikationen ist ungültig.</li>';
 		fehler = true;
 	}
 
 
 	if (!cms_check_toggle(genehmigt)) {
-		meldung += '<li>Die Eingabe für die Genehmigung ist ungültig.</li>';
+		meldung += '<li>die Eingabe für die Genehmigung ist ungültig.</li>';
 		fehler = true;
 	}
 
 	if (!cms_check_toggle(aktiv)) {
-		meldung += '<li>Die Eingabe für die Aktivität ist ungültig.</li>';
+		meldung += '<li>die Eingabe für die Aktivität ist ungültig.</li>';
 		fehler = true;
 	}
 
@@ -340,7 +340,6 @@ function cms_galerie_bild_box_machen(pfad) {
 	code += "</td></tr>";
 	code += "<tr><th>Beschreibung:</th><td colspan=\"4\"><textarea name=\"cms_bild_beschreibung_"+neueid+"\" id=\"cms_bild_beschreibung_"+neueid+"\"></textarea></td></tr>";
 	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_bild_entfernen('"+neueid+"')\">- Bild entfernen</span></td></tr>";
-																																														 // ACHTUNG: "-" wegen Einigkeit überall fehlend
 	var knoten = $("<table></table>", {class: "cms_formular", id: "cms_bild"+neueid}).html(code);
 	box.append(knoten);
 	anzahl.val(anzahlneu);

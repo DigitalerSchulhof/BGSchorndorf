@@ -127,6 +127,7 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
       }
       if($anzeigetyp == "bereiche_balken") {
         $url = $sqld["url"];
+        $bereich = $url;
         $abk = array("Schulhof/Nutzerkonto" => "Nutzerkonto",
                      "Schulhof/Anmeldung" => "Anmeldung",
                      "Schulhof/Passwort_vergessen" => "Anmeldung",
@@ -151,9 +152,6 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
             $bereich = $name;
             break;
           }
-
-        if($bereich == "")
-          $bereich = $url;
 
         $datenHBar[$bereich] = (isset($datenHBar[$bereich])?$datenHBar[$bereich]:0)+$sqld["sum"];
       }
