@@ -22,12 +22,11 @@ else {
 	$maxebene = 0;
 	$dbs = cms_verbinden('s');
 	$suchbegriff = cms_texttrafo_e_db_ohnetag($suchbegriff);
-	$suchbegriff = "%{$suchbegriff}%";
-	$sql = $dbs->prepare("SELECT id, bezeichnung, beschreibung FROM seiten WHERE bezeichnung LIKE ? AND (status = 'a' OR status = 's') ORDER BY bezeichnung ASC");
+	$sql = $dbs->prepare("SELECT id, bezeichnung, beschreibung, LEVENSHTEIN(bezeichnung, ?) as distanz FROM seiten WHERE (status = 'a' OR status = 's') ORDER BY distanz ASC, bezeichnung ASC LIMIT 10");
 	$sql->bind_param("s", $suchbegriff);
 
 	if ($sql->execute()) {
-    $sql->bind_result($sid, $sbezeichnung, $sbeschreibung);
+    $sql->bind_result($sid, $sbezeichnung, $sbeschreibung, $x);
     while($sql->fetch()) {
       $pfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
       $ebenenzahl = count($pfad);
