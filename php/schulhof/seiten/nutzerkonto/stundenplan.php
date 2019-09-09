@@ -7,25 +7,6 @@
 // PROFILDATEN LADEN
 if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 	$dbs = cms_verbinden();
-	// Aktuellen Zeitraum laden
-	$jetzt = time();
-	$zeitraum = "-";
-	$sql = "SELECT id FROM zeitraeume WHERE beginn < $jetzt AND ende > $jetzt AND aktiv = 1";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$zeitraum = $daten['id'];
-		}
-		$anfrage->free();
-	}
-	$schuljahr = "-";
-	$sql = "SELECT id FROM schuljahre WHERE beginn < $jetzt AND ende > $jetzt";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$schuljahr = $daten['id'];
-		}
-		$anfrage->free();
-	}
-
 	if ((($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] == '1') && ($CMS_BENUTZERART == 'l')) ||
 	 		(($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '1') && ($CMS_BENUTZERART == 's'))) {
 		$stundenplan = "";
@@ -37,7 +18,7 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 				}
 				$anfrage->free();
 			}
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_lehrerplan_aus_datei($stundenplan);
 		}
 		else if ($CMS_BENUTZERART == 's') {
@@ -48,19 +29,64 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 				}
 				$anfrage->free();
 			}
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_klassenplan_aus_datei($stundenplan);
 		}
-
+		$code .= "</div>";
 	}
 	else if ((($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] != '1') && ($CMS_BENUTZERART == 'l')) ||
 	 				 (($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] != '1') && ($CMS_BENUTZERART == 's'))) {
-		include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
-		if ($zeitraum != '-') {
-			$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, $CMS_BENUTZERART, $CMS_BENUTZERID, false);
+		if (cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR)) {
+			if (isset($_SESSION['MEINSTUNDENPLANZEITRAUM']) && (cms_check_ganzzahl($_SESSION['MEINSTUNDENPLANZEITRAUM'],0) || ($_SESSION['MEINSTUNDENPLANZEITRAUM'] == '-'))) {
+				$zeitraum = $_SESSION['MEINSTUNDENPLANZEITRAUM'];
+				$zeitraumwahl = "";
+				// Alle aktiven Zeiträume dieses Schuljahres laden
+				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 ORDER BY beginn DESC";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+				if ($sql->execute()) {
+					$sql->bind_result($zid, $zbez);
+					while ($sql->fetch()) {
+						if ($zeitraum == '-') {$zeitraum = $zid;}
+						if ($zeitraum == $zid) {$wert = 1;} else {$wert = 0;}
+						$zeitraumwahl .= cms_togglebutton_generieren ('cms_zeitraumwahl_'.$zid, $zbez, $wert, "cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '$zid')")." ";
+					}
+				}
+				$sql->close();
+
+				if (strlen($zeitraumwahl) > 0) {
+					$code .= "<p>".$zeitraumwahl."</p></div>";
+					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
+					if ($CMS_BENUTZERART == 'l') {
+						$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
+						//$code .= cms_lehrerregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+						$code .= "</div></div>";
+						$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+						$code .= cms_lehrerregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+						$code .= "</div></div>";
+					}
+					else {
+						$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
+						//$code .= cms_personenregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+						$code .= "</div></div>";
+						$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+						$code .= cms_personenregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+						$code .= "</div></div>";
+					}
+					$code .= "<div class=\"cms_clear\"></div>";
+
+				}
+				else {
+					$code .= "<p class=\"cms_notiz\">Im gewählten Schuljahr stehen im Moment keine Stundenpläne zur Verfügung.</p>";
+				}
+
+			}
+			else {
+				$code .= cms_meldung_bastler();
+			}
 		}
 		else {
-			$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
+			$code .= cms_meldung('info', '<h4>Kein Schuljahr ausgewählt</h4><p>In diesem Nutzerkonto wurde kein Schuljahr ausgewählt.</p><p><a class="cms_button" href="Schulhof/Nutzerkonto/Mein_Profil">Profildaten</a></p>');
 		}
 	}
 	cms_trennen($dbs);
@@ -70,8 +96,4 @@ else {
 	echo cms_meldung_bastler();
 }
 ?>
-
-</div>
-
-
 <div class="cms_clear"></div>

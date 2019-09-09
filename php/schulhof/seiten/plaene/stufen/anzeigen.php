@@ -29,13 +29,13 @@ if ($id != "-") {
 		}
 
 		// Raumplan
-		include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 		$code .= "<h3>Regulärer Stundenplan</h3>";
 		if ($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == 'extern') {
 			$code .= cms_meldung('info', '<h4>Nicht verfügbar</h4><p>Bei externer Stundenplanverwaltung stehen im Moment noch keine Stundenpläne zur Verfügung.</p>');
 		}
 		else {
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 			if ($zeitraum != '-') {
 				$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'stufe', $id, false);
 			}

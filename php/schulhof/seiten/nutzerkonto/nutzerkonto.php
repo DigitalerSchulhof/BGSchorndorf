@@ -158,7 +158,7 @@ echo $code;
 <?php
 $fav = "";
 if ($CMS_BENUTZERART == 'l' || $CMS_BENUTZERART == 's') {
-		$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Stundenplan\">Stundenplan</a></li> ";
+		$fav .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";
 }
 $fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 $fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach/Posteingang\">Postfach</a></li> ";

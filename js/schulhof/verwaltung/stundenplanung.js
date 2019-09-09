@@ -410,7 +410,38 @@ function cms_stundenerzeugen_speichern() {
     else {
       cms_meldung_an('erfolg', 'Stunden und Tagebücher erzeugen', '<p>Es war nichts zu erzeugen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung\');">OK</span></p>');
     }
-
-
   }
+}
+
+
+function cms_stundenplan_vorbereiten(art, id, zeitraum) {
+  var zeitraum = zeitraum || '-';
+  cms_laden_an('Stundenplan', 'Der Stundenplan wird vorbereitet ...');
+  var meldung = '<p>Die Stunden und Tagebücher konnten nicht erzeugt werden, denn ...</p><ul>';
+  var fehler = false;
+
+  if ((art != 'm') && (art != 'l') && (art != 'p') && (art != 'r') &&
+      (art != 'k') && (art != 't')) {fehler = true;}
+  if (!cms_check_ganzzahl(id, 0)) {fehler = true;}
+  if ((!cms_check_ganzzahl(zeitraum, 0)) && (zeitraum != '-')) {fehler = true;}
+
+  if (fehler) {
+		cms_meldung_an('fehler', 'Stundenplanung', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+    var formulardaten = new FormData();
+    formulardaten.append('art', art);
+    formulardaten.append('id', id);
+    formulardaten.append('zeitraum', zeitraum);
+    formulardaten.append("anfragenziel", 	'295');
+
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == "ERFOLG") {
+        if (art == 'm') {cms_link('Schulhof/Nutzerkonto/Mein_Stundenplan');}
+      }
+      else {cms_fehlerbehandlung(rueckgabe);}
+    }
+
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
 }

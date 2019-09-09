@@ -17,7 +17,7 @@ if ($angemeldet && $zugriff) {
 	$dbs = cms_verbinden('s');
 
 	// Klassenplan
-	include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+	include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 	$code .= "<h3>Regulärer Stundenplan</h3>";
 	if ($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] == '1') {
 		// Raum laden
@@ -33,7 +33,7 @@ if ($angemeldet && $zugriff) {
 
 		if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Stundenplan verfügbar</h4><p>Für diese Lehrkraft wurde kein Stundenplan hinterlegt.</p>");}
 		else {
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_lehrerplan_aus_datei($stundenplan);
 		}
 	}

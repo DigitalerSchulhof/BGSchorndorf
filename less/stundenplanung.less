@@ -84,7 +84,7 @@
   overflow-y: scroll;
 }
 
-.cms_stundenplanung_stundenfeld {
+.cms_stundenplanung_stundenfeld, .cms_stundenplan_stundenfeld {
   display: flex;
   height: 100%;
   position: absolute;
@@ -111,6 +111,28 @@
   position: relative;
   opacity: .75;
   transition: 250ms ease-in-out;
+}
+
+.cms_stundenplan_stunde {
+  display: inline-block;
+  background: @standardhell;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  font-size: 75%;
+  padding: 2px;
+  overflow-y: scroll;
+}
+
+.cms_stundenplan_stunde_rythmus {
+  position: absolute;
+  bottom: 0px;
+  right: 3px;
+  opacity: .25;
+  color: #ffffff;
+  font-size: 250%;
+  font-weight: bold;
 }
 
 .cms_stundenplanung_stundeinfo {

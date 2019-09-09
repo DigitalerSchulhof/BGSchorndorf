@@ -239,6 +239,7 @@ function cms_spalte_ausgeben($dbs, $spalte) {
   if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && ($CMS_RECHTE['Website']['Inhalte anlegen'])) {
     $code .= cms_neues_element($spalte, $position, $CMS_URL[2]);
   }
+
   for ($i = 1; $i <= count($elementcode); $i++) {
     $code .= $elementcode[$i];
     $position++;

@@ -35,7 +35,7 @@ else {
 				$anfrage->free();
 			}
 
-			include_once("php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php");
+			include_once("php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php");
 			if ($zeitraum != '-') {
 				echo cms_stundenplan_erzeugen($dbs, $zeitraum, $personart, $personid, false);
 			}

@@ -93,7 +93,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['mobil'] .= "<ul>";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
-						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Mein_Stundenplan\">Stundenplan</a></li> ";}
+						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['mobil'] .= "<li><a href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['mobil'] .= "<li><a href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";

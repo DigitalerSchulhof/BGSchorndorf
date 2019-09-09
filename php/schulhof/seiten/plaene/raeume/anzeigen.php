@@ -51,7 +51,7 @@ if ($angemeldet && $zugriff) {
 	  $sql->close();
 
 		$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
-		include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 
 		if ($CMS_RECHTE['Planung']['Raumpläne sehen']) {
 			$code .= "<h3>Regulärer Raumplan</h3>";
@@ -59,12 +59,12 @@ if ($angemeldet && $zugriff) {
 
 				if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
 				else {
-					include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 					$code .= cms_raumplan_aus_datei($stundenplan);
 				}
 			}
 			else {
-				include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+				include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 				if ($zeitraum != '-') {
 					$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'r', $id, false);
 				}
