@@ -30,6 +30,11 @@ else {
 	if ($sql->execute()) {
     $sql->bind_result($sid, $st, $sbezeichnung, $sbeschreibung, $x);
     while($sql->fetch()) {
+			if($kx == -1) $kx = $x;
+			if($kx > $x) {
+				$kx = $x;
+				$kk = "blog";
+			}
       $pfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 			$pfad = cms_seitenpfadlink_erzeugen($pfad);
 
@@ -48,7 +53,6 @@ else {
 	if ($sql->execute()) {
 		$sql->bind_result($sbezeichnung, $sdatum, $x);
 		while ($sql->fetch()) {
-			if($kx == -1) $kx = $x;
 			if($kx > $x) {
 				$kx = $x;
 				$kk = "blog";
