@@ -214,7 +214,6 @@ function cms_seite_ausgeben($dbs) {
   }
 }
 
-
 function cms_spalte_ausgeben($dbs, $spalte) {
   global $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_URL, $CMS_ELEMENTE;
   $code = "";
@@ -329,6 +328,7 @@ function cms_ist_aktuell($art, $e, $innen = false) {
 }
 
 
+
 function cms_editoren_ausgeben($e) {
   global $CMS_URL;
   // Inaktiv für den Benutzer
@@ -349,7 +349,6 @@ function cms_editoren_ausgeben($e) {
     return $code;
   }
 }
-
 
 function cms_downloads_ausgeben($e) {
   global $CMS_URL;
@@ -400,7 +399,6 @@ function cms_downloads_ausgeben($e) {
     return $code;
   }
 }
-
 
 function cms_boxenaussen_ausgeben($dbs, $e) {
   global $CMS_URL;
@@ -466,7 +464,6 @@ function cms_box_ausgeben($boxen, $ausrichtung, $breite, $zusatz) {
   }
   return $code;
 }
-
 
 function cms_eventuebersichten_ausgeben($dbs, $e) {
   global $CMS_SCHLUESSEL, $CMS_URL;
@@ -634,7 +631,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
 }
 
 function cms_newsletter_ausgeben($dbs, $k) {
-  global $CMS_SCHLUESSEL, $CMS_URL;
+  global $CMS_SCHLUESSEL, $CMS_URL, $CMS_GRUPPEN;
   // Inaktiv für den Benutzer
   if (($CMS_URL[1] == 'Seiten') && ($k['aktiv'] == '0')) {
     return "";
@@ -645,6 +642,7 @@ function cms_newsletter_ausgeben($dbs, $k) {
     $zusatzklasse = "";
     $bezeichnung = $k['bezeichnung'.$zusatz];
     $beschreibung = $k['beschreibung'.$zusatz];
+    $typ = $k["typ".$zusatz];
     $aktiv = $k['aktiv'];
 
     if ($CMS_URL[1] == 'Bearbeiten') {
@@ -659,13 +657,29 @@ function cms_newsletter_ausgeben($dbs, $k) {
       $code .= "<div class=\"cms_newsletter_box_a\"><div class=\"cms_newsletter_box_i\"><h2>$bezeichnung</h2>";
         if($beschreibung)
           $code .= "<p>$beschreibung</p>";
-        $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
-          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_newsletter_id\" value=\"".$k["id"]."\"></th></tr>";
+        $code .= "<table class=\"cms_formular\" id=\"cms_newsletter_tabelle_".$k["id"]."\">";
+          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_newsletter_id\" value=\"".$typ."\"></th></tr>";
           $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_newsletter_name\" autocomplete=\"name\"></td></tr>";
           $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_newsletter_mail\" autocomplete=\"email\"></td></tr>";
           $code .= "<tr></tr>";
           $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
-        $code .= "</table>";
+
+          $zuordnungen = "";
+          foreach ($CMS_GRUPPEN as $g) {
+            $gk = cms_textzudb($g);
+            $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = $typ) AS x ORDER BY bezeichnung ASC";
+            if ($anfrage2 = $dbs->query($sql)) {
+              while ($z = $anfrage2->fetch_assoc()) {
+                $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> ";
+              }
+              $anfrage2->free();
+            }
+          }
+
+          if(strlen($zuordnungen) > 0)
+            $code .= "<tr><td colspan=\"2\">$zuordnungen</td></tr>";
+
+          $code .= "</table>";
 
       $code .= "</div></div>";
 
@@ -678,6 +692,8 @@ function cms_newsletter_ausgeben($dbs, $k) {
     return $code;
   }
 }
+
+
 
 function cms_zeitabhaengig_aus_schulhof() {
   global $CMS_URL, $CMS_SEITENDETAILS, $CMS_SCHLUESSEL, $CMS_GERAET;

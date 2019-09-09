@@ -17,7 +17,7 @@ $dbs = cms_verbinden('s');
 
 $canzeigen .= '<table class="cms_liste">';
 $canzeigen .= '<thead>';
-$canzeigen .= '<tr><th></th><th>Bezeichnung</th><th>Aktionen</th>';
+$canzeigen .= '<tr><th></th><th>Bezeichnung</th><th></th><th>Aktionen</th>';
 $canzeigen .= "</thead>";
 $canzeigen .= '<tbody id="cms_verwaltung_newsletter">';
 $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM newslettertypen";
@@ -27,6 +27,17 @@ $anfrage = $dbs->query($sql);
 while ($daten = $anfrage->fetch_assoc()) {
   $newsletter .= '<tr><td><img src="res/icons/klein/newsletter.png"></td><td>'.$daten['bezeichnung'].'</td>';
   $zuordnungen = "";
+  foreach ($CMS_GRUPPEN as $g) {
+    $gk = cms_textzudb($g);
+    $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = ".$daten['id'].") AS x ORDER BY bezeichnung ASC";
+    if ($anfrage2 = $dbs->query($sql)) {
+      while ($z = $anfrage2->fetch_assoc()) {
+        $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> "; ;
+      }
+      $anfrage2->free();
+    }
+  }
+  $newsletter .= "<td>$zuordnungen</td>";
   $newsletter .= "<td>";
   if ($sehen) {
     $newsletter .= "<span class=\"cms_aktion_klein\" onclick=\"cms_newsletter_details_vorbereiten('".$daten['id']."', 'Schulhof/Website/Newsletter')\"><span class=\"cms_hinweis\">Empfängerliste sehen</span><img src=\"res/icons/klein/empfaengerliste.png\"></span> ";

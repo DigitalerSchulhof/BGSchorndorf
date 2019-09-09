@@ -306,12 +306,12 @@ function cms_newsletter_bearbeiten_speichern(ziel) {
 	if (!fehler) {
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe.startsWith("ERFOLG")) {
-				cms_meldung_an('erfolg', 'Neuen Newsletter anlegen', '<p>Der Newsletter wurde angelegt.</p>', '<p><span class="cms_button" onclick="'+rueckgabe.replace("ERFOLG", "")+'">OK</span></p>');
+				cms_meldung_an('erfolg', 'Newsletter bearbeiten', '<p>Der Newsletter wurde bearbeitet.</p>', '<p><span class="cms_button" onclick="'+rueckgabe.replace("ERFOLG", "")+'">OK</span></p>');
 			}
 			else if (rueckgabe.match(/DOPPELT/)) {
 				var meldung = '<p>Der Newsletter konnte nicht bearbeitet werden, denn ...</p><ul>';
 				meldung += '<ul><li>es existiert bereits ein Newsletter mit dieser Bezeichnung.</li></ul>';
-				cms_meldung_an('fehler', 'Neuen Newsletter anlegen', meldung, '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				cms_meldung_an('fehler', 'Newsletter bearbeiten', meldung, '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else {
 				cms_fehlerbehandlung(rueckgabe);
