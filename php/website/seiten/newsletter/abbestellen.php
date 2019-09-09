@@ -3,21 +3,14 @@
 <?php
   $dbs = cms_verbinden("s");
 
-  $id = $CMS_URL[2];
-  $token = $CMS_URL[3];
+  $token = $CMS_URL[2];
 
-  $fehler = false;
-  // abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ
-  if(!cms_check_ganzzahl($id, 0))
+  $sql = "DELETE FROM newsletterempfaenger WHERE token = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+  $sql = $dbs->prepare($sql);
+  $sql->bind_param("is", $id, $token);
+  if(!$sql->execute() || !$dbs->affected_rows)
     $fehler = true;
 
-  if(!$fehler) {
-    $sql = "DELETE FROM newsletterempfaenger WHERE id = ? AND token = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    $sql = $dbs->prepare($sql);
-    $sql->bind_param("is", $id, $token);
-    if(!$sql->execute() || !$dbs->affected_rows)
-      $fehler = true;
-  }
   if($fehler)
     echo cms_meldung_fehler();
   else
