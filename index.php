@@ -7,7 +7,7 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
+	//include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");

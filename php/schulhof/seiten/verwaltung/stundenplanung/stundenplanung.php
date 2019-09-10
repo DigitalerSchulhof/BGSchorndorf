@@ -437,7 +437,7 @@ if ($zugriff) {
         }
         $sql->close();
 
-        $minpp = 1.25;
+        $minpp = 1;
         $yakt = 40;
         $zende = $SCHULSTUNDEN[$SCHULSTUNDENIDS[0]]['beginn'];
         foreach ($SCHULSTUNDENIDS AS $s) {
@@ -478,7 +478,7 @@ if ($zugriff) {
             $code .= "<span class=\"cms_stundenplan_zeitlinieende\" style=\"top: ".$SCHULSTUNDEN[$s]['endey']."px;\"><span class=\"cms_stundenplan_zeitlinietext\">".cms_fuehrendenull($SCHULSTUNDEN[$s]['endes']).":".cms_fuehrendenull($SCHULSTUNDEN[$s]['endem'])."</span></span>";
           }
           $code .= "<span class=\"cms_stundenplan_ueberschrift\" style=\"top: 0px; left: $spaltenbreite%;\"><h3>Klasse</h3></span>";
-          $code .= "<span class=\"cms_stundenplan_ueberschrift\" style=\"top: 0px; left: ".((count($SCHULTAGE)+1)*$spaltenbreite)."%\"><h3>Lehrer</h3></span>";
+          $code .= "<span class=\"cms_stundenplan_ueberschrift\" style=\"top: 0px; left: ".((count($SCHULTAGE)+1)*$spaltenbreite)."%\"><h3>Lehrkraft</h3></span>";
           $code .= "<span class=\"cms_stundenplan_ueberschrift\" style=\"top: 0px; left: ".((count($SCHULTAGE)*2+1)*$spaltenbreite)."%\"><h3>Raum</h3></span>";
           $code .= "<div class=\"cms_stundenplan_spalte\" style=\"width: $spaltenbreite%;\">";
           $code .= "</div>";
@@ -553,11 +553,18 @@ else {
 function cms_generiere_unterrichtsstunde($stunde, $modus) {
   $event = "";
   if ($modus == 'L') {$event = " onclick=\"cms_stundeloeschen(".$stunde['id'].")\"";}
-  $code = "<span class=\"cms_stundenplanung_stunde cms_farbbeispiel_".$stunde['farbe']."\"$event><span class=\"cms_stundenplanung_stundeinfo\">".$stunde['kursbez']."<br>".$stunde['lehrerbez']."<br>".$stunde['raumbez']."";
+  if (($stunde['farbe'] <= 4) || (($stunde['farbe'] >= 12) && ($stunde['farbe'] <= 23))) {$style = "color:#ffffff;";} else {$style="";}
+  $code = "<span class=\"cms_stundenplanung_stunde cms_farbbeispiel_".$stunde['farbe']."\" style=\"$style\"$event>".$stunde['kursbez']."<br>".$stunde['lehrerbez']."<br>".$stunde['raumbez'];
   if ($stunde['rythmus'].'' != '0') {
     $code .= "<br>".chr(64+$stunde['rythmus'])." Woche";
   }
-  $code .= "</span></span>";
+  /*$code .= "<span class=\"cms_stundenplanung_stundeinfo\">".$stunde['kursbez']."<br>".$stunde['lehrerbez']."<br>".$stunde['raumbez']."";
+  if ($stunde['rythmus'].'' != '0') {
+    $code .= "<br>".chr(64+$stunde['rythmus'])." Woche";
+  }
+  $code .= "</span>";
+  */
+  $code .= "</span>";
   return $code;
 }
 

@@ -322,7 +322,7 @@ function cms_vertretungsplanung_tagaendern() {
 	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
 
 	if (fehler) {
-		feld.innerHTML = cms_meldung_code('fehler', 'Fehler beim Laden der Konflikte', '<p>Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>');
+		feld.innerHTML = cms_meldung_code('fehler', 'Fehler beim Vorbereiten des Vertretungsplans', '<p>Beim Laden der Vertretungsplans ist ein Fehler aufgetreten.</p>');
 	}
 	else {
 		var formulardaten = new FormData();
@@ -392,6 +392,201 @@ function cms_vplan_vollbild(vollbild) {
 	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+
+function cms_vplan_stufewaehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'171');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplan_klassewaehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'172');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplan_kurswaehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'173');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplan_lehrerwaehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'174');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplan_raumwaehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'175');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplanstunde_waehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'176');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplanoption_waehlen(id) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplan wird aktualisiert ...');
+
+	if ((id !== 'e') && (id !== 'v') && (id !== 'a') & (id !== 's')) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('id', id);
+	  formulardaten.append("anfragenziel", 	'177');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplan_zielstunden() {
+	var feld = document.getElementById('cms_vplan_zielstunden');
+	feld.innerHTML = cms_meldung_laden("Die Stundenpläne für den Zieltag werden geladen.");
+	var tag = document.getElementById('cms_vplan_neu_datum_T').value;
+	var monat = document.getElementById('cms_vplan_neu_datum_M').value;
+	var jahr = document.getElementById('cms_vplan_neu_datum_J').value;
+	var lehrer = document.getElementById('cms_vplan_neu_l').value;
+	var raum = document.getElementById('cms_vplan_neu_r').value;
+	var fehler = false;
+
+	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+	if (!cms_check_ganzzahl(lehrer,0)) {fehler = true;}
+	if (!cms_check_ganzzahl(raum,0)) {fehler = true;}
+
+	if (fehler) {
+		feld.innerHTML = '<p class="cms_notiz">Beim Laden der Stundepläne ist ein Fehler aufgetreten.</p>';
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('tag', tag);
+	  formulardaten.append('monat', monat);
+	  formulardaten.append('jahr', jahr);
+	  formulardaten.append('lehrer', lehrer);
+	  formulardaten.append('raum', raum);
+	  formulardaten.append("anfragenziel", 	'299');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe.match(/^<div class=/) == "ERFOLG") {
+	      feld.innerHTML = rueckgabe;
+	    }
+			else {feld.innerHTML = rueckgabe+'<p class="cms_notiz">Beim Laden der Stundepläne ist ein Fehler aufgetreten.</p>';}
 	  }
 
 	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

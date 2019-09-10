@@ -192,28 +192,6 @@ function cms_stundenplanung_rythmuswaehlen(id) {
 	}
 }
 
-function cms_stundenplanung_rythmuswaehlen(id) {
-  cms_laden_an('Stundenplanung aktualisieren', 'Der Stundenplan wird aktualisiert ...');
-
-	if (!cms_check_ganzzahl(id,0) && (id !== '-')) {
-		cms_meldung_an('fehler', 'Stundenplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		var formulardaten = new FormData();
-	  formulardaten.append('id', id);
-	  formulardaten.append("anfragenziel", 	'161');
-
-	  function anfragennachbehandlung(rueckgabe) {
-			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
-	    }
-	    else {cms_fehlerbehandlung(rueckgabe);}
-	  }
-
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
-	}
-}
-
 function cms_stundemarkieren(tag, stunde) {
 	cms_klasse_dazu('cms_stunde_k_'+tag+'_'+stunde, 'cms_stundenplanung_markiert');
 	cms_klasse_dazu('cms_stunde_l_'+tag+'_'+stunde, 'cms_stundenplanung_markiert');
