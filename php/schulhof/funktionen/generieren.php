@@ -773,6 +773,6 @@ function cms_sql_set_fragezeichen($wert, $aes = false) {
 }
 
 function cms_generiere_nachladen($id, $script) {
-  return "<div id=\"$id\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Entfernte Inhalte werden geladen...</p><script>$script</script></div></div>";
+  return "<div id=\"$id\" class=\"cms_gesichert\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Gesicherte Inhalte werden geladen...</p><script>$script</script></div></div>";
 }
 ?>

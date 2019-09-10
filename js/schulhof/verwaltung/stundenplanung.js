@@ -372,9 +372,10 @@ function cms_stundenerzeugen_speichern() {
       feld.innerHTML = neuemeldung;
 
       var formulardaten = new FormData();
-      formulardaten.append("stufe", st[stufennr]);
-      formulardaten.append("zeitraum", 	ztanlegen[zeitraumnr]);
+      formulardaten.append("stufe",       st[stufennr]);
+      formulardaten.append("zeitraum", 	  ztanlegen[zeitraumnr]);
       formulardaten.append("schuljahr", 	schuljahr);
+      formulardaten.append("erster", 	    'j');
       formulardaten.append("anfragenziel", 	'294');
 
       function anfragennachbehandlung(rueckgabe) {
@@ -397,6 +398,7 @@ function cms_stundenerzeugen_speichern() {
             formulardaten.append("stufe", st[stufennr]);
             formulardaten.append("zeitraum", 	ztanlegen[zeitraumnr]);
             formulardaten.append("schuljahr", 	schuljahr);
+            formulardaten.append("erster", 	    'n');
             formulardaten.append("anfragenziel", 	'294');
 
             cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

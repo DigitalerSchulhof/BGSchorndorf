@@ -226,7 +226,7 @@ function cms_schulhof_datenschutz() {
 
 
 function cms_schulhof_rechte() {
-  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_RECHTE;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_HOSTINGPARTNERIN, $CMS_NAMEDATENSCHUTZ, $CMS_SCHULE, $CMS_STRASSE, $CMS_PLZORT, $CMS_TELEFON, $CMS_TELEFAX, $CMS_MAILDATENSCHUTZ, $CMS_NAMEADMINISTRATION, $CMS_MAILADMINISTRATION;
 
   $link = "";
   $linkanzeige = "";
@@ -268,49 +268,23 @@ function cms_schulhof_rechte() {
 
   $code .= "<h3>Auskunftspflicht</h3>";
   $code .= "<p>Unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> kann jederzeit eingesehen werden, welche Daten gespeichert werden, wer sie sieht, auf welcher Grundlage (Einwilligung oder Gesetz) die Daten gespeichert werden und zu welchem Zweck sie gespeichert sind. Entstehen darüber hinaus Fragen, ist die Schule verpflichtet, über die Datenhaltung und die gespeicherten personenbezogenen Daten Auskunft zu geben.</p>";
-  $code .= "<p>Die Ansprechpartner dafür sind die Datenschutzbeauftragten der Schule:</p>";
+  $code .= "<p>Die Ansprechpartner dafür ist der Datenschutzbeauftragte der Schule:</p>";
+  $code .=  "<p>$CMS_NAMEDATENSCHUTZ<br>$CMS_SCHULE<br>";
+  $code .=  "$CMS_STRASSE<br>";
+  $code .=  "$CMS_PLZORT";
+  if (strlen($CMS_TELEFON) > 0) {$code .=  "<br>Telefon: $CMS_TELEFON";}
+  if (strlen($CMS_TELEFAX) > 0) {$code .=  "<br>Fax: $CMS_TELEFAX";}
+  if (strlen($CMS_MAILDATENSCHUTZ) > 0) {$code .=  "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
+  $code .=  "</p>";
 
-  // Datenschutzbeauftragten laden
-  // RAUM LADEN
-  $dbs = cms_verbinden('s');
-  $datenschutz = "";
-  $jetzt = time();
-  $sql = "SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuljahre JOIN schluesselposition ON schuljahre.id = schluesselposition.schuljahr JOIN personen ON personen.id = schluesselposition.person WHERE (beginn <= $jetzt AND ende >= $jetzt) AND position = AES_ENCRYPT('Datenschutzbeauftragter', '$CMS_SCHLUESSEL') ORDER BY nachname";
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
-      $id = $daten['id'];
-      $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-      $datenschutz .= "<span class=\"cms_button\" onclick=\"cms_kontaktformular ('datenschutz')\">$name</span> ";
-    }
-    $anfrage->free();
-  }
-  if (strlen($datenschutz) == 0) {
-    $code .= "<p class=\"cms_notiz\">Keine Datenschutzbeauftragte benannt</p>";
-  }
-  else {
-    $code .= "<p>$datenschutz</p>";
-  }
-
-  $code .= "<p>Für technische Fragen kann einer der Administratoren des Schulhofs kontaktiert werden:</p>";
-
-  $admin = "";
-  $sql = "SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN rollenzuordnung ON personen.id = rollenzuordnung.person WHERE rolle = 0";
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
-      $id = $daten['id'];
-      $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-      $admin .= "<span class=\"cms_button\" onclick=\"cms_kontaktformular ('admin')\">$name</span> ";
-    }
-    $anfrage->free();
-  }
-  cms_trennen($dbs);
-
-  if (strlen($admin) == 0) {
-    $code .= "<p class=\"cms_notiz\">Keine Administratoren benannt</p>";
-  }
-  else {
-    $code .= "<p>$admin</p>";
-  }
+  $code .= "<p>Für technische Fragen kann ein Administrator des Schulhofs kontaktiert werden:</p>";
+  $code .=  "<p>$CMS_NAMEADMINISTRATION<br>$CMS_SCHULE<br>";
+  $code .=  "$CMS_STRASSE<br>";
+  $code .=  "$CMS_PLZORT";
+  if (strlen($CMS_TELEFON) > 0) {$code .=  "<br>Telefon: $CMS_TELEFON";}
+  if (strlen($CMS_TELEFAX) > 0) {$code .=  "<br>Fax: $CMS_TELEFAX";}
+  if (strlen($CMS_MAILADMINISTRATION) > 0) {$code .=  "<br><a href=\"mailto:$CMS_MAILADMINISTRATION\">$CMS_MAILADMINISTRATION</a>";}
+  $code .=  "</p>";
 
   $code .= "<h3>Berichtigung</h3>";
   $code .= "<p>Sollten falsche Daten hinterlegt sein, die nicht direkt geändert werden können, so ist die Schule verpflichtet, die Daten zu berichtigen.</p>";

@@ -55,11 +55,11 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 				$sql->close();
 				if (strlen($zeitraumwahl) == 0) {"<p class=\"cms_notiz\">Keine Zeiträume gefunden</p>";}
 					else {$zeitraumwahl = "<p>".$zeitraumwahl."</p>";}
-				$code .= "</div>";
 
 				if (strlen($zeitraumwahl) > 0) {
 					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 					if ($CMS_BENUTZERART == 'l') {
+						$code .= "</div>";
 						$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 						$code .= "<h3>Stundenplan für die nächsten beiden Tage</h3>";
 						$code .= cms_meldung('info', "<h4>In Kürze</h4><p>Diese Funktion wird bald ergänzt!</p>");
@@ -71,6 +71,7 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 						$code .= "</div></div>";
 					}
 					else {
+						$code .= "</div>";
 						$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 						$code .= "<h3>Stundenplan für die nächsten beiden Tage</h3>";
 						$code .= cms_meldung('info', "<h4>In Kürze</h4><p>Diese Funktion wird bald ergänzt!</p>");
@@ -86,6 +87,7 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 				}
 				else {
 					$code .= "<p class=\"cms_notiz\">Im gewählten Schuljahr stehen im Moment keine Stundenpläne zur Verfügung.</p>";
+					$code .= "</div>";
 				}
 
 			}

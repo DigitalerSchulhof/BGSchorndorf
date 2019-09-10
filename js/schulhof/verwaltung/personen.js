@@ -146,9 +146,10 @@ function cms_schulhof_verwaltung_personen_benutzerkonto_aendern () {
 
 /* BENUTZERNAME WIRD GEÄNDERT */
 function cms_schulhof_verwaltung_personen_lehrerkuerzel_aendern () {
-	cms_laden_an('Benutzername ändern', 'Die Eingaben werden überprüft.');
+	cms_laden_an('Lehrerkürzel ändern', 'Die Eingaben werden überprüft.');
 	var lehrerkuerzel = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_lehrerkuerzel').value;
-	var stundenplan = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_stundenplan').value;
+	var splan = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_stundenplan');
+	if (splan) {stundenplan = splan.value;} else {stundenplan = '';}
 	var id = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_lehrerkuerzel_id').value;
 
 

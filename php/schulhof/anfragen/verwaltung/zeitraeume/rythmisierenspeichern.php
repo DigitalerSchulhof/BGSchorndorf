@@ -41,7 +41,6 @@ if (cms_angemeldet() && $zugriff) {
 			$RYTHMEN[$wochen]['kw'] = date('W', $jetzt);
 			$RYTHMEN[$wochen]['rythmus'] = null;
 			$jetzt = mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+(7-$bwtag+1), date('Y', $jetzt));
-			echo date('N', $jetzt);
 		}
 		while ($jetzt <= $zende) {
 			$wochen++;

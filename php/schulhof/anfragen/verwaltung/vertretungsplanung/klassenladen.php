@@ -8,13 +8,13 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 
-if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER1"; exit;}
-if (isset($_POST['monat'])) {$monat = $_POST['monat'];} else {echo "FEHLER2"; exit;}
-if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER3"; exit;}
+if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['monat'])) {$monat = $_POST['monat'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 
-if (!cms_check_ganzzahl($tag,1,31)) {echo "FEHLER4"; exit;}
-if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER5"; exit;}
-if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER6"; exit;}
+if (!cms_check_ganzzahl($tag,1,31)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'];

@@ -11,10 +11,12 @@ session_start();
 if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "FEHLER";exit;}
 if (isset($_POST['zeitraum'])) {$zeitraum = $_POST['zeitraum'];} else {echo "FEHLER";exit;}
 if (isset($_POST['stufe'])) {$stufe = $_POST['stufe'];} else {echo "FEHLER";exit;}
+if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";exit;}
 
 if (!cms_check_ganzzahl($schuljahr, 0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($zeitraum, 0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($stufe, 0)) {echo "FEHLER";exit;}
+if (($erster != 'j') && ($erster != 'n')) {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen'];
@@ -157,10 +159,12 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// Alten Unterricht löschen
-		$sql = "DELETE FROM unterricht WHERE tbeginn > $jetzt";
-		$sql = $dbs->prepare($sql);
-		$sql->execute();
-		$sql->close();
+		if ($erster == 'j') {
+			$sql = "DELETE FROM unterricht WHERE tbeginn > $jetzt";
+			$sql = $dbs->prepare($sql);
+			$sql->execute();
+			$sql->close();
+		}
 
 		// Anfang der Stundenerzeugung festlegen
 		if ($zbeginn > $jetzt) {$jetzt = $zbeginn;}

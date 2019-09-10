@@ -138,7 +138,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
-						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Stundenplan\">Stundenplan</a></li> ";}
+						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
@@ -488,7 +488,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
 	}
 	if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
-		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">Vertretungsplan</a></li> ";
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_vertretungsplanung_vorbereiten(false)\">Vertretungsplan</a></li> ";
 	}
 	if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";

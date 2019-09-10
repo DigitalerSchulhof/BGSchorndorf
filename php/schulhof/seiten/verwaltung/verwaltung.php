@@ -219,7 +219,7 @@ if ($CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen']) {
 }
 if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"javascript:cms_vertretungsplanung_vorbereiten(false)\">";
 			$code .=  "<h3>Vertretungsplan</h3>";
 			$code .=  "<p>Schulstunden ändern, verschieben oder entfallen lassen.</p>";
 		$code .=  "</a>";

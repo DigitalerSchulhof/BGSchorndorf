@@ -1,17 +1,30 @@
-function cms_ausplanen_klassen_laden() {
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_l');
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_r');
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_k');
-	feld = document.getElementById('cms_klassen_ausplanen');
-	feld.innerHTML = cms_ladeicon();
-	var tag = document.getElementById('cms_ausplanung_datum_T').value;
-	var monat = document.getElementById('cms_ausplanung_datum_M').value;
-	var jahr = document.getElementById('cms_ausplanung_datum_J').value;
+function cms_vplan_klassen_laden(art) {
 	fehler = false;
+	if (art == 'ausplanung') {
+		cms_gesichert_laden('cms_ausplanung_ausgeplant_l');
+		cms_gesichert_laden('cms_ausplanung_ausgeplant_r');
+		cms_gesichert_laden('cms_ausplanung_ausgeplant_k');
+		feld = document.getElementById('cms_klassen_ausplanen');
+		feld.innerHTML = cms_ladeicon();
+		var tag = document.getElementById('cms_ausplanung_datum_T').value;
+		var monat = document.getElementById('cms_ausplanung_datum_M').value;
+		var jahr = document.getElementById('cms_ausplanung_datum_J').value;
+	}
+	else if (art == 'vplanung') {
+		cms_gesichert_laden('cms_vplan_konflikte');
+		feld = document.getElementById('cms_vplan_klassen');
+		feld.innerHTML = cms_ladeicon();
+		var tag = document.getElementById('cms_vplan_datum_T').value;
+		var monat = document.getElementById('cms_vplan_datum_M').value;
+		var jahr = document.getElementById('cms_vplan_datum_J').value;
+	}
+	else {fehler = true;}
 
-	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
-	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
-	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+	if (!fehler) {
+		if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+		if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+		if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+	}
 
 	if (fehler) {
 		feld.innerHTML = "<p class=\"cms_notiz\">Fehler beim Laden der Klassen.</p>";
@@ -25,8 +38,14 @@ function cms_ausplanen_klassen_laden() {
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe.match(/^<option/) || rueckgabe == "") {
-				feld.innerHTML = "<select id=\"cms_ausplanen_k\" name=\"cms_ausplanen_k\">"+rueckgabe+"</select>";
-				cms_ausplanen_lausgeplant();
+				if (art == 'ausplanung') {
+					feld.innerHTML = "<select id=\"cms_ausplanen_k\" name=\"cms_ausplanen_k\">"+rueckgabe+"</select>";
+					cms_ausplanen_lausgeplant();
+				}
+				else if (art == 'vplanung') {
+					feld.innerHTML = "<select id=\"cms_vplan_k\" name=\"cms_vplan_k\">"+rueckgabe+"</select>";
+					cms_vplan_konflikte();
+				}
 			}
 			else {"<p class=\"cms_notiz\">Fehler beim Laden der Klassen.</p>";}
 		}
@@ -36,9 +55,9 @@ function cms_ausplanen_klassen_laden() {
 }
 
 function cms_ausplanen_lausgeplant() {
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_l');
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_r');
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_k');
+	cms_gesichert_laden('cms_ausplanung_ausgeplant_l');
+	cms_gesichert_laden('cms_ausplanung_ausgeplant_r');
+	cms_gesichert_laden('cms_ausplanung_ausgeplant_k');
 	feld = document.getElementById('cms_ausplanung_ausgeplant_l');
 	var tag = document.getElementById('cms_ausplanung_datum_T').value;
 	var monat = document.getElementById('cms_ausplanung_datum_M').value;
@@ -73,7 +92,7 @@ function cms_ausplanen_lausgeplant() {
 }
 
 function cms_ausplanen_rausgeplant() {
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_r');
+	cms_gesichert_laden('cms_ausplanung_ausgeplant_r');
 	feld = document.getElementById('cms_ausplanung_ausgeplant_r');
 	var tag = document.getElementById('cms_ausplanung_datum_T').value;
 	var monat = document.getElementById('cms_ausplanung_datum_M').value;
@@ -108,7 +127,7 @@ function cms_ausplanen_rausgeplant() {
 }
 
 function cms_ausplanen_kausgeplant() {
-	cms_entfernt_laden('cms_ausplanung_ausgeplant_k');
+	cms_gesichert_laden('cms_ausplanung_ausgeplant_k');
 	feld = document.getElementById('cms_ausplanung_ausgeplant_k');
 	var tag = document.getElementById('cms_ausplanung_datum_T').value;
 	var monat = document.getElementById('cms_ausplanung_datum_M').value;
@@ -273,4 +292,108 @@ function cms_ausplanung_loeschen(id, art) {
 	}
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+}
+
+function cms_vertretungsplanung_vorbereiten() {
+  cms_laden_an('Vertretungsplan vorbereiten', 'Der Vertretungsplan wird vorbereitet ...');
+	var formulardaten = new FormData();
+  formulardaten.append("anfragenziel", 	'296');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_vertretungsplanung_tagaendern() {
+  cms_laden_an('Vertretungsplan vorbereiten', 'Der Vertretungsplan wird vorbereitet ...');
+	var tag = document.getElementById('cms_vplan_datum_T').value;
+	var monat = document.getElementById('cms_vplan_datum_M').value;
+	var jahr = document.getElementById('cms_vplan_datum_J').value;
+
+	fehler = false;
+
+	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+
+	if (fehler) {
+		feld.innerHTML = cms_meldung_code('fehler', 'Fehler beim Laden der Konflikte', '<p>Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>');
+	}
+	else {
+		var formulardaten = new FormData();
+		formulardaten.append("tag", 	tag);
+		formulardaten.append("monat", monat);
+		formulardaten.append("jahr", 	jahr);
+	  formulardaten.append("anfragenziel", 	'297');
+
+	  function anfragennachbehandlung(rueckgabe) {
+	    if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_vplan_konflikte() {
+	cms_gesichert_laden('cms_vplan_konflikte');
+	feld = document.getElementById('cms_vplan_konflikte');
+	var tag = document.getElementById('cms_vplan_datum_T').value;
+	var monat = document.getElementById('cms_vplan_datum_M').value;
+	var jahr = document.getElementById('cms_vplan_datum_J').value;
+	fehler = false;
+
+	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+
+	if (fehler) {
+		feld.innerHTML = cms_meldung_code('fehler', 'Fehler beim Laden der Konflikte', '<p>Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>');
+	}
+	else {
+		formulardaten = new FormData();
+		cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+		formulardaten.append("tag", 	tag);
+		formulardaten.append("monat", monat);
+		formulardaten.append("jahr", 	jahr);
+		formulardaten.append("anfragenziel", 	'5');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe.match(/^<h2/)) {
+				feld.innerHTML = rueckgabe;
+			}
+			else {feld.innerHTML = rueckgabe;}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	}
+}
+
+function cms_vplan_vollbild(vollbild) {
+  cms_laden_an('Vertretungsplanung aktualisieren', 'Der Vertretungsplanung wird aktualisiert ...');
+
+	if (!cms_check_toggle(vollbild)) {
+		cms_meldung_an('fehler', 'Vertretungsplanung aktualisieren', '<p>Die Eingaben sind fehlerhaft.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+	  formulardaten.append('vollbild', vollbild);
+	  formulardaten.append("anfragenziel", 	'298');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+	      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+	    }
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
 }

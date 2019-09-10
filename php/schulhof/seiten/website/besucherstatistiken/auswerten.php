@@ -386,6 +386,14 @@ function cms_erfasse_click() {
     }
   }
   $tabelle = "";
+  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && !isset($CMS_SEITENDETAILS['id'])) {
+    error_log($CMS_URLGANZ);
+    error_log(print_r(get_browser()));
+    foreach($CMS_SEITENDETAILS as $i => $v) {
+      error_log($i . "=>" . $v);
+    }
+  }
+
   if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
     $dbs->query("INSERT INTO urls (url) VALUES ('$CMS_URLGANZ')");
     $id = $CMS_SEITENDETAILS["id"];

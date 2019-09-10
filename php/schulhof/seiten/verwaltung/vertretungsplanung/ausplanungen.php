@@ -7,7 +7,7 @@ $zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'];
 $code = "";
 if ($zugriff) {
   if (!$CMS_IMLN) {
-    $code .= cms_meldung_eingeschraenkt();
+    $code .= cms_meldung_firewall();
   }
   else {
     if (isset($_SESSION['AUSPLANUNGTAG']) && cms_check_ganzzahl($_SESSION['AUSPLANUNGTAG'],1,31)) {$tag = $_SESSION['AUSPLANUNGTAG'];} else {$tag = date('d');}
@@ -18,7 +18,7 @@ if ($zugriff) {
     $_SESSION['AUSPLANUNGJAHR'] = $jahr;
 
     $code .= "<table class=\"cms_formular\">";
-    $code .= "<tr><th>Datum:</th><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_ausplanen_klassen_laden();')."</td>";
+    $code .= "<tr><th>Datum:</th><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_vplan_klassen_laden(\'ausplanung\');')."</td>";
     $code .= "</table>";
 
     // LEHRER LADEN
@@ -28,8 +28,9 @@ if ($zugriff) {
     if ($sql->execute()) {
       $sql->bind_result($id, $vorname, $nachname, $titel, $kuerzel);
       while ($sql->fetch()) {
-        $bez = cms_generiere_anzeigename($vorname, $nachname, $titel);
-        if (strlen($kuerzel) > 0) {$bez .= " ($kuerzel)";}
+        $bez = "";
+        if (strlen($kuerzel) > 0) {$bez = "$kuerzel - ";}
+        $bez .= cms_generiere_anzeigename($vorname, $nachname, $titel);
         $LEHRER .= "<option value=\"$id\">$bez</option>";
       }
     }

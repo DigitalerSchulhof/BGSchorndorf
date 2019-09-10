@@ -18,7 +18,7 @@
       <h4>Herausgeber</h4>
       <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
       <?php
-        echo "<p>$CMS_SCHULE<br>";
+        echo "<p>$CMS_NAMESCHULLEITER<br>$CMS_SCHULE<br>";
         echo "$CMS_STRASSE<br>";
         echo "$CMS_PLZORT";
         if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
@@ -26,10 +26,7 @@
         if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
         echo "</p>";
       ?>
-
-      <h4>Vertretungsberechtigter</h4>
-      <?php echo "<p>$CMS_NAMESCHULLEITER</p>"; ?>
-      <p>Der Vertretungsberechtigte entscheidet, ggf. mit Rücksprache anderer, über den Zweck der Verarbeitung von personenbezogenen Daten und welche Mittel dazu eingesetzt werden.</p>
+      <p>Vertretungsberechtigte entscheiden, ggf. mit Rücksprache anderer, über den Zweck der Verarbeitung von personenbezogenen Daten und welche Mittel dazu eingesetzt werden.</p>
 
       <h4>Datenschutzbeauftragter</h4>
       <?php
@@ -65,7 +62,7 @@
       <h4>Newsletter</h4>
       <p>Die Anmeldung zu unserem Newsletter erfolgt absolut freiwillig und ausschließlich auf Ihre Initiative hin. Erhoben wird zu diesem Zweck Ihr voller Name sowie Ihre eMailadresse. Grundlage für die Erhebung dieser Daten ist daher Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Die angegeben Daten werden ausschließlich zum Versand des Newsletters verwendet und nicht an Dritte weitergegeben.</p>
 
-      <p>Ein Widerruf Ihrer bereits erteilten Einwilligung ist jederzeit möglich. Nutzen Sie dazu bitte den Link zur Abmeldung vom Newsletter, der in jedem Newsletter ganz unten enthalten ist. Mit der Abmeldung vom Newsletter ist die automatische Löscung der Daten verbunden, die zum Zweck des Newsletterversands erhoben wurden.</p>
+      <p>Ein Widerruf Ihrer bereits erteilten Einwilligung ist jederzeit möglich. Nutzen Sie dazu bitte den Link zur Abmeldung vom Newsletter, der in jedem Newsletter ganz unten enthalten ist. Mit der Abmeldung vom Newsletter ist die automatische Löschung der Daten verbunden, die zum Zweck des Newsletterversands erhoben wurden.</p>
 
       <h4>Besucherstatistik</h4>
       <p>Zu statistischen Zwecken werden die Zugriffszahlen auf die jeweiligen Seiten gespeichert. Dabei werden keine personenbezogenen Daten erhoben. (Beispiel: 35.267 Zugriffe auf die Starseite im Monat Januar im Jahr 1857.)</p>

@@ -107,13 +107,11 @@ if ($zugriff) {
         $code .= "<tr><td>$kalenderwoche</td><td>".cms_tagname($wochentag)." ".date("d.m.Y", $jetzt)."</td><td>";
         for ($i=1; $i<$wochentag; $i++) {$code .= cms_wochentagfeld(false, false, $TAGE);}
       $woche = 0;
-      
+
       $wochenbeginn = $zbeginn;
       while ($jetzt <= $zende) {
         if ($wochentag > 7) {
           $woche++;
-
-          echo $wochenbeginn."-".$kalenderwoche."-".$RYTH[$wochenbeginn][$kalenderwoche]."<br>";
           if (isset($RYTH[$wochenbeginn][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$wochenbeginn][$kalenderwoche]];}
           else {$opt = $OPTIONEN[1];}
           $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";

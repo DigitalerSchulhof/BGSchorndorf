@@ -8,7 +8,7 @@ $zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
 if ($zugriff) {
 	$code = "";
 
-	$personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
+	$personen = array("Lehrer", "Schüler", "Verwaltungsangestellte", "Eltern", "Externe");
 	$gruppen = $CMS_GRUPPEN;
 	$raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 
