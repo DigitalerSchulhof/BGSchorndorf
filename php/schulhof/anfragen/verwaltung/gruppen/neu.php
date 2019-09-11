@@ -172,7 +172,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Prüfen, ob es in diesem Schuljahr schon eine Gruppe mit dieser Bezeichnung gibt
 		$bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
+		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND $schuljahrtest");
 	  $sql->bind_param("s", $bezeichnung);
 	  if ($sql->execute()) {
 	    $sql->bind_result($anzahl);

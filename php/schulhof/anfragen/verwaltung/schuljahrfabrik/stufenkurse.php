@@ -149,7 +149,7 @@ if (cms_angemeldet() && $zugriff) {
 							$kurs['bez'] = $f['bez']." ".$STUFENINFO['bez']." ".$_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_zusatz'.$a].$k;
 							$kurs['icon'] = $f['icon'];
 							$kurs['stufe'] = $STUFENINFO['id'];
-							$kurs['kurz'] = $f['kurz']." ".$_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_zusatz'.$a].$k;
+							$kurs['kurz'] = $f['kurz']." ".$STUFENINFO['bez']." ".$_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_zusatz'.$a].$k;
 							$kurs['fach'] = $f['id'];
 							$kurs['id'] = null;
 							array_push($NEUEKURSE, $kurs);

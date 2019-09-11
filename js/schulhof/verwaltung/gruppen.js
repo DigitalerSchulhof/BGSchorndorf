@@ -99,7 +99,6 @@ function cms_gruppen_neu_speichern (art) {
           }
 
           if (fehlersammlung) {
-            cms_fehlerbehandlung(rueckgabe);
             cms_meldung_an('fehler', 'Fehlerhafte Eingaben', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
           }
           else {
