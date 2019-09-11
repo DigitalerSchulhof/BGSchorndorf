@@ -330,7 +330,7 @@ function cms_stundenerzeugen_speichern() {
     var stufennr = 0;
     var zeitraumnr = 0;
 
-    if ((anzzeitraeume > 0) || (st.length == 0)) {
+    if ((anzzeitraeume > 0) && (st.length > 0)) {
       var feld = document.getElementById('cms_blende_i');
       var neuemeldung = '<div class="cms_spalte_i">';
       neuemeldung += '<h2 id="cms_laden_ueberschrift">Stunden und Tagebücher erzeugen</h2>';

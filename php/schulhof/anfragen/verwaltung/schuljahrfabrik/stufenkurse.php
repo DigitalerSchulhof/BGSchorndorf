@@ -7,9 +7,10 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['stufen'])) {$stufen = $_POST['stufen'];} else {echo "FEHLER";exit;}
+if (isset($_POST['stufe'])) {$stufe = $_POST['stufe'];} else {echo "FEHLER";exit;}
 if (isset($_POST['altestufen'])) {$altestufen = $_POST['altestufen'];} else {echo "FEHLER";exit;}
 if (isset($_POST['faecher'])) {$faecher = $_POST['faecher'];} else {echo "FEHLER";exit;}
+if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";exit;}
 
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
@@ -17,12 +18,11 @@ if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SC
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
 
-if (!cms_check_idfeld($stufen) || !cms_check_idfeld($altestufen) || !cms_check_idfeld($faecher)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($stufe,0) || !cms_check_idfeld($altestufen) || !cms_check_idfeld($faecher) || (($erster != 'n') && ($erster != 'j'))) {echo "FEHLER";exit;}
 
 $dbs = cms_verbinden('s');
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
-
 
 	$FAECHERINFO = array();
 	$FAECHERICONS = array();
@@ -32,33 +32,28 @@ if (cms_angemeldet() && $zugriff) {
 	$STUFENINFO = array();
 	$STUFENALTINFO = array();
 
-	// Prüfen, ob alle Stufen im neuen Schuljahr liegen
-	if (strlen($stufen) > 0) {
-		$stufenids = cms_generiere_sqlidliste($stufen);
-		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM stufen WHERE id IN $stufenids AND schuljahr != ?");
-		$sql->bind_param("i", $neuschuljahr);
-		if ($sql->execute()) {
-      $sql->bind_result($anzahl);
-      if ($sql->fetch()) {
-				if ($anzahl > 0) {$fehler = true;}
-      } else {$fehler = true;}
+	// Prüfen, ob die Stufe im neuen Schuljahr liegen
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM stufen WHERE id = ? AND schuljahr != ?");
+	$sql->bind_param("ii", $stufe, $neuschuljahr);
+	if ($sql->execute()) {
+    $sql->bind_result($anzahl);
+    if ($sql->fetch()) {
+			if ($anzahl > 0) {$fehler = true;}
     } else {$fehler = true;}
-    $sql->close();
+  } else {$fehler = true;}
+  $sql->close();
 
-		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM stufen WHERE id IN $stufenids AND schuljahr = ?");
-		$sql->bind_param("i", $neuschuljahr);
-		if ($sql->execute()) {
-      $sql->bind_result($sid, $sbez, $sicon);
-      while ($sql->fetch()) {
-				$stufe = array();
-				$stufe['id'] = $sid;
-				$stufe['bez'] = $sbez;
-				$stufe['icon'] = $sicon;
-				array_push($STUFENINFO, $stufe);
-      }
-    } else {$fehler = true;}
-    $sql->close();
-	}
+	$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM stufen WHERE id = ? AND schuljahr = ?");
+	$sql->bind_param("ii", $stufe, $neuschuljahr);
+	if ($sql->execute()) {
+    $sql->bind_result($sid, $sbez, $sicon);
+    if ($sql->fetch()) {
+			$STUFENINFO['id'] = $sid;
+			$STUFENINFO['bez'] = $sbez;
+			$STUFENINFO['icon'] = $sicon;
+    }
+  } else {$fehler = true;}
+  $sql->close();
 
 	// Prüfen, ob alle alten Stufen im alten Schuljahr liegen
 	if (strlen($altestufen) > 0) {
@@ -143,23 +138,21 @@ if (cms_angemeldet() && $zugriff) {
 	$NEUEKURSE = array();
 	// Kurse nach Stufen
 	if (!$fehler) {
-		foreach ($STUFENINFO as $s) {
-			foreach ($FAECHERINFO as $f) {
-				for ($a=1; $a<=3; $a++) {
-					if (!isset($_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_anzahl'.$a]) || !isset($_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_zusatz'.$a])) {$fehler = true;}
-					else if (!cms_check_ganzzahl($_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_anzahl'.$a], 0)) {$fehler = true;}
-					else {
-						if ($_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_anzahl'.$a] > 0) {
-							for ($k=1; $k<=$_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_anzahl'.$a]; $k++) {
-								$kurs = array();
-								$kurs['bez'] = $f['bez']." ".$_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_zusatz'.$a].$k;
-								$kurs['icon'] = $f['icon'];
-								$kurs['stufe'] = $s['id'];
-								$kurs['kurz'] = $f['kurz']." ".$_POST['kursenachstufen_'.$s['id'].'_'.$f['id'].'_zusatz'.$a].$k;
-								$kurs['fach'] = $f['id'];
-								$kurs['id'] = null;
-								array_push($NEUEKURSE, $kurs);
-							}
+		foreach ($FAECHERINFO as $f) {
+			for ($a=1; $a<=3; $a++) {
+				if (!isset($_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_anzahl'.$a]) || !isset($_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_zusatz'.$a])) {$fehler = true;}
+				else if (!cms_check_ganzzahl($_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_anzahl'.$a], 0)) {$fehler = true;}
+				else {
+					if ($_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_anzahl'.$a] > 0) {
+						for ($k=1; $k<=$_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_anzahl'.$a]; $k++) {
+							$kurs = array();
+							$kurs['bez'] = $f['bez']." ".$STUFENINFO['bez']." ".$_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_zusatz'.$a].$k;
+							$kurs['icon'] = $f['icon'];
+							$kurs['stufe'] = $STUFENINFO['id'];
+							$kurs['kurz'] = $f['kurz']." ".$_POST['kursenachstufen_'.$STUFENINFO['id'].'_'.$f['id'].'_zusatz'.$a].$k;
+							$kurs['fach'] = $f['id'];
+							$kurs['id'] = null;
+							array_push($NEUEKURSE, $kurs);
 						}
 					}
 				}
@@ -173,27 +166,26 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, AES_DECRYPT(kurzbezeichnung, '$CMS_SCHLUESSEL') AS kurz, fach FROM kurse WHERE stufe = ? AND schuljahr = ?");
 		foreach ($STUFENALTINFO AS $a) {
-			foreach ($STUFENINFO AS $s) {
-				$kursnr = 1;
-				if (!isset($_POST['kurseuebertragen_'.$a['id'].'_'.$s['id']])) {$fehler = true;}
-				else if (!cms_check_toggle($_POST['kurseuebertragen_'.$a['id'].'_'.$s['id']])) {$fehler = true;}
-				else {
-					if ($_POST['kurseuebertragen_'.$a['id'].'_'.$s['id']] == '1') {
-						// Kurse dieser Stufe laden
-						$sql->bind_param("ii", $a['id'], $altschuljahr);
-						if ($sql->execute()) {
-							$sql->bind_result($kid, $kbez, $kicon, $kkurz, $kfach);
-							while ($sql->fetch()) {
-								if (!is_null($FAECHERALTINFO[$kfach])) {
-									$kurs = array();
-									$kurs['id'] = $kid;
-									$kurs['bez'] = $kbez;
-									$kurs['icon'] = $kicon;
-									$kurs['kurz'] = $kkurz;
-									$kurs['fachid'] = $FAECHERALTINFO[$kfach];
-									$kurs['stufeid'] = $s['id'];
-									array_push($KURSEUEBERTRAGEN, $kurs);
-								}
+			$kursnr = 1;
+			$s = $STUFENINFO;
+			if (!isset($_POST['kurseuebertragen_'.$a['id'].'_'.$s['id']])) {$fehler = true;}
+			else if (!cms_check_toggle($_POST['kurseuebertragen_'.$a['id'].'_'.$s['id']])) {$fehler = true;}
+			else {
+				if ($_POST['kurseuebertragen_'.$a['id'].'_'.$s['id']] == '1') {
+					// Kurse dieser Stufe laden
+					$sql->bind_param("ii", $a['id'], $altschuljahr);
+					if ($sql->execute()) {
+						$sql->bind_result($kid, $kbez, $kicon, $kkurz, $kfach);
+						while ($sql->fetch()) {
+							if (!is_null($FAECHERALTINFO[$kfach])) {
+								$kurs = array();
+								$kurs['id'] = $kid;
+								$kurs['bez'] = $kbez;
+								$kurs['icon'] = $kicon;
+								$kurs['kurz'] = $kkurz;
+								$kurs['fachid'] = $FAECHERALTINFO[$kfach];
+								$kurs['stufeid'] = $s['id'];
+								array_push($KURSEUEBERTRAGEN, $kurs);
 							}
 						}
 					}
@@ -236,26 +228,28 @@ if (cms_angemeldet() && $zugriff) {
 	}
 
 	if (!$fehler) {
-		// Dateisystem alter Kurse löschen
-		$sql = $dbs->prepare("SELECT id FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT id FROM klassen WHERE schuljahr = ?))");
-		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
-		if ($sql->execute()) {
-			$sql->bind_result($kursid);
-			while ($sql->fetch()) {
-				// Dateisystem erzeugen
-				$pfad = '../../../dateien/schulhof/gruppen/kurse/'.$kursid;
-				if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
-				mkdir($pfad);
-				chmod($pfad, 0775);
+		if ($erster == 'j') {
+			// Dateisystem alter Kurse löschen
+			$sql = $dbs->prepare("SELECT id FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT id FROM klassen WHERE schuljahr = ?))");
+			$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
+			if ($sql->execute()) {
+				$sql->bind_result($kursid);
+				while ($sql->fetch()) {
+					// Dateisystem erzeugen
+					$pfad = '../../../dateien/schulhof/gruppen/kurse/'.$kursid;
+					if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}
+					mkdir($pfad);
+					chmod($pfad, 0775);
+				}
 			}
-		}
-		$sql->close();
+			$sql->close();
 
-		// Alte Kurse löschen
-		$sql = $dbs->prepare("DELETE FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT id FROM klassen WHERE schuljahr = ?))");
-		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
-		$sql->execute();
-		$sql->close();
+			// Alte Kurse löschen
+			$sql = $dbs->prepare("DELETE FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT id FROM klassen WHERE schuljahr = ?))");
+			$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
+			$sql->execute();
+			$sql->close();
+		}
 
 		// Kurse anlegen
 		$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), stufe = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, kursbezextern = AES_ENCRYPT('', '$CMS_SCHLUESSEL'), sichtbar = 0, schuljahr = ?, chataktiv = 0 WHERE id = ?");
