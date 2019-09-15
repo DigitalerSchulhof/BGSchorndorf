@@ -52,6 +52,7 @@
 	if (isset($_GET['URL'])) {
 		$CMS_URL = explode('/', $_GET['URL']);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
+		// Fallback bei ungültigen URLs
 		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
@@ -66,11 +67,13 @@
 			$CMS_URL[0] = "Website";
 		}
 
+		// Schulhof Zugriff verhindern
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Schulhof") && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen")))   {
 			$CMS_URL = array();
 		  $CMS_URL[0] = "Schulhof";
 		  $CMS_URL[1] = "Anmeldung";
 		}
+		// Ungültige Website URL Anfänge
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {
 			if (isset($CMS_URL[1])) {
 				if (($CMS_URL[1] != "Seiten") && ($CMS_URL[1] != 'Blog') && ($CMS_URL[1] != 'Galerien') && ($CMS_URL[1] != 'Termine') && ($CMS_URL[1] != 'Voranmeldung') &&
@@ -91,6 +94,7 @@
 		$CMS_URL = array();
 		$CMS_URL[0] = 'Website';
 	}
+
 	$CMS_URLGANZ = implode('/', $CMS_URL);
 
 	$CMS_JAHR = date("Y");
@@ -218,7 +222,7 @@
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
 
-		// Skripte, die nur für angemeldete notwendig sind
+		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
 			$code = "";
 			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
