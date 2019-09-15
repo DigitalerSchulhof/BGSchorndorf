@@ -388,7 +388,7 @@ function cms_erfasse_click() {
   $tabelle = "";
   if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && !isset($CMS_SEITENDETAILS['id'])) {
     error_log($CMS_URLGANZ);
-    error_log(print_r(get_browser()));
+    error_log($_SERVER['HTTP_USER_AGENT']);
     foreach($CMS_SEITENDETAILS as $i => $v) {
       error_log($i . "=>" . $v);
     }

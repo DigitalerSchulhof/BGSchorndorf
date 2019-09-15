@@ -7,7 +7,21 @@ function cms_check_mail($mail) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}^', $mail) != 1) {
+	if (preg_match('/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/', $mail) != 1) {
+		return false;
+	}
+	else return true;
+}
+
+function cms_check_uhrzeit($uhrzeit) {
+	if(is_array($uhrzeit)) {
+		$r = true;
+		foreach ($uhrzeit as $i => $u)
+			if(!cms_check_uhrzeit($u))
+				$r = false;
+		return $r;
+	}
+	if (preg_match('/^[0-9]{1,2}:[0-9-]{1,2}$/', $uhrzeit) != 1) {
 		return false;
 	}
 	else return true;

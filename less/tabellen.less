@@ -133,6 +133,16 @@ table .cms_senkrecht {
   color: @standarddunkel;
 }
 
+table.cms_zeitwahl {
+  width: 100%;
+  margin-bottom: @absatzabstand;
+  border-collapse: collapse;
+  border-spacing: collapse;
+}
+
+table.cms_zeitwahl td+td {text-align: center;}
+table.cms_zeitwahl td+td+td {text-align: right;}
+
 table.table {
   width: 100%;
   margin-bottom: @absatzabstand;

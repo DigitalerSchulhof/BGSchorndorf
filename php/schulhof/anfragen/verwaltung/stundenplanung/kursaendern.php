@@ -16,7 +16,6 @@ $zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$_SESSION['STUNDENPLANUNGKURSE'] = $id;
-	$_SESSION['STUNDENPLANUNGLEHRER'] = 'x';
 	echo "ERFOLG";
 }
 else {

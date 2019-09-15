@@ -2,6 +2,10 @@ function cms_check_mail (mail) {
 	return mail.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/);
 }
 
+function cms_check_uhrzeit (uhrzeit) {
+	return uhrzeit.match(/^[0-9]{1,2}:[0-9]{1,2}$/);
+}
+
 function cms_check_name (name) {
 	return name.match(/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ ]+$/);
 }
