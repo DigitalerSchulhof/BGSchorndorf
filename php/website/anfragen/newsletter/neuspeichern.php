@@ -42,6 +42,7 @@ if (cms_angemeldet() && $zugriff) {
 
 
 	if (!$fehler) {
+		$dbs = cms_verbinden("s");
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
 
 		// Formular eintragen
