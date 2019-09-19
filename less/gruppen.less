@@ -341,4 +341,36 @@
       }
     }
   }
+  #cms_chat_status, #cms_chat_laden {
+    display: none;
+    text-align: center;
+    padding-top: 10px;
+    h3 {
+      margin-top: 0;
+    }
+  }
+  #cms_chat_berechtigung {
+    display: none;
+  }
+  &.cms_chat_status {
+    >* {
+      display: none;
+    }
+    &.cms_chat_laden {
+      #cms_chat_laden {
+        display: block;
+      }
+    }
+    #cms_chat_status {
+      display: block;
+    }
+  }
+  &.cms_chat_berechtigung {
+    >* {
+      display: none !important;
+    }
+    #cms_chat_berechtigung {
+      display: block !important;
+    }
+  }
 }

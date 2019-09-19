@@ -153,8 +153,25 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 	$sql->close();
 	$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
 
+	$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ?";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("ii", $CMS_BENUTZERID, $gruppenid);
+	$sql->bind_result($istda);
+	$sql->execute();
+	$sql->fetch();
+	$sql->close();
+	$gebannt = $gebannt && $istda;
 	$code = "";
-	$code .= "<div id=\"cms_chat\">";
+	$code .= "<div id=\"cms_chat\" class=\"cms_chat_status cms_chat_laden\">";
+		$code .= "<div id=\"cms_chat_laden\">";
+			$code .= cms_ladeicon();
+		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_status\">";
+			$code .= "<h3>Skript wird geladen...</h3>";
+		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_berechtigung\">";
+			$code .= cms_meldung_berechtigung();
+		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_nachrichten\">";
 			/*
 				Löschstatus:
@@ -163,108 +180,14 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 				2: Direkt gelöscht
 			*/
 
-			// Nachrichten laden
-			$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL') FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person WHERE chat.gruppe = $gruppenid AND chat.meldestatus = 0 ORDER BY chat.id DESC LIMIT ".($limit+1);
-			$sql = $dbs->prepare($sql);
-			$sql->bind_result($id, $p, $d, $i, $m, $gl, $v, $n, $t);
-			$sql->execute();
-			while($sql->fetch())
-				array_push($nachrichten, array("id" => $id, "person" => $p, "datum" => $d, "inhalt" => $i, "meldestatus" => $m, "name" => cms_generiere_anzeigename($v, $n, $t), "geloescht" => $gl));
-
-			if(!count($nachrichten))
-				$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
-			else if(count($nachrichten) > $limit)
-				$code .= "<div id=\"cms_chat_nachrichten_nachladen\" class=\"cms_notiz\" onclick=\"cms_chat_nachrichten_nachladen('$g', '$gruppenid', $limit);\">Ältere Nachrichten laden</div>";
-
-			$_SESSION["LETZTENACHRICHT_$g"]["$gruppenid"] = -1;	// Fürs Aktualisieren genutzt
-			$letztesDatum = "blub";	// Dummy
-			$tag = "blub";					// Dummy
-			$ccode = $code;	// Rest-Code
-			$ncode = "";	// Nachrichten Code
-
-			echo "<script>var chat_rechte = [";
-			if($rechte["nachrichtloeschen"])
-			echo "\"nachrichtloeschen\",";
-			if($rechte["nutzerstummschalten"])
-			echo "\"nutzerstummschalten\",";
-			echo "];</script>";
-
-			foreach($nachrichten as $i => $n) {		// Nachrichten von unten nach oben (Neuste zu Älteste)
-				if($i >= $limit)	//	Limit an zu ladenden Nachrichten überschritten. Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
-					break;
-				$code = "";	// Code der aktuellen Nachricht
-
-				$tag = cms_tagnamekomplett(date("w", $n["datum"])) . ", den " . date("d", $n["datum"]) . " " . cms_monatsnamekomplett(date("n", $n["datum"]));
-
-				if($letztesDatum == "blub") {	// Für die unterste Nachricht ausgeführt
-					$letztesDatum = $tag;
-					$_SESSION["LETZTENACHRICHT_$g"]["$gruppenid"] = $n["id"];			// Unterste Nachricht
-				}
-
-				// Nachricht gemeldet
-				$gemeldet = false;
-				if($n["meldestatus"]) {
-					$sql = "SELECT 1 as r FROM $gk"."chatmeldungen WHERE nachricht = ? AND melder = ?";
-					$sql = $dbs->prepare($sql);
-					$sql->bind_param("ii", $n["id"], $CMS_BENUTZERID);
-					$sql->bind_result($gemeldet);
-					$sql->execute();
-					$sql->fetch();
-				}
-
-				$eigen = $n["person"]==$CMS_BENUTZERID;
-
-				$extraklassen = "";
-				if($gemeldet)
-					$extraklassen .= " cms_chat_nachricht_gemeldet";
-				if($eigen)
-					$extraklassen .= " cms_chat_nachricht_eigen";
-				if($n["geloescht"])
-					$extraklassen .= " cms_chat_nachricht_geloescht";
-
-				if($n["geloescht"])
-					$n["inhalt"] = "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht";
-
-				$code .= "<div class=\"cms_chat_nachricht_aussen$extraklassen\">";
-					$code .= "<div class=\"cms_chat_nachricht_innen\">";
-						$code .= "<div class=\"cms_chat_nachricht_id\">".$n["id"]."</div>";
-						$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"sendend\"><img src=\"res/laden/standard.gif\"></div>";
-
-						$aktionen = "";
-
-						if(!$eigen) {
-							$aktionen .= "<p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '$g', '$gruppenid')\">Nachricht melden</p>";
-							if($rechte["nachrichtloeschen"])
-								$aktionen .= "<p data-mehr=\"loeschen\" onclick=\"cms_chat_nachricht_loeschen_anzeigen(this, '$g', '$gruppenid')\">Nachricht löschen</p>";
-							if($rechte["nutzerstummschalten"])
-								$aktionen .= "<p data-mehr=\"bannen\" onclick=\"cms_chat_nutzer_stummschalten_anzeigen(this, '$g', '$gruppenid')\">Sender stummschalten</p>";
-						}
-						if($n["geloescht"])
-							$aktionen = "";
-
-						if(strlen($aktionen) > 0)
-							$code .= "<div class=\"cms_chat_nachricht_aktion\" data-aktion=\"mehr\">&vellip;<span class=\"cms_chat_aktion\">$aktionen</span></div>";
-						$code .= "<div class=\"cms_chat_nachricht_autor\">".$n["name"]."</div>";
-						$code .= "<div class=\"cms_chat_nachricht_nachricht\">".$n["inhalt"]."</div>";
-						$code .= "<div class=\"cms_chat_nachricht_zeit\">".date("H:i", $n["datum"])."</div>";
-					$code .= "</div>";
-				$code .= "</div>";
-
-				if($letztesDatum != $tag) {	// Aktueles Datum > Datum vorheriger Nachricht -> neuer Tag
-					$code .= "<div class=\"cms_chat_datum cms_notiz\">$letztesDatum</div>";
-					$letztesDatum = $tag;
-				}
-
-				$ncode = $code . $ncode;
-				$_SESSION["ERSTENACHRICHT_$g"]["$gruppenid"] = $n["id"];	// Oberste Nachricht
-			}
-
-		$code = $ccode;
+			// if(!count($nachrichten))
+			// 	$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
+			// else if(count($nachrichten) > $limit)
+			// 	$code .= "<div id=\"cms_chat_nachrichten_nachladen\" class=\"cms_notiz\" onclick=\"cms_chat_nachrichten_nachladen('$g', '$gruppenid', $limit);\">Ältere Nachrichten laden</div>";
 
 		if(count($nachrichten))		// Oberstes Datum ausgeben
 			$code .= "<div class=\"cms_chat_datum cms_notiz\">$tag</div>";
 
-		$code .= $ncode;
 		$code .= "</div>";
 
 		if($rechte["chatten"]) {	// Schreibrecht
@@ -278,7 +201,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			$code .= "</div>";
 		}
 	$code .= "</div>";
-	$code .= "<script>$(window).on(\"load\", function() {cms_chat_aktualisieren('$g', '$gruppenid')});</script>";
+	$code .= "<script>$(window).on('load', function() {socketChat.init('$g', '$gruppenid');})</script>";
 	return $code;
 }
 ?>

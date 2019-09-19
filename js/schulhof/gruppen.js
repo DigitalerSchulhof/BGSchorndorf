@@ -593,6 +593,143 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
+var socket;
+/* Chat scrollen, Aktion listener setzen, Socket laden */
+$(window).on("load", function() {
+  var chat = $("#cms_chat_nachrichten");
+  chat.scrollTop(chat.prop("scrollHeight"));
+  $(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
+});
+/*
+  0: Init
+  1: Verbinden
+  2: Neu Verbinden...
+  3: Verbunden
+  4: Authentifikation
+  5: Chat laden
+  6: Erfolg
+*/
+/* Socket Zeug */
+var socketChat = {
+  socket: null,
+  g: null,
+  gid: null,
+  verbindenInterval: null,
+  intervalUebrig: null,
+  status: 0,
+  senden: function(nachricht) {
+    if(!socketChat.socket && !socketChat.verbindenInterval) {
+      socketChat.neuVerbinden();
+      return;
+    }
+    socketChat.socket.send(nachricht)
+  },
+  statusSetzen: function(nachricht, laden) {
+    laden !== true && laden !== false ? laden = true : laden;
+    $("#cms_chat").removeClass("cms_chat_status");
+    if(nachricht === null) {
+      $("#cms_chat").removeClass("cms_chat_status cms_chat_laden");
+      return;
+    }
+
+    if(nachricht) {
+      $("#cms_chat").addClass("cms_chat_status");
+      $("#cms_chat_status").html("");
+    }
+    if(laden === true || laden === false)
+      laden ? $("#cms_chat").addClass("cms_chat_laden") : $("#cms_chat").removeClass("cms_chat_laden")
+    if($.isArray(nachricht))
+      $.each(nachricht, function(i, n) {
+        $("#cms_chat_status").append("<h3>"+n+"</h3>");
+      })
+    else
+      $("#cms_chat_status").html("<h3>"+nachricht+"</h3>");
+  },
+  eventsSetzten: function(socket) {
+    socket = socket || socketChat.socket;
+    socket.onopen = socketChat.events.open;
+    socket.onclose = socketChat.events.close;
+    socket.onmessage = socketChat.events.nachricht;
+  },
+  verbinden: function() {
+    socketChat.statusSetzen("Verbindung zum Webchat aufbauen...");
+    socketChat.status = 1;
+    if(socketChat.verbindenInterval)
+      clearInterval(socketChat.verbindenInterval)
+    socketChat.socket = new WebSocket("ws://localhost:12345");
+    socketChat.eventsSetzten();
+  },
+  authentifizieren: function() {
+    socketChat.statusSetzen("Authentifizieren...")
+    auth = {
+      "status": "0",
+      "g": socketChat.g,
+      "gid": socketChat.gid,
+      "sessid": CMS_SESSIONID
+    };
+    socketChat.senden(JSON.stringify(auth));
+  },
+  neuVerbinden: function() {
+    var s = socketChat.status;
+    socketChat.status = 2;
+    socketChat.socket = null;
+    if(socketChat.verbindenInterval)
+      clearInterval(socketChat.verbindenInterval)
+    socketChat.intervalUebrig = 5;
+    socketChat.verbindenInterval = setInterval(function() {
+      var n = s == 4 ? "Authentifikation fehlgeschlagen..." : "Verbindung verloren...";
+
+      socketChat.statusSetzen([n, "Neuer Versuch in "+socketChat.intervalUebrig], false);
+      if(socketChat.intervalUebrig-- <= 0)
+        socketChat.verbinden();
+    }, 1000);
+  },
+  init: function(g, gid) {
+    socketChat.g = g;
+    socketChat.gid = gid;
+    socketChat.status = 0;
+    socketChat.verbinden();
+  },
+  events: {
+    close: function(e) {
+      socketChat.neuVerbinden();
+    },
+    open: function(e) {
+      socketChat.status = 3;
+    },
+    nachricht: function(e) {
+      var data = JSON.parse(e.data);
+      switch(data["status"]) {
+        case "-2":
+          // Berechtigung
+          $("#cms_chat").addClass("cms_chat_berechtigung");
+          break;
+        case "-1":
+          // Ungültige Anfrage
+          socketChat.neuVerbinden();
+          break;
+        case "0":
+          // Authentifikation kann beginnen
+          socketChat.status = 4;
+          socketChat.authentifizieren();
+          break;
+        case "1":
+          // Authentifikation erfolgreich
+          socketChat.status = 5;
+          break;
+        case "2":
+          // Chat geladen
+          
+          socketChat.status = 6;
+          socketChat.statusSetzen(null);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+}
 /* Nachricht senden */
 function cms_chat_nachricht_senden(art, id) {
   if($("#cms_chat_nachricht_verfassen").hasClass("cms_chat_gebannt"))
@@ -642,12 +779,6 @@ function cms_chat_nachricht_senden(art, id) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-/* Chat scrollen, Aktion listener setzen */
-$(window).on("load", function() {
-  var chat = $("#cms_chat_nachrichten");
-  chat.scrollTop(chat.prop("scrollHeight"));
-  $(".cms_chat_nachricht_aktion").click(cms_chat_aktion);
-});
 /* Mehr gedrückt */
 function cms_chat_aktion() {
   if($(this).data("aktion") == "mehr") {

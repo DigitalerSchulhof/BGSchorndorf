@@ -3,16 +3,20 @@ set_time_limit(0);
 set_include_path(dirname(__FILE__)."/../../");
 include_once("php/schulhof/funktionen/config.php");
 include_once("php/schulhof/funktionen/check.php");
+include_once("php/schulhof/funktionen/texttrafo.php");
+include_once("php/schulhof/funktionen/generieren.php");
+include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 include_once("php/allgemein/funktionen/sql.php");
 
 define('HOST_NAME', $CMS_DOMAIN);
 define('PORT', "12345");
 $null = NULL;
 
+$limit = 20;
+
 $dbs = cms_verbinden("s");
 
 $socketHandler = new SocketHandler();
-$chat = new Chat();
 
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
@@ -25,12 +29,7 @@ $clientSockets = array($socket);
 // Nicht authentifizierte Sockets
 $unbekannt = array();
 
-// Anonyme Funktionen für die Übersicht
-/*
-*	BENÖTIGEN PHP 7+
-*/
 while (true) {
-	// Authentifizierenden Timeout prüfen
 	foreach($unbekannt as $k => $v) {
 		if(time() > $v["verbunden"] + 60) {	// 60 Sekunden für Authentifikation
 			$index = array_search($v["socket"], $clientSockets);
@@ -40,52 +39,44 @@ while (true) {
 		}
 	}
 
-	// Ohne reference kopieren
 	$updatePruefenSockets = $clientSockets;
-	// Warten, bis sich was getan hat
 	socket_select($updatePruefenSockets, $null, $null, 0, 10);
-	// Neue Aktion im Socket oder so - Ich weiß nicht ganz.  -  [Neuer Client]
+
 	if (in_array($socket, $updatePruefenSockets)) {
-		// Neuer Client Socket
 		$neuerClient = socket_accept($socket);
-		// Neuen Client behandeln
-		(function ($clientSocket) use ($updatePruefenSockets, $clientSockets, $unbekannt){
-			// Header ausm Socket lesen (Nicht mehr als 1,024 Bytes?)
-			$header = socket_read($clientSocket, 1024);
-			// Session laden
-			$headers = array();
-			$lines = preg_split("/\r\n/", $header);
-			foreach($lines as $line) {
-				$line = chop($line);
-				if(preg_match('/\A(\S+): (.*)\z/', $line, $matches))
-				{
-					$headers[$matches[1]] = $matches[2];
-				}
+
+		// Header ausm Socket lesen (Nicht mehr als 1,024 Bytes?)
+		$header = socket_read($neuerClient, 1024);
+		// Session laden
+		$headers = array();
+		$lines = preg_split("/\r\n/", $header);
+		foreach($lines as $line) {
+			$line = chop($line);
+			if(preg_match('/\A(\S+): (.*)\z/', $line, $matches))
+			{
+				$headers[$matches[1]] = $matches[2];
 			}
-			$clientSockets[] = $clientSocket;
-			$unbekannt[] = array("socket" => $clientSocket, "verbunden" => time());
-
-			// Handshake machen
-			$socketHandler->doHandshake($header, $clientSocket, HOST_NAME, PORT);
-
-			$socketHandler->send(json_encode(array("status" => "0", "nachricht" => "Bereit für Authentifikation")), $neuerClient);
-			// Hax
-			$index = array_search($socket, $updatePruefenSockets);
-			unset($updatePruefenSockets[$index]);
-		})($neuerClient);
+		}
+		$clientSockets[] = $neuerClient;
+		$unbekannt[] = array("socket" => $neuerClient, "verbunden" => time());
+		// Handshake machen
+		$socketHandler->doHandshake($header, $neuerClient, HOST_NAME, PORT);
+		nachricht($neuerClient, "0", "Bereit für Authentifikation");
+		// Hax
+		$index = array_search($socket, $updatePruefenSockets);
+		unset($updatePruefenSockets[$index]);
 	}
 
 	foreach ($updatePruefenSockets as $clientSocket) {
-		// Daten lesen (Max 1,024 Bytes?)
 		while(socket_recv($clientSocket, $socketData, 1024, 0) >= 1){
-			// Daten entschlüsseln
 			$socketMessage = $socketHandler->unseal($socketData);
-			// TODO: An andere Weiterleiten, in db speichern
 			$nachricht = json_decode($socketMessage, true);
+
 			if($nachricht == null)
 				break 2;
 			switch ($nachricht["status"]) {
 				case "0":
+					// Authentifikation
 					$g = $nachricht["g"];
 					$gid = $nachricht["gid"];
 					$sessid = $nachricht["sessid"];
@@ -93,7 +84,7 @@ while (true) {
 						foreach($unbekannt as $i => $v) {
 							if($v["socket"] == $clientSocket) {
 								unset($unbekannt[$i]);
-								$socketHandler->send(json_encode(array("status" => "-1", "nachricht" => "FEHLER")), $clientSocket);
+								fehler($clientSocket, "-1");
 								break 2;
 							}
 						}
@@ -114,30 +105,89 @@ while (true) {
 							unset($unbekannt[$i]);
 						}
 					}
-					if(isset($verbunden[$g][$gid][$id]))
+					if(!cms_valide_gruppe($g))
 						$fehler = true;
 					if(!$fehler) {
 						// Berechtigung prüfen
-						$verbunden[$g][$gid][$id] = $socket;
-						$socketHandler->send(json_encode(array("status" => "1", "nachricht" => "Authentifikation erfolgreich")), $clientSocket);
+						$rechte = cms_gruppenrechte_laden($dbs, $g, $gid, $id);
+						$gk = cms_textzudb($g);
+						$sql = $dbs->prepare("SELECT chataktiv FROM $gk WHERE id = ?");
+						$sql->bind_param("i", $gid);
+						$sql->bind_result($chataktiv);
+						$sql->execute();
+						if(!$sql->fetch())
+							fehler($clientSocket, "-1");
+						$sql->close();
+
+						if(!$rechte["mitglied"] || !$chataktiv) {
+							fehler($clientSocket, "-2", "Nicht berechtigt");
+						}
+						$verbunden[$g][$gid][$id][] = $clientSocket;
+						$socketInfos[intval($clientSocket)] = array("id" => $id, "g" => $g, "gid" => $gid);
+						nachricht($clientSocket, "1", "Authentifikation erfolgreich");
+						// Erfolgreich eingetragen! :D
+						// Was für ne Arbeit
+						"😅";
+
+						// Daten prüfen
+						$gebannt = 1;
+						// Stummschaltung prüfen
+						$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis = 0";
+						$sql = $dbs->prepare($sql);
+						$sql->bind_param("ii", $id, $gid);
+						$sql->bind_result($gebannt);
+						$sql->execute();
+						$sql->fetch();
+						$sql->close();
+						$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
+
+						$daten = array();
+
+						$daten["nachrichten"] = array();
+						$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL'), meldungen.melder IS NOT NULL FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person LEFT OUTER JOIN $gk"."chatmeldungen as meldungen ON meldungen.nachricht = chat.id AND meldungen.melder = ? WHERE chat.gruppe = $gid AND chat.fertig = 1 ORDER BY chat.id DESC LIMIT ".($limit+1);
+						$sql = $dbs->prepare($sql);
+						$sql->bind_param("i", $id);
+						$sql->bind_result($nid, $p, $d, $i, $m, $gl, $v, $n, $t, $sm);
+						$sql->execute();
+						while($sql->fetch())
+							$daten["nachrichten"][] = array(
+								"id" => $nid,
+								"person" => $p,
+								"tag" => cms_tagnamekomplett(date("w", $d)) . ", den " . date("d", $d) . " " . cms_monatsnamekomplett(date("n", $d)),
+								"inhalt" => $gl ? "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht" : $i,
+								"gemeldet" => $m,
+								"selbstgemeldet" => $sm,
+								"name" => cms_generiere_anzeigename($v, $n, $t),
+								"geloescht" => $gl,
+								"eigen" => $p == $nid);
+
+						$daten["nachrichtloeschen"] = $rechte["nachrichtloeschen"];
+						$daten["nutzerstummschalten"] = $rechte["nutzerstummschalten"];
+						$daten["stummgeschalten"] = $gebannt;
+						$daten["leer"] = !count($daten["nachrichten"]);
+						$daten["mehrladen"] = count($daten["nachrichten"]) > $limit;
+
+						array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+
+						senden($clientSocket, "2", $daten);
 					} else {
-						$socketHandler->send(json_encode(array("status" => "-1", "nachricht" => "FEHLER")), $clientSocket);
+						fehler($clientSocket, "-1");
 					}
 					break;
 				default:
-					// Neue Nachricht
+
 					break;
 			}
-			// Aus beiden Schleifen ausbrechen
 			break 2;
 		}
-		// socket_recv hat keine Daten erkannt?
-
-		// Prüfen ob noch da
 		$socketData = @socket_read($clientSocket, 1024, PHP_NORMAL_READ);
 		if ($socketData === false) {
-			// Aus Client Liste entfernen
 			$kickClientIndex = array_search($clientSocket, $clientSockets);
+			$infos = $socketInfos[intval($clientSocket)];
+			if(($index = array_search($clientSocket, $verbunden[$infos["g"]][$infos["gid"]][$infos["id"]])) !== false)
+				unset($verbunden[$infos["g"]][$infos["gid"]][$infos["id"]][$index]);
+			unset($verbunden[$infos["g"]][$infos["gid"]][$infos["id"]]);
+			unset($socketInfos[intval($clientSocket)]);
 			unset($clientSockets[$kickClientIndex]);
 		}
 	}
@@ -210,7 +260,22 @@ class SocketHandler {
 	}
 }
 
-class Chat {
+function fehler($socket, $status, $nachricht = "Ein unbekannter Fehler ist aufgetreten") {
+	global $socketHandler;
+	return $socketHandler->send(json_encode(array("status" => $status, "nachricht" => $nachricht)), $socket);
+}
 
+function nachricht($socket, $status, $nachricht) {
+	global $socketHandler;
+	return $socketHandler->send(json_encode(array("status" => $status, "nachricht" => $nachricht)), $socket);
+}
+
+function senden($socket, $status, $daten) {
+	global $socketHandler;
+	if(is_array($daten))
+		$daten["status"] = $status;
+	else
+		$daten = array("status" => $status, "daten" => $daten);
+	return $socketHandler->send(json_encode($daten), $socket);
 }
 ?>
