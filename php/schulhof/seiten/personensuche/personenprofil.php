@@ -7,7 +7,7 @@ $code .= "</p>";
 $code .= "<h1>Nutzerprofile</h1>";
 
 if (isset($_SESSION['PERSONENPROFIL'])) {
-  if ($CMS_RECHTE['Personen']['Personen sehen'] && false) {
+  if ($CMS_RECHTE['Personen']['Personen sehen']) {
     $person = $_SESSION['PERSONENPROFIL'];
     $fehler = true;
     $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht FROM personen WHERE id = $person";
