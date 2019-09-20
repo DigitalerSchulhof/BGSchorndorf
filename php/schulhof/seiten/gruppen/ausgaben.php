@@ -172,34 +172,29 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 		$code .= "<div id=\"cms_chat_berechtigung\">";
 			$code .= cms_meldung_berechtigung();
 		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">";
+			$code .= "Keine Nachrichten vorhanden";
+		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_mehr\" class=\"cms_notiz\" onclick=\"socketChat.nachladen();\">";
+			$code .= "Ältere Nachrichten laden";
+		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_stumm\">";
+			if($CMS_BENUTZERART == 's')
+				$code .= cms_meldung("fehler", "<h4>Du wurdest stummgeschalten</h4><p>Dir wurde vorläufig das Recht des Schreibens genommen!</p>");
+			else
+				$code .= cms_meldung("fehler", "<h4>Sie wurden stummgeschalten</h4><p>Ihnen wurde vorläufig das Recht des Schreibens genommen!</p>");
+		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_nachrichten\">";
-			/*
-				Löschstatus:
-				0: Nichts
-				1: Gemeldet & Gelöscht
-				2: Direkt gelöscht
-			*/
-
-			// if(!count($nachrichten))
-			// 	$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">Keine Nachrichten vorhanden.</div>";
-			// else if(count($nachrichten) > $limit)
-			// 	$code .= "<div id=\"cms_chat_nachrichten_nachladen\" class=\"cms_notiz\" onclick=\"cms_chat_nachrichten_nachladen('$g', '$gruppenid', $limit);\">Ältere Nachrichten laden</div>";
-
-		if(count($nachrichten))		// Oberstes Datum ausgeben
-			$code .= "<div class=\"cms_chat_datum cms_notiz\">$tag</div>";
-
+			$code .= cms_meldung_fehler();	// Sollte bei erfolgreichem Laden nicht sichtbar sein
 		$code .= "</div>";
 
 		if($rechte["chatten"]) {	// Schreibrecht
 			$code .= "<div id=\"cms_chat_nachricht_verfassen\" class=\"".($gebannt?"cms_chat_gebannt":"")."\">";
 				$code .= "<label for=\"cms_chat_neue_nachricht\"><p class=\"cms_notiz\">Nachricht verfassen:</p></label>";
 				$code .= "<textarea data-gramm=\"false\" type=\"text\" id=\"cms_chat_neue_nachricht\" onkeypress=\"return cms_chat_enter(event, '$g', '$gruppenid');\"></textarea><div onclick=\"cms_chat_nachricht_senden('$g', '$gruppenid')\"><img src=\"res/icons/klein/senden.png\"></div>";
-				if($CMS_BENUTZERART == 's')
-				$code .= cms_meldung("fehler", "<h4>Du wurdest stummgeschalten</h4><p>Dir wurde vorläufig das Recht des Schreibens genommen!</p>");
-				else
-				$code .= cms_meldung("fehler", "<h4>Sie wurden stummgeschalten</h4><p>Ihnen wurde vorläufig das Recht des Schreibens genommen!</p>");
 			$code .= "</div>";
 		}
+
 	$code .= "</div>";
 	$code .= "<script>$(window).on('load', function() {socketChat.init('$g', '$gruppenid');})</script>";
 	return $code;

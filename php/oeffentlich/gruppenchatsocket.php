@@ -14,6 +14,29 @@ $null = NULL;
 
 $limit = 20;
 
+/*
+* Server->Client
+*  Generell:
+*   -2: Berechtigung
+*   -1: Ungültige Anfrage
+*	 Authentifikation:
+*    0: Authentifikation kann beginnen
+*    1: Authentifikation erfolgreich, Daten folgen
+*    2: Daten (Nachrichten, Rechte etc.)
+*  Betrieb:
+*    3:	Neue Nachricht (ausgehend)
+*    4: Nachricht gelöscht
+*		 5: Stummschaltung Statusupdate
+*		 6: Antwort an c->s#2
+*
+*	Client->Server
+*  Authentifikation:
+*    0: Antwort an s->c#0
+*  Betrieb:
+*    1: Neue Nachricht (eingehend)
+*    2: Nachrichten Nachladen
+*/
+
 $dbs = cms_verbinden("s");
 
 $socketHandler = new SocketHandler();
@@ -32,9 +55,7 @@ $unbekannt = array();
 while (true) {
 	foreach($unbekannt as $k => $v) {
 		if(time() > $v["verbunden"] + 60) {	// 60 Sekunden für Authentifikation
-			$index = array_search($v["socket"], $clientSockets);
-			socket_close($v["socket"]);
-			unset($clientSockets[$index]);
+			client_schmeissen($v["socket"]);
 			unset($unbekannt[$k]);
 		}
 	}
@@ -72,11 +93,11 @@ while (true) {
 			$socketMessage = $socketHandler->unseal($socketData);
 			$nachricht = json_decode($socketMessage, true);
 
-			if($nachricht == null)
+			if($nachricht == null || !isset($nachricht["status"]))
 				break 2;
+
 			switch ($nachricht["status"]) {
 				case "0":
-					// Authentifikation
 					$g = $nachricht["g"];
 					$gid = $nachricht["gid"];
 					$sessid = $nachricht["sessid"];
@@ -141,41 +162,147 @@ while (true) {
 						$sql->close();
 						$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
 
+						$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ?";
+						$sql = $dbs->prepare($sql);
+						$sql->bind_param("ii", $id, $gid);
+						$sql->bind_result($istda);
+						$sql->execute();
+						$sql->fetch();
+						$sql->close();
+						$gebannt = $gebannt && $istda;
+
 						$daten = array();
 
 						$daten["nachrichten"] = array();
 						$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL'), meldungen.melder IS NOT NULL FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person LEFT OUTER JOIN $gk"."chatmeldungen as meldungen ON meldungen.nachricht = chat.id AND meldungen.melder = ? WHERE chat.gruppe = $gid AND chat.fertig = 1 ORDER BY chat.id DESC LIMIT ".($limit+1);
 						$sql = $dbs->prepare($sql);
 						$sql->bind_param("i", $id);
-						$sql->bind_result($nid, $p, $d, $i, $m, $gl, $v, $n, $t, $sm);
+						$sql->bind_result($nid, $p, $d, $i, $m, $ls, $v, $n, $t, $sm);
 						$sql->execute();
 						while($sql->fetch())
 							$daten["nachrichten"][] = array(
 								"id" => $nid,
 								"person" => $p,
 								"tag" => cms_tagnamekomplett(date("w", $d)) . ", den " . date("d", $d) . " " . cms_monatsnamekomplett(date("n", $d)),
-								"inhalt" => $gl ? "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht" : $i,
+								"zeit" => date("H:i", $d),
+								"inhalt" => $ls ? "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht" : $i,
 								"gemeldet" => $m,
 								"selbstgemeldet" => $sm,
 								"name" => cms_generiere_anzeigename($v, $n, $t),
-								"geloescht" => $gl,
-								"eigen" => $p == $nid);
+								"geloescht" => !!$ls,	// (bool)
+								"eigen" => $p == $id);
 
-						$daten["nachrichtloeschen"] = $rechte["nachrichtloeschen"];
-						$daten["nutzerstummschalten"] = $rechte["nutzerstummschalten"];
-						$daten["stummgeschalten"] = $gebannt;
+						$daten["loeschen"] = $rechte["nachrichtloeschen"];
+						$daten["stummschalten"] = $rechte["nutzerstummschalten"];
+						$daten["stumm"] = $gebannt;
 						$daten["leer"] = !count($daten["nachrichten"]);
-						$daten["mehrladen"] = count($daten["nachrichten"]) > $limit;
+						$daten["mehr"] = count($daten["nachrichten"]) > $limit;
 
 						array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+						$daten["nachrichten"] = array_reverse($daten["nachrichten"]);
 
 						senden($clientSocket, "2", $daten);
 					} else {
 						fehler($clientSocket, "-1");
 					}
 					break;
-				default:
+				case "1":
+					if(($daten = clientDaten($clientSocket)) === null) {
+						clientSchmeissen($clientSocket);
+						break 3;
+					}
+					$inhalt = $nachricht["nachricht"];
+					$id = $daten["id"];
+					$g = $daten["g"];
+					$gk = cms_textzudb($g);
+					$gid = $daten["gid"];
 
+					$inhalt = htmlentities($inhalt);
+
+					$gebannt = 1;
+					// Stummschaltung prüfen
+					$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis < ".time();
+					$sql = $dbs->prepare($sql);
+					$sql->bind_param("ii", $id, $gid);
+					$sql->bind_result($gebannt);
+					$sql->execute();
+					$sql->fetch();
+					$sql->close();
+					$gebannt = !$gebannt;		// Umkehrung, weil bei abgelaufener Banndauer (bannbis == 0) 1 gegeben wird.
+
+					$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ?";
+					$sql = $dbs->prepare($sql);
+					$sql->bind_param("ii", $id, $gid);
+					$sql->bind_result($istda);
+					$sql->execute();
+					$sql->fetch();
+					$sql->close();
+					$gebannt = $gebannt && $istda;
+
+					if($gebannt) {
+						fehler($clientSocket, "-3");
+						break 3;
+					}
+					$rechte = cms_gruppenrechte_laden($dbs, $g, $gid, $id);
+					$gk = cms_textzudb($g);
+					$sql = $dbs->prepare("SELECT chataktiv FROM $gk WHERE id = ?");
+					$sql->bind_param("i", $gid);
+					$sql->bind_result($chataktiv);
+					$sql->execute();
+					if(!$sql->fetch())
+						fehler($clientSocket, "-1");
+					$sql->close();
+
+					if(!$rechte["mitglied"] || !$rechte["chatten"] || $gebannt || !$chataktiv) {
+						fehler($clientSocket, "-2", "Nicht berechtigt");
+					}
+					$nid = cms_generiere_kleinste_id($gk."chat", "s", $id);
+					$sql = "UPDATE $gk"."chat SET gruppe = ?, person = ?, datum = ?, inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), meldestatus = 0, loeschstatus = 0, fertig = 1 WHERE id = ?";
+			    $sql = $dbs->prepare($sql);
+					$jetzt = time();
+			    $sql->bind_param("iiisi", $gid, $id, $jetzt, $inhalt, $nid);
+			    $sql->execute();
+
+					$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?";
+					$sql = $dbs->prepare($sql);
+			    $sql->bind_param("i", $id);
+					$sql->bind_result($v, $n, $t);
+			    $sql->execute();
+					$sql->fetch();
+
+					anGruppeSenden($g, $gid, $jetzt, $inhalt, $id, cms_generiere_anzeigename($v, $n, $t), $nid, $nachricht["cid"]);
+					break;
+				case "2":
+					if(!isset($nachricht["lid"]) || !cms_check_ganzzahl($nachricht["lid"])) {
+						fehler($clientSocket, "-1");
+					}
+					$lid = $nachricht["lid"];
+					$daten["nachrichten"] = array();
+					$sql = "SELECT chat.id, chat.person, chat.datum, AES_DECRYPT(chat.inhalt, '$CMS_SCHLUESSEL') as inhalt, chat.meldestatus, chat.loeschstatus, AES_DECRYPT(sender.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(sender.titel, '$CMS_SCHLUESSEL'), meldungen.melder IS NOT NULL FROM $gk"."chat as chat JOIN personen as sender ON sender.id = chat.person LEFT OUTER JOIN $gk"."chatmeldungen as meldungen ON meldungen.nachricht = chat.id AND meldungen.melder = ? WHERE chat.gruppe = $gid AND chat.fertig = 1 AND chat.id < $lid ORDER BY chat.id DESC LIMIT ".($limit+1);
+					$sql = $dbs->prepare($sql);
+					$sql->bind_param("i", $id);
+					$sql->bind_result($nid, $p, $d, $i, $m, $ls, $v, $n, $t, $sm);
+					$sql->execute();
+					while($sql->fetch())
+						$daten["nachrichten"][] = array(
+							"id" => $nid,
+							"person" => $p,
+							"tag" => cms_tagnamekomplett(date("w", $d)) . ", den " . date("d", $d) . " " . cms_monatsnamekomplett(date("n", $d)),
+							"zeit" => date("H:i", $d),
+							"inhalt" => $ls ? "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht" : $i,
+							"gemeldet" => $m,
+							"selbstgemeldet" => $sm,
+							"name" => cms_generiere_anzeigename($v, $n, $t),
+							"geloescht" => !!$ls,	// (bool)
+							"eigen" => $p == $id);
+
+					$daten["mehr"] = count($daten["nachrichten"]) > $limit;
+					array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+					
+					senden($clientSocket, "6", $daten);
+					break;
+				default:
+					fehler($clientSocket, "-1");
 					break;
 			}
 			break 2;
@@ -192,7 +319,7 @@ while (true) {
 		}
 	}
 }
-// Programm vorbei, Socket schließen
+// Programm irgendwie gestorben, Socket schließen
 socket_close($socket);
 
 class SocketHandler {
@@ -277,5 +404,43 @@ function senden($socket, $status, $daten) {
 	else
 		$daten = array("status" => $status, "daten" => $daten);
 	return $socketHandler->send(json_encode($daten), $socket);
+}
+
+function clientDaten($clientSocket) {
+	global $socketInfos;
+	$infos = $socketInfos[intval($clientSocket)];
+	if($infos)
+		return array("g" => $infos["g"], "gid" => $infos["gid"], "id" => $infos["id"]);
+	return null;
+}
+
+function clientSchmeissen($clientSocket) {
+	global $clientSockets, $verbunden;
+	$index = array_search($clientSocket, $clientSockets);
+	socket_close($clientSocket);
+	unset($clientSockets[$index]);
+	if(($daten = clientDaten($clientSocket)) !== null)
+		unset($verbunden[$infos["g"]][$infos["gid"]][$infos["id"]]);
+}
+
+function anGruppeSenden($g, $gid, $d, $i, $id, $name, $nid, $cid) {
+	global $verbunden;
+	if(!isset($verbunden[$g][$gid]))
+		return;
+	foreach($verbunden[$g][$gid] as $nuid => $sockets) {
+		foreach($sockets as $k => $s) {
+			$n = array(
+				"id" => $nid,
+				"person" => $id,
+				"tag" => cms_tagnamekomplett(date("w", $d)) . ", den " . date("d", $d) . " " . cms_monatsnamekomplett(date("n", $d)),
+				"zeit" => date("H:i", $d),
+				"inhalt" => $i,
+				"name" => $name,
+				"eigen" => $nuid == $id);
+			if($n["eigen"])
+				$n["cid"] = $cid;
+			senden($s, "3", $n);
+		}
+	}
 }
 ?>
