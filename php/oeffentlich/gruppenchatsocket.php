@@ -361,7 +361,6 @@ function authentifizieren($nachricht, $socket) {
 			"tag" => cms_tagnamekomplett(date("w", $d)) . ", den " . date("d", $d) . " " . cms_monatsnamekomplett(date("n", $d)),
 			"zeit" => date("H:i", $d),
 			"inhalt" => $ls ? "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht" : $i,
-			"gemeldet" => $m,
 			"selbstgemeldet" => $sm,
 			"name" => cms_generiere_anzeigename($v, $n, $t),
 			"geloescht" => !!$ls,	// (bool)
@@ -493,7 +492,6 @@ function nachrichtenNachladen($nachricht, $socket) {
 			"tag" => cms_tagnamekomplett(date("w", $d)) . ", den " . date("d", $d) . " " . cms_monatsnamekomplett(date("n", $d)),
 			"zeit" => date("H:i", $d),
 			"inhalt" => $ls ? "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht" : $i,
-			"gemeldet" => $m,
 			"selbstgemeldet" => $sm,
 			"name" => cms_generiere_anzeigename($v, $n, $t),
 			"geloescht" => !!$ls,	// (bool)
@@ -541,6 +539,11 @@ function nachrichtLoeschen($nachricht, $socket) {
 	}
 
 	$sql = "UPDATE $gk"."chat SET loeschstatus = 2 WHERE id = ?";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("i", $lid);
+	$sql->execute();
+
+	$sql = "DELETE FROM $gk"."chatmeldungen WHERE nachricht = ?";
 	$sql = $dbs->prepare($sql);
 	$sql->bind_param("i", $lid);
 	$sql->execute();

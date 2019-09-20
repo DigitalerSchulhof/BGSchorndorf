@@ -721,7 +721,7 @@ var socketChat = {
     if(!nachgeladen)
       socketChat.datum(n.tag);
 
-    var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen", id: "cms_chat_nachricht_"+n.id}).append(
+    var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen"+(n.selbstgemeldet?" cms_chat_nachricht_gemeldet":""), id: "cms_chat_nachricht_"+n.id}).append(
       $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
         $("<div></div>", {class: "cms_chat_nachricht_id"}).text(n.id),
         $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_chat_aktion\">"+aktionen+"</span>"),
@@ -832,10 +832,10 @@ var socketChat = {
         case "4":
           socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
           var lid = daten["lid"];
-          socketChat.nachrichten.find("#cms_chat_nachricht_"+lid).addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html(daten["inhalt"]);
+          socketChat.nachrichten.find("#cms_chat_nachricht_"+lid).removeClass("cms_chat_nachricht_gemeldet").addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html(daten["inhalt"]);
           break;
         case "5":
-          
+
           break;
         case "6":
           socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
