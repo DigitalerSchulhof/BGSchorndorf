@@ -169,14 +169,17 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 		$code .= "<div id=\"cms_chat_status\">";
 			$code .= "<h3>Skript wird geladen...</h3>";
 		$code .= "</div>";
-		$code .= "<div id=\"cms_chat_berechtigung\">";
-			$code .= cms_meldung_berechtigung();
-		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_leer\" class=\"cms_notiz\">";
 			$code .= "Keine Nachrichten vorhanden";
 		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_mehr\" class=\"cms_notiz\" onclick=\"socketChat.nachladen();\">";
 			$code .= "Ältere Nachrichten laden";
+		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_nachrichten\">";
+			$code .= cms_meldung_fehler();	// Sollte bei erfolgreichem Laden nicht sichtbar sein
+		$code .= "</div>";
+		$code .= "<div id=\"cms_chat_berechtigung\">";
+			$code .= cms_meldung_berechtigung();
 		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_stumm\">";
 			if($CMS_BENUTZERART == 's')
@@ -184,12 +187,9 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			else
 				$code .= cms_meldung("fehler", "<h4>Sie wurden stummgeschalten</h4><p>Ihnen wurde vorläufig das Recht des Schreibens genommen!</p>");
 		$code .= "</div>";
-		$code .= "<div id=\"cms_chat_nachrichten\">";
-			$code .= cms_meldung_fehler();	// Sollte bei erfolgreichem Laden nicht sichtbar sein
-		$code .= "</div>";
 
 		if($rechte["chatten"]) {	// Schreibrecht
-			$code .= "<div id=\"cms_chat_nachricht_verfassen\" class=\"".($gebannt?"cms_chat_gebannt":"")."\">";
+			$code .= "<div id=\"cms_chat_nachricht_verfassen\">";
 				$code .= "<label for=\"cms_chat_neue_nachricht\"><p class=\"cms_notiz\">Nachricht verfassen:</p></label>";
 				$code .= "<textarea data-gramm=\"false\" type=\"text\" id=\"cms_chat_neue_nachricht\" onkeypress=\"return cms_chat_enter(event, '$g', '$gruppenid');\"></textarea><div onclick=\"cms_chat_nachricht_senden('$g', '$gruppenid')\"><img src=\"res/icons/klein/senden.png\"></div>";
 			$code .= "</div>";

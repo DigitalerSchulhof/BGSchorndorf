@@ -615,11 +615,11 @@ var socketChat = {
   intervalUebrig: null,
   sendend: null,
   status: 0,
-  stumm: false,
   rechte: {
     loeschen: false,
     stummschalten: false
   },
+  stummTimeout: null,
   statusSetzen: function(nachricht, laden) {
     laden !== true && laden !== false ? laden = true : laden;
     socketChat.chat.removeClass("cms_chat_status cms_chat_laden cms_chat_stumm cms_chat_leer cms_chat_mehr");
@@ -710,9 +710,9 @@ var socketChat = {
     if(!n.eigen)
       r += "<p data-mehr=\"melden\" onclick=\"cms_chat_nachricht_melden_anzeigen(this, '"+socketChat.g+"', '"+socketChat.gid+"')\">Nachricht melden</p>";
     if(socketChat.rechte.loeschen)
-      r += "<p data-mehr=\"loeschen\" onclick=\"cms_chat_nachricht_loeschen_anzeigen(this, '"+socketChat.g+"', '"+socketChat.gid+"')\">Nachricht löschen</p>";
+      r += "<p data-mehr=\"loeschen\" onclick=\"cms_chat_nachricht_loeschen_anzeigen(this)\">Nachricht löschen</p>";
     if(socketChat.rechte.stummschalten)
-      r += "<p data-mehr=\"bannen\" onclick=\"cms_chat_nutzer_stummschalten_anzeigen(this, '"+socketChat.g+"', '"+socketChat.gid+"')\">Sender stummschalten</p>";
+      r += "<p data-mehr=\"bannen\" onclick=\"cms_chat_nutzer_stummschalten_anzeigen(this)\">Sender stummschalten</p>";
     return r;
   },
   nachrichtAnzeigen: function(n, nachgeladen) {
@@ -779,6 +779,19 @@ var socketChat = {
       "lid": id
     });
   },
+  nutzerStummschalten: function(id) {
+    cms_meldung_aus();
+    socketChat.statusSetzen("Nutzer stummschalten...");
+    var daten = {"status": "4", "lid": id};
+    var banndauer, bannbis = null;
+    bannbis = Math.floor(new Date($("#cms_bannbis_J").val(), $("#cms_bannbis_M").val()-1, $("#cms_bannbis_T").val(), $("#cms_bannbis_h").val(), $("#cms_bannbis_m").val(), 0).getTime()/1000);
+    banndauer = ($("#cms_banndauer_T").val() * 24*60*60 + $("#cms_banndauer_h").val() * 60 * 60 + $("#cms_banndauer_m").val() * 60);
+    if(bannbis && $("#cms_reiter_bann_0").hasClass("cms_reiter_aktiv"))
+      daten["bannbis"] = bannbis;
+    if(banndauer && $("#cms_reiter_bann_1").hasClass("cms_reiter_aktiv"))
+      daten["banndauer"] = banndauer;
+    socketChat.senden(daten);
+  },
   events: {
     close: function(e) {
       socketChat.neuVerbinden();
@@ -814,8 +827,12 @@ var socketChat = {
 
           socketChat.rechte.loeschen = daten.loeschen;
           socketChat.rechte.stummschalten = daten.stummschalten;
-          socketChat.rechte.stumm = daten.stumm;
-
+          if(daten.stumm) {
+            socketChat.chat.addClass("cms_chat_stumm");
+            socketChat.stummTimeout = setTimeout(function() {
+              socketChat.chat.removeClass("cms_chat_stumm");
+            }, daten.stumm*1000-new Date().getTime());
+          }
           socketChat.nachrichten.html("");
 
           $.each(daten.nachrichten, function(k, v) { socketChat.nachrichtAnzeigen(v); });
@@ -835,7 +852,13 @@ var socketChat = {
           socketChat.nachrichten.find("#cms_chat_nachricht_"+lid).removeClass("cms_chat_nachricht_gemeldet").addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html(daten["inhalt"]);
           break;
         case "5":
-
+          if(daten.stumm) {
+            socketChat.chat.addClass("cms_chat_stumm");
+            socketChat.stummTimeout = setTimeout(function() {
+              socketChat.chat.removeClass("cms_chat_stumm");
+            }, daten.stumm*1000-new Date().getTime());
+          } else
+            cms_meldung_fehler();
           break;
         case "6":
           socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
@@ -843,6 +866,9 @@ var socketChat = {
 
           $.each(daten.nachrichten, function(k, v) { socketChat.nachrichtAnzeigen(v, true); });
 
+          break;
+        case "7":
+          socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
           break;
         default:
           break;
@@ -933,7 +959,7 @@ function cms_chat_nachricht_melden(art, gid, id) {
 }
 
 /* Nachricht löschen - Bestätigung */
-function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
+function cms_chat_nachricht_loeschen_anzeigen(t) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   if(p.hasClass("cms_chat_nachricht_geloescht")) {
     cms_meldung_an("warnung", "Nachricht gelöscht", "<p>Diese Nachricht wurde schon gelöscht.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span>');
@@ -942,28 +968,9 @@ function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
   var id = p.find(".cms_chat_nachricht_id").html();
   cms_meldung_an('warnung', 'Nachricht löschen', '<p>Soll die Nachricht wirklich für alle gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="socketChat.nachrichtLoeschen(\''+id+'\')">Löschen</span></p>');
 }
-/* Nachricht löschen - Senden */
-function cms_chat_nachricht_loeschen(gruppe, gid, id) {
-  cms_laden_an('Nachricht löschen', 'Informationen werden gesammelt.');
-
-  var formulardaten = new FormData();
-  formulardaten.append("id",              id);
-  formulardaten.append("gruppe",          gruppe);
-  formulardaten.append("gruppenid",       gid);
-  formulardaten.append("anfragenziel", 	  '276');
-
-  function anfragennachbehandlung(rueckgabe) {
-    if (rueckgabe == "ERFOLG") {
-      $("#cms_chat").find(".cms_chat_nachricht_id").filter(function () {return $(this).html() == id}).parents(".cms_chat_nachricht_aussen").addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html("<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht").parents(".cms_chat_nachricht_aussen").find(".cms_chat_nachricht_aktion").remove();
-      cms_laden_aus();
-    } else {cms_fehlerbehandlung(rueckgabe);}
-  }
-
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
-}
 
 /* Nutzer stummschalten - Bestätigung */
-function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
+function cms_chat_nutzer_stummschalten_anzeigen(t) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   var id = p.find(".cms_chat_nachricht_id").html();
 
@@ -979,30 +986,5 @@ function cms_chat_nutzer_stummschalten_anzeigen(t, art, gid) {
   banndauer = '<p>Wie lange soll der Nutzer stummgeschalten werden?</p>'+banndauer;
   banndauer = '<div class="cms_reitermenue_o" id="cms_reiterfenster_bann_1"><div class="cms_reitermenue_i">'+banndauer+'</div></div>';
 
-  cms_meldung_an('warnung', 'Nutzer stummschalten', menue+bannbis+banndauer, '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nutzer_stummschalten(\''+art+'\', \''+gid+'\', \''+id+'\')">Stummschalten</span></p>');
-}
-/* Nutzer stummschalten - Senden */
-function cms_chat_nutzer_stummschalten(gruppe, gid, id) {
-  var banndauer, bannbis = null;
-  bannbis = Math.floor(new Date($("#cms_bannbis_J").val(), $("#cms_bannbis_M").val()-1, $("#cms_bannbis_T").val(), $("#cms_bannbis_h").val(), $("#cms_bannbis_m").val(), 0).getTime()/1000);
-  banndauer = ($("#cms_banndauer_T").val() * 24*60*60 + $("#cms_banndauer_h").val() * 60 * 60 + $("#cms_banndauer_m").val() * 60);
-  var formulardaten = new FormData();
-  formulardaten.append("id",              id);
-  formulardaten.append("gruppe",          gruppe);
-  formulardaten.append("gruppenid",       gid);
-  if(bannbis && $("#cms_reiter_bann_0").hasClass("cms_reiter_aktiv"))
-    formulardaten.append("bannbis",       bannbis);
-  if(banndauer && $("#cms_reiter_bann_1").hasClass("cms_reiter_aktiv"))
-    formulardaten.append("banndauer",     banndauer);
-  formulardaten.append("anfragenziel", 	  '277');
-
-  cms_laden_an('Nutzer stummschalten', 'Informationen werden gesammelt.');
-
-  function anfragennachbehandlung(rueckgabe) {
-    if (rueckgabe == "ERFOLG") {
-      cms_meldung_an('erfolg', 'Nutzer stummschalten', '<p>Der Nutzer wurde erfolgreich stummgeschalten.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-    } else {cms_fehlerbehandlung(rueckgabe);}
-  }
-
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_meldung_an('warnung', 'Nutzer stummschalten', menue+bannbis+banndauer, '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="socketChat.nutzerStummschalten(\''+id+'\')">Stummschalten</span></p>');
 }

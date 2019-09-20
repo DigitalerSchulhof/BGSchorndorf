@@ -317,14 +317,6 @@
     .cms_meldung_fehler {
       display: none;
     }
-    &.cms_chat_gebannt {
-      > * {
-        display: none !important;
-      }
-      .cms_meldung_fehler {
-        display: block !important;
-      }
-    }
     div:not(.cms_meldung_fehler) {
       display: inline-block;
       float: right;
@@ -373,7 +365,7 @@
     }
   }
   &.cms_chat_stumm { // 0.1
-    >* {
+    >#cms_chat_nachricht_verfassen {
       display: none;
     }
     #cms_chat_stumm {
