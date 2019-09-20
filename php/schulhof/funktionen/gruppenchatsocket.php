@@ -1,6 +1,6 @@
 <?php
 set_time_limit(0);
-set_include_path(dirname(__FILE__)."/../../");
+set_include_path(dirname(__FILE__)."/../../../");
 include_once("php/schulhof/funktionen/config.php");
 include_once("php/schulhof/funktionen/check.php");
 include_once("php/schulhof/funktionen/texttrafo.php");
