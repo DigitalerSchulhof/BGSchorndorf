@@ -1,4 +1,4 @@
 -- Format:
--- 
--- <Commit Hash, seit dem die SQL notwendig ist>:
+--
+-- Commit lässt sich mit GitHub "History" herausfinden
 -- <SQL Änderungen>
