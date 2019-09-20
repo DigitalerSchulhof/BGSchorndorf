@@ -721,7 +721,7 @@ var socketChat = {
     if(!nachgeladen)
       socketChat.datum(n.tag);
 
-    var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen"}).append(
+    var nachr = $("<div></div>", {class: "cms_chat_nachricht_aussen", id: "cms_chat_nachricht_"+n.id}).append(
       $("<div></div>", {class: "cms_chat_nachricht_innen"}).append(
         $("<div></div>", {class: "cms_chat_nachricht_id"}).text(n.id),
         $("<div></div>", {class: "cms_chat_nachricht_aktion", "data-aktion": "mehr"}).html("&vellip;<span class=\"cms_chat_aktion\">"+aktionen+"</span>"),
@@ -765,9 +765,18 @@ var socketChat = {
     return cid;
   },
   nachladen: function() {
+    socketChat.statusSetzen("Nachrichten laden...");
     socketChat.senden({
       "status": "2",
       "lid": socketChat.nachrichten.find(".cms_chat_nachricht_id").first().text()
+    });
+  },
+  nachrichtLoeschen: function(id) {
+    cms_meldung_aus();
+    socketChat.statusSetzen("Nachricht löschen...");
+    socketChat.senden({
+      "status": "3",
+      "lid": id
     });
   },
   events: {
@@ -780,6 +789,9 @@ var socketChat = {
     nachricht: function(e) {
       var daten = JSON.parse(e.data);
       switch(daten["status"]) {
+        case "-3":
+          socketChat.neuVerbinden();
+          break;
         case "-2":
           $("#cms_chat").addClass("cms_chat_berechtigung");
           break;
@@ -818,12 +830,15 @@ var socketChat = {
           socketChat.nachrichtAnzeigen(daten);
           break;
         case "4":
-
+          socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
+          var lid = daten["lid"];
+          socketChat.nachrichten.find("#cms_chat_nachricht_"+lid).addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html(daten["inhalt"]);
           break;
         case "5":
-
+          
           break;
         case "6":
+          socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
           socketChat.chat.setClass("cms_chat_mehr", daten.mehr);
 
           $.each(daten.nachrichten, function(k, v) { socketChat.nachrichtAnzeigen(v, true); });
@@ -925,7 +940,7 @@ function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
     return;
   }
   var id = p.find(".cms_chat_nachricht_id").html();
-  cms_meldung_an('warnung', 'Nachricht löschen', '<p>Soll die Nachricht wirklich für alle gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_chat_nachricht_loeschen(\''+art+'\', \''+gid+'\', \''+id+'\')">Löschen</span></p>');
+  cms_meldung_an('warnung', 'Nachricht löschen', '<p>Soll die Nachricht wirklich für alle gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="socketChat.nachrichtLoeschen(\''+id+'\')">Löschen</span></p>');
 }
 /* Nachricht löschen - Senden */
 function cms_chat_nachricht_loeschen(gruppe, gid, id) {
