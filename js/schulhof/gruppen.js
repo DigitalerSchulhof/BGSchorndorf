@@ -593,8 +593,6 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
-var socket;
 /*
   0: Init
   1: Verbinden
@@ -906,7 +904,7 @@ function cms_chat_nachricht_senden(art, id) {
 
   chat.scrollTop(chat.prop("scrollHeight"));
 }
-/* Mehr gedrückt */
+/* Aktionen zeigen */
 function cms_chat_aktion() {
   if($(this).data("aktion") == "mehr") {
     var h = $(this).find(".cms_chat_aktion");
@@ -923,7 +921,6 @@ function cms_chat_enter(e, art, id) {
     }
   return true;
 }
-
 /* Nachricht melden - Bestätigung */
 function cms_chat_nachricht_melden_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
@@ -957,7 +954,6 @@ function cms_chat_nachricht_melden(art, gid, id) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
 /* Nachricht löschen - Bestätigung */
 function cms_chat_nachricht_loeschen_anzeigen(t) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
@@ -968,7 +964,6 @@ function cms_chat_nachricht_loeschen_anzeigen(t) {
   var id = p.find(".cms_chat_nachricht_id").html();
   cms_meldung_an('warnung', 'Nachricht löschen', '<p>Soll die Nachricht wirklich für alle gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="socketChat.nachrichtLoeschen(\''+id+'\')">Löschen</span></p>');
 }
-
 /* Nutzer stummschalten - Bestätigung */
 function cms_chat_nutzer_stummschalten_anzeigen(t) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
