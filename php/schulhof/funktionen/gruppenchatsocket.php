@@ -1,6 +1,7 @@
 <?php
 set_time_limit(0);
 set_include_path(dirname(__FILE__)."/../../../");
+date_default_timezone_set("CET");
 include_once("php/schulhof/funktionen/config.php");
 include_once("php/schulhof/funktionen/check.php");
 include_once("php/schulhof/funktionen/texttrafo.php");
@@ -42,7 +43,6 @@ $nachlimit = 20;
 *		 3: Nachricht löschen
 *		 4: Nutzer stummschalten
 */
-
 $dbs = cms_verbinden("s");
 
 $socketHandler = new SocketHandler();
