@@ -263,11 +263,11 @@ else if ($CMS_URL[0] == 'Schulhof') {
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/termine/terminansicht.php';}
   if (preg_match("/^Schulhof\/Blog(\/[0-9]{4}(\/$CMS_MONATELINK(\/[0-9]{2}){0,1}){0,1}){0,1}/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/blogeintraege/blog.php';}
-  if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ))
+  if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/blogeintraege/blogansicht.php';}
   if (preg_match("/^Schulhof\/Galerien(\/[0-9]{4}(\/$CMS_MONATELINK(\/[0-9]{2}){0,1}){0,1}){0,1}/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/galerien/galerie.php';}
-  if (preg_match("/^Schulhof\/Galerien\/[0-9]{4}\/(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ))
+  if (preg_match("/^Schulhof\/Galerien\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/schulhof/seiten/galerien/galerieansicht.php';}
 
   // Website

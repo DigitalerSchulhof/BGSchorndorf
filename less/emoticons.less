@@ -2,7 +2,6 @@
 @import "standard.less";
 
 #cms_reaktionen {
-  float: left;
   margin-top: 10px;
   .cms_reaktion {
     display: inline-block;
@@ -45,11 +44,11 @@
   }
   & + .cms_notiz {
     display: none;
-    & a:hover {
+    a:hover {
       color: @schriftlink !important;
     }
   }
-  &.cms_noch_anmelden {
+  .cms_noch_anmelden {
     .cms_reaktion {
       opacity: 0.4;
       * {
