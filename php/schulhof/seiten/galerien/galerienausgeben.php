@@ -153,8 +153,8 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 					$aktionen .= "<span class=\"cms_button\" onclick=\"cms_galerie_bearbeiten_vorbereiten('".$galerie['id']."', '$linkl')\">Galerie bearbeiten</span> ";
 				}
 				if ($CMS_RECHTE['Organisation']['Galerien genehmigen'] && ($galerie['genehmigt'] == 0)) {
-					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_galerie_genehmigen('Blogeinträge', '".$galerie['id']."', '$link')\">Galerie genehmigen</span> ";
-					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_galerie_ablehnen('Blogeinträge', '".$galerie['id']."', '$linkl')\">Galerie ablehnen</span> ";
+					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_galerie_genehmigen('".$galerie['id']."', '$link')\">Galerie genehmigen</span> ";
+					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_galerie_ablehnen('".$galerie['id']."', '$linkl')\">Galerie ablehnen</span> ";
 				}
 				if ($CMS_RECHTE['Website']['Galerien löschen']) {
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_galerie_loeschen_vorbereiten('".$galerie['id']."', '".$galerie['bezeichnung']."', '$linkl')\">Galerie löschen</span> ";
