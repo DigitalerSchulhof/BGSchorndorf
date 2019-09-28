@@ -56,9 +56,6 @@ var galerie = {
   keydownSetzen: function() {
     $(document).keydown(function(e) {
         switch(e.which) {
-            case 27:
-              galerie.vollbild(false);
-              break;
             case 37:
               galerie.vor();
               break;
@@ -69,8 +66,5 @@ var galerie = {
         }
         e.preventDefault();
     });
-  },
-  vollbild: function(wert) {
-    wert !== true && wert !== false ? $("#cms_galerie_vollbild").toggleClass("cms_galerie_vollbild") : $("#cms_galerie_vollbild").setClass("cms_galerie_vollbild", wert);
   }
 }
