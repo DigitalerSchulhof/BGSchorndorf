@@ -209,6 +209,7 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 						$code .= "<div class=\"cms_galerie_beschreibung\">".$bild["beschreibung"]."</div>";
 					$code .= "</div>";
 				}
+				$code .= "<div id=\"cms_galerie_laden\">".cms_ladeicon()."<h3>Die Galerie wird geladen...</h3></div>";
 				$code .= "<div id=\"cms_galerie_dots\">";
 					for($i = 0; $i < count($bilder); $i++)
 						$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";

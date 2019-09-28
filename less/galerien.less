@@ -216,6 +216,7 @@
       bottom: 10px;
       padding: 8px 12px;
       background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
       color: @schriftunscheinbar;
     }
     animation-name: cms_galerien_fade;
@@ -226,7 +227,52 @@
       display: block;
     }
   }
-  #cms_galerie_dots {
+
+  #cms_galerie_next,
+  #cms_galerie_vor,
+  #cms_galerie_dots{
+    display: none;
+  }
+
+  #cms_galerie_laden {
+    display: block;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .cms_galerie_zeigen ~ #cms_galerie_laden {
+    display: none;
+  }
+
+  .cms_galerie_zeigen ~ #cms_galerie_next,
+  .cms_galerie_zeigen ~ #cms_galerie_vor {
+    display: block;
+    position: absolute;
+    top: 50%;
+    padding: 16px;
+    color: @schriftunscheinbar;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: auto;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: 500ms ease;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+  #cms_galerie_vor {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  #cms_galerie_next {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    right: 0;
+  }
+
+  .cms_galerie_zeigen ~ #cms_galerie_dots {
+    display: block;
     margin-top: 10px;
     text-align: center;
     .cms_galerie_dot {
@@ -244,26 +290,6 @@
     }
   }
 
-  #cms_galerie_next,
-  #cms_galerie_vor {
-    position: absolute;
-    top: 50%;
-    padding: 16px;
-    color: @schriftunscheinbar;
-    font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.4);
-    width: auto;
-    transform: translateY(-50%);
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 500ms ease;
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-  }
-  #cms_galerie_next {
-    right: 0;
-  }
 }
 
 @keyframes cms_galerien_fade {

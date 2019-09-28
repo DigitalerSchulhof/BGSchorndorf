@@ -8,7 +8,6 @@ var galerie = {
   index: null,
   interval: null,
   zeigen: function(i, auto) {
-    console.log(i);
     if(i.jQuery)
       if(!i.parents("#cms_galerie_bilder").length || !i.is(".cms_galerie_bild"))
         return false;
@@ -40,6 +39,11 @@ var galerie = {
   next: function(i, auto) {
     i = i || 1;
     auto = auto || false;
+    if(galerie.index+i >= $(".cms_galerie_bild").length)
+      galerie.index = 0-i;
+    if(galerie.index+i < 0)
+      galerie.index = $(".cms_galerie_bild").length;
+
     galerie.zeigen(galerie.index+i, auto);
   },
   starteLoop: function() {
@@ -52,10 +56,10 @@ var galerie = {
   keydownSetzen: function() {
     $(document).keydown(function(e) {
         switch(e.which) {
-            case 37: // Links
+            case 37:
               galerie.vor();
               break;
-            case 39: // Rechts
+            case 39:
               galerie.next();
               break;
             default: return;
