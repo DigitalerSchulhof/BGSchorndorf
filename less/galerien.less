@@ -209,6 +209,7 @@
     display: none;
     width: 100%;
     position: relative;
+    border-radius: 5px;
     .cms_galerie_beschreibung {
       position: absolute;
       left: 50%;
@@ -230,8 +231,18 @@
 
   #cms_galerie_next,
   #cms_galerie_vor,
-  #cms_galerie_dots{
+  #cms_galerie_dots,
+  #cms_galerie_mach_vollbild,
+  #cms_galerie_mach_leerbild {
     display: none;
+  }
+
+  #cms_galerie_mach_vollbild,
+  #cms_galerie_mach_leerbild {
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+    cursor: pointer;
   }
 
   #cms_galerie_laden {
@@ -290,6 +301,34 @@
     }
   }
 
+  .cms_galerie_zeigen ~ #cms_galerie_mach_vollbild {
+    display: block;
+  }
+}
+.cms_galerie_vollbild {
+  height: 100%;
+  width: 100%;
+  z-index: 1999;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.75);
+  margin: 0px;
+  padding: 50px;
+  #cms_galerie_dots {
+    .cms_galerie_dot {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      &.cms_galerie_zeigen, &:hover {
+        background-color: rgba(255, 255, 255, 0.6) !important;
+      }
+    }
+  }
+  #cms_galerie_mach_vollbild {
+    display: none !important;
+  }
+  #cms_galerie_mach_leerbild {
+    display: block !important;
+  }
 }
 
 @keyframes cms_galerien_fade {

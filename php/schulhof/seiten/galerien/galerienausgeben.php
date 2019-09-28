@@ -202,7 +202,7 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			//
 			// $code .= "</div></div></div>";
 
-			$code .= "<div id=\"cms_galerie_bilder\">";
+			$code .= "<div id=\"cms_galerie_vollbild\"><div id=\"cms_galerie_bilder\">";
 				foreach($bilder as $bild) {
 					$code .= "<div class=\"cms_galerie_bild\">";
 						$code .= "<img src=\"".$bild["pfad"]."\">";
@@ -216,7 +216,9 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 				$code .= "</div>";
 				$code .= "<div onclick=\"galere.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
 				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
-			$code .= "</div>";
+				$code .= "<img id=\"cms_galerie_mach_vollbild\" onclick=\"galerie.vollbild()\" src=\"res/icons/gross/galerie_vollbild.png\">";
+				$code .= "<img id=\"cms_galerie_mach_leerbild\" onclick=\"galerie.vollbild()\" src=\"res/icons/gross/galerie_leerbild.png\">";
+			$code .= "</div></div>";
 
 			// Bilder Ende
 
