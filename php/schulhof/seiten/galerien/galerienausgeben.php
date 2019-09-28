@@ -214,7 +214,7 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 					for($i = 0; $i < count($bilder); $i++)
 						$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";
 				$code .= "</div>";
-				$code .= "<div onclick=\"galere.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
+				$code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
 				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
 			$code .= "</div>";
 
