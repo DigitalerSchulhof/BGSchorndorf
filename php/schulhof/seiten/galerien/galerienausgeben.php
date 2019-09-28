@@ -165,11 +165,11 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">".$kalender."";
 
-			$code .= "<div style=\"text-align: right;\"><br><h1>".$galerie['bezeichnung']."</h1>";
+			$code .= "<div class=\"cms_galerie_zusatzinfo\"><br><h1>".$galerie['bezeichnung']."</h1>";
 			$code .= $galerie['beschreibung']."</div></div>";
 			if (strlen($aktionen) > 0) {
 				$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\"></div></div>";
-				$code .= "<div class=\"cms_spalte_2\" style=\"text-align: right;\"><div class=\"cms_spalte_i\">";
+				$code .= "<div class=\"cms_spalte_2\" class=\"cms_galerie_zusatzinfo\"><div class=\"cms_spalte_i\">";
 					$code .= "<h3>Aktionen</h3><p>".$aktionen."</p>";
 				$code .= "</div></div>";
 			}
