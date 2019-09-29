@@ -209,14 +209,20 @@
 
 /* FARBBEISPIELE */
 .cms_farbbeispiel_aktiv {
+  cursor: pointer;
 	border: 2px solid @hintergrundhell;
 }
 
 .cms_farbbeispiel {
+  cursor: pointer;
 	border: 2px solid @standardhell;
 }
 
 .cms_farbbeispiel_aktiv:hover, .cms_farbbeispiel:hover {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  margin-right: 4px;
 	border: 2px solid @hintergrunddunkel;
 }
 
@@ -225,6 +231,7 @@
 	display: inline-block;
 	width: 18px;
 	height: 18px;
+  margin: 1px;
 	margin-right: 5px;
 	line-height: 0px;
 	transition: 250ms;

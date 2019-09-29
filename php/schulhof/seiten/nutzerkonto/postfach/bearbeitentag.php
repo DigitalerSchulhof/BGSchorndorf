@@ -27,8 +27,8 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			<?php
 				echo "<span class=\"cms_farbbeispiel_aktiv cms_farbbeispiel_0\" id=\"cms_farbbeispiel_0\" onclick=\"cms_postfach_tag_farbbeispiel_waehlen(0)\"></span>";
 				$pause = 1;
-				for ($i=1; $i<48; $i++) {
-					if ($pause == 12) {
+				for ($i=1; $i<16*4; $i++) {
+					if ($pause == 16) {
 						echo "<br>";
 						$pause = 0;
 					}
