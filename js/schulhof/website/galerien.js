@@ -319,7 +319,7 @@ $(document).ready(function () {
 });
 
 function cms_galerie_bild_hinzufuegen() {
-	cms_laden_an("Bild hinzufügen", "Das Bild wird hinzugefügt");	// Gibt den Nutzer Feedback, dass der Klick erfasst wurde, da sich nicht unbedingt sichtbar etwas tut
+	cms_laden_an("Bild hinzufügen", "Das Bild wird hinzugefügt");	// Gibt dem Nutzer Feedback, dass der Klick erfasst wurde, da sich nicht unbedingt sichtbar etwas tut
 	cms_galerie_bild_box_machen($(this).data("pfad"));
 	setTimeout(function() {
 		cms_laden_aus();
