@@ -82,6 +82,15 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   $d = array_diff(scandir($update_verzeichnis), array(".", ".."));
   rename("$update_verzeichnis/".$d[2], "$update_verzeichnis/release");
 
+  // Dev löschen
+  cms_v_loeschen("$update_verzeichnis/release/datenbanken");
+  cms_v_loeschen("$update_verzeichnis/release/less");
+  @unlink("$update_verzeichnis/release/.gitignore");
+  @unlink("$update_verzeichnis/release/cms_schulhof.sql");
+  @unlink("$update_verzeichnis/release/cms_personen.sql");
+  @unlink("$update_verzeichnis/release/encrypt.php");
+  @unlink("$update_verzeichnis/release/prepared.php");
+
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
   cms_v_loeschen($update_verzeichnis);
   echo "ERFOLG";
