@@ -104,33 +104,33 @@ function cms_v_loeschen($pfad) {
 	 return;
   if(!is_dir($pfad))
     return;
-  $d = array_diff(scandir($pfad), array(".", ".."));
-  foreach($d as $dd) {
-    $dd = "$pfad/$dd";
-    if(is_file($dd))
-      unlink($dd);
-    else if(is_dir($dd))
-      cms_v_loeschen($dd);
+  $dateien = array_diff(scandir($pfad), array(".", ".."));
+  foreach($dateien as $datei) {
+    $datei = "$pfad/$datei";
+    if(is_file($datei))
+      unlink($datei);
+    else if(is_dir($datei))
+      cms_v_loeschen($datei);
   }
   rmdir($pfad);
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "") {
-  $bl = array("/.git", "/backup", "/update", "/dateien", "/css");
-  foreach($bl as $b)
+  $pfadanfangsblacklist = array("/.git", "/backup", "/update", "/dateien", "/css");
+  foreach($pfadanfangsblacklist as $b)
     if(strpos($pfad, $b) === 0)
 	  return;
-  $d = array_diff(scandir("$von$pfad"), array(".", ".."));
-  foreach($d as $dd) {
-    $ddd = "$von$pfad/$dd";
-	  if($pfad == "/php/schulhof/funktionen" && $dd == "config.php")
+  $dateien = array_diff(scandir("$von$pfad"), array(".", ".."));
+  foreach($dateien as $datei) {
+    $ddd = "$von$pfad/$datei";
+	  if($pfad == "/php/schulhof/funktionen" && $datei == "config.php")
 	   continue;
     if(is_file($ddd)) {
       if(!is_dir("$nach$pfad"))
         @mkdir("$nach$pfad", null, true);
-      rename($ddd, "$nach$pfad/$dd");
+      rename($ddd, "$nach$pfad/$datei");
     } else
-      cms_v_verschieben($von, $nach, "$pfad/$dd");
+      cms_v_verschieben($von, $nach, "$pfad/$datei");
   }
   if(strlen($pfad))
 	  @rmdir("$von$pfad");
