@@ -69,7 +69,7 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   curl_exec($curl);
   curl_close($curl);
   fclose($tar_ziel);
-  
+
   $p = new PharData("$update_verzeichnis/release.tar.gz");
   $p->decompress();
   unlink("$update_verzeichnis/release.tar.gz");
@@ -78,6 +78,7 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   $p->extractTo($update_verzeichnis);
   unlink("$update_verzeichnis/release.tar");
 
+  sleep(1);
   $d = array_diff(scandir($update_verzeichnis), array(".", ".."));
   rename("$update_verzeichnis/".$d[2], "$update_verzeichnis/release");
 
@@ -91,7 +92,7 @@ else {
 
 function cms_v_loeschen($pfad) {
   if(strpos($pfad, ".git") === 0)
-	return;
+	 return;
   if(!is_dir($pfad))
     return;
   $d = array_diff(scandir($pfad), array(".", ".."));
@@ -113,8 +114,8 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
   $d = array_diff(scandir("$von$pfad"), array(".", ".."));
   foreach($d as $dd) {
     $ddd = "$von$pfad/$dd";
-	if($pfad == "/php/schulhof/funktionen" && $dd == "config.php")
-	  continue;
+	  if($pfad == "/php/schulhof/funktionen" && $dd == "config.php")
+	   continue;
     if(is_file($ddd)) {
       if(!is_dir("$nach$pfad"))
         @mkdir("$nach$pfad", null, true);
@@ -122,8 +123,14 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
     } else
       cms_v_verschieben($von, $nach, "$pfad/$dd");
   }
+  $i = 0;
   if(strlen($pfad))
 	if(count(scandir("$von$pfad")) == 2)
-	  rmdir("$von$pfad");
+	  while(!rmdir("$von$pfad")) {
+      sleep(1);
+      $i++;
+      if($i > 60)
+        break;
+	  }
 }
 ?>
