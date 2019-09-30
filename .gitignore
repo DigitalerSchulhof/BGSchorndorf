@@ -1,7 +1,6 @@
 /lehrerdateien/*
 /css/*
 /php/phpmailer/*
-/css/*
 /php/schulhof/funktionen/config.php
 /php/schulhof/funktionen/configbackup.php
 /dateien/*
@@ -10,3 +9,5 @@
 /cms_lehrerzimmer.sql
 /cms_schulhof.sql
 /GitFlow.md
+/backup/*
+/update/*
