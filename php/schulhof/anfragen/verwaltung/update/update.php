@@ -72,15 +72,17 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
 
   $p = new PharData("$update_verzeichnis/release.tar.gz");
   $p->decompress();
+  sleep(1);
   unlink("$update_verzeichnis/release.tar.gz");
-
+  sleep(1);
   $p = new PharData("$update_verzeichnis/release.tar");
   $p->extractTo($update_verzeichnis);
+  sleep(1);
   unlink("$update_verzeichnis/release.tar");
-
   sleep(1);
   $d = array_diff(scandir($update_verzeichnis), array(".", ".."));
   rename("$update_verzeichnis/".$d[2], "$update_verzeichnis/release");
+  sleep(1);
 
   // Dev löschen
   cms_v_loeschen("$update_verzeichnis/release/datenbanken");
@@ -112,9 +114,7 @@ function cms_v_loeschen($pfad) {
     else if(is_dir($datei))
       cms_v_loeschen($datei);
   }
-  for($i = 0; i < 60; $i++)
-    if(@rmdir($pfad))
-      break;
+  @rmdir($pfad);
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "") {
