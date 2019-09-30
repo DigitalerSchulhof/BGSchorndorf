@@ -132,14 +132,7 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
     } else
       cms_v_verschieben($von, $nach, "$pfad/$dd");
   }
-  $i = 0;
   if(strlen($pfad))
-	if(count(scandir("$von$pfad")) == 2)
-	  while(!rmdir("$von$pfad")) {
-      sleep(1);
-      $i++;
-      if($i > 60)
-        break;
-	  }
+	  @rmdir("$von$pfad");
 }
 ?>
