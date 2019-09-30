@@ -600,6 +600,15 @@ if (($CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten']) || ($CMS
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Administration']['Schulhof aktualisieren']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_update\" href=\"Schulhof/Verwaltung/Schulhof_aktualisieren\">";
+			$code .=  "<h3>Schulhof aktualisieren</h3>";
+			$code .=  "<p>Nach Updates prüfen und aktualisieren.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 
 if ($tabzahl > 0) {
 	$code = "<h2>Administration</h2><ul class=\"cms_uebersicht\">".$code."</ul>";

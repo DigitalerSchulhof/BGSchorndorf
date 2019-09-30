@@ -225,6 +225,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Ferien']                                   = 'php/schulhof/seiten/verwaltung/ferien/ferien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Ferien/Neuer_Ferientermin']                = 'php/schulhof/seiten/verwaltung/ferien/neuerferientermin.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Ferien/Ferientermin_bearbeiten']           = 'php/schulhof/seiten/verwaltung/ferien/ferienterminbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schulhof_aktualisieren']                   = 'php/schulhof/seiten/verwaltung/update/update.php';
   if (preg_match("/^Schulhof\/Ferien(\/[0-9]{4}){0,1}$/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/website/seiten/ferien/ferien.php';}
 

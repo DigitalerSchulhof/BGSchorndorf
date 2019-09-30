@@ -266,9 +266,10 @@ if ($rechteplaetten) {
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Administration', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anmeldungshinweise löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Administration', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Speicherplatzstatistik einsehen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++; */
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Administration', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schulhof aktualisieren', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Administration', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Updates einspielen', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
+		/*
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Administration', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Backup erstellen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Administration', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Verschlüsselung ändern', '$CMS_SCHLUESSEL'))";
