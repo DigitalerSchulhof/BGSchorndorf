@@ -112,7 +112,9 @@ function cms_v_loeschen($pfad) {
     else if(is_dir($datei))
       cms_v_loeschen($datei);
   }
-  rmdir($pfad);
+  for($i = 0; i < 60; $i++)
+    if(@rmdir($pfad))
+      break;
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "") {
