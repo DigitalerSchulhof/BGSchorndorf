@@ -137,12 +137,14 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$bilder = array();
 
-			$sql = "SELECT * FROM (SELECT id, galerie, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung FROM galerienbilder WHERE galerie = ".$galerie['id'].") AS x";
-			if ($anfrage = $dbs->query($sql)) {
-				while ($daten = $anfrage->fetch_assoc()) {
+			$sql = "SELECT id, galerie, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung FROM galerienbilder WHERE galerie = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $galerie['id']);
+			if ($sql->execute()) {
+				foreach ($sql->get_result() as $daten) {
 					array_push($bilder, $daten);
 				}
-				$anfrage->free();
+				$sql->close();
 			}
 
 			$aktionen = "";
@@ -153,8 +155,8 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 					$aktionen .= "<span class=\"cms_button\" onclick=\"cms_galerie_bearbeiten_vorbereiten('".$galerie['id']."', '$linkl')\">Galerie bearbeiten</span> ";
 				}
 				if ($CMS_RECHTE['Organisation']['Galerien genehmigen'] && ($galerie['genehmigt'] == 0)) {
-					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_galerie_genehmigen('Blogeinträge', '".$galerie['id']."', '$link')\">Galerie genehmigen</span> ";
-					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_galerie_ablehnen('Blogeinträge', '".$galerie['id']."', '$linkl')\">Galerie ablehnen</span> ";
+					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_galerie_genehmigen('".$galerie['id']."', '$link')\">Galerie genehmigen</span> ";
+					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_galerie_ablehnen('".$galerie['id']."', '$linkl')\">Galerie ablehnen</span> ";
 				}
 				if ($CMS_RECHTE['Website']['Galerien löschen']) {
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_galerie_loeschen_vorbereiten('".$galerie['id']."', '".$galerie['bezeichnung']."', '$linkl')\">Galerie löschen</span> ";
@@ -163,11 +165,11 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">".$kalender."";
 
-			$code .= "<div style=\"text-align: right;\"><br><h1>".$galerie['bezeichnung']."</h1>";
+			$code .= "<div class=\"cms_galerie_zusatzinfo\"><br><h1>".$galerie['bezeichnung']."</h1>";
 			$code .= $galerie['beschreibung']."</div></div>";
 			if (strlen($aktionen) > 0) {
 				$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\"></div></div>";
-				$code .= "<div class=\"cms_spalte_2\" style=\"text-align: right;\"><div class=\"cms_spalte_i\">";
+				$code .= "<div class=\"cms_spalte_2\" class=\"cms_galerie_zusatzinfo\"><div class=\"cms_spalte_i\">";
 					$code .= "<h3>Aktionen</h3><p>".$aktionen."</p>";
 				$code .= "</div></div>";
 			}
@@ -179,26 +181,46 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 				$code .= "<p>Kein Vorschaubild ausgewählt</p>";
 			$code .= "</div></div>";
 
-			$code .= "<div style=\"width:100%; float: left\"><div class=\"cms_spalte_i\">";
+			$code .= "<div class=\"cms_clear\"></div>";
 
+			// Bilder
 
+			// $code .= "<div style=\"width:100%; float: left\"><div class=\"cms_spalte_i\">";
+			//
+			// 	$code .= "<div class=\"cms_bilder_spalte\">";
+			// 	$c = 0;
+			// 	if(count($bilder) < 1) {
+			// 		$code .= "<p style=\"padding-left: 30px;\">Keine Bilder ausgewählt</p>";
+			// 	}
+			// 	foreach($bilder as $bild) {
+			// 		$code .= "<div class=\"cms_galerie_bild\"><div class=\"cms_galerie_bild_innen\">";
+			// 			$code .= "<img onclick=\"cms_link('".$bild["pfad"]."', true)\"src=\"".$bild["pfad"]."\"><br><p>".$bild["beschreibung"]."</p>";
+			// 		$code .= "</div></div>";
+			// 		if(++$c%ceil(count($bilder)/3)==0)
+			// 			$code .= "</div><div class=\"cms_bilder_spalte\">";
+			// 	}
+			//
+			// $code .= "</div></div></div>";
 
-			$code .= "<div class=\"cms_bilder_spalte\">";
-			$c = 0;
-			if(count($bilder) < 1) {
-				$code .= "<p style=\"padding-left: 30px;\">Keine Bilder ausgewählt</p>";
-			}
-			foreach($bilder as $bild) {
-				$code .= "<div class=\"cms_galerie_bild\"><div class=\"cms_galerie_bild_innen\">";
-					$code .= "<img onclick=\"cms_link('".$bild["pfad"]."', true)\"src=\"".$bild["pfad"]."\"><br><p>".$bild["beschreibung"]."</p>";
-				$code .= "</div></div>";
-				if(++$c%ceil(count($bilder)/3)==0)
-					$code .= "</div><div class=\"cms_bilder_spalte\">";
-			}
+			$code .= "<div id=\"cms_galerie_bilder\">";
+				foreach($bilder as $bild) {
+					$code .= "<div class=\"cms_galerie_bild\">";
+						$code .= "<img src=\"".$bild["pfad"]."\">";
+						$code .= "<div class=\"cms_galerie_beschreibung\">".$bild["beschreibung"]."</div>";
+					$code .= "</div>";
+				}
+				$code .= "<div id=\"cms_galerie_laden\">".cms_ladeicon()."<h3>Die Galerie wird geladen...</h3></div>";
+				$code .= "<div id=\"cms_galerie_dots\">";
+					for($i = 0; $i < count($bilder); $i++)
+						$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";
+				$code .= "</div>";
+				$code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
+				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
+			$code .= "</div>";
 
-			$code .= "</div></div></div>";
+			// Bilder Ende
 
-			$code .= "<br class=\"cms_clear\"><br>".cms_artikel_reaktionen("g", $galerie["id"], "-");
+			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
 
 
 			$CMS_GALERIEID = $galerie["id"];
