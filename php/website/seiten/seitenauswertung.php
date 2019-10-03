@@ -837,7 +837,7 @@ function cms_zeitabhaengig_aus_schulhof() {
       else if ($CMS_URL[1] == "Galerien") {
         include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
         if (isset($CMS_URL[5])) {
-          $code .= cms_galerie_ausgeben($dbs);
+          $code .= cms_galeriedetailansicht_ausgeben($dbs);
         }
         else {
           $galeriecode = "";

@@ -47,9 +47,11 @@ if (isset($_SESSION['PERSONENPROFIL'])) {
       }
 
       if (strlen($aktionscode) > 0) {
-        $code .= "<h3>Aktionen</h3><ul class=\"cms_aktionen_liste\">".$aktionscode."</ul>";;
+        $code .= "<h3>Aktionen</h3><ul class=\"cms_aktionen_liste\">".$aktionscode."</ul>";
       }
     }
+  } else {
+    $code .= cms_meldung_berechtigung();
   }
 }
 else {$code .= cms_meldung_bastler();}

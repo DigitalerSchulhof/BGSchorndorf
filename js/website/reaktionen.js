@@ -1,11 +1,4 @@
-$(window).ready(function() {
-  // Auswahl
-  $(".cms_reaktion img").click(function() {
-    cms_reaktion($(this).data("reaktion"));
-  })
-})
-
-function cms_reaktion(reaktion) {
+function cms_reaktion(reaktion, typ, id, gid) {
   cms_laden_an('Reagieren', 'Wird verarbeitet...');
 
   var r = $(".cms_reaktion_"+reaktion);
@@ -17,9 +10,9 @@ function cms_reaktion(reaktion) {
   r.toggleClass("cms_reagiert");
 
   var formulardaten = new FormData();
-  formulardaten.append("typ",       cms_typ);
-  formulardaten.append("id",        cms_id);
-  formulardaten.append("gid",       cms_gid);
+  formulardaten.append("typ",       typ);
+  formulardaten.append("id",        id);
+  formulardaten.append("gid",       gid);
   formulardaten.append("reaktion",  reaktion);
 
   formulardaten.append("anfragenziel", 	'341');

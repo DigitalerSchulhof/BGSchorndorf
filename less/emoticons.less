@@ -2,7 +2,6 @@
 @import "standard.less";
 
 #cms_reaktionen {
-  float: left;
   margin-top: 10px;
   .cms_reaktion {
     display: inline-block;
@@ -43,9 +42,9 @@
       max-height: 4*(35px);
     }
   }
-  & + .cms_notiz {
+  .cms_notiz {
     display: none;
-    & a:hover {
+    a:hover {
       color: @schriftlink !important;
     }
   }
@@ -56,7 +55,7 @@
         cursor: not-allowed;
       }
     }
-    & + .cms_notiz {
+    .cms_notiz {
       display: block;
     }
   }

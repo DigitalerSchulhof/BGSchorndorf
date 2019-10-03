@@ -3,8 +3,12 @@ function cms_einblenden(id, art) {
 	document.getElementById(id).style.display = art;
 }
 
+// jQuery-Objekt möglich
 function cms_ausblenden(id) {
-	document.getElementById(id).style.display = 'none';
+	if(id.jquery)	// Truthy Version-String wenn gültiges jQuery Objekt
+		id.css("display", "none");
+	else
+		$("#"+id).css("display", "none");
 }
 
 function cms_toggle_anzeigen(id, art) {

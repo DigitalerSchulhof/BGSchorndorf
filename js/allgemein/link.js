@@ -1,5 +1,5 @@
 function cms_link (ziel, neuerTab) {
-	neuerTab = neuerTab || false;	// False -> False, True -> True
+	neuerTab = neuerTab || false;
 	if(!neuerTab)
 		window.location.href = CMS_DOMAIN+'/'+ziel;
 	else

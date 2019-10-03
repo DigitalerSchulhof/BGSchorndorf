@@ -127,6 +127,7 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
       }
       if($anzeigetyp == "bereiche_balken") {
         $url = $sqld["url"];
+        $bereich = $url;
         $abk = array("Schulhof/Nutzerkonto" => "Nutzerkonto",
                      "Schulhof/Anmeldung" => "Anmeldung",
                      "Schulhof/Passwort_vergessen" => "Anmeldung",
@@ -151,9 +152,6 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
             $bereich = $name;
             break;
           }
-
-        if($bereich == "")
-          $bereich = $url;
 
         $datenHBar[$bereich] = (isset($datenHBar[$bereich])?$datenHBar[$bereich]:0)+$sqld["sum"];
       }
@@ -386,7 +384,7 @@ function cms_erfasse_click() {
     }
   }
   $tabelle = "";
-  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
+  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) != "-" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
     $dbs->query("INSERT INTO urls (url) VALUES ('$CMS_URLGANZ')");
     $id = $CMS_SEITENDETAILS["id"];
     $tabelle = "besucherstatistik_website";

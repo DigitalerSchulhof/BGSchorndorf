@@ -53,8 +53,8 @@ if (!$fehler) {
 			echo "<tr><th>Titel:</th><td><input type=\"text\" name=\"cms_postach_tag_titel\" id=\"cms_postach_tag_titel\" value=\"$titel\"></td></tr>";
 			echo "<tr><th>Farbe:</th><td>";
 					$pause = 0;
-					for ($i=0; $i<48; $i++) {
-						if ($pause == 12) {
+					for ($i=0; $i<16*4; $i++) {
+						if ($pause == 16) {
 							echo "<br>";
 							$pause = 0;
 						}

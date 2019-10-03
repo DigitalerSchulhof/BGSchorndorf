@@ -2,6 +2,7 @@
 --
 -- Format:
 --
+-- Commit lässt sich mit GitHub "History" herausfinden
 -- <SQL Änderungen>
 
 CREATE TABLE `newslettertypen` (
