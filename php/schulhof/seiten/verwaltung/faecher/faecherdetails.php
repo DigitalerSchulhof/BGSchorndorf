@@ -39,8 +39,8 @@ function cms_faecher_ausgeben ($id) {
 		$code .= "<tr><th>Kürzel:</th><td><input type=\"text\" name=\"cms_faecher_kuerzel\" id=\"cms_faecher_kuerzel\" value=\"".$kuerzel."\"></td></tr>";
 		$code .= "<tr><th>Farbe:</th><td>";
 		$pause = 0;
-		for ($i=0; $i<48; $i++) {
-			if ($pause == 12) {$code .= "<br>"; $pause = 0;}
+		for ($i=0; $i<16*4; $i++) {
+			if ($pause == 16) {$code .= "<br>"; $pause = 0;}
 			if ($farbe == $i) {$zusatz = "_aktiv";} else {$zusatz = "";}
 			$pause++;
 			$code .= "<span class=\"cms_farbbeispiel$zusatz cms_farbbeispiel_".$i."\" id=\"cms_farbbeispiel_".$i."\" onclick=\"cms_farbbeispiel_waehlen($i, 'cms_faecher_farbe')\"></span>";
