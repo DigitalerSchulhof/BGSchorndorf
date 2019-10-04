@@ -26,12 +26,20 @@ $sql->bind_param("si", $mail, $id);
 if(!$sql->execute() || $sql->fetch())
   die("MAIL");
 
+$sql = "SELECT COUNT(*) FROM newsletterempfaenger WHERE token = ?";
+$sql = $dbs->prepare($sql);
+$sql->bind_param("s", $token);
+$sql->bind_result($anz);
+
 $pool = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-$token = "";
-srand ((double)microtime()*1000000);
-for($i = 0; $i < 64; $i++) {
+do {
+  $token = "";
+  srand ((double)microtime()*1000000);
+  for($i = 0; $i < 64; $i++) {
     $token .= substr($pool,(rand()%(strlen ($pool))), 1);
-}
+  }
+  $sql->execute();
+} while(!$sql->fetch() || $anz);
 
 // Einfügen
 $eid = cms_generiere_kleinste_id("newsletterempfaenger", "s", '0');
