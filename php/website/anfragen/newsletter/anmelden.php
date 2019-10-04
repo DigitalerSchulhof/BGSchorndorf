@@ -26,7 +26,7 @@ $sql->bind_param("si", $mail, $id);
 if(!$sql->execute() || $sql->fetch())
   die("MAIL");
 
-$sql = "SELECT COUNT(*) FROM newsletterempfaenger WHERE token = ?";
+$sql = "SELECT COUNT(*) FROM newsletterempfaenger WHERE token = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("s", $token);
 $sql->bind_result($anz);
