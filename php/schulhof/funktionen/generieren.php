@@ -623,6 +623,13 @@ function cms_toggleeinblenden_generieren ($id, $buttontext1, $buttontext0, $inha
   return "<div class=\"cms_toggleeinblenden\" id=\"$id"."_F\" style=\"display: $style;\">$inhalt</div><p><span class=\"cms_toggle_$zusatz"."aktiv\" id=\"$id"."_K\" onclick=\"cms_toggleeinblenden('$id', '$buttontext1', '$buttontext0');\">$buttontext</span><input type=\"hidden\" id=\"$id\" name=\"$id\" value=\"$wert\"></p>";
 }
 
+function cms_toggletext_generieren ($id, $buttontext1, $buttontext0, $wert, $zusatzaktion = "") {
+  $buttontext = "";
+  if ($wert != 1) {$zusatz = "in"; $buttontext = $buttontext1; $style = "none";}
+  else {$zusatz = ""; $buttontext = $buttontext0; $style = "block";}
+  return "<span class=\"cms_toggle_$zusatz"."aktiv\" id=\"$id"."_K\" onclick=\"cms_toggletextbutton('$id', '$buttontext1', '$buttontext0');$zusatzaktion\">$buttontext</span><input type=\"hidden\" id=\"$id\" name=\"$id\" value=\"$wert\">";
+}
+
 function cms_toggleiconbuttontext_generieren ($id, $icon, $buttontext1, $buttontext0, $wert, $zusatzaktion = "") {
   if ($wert != 1) {$zusatz = "in"; $buttontext = $buttontext0;} else {$zusatz = ""; $buttontext = $buttontext1;}
   return "<span class=\"cms_iconbutton cms_toggle_$zusatz"."aktiv\" id=\"$id"."_K\" onclick=\"cms_toggleiconbuttontext('$id', '$buttontext1', '$buttontext0');$zusatzaktion\" style=\"background-image: url('$icon')\">$buttontext</span><input type=\"hidden\" id=\"$id\" name=\"$id\" value=\"$wert\">";
@@ -773,6 +780,6 @@ function cms_sql_set_fragezeichen($wert, $aes = false) {
 }
 
 function cms_generiere_nachladen($id, $script) {
-  return "<div id=\"$id\" class=\"cms_gesichert\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Gesicherte Inhalte werden geladen...</p><script>$script</script></div></div>";
+  return "<div id=\"$id\" class=\"cms_gesichert\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Inhalte werden geladen...<script>$script</script></p></div></div>";
 }
 ?>

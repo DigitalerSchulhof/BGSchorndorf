@@ -181,7 +181,7 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		// Solange Stunden erzeugen, bis der Zeitraum überschritten ist
-		$sql = $dbs->prepare("UPDATE unterricht SET kurs = ?, pbeginn = ?, pende = ?, plehrer = ?, praum = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = ?");
+		$sql = $dbs->prepare("UPDATE unterricht SET pkurs = ?, pbeginn = ?, pende = ?, plehrer = ?, praum = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = ?");
 		while ($jetzt < $zende) {
 			// Aktuellen Rythmus finden
 			// Wenn das aktuelle Datum nach dem Ende des Rythmus liegt
@@ -209,7 +209,7 @@ if (cms_angemeldet() && $zugriff) {
 					$uid = cms_generiere_kleinste_id('unterricht');
 					$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 					$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
-					$sql->bind_param("iiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
+					$sql->bind_param("iiiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
 					$sql->execute();
 				}
 			}
@@ -217,7 +217,7 @@ if (cms_angemeldet() && $zugriff) {
 				$uid = cms_generiere_kleinste_id('unterricht');
 				$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 				$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
-				$sql->bind_param("iiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
+				$sql->bind_param("iiiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
 				$sql->execute();
 			}
 

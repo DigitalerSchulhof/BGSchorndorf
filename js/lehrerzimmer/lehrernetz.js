@@ -1,5 +1,5 @@
 function cms_gesichert_laden(id) {
-	document.getElementById(id).innerHTML = '<div class=\"cms_meldung_laden\">'+cms_ladeicon()+'<p>Gesicherte Inhalte werden geladen...</p></div>';
+	document.getElementById(id).innerHTML = '<div class=\"cms_meldung_laden\">'+cms_ladeicon()+'<p>Inhalte werden geladen...</p></div>';
 }
 
 function cms_lehrerdatenbankzugangsdaten_schicken(formulardaten) {

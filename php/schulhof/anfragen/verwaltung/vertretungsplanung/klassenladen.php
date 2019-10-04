@@ -7,7 +7,6 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-
 if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['monat'])) {$monat = $_POST['monat'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}

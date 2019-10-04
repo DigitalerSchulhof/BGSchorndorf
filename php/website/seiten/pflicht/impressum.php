@@ -32,7 +32,7 @@
 
 
 <h2>Rechtliche Hinweise</h2>
-<h3>Uheberrecht</h3>
+<h3>Urheberrecht</h3>
 <p>Urheberrecht Texte, Bilder, Grafiken und Fotos sowie die Gestaltung dieser Internetseiten unterliegen dem Urheberrecht. Sie dürfen von Ihnen nur zum privaten und sonstigen eigenen Gebrauch im Rahmen des § 53 Urheberrechtsgesetz (UrhG) ohne jede Änderung vervielfältigt werden. Eine Verbreitung von Kopien (analog oder digital) oder Auszügen ist nur mit schriftlicher Genehmigung zulässig. Der Nachdruck und die Auswertung von Pressemitteilungen und Reden sind mit Quellenangabe gestattet. Texte, Bilder, Grafiken und sonstige Materialien können ganz oder teilweise dem Urheberrecht Dritter unterliegen. Die Inhalte Dritter sind als solche kenntlich gemacht und dürfen ohne Einwilligung des Rechteinhabers nicht vervielfältigt, öffentlich zugänglich gemacht oder öffentlich wiedergegeben werden.</p>
 
 <h3>Haftung für Inhalte</h3>

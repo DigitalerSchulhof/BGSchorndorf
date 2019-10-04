@@ -13,7 +13,7 @@ if (in_array($g, $CMS_GRUPPEN)) {
 		$sql = $dbs->prepare("SELECT id, COUNT(*) as anzahl FROM schuljahre WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
 		$sql->bind_param("s", $schuljahr);
 		if ($sql->execute()) {
-			$sql->bind_result($sjid, $anzahl);
+			$sql->bind_result($schuljahrid, $anzahl);
 			if ($sql->fetch()) {if ($anzahl == 1) {$fehler = false;}}
 		}
 		$sql->close();

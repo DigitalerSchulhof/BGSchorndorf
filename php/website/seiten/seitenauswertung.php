@@ -592,7 +592,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
 
       $felder = 0;
 
-      $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\"><h2>Kontakt</h2>";
+      $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\">";
         if(!isset($_SESSION["DSGVO_COOKIESAKZEPTIERT"]))
           $code .= cms_meldung("fehler", "<h4>Cookies</h4>Für die Verwendung des Kontaktformulars muss der Verwendung von Cookies zugestimmt werden!");
         else {

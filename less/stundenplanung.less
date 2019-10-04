@@ -43,6 +43,7 @@
   text-align: center;
   line-height: 100%;
   text-overflow: ellipsis;
+  left: 0px;
 }
 
 .cms_stundenplan_zeitliniebeginn, .cms_stundenplan_zeitlinieende {
@@ -114,9 +115,9 @@
   padding: 2px 0px;
 }
 
-.cms_stundenplan_stunde {
+.cms_stundenplan_stunde, .cms_stundenplan_stunde_geloest,
+.cms_stundenplan_stunde_konflikt, .cms_stundenplan_stunde_ueberschneidung {
   display: inline-block;
-  background: @standardhell;
   height: 100%;
   width: 100%;
   text-align: center;
@@ -125,6 +126,11 @@
   padding: 2px 0px;
   overflow-y: scroll;
 }
+
+.cms_stundenplan_stunde {background: @standardhell;}
+.cms_stundenplan_stunde_geloest {background: @infohell;}
+.cms_stundenplan_stunde_konflikt {background: @fehlerhell;}
+.cms_stundenplan_stunde_ueberschneidung {background: @warnunghell;}
 
 .cms_stundenplan_stunde_rythmus {
   position: absolute;
@@ -179,3 +185,5 @@
 .cms_wochentag_rythmus {background: @hintergrundhell;}
 .cms_wochentag_rythmus_schulfrei {background: @infohell;}
 .cms_wochentag_rythmus_ferien {background: @erfolghell;}
+
+.cms_stundenplan_spaltentitel .cms_notiz {color: inherit !important;}

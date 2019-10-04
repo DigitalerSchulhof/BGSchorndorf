@@ -119,7 +119,7 @@ if ($zugriff) {
     $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
     $code .= "<h2>Ausgeplant</h2>";
     $code .= "<table class=\"cms_zeitwahl\">";
-    $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('-')\">«</span></td><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_vplan_ausgeplant_laden(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('+')\">»</span></td>";
+    $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('-')\">«</span></td><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_vplan_ausgeplant_laden(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('+')\">»</span></td></tr>";
     $code .= "</table>";
     $code .= "<h3>Lehrkräfte</h3>";
     $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_l', '');

@@ -37,8 +37,25 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 	else if ((($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] != '1') && ($CMS_BENUTZERART == 'l')) ||
 	 				 (($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] != '1') && ($CMS_BENUTZERART == 's'))) {
 		if (cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR)) {
+			$zeitraum = "-";
 			if (isset($_SESSION['MEINSTUNDENPLANZEITRAUM']) && (cms_check_ganzzahl($_SESSION['MEINSTUNDENPLANZEITRAUM'],0) || ($_SESSION['MEINSTUNDENPLANZEITRAUM'] == '-'))) {
 				$zeitraum = $_SESSION['MEINSTUNDENPLANZEITRAUM'];
+			}
+			else {
+				$jetzt = time();
+				$sql = "SELECT id FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 AND beginn <= ? AND ende >= ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("iii", $CMS_BENUTZERSCHULJAHR, $jetzt, $jetzt);
+				if ($sql->execute()) {
+					$sql->bind_result($z);
+					if ($sql->fetch()) {
+						$zeitraum = $z;
+					}
+				}
+				$sql->close();
+			}
+
+			if (cms_check_ganzzahl($zeitraum,0) || ($zeitraum == '-')) {
 				$zeitraumwahl = "";
 				// Alle aktiven Zeiträume dieses Schuljahres laden
 				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 ORDER BY beginn DESC";
@@ -83,13 +100,11 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 						$code .= "</div></div>";
 					}
 					$code .= "<div class=\"cms_clear\"></div>";
-
 				}
 				else {
 					$code .= "<p class=\"cms_notiz\">Im gewählten Schuljahr stehen im Moment keine Stundenpläne zur Verfügung.</p>";
 					$code .= "</div>";
 				}
-
 			}
 			else {
 				$code .= cms_meldung_bastler();

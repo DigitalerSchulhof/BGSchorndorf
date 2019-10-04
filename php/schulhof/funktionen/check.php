@@ -59,7 +59,7 @@ function cms_check_nametitel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
+	if (preg_match("/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
 	else return true;
@@ -248,6 +248,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			$CMS_RECHTE['Planung']['Räume sehen'] = true;
 			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
 			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
+			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'v') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
@@ -266,6 +268,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			$CMS_RECHTE['Planung']['Räume sehen'] = true;
 			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
 			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
+			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'x') {
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}

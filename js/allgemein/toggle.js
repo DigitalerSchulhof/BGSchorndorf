@@ -99,6 +99,24 @@ function cms_toggleeinblenden(id, text1, text0) {
 	}
 }
 
+function cms_toggletextbutton(id, text1, text0) {
+	var wert = document.getElementById(id);
+	var knopf = document.getElementById(id+'_K');
+
+	// Wenn inaktiv, aktivieren
+	if (wert.value == 0) {
+		wert.value = 1;
+		knopf.className = "cms_toggle_aktiv";
+		knopf.innerHTML = text0;
+	}
+	// Sonst deaktivieren
+	else {
+		wert.value = 0;
+		knopf.className = "cms_toggle_inaktiv";
+		knopf.innerHTML = text1;
+	}
+}
+
 
 // Bei Klick ändert der Schieber seinen Wert von 1->0 oder von 0->1
 function cms_schieber(id) {

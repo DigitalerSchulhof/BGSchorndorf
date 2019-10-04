@@ -29,9 +29,9 @@ $code = "";
 $anmeldung_moeglich = true;
 if ($anmeldung_moeglich) {
 
-	/*$meldung = "<h4>Fehler beim Update</h4>";
-	$meldung .= "<p>Beim Anwenden einer neuen besseren Datenverschlüsselung sind bedauerlicherweise Fehler aufgetreten. Dadurch wurden alle Anhänge und Dateien in Gruppen unbrauchbar. Entschuldigen Sie bitte diesen Fehler! Solange Sie diese Meldung sehen, sind diese Daten nicht verfügbar. <b>Bitte laden Sie bis diese Meldung verschwindet keine Daten hoch, damit die alten Daten widerhergestellt werden können!</b></p>";
-	$code .= cms_meldung('info', $meldung);*/
+	$meldung = "<h4>Vertretungsplan</h4>";
+	$meldung .= "<p>Bis auf Weiteres sind im Schulhof keine Vertretungen hinterlegt. An der Lösung des Problems wird gearbeitet.</p>";
+	$code .= cms_meldung('info', $meldung);
 
 	$code .= "<p>Um den Schulhof zu betreten, ist eine Anmeldung nötig ...</p>";
 

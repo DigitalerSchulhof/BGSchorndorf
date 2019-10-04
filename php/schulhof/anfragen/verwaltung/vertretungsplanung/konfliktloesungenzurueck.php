@@ -3,22 +3,23 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
-
+include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['vollbild'])) {$vollbild = $_POST['vollbild'];} else {echo "FEHLER";exit;}
-
-if (!cms_check_toggle($vollbild)) {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
 
 if (cms_angemeldet() && $zugriff) {
-	$_SESSION['VERTRETUNGSPLANUNGVOLLBILD'] = $vollbild;
-	echo "ERFOLG";
+  $dbs = cms_verbinden('s');
+  $sql = $dbs->prepare("DELETE FROM unterrichtkonflikt");
+  $sql->execute();
+  echo "ERFOLG";
+  cms_trennen($dbs);
 }
 else {
 	echo "BERECHTIGUNG";
 }
+cms_trennen($dbs);
 ?>

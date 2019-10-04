@@ -133,11 +133,11 @@ function cms_dsgvo_datenschutz() {
 
 
 function cms_vollbild(id) {
-	var feld = document.getElementById(id+'_wert');
+	var feld = document.getElementById(id);
 	if (feld) {
 		if (cms_check_toggle(feld.value)) {
-			if (feld.value == 1) {cms_klasse_dazu(id, 'cms_vollbild');}
-			else {cms_klasse_weg(id, 'cms_vollbild');}
+			if (feld.value == 1) {cms_klasse_dazu(id+'_F', 'cms_vollbild');}
+			else {cms_klasse_weg(id+'_F', 'cms_vollbild');}
 		}
 	}
 }

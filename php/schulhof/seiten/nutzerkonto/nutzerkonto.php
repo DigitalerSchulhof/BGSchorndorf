@@ -160,6 +160,7 @@ if ($CMS_BENUTZERART == 'l' || $CMS_BENUTZERART == 's') {
 		$fav .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";
 }
 $fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
+$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></li> ";
 $fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach/Posteingang\">Postfach</a></li> ";
 
 if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] || $CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] ||

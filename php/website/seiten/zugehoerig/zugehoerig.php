@@ -91,9 +91,9 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     $sql->close();
 
     $code = "<h3><img id=\"cms_zugehoerig_icon\" src=\"res/gruppen/klein/$gruppenicon\"> $anzeigegruppe » $gruppenname</h3>";
-    $code .= "<table><tr><td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr-1)."', '$gruppe', '$gruppenid')\"\">«</span></td>";
+    $code .= "<table><tr><td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr-1)."', '$gruppe', '$gruppenid', '$url')\"\">«</span></td>";
     $code .= "<td>$jahr</td>";
-    $code .= "<td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr+1)."', '$gruppe', '$gruppenid')\"\">»</span></td></tr></table>";
+    $code .= "<td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr+1)."', '$gruppe', '$gruppenid', '$url')\"\">»</span></td></tr></table>";
 
     $blogcode = "";
     foreach ($BLOGEINTRAEGE as $e) {
