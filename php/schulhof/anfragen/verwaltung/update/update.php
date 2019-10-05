@@ -118,15 +118,22 @@ function cms_v_loeschen($pfad) {
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "") {
-  $pfadanfangsblacklist = array("/.git", "/backup", "/update", "/dateien", "/css");
-  foreach($pfadanfangsblacklist as $b)
-    if(strpos($pfad, $b) === 0)
-	  return;
+  $pfadblacklist = array("/.git/", "/lehrerdateien/", "/backup/", "/update/", "/dateien/", "/css/", "/php/phpmailer/");
+  $dateiblacklist = array("/php/schulhof/funktionen/config.php");
+  foreach($pfadblacklist as $b)
+    if(strpos($pfad, ltrim($b, "/")) === 0)
+	   return;
+
   $dateien = array_diff(scandir("$von$pfad"), array(".", ".."));
   foreach($dateien as $datei) {
     $ddd = "$von$pfad/$datei";
-	  if($pfad == "/php/schulhof/funktionen" && $datei == "config.php")
-	   continue;
+    foreach($dateiblacklist as $b) {
+      $b = explode("/", $b);
+      $n = array_pop($b);
+      $p = join("/", $b);
+      if($pfad == $p && $datei == $n)
+        continue 2; // Datei überspringen
+    }
     if(is_file($ddd)) {
       if(!is_dir("$nach$pfad"))
         @mkdir("$nach$pfad", null, true);

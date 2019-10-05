@@ -33,9 +33,29 @@
 <div class="cms_spalte_i">
 	<h2>Neuerungen</h2>
 	<?php
-		include_once("../../funktionen/neuerungen.php");
+		include_once(dirname(__FILE__)."/../../allgemein/funktionen/yaml.php");
+		use Async\Yaml;
 
-		echo cms_neuerungen();
+		$aeltere = "";
+		$versionen = Yaml::loader(dirname(__FILE__)."/../../../versionen.yml")["version"];
+
+		$version = function ($v, $version, $sichtbar = 0) {
+			$code = "<h4>".$version["version"]." - ".$version["tag"]."</h4>";
+			$code .= "<ul>";
+				foreach($version["neuerungen"] as $n)
+					$code .= "<li>$n</li>";
+			$code .= "</ul>";
+			return cms_toggleeinblenden_generieren ("cms_neuerungenverlaufknopf_$v", "Neuerungen in Version <b>".$version["version"]."</b> einblenden", "Neuerungen in Version <b>".$version["version"]."</b> ausblenden", $code, $sichtbar);
+		};
+
+
+		echo $version(array_keys($versionen)[0], array_shift($versionen), 1);
+
+		foreach($versionen as $k => $v) {
+			$aeltere .= $version($k, $v);
+		}
+
+		echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_aeltere', "Neuerungen älterer Versionen einblenden", "Neuerungen älterer Versionen ausblenden", $aeltere, 0);
 	?>
 	</div>
 </div>

@@ -109,7 +109,7 @@ version:
     neuerungen:
       - Die Website wird abhängig vom benutzten Gerät verschieden angezeigt. Diese Einstellung kann auch manuell geändert werden.
   0_3_2:
-    versione: 0.3.2
+    version: 0.3.2
     tag: Sonntag, den 26. August 2018
     neuerungen:
       - Das neue Element »Eventübersicht« ist für die Website verfügbar.
