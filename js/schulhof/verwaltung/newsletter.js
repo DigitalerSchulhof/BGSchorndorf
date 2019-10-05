@@ -381,6 +381,8 @@ function cms_newsletter_senden(id) {
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
 			cms_meldung_an('erfolg', 'Newsletter schreiben', '<p>Der Newsletter wurde gesandt.</p>', '<p><span class="cms_button" onclick="location.reload();">OK</span></p>');
+		} else if(rueckgabe == "BÖSE"){
+			cms_meldung_an('fehler', 'Newsletter schreiben', '<p>Die Nachricht enthält verbotenen Code!<br>Der Vorfall wurde protokolliert</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);

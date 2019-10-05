@@ -53,7 +53,7 @@ while ($daten = $anfrage->fetch_assoc()) {
 }
 $anfrage->free();
 if (strlen($newsletter) == 0)
-  $canzeigen .= "<tr><td colspan=\"3\" class=\"cms_notiz\">-- keine Newsletter vorhanden --</td></tr>";
+  $canzeigen .= "<tr><td colspan=\"4\" class=\"cms_notiz\">-- keine Newsletter vorhanden --</td></tr>";
 else
   $canzeigen .= $newsletter;
 
