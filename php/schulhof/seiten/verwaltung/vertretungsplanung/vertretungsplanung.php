@@ -241,11 +241,12 @@ if ($zugriff) {
         $code .= cms_generiere_nachladen('cms_vplan_konflikte_plan', 'cms_vplan_konflikte_liste(\'a\');');
         $code .= "</div>";
       $code .= "</div>";
-      $code .= "<p><span class=\"cms_button\" onclick=\"cms_vplan_konfliktloesung_uebernehmen()\">Konfliktlösung übernehmen</span> <span class=\"cms_button_nein\" onclick=\"cms_vplan_konfliktloesung_zueuecksetzen_anzeigen()\">Konfliktlösung zurücksetzen</span></p>";
+      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_konfliktloesung_uebernehmen()\">Konfliktlösung übernehmen</span> <span class=\"cms_button_nein\" onclick=\"cms_vplan_konfliktloesung_zueuecksetzen_anzeigen()\">Konfliktlösung zurücksetzen</span></p>";
 
       $code .= "<h3>Sondereinsatz</h3>";
       $code .= "<table class=\"cms_formular\">";
       $code .= "<tr><th>Kurs:</th><td><select id=\"cms_vplan_sondereinsatz_kurs\" name=\"cms_vplan_sondereinsatz_kurs\">";
+      $code .= "<option value=\"-\">Aufsicht</option>";
       foreach ($KURSE as $e) {
         $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
       }

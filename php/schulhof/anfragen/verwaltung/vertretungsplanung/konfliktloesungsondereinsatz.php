@@ -21,7 +21,7 @@ if (!cms_check_ganzzahl($tag,1,31)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($lehrer,0)) {echo "FEHLER"; exit;}
-if (!cms_check_ganzzahl($kurs,0)) {echo "FEHLER"; exit;}
+if ((!cms_check_ganzzahl($kurs,0)) && ($kurs != '-')) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($raum,0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($stunde,0)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($anzeigen)) {echo "FEHLER"; exit;}
@@ -34,8 +34,9 @@ if (cms_angemeldet() && $zugriff) {
   $hb = mktime(0,0,0,$monat, $tag, $jahr);
   $fehler = false;
   // Kursexistenz prüfen und Schuljahr laden
-  $sql = $dbs->prepare("SELECT COUNT(*), schuljahr FROM kurse WHERE id = ?");
-  $sql->bind_param("i", $kurs);
+
+  $sql = $dbs->prepare("SELECT COUNT(*), id FROM schuljahre WHERE beginn <= ? AND ende >= ?");
+  $sql->bind_param("ii", $hb, $hb);
   if ($sql->execute()) {
     $sql->bind_result($anzahl, $SCHULJAHR);
     if ($sql->fetch()) {
@@ -43,6 +44,19 @@ if (cms_angemeldet() && $zugriff) {
     } else {$fehler = true;}
   } else {$fehler = true;}
   $sql->close();
+
+  if ($kurs != '-') {
+    $sql = $dbs->prepare("SELECT COUNT(*) FROM kurse WHERE id = ? AND schuljahr = ?");
+    $sql->bind_param("i", $kurs);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl);
+      if ($sql->fetch()) {
+        if ($anzahl != 1) {$fehler = true;}
+      } else {$fehler = true;}
+    } else {$fehler = true;}
+    $sql->close();
+  }
+
 
   // Lehrerexistenz prüfen
   if (!$fehler) {
@@ -85,6 +99,7 @@ if (cms_angemeldet() && $zugriff) {
 
   if (!$fehler) {
     // Stunde eintragen
+    if ($kurs == '-') {$kurs = null;}
     $tbeginn = mktime($STDBEGINNS, $STDBEGINNM, 0, $monat, $tag, $jahr);
     $tende = mktime($STDENDES, $STDENDEM, 0, $monat, $tag, $jahr)-1;
     $nid = cms_generiere_kleinste_id('unterrichtkonflikt');

@@ -584,7 +584,7 @@ function cms_vplan_konflikte_liste(art) {
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe.match(/^<h4/) || rueckgabe.match(/^<p/) || rueckgabe.match(/^<table/)) {
 				liste.innerHTML = rueckgabe;
-				if ((art == 'a') || (art == 'k')) {cms_vplan_konflikte_plan();}
+				if ((art == 'a') || (art == 'k')) {cms_vplan_konflikte_plan(art);}
 			}
 			else {
 				liste.innerHTML = '<p class=\"cms_notiz\">Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>';
@@ -689,7 +689,7 @@ function cms_vplan_sondereinsatz_speichern() {
 	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
 	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
 	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
-	if (!cms_check_ganzzahl(kurs,0)) {fehler = true;}
+	if ((!cms_check_ganzzahl(kurs,0)) && (kurs != '-')) {fehler = true;}
 	if (!cms_check_ganzzahl(raum,0)) {fehler = true;}
 	if (!cms_check_ganzzahl(stunde,0)) {fehler = true;}
 	if (!cms_check_toggle(anz,0)) {fehler = true;}
@@ -790,17 +790,195 @@ function cms_vplan_konflikte_plan(art) {
 
 		// VERTRETUNSTEXTE LADEN
 		function anfragennachbehandlung(rueckgabe) {
-			if (rueckgabe.match(/^<p/) || rueckgabe.match(/^<h4/)) {
+			if (rueckgabe.match(/^<div class/)) {
 				plan.innerHTML = rueckgabe;
 			}
 			else {
 				plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>';
 			}
+			if (art == 'a') {cms_vplan_wochenplan_l(art);}
 		}
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
 function cms_vplan_wochenplan_l(art, lehrer, raum, klasse) {
-	alert(art+lehrer+raum+klasse);
+	var lehrer = lehrer || false;
+	var raum = raum || false;
+	var klasse = klasse || false;
+	var art = art || false;
+	var altlehrer = document.getElementById('cms_vplan_woche_lehrer').value;
+	var altraum = document.getElementById('cms_vplan_woche_raum').value;
+	var altklasse = document.getElementById('cms_vplan_woche_klasse').value;
+	var aktualisieren = '';
+	if (art != 'a') {aktualisieren = 'l';}
+	else if (art == 'a') {
+		if (lehrer) {
+			if (lehrer != altlehrer) {
+				aktualisieren += 'l';
+				document.getElementById('cms_vplan_woche_lehrer').value = lehrer;
+				cms_gesichert_laden('cms_vplan_wochenplan_l');
+			}
+		}
+		else {aktualisieren += 'l';}
+		if (raum) {
+			if (raum != altraum) {
+				aktualisieren += 'r';
+				document.getElementById('cms_vplan_woche_raum').value = raum;
+				cms_gesichert_laden('cms_vplan_wochenplan_r');
+			}
+		}
+		else {aktualisieren += 'r';}
+		if (klasse) {
+			if (klasse != altklasse) {
+				aktualisieren += 'k';
+				document.getElementById('cms_vplan_woche_klasse').value = klasse;
+				cms_gesichert_laden('cms_vplan_wochenplan_k');
+			}
+		}
+		else {aktualisieren += 'k';}
+	}
+
+	// Lehrer aktualisieren
+	if (aktualisieren.match(/l/)) {
+		var tag = document.getElementById('cms_vplanlehrer_datum_T').value;
+		var monat = document.getElementById('cms_vplanlehrer_datum_M').value;
+		var jahr = document.getElementById('cms_vplanlehrer_datum_J').value;
+		var lehrer = document.getElementById('cms_vplan_woche_lehrer').value;
+		var plan = document.getElementById('cms_vplan_wochenplan_l');
+		var fehler = false;
+
+		if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+		if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+		if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+		if (!cms_check_ganzzahl(lehrer,0)) {fehler = true;}
+
+		if (fehler) {
+			plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Lehrerplans ist ein Fehler aufgetreten.</p>';
+		}
+		else {
+			formulardaten = new FormData();
+			cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+			formulardaten.append("tag", 	tag);
+			formulardaten.append("monat", monat);
+			formulardaten.append("jahr", 	jahr);
+			formulardaten.append("lehrer",lehrer);
+			formulardaten.append("anfragenziel", 	'8');
+
+			// VERTRETUNSTEXTE LADEN
+			function anfragennachbehandlung(rueckgabe) {
+				if (rueckgabe.match(/^<div class/)) {
+					plan.innerHTML = rueckgabe;
+				}
+				else {
+					plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Lehrerplans ist ein Fehler aufgetreten.</p>';
+				}
+				if (art == 'a') {cms_vplan_wochenplan_r(aktualisieren);}
+			}
+			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		}
+	}
+	else if (art == 'a') {cms_vplan_wochenplan_r(aktualisieren);}
+}
+
+function cms_vplan_wochenplan_r(aktualisieren) {
+	var aktualisieren = aktualisieren || 'r';
+	if (aktualisieren.match(/r/)) {
+		var tag = document.getElementById('cms_vplanraum_datum_T').value;
+		var monat = document.getElementById('cms_vplanraum_datum_M').value;
+		var jahr = document.getElementById('cms_vplanraum_datum_J').value;
+		var raum = document.getElementById('cms_vplan_woche_raum').value;
+		var plan = document.getElementById('cms_vplan_wochenplan_r');
+		var fehler = false;
+
+		if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+		if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+		if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+		if (!cms_check_ganzzahl(raum,0)) {fehler = true;}
+
+		if (fehler) {
+			plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Raumplans ist ein Fehler aufgetreten.</p>';
+		}
+		else {
+			formulardaten = new FormData();
+			cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+			formulardaten.append("tag", 	tag);
+			formulardaten.append("monat", monat);
+			formulardaten.append("jahr", 	jahr);
+			formulardaten.append("raum",raum);
+			formulardaten.append("anfragenziel", 	'9');
+
+			// VERTRETUNSTEXTE LADEN
+			function anfragennachbehandlung(rueckgabe) {
+				if (rueckgabe.match(/^<div class/)) {
+					plan.innerHTML = rueckgabe;
+				}
+				else {
+					plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Raumplans ist ein Fehler aufgetreten.</p>';
+				}
+				if (aktualisieren.match(/k/)) {cms_vplan_wochenplan_k(aktualisieren);}
+			}
+			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		}
+	}
+	else if (aktualisieren.match(/k/)) {cms_vplan_wochenplan_k(aktualisieren);}
+}
+
+function cms_vplan_wochenplan_k(aktualisieren) {
+	var aktualisieren = aktualisieren || 'k';
+	if (aktualisieren.match(/k/)) {
+		var tag = document.getElementById('cms_vplanklasse_datum_T').value;
+		var monat = document.getElementById('cms_vplanklasse_datum_M').value;
+		var jahr = document.getElementById('cms_vplanklasse_datum_J').value;
+		var klasse = document.getElementById('cms_vplan_woche_klasse').value;
+		var plan = document.getElementById('cms_vplan_wochenplan_k');
+		var fehler = false;
+
+		if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+		if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+		if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+		if (!cms_check_ganzzahl(klasse.substr(1),0)) {fehler = true;}
+		if ((klasse.substr(0,1) != 's') && (klasse.substr(0,1) != 'k')) {fehler = true;}
+
+		if (fehler) {
+			plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
+		}
+		else {
+			formulardaten = new FormData();
+			cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+			formulardaten.append("tag", 	tag);
+			formulardaten.append("monat", monat);
+			formulardaten.append("jahr", 	jahr);
+			formulardaten.append("klasse", klasse);
+			formulardaten.append("anfragenziel", 	'10');
+
+			// VERTRETUNSTEXTE LADEN
+			function anfragennachbehandlung(rueckgabe) {
+				if (rueckgabe.match(/^<div class/)) {
+					plan.innerHTML = rueckgabe;
+				}
+				else {
+					plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
+				}
+			}
+			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		}
+	}
+}
+
+
+function cms_vplan_konfliktloesung_uebernehmen() {
+  cms_laden_an('Konfliktlösung übernehmen', 'Geplante Vertretungen werden gespeichert ...');
+
+	var formulardaten = new FormData();
+  formulardaten.append("anfragenziel", 	'296');
+
+  function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
