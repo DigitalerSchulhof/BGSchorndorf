@@ -91,7 +91,7 @@
                 echo "<tr class=\"cms_release cms_release_".$w["id"]."\">";
                   echo "<th class=\"cms_release_v\">$v</th>";
                   echo "<td class=\"cms_release_t\">$t</td>";
-                  echo "<td><span class=\"cms_aktion_klein\" onclick=\"cms_release_waehlen('".$release["id"]."', '$v')\"><span class=\"cms_hinweis\">Version auswählen</span><img src=\"res/icons/klein/version_hoch.png\"></span></td>";
+                  echo "<td><span class=\"cms_aktion_klein\" onclick=\"cms_release_waehlen('".$w["id"]."', '$v')\"><span class=\"cms_hinweis\">Version auswählen</span><img src=\"res/icons/klein/version_hoch.png\"></span></td>";
                 echo "</tr>";
               }
             echo "</table>";

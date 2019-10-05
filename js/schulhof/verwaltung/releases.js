@@ -1,14 +1,14 @@
 function cms_release_waehlen(id, version) {
-  cms_laden_an();
+  cms_laden_an("Version wählen", "Die Version wird ausgewählt...");
   var v = version;
-  var i = $(".cms_release_"+id+">.cms_release_i").text();
-  if(!i.length) {
+  var t = $(".cms_release_"+id+">.cms_release_t").text();
+  if(!t.length) {
     cms_meldung_fehler();
     return;
   }
   $("#cms_aktuelles_release_v").text(v);
   $("#cms_gewaehltes_release").val(id);
-  $("#cms_aktuelles_release_i").text(i);
+  $("#cms_aktuelles_release_t").text(t);
   setTimeout(function() {
     cms_laden_aus();
   }, 100);
