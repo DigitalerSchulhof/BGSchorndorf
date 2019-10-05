@@ -958,7 +958,7 @@ function cms_vplan_wochenplan_k(aktualisieren) {
 					plan.innerHTML = rueckgabe;
 				}
 				else {
-					plan.innerHTML = rueckgabe;//'<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
+					plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
 				}
 			}
 			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
@@ -1045,12 +1045,12 @@ function cms_vertretungsplan_stunde_verschieben_info() {
 
 function cms_vplan_stunde_kopieren() {
 	cms_laden_an('Stunde kopieren', 'Stunde wird kopiert ...');
-
 	var formulardaten = new FormData();
+	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
   formulardaten.append("ausgangsstundeu", vplan_start_uid);
   formulardaten.append("ausgangsstundek", vplan_start_kid);
   formulardaten.append("zielzeit", 	vplan_ziel_std);
-  formulardaten.append("anfragenziel", 	'297');
+  formulardaten.append("anfragenziel", 	'11');
 
   function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
@@ -1060,17 +1060,18 @@ function cms_vplan_stunde_kopieren() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 function cms_vplan_stunde_verlegen() {
 	cms_laden_an('Stunde verlegen', 'Stunde wird verlegt ...');
 
 	var formulardaten = new FormData();
+	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
   formulardaten.append("ausgangsstundeu", vplan_start_uid);
   formulardaten.append("ausgangsstundek", vplan_start_kid);
   formulardaten.append("zielzeit", 	vplan_ziel_std);
-  formulardaten.append("anfragenziel", 	'298');
+  formulardaten.append("anfragenziel", 	'12');
 
   function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
@@ -1080,18 +1081,19 @@ function cms_vplan_stunde_verlegen() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 function cms_vplan_stunde_ersetzen() {
 	cms_laden_an('Stunde ersetzen', 'Stunde wird ersetzt ...');
 
 	var formulardaten = new FormData();
+	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
   formulardaten.append("ausgangsstundeu", vplan_start_uid);
   formulardaten.append("ausgangsstundek", vplan_start_kid);
   formulardaten.append("zielstundeu", 	vplan_ziel_uid);
   formulardaten.append("zielstundek", 	vplan_ziel_kid);
-  formulardaten.append("anfragenziel", 	'299');
+  formulardaten.append("anfragenziel", 	'13');
 
   function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
@@ -1101,18 +1103,19 @@ function cms_vplan_stunde_ersetzen() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 function cms_vplan_stunde_tauschen() {
 	cms_laden_an('Stunde tauschen', 'Stunde wird getauscht ...');
 
 	var formulardaten = new FormData();
+	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
   formulardaten.append("ausgangsstundeu", vplan_start_uid);
   formulardaten.append("ausgangsstundek", vplan_start_kid);
   formulardaten.append("zielstundeu", 	vplan_ziel_uid);
   formulardaten.append("zielstundek", 	vplan_ziel_kid);
-  formulardaten.append("anfragenziel", 	'352');
+  formulardaten.append("anfragenziel", 	'14');
 
   function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
@@ -1122,5 +1125,5 @@ function cms_vplan_stunde_tauschen() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
