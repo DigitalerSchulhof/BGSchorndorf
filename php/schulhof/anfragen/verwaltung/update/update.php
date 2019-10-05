@@ -121,7 +121,7 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
   $pfadblacklist = array("/.git/", "/lehrerdateien/", "/backup/", "/update/", "/dateien/", "/css/", "/php/phpmailer/");
   $dateiblacklist = array("/php/schulhof/funktionen/config.php");
   foreach($pfadblacklist as $b)
-    if(strpos($pfad, ltrim($b, "/")) === 0)
+    if(strpos($pfad, trim($b, "/")) === 0)
 	   return;
 
   $dateien = array_diff(scandir("$von$pfad"), array(".", ".."));
