@@ -7,7 +7,6 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
 

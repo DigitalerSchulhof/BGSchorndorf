@@ -958,14 +958,13 @@ function cms_vplan_wochenplan_k(aktualisieren) {
 					plan.innerHTML = rueckgabe;
 				}
 				else {
-					plan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
+					plan.innerHTML = rueckgabe;//'<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
 				}
 			}
 			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 		}
 	}
 }
-
 
 function cms_vplan_konfliktloesung_uebernehmen() {
   cms_laden_an('Konfliktlösung übernehmen', 'Geplante Vertretungen werden gespeichert ...');
@@ -975,7 +974,150 @@ function cms_vplan_konfliktloesung_uebernehmen() {
 
   function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-      cms_link('Schulhof/Verwaltung/Planung/Vertretungsplanung');
+			cms_vplan_konflikte_liste('a');
+			cms_laden_aus();
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+
+var vplan_start_std = null;
+var vplan_start_lehrer = null;
+var vplan_start_raum = null;
+var vplan_start_kurs = null;
+var vplan_start_bez = null;
+var vplan_start_uid = null;
+var vplan_start_kid = null;
+var vplan_ziel_std = null;
+var vplan_ziel_lehrer = null;
+var vplan_ziel_raum = null;
+var vplan_ziel_kurs = null;
+var vplan_ziel_bez = null;
+var vplan_ziel_uid = null;
+var vplan_ziel_kid = null;
+
+function cms_vertretungsplan_stunde_verschieben_start(std, kurs, lehrer, raum, bez, uid, kid) {
+	vplan_start_std = std;
+	vplan_start_lehrer = lehrer;
+	vplan_start_raum = raum;
+	vplan_start_kurs = kurs;
+	vplan_start_bez = bez;
+	vplan_start_uid = uid;
+	vplan_start_kid = kid;
+}
+
+function cms_vertretungsplan_stunde_verschieben_ziel(std, kurs, lehrer, raum, bez, uid, kid) {
+	vplan_ziel_std = std;
+	vplan_ziel_lehrer = lehrer;
+	vplan_ziel_raum = raum;
+	vplan_ziel_kurs = kurs;
+	vplan_ziel_bez = bez;
+	vplan_ziel_uid = uid;
+	vplan_ziel_kid = kid;
+	cms_vertretungsplan_stunde_verschieben_info();
+}
+
+
+function cms_vertretungsplan_stunde_verschieben_info() {
+	if ((vplan_start_uid == vplan_ziel_uid) && (vplan_start_kid == vplan_ziel_kid)) {
+		cms_meldung_an('info', 'Stunde verschieben', '<p>Es wurde die identische Stunde ausgewählt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span></p>');
+	}
+	else {
+		var info = '<b>Kopieren</b> lässt die Ausgangsstunde unberührt und erstellt am Zielort einen Sondereinsatz.';
+		var optionen = '<span class="cms_button" onclick="cms_vplan_stunde_kopieren();">Kopieren</span> ';
+		info += '<br><b>Verlegen</b> verlegt die Ausgangsstunde in die Zielstunde. Andere Stunden bleiben unberührt.';
+		optionen += '<span class="cms_button" onclick="cms_vplan_stunde_verlegen();">Verlegen</span> ';
+		if (cms_check_ganzzahl(vplan_ziel_kurs,0)) {
+			info += '<br><b>Ersetzen</b> lässt die Zielstunde entfallen und verlegt die Ausgangsstunde in die Zielstunde.';
+			optionen += '<span class="cms_button" onclick="cms_vplan_stunde_ersetzen();">Ersetzen</span> ';
+			info += '<br><b>Tauschen</b> vertauscht Ziel- mit Ausgangsstunde.';
+			optionen += '<span class="cms_button" onclick="cms_vplan_stunde_tauschen();">Tauschen</span> ';
+		}
+		optionen += '<span class="cms_button_nein" onclick="cms_meldung_aus();">Abbrechen</span>';
+		cms_meldung_an('info', 'Stunde verschieben', '<p>'+vplan_start_bez+' <b>'+vplan_start_std+'</b><br>&searr;<br> '+vplan_ziel_bez+' <b>'+vplan_ziel_std+'</b></p><p>Was genau wollen Sie tun?</p>', '<p>'+optionen+'</p><p class=\"cms_notiz\">'+info+'</p>');
+	}
+}
+
+
+function cms_vplan_stunde_kopieren() {
+	cms_laden_an('Stunde kopieren', 'Stunde wird kopiert ...');
+
+	var formulardaten = new FormData();
+  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+  formulardaten.append("ausgangsstundek", vplan_start_kid);
+  formulardaten.append("zielzeit", 	vplan_ziel_std);
+  formulardaten.append("anfragenziel", 	'297');
+
+  function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_vplan_konflikte_liste('a');
+			cms_laden_aus();
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_vplan_stunde_verlegen() {
+	cms_laden_an('Stunde verlegen', 'Stunde wird verlegt ...');
+
+	var formulardaten = new FormData();
+  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+  formulardaten.append("ausgangsstundek", vplan_start_kid);
+  formulardaten.append("zielzeit", 	vplan_ziel_std);
+  formulardaten.append("anfragenziel", 	'298');
+
+  function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_vplan_konflikte_liste('a');
+			cms_laden_aus();
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_vplan_stunde_ersetzen() {
+	cms_laden_an('Stunde ersetzen', 'Stunde wird ersetzt ...');
+
+	var formulardaten = new FormData();
+  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+  formulardaten.append("ausgangsstundek", vplan_start_kid);
+  formulardaten.append("zielstundeu", 	vplan_ziel_uid);
+  formulardaten.append("zielstundek", 	vplan_ziel_kid);
+  formulardaten.append("anfragenziel", 	'299');
+
+  function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_vplan_konflikte_liste('a');
+			cms_laden_aus();
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_vplan_stunde_tauschen() {
+	cms_laden_an('Stunde tauschen', 'Stunde wird getauscht ...');
+
+	var formulardaten = new FormData();
+  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+  formulardaten.append("ausgangsstundek", vplan_start_kid);
+  formulardaten.append("zielstundeu", 	vplan_ziel_uid);
+  formulardaten.append("zielstundek", 	vplan_ziel_kid);
+  formulardaten.append("anfragenziel", 	'352');
+
+  function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_vplan_konflikte_liste('a');
+			cms_laden_aus();
     }
     else {cms_fehlerbehandlung(rueckgabe);}
   }
