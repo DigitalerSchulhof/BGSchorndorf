@@ -10,6 +10,7 @@
   if(!$CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
     echo cms_meldung_berechtigung();
   else {
+    echo cms_meldung("warnung", "<h4>Datenbankänderungen</h4><p>Bei einem manuellen Wechsel der Version können Unstimmigkeiten auftreten und manche Funktionen beeinträchtigen.</p><p>Vor der Änderung wird automatisch ein Backup des aktuellen Programmcodes gemacht. Fehler in der Datenbank können nicht rückgängig gemacht werden!</p>");
     $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
     $basis_verzeichnis = dirname(__FILE__)."/../../../../..";
 
