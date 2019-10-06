@@ -201,6 +201,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
@@ -215,6 +216,7 @@
     echo "<script src=\"js/allgemein/check.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/download.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/suche.js?v=$CMS_VERSION\"></script>";
+    echo "<script src=\"js/allgemein/contextmenue.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/schulhof/nutzerkonto/anmelden.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/zugehoerig.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
@@ -472,6 +474,7 @@
 		include_once("php/allgemein/seiten/blende.php");
 		cms_trennen($dbs);
 	?>
+	<div id="contextmenue"></div>
 
 	<div id="cms_javascript">
 		<?php

@@ -623,21 +623,9 @@ echo $code;
 		</a>
 	</li>
 	<li>
-		<a class="cms_uebersicht_verwaltung_neuerungen" href="Schulhof/Verwaltung/Neuerungen/">
-			<h3>Neuerungen</h3>
-			<p>Neuerungen verwalten sowie Personen zuordnen, die Neuerungen schreiben dürfen. Neuerungen werden vor der Anmeldung zum Schulhof angezeigt. Durch Updates werden automatisch Neuerungen eingespielt. Diese können ergänzt, umgeschrieben oder entfernt werden.</p>
-		</a>
-	</li>
-	<li>
 		<a class="cms_uebersicht_verwaltung_speicherplatz" href="Schulhof/Verwaltung/Speicherplatz/">
 			<h3>Speicherplatz</h3>
 			<p>Statistiken über die Verwendung des Online-Speichers, sowie Einstellungen von Speicherlimits.</p>
-		</a>
-	</li>
-	<li>
-		<a class="cms_uebersicht_verwaltung_update" href="Schulhof/Verwaltung/Update/">
-			<h3>Update</h3>
-			<p>Softwareerneuerungen einspielen.</p>
 		</a>
 	</li>
 	<li>
