@@ -183,25 +183,6 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$code .= "<div class=\"cms_clear\"></div>";
 
-			// Bilder
-
-			// $code .= "<div style=\"width:100%; float: left\"><div class=\"cms_spalte_i\">";
-			//
-			// 	$code .= "<div class=\"cms_bilder_spalte\">";
-			// 	$c = 0;
-			// 	if(count($bilder) < 1) {
-			// 		$code .= "<p style=\"padding-left: 30px;\">Keine Bilder ausgewählt</p>";
-			// 	}
-			// 	foreach($bilder as $bild) {
-			// 		$code .= "<div class=\"cms_galerie_bild\"><div class=\"cms_galerie_bild_innen\">";
-			// 			$code .= "<img onclick=\"cms_link('".$bild["pfad"]."', true)\"src=\"".$bild["pfad"]."\"><br><p>".$bild["beschreibung"]."</p>";
-			// 		$code .= "</div></div>";
-			// 		if(++$c%ceil(count($bilder)/3)==0)
-			// 			$code .= "</div><div class=\"cms_bilder_spalte\">";
-			// 	}
-			//
-			// $code .= "</div></div></div>";
-
 			$code .= "<div id=\"cms_galerie_bilder\">";
 				foreach($bilder as $bild) {
 					$code .= "<div class=\"cms_galerie_bild\">";
@@ -217,8 +198,6 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 				$code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
 				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
 			$code .= "</div>";
-
-			// Bilder Ende
 
 			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
 

@@ -384,7 +384,16 @@ function cms_erfasse_click() {
     }
   }
   $tabelle = "";
-  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) != "-" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
+
+  $website =  !is_null($CMS_SEITENDETAILS)            &&  // Seitendetails
+              (strlen($CMS_SEITENDETAILS['id']) > 0)  &&  // Gültige Seite
+              (
+                cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) != "-"                                                    ||  // Website
+                ($CMS_SEITENDETAILS["art"] == "t" || $CMS_SEITENDETAILS["art"] == "b" || $CMS_SEITENDETAILS["art"] == "g")      // Artikel
+              );
+
+
+  if($website) {
     $dbs->query("INSERT INTO urls (url) VALUES ('$CMS_URLGANZ')");
     $id = $CMS_SEITENDETAILS["id"];
     $tabelle = "besucherstatistik_website";
