@@ -46,7 +46,7 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
     return cms_meldung_fehler();
   if($start["jahr"] == $ende["jahr"] && $start["monat"] == $ende["monat"]) {
     if(!$kd)
-      echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+      echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -161,13 +161,13 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
     }
     if($r->num_rows == 0) {
       if(!$kd)
-        echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+        echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
       $kd = true;
       return;
     }
   } else {
     if(!$kd)
-      echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+      echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -328,7 +328,7 @@ function cms_besucherstatistik_website_jahresplaettchen($typ) {
   $sqld = $anfrage->fetch_assoc();
   $minJahr = intval($sqld["jahr"]);
   if($minJahr == 0) {
-    echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+    echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
