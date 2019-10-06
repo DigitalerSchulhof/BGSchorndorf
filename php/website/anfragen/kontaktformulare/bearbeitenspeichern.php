@@ -24,7 +24,7 @@ foreach ($beschreibungen as $i => $b) {
 $beschreibungen = $bes;
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
+$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
