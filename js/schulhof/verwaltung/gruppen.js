@@ -53,7 +53,6 @@ function cms_gruppen_neu_speichern (art) {
             cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
 
             function lehrerservernachbehandlung(rueckgabe) {
-              alert(rueckgabe);
               if (rueckgabe == "ERFOLG") {
                 cms_meldung_an('erfolg', 'Neue Gruppe anlegen', '<p>Die Gruppe wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Gruppen/'+art.replace(' ', '_')+'\');">Zurück zur Übersicht</span></p>');
               }
