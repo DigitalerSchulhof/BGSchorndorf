@@ -10,25 +10,18 @@
   if(!$CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
     echo cms_meldung_berechtigung();
   else {
-    echo cms_meldung("warnung", "<h4>Datenbankänderungen</h4><p>Bei einem manuellen Wechsel der Version können Unstimmigkeiten auftreten und manche Funktionen beeinträchtigen.</p><p>Vor der Änderung wird automatisch ein Backup des aktuellen Programmcodes gemacht. Fehler in der Datenbank können nicht rückgängig gemacht werden!</p>");
     $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
     $basis_verzeichnis = dirname(__FILE__)."/../../../../..";
-
-    include_once("$basis_verzeichnis/php/schulhof/funktionen/neuerungen.php");
-
-    $versionen = array(); // Tatsächliche Versionen (Aus origin/versionen.yml)
-    $waehlbar = array();  // Wählbare Versionen     (Aus Releases)
-
 
     if(!file_exists("$basis_verzeichnis/version")) {
       echo cms_meldung("fehler", "<h4>Ungültige Version</h4><p>Bitte den Administrator benachrichtigen!</p>");
     } else {
       $version = trim(file_get_contents("$basis_verzeichnis/version"));
 
-      // Versionen von GitHub holen
+      // Versionsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/releases",
+        CURLOPT_URL             => "$GitHub_base/releases/latest",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
@@ -38,13 +31,13 @@
         )
       );
       curl_setopt_array($curl, $curlConfig);
-      $antwort = curl_exec($curl);
+      $neuste = curl_exec($curl);
       curl_close($curl);
 
       // Neuerungsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/contents/versionen.yml",
+        CURLOPT_URL             => "$GitHub_base/contents/versionen.yml?ref=updater",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
@@ -57,48 +50,24 @@
       $versionenYaml = curl_exec($curl);
       curl_close($curl);
 
-      if(($antwort = json_decode($antwort, true)) === null || ($versionen = @Yaml::loadString($versionenYaml)["version"]) === null)
+      if(($neuste = json_decode($neuste, true)) === null || ($versionen = @Yaml::loadString($versionenYaml)["version"]) === null)
         echo cms_meldung_fehler();
       else {
-        foreach($antwort as $release) {
-          if($release["draft"] || $release["prerelease"])
-            continue;
-          $waehlbar[] = array(
-            "version" => $release["name"],
-            "id" => $release["id"]
-          );
-        }
+        $neusteversion = $neuste["name"];
+        $neusteversiondatum = $neuste["created_at"];
+        $neusteversionid = $neuste["id"];
+        $assets = $neuste["assets"];
 
-        usort($waehlbar, function($a, $b) {
-          return version_compare($a["version"], $b["version"], "lt");
-        });
+        if(version_compare($neusteversion, $version, "gt")) {
+          echo cms_meldung("warnung", "<h4>Aktualisieren</h4><p>Der Programmcode sowie die Datenbanken des Digitalen Schulhofs werden automatisch aktualisiert. Sobald der Vorgang gestartet wird, ist die gesamte Website für einige Minuten nicht erreichbar.</p><p>Sollte die Website nach dem Update fehlerhaft funktionieren, ist der Administrator <b>umgehend</b> zu benachrichtigen.");
+          echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version verfügbar: <b>".$neusteversion."</b></p>");
 
-        if(count($waehlbar))
-          if(version_compare($waehlbar[0]["version"], $version, "gt")) {
-            echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version verfügbar: <b>".$waehlbar[0]["version"]."</b></p>");
-          }
-
-
-        // Versionen ausgeben
-        echo "<div class=\"cms_spalte_2\">";
-          echo "<div class=\"cms_spalte_i\">";
-            echo "<h2>Verfügbare Versionen</h2>";
-            echo "<table class=\"cms_formular\">";
-              foreach($waehlbar as $w) {
-                $v = $versionen[str_replace(".", "_", $w["version"])];
-                $t = $v["tag"];
-                $v = $v["version"];
-
-                echo "<tr class=\"cms_release cms_release_".$w["id"]."\">";
-                  echo "<th class=\"cms_release_v\">$v</th>";
-                  echo "<td class=\"cms_release_t\">$t</td>";
-                  echo "<td><span class=\"cms_aktion_klein\" onclick=\"cms_release_waehlen('".$w["id"]."', '$v')\"><span class=\"cms_hinweis\">Version auswählen</span><img src=\"res/icons/klein/version_hoch.png\"></span></td>";
-                echo "</tr>";
-              }
-            echo "</table>";
-            echo "<div class=\"cms_notiz\">Ältere Versionen werden nicht unterstützt.</div>";
+          echo "<div class=\"cms_spalte_2\">";
+            echo "<span class=\"cms_button_ja\" onclick=\"cms_schulhof_aktualisieren_vorbereiten();\">Schulhof aktualisieren</span> ";
+            echo "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
           echo "</div>";
-          echo "<div class=\"cms_spalte_i\">";
+
+          echo "<div class=\"cms_spalte_2\">";
             echo "<h2>Neuerungsverlauf</h2>";
 
             $aeltere = "";
@@ -120,34 +89,10 @@
 
             echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_aeltere', "Neuerungen älterer Versionen einblenden", "Neuerungen älterer Versionen ausblenden", $aeltere, 0);
           echo "</div>";
-        echo "</div>";
-        echo "<div class=\"cms_spalte_2\">";
-          echo "<div class=\"cms_spalte_i\">";
-            echo "<h2>Gewählte Version</h2>";
-            echo "<table class=\"cms_formular\">";
-              $code = "";
-              foreach($waehlbar as $w) {
-                if($w["version"] != $version)
-                  continue;
-
-                $v = $versionen[str_replace(".", "_", $version)];
-                $t = $v["tag"];
-                $v = $v["version"];
-
-                $code .= "<tr id=\"cms_aktuelles_release\">";
-                  $code .= "<th id=\"cms_aktuelles_release_v\">$v</th>";
-                  $code .= "<td id=\"cms_aktuelles_release_t\">$t</td>";
-                  $code .= "<td><input type=\"hidden\" id=\"cms_gewaehltes_release\" value=\"".$w["id"]."\"></td>";
-                $code .= "</tr>";
-              }
-              if(!strlen($code))
-                $code = cms_meldung_fehler();
-              echo $code;
-            echo "</table>";
-            echo "<span class=\"cms_button_ja\" onclick=\"cms_release_hochladen_vorbereiten()\">Hochladen</span> ";
-            echo "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung')\">Abbrechen</span>";
-          echo "</div>";
-        echo "</div>";
+        } else {
+          echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version!</p>");
+          echo "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
+        }
       }
     }
   }

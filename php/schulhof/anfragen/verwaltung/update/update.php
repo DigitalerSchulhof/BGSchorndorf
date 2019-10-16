@@ -8,13 +8,14 @@ include_once("../../schulhof/funktionen/check.php");
 set_time_limit(0);
 
 session_start();
-postLesen("version");
-if(!cms_check_ganzzahl($version))
-  die("FEHLER");
+
 $CMS_RECHTE = cms_rechte_laden();
+$dbs = cms_verbinden("s");
 
 if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"]) {
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
+  $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
+
   $base_verzeichnis = dirname(__FILE__)."/../../../../..";
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
@@ -22,7 +23,7 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   // Versionen prüfen und Daten laden
   $curl = curl_init();
   $curlConfig = array(
-    CURLOPT_URL             => "$GitHub_base/releases/".urlencode($version),
+    CURLOPT_URL             => "$GitHub_base/releases/latest",
     CURLOPT_RETURNTRANSFER  => true,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
@@ -36,10 +37,31 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   curl_close($curl);
   if(!($antwort = json_decode($antwort, true)))
     die("FEHLER");
-  if($antwort["prerelease"] || $antwort["draft"])
-    die("FEHLER");
 
+  $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
+
+  $neueSQL = "-- Fehler";
+  foreach($assets as $a) {
+    if($a["name"] == "neueSQL.sql") {
+      $assetID = $a["id"];
+
+      $curl = curl_init();
+      $curlConfig = array(
+        CURLOPT_URL             => "$GitHub_base_at/releases/assets/$assetID",
+        CURLOPT_RETURNTRANSFER  => true,
+        CURLOPT_FOLLOWLOCATION  => true,
+        CURLOPT_HTTPHEADER      => array(
+          "Authorization: token $GITHUB_OAUTH",
+          "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
+          "Accept: application/octet-stream",
+        )
+      );
+      curl_setopt_array($curl, $curlConfig);
+      $neueSQL = curl_exec($curl);
+      curl_close($curl);
+    }
+  }
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
@@ -95,6 +117,14 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
 
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
   cms_v_loeschen($update_verzeichnis);
+
+  $neueSQL = str_replace('$CMS_SCHLUESSEL', "$CMS_SCHLUESSEL", $neueSQL);
+  $neueSQL = explode("\n", $neueSQL);
+  foreach($neueSQL as $s) {
+    $sql = @$dbs->prepare($s);
+    if($sql !== false)
+      @$sql->execute();
+  }
   echo "ERFOLG";
 }
 else {
@@ -123,7 +153,7 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
   foreach($pfadblacklist as $b)
     if(strpos($pfad, rtrim($b, "/")) === 0)
 	   return;
-  
+
   $dateien = array_diff(scandir("$von$pfad"), array(".", ".."));
   foreach($dateien as $datei) {
     $ddd = "$von$pfad/$datei";
