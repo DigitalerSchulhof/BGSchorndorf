@@ -6,7 +6,6 @@
   include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
   use Async\Yaml;
 
-
   if(!$CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
     echo cms_meldung_berechtigung();
   else {
@@ -37,7 +36,7 @@
       // Neuerungsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/contents/versionen.yml?ref=updater",
+        CURLOPT_URL             => "$GitHub_base/contents/versionen.yml",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
@@ -50,7 +49,7 @@
       $versionenYaml = curl_exec($curl);
       curl_close($curl);
 
-      if(($neuste = json_decode($neuste, true)) === null || ($versionen = @Yaml::loadString($versionenYaml)["version"]) === null)
+      if(($neuste = json_decode($neuste, true)) === null || !count($neuste) || isset($neuste["documentation_url"])/* Fehler mit API */ || ($versionen = @Yaml::loadString($versionenYaml)["version"]) === null)
         echo cms_meldung_fehler();
       else {
         $neusteversion = $neuste["name"];
