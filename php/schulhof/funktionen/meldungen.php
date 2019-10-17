@@ -48,7 +48,16 @@ function cms_meldung_firewall () {
 }
 
 function cms_meldung_fehler () {
-	$inhalt = '<p>Ein unbekannter Fehler ist aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.</p>';
+	global $CMS_SCHLUESSEL;
+	$fehler = debug_backtrace(0, 1)[0];
+	$datei = $fehler["file"];
+	$zeile = $fehler["line"];
+	$fehler = "Z$zeile:$datei@".date("d.m.Y H:i");
+
+	$iv = substr($CMS_SCHLUESSEL, 0, 16);
+	$fehlercode = openssl_encrypt ($fehler, 'aes128', $iv, 0, $iv);
+
+	$inhalt = "<p>Ein unbekannter Fehler ist aufgetreten. Bitte den Administrator über den Link in der Fußzeile informieren.<br>Fehlercode: <input type=\"text\" class=\"cms_klein\" value=\"$fehlercode\"></p>";
 	return cms_meldung ("fehler", "<h4>Fehler</h4>".$inhalt);
 }
 
