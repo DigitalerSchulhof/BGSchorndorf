@@ -576,6 +576,12 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     if ($CMS_URL[1] == 'Bearbeiten') {
       $code .= cms_element_bearbeiten($k, 'kontaktformulare', $CMS_URL[2]);
     }
+    $sql = "SELECT COUNT(*) FROM kontaktformulareempfaenger WHERE kontaktformular = ".$k["id"];
+    $sql = $dbs->prepare($sql);
+    $sql->bind_result($empfaengeranz);
+    $sql->execute();
+    $sql->fetch();
+    $sql->close();
 
     $sql = "SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ".$k['id'];
     $sql = $dbs->query($sql);
@@ -597,10 +603,22 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
         else {
         $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
           $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
-          $code .= "<tr><th>Empfänger: </th><td><select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
-          while($sqld = $sql->fetch_assoc())
-          $code .= "<option value=\"".$sqld["id"]."\">".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."</option>";
-          $code .= "</select></td></tr>";
+          $code .= "<tr><th>Empfänger: </th><td>";
+          if(!$empfaengeranz) {
+            $code .= "<p class=\"cms_notiz\">Es sind keine Empfänger hinterlegt.<br>Bitte den Administrator kontaktieren.</p>";
+          } else {
+            if($empfaengeranz == 1) {
+              $sqld = $sql->fetch_assoc();
+              $code .= "<input type=\"hidden\" class=\"cms_kontaktformular_empfaenger\" value=\"{$sqld['id']}\">";
+              $code .= "<input class=\"cms_mittel\" disabled value=\"".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."\">";
+            } else {
+              $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
+              while($sqld = $sql->fetch_assoc())
+                $code .= "<option value=\"".$sqld["id"]."\">".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."</option>";
+              $code .= "</select>";
+            }
+          }
+          $code .= "</td></tr>";
 
           $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
           $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
