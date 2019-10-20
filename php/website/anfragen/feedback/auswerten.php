@@ -56,7 +56,7 @@ if($titel != "") {
     $sql->execute();
     $sql->close();
 
-    if($CMS_EINSTELLUNGEN["Fehlermeldung an GitHub"]) {
+    if($CMS_EINSTELLUNGEN["Fehlermeldung an GitHub"] || true) {
       // GitHub API
       $api = "https://api.github.com/repos/oxydon/BGSchorndorf/issues";
 
@@ -90,7 +90,7 @@ if($titel != "") {
       );
 
       curl_setopt_array($curl, $curlConfig);
-      $r = curl_exec($curl);
+      curl_exec($curl);
       curl_close($curl);
     }
     echo "ERFOLG";
@@ -118,21 +118,14 @@ function issue_body_machen() {
   $r = "";
   $dbs = cms_verbinden("s");
 
-  $r .= "## $titel\n";
-  $beschreibung = explode("\n", $beschreibung);
-  foreach($beschreibung as $i => $b)
-    $r .= "> $b\n";
-  $r .= "\n";
-  $r .= "|**Hotel**|Trivago|\n";
-  $r .= "|:-:|:-|\n";
-  $r .= "|**Zeitpunkt**|".date("d.m.Y H:i:s", $weilreferencetime)."|\n";
-
   if($beschreibung == "")
     $beschreibung = "Keine Beschreibung vorhanden";
   if($ersteller == "")
     $ersteller = "Unbekannt";
   if($url == "")
     $url = "Keine URL vorhanden";
+
+  $r .= "## $titel\n";
 
   $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = $ersteller";
   if ($anfrage = $dbs->query($sql)) {
@@ -145,7 +138,17 @@ function issue_body_machen() {
     }
     $anfrage->free();
   }
+
+  $beschreibung = explode("\n", $beschreibung);
+  foreach($beschreibung as $i => $b)
+    $r .= "> $b\n";
+
+
+  $r .= "<details><summary>Technische Details</summary><p>\n\n";
   $r .= "|**Ersteller**|$ersteller|\n";
+  $r .= "|:-:|:-|\n";
+  $r .= "|**Zeitpunkt**|".date("d.m.Y H:i:s", $weilreferencetime)."|\n";
+
   $r .= "|**Interne ID**|$idM|\n";
   $r .= "|**URL**|$url|\n";
   $r .= "|**Header**|";
@@ -163,9 +166,11 @@ function issue_body_machen() {
     $r .= "`$s`<br>";
   substr($r, 0, -4);
   if(count($session) == 0)
-  $r .= "Leer";
+    $r .= "Leer";
   $r .= "|\n\n";
+  $r .= "\n</p></details>\n\n";
   $r .= "#### Dieses Ticket wurde nach Angaben Dritter automatisch erstellt.";
+  die(base64_encode($r));
   return $r;
 }
 ?>

@@ -354,8 +354,8 @@ if ($zugriff) {
 		$code .= "<th>Fehlermeldungen benötigen Anmeldung:</th>";
 		$code .= "<td>".cms_schieber_generieren('fehlermeldungenangemeldet',$einstellungen['Fehlermeldung Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
-		$code .= "<th>Fehlermeldungen ans Entwicklerteam weiterleiten:</th>";
-		$code .= "<td>".cms_schieber_generieren('fehlermeldungengithub',$einstellungen['Fehlermeldung an GitHub'])."</td>";
+		$code .= "<th>Fehlermeldungen ans Entwicklerteam weiterleiten:<br><p class=\"cms_notiz\" style=\"font-weight: normal;\">Diese Option dient ausschließlich zur Verbesserung des Digitalen Schulhofs und kann nicht deaktiviert werden.</p></th>";
+		$code .= "<td>".cms_schieber_generieren('fehlermeldungengithub',$einstellungen['Fehlermeldung an GitHub'],'cms_schieber(\'fehlermeldungengithub\')')."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Feedback ist aktiv:</th>";
