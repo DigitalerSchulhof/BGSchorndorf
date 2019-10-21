@@ -94,7 +94,7 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		$jetzt = time();
-		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, 0, 1, 0, 0, 0, 0, 0, ?)");
+		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) VALUES (?, ?, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
 		foreach ($KURSE as $k) {
 			if (strlen($k['schueler']) > 0) {
 				$personen = explode("|", substr($k['lehrer'], 1));
@@ -105,7 +105,7 @@ if (cms_angemeldet() && $zugriff) {
 			}
 		}
 		$sql->close();
-		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, ?)");
+		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0)");
 		foreach ($KURSE as $k) {
 			if (strlen($k['lehrer']) > 0) {
 				$personen = explode("|", substr($k['lehrer'], 1));
@@ -130,7 +130,7 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 
 		// Personen der Kurse in die jeweilige Stufen übernehmen
-		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, ? FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
+		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
 		$sql->bind_param("iii", $jetzt, $neuschuljahr, $neuschuljahr);
 		$sql->execute();
 		$sql->close();

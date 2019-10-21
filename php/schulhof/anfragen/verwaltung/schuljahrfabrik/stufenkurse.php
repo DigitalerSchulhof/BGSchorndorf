@@ -268,7 +268,7 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 
 		// Mitglieder übertragen
-		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, chattenab) SELECT ? AS gruppe, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, chattenab FROM kursemitglieder WHERE gruppe = ?");
+		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT ? AS gruppe, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon FROM kursemitglieder WHERE gruppe = ?");
 		foreach ($NEUEKURSE AS $n) {
 			if (!is_null($n['id'])) {
 				$sql->bind_param("si", $n['neuid'], $n['id']);
@@ -294,7 +294,7 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		// Personen der Klassen in die jeweilige Stufen übernehmen
-		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) SELECT stufe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ?");
+		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT stufe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ?");
 		$sql->bind_param("i", $neuschuljahr);
 		$sql->close();
 
