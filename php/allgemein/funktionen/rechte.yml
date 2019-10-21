@@ -1,7 +1,7 @@
 # Rechtebaum des Digitalen Schulhofs
 schulhof:
   verwaltung:
-    nutzerkonten: # Nutzerkonten
+    nutzerkonten:
       anmeldedetails: Anmeldedetails sehen
       onlinestatus: Onlinestatus sehen
       ansprechpartner: Ansprechpartner Anderer sehen
@@ -12,19 +12,14 @@ schulhof:
       einstellungen:
         sehen: Persönliche Einstellungen Anderer sehen
         ändern: Persönliche Einstellungen Anderer ändern
-      identitätsdiebstahl: Identitätsdiebstähle verwalten
-    listen: # Schüler-/Elternvertreter
-      schülervertreter: Schülervertreter sehen
-      elternvertreter: Elternvertreter sehen
-      lehrer: Lehrer sehen
-      eltern: Eltern sehen
-      schüler: Schüler sehen
-      externe: Externe sehen
-      verwaltungsangestellte: Verwaltungsangestellte sehen
-    lehrer: # Lehrer (Person)
+      verstöße:
+        identitätsdiebstahl: Identitätsdiebstähle verwalten
+        auffälliges: Auffälliges verwalten
+        chatmeldungen: Chatmeldungen verwalten
+    lehrer:
       stundenpläne: Lehrern Stundenpläne zuweisen
       kürzel: Lehrerkürzel ändern
-    personen: # Personen allgemein
+    personen:
       sehen: Personen sehen
       anlegen: Personen anlegen
       löschen: Personen löschen
@@ -39,18 +34,235 @@ schulhof:
         bearbeiten: Rollen bearbeiten
         löschen: Rollen löschen
     einstellungen: Allgemeine Einstellungen vornehmen
+    anmeldehinwiese: Anmeldehinweise bearbeiten
     schule:
       adressen: Adressen der Schule verwalten
       ansprechartner: Ansprechpartner der Schule verwalten
       mail: Mailadresse des Schulhofs verwalten
+  technik:
+    geräte:
+      verwalten: Geräte verwalten
+      probleme: Probleme melden
+    hausmeisteraufträge:
+      erteilen: Hausmeisteraufträge erteilen
+      löschen: Hausmeisteraufträge löschen
+      markieren: Hausmeisteraufträge markieren
+      sehen: Hausmeisteraufträge sehen
+  gruppen:
+    arbeitsgemeinschaften:
+      anlegen: Arbeitsgemeinschaften anlegen
+      bearbeiten: Arbeitsgemeinschaften bearbeiten
+      löschen: Arbeitsgemeinschaften löschen
+    arbeitskreise:
+      anlegen: Arbeitskreise anlegen
+      bearbeiten: Arbeitskreise bearbeiten
+      löschen: Arbeitskreise löschen
+    ereignisse:
+      anlegen: Ereignisse anlegen
+      bearbeiten: Ereignisse bearbeiten
+      löschen: Ereignisse löschen
+    fachschaften:
+      anlegen: Fachschaften anlegen
+      bearbeiten: Fachschaften bearbeiten
+      löschen: Fachschaften löschen
+    fahrten:
+      anlegen: Fahren anlegen
+      bearbeiten: Fahren bearbeiten
+      löschen: Fahren löschen
+    gremien:
+      anlegen: Gremien anlegen
+      bearbeiten: Gremien bearbeiten
+      löschen: Gremien löschen
+    klassen:
+      anlegen: Klassen anlegen
+      bearbeiten: Klassen bearbeiten
+      löschen: Klassen löschen
+    kurse:
+      anlegen: Kurse anlegen
+      bearbeiten: Kurse bearbeiten
+      löschen: Kurse löschen
+    sonstigegruppen:
+      anlegen: Sonstige Gruppen anlegen
+      bearbeiten: Sonstige Gruppen bearbeiten
+      löschen: Sonstige Gruppen löschen
+    stufen:
+      anlegen: Stufen anlegen
+      bearbeiten: Stufen bearbeiten
+      löschen: Stufen löschen
+    wettbewerbe:
+      anlegen: Wettbewerbe anlegen
+      bearbeiten: Wettbewerbe bearbeiten
+      löschen: Wettbewerbe löschen
+  information:
+    listen:
+      schülervertreter: Schülervertreter sehen
+      elternvertreter: Elternvertreter sehen
+      lehrer: Lehrer sehen
+      eltern: Eltern sehen
+      schüler: Schüler sehen
+      externe: Externe sehen
+      gruppen:
+        verwaltungsangestellte: Verwaltungsangestellte sehen
+        arbeitsgemeinschaften: Arbeitesgemeinschaften sehen
+        arbeitskreise: Arbeitskreise sehen
+        ereignisse: Ereignisse sehen
+        fachschaften: Fachschaften sehen
+        fahrten: Fahrten sehen
+        gremien: Gremien sehen
+        klassen: Klassen sehen
+        kurse: Kurse sehen
+        sonstigegruppen: Sonstige Gruppen sehen
+        stufen: Stufen sehen
+        wettbewerbe: Wettbewerbe sehen
+    dauerbrenner:
+      anlegen: Dauerbrenner anlegen
+      bearbeiten: Dauerbrenner bearbeiten
+      löschen: Dauerbrenner löschen
+    pinnwände:
+      anlegen: Pinnwände anlegen
+      bearbeiten: Pinnwände bearbeiten
+      löschen: Pinnwände löschen
 website:
-
+  inhalte: Inhalte freigeben
+  navigation: Hauptnavigationen festlegen
+  titelbilder:
+    hochladen: Titelbilder hochladen
+    löschen: Titelbilder löschen
+    umbenennen: Titelbilder umbenennen
+  dateien:
+    hochladen: Dateien hochladen
+    umbenennen: Dateien umbenennen
+    löschen: Dateien löschen
+  seiten:
+    anlegen: Seiten anlegen
+    bearbeiten: Seiten bearbeiten
+    löschen: Seiten löschen
+    startseite: Startseite festlegen
+  elemente:
+    faq:
+      anlegen: Häufige Fragen anlegen
+      bearbeiten: Häufige Fragen bearbeiten
+      löschen: Häufige Fragen löschen
+    editor:
+      anlegen: Editor anlegen
+      bearbeiten: Editor bearbeiten
+      löschen: Editor löschen
+    download:
+      anlegen: Download anlegen
+      bearbeiten: Download bearbeiten
+      löschen: Download löschen
+    kontaktformular:
+      anlegen: Kontaktformular anlegen
+      bearbeiten: Kontaktformular bearbeiten
+      löschen: Kontaktformular löschen
+    boxen:
+      anlegen: Boxen anlegen
+      bearbeiten: Boxen bearbeiten
+      löschen: Boxen löschen
+    eventübersicht:
+      anlegen: Eventübersichten anlegen
+      bearbeiten: Eventübersichten bearbeiten
+      löschen: Eventübersichten löschen
+    newsletter:
+      anlegen: Newsletter anlegen
+      bearbeiten: Newsletter bearbeiten
+      löschen: Newsletter löschen
+artikel:
+  öffentlich:
+    blogeinträge:
+      anlegen: Blogeinträge anlegen
+      bearbeiten: Blogeinträge bearbeiten
+      löschen: Blogeinträge löschen
+      genehmigen: Blogeinträge genehmigen
+    termine:
+      anlegen: Terine anlegen
+      bearbeiten: Terine bearbeiten
+      löschen: Terine löschen
+      genehmigen: Termine genehmigen
+    galerien:
+      anlegen: Galerien anlegen
+      bearbeiten: Galerien bearbeiten
+      löschen: Galerien löschen
+      genehmigen: Galerien genehmigen
+  schulhof:
+    blogeinträge:
+      anlegen: Blogeinträge anlegen
+      bearbeiten: Blogeinträge bearbeiten
+      löschen: Blogeinträge löschen
+    termine:
+      anlegen: Terine anlegen
+      bearbeiten: Terine bearbeiten
+      löschen: Terine löschen
+    galerien:
+      anlegen: Galerien anlegen
+      bearbeiten: Galerien bearbeiten
+      löschen: Galerien löschen
+  lehrer:
+    blogeinträge:
+      anlegen: Blogeinträge anlegen
+      bearbeiten: Blogeinträge bearbeiten
+      löschen: Blogeinträge löschen
+    termine:
+      anlegen: Terine anlegen
+      bearbeiten: Terine bearbeiten
+      löschen: Terine löschen
+    galerien:
+      anlegen: Galerien anlegen
+      bearbeiten: Galerien bearbeiten
+      löschen: Galerien löschen
+  lehrerundverwaltung:
+    blogeinträge:
+      anlegen: Blogeinträge anlegen
+      bearbeiten: Blogeinträge bearbeiten
+      löschen: Blogeinträge löschen
+    termine:
+      anlegen: Terine anlegen
+      bearbeiten: Terine bearbeiten
+      löschen: Terine löschen
+    galerien:
+      anlegen: Galerien anlegen
+      bearbeiten: Galerien bearbeiten
+      löschen: Galerien löschen
+  gruppen:
+    blogeinträge:
+      anlegen: Blogeinträge anlegen
+      bearbeiten: Blogeinträge bearbeiten
+      löschen: Blogeinträge löschen
+    termine:
+      anlegen: Terine anlegen
+      bearbeiten: Terine bearbeiten
+      löschen: Terine löschen
+    galerien:
+      anlegen: Galerien anlegen
+      bearbeiten: Galerien bearbeiten
+      löschen: Galerien löschen
 lehrerzimmer:
   zugriff: Zugriff aufs Lehrernetz gestatten
 technik:
+  fehlermeldungen: Fehlermeldungen verwalten
+  feedback: Feedback verwalten
   server:
-    netze: Schulnetze verwalteten
+    netze: Schulnetze verwalten
     vpn: VPN verwalten
+    update: Digitalen Schulhof aktualisieren
+    speicher:
+      personenquota: Speicherplatzquota festlegen
+      backup: Backup erstellen
+      verschlüsselung: Verschlüsselung ändern
     dateien:
       schulhof: Dateitypen im Schulhof erlauben
       website: Dateitypen auf der Website erlauben
+statistik:
+  speicherplatz: Speicherplatzstatistik anzeigen
+  besucher:
+    schulhof: Besucherstatistiken des Schulhof sehen
+    anteile:
+      schüler: Besucheranteil an Schülern sehen
+      lehrer: Besucheranteil an Lehrern sehen
+      lehrer: Besucheranteil an Eltern sehen
+      externe: Besucheranteil an Externen sehen
+      verwaltungsangestellte: Besucheranteil an Verwaltungsangestellten sehen
+    website:
+      termine: Besucherstatistiken von Terinen sehen
+      blogeinträge: Besucherstatistiken von Blogeinträge sehen
+      galerien: Besucherstatistiken von Galerien sehen
