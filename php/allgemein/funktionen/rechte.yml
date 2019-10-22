@@ -53,47 +53,177 @@ schulhof:
       anlegen: Arbeitsgemeinschaften anlegen
       bearbeiten: Arbeitsgemeinschaften bearbeiten
       löschen: Arbeitsgemeinschaften löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     arbeitskreise:
       anlegen: Arbeitskreise anlegen
       bearbeiten: Arbeitskreise bearbeiten
       löschen: Arbeitskreise löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     ereignisse:
       anlegen: Ereignisse anlegen
       bearbeiten: Ereignisse bearbeiten
       löschen: Ereignisse löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     fachschaften:
       anlegen: Fachschaften anlegen
       bearbeiten: Fachschaften bearbeiten
       löschen: Fachschaften löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     fahrten:
       anlegen: Fahren anlegen
       bearbeiten: Fahren bearbeiten
       löschen: Fahren löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     gremien:
       anlegen: Gremien anlegen
       bearbeiten: Gremien bearbeiten
       löschen: Gremien löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     klassen:
       anlegen: Klassen anlegen
       bearbeiten: Klassen bearbeiten
       löschen: Klassen löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     kurse:
       anlegen: Kurse anlegen
       bearbeiten: Kurse bearbeiten
       löschen: Kurse löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     sonstigegruppen:
       anlegen: Sonstige Gruppen anlegen
       bearbeiten: Sonstige Gruppen bearbeiten
       löschen: Sonstige Gruppen löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     stufen:
       anlegen: Stufen anlegen
       bearbeiten: Stufen bearbeiten
       löschen: Stufen löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
     wettbewerbe:
       anlegen: Wettbewerbe anlegen
       bearbeiten: Wettbewerbe bearbeiten
       löschen: Wettbewerbe löschen
+      artikel:
+        blogeinträge:
+          anlegen: Blogeinträge anlegen
+          bearbeiten: Blogeinträge bearbeiten
+          löschen: Blogeinträge löschen
+          genehmigen: Blogeinträge genehmigen
+        termine:
+          anlegen: Termine anlegen
+          bearbeiten: Termine bearbeiten
+          löschen: Termine löschen
+          genehmigen: Termine genehmigen
   information:
+    pläne:
+      stundenpläne:
+        klassen: Klassenstundenpläne sehen
+        lehrer: Lehrerstundenpläne sehen
+        räume: Raumstundenpläne sehen
+        stufen: Stufenstundenpläne sehen
+        vertretungen:
+          lehrer: Vertretungsplan (Lehreransicht) sehen
+          schüler: Vertretungsplan (Schüleranasicht) sehen
     listen:
       schülervertreter: Schülervertreter sehen
       elternvertreter: Elternvertreter sehen
@@ -122,6 +252,94 @@ schulhof:
       anlegen: Pinnwände anlegen
       bearbeiten: Pinnwände bearbeiten
       löschen: Pinnwände löschen
+      anschläge:
+        anlegen: Pinnwandanschläge anlegen
+        bearbeiten: Pinnwandanschläge bearbeiten
+        löschen: Pinnwandanschläge löschen
+    newsletter:
+      empfänger:
+        sehen: Newsletterempfängerliste sehen
+        anlegen: Newsletterempfänger anlegen
+        bearbeiten: Newsletterempfänger bearbeiten
+        löschen: Newsletterempfänger löschen
+      schreiben: Newsletter schreiben
+  organisation:
+    buchungen:
+      räume:
+        anonymisiert: Raumbuchungen anonymisiert sehen
+        sehen: Raumbuchungen sehen
+        vornehmen: Raumbuchungen vornehmen
+        löschen: Raumbuchungen löschen
+      leihgeräte:
+        anonymisiert: Leihgerätebuchungen anonymisiert sehen
+        sehen: Leihgerätebuchungen sehen
+        vornehmen: Leihgerätebuchungen vornehmen
+        löschen: Leihgerätebuchungen löschen
+    räume:
+      anlegen: Räume anlegen
+      bearbeiten: Räume bearbeiten
+      löschen: Räume löschen
+    leihgeräte:
+      anlegen: Leihgeräte anlegen
+      bearbeiten: Leihgeräte bearbeiten
+      löschen: Leihgeräte löschen
+    ferien:
+      anlegen: Ferien anlegen
+      bearbeiten: Ferien bearbeiten
+      löschen: Ferien löschen
+    schulanmeldung:
+      vorbereiten: Schulanmeldung vorbereiten
+      akzeptieren: Schulanmeldung akzeptieren
+      bearbeiten: Schulanmeldung bearbeiten
+      erfassen: Schulanmeldung erfassen
+      exportieren: Schulanmeldung exportieren
+      löschen: Schulanmeldung löschen
+  planung:
+    schuljahre:
+      anlegen: Schuljahre anlegen
+      bearbeiten: Schuljahre bearbeiten
+      löschen: Schuljahre löschen
+      fabrik: Schuljahrfabrik benutzen
+      planungszeiträume:
+        anlegen: Planungszeiträume anlegen
+        bearbeiten: Planungszeiträume bearbeiten
+        löschen: Planungszeiträume löschen
+        duplizieren: Planungszeiträume duplizieren
+        rythmisieren: Planungszeiträume rythmisieren
+        stundenplanung:
+          durchführen: Stundenplanung durchführen
+          kontingentstundentafel: Kontingentstundentafel erstellen
+          sperrzeiten:
+            klassen: Sperrzeiten von Klassen verwalten
+            lehrer: Sperrzeiten von Lehrern verwalten
+            räume: Sperrzeiten von Räumen verwalten
+          lehrauftragsverteilung: Lehrauftragsverteilung vornehmen
+          schienen:
+            anlegen: Schienen anlegen
+            bearbeiten: Schienen bearbeiten
+            löschen: Schienen löschen
+      stundentagebücher:
+        erzeugen: Tagebücher erzeugen
+        archivieren: Tagebücher archivieren
+        prüfen: Tagebücher prüfen
+      fächer:
+        bearbeiten: Fächer bearbeiten
+        anlegen: Fächer anlegen
+        löschen: Fächer löschen
+        räume: Fächer an Räume kopplen
+        zeiten: Fächer an Zeiten koppeln
+        lehrer: Fächer an Lehrer koppeln
+      profile:
+        anlegen: Profile anlegen
+        bearbeiten: Profile bearbeiten
+        löschen: Profile löschen
+    vertretungsplan:
+      ausplanungen: Ausplanungen vornehmen
+      vertretungsplanung: Vertretungsplanung vornehmen
+    räume:
+      anlegen: Räume anlegen
+      bearbeiten: Räume bearbeiten
+      löschen: Räume löschen
 website:
   inhalte: Inhalte freigeben
   navigation: Hauptnavigationen festlegen
@@ -168,22 +386,23 @@ website:
       bearbeiten: Newsletter bearbeiten
       löschen: Newsletter löschen
 artikel:
+  genehmigen:
+    blogeinträge: Blogeinträge genehmigen
+    termine: Termine genehmigen
+    galerien: Galerien genehmigen
   öffentlich:
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten
       löschen: Blogeinträge löschen
-      genehmigen: Blogeinträge genehmigen
     termine:
       anlegen: Terine anlegen
       bearbeiten: Terine bearbeiten
       löschen: Terine löschen
-      genehmigen: Termine genehmigen
     galerien:
       anlegen: Galerien anlegen
       bearbeiten: Galerien bearbeiten
       löschen: Galerien löschen
-      genehmigen: Galerien genehmigen
   schulhof:
     blogeinträge:
       anlegen: Blogeinträge anlegen
@@ -223,19 +442,6 @@ artikel:
       anlegen: Galerien anlegen
       bearbeiten: Galerien bearbeiten
       löschen: Galerien löschen
-  gruppen:
-    blogeinträge:
-      anlegen: Blogeinträge anlegen
-      bearbeiten: Blogeinträge bearbeiten
-      löschen: Blogeinträge löschen
-    termine:
-      anlegen: Terine anlegen
-      bearbeiten: Terine bearbeiten
-      löschen: Terine löschen
-    galerien:
-      anlegen: Galerien anlegen
-      bearbeiten: Galerien bearbeiten
-      löschen: Galerien löschen
 lehrerzimmer:
   zugriff: Zugriff aufs Lehrernetz gestatten
 technik:
@@ -252,10 +458,11 @@ technik:
     dateien:
       schulhof: Dateitypen im Schulhof erlauben
       website: Dateitypen auf der Website erlauben
+  haustechnik: Haustechnikausgabe verwalten
 statistik:
   speicherplatz: Speicherplatzstatistik anzeigen
   besucher:
-    schulhof: Besucherstatistiken des Schulhof sehen
+    schulhof: Besucherstatistiken des Schulhofs sehen
     anteile:
       schüler: Besucheranteil an Schülern sehen
       lehrer: Besucheranteil an Lehrern sehen
