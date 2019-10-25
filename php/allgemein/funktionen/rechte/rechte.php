@@ -4,9 +4,15 @@
   function cms_hat_recht($recht) {
     global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden("s");
+
     $person = $_SESSION['BENUTZERID'];
     if(!isset($person))
       return false;
+
+    $recht = str_replace("(",   " ( ",  $recht);
+    $recht = str_replace(")",   " ) ",  $recht);
+    $recht = str_replace("&&",  " && ", $recht);
+    $recht = str_replace("||",  " || ", $recht);
 
     $rechte = explode(" ", $recht);
     $rechte = preg_grep("/([a-zäöüß]{1,}\.[a-zäöüß]{1,})|[a-zäöüß]{1,}/i", $rechte);

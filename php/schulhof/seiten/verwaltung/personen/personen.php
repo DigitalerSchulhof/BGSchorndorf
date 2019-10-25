@@ -1,11 +1,11 @@
+<?php
+	if (r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen || schulhof.verwaltung.personen.daten")) {
+?>
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <h1>Personen auf dem Schulhof</h1>
 
-<?php
-	if (r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen || schulhof.verwaltung.personen.daten")) {
-?>
 	<h4>Filter</h4>
 	<table class="cms_formular">
 		<tr>
@@ -44,11 +44,13 @@
 <?php
 	if (r("schulhof.verwaltung.personen.anlegen")) {echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Personen/Neue_Person_anlegen\">+ Neue Person anlegen</a></p>";}
 	// if ($CMS_RECHTE['Personen']['Personen löschen'] && !$CMS_IMLN) {echo cms_meldung('firewall', '<h4>Firewall</h4><p>Personen können nur aus dem Lehrernetz gelöscht werden. Andernfalls ist eine vollständige Löschung nicht möglich.</p>');}
+?>
+</div>
+
+<div class="cms_clear"></div>
+<?php
 }
 else {
 	echo cms_meldung_berechtigung();
 }
 ?>
-</div>
-
-<div class="cms_clear"></div>
