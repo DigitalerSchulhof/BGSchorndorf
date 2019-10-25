@@ -261,11 +261,11 @@ function cms_neues_element($spalte, $position, $version) {
   $code .= "<div class=\"cms_website_neu_menue\" id=\"cms_website_neu_menue_$spalte"."_$position\" style=\"display: none;\">";
     $code .= "<p class=\"cms_website_neu_menue_box\">";
     $parameter = "'-', '$spalte', '$position', '$version', '".cms_seitenpfadlink_zusammensetzen($CMS_ZUSATZ)."'";
-    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_editor\" onclick=\"cms_editoren_anzeigen($parameter)\">+ Neuer Editor</span> ";
-    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_download\" onclick=\"cms_downloads_anzeigen($parameter)\">+ Neuer Download</span> ";
-    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
-    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
-    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
+    r("website.elemente.editor.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_editor\" onclick=\"cms_editoren_anzeigen($parameter)\">+ Neuer Editor</span> ";
+    r("website.elemente.download.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_download\" onclick=\"cms_downloads_anzeigen($parameter)\">+ Neuer Download</span> ";
+    r("website.elemente.boxen.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
+    r("website.elemente.eventübersicht.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
+    r("website.elemente.kontaktformular.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_website_schliessen\" onclick=\"cms_ausblenden('cms_website_neu_menue_$spalte"."_$position')\">Menü schließen</span> ";
     $code .= "</p>";
     $code .= "<div class=\"cms_website_neu_element\" id=\"cms_website_neu_element_$spalte"."_$position\"></div>";

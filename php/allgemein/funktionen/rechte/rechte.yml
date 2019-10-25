@@ -22,8 +22,8 @@ schulhof:
     personen:
       sehen: Personen sehen
       anlegen: Personen anlegen
-      löschen: Personen löschen
       bearbeiten: Personen bearbeiten
+      löschen: Personen löschen
       daten: Persönliche Daten Anderer sehen
       schülereltern: Schüler und Eltern verknüpfen
     rechte:
@@ -38,7 +38,7 @@ schulhof:
     schule:
       adressen: Adressen der Schule verwalten
       ansprechartner: Ansprechpartner der Schule verwalten
-      mail: Mailadresse des Schulhofs verwalten
+      mail: Mailadressen des Schulhofs verwalten
     sprachen:
       anlegen: Sprachen anlegen
       bearbeiten: Sprachen bearbeiten

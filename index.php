@@ -15,6 +15,7 @@
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
 	include_once("php/schulhof/seiten/website/reaktionen.php");
 	include_once("php/allgemein/funktionen/captcha.php");
+	include_once("php/allgemein/funktionen/rechte/rechte.php");
 
 	session_start();
 
