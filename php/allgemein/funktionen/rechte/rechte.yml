@@ -30,6 +30,7 @@ schulhof:
       zuordnen: Personen Rechte zuordnen
       rollen:
         zuordnen: Personen Rollen zuordnen
+        sehen: Rollen sehen
         erstellen: Rollen erstellen
         bearbeiten: Rollen bearbeiten
         löschen: Rollen löschen

@@ -1,12 +1,11 @@
 <div class="cms_spalte_i">
-<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
+	<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
+	<?php
+		if (r("schulhof.verwaltung.rechte.rollen.zuordnen || schulhof.verwaltung.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
+	?>
 
 <h1>Rollen</h1>
 
-<?php
-$zugriff = $CMS_RECHTE['Personen']['Rollen anlegen'] || $CMS_RECHTE['Personen']['Rollen bearbeiten'] || $CMS_RECHTE['Personen']['Rollen löschen'];
-if ($zugriff) {
-?>
 	<table class="cms_liste">
 		<thead>
 			<tr><th></th><th>Bezeichnung</th><th>Rechte</th><th>Personen</th><th>Aktionen</th></tr>
@@ -81,10 +80,10 @@ if ($zugriff) {
 					$ausgabe .= "<td>";
 					if ($daten['id'] != 0) {
 						$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-						if ($CMS_RECHTE['Personen']['Rollen bearbeiten']) {
+						if (r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 							$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_rolle_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 						}
-						if ($CMS_RECHTE['Personen']['Rollen löschen']) {
+						if (r("schulhof.verwaltung.rechte.rollen.löschen")) {
 							$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_rolle_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 						}
 					}
@@ -105,11 +104,11 @@ if ($zugriff) {
 		</tbody>
 	</table>
 <?php
-	if ($CMS_RECHTE['Personen']['Rollen anlegen']) {echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen\">+ Neue Rolle anlegen</a></p>";}
-}
-else {
-	echo cms_meldung_berechtigung();
-}
+	if (r("schulhof.verwaltung.rechte.rollen.erstellen"))
+		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen\">+ Neue Rolle anlegen</a></p>";
+
+	} else
+		echo cms_meldung_berechtigung();
 ?>
 </div>
 
