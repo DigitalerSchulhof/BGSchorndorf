@@ -50,9 +50,9 @@ schulhof:
       probleme: Probleme melden
     hausmeisteraufträge:
       erteilen: Hausmeisteraufträge erteilen
-      löschen: Hausmeisteraufträge löschen
-      markieren: Hausmeisteraufträge markieren
       sehen: Hausmeisteraufträge sehen
+      markieren: Hausmeisteraufträge markieren
+      löschen: Hausmeisteraufträge löschen
   gruppen:
     arbeitsgemeinschaften:
       anlegen: Arbeitsgemeinschaften anlegen
@@ -354,12 +354,12 @@ schulhof:
       bearbeiten: Räume bearbeiten
       löschen: Räume löschen
 website:
-  inhalte: Inhalte freigeben
+  freigeben: Inhalte freigeben
   navigation: Hauptnavigationen festlegen
   titelbilder:
     hochladen: Titelbilder hochladen
-    löschen: Titelbilder löschen
     umbenennen: Titelbilder umbenennen
+    löschen: Titelbilder löschen
   dateien:
     hochladen: Dateien hochladen
     umbenennen: Dateien umbenennen
@@ -476,13 +476,14 @@ technik:
 statistik:
   speicherplatz: Speicherplatzstatistik anzeigen
   besucher:
-    schulhof: Besucherstatistiken des Schulhofs sehen
-    anteile:
-      schüler: Nutzeranteil an Schülern sehen
-      lehrer: Nutzeranteil an Lehrern sehen
-      lehrer: Nutzeranteil an Eltern sehen
-      externe: Nutzeranteil an Externen sehen
-      verwaltungsangestellte: Nutzeranteil an Verwaltungsangestellten sehen
+    schulhof:
+      sehen: Besucherstatistiken des Schulhofs sehen
+      anteile:
+        schüler: Nutzeranteil an Schülern sehen
+        lehrer: Nutzeranteil an Lehrern sehen
+        lehrer: Nutzeranteil an Eltern sehen
+        externe: Nutzeranteil an Externen sehen
+        verwaltungsangestellte: Nutzeranteil an Verwaltungsangestellten sehen
     website:
       termine: Besucherstatistiken der Termine sehen
       blogeinträge: Besucherstatistiken der Blogeinträge sehen

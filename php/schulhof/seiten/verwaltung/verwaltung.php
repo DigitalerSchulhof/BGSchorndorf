@@ -255,23 +255,23 @@ if (r("schulhof.organisation.schulanmeldung.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+if (r("artikel.genehmigen.termine")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_termine\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">";
 			$code .=  "<h3>Genehmigungscenter Termine</h3>";
-			$code .=  "<p>Öffentliche und gruppeninterne Termine bearbeiten und genehmigen.</p>";
+			$code .=  "<p>Öffentliche und gruppeninterne Termine bearbeiten und genehmigen.</p>";	// TODO: Recht gruppenintern genehmigen
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+if (r("artikel.genehmigen.blogeinträge")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_blogeintraege\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">";
 			$code .=  "<h3>Genehmigungscenter Blogeinträge</h3>";
-			$code .=  "<p>Öffentliche und gruppeninterne Blogeinträge bearbeiten und genehmigen.</p>";
+			$code .=  "<p>Öffentliche und gruppeninterne Blogeinträge bearbeiten und genehmigen.</p>";	// TODO: Recht gruppenintern genehmigen
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+if (r("artikel.genehmigen.galerien")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_genehmigungen_galerien\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">";
 			$code .=  "<h3>Genehmigungscenter Galerien</h3>";
@@ -279,19 +279,19 @@ if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Organisation']['Dauerbrenner anlegen'] || $CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten'] || $CMS_RECHTE['Organisation']['Dauerbrenner löschen']) {
+if (r("schulhof.information.dauerbrenner.*")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_dauerbrenner\" href=\"Schulhof/Verwaltung/Dauerbrenner\">";
 			$code .=  "<h3>Dauerbrenner</h3>";
-			$code .=  "<p>Dauerbrenner anlegen, bearbeiten und löschen.</p>";
+			$code .=  "<p>Dauerbrenner ".aufzaehlen(array("anlegen" => r("schulhof.information.dauerbrenner.anlegen"), "bearbeiten" => r("schulhof.information.dauerbrenner.bearbeiten"), "löschen" => r("schulhof.information.dauerbrenner.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Organisation']['Pinnwände anlegen'] || $CMS_RECHTE['Organisation']['Pinnwände bearbeiten'] || $CMS_RECHTE['Organisation']['Pinnwände löschen']) {
+if (r("schulhof.information.pinnwände.*")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_pinnwaende\" href=\"Schulhof/Verwaltung/Pinnwände\">";
 			$code .=  "<h3>Pinnwände</h3>";
-			$code .=  "<p>Pinnwände anlegen, bearbeiten und löschen.</p>";
+			$code .=  "<p>Pinnwände ".aufzaehlen(array("anlegen" => r("schulhof.information.pinnwände.anlegen"), "bearbeiten" => r("schulhof.information.pinnwände.bearbeiten"), "löschen" => r("schulhof.information.pinnwände.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -306,15 +306,15 @@ if ($code) {
 
 // WEBSITE
 $code = "";
-if ($CMS_RECHTE['Website']['Seiten anlegen'] || $CMS_RECHTE['Website']['Seiten bearbeiten'] || $CMS_RECHTE['Website']['Seiten löschen'] || $CMS_RECHTE['Website']['Startseite festlegen']) {
+if (r("website.seiten.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_seiten\" href=\"Schulhof/Website/Seiten\">";
 			$code .=  "<h3>Seiten</h3>";
-			$code .=  "<p>Seiten anlegen, bearbeiten und löschen. Bestehende Seiten zur Startseite machen.</p>";
+			$code .=  "<p>".aufzaehlen('Seiten $. ', array("anlegen" => r("schulhof.information.pinnwände.anlegen"), "bearbeiten" => r("schulhof.information.pinnwände.bearbeiten"), "löschen" => r("schulhof.information.pinnwände.löschen"))).(r("website.seiten.startseite")?"Startseite festlegen.":"")."</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Hauptnavigationen festlegen']) {
+if (r("website.navigation")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_hauptnavigationen\" href=\"Schulhof/Website/Hauptnavigationen\">";
 			$code .=  "<h3>Hauptnavigationen</h3>";
@@ -322,79 +322,79 @@ if ($CMS_RECHTE['Website']['Hauptnavigationen festlegen']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Dateien hochladen'] || $CMS_RECHTE['Website']['Dateien umbenennen'] || $CMS_RECHTE['Website']['Dateien löschen']) {
+if (r("website.dateien.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_dateien\" href=\"Schulhof/Website/Dateien\">";
 			$code .=  "<h3>Dateien</h3>";
-			$code .=  "<p>Dateien hochladen, umbenennen und löschen, die auf der Website verwendet werden können, sowie Ordner anlegen, umbenennen und löschen, um diese Dateien zu organisieren.</p>";
+			$code .=  "<p>Dateien ".aufzaehlen(array("hochladen" => r("website.dateien.hochladen"), "umbenennen" => r("website.dateien.umbenennen"), "löschen" => r("website.dateien.löschen"))).", die auf der Website verwendet werden können, sowie Ordner ".aufzaehlen(array("hochladen" => r("website.dateien.hochladen"), "umbenennen" => r("website.dateien.umbenennen"), "löschen" => r("website.dateien.löschen"))).", um diese Dateien zu organisieren.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
-if ($CMS_RECHTE['Website']['Termine anlegen'] || $CMS_RECHTE['Website']['Termine bearbeiten'] || $CMS_RECHTE['Website']['Termine löschen']) {
 }
+if (r("artikel.öffentlich.termine.*")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_termine\" href=\"Schulhof/Website/Termine\">";
 			$code .=  "<h3>Termine</h3>";
-			$code .=  "<p>Termine anlegen, bearbeiten und löschen.</p>";
+			$code .=  "<p>Termine ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.termine.anlegen"), "bearbeiten" => r("artikel.öffentlich.termine.bearbeiten"), "löschen" => r("artikel.öffentlich.termine.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Blogeinträge anlegen'] || $CMS_RECHTE['Website']['Blogeinträge bearbeiten'] || $CMS_RECHTE['Website']['Blogeinträge löschen'] || $CMS_RECHTE['Website']['Inhalte freigeben']) {
+if (r("artikel.öffentlich.blogeinträge.* || website.freigeben")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_blog\" href=\"Schulhof/Website/Blogeinträge\">";
 			$code .=  "<h3>Blogeinträge</h3>";
-			$code .=  "<p>Blogeinträge anlegen, bearbeiten, löschen und freigeben.</p>";
+			$code .=  "<p>Blogeinträge ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.blogeinträge.anlegen"), "bearbeiten" => r("artikel.öffentlich.blogeinträge.bearbeiten"), "löschen" => r("artikel.öffentlich.blogeinträge.löschen"), "löschen" => r("website.freigeben"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Galerien anlegen'] || $CMS_RECHTE['Website']['Galerien bearbeiten'] || $CMS_RECHTE['Website']['Galerien löschen'] || $CMS_RECHTE['Website']['Inhalte freigeben']) {
+if (r("artikel.öffentlich.galerien.* || website.freigeben")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_galerien\" href=\"Schulhof/Website/Galerien\">";
 			$code .=  "<h3>Galerien</h3>";
-			$code .=  "<p>Galerien anlegen, bearbeiten, löschen und freigeben.</p>";
+			$code .=  "<p>Galerien ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.galerien.anlegen"), "bearbeiten" => r("artikel.öffentlich.galerien.bearbeiten"), "löschen" => r("artikel.öffentlich.galerien.löschen"), "löschen" => r("website.freigeben"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Titelbilder hochladen'] || $CMS_RECHTE['Website']['Titelbilder umbenennen'] || $CMS_RECHTE['Website']['Titelbilder löschen']) {
+if (r("website.titelbilder.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_titelbilder\" href=\"Schulhof/Website/Titelbilder\">";
 			$code .=  "<h3>Titelbilder</h3>";
-			$code .=  "<p>Titelbilder hochladen, umbenennen, löschen.</p>";
+			$code .=  "<p>Titelbilder ".aufzaehlen(array("hochladen" => r("website.titelbilder.hochladen"), "umbenennen" => r("website.titelbilder.umbenennen"), "löschen" => r("website.titelbilder.löschen")))."</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen']) {	//B
+if (r("statistik.besucher.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_besucherstatistik\" href=\"Schulhof/Website/Besucherstatistiken\">";
 			$code .=  "<h3>Besucherstatistiken</h3>";
-			$code .=  "<p>Besucherstatistiken der Website und des Schulhofs sehen.</p>";
+			$code .=  "<p>".aufzaehlen('Besucherstatistiken $ sehen. ', array("der Website" => r("statistik.besucher.website.*"), "des Schulhof" => r("statistik.besucher.schulhof.sehen"))).(r("statistik.besucher.schulhof.anteile.*")?"Besucheranteile sehen.":"")."</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Feedback sehen'] || $CMS_RECHTE['Website']['Feedback verwalten']) {
+if (r("technik.feedback")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">";
 			$code .=  "<h3>Feedback</h3>";
-			$code .=  "<p>Feedback sehen".($CMS_RECHTE['Website']['Feedback verwalten']?" und verwalten":"").".</p>";
+			$code .=  "<p>Feedback sehen und verwalten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
-if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
 }
+if (r("technik.fehlermeldungen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen\" href=\"Schulhof/Website/Fehlermeldungen\">";
 			$code .=  "<h3>Fehlermeldungen</h3>";
-			$code .=  "<p>Fehlermeldungen sehen".($CMS_RECHTE['Website']['Fehlermeldungen verwalten']?" und verwalten":"").".</p>";
+			$code .=  "<p>Fehlermeldungen sehen und verwalten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten']) {
+if (r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auffaellig\" href=\"Schulhof/Aufgaben/Auffälliges\">";
 			$code .=  "<h3>Auffälliges Verhalten</h3>";
-			$code .=  "<p>Auffälliges Verhalten von Nutzern sehen".($CMS_RECHTE['Website']['Auffälliges verwalten']?" und verwalten":"").".</p>";
+			$code .=  "<p>Auffälliges Verhalten von Nutzern sehen und verwalten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Emoticons verwalten']) {
+if (r("*") && false) {	// TODO: Recht
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_emoticons\" href=\"Schulhof/Website/Emoticons\">";
 			$code .=  "<h3>Emoticons</h3>";
@@ -413,7 +413,7 @@ if ($code) {
 
 // TECHNIK
 $code = "";
-if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
+if (r("schulhof.technik.geräte.verwalten")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_geraete\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">";
 			$code .=  "<h3>Geräte verwalten</h3>";
@@ -421,15 +421,15 @@ if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
+if (r("schulhof.technik.hausmeisteraufträge.sehen || schulhof.technik.hausmeisteraufträge.markieren || schulhof.technik.hausmeisteraufträge.löschen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_hausmeister\" href=\"Schulhof/Hausmeister/Aufträge\">";
 			$code .=  "<h3>Hausmeisteraufräge</h3>";
-			$code .=  "<p>Hausmeisteraufträge sehen, markieren und löschen.</p>";
+			$code .=  "<p>Hausmeisteraufträge ".aufzaehlen(array("sehen" => r("schulhof.technik.hausmeisteraufträge.sehen"), "markieren" => r("schulhof.technik.hausmeisteraufträge.markieren"), "löschen" => r("schulhof.technik.hausmeisteraufträge.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Technik']['Haustechnikausgabe verwalten']) {
+if (r("technik.haustechnik")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_haustechnik\" href=\"Schulhof/Verwaltung/Haustechnik\">";
 			$code .=  "<h3>Haustechnikausgabe verwalten</h3>";
@@ -448,7 +448,7 @@ if ($code) {
 
 // ADMINISTRATION
 $code = "";
-if ($CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen']) {
+if (r("schulhof.verwaltung.einstellungen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_allgemeine_einstellungen\" href=\"Schulhof/Verwaltung/Allgemeine_Einstellungen\">";
 			$code .=  "<h3>Allgemeine Einstellungen</h3>";
@@ -456,7 +456,7 @@ if ($CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Administration']['Schulnetze verwalten']) {
+if (r("technik.server.netze")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schulnetze\" href=\"Schulhof/Verwaltung/Schulnetze\">";
 			$code .=  "<h3>Schulnetze</h3>";
@@ -464,7 +464,7 @@ if ($CMS_RECHTE['Administration']['Schulnetze verwalten']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Administration']['VPN verwalten']) {
+if (r("technik.server.vpn")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_vpn\" href=\"Schulhof/Verwaltung/VPN\">";
 			$code .=  "<h3>VPN</h3>";
@@ -472,7 +472,7 @@ if ($CMS_RECHTE['Administration']['VPN verwalten']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Administration']['Zulässige Dateien verwalten']) {
+if (r("technik.server.dateienerlaubnis")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_zulaessig\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">";
 			$code .=  "<h3>Zulässige Dateien</h3>";
@@ -480,11 +480,11 @@ if ($CMS_RECHTE['Administration']['Zulässige Dateien verwalten']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (($CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten']) || ($CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten'])) {
+if (r("schulhof.verwaltung.schule.adressen || schulhof.verwaltung.schule.mail")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails\" href=\"Schulhof/Verwaltung/Schuldetails\">";
 			$code .=  "<h3>Schuldetails</h3>";
-			$code .=  "<p>Einstellungen der eMailadresse des Schulhofs, der Adresse und des Webmasters.</p>";
+			$code .=  "<p>Einstellen ".aufzaehlen(array("der Adresse der Schule" => r("schulhof.verwaltung.schule.adressen"), "der eMailadresse des Schulhofs" => r("schulhof.verwaltung.schule.mail")))."</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -551,14 +551,27 @@ if ($code) {
 </ul> -->
 <div class="cms_clear"></div>
 <?php
-	function aufzaehlen($was) {
-		while(($k = array_search(false, $was)) !== false)
-			unset($was[$k]);
-		if(array_values($was) !== $was)
-			$was = array_keys($was);
-		$l = array_pop($was);
-		if($was)
-			return implode(", ", $was)." und ".$l;
-		return $l;
+	/*
+		Nimmt a)
+			1 - Ein Array und verbindet die Inhalte mit ,,,und. Inhalte mit dem Wert "false" werden ausgelassen
+		b)
+			1 - Einen String, in dem "$" mit aufzaehlen(2) ersetzt wird. Ist aufzaehlen(2) leer, wird nichts zurückgegeben.
+			2 - Ein Array
+	*/
+	function aufzaehlen($ws, $w = null) {
+		if(is_array($ws)) {
+			while(($k = array_search(false, $ws)) !== false)
+				unset($ws[$k]);
+			if(array_values($ws) !== $ws)
+				$ws = array_keys($ws);
+			$l = array_pop($ws);
+			if($ws)
+				return implode(", ", $ws)." und ".$l;
+			return $l;
+		} else {
+			if(($a = aufzaehlen($w)))
+				return str_replace('$', $a, $ws);
+			return "";
+		}
 	}
 ?>
