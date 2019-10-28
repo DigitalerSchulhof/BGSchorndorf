@@ -149,6 +149,7 @@ function cms_einstellungen_gruppen_aendern() {
 function cms_einstellungen_stundenplaene_aendern() {
 	cms_laden_an('Stundenplan-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 	var vplanextern = document.getElementById('cms_vertretungsplan_extern').value;
+	var vplanpersoenlich = document.getElementById('cms_vertretungsplan_persoenlich').value;
 	var vplanschueleraktuell = document.getElementById('cms_vertretungsplan_schueler_aktuell').value;
 	var vplanschuelerfolgetag = document.getElementById('cms_vertretungsplan_schueler_folgetag').value;
 	var vplanlehreraktuell = document.getElementById('cms_vertretungsplan_lehrer_aktuell').value;
@@ -166,6 +167,11 @@ function cms_einstellungen_stundenplaene_aendern() {
 
 	if (!cms_check_toggle(vplanextern)) {
 		meldung += '<li>Entweder wird der Untis-Vertretungsplan verwendet, oder nicht.</li>';
+		fehler = true;
+	}
+
+	if ((vplanpersoenlich != 'Klassen') && (vplanpersoenlich != 'Kursen')) {
+		meldung += '<li>Die Auswahl für die Ausgabe des persönlichen Vertretungsplans ist ungültig.</li>';
 		fehler = true;
 	}
 

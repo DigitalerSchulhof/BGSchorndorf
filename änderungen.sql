@@ -71,3 +71,6 @@ CREATE TABLE `vplantext` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ALTER TABLE `vplantext`
   ADD PRIMARY KEY (`zeit`,`art`);
+
+
+-- Standardwerte setzen

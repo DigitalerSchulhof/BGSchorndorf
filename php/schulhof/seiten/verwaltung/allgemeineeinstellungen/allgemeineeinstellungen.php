@@ -242,6 +242,13 @@ if ($zugriff) {
 		$code .= "<th>Untis-Vertretungsplan verwenden:</th>";
 		$code .= "<td>".cms_schieber_generieren('vertretungsplan_extern',$einstellungen['Vertretungsplan extern'], 'cms_vertretungsplan_einstellungen_anzeigen()')."</td>";
 		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Persönlicher Vertretungsplan nach ...</th><td><select id=\"cms_vertretungsplan_persoenlich\" name=\"cms_vertretungsplan_persoenlich\">";
+		if ($einstellungen['Persönlicher Vertretungsplan nach ...'] == 'Klassen') {$selected = "selected=\"selected\"";} else {$selected = "";}
+		$code .= "<option value=\"Klassen\" $selected>Klassen</option>";
+		if ($einstellungen['Persönlicher Vertretungsplan nach ...'] == 'Kursen') {$selected = "selected=\"selected\"";} else {$selected = "";}
+		$code .= "<option value=\"Kursen\" $selected>Kursen</option>";
+		$code .= "</select></td></tr>";
 		if ($einstellungen['Vertretungsplan extern'] == 1) {$style = "display: table-row";}
 		else {$style = "display: none";}
 		$code .= "<tr id=\"cms_vertretungsplan_schueler_aktuell_F\" style=\"$style\">";

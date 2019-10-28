@@ -107,6 +107,15 @@ if (cms_angemeldet() && $zugriff) {
     if ($stunde == '-') {
       $tbeginn = null;
       $tende = null;
+      if ($ort == 'a') {$sql = "SELECT tbeginn, tende FROM unterricht WHERE id = ?";}
+      else {$sql = "SELECT tbeginn, tende FROM unterrichtkonflikt WHERE id = ?";}
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($tbeginn, $tende);
+        $sql->fetch();
+      }
+      $sql->close();
       $art = 'e';
     }
     else {
@@ -117,8 +126,14 @@ if (cms_angemeldet() && $zugriff) {
     // Stunde eintragen
     if ($ort == 'a') {
       $nid = cms_generiere_kleinste_id('unterrichtkonflikt');
-      $sql = $dbs->prepare("UPDATE unterrichtkonflikt SET altid = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = ?, vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vplanart = ? WHERE id = ?");
-      $sql->bind_param("iiiiiiissi", $id, $kurs, $tbeginn, $tende, $lehrer, $raum, $anzeigen, $bemerkung, $art, $nid);
+      if ($art != 'e') {
+        $sql = $dbs->prepare("UPDATE unterrichtkonflikt SET altid = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = ?, vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vplanart = ? WHERE id = ?");
+        $sql->bind_param("iiiiiiissi", $id, $kurs, $tbeginn, $tende, $lehrer, $raum, $anzeigen, $bemerkung, $art, $nid);
+      }
+      else {
+        $sql = $dbs->prepare("UPDATE unterrichtkonflikt SET altid = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = ?, vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vplanart = ? WHERE id = ?");
+        $sql->bind_param("iiiiiiissi", $id, $kurs, $tbeginn, $tende, $lehrer, $raum, $anzeigen, $bemerkung, $art, $nid);
+      }
       $sql->execute();
     }
     else {
