@@ -1,4 +1,3 @@
-# Rechtebaum des Digitalen Schulhofs
 schulhof:
   verwaltung:
     nutzerkonten:
@@ -176,6 +175,7 @@ schulhof:
           löschen: Termine löschen
           genehmigen: Termine genehmigen
     sonstigegruppen:
+      knotenname: Sonstige Gruppen
       anlegen: Sonstige Gruppen anlegen
       bearbeiten: Sonstige Gruppen bearbeiten
       löschen: Sonstige Gruppen löschen
@@ -335,12 +335,13 @@ schulhof:
         archivieren: Tagebücher archivieren
         prüfen: Tagebücher prüfen
       fächer:
-        bearbeiten: Fächer bearbeiten
         anlegen: Fächer anlegen
+        bearbeiten: Fächer bearbeiten
         löschen: Fächer löschen
-        räume: Fächer an Räume kopplen
-        zeiten: Fächer an Zeiten koppeln
-        lehrer: Fächer an Lehrer koppeln
+        koppeln:
+          räume: Fächer an Räume kopplen
+          zeiten: Fächer an Zeiten koppeln
+          lehrer: Fächer an Lehrer koppeln
       profile:
         anlegen: Profile anlegen
         bearbeiten: Profile bearbeiten
@@ -443,6 +444,7 @@ artikel:
       bearbeiten: Galerien bearbeiten
       löschen: Galerien löschen
   lehrerundverwaltung: # Nur für Lehrer und Verwaltungsangestellte
+    knotenname: Lehrer und Verwaltungsangestellte
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten
