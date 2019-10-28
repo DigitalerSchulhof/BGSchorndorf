@@ -1,0 +1,59 @@
+// out: ../css/rechtebaum.css, sourcemap: false, compress: true, autoprefixer: true
+@import "standard.less";
+
+.cms_rechtebox {
+  margin-left: 24px;
+  &:not(.cms_recht_wert):not(.cms_recht_u) {
+    background-size: 24px;
+    background-image: url('../res/sonstiges/rechtebaum/leer.png');
+    background-repeat: repeat-y;
+  }
+  .cms_recht {
+    // Icon
+    &>.icon {
+      content: " ";
+      display: inline-block;
+      background-size: cover;
+      background-image: url('../res/sonstiges/rechtebaum/wert.png');
+      line-height: 24px;
+      float: left;
+      height: 24px;
+      width:  24px;
+    }
+    &.cms_hat_kinder {
+      &>.icon {
+        cursor: pointer;
+        background-image: url('../res/sonstiges/rechtebaum/wert_k.png');
+        &.cms_recht_eingeklappt {
+          background-image: url('../res/sonstiges/rechtebaum/wert_k_c.png');
+        }
+      }
+    }
+    &.cms_recht_u {
+      &>.icon {
+        background-image: url('../res/sonstiges/rechtebaum/wert_u.png');
+      }
+    }
+    &.cms_recht_u.cms_hat_kinder {
+      &>.icon {
+        background-image: url('../res/sonstiges/rechtebaum/wert_u_k.png');
+        &.cms_recht_eingeklappt {
+          background-image: url('../res/sonstiges/rechtebaum/wert_u_k_c.png');
+        }
+      }
+    }
+
+    .cms_recht_beschreibung {
+      height: 24px;
+      display: inline-block;
+      padding: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      &:hover {
+        transition: 250ms ease-in-out;
+        color: @schriftbutton;
+        background-color: @button;
+      }
+    }
+  }
+}

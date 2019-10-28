@@ -169,8 +169,7 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 
 	$dbs = cms_verbinden('s');
 
-	$sql = $dbs->prepare("SELECT person AS wert, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte LEFT JOIN (SELECT person, recht FROM rechtzuordnung WHERE person = ? UNION SELECT DISTINCT rolle*0+? AS person, recht FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = ?)) AS rechtzuordnung ON rechte.id = rechtzuordnung.recht");
-  $sql->bind_param("iii", $aktiverbenutzer, $aktiverbenutzer, $aktiverbenutzer);
+	$sql = $dbs->prepare("SELECT 2 AS wert, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte");
   if ($sql->execute()) {
     $sql->bind_result($wert, $kategorie, $bezeichnung);
     while($sql->fetch()) {

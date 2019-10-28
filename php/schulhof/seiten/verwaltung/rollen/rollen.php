@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 	<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 	<?php
-		if (r("schulhof.verwaltung.rechte.rollen.zuordnen || schulhof.verwaltung.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
+		if (r("schulhof.verwaltung.rechte.rollen.zuordnen || schulhof.verwaltung.rechte.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
 	?>
 
 <h1>Rollen</h1>

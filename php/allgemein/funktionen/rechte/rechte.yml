@@ -372,6 +372,7 @@ website:
     startseite: Startseite festlegen
   elemente:
     faq:
+      knotenname: Häufige Fragen
       anlegen: Häufige Fragen anlegen
       bearbeiten: Häufige Fragen bearbeiten
       löschen: Häufige Fragen löschen
