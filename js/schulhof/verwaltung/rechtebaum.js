@@ -4,8 +4,10 @@ $(document).ready(function() {
     $(this).siblings(".cms_rechtekinder").slideToggle("slow");
   });
   $(".cms_recht_beschreibung").click(function() {
-    var r = $(this).parent(".cms_recht");
-    if($(this).hasClass("cms_recht_aktiv")) {
+    var r = $(this).parent(".cms_recht:not(.cms_recht_rolle)");
+    if(!r.length)
+      return;
+    if(r.hasClass("cms_recht_aktiv")) {
       // Recht wegnehmen
 
       // Allen Eltern nehmen
@@ -18,7 +20,7 @@ $(document).ready(function() {
       // Recht geben
 
       // Allen Kindern geben
-      r.find(".cms_recht,.cms_recht_beschreibung").addClass("cms_recht_aktiv");
+      r.find(".cms_recht:not(.cms_recht_rolle)").addClass("cms_recht_aktiv");
       r.addClass("cms_recht_aktiv");
 
       // Prüfen ob alle Geschwister
@@ -27,9 +29,8 @@ $(document).ready(function() {
         var p = r.parent().closest(".cms_recht");
         if(!p.length)
           return;
-        if(p.find(".cms_recht").length == p.find(".cms_recht.cms_recht_aktiv").length) {
+        if(p.find(".cms_recht").length == p.find(".cms_recht_aktiv").length) {
           p.addClass("cms_recht_aktiv");
-          p.find(">.cms_recht_beschreibung").addClass("cms_recht_aktiv");
           rekgeben(p);
         }
       };
@@ -38,7 +39,7 @@ $(document).ready(function() {
   });
 });
 
-function cms_rechte_lesen() {
+function cms_rechte_speichern() {
   var rechte = [];
   var rekpruefen = function(e, pfad) {
     if(!e.length)
@@ -53,5 +54,19 @@ function cms_rechte_lesen() {
     });
   };
   rekpruefen($("#cms_rechtepapa>.cms_recht"), "");
-  console.log(rechte);
+
+  var formulardaten = new FormData();
+  formulardaten.append('rechte', rechte);
+  formulardaten.append('anfragenziel', '127');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_meldung_an('erfolg', 'Rechte vergeben', '<p>Die Rechte wurden vergeben.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+    }
+    else {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }

@@ -6,8 +6,7 @@
 
   $cms_nutzerrechte = array();  // Wichtig: im Array sind nur Rechte, die der Nutzer hat - d.h. Am Ende jedes "Pfads" im Array steht "true"
   $cms_allerechte = array();  // Alle Rechte als Ndarray
-  function cms_rechte_laden_sql($sql, $pt, ...$params) {
-    global $cms_nutzerrechte;
+  function cms_rechte_laden_sql($sql, &$arr, $pt, ...$params) {
     $dbs = cms_verbinden();
 
     $sql = $dbs->prepare($sql);
@@ -17,7 +16,9 @@
 
     while($sql->fetch()) {
       $pfad = explode(".", $recht);
-      $a = &$cms_nutzerrechte;
+      $a = &$arr;
+      if($a === true)
+        break;
       foreach($pfad as $i => $p) {
         if(++$i == count($pfad)) {
           $p == "*" ? ($a = true) : ($a[$p] = true);
@@ -32,28 +33,34 @@
     }
     $sql->close();
   }
-  function cms_rechte_laden_n() {
-    global $CMS_SCHLUESSEL;
+
+  function cms_rechte_laden_n($person = '-', &$arr = null) {
+    global $CMS_SCHLUESSEL, $cms_nutzerrechte;
     $dbs = cms_verbinden("s");
 
-    $person = $_SESSION['BENUTZERID'];
-    if(!isset($person))
-      return false;
+    if(is_null($arr))
+      $arr = &$cms_nutzerrechte;
+
+  	if ($person == '-')
+      $person = $_SESSION['BENUTZERID'] ?? "-";
 
     $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rechtezuordnung WHERE person = ?";
-    cms_rechte_laden_sql($sql, "i", $person);
+    cms_rechte_laden_sql($sql, $arr, "i", $person);
   }
-  function cms_rechte_laden_r() {
-    global $CMS_SCHLUESSEL;
+  function cms_rechte_laden_r($person = '-', &$arr = null) {
+    global $CMS_SCHLUESSEL, $cms_nutzerrechte;
     $dbs = cms_verbinden("s");
 
-    $person = $_SESSION['BENUTZERID'];
-    if(!isset($person))
-      return false;
+    if(is_null($arr))
+      $arr = &$cms_nutzerrechte;
+
+    if ($person == '-')
+      $person = $_SESSION['BENUTZERID'] ?? "-";
 
     $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte JOIN rollenzuordnung ON rollenrechte.rolle = rollenzuordnung.rolle WHERE rollenzuordnung.person = ?";
-    cms_rechte_laden_sql($sql, "i", $person);
+    cms_rechte_laden_sql($sql, $arr, "i", $person);
   }
+
   function cms_allerechte_laden() {
     global $cms_allerechte;
 

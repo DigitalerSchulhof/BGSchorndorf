@@ -29,7 +29,6 @@ else {
 	$id = $_SESSION['PERSONENDETAILS'];
 	if (r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 		echo "<h1>Rollen und Rechte vergeben</h1>";
-
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
 		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(art, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?";
@@ -38,6 +37,7 @@ else {
 		$sql->bind_result($vorname, $nachname, $personart);
 		if(!$sql->execute() || !$sql->fetch())
 			echo cms_meldung_unbekannt();
+		echo "<p class=\"cms_notiz\">$vorname $nachname</p>";
 
 		if(r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
 			echo "<div class=\"cms_spalte_2\">";
@@ -65,13 +65,14 @@ else {
 			echo "<div class=\"cms_spalte_2\">";
 				echo "<h3>Verfügbare Rechte</h3>";
 				$rechte = YAML::loader(dirname(__FILE__)."/../../../../allgemein/funktionen/rechte/rechte.yml");
-				if($cms_nutzerrechte === true)
-					$alle = true;
-				else
-					$rechte = array_replace_recursive($rechte, $cms_nutzerrechte);
+				$alle = false;
 
+				$cms_desnutzersrechte = array();
+				$cms_derrollerechte = array();
+				cms_rechte_laden_n($id, $cms_desnutzersrechte);
+				cms_rechte_laden_r($id, $cms_derrollerechte);
 
-				$recht_machen = function($recht, $kinder = null, $unterstes = false) use (&$recht_machen) {
+				$recht_machen = function($pfad, $recht, $kinder = null, $unterstes = false) use (&$recht_machen, $cms_desnutzersrechte, $cms_derrollerechte) {
 					$code = "";
 
 					$knoten = $recht;
@@ -84,22 +85,53 @@ else {
 						unset($kinder["knotenname"]);
 					}
 
-					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_u":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\">".mb_ucfirst($recht)."</span>";
+					// Hat die Person das Recht?
+					$rechtecheck = function($r, $pf) {
+						foreach(explode(".", $pf) as $p) {
+							if($r === true)
+								return true;
+							else
+								if(isset($r[$p])) {
+									if(($r = $r[$p]) === true)
+										return true;
+								} else
+									return false;
+						}
+					};
+
+					$personhatrecht = false;
+					$rollehatrecht = false;
+
+					if(substr("$pfad.$knoten", 2) !== false && ($pf = explode(".", substr("$pfad.$knoten", 2))) !== null) {
+						$personhatrecht = $rechtecheck($cms_desnutzersrechte, substr("$pfad.$knoten", 2));
+						$rollehatrecht = $rechtecheck($cms_derrollerechte, substr("$pfad.$knoten", 2));
+					}
+					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_u":"").($personhatrecht&&!$rollehatrecht?" cms_recht_aktiv":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\">".mb_ucfirst($recht)."</span></span>";
 
 					// Kinder ausgeben
 					$c = 0;
 					if(is_array($kinder)) {
 						$code .= "<div class=\"cms_rechtekinder\"".($recht?"style=\"display: none;\"":"").">";
 						foreach($kinder as $n => $i)
-							$code .= "<div class=\"cms_rechtebox".(!is_null($i) && !is_array($i)?" cms_recht_wert":"").(++$c==count($kinder)?" cms_recht_u":"")."\">".$recht_machen($n, $i, $c == count($kinder))."</div>";
+							$code .= "<div class=\"cms_rechtebox".(!is_null($i) && !is_array($i)?" cms_recht_wert":"").(++$c==count($kinder)?" cms_recht_u":"")."\">".$recht_machen("$pfad.$knoten", $n, $i, $c == count($kinder))."</div>";
 						$code .= "</div>";
 					}
 					$code .= "</div>";
 					return $code;
 				};
 
-				echo "<div id=\"cms_rechtepapa\">".$recht_machen("", $rechte, true)."</div>";
-				echo "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				echo "<div id=\"cms_rechtepapa\" class=\"cms_spalte_i\">".$recht_machen("", "", $rechte, true)."</div>";
+
+				echo "<div class=\"cms_spalte_2\">";
+					echo "<span class=\"cms_button_ja\" onclick=\"cms_rechte_speichern()\">Speichern</span> <span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Personen')\">Abbrechen</span>";
+					echo "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				echo "</div>";
+				echo "<div class=\"cms_spalte_2\">";
+					echo "<h3>Legende</h3>";
+					echo "<span class=\"cms_demorecht\">Unvergebenes Recht</span> ";
+					echo "<span class=\"cms_demorecht cms_demorecht_aktiv\">Vergebenes Recht</span> ";
+					echo "<span class=\"cms_demorecht cms_demorecht_rolle\">Recht einer zugeordneten Rolle</span> ";
+				echo "</div>";
 			echo "</div>";
 		}
 	}

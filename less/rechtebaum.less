@@ -1,9 +1,12 @@
 // out: ../css/rechtebaum.css, sourcemap: false, compress: true, autoprefixer: true
 @import "standard.less";
 
+#cms_rechtepapa {
+  margin-left: -34px;
+}
 .cms_rechtebox {
   margin-left: 24px;
-  &:not(.cms_recht_wert):not(.cms_recht_u) {
+  &:not(.cms_raecht_wert):not(.cms_recht_u) {
     background-size: 24px;
     background-image: url('../res/sonstiges/rechtebaum/leer.png');
     background-repeat: repeat-y;
@@ -42,19 +45,28 @@
         }
       }
     }
-
     .cms_recht_beschreibung {
       height: 24px;
       display: inline-block;
-      padding: 5px;
-      border-radius: 1px;
-      cursor: pointer;
-      transition: 250ms ease-in-out;
-      &:hover {
-        color: @schriftbutton;
-        background-color: @button;
+      .cms_recht_beschreibung_i {
+        height: 20px;
+        cursor: pointer;
+        transition: 250ms ease-in-out;
+        border-radius: 1px;
+        padding: 3px;
+        margin: 2px;
+        display: inline-block;
+        border: 1px solid @standarddunkel;
+        &:hover {
+          border-color: transparent;
+          color: @schriftbutton;
+          background-color: @button;
+        }
       }
-      &.cms_recht_aktiv {
+    }
+    &.cms_recht_aktiv {
+      .cms_recht_beschreibung_i {
+        border-color: transparent;
         color: @schriftfarbedunkel;
         background-color: @erfolghell;
         &:hover {
@@ -62,5 +74,43 @@
         }
       }
     }
+    &.cms_recht_rolle {
+      .cms_recht_beschreibung_i {
+        border-color: transparent;
+        cursor: default;
+        background-color: @infohell !important;
+        color: @schriftfarbedunkel !important;
+      }
+    }
+  }
+}
+
+.cms_demorecht {
+  height: 24px;
+  display: inline-block;
+  padding: 5px;
+  margin-bottom: 2px;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: 250ms ease-in-out;
+  border: 1px solid @standarddunkel;
+  &:hover {
+    border-color: transparent;
+    color: @schriftbutton;
+    background-color: @button;
+  }
+  &.cms_demorecht_aktiv {
+    border-color: transparent;
+    color: @schriftfarbedunkel;
+    background-color: @erfolghell;
+    &:hover {
+      background-color: @fehlerhell;
+    }
+  }
+  &.cms_demorecht_rolle {
+    border-color: transparent;
+    cursor: default;
+    background-color: @infohell !important;
+    color: @schriftfarbedunkel !important;
   }
 }

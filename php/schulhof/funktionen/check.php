@@ -157,10 +157,14 @@ function cms_angemeldet () {
   return $angemeldet;
 }
 
+include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");	// TODO: Rem
 
 function cms_rechte_laden($aktiverbenutzer = '-') {
 	global $CMS_SCHLUESSEL;
+	cms_allerechte_laden();
 
+	cms_rechte_laden_n($aktiverbenutzer);
+	cms_rechte_laden_r($aktiverbenutzer);
 	// Verbindung zur Datenbank herstellen
 	$BENUTZERIDTEST = "-";
 	$BENUTZERARTTEST = "-";

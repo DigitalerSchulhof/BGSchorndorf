@@ -124,10 +124,6 @@
 
 		// Rechte des Benutzers laden
 		$CMS_RECHTE = cms_rechte_laden();
-		cms_allerechte_laden();
-
-		cms_rechte_laden_n();
-		cms_rechte_laden_r();
 	}
 
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
