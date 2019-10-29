@@ -491,3 +491,151 @@ function cms_zeitraeume_klonen_speichern() {
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
+
+function cms_stundenplanung_importieren_vorbereiten (id) {
+	cms_laden_an('Stundenplanung in Zeiträume importieren vorbereiten', 'Die Berechtigung wird geprüft.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", id);
+	formulardaten.append("anfragenziel", 	'297');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Verwaltung/Planung/Zeiträume/Stundenplanung_importieren');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+function cms_stundenplanung_import_speichern() {
+	cms_laden_an('Stundenplanung importieren', 'Die Eingaben werden überprüft.');
+	var lehrer = document.getElementById('cms_stundenplanung_import_lehrer').value;
+	var tag = document.getElementById('cms_stundenplanung_import_tag').value;
+	var stunde = document.getElementById('cms_stundenplanung_import_stunde').value;
+	var fach = document.getElementById('cms_stundenplanung_import_fach').value;
+	var raum = document.getElementById('cms_stundenplanung_import_raum').value;
+	var schienen = document.getElementById('cms_stundenplanung_import_schienen').value;
+	var klasse = document.getElementById('cms_stundenplanung_import_klasse').value;
+	var csv = document.getElementById('cms_stundenplanung_import_csv').value;
+	var trennung = document.getElementById('cms_stundenplanung_import_trennung').value;
+
+	var meldung = '<p>Die Stundenplanung konnte nicht importiert werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+	if (csv.length == 0) {
+		meldung += '<li>es wurden keine Datensätze eingegeben.</li>';
+		fehler = true;
+	}
+
+	if (trennung.length == 0) {
+		meldung += '<li>es wurde kein Trennsymbol eingegeben.</li>';
+		fehler = true;
+	}
+
+  var maxspalten = 0;
+  if (!fehler) {
+    // Inhalte analysieren
+    var csvanalyse = csv.split("\n");
+    for (var i=0; i<csvanalyse.length; i++) {
+      var aktspalten = csvanalyse[i].split(trennung).length;
+      if (aktspalten > maxspalten) {maxspalten = aktspalten;}
+    }
+  }
+
+	if (!cms_check_ganzzahl(lehrer, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für die Lehrer ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(tag, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für den Tag ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(stunde, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für die Stunde ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(fach, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für das Fach ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(raum, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für den Raum ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(schienen, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für die Schienen-ID ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(klasse, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für die Klasse ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Stundenplanung importieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+
+
+    var feld = document.getElementById('cms_blende_i');
+    var neuemeldung = '<div class="cms_spalte_i">';
+    neuemeldung += '<h2 id="cms_laden_ueberschrift">Stundenplanung importieren</h2>';
+    neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
+    neuemeldung += '<h4>Gesamtfortschritt</h4>';
+    neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
+      neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_schritte_balken" style="width: 0%;"></div>';
+    neuemeldung += '</div>';
+    neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Arbeitsschritte: <span id="cms_stundenplanung_schritte">0</span>/<span id="cms_stundenplanung_schritte_alle">?</span> abgeschlossen</p>';
+    neuemeldung += '<div>';
+      neuemeldung += '<h4>Datenanalyse</h4>';
+      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
+        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_analyse_balken" style="width: 0%;"></div>';
+      neuemeldung += '</div>'
+      neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Datenanalyse: <span id="cms_stundenplanung_analyse">0</span>/2 abgeschlossen</p>';
+    neuemeldung += '</div>';
+    neuemeldung += '<div>';
+      neuemeldung += '<h4>Kurse anlegen</h4>';
+      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
+        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_kurse_balken" style="width: 0%;"></div>';
+      neuemeldung += '</div>'
+      neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Kurse angelegt: <span id="cms_stundenplanung_kurse">0</span>/<span id="cms_stundenplanung_kurse_alle">?</span> abgeschlossen</p>';
+    neuemeldung += '</div>';
+    neuemeldung += '<div>';
+      neuemeldung += '<h4>Stunden platzieren</h4>';
+      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
+        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_stunden_balken" style="width: 0%;"></div>';
+      neuemeldung += '</div>'
+      neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Stunden platziert: <span id="cms_stundenplanung_stunden">0</span>/<span id="cms_stundenplanung_stunden_alle">?</span> abgeschlossen</p>';
+    neuemeldung += '</div>';
+    neuemeldung += '</div>';
+    feld.innerHTML = neuemeldung;
+
+    var formulardaten = new FormData();
+    formulardaten.append("csv", csv);
+    formulardaten.append("trennung", trennung);
+    formulardaten.append("lehrer", lehrer);
+    formulardaten.append("tag", tag);
+    formulardaten.append("stunde", stunde);
+    formulardaten.append("fach", fach);
+    formulardaten.append("raum", raum);
+    formulardaten.append("schienen", schienen);
+    formulardaten.append("klasse", klasse);
+    formulardaten.append("anfragenziel", 	'298');
+
+    function anfragennachbehandlung(rueckgabe) {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}

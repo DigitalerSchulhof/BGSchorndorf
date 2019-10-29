@@ -89,7 +89,7 @@ if ($zugriff) {
     $code .= "</table>";
 
     if ($CMS_RECHTE['Planung']['Fächer anlegen']) {
-      $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a></p>";
+      $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a> <a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Fächer_importieren\">+ Neue Fächer importieren</a></p>";
     }
 
 

@@ -72,5 +72,4 @@ CREATE TABLE `vplantext` (
 ALTER TABLE `vplantext`
   ADD PRIMARY KEY (`zeit`,`art`);
 
-
 -- Standardwerte setzen
