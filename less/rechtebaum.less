@@ -47,12 +47,19 @@
       height: 24px;
       display: inline-block;
       padding: 5px;
-      border-radius: 4px;
+      border-radius: 1px;
       cursor: pointer;
+      transition: 250ms ease-in-out;
       &:hover {
-        transition: 250ms ease-in-out;
         color: @schriftbutton;
         background-color: @button;
+      }
+      &.cms_recht_aktiv {
+        color: @schriftfarbedunkel;
+        background-color: @erfolghell;
+        &:hover {
+          background-color: @fehlerhell;
+        }
       }
     }
   }

@@ -2,6 +2,22 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
+if (!function_exists('mb_ucfirst')) {
+	function mb_ucfirst($str, $encoding = "UTF-8", $lower_str_end = false) {
+		$first_letter = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding);
+		$str_end = "";
+		if ($lower_str_end) {
+			$str_end = mb_strtolower(mb_substr($str, 1, mb_strlen($str, $encoding), $encoding), $encoding);
+		}
+		else {
+			$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
+		}
+		$str = $first_letter . $str_end;
+		return $str;
+	}
+}
+
+
 include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
 use Async\YAML;
 
@@ -58,6 +74,8 @@ else {
 				$recht_machen = function($recht, $kinder = null, $unterstes = false) use (&$recht_machen) {
 					$code = "";
 
+					$knoten = $recht;
+
 					// Alternativer Knotenname
 					if(!is_null($kinder) && !is_array($kinder))
 						$recht = $kinder;
@@ -66,7 +84,7 @@ else {
 						unset($kinder["knotenname"]);
 					}
 
-					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_u":"")."\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\">".ucfirst($recht)."</span>";
+					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_u":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\">".mb_ucfirst($recht)."</span>";
 
 					// Kinder ausgeben
 					$c = 0;
@@ -76,12 +94,12 @@ else {
 							$code .= "<div class=\"cms_rechtebox".(!is_null($i) && !is_array($i)?" cms_recht_wert":"").(++$c==count($kinder)?" cms_recht_u":"")."\">".$recht_machen($n, $i, $c == count($kinder))."</div>";
 						$code .= "</div>";
 					}
-
 					$code .= "</div>";
 					return $code;
 				};
 
-				echo $recht_machen("", $rechte, true);
+				echo "<div id=\"cms_rechtepapa\">".$recht_machen("", $rechte, true)."</div>";
+				echo "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
 			echo "</div>";
 		}
 	}
