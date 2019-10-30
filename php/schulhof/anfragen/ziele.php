@@ -299,7 +299,7 @@ $CMS_ZIELE[295] = 'php/schulhof/anfragen/verwaltung/stundenplanung/stundenplanvo
 $CMS_ZIELE[296] = 'php/schulhof/anfragen/verwaltung/vertretungsplanung/konflikteuebernehmen.php';
 $CMS_ZIELE[297] = 'php/schulhof/anfragen/verwaltung/zeitraeume/stundenplanungimportierenvorbereiten.php';
 $CMS_ZIELE[298] = 'php/schulhof/anfragen/verwaltung/zeitraeume/stundenplanungimportierenidanalyse.php';
-$CMS_ZIELE[299] = '';
+$CMS_ZIELE[299] = 'php/schulhof/anfragen/verwaltung/zeitraeume/stundenplanungimportierenkursanalyse.php';
 $CMS_ZIELE[300] = 'php/lehrerzimmer/anfragen/intern/geraetezustand.php';
 $CMS_ZIELE[301] = 'php/schulhof/anfragen/verwaltung/galerien/neuvorbereiten.php';
 $CMS_ZIELE[302] = 'php/schulhof/anfragen/verwaltung/galerien/bearbeitenvorbereiten.php';
@@ -352,5 +352,6 @@ $CMS_ZIELE[348] = 'php/schulhof/anfragen/verwaltung/schuljahrfabrik/personeninku
 $CMS_ZIELE[349] = '';
 $CMS_ZIELE[350] = 'php/schulhof/anfragen/verwaltung/gruppen/klassenfaecherladen.php';
 $CMS_ZIELE[351] = 'php/schulhof/anfragen/verwaltung/gruppen/kursefaecherladen.php';
-$CMS_ZIELE[352] = '';
+$CMS_ZIELE[352] = 'php/schulhof/anfragen/verwaltung/zeitraeume/stundenplanungimportierenstundeplatzieren.php';
+$CMS_ZIELE[353] = 'php/schulhof/anfragen/verwaltung/zeitraeume/stundenplanungimportierenabschluss.php';
 ?>

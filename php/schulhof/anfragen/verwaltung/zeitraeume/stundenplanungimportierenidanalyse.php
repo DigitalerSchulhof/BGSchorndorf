@@ -60,8 +60,8 @@ if (cms_angemeldet() && $zugriff) {
 			} else {$fehler = true;}
 		} else {$fehler = true;}
 		$sql->close();
-		$sql = $dbs->prepare("SELECT COUNT(*) FROM zeitraeume WHERE id = ?");
-		$sql->bind_param("i", $ZEITRAUM);
+		$sql = $dbs->prepare("SELECT COUNT(*) FROM zeitraeume WHERE id = ? AND schuljahr = ?");
+		$sql->bind_param("ii", $ZEITRAUM, $SCHULJAHR);
 		if ($sql->execute()) {
 			$sql->bind_result($zanzahl);
 			if ($sql->fetch()) {
@@ -189,24 +189,16 @@ if (cms_angemeldet() && $zugriff) {
 				if (!in_array($dfach, $FAECHER)) {array_push($FAECHER, $dfach);}
 			}
 		}
-
-		// echo "LEHRER:<br>";
-		// print_r($LEHRER); echo "<br><br>RÄUME:<br>";
-		// print_r($RAEUME); echo "<br><br>SCHULSTUNDEN:<br>";
-		// print_r($SCHULSTUNDEN); echo "<br><br>TAGE:<br>";
-		// print_r($TAGE); echo "<br><br>KLASSEN:<br>";
-		// print_r($KLASSEN); echo "<br><br>STUFEN:<br>";
-		// print_r($STUFEN); echo "<br><br>FÄCHER:<br>";
-		// print_r($FAECHER); echo "<br><br>";
 	}
 
+	$LEHRERFEHLER = array();
+	$RAEUMEFEHLER = array();
+	$SCHULSTUNDENFEHLER = array();
+	$KLASSENFEHLER = array();
+	$STUFENFEHLER = array();
+	$FACHFEHLER = array();
+
 	if (!$fehler) {
-		$LEHRERFEHLER = array();
-		$RAEUMEFEHLER = array();
-		$SCHULSTUNDENFEHLER = array();
-		$KLASSENFEHLER = array();
-		$STUFENFEHLER = array();
-		$FACHFEHLER = array();
 		$LEHRERIDS = array();
 		$RAEUMEIDS = array();
 		$SCHULSTUNDENIDS = array();
@@ -312,7 +304,6 @@ if (cms_angemeldet() && $zugriff) {
 		$UNTERRICHT = array();
 		$STATTFINDEN = "";
 		foreach ($csvanalyse as $csvteil) {
-			// LEHRER abschließen
 			$daten = explode($trennung, $csvteil);
 			$dlehrer = $daten[$lehrer-1];
 			$draum = $daten[$raum-1];
@@ -328,7 +319,6 @@ if (cms_angemeldet() && $zugriff) {
 			}
 			// Kurse dieses Lehrers abschließen
 			if (($aktlehrer != "-") && ($dlehrer != $aktlehrer)) {
-				$aktlehrer = $dlehrer;
 				foreach ($UNTERRICHT as $t) {
 					foreach ($t as $s) {
 						foreach ($s as $u) {
@@ -346,6 +336,8 @@ if (cms_angemeldet() && $zugriff) {
 
 							$bez = $ustufe.$uklassen." ".$FACHIDS[$ufach]['bez'];
 							$kurzbez = $ustufe.$uklassen." ".$ufach;
+							if (!cms_check_titel($bez)) {$fehler = true;}
+							if (!cms_check_titel($kurzbez)) {$fehler = true;}
 							if (!in_array($bez, $KURSEBEZ)) {
 								$K = array();
 								$K['bezeichnung'] = $bez;
@@ -353,7 +345,7 @@ if (cms_angemeldet() && $zugriff) {
 								$K['stufe'] = $STUFENIDS[$ustufe];
 								$K['kurzbez'] = $kurzbez;
 								$K['fach'] = $FACHIDS[$ufach]['id'];
-								$K['klassen'] = substr($uklassenids, 1);
+								$K['klassen'] = $uklassenids;
 								array_push($KURSE, $K);
 								array_push($KURSEBEZ, $bez);
 							}
@@ -362,6 +354,7 @@ if (cms_angemeldet() && $zugriff) {
 						}
 					}
 				}
+				$aktlehrer = $dlehrer;
 				$UNTERRICHT = array();
 			}
 
@@ -394,6 +387,8 @@ if (cms_angemeldet() && $zugriff) {
 				}
 				$bez = $dstufe." ".$kursart."K ".$FACHIDS[$dfach]['bez']." ".$kursnr;
 				$kurzbez = $dstufe." ".$kursart."K ".$dfach.$kursnr;
+				if (!cms_check_titel($bez)) {$fehler = true;}
+				if (!cms_check_titel($kurzbez)) {$fehler = true;}
 				if (!in_array($bez, $KURSEBEZ)) {
 					$K = array();
 					$K['bezeichnung'] = $bez;
@@ -411,7 +406,6 @@ if (cms_angemeldet() && $zugriff) {
 				$STATTFINDEN .= $RAEUMEIDS[$draum].$trennung."\n";
 			}
 		}
-		$aktlehrer = $dlehrer;
 		foreach ($UNTERRICHT as $t) {
 			foreach ($t as $s) {
 				foreach ($s as $u) {
@@ -429,6 +423,8 @@ if (cms_angemeldet() && $zugriff) {
 
 					$bez = $ustufe.$uklassen." ".$FACHIDS[$ufach]['bez'];
 					$kurzbez = $ustufe.$uklassen." ".$ufach;
+					if (!cms_check_titel($bez)) {$fehler = true;}
+					if (!cms_check_titel($kurzbez)) {$fehler = true;}
 					if (!in_array($bez, $KURSEBEZ)) {
 						$K = array();
 						$K['bezeichnung'] = $bez;
@@ -436,7 +432,7 @@ if (cms_angemeldet() && $zugriff) {
 						$K['stufe'] = $STUFENIDS[$ustufe];
 						$K['kurzbez'] = $kurzbez;
 						$K['fach'] = $FACHIDS[$ufach]['id'];
-						$K['klassen'] = substr($uklassenids, 1);
+						$K['klassen'] = $uklassenids;
 						array_push($KURSE, $K);
 						array_push($KURSEBEZ, $bez);
 					}
@@ -447,30 +443,28 @@ if (cms_angemeldet() && $zugriff) {
 		}
 	}
 
-
-
-	// echo "LEHRER:<br>";
-	// print_r($LEHRERIDS); echo "<br><br>RÄUME:<br>";
-	// print_r($RAEUMEIDS); echo "<br><br>SCHULSTUNDEN:<br>";
-	// print_r($SCHULSTUNDENIDS); echo "<br><br>KLASSEN:<br>";
-	// print_r($KLASSENIDS); echo "<br><br>STUFEN:<br>";
-	// print_r($STUFENIDS); echo "<br><br>FÄCHER:<br>";
-	// print_r($FACHIDS); echo "<br><br>";
-	$KURSTEXT = "";
-	foreach ($KURSE AS $K) {
-		$KURSTEXT .= $K['bezeichnung'].$trennung;
-		$KURSTEXT .= $K['kurzbez'].$trennung;
-		$KURSTEXT .= $K['stufe'].$trennung;
-		$KURSTEXT .= $K['fach'].$trennung;
-		$KURSTEXT .= $K['klassen'].$trennung."\n\n\n";
+	if ($fehler) {
+		echo "FEHLER\n\n\n";
+		echo implode($trennung, $LEHRERFEHLER)."\n\n\n";
+		echo implode($trennung, $RAEUMEFEHLER)."\n\n\n";
+		echo implode($trennung, $SCHULSTUNDENFEHLER)."\n\n\n";
+		echo implode($trennung, $KLASSENFEHLER)."\n\n\n";
+		echo implode($trennung, $STUFENFEHLER)."\n\n\n";
+		echo implode($trennung, $FACHFEHLER);
 	}
-
-	echo $KURSTEXT.$STATTFINDEN;
-
-
-
-
-	echo "ERFOLG";
+	else {
+		echo "ERFOLG\n\n\n";
+		$KURSTEXT = "";
+		foreach ($KURSE AS $K) {
+			$KURSTEXT .= $K['bezeichnung'].$trennung;
+			$KURSTEXT .= $K['kurzbez'].$trennung;
+			$KURSTEXT .= $K['stufe'].$trennung;
+			$KURSTEXT .= $K['fach'].$trennung;
+			$KURSTEXT .= $K['icon'].$trennung;
+			$KURSTEXT .= $K['klassen'].$trennung."\n";
+		}
+		echo $KURSTEXT."\n\n".$STATTFINDEN."\n\n";
+	}
 	cms_trennen($dbs);
 }
 else {

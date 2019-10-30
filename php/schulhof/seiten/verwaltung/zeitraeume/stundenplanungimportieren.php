@@ -56,7 +56,10 @@ if ($zugriff) {
     $code .= "<tr><th>Klasse:</th><td>";
       $code .= "<select name=\"cms_stundenplanung_import_klasse\" id=\"cms_stundenplanung_import_klasse\" disabled=\"disabled\">";
     $code .= "<option value=\"-\">nicht importieren</option></select></td></tr>";
+    $code .= "<tr><th>Zuordnen:</th><td>".cms_schieber_generieren("stundenplanung_import_zuordnen", 0)."</td></tr>";
     $code .= "</table>";
+
+    $code .= "<p><input type=\"hidden\" name=\"cms_stundenplanung_import_schuljahr\" id=\"cms_stundenplanung_import_schuljahr\" value=\"$SCHULJAHR\"></p>";
 
     $code .= cms_meldung('info','<h4>Dopplungen</h4><p>Ergeben sich doppelte Einträge durch das Auswählen der Spalten und dadurch ggf. wegfallende Informationen, oder dadurch, dass bereits Datensätze bestehen, so wird der erste Eintrag gespeichert bzw. der bestehende Eintrag beibehalten und alle folgenden verworfen.</p>');
 
