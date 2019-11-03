@@ -8,7 +8,6 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
@@ -221,6 +220,16 @@
 					else {$fehler = true;}
 				}
 				else {$fehler = true;}
+			}
+			else if ($_SESSION['DRUCKANSICHT'] == 'Vertretungsplan') {
+				include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
+				$code .= "<h1>Vertretungsplan Lehreransicht</h1>";
+				$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 'l');
+				$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 'l');
+
+				$code .= "<h1>Vertretungsplan Schüleransicht</h1>";
+				$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 's');
+				$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 's');
 			}
 			else {$fehler = true;}
 		}

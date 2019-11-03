@@ -613,8 +613,23 @@ function cms_vplan_raum(aendern) {
 	else {cms_vplan_wochenplan_r();}
 }
 
+function cms_vplan_montagdatum(id) {
+	var tag = parseInt(document.getElementById(id+'_T').value);
+	var monat = parseInt(document.getElementById(id+'_M').value);
+	var jahr = parseInt(document.getElementById(id+'_J').value);
+	var jetzt = new Date(jahr, monat-1, tag, 0, 0, 0, 0);
+	var wochentag = jetzt.getDay();
+	if (wochentag == 0) {wochentag = 7;}
+	tag = parseInt(tag) - wochentag + 1;
+	document.getElementById(id+'_T').value = tag;
+	document.getElementById(id+'_M').value = monat;
+	document.getElementById(id+'_J').value = jahr;
+	cms_datumcheck(id);
+}
+
 
 function cms_vplan_klasse(aendern) {
+	var leise = leise || false;
 	var koppeln = document.getElementById('cms_vplan_wochenplaene').value;
 	cms_gesichert_laden('cms_vplan_wochenplan_k');
 	if (koppeln == 1) {
@@ -872,26 +887,26 @@ function cms_vplan_wochenplan_l(art, lehrer, raum, klasse, datum) {
 	else if (art == 'a') {
 		if (lehrer) {
 			if (lehrer != altlehrer) {
-				aktualisieren += 'l';
 				document.getElementById('cms_vplan_woche_lehrer').value = lehrer;
 				cms_gesichert_laden('cms_vplan_wochenplan_l');
 			}
+				aktualisieren += 'l';
 		}
 		else {aktualisieren += 'l';}
 		if (raum) {
 			if (raum != altraum) {
-				aktualisieren += 'r';
 				document.getElementById('cms_vplan_woche_raum').value = raum;
 				cms_gesichert_laden('cms_vplan_wochenplan_r');
 			}
+			aktualisieren += 'r';
 		}
 		else {aktualisieren += 'r';}
 		if (klasse) {
 			if (klasse != altklasse) {
-				aktualisieren += 'k';
 				document.getElementById('cms_vplan_woche_klasse').value = klasse;
 				cms_gesichert_laden('cms_vplan_wochenplan_k');
 			}
+			aktualisieren += 'k';
 		}
 		else {aktualisieren += 'k';}
 		if (datum) {
@@ -906,9 +921,9 @@ function cms_vplan_wochenplan_l(art, lehrer, raum, klasse, datum) {
 				document.getElementById('cms_vplanlehrer_datum_J').value = datum[2];
 				document.getElementById('cms_vplanraum_datum_J').value = datum[2];
 				document.getElementById('cms_vplanklasse_datum_J').value = datum[2];
-				cms_datumcheck('cms_vplanlehrer_datum');
-				cms_datumcheck('cms_vplanraum_datum');
-				cms_datumcheck('cms_vplanklasse_datum');
+				cms_vplan_montagdatum('cms_vplanlehrer_datum');
+				cms_vplan_montagdatum('cms_vplanraum_datum');
+				cms_vplan_montagdatum('cms_vplanklasse_datum');
 			}
 
 		}
@@ -941,7 +956,7 @@ function cms_vplan_wochenplan_l(art, lehrer, raum, klasse, datum) {
 			formulardaten.append("anfragenziel", 	'8');
 
 			function anfragennachbehandlung(rueckgabe) {
-				if (rueckgabe.match(/^<div class/)) {
+				if (rueckgabe.match(/^<div class/) || rueckgabe.match(/^<p class/)) {
 					plan.innerHTML = rueckgabe;
 				}
 				else {
@@ -983,7 +998,7 @@ function cms_vplan_wochenplan_r(aktualisieren) {
 			formulardaten.append("anfragenziel", 	'9');
 
 			function anfragennachbehandlung(rueckgabe) {
-				if (rueckgabe.match(/^<div class/)) {
+				if (rueckgabe.match(/^<div class/) || rueckgabe.match(/^<p class/)) {
 					plan.innerHTML = rueckgabe;
 				}
 				else {
@@ -1026,7 +1041,7 @@ function cms_vplan_wochenplan_k(aktualisieren) {
 			formulardaten.append("anfragenziel", 	'10');
 
 			function anfragennachbehandlung(rueckgabe) {
-				if (rueckgabe.match(/^<div class/)) {
+				if (rueckgabe.match(/^<div class/) || rueckgabe.match(/^<p class/)) {
 					plan.innerHTML = rueckgabe;
 				}
 				else {
@@ -1097,89 +1112,152 @@ function cms_vertretungsplan_stunde_verschieben_info() {
 }
 
 
-function cms_vplan_stunde_kopieren() {
-	cms_laden_an('Stunde kopieren', 'Stunde wird kopiert ...');
-	var formulardaten = new FormData();
-	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-  formulardaten.append("ausgangsstundeu", vplan_start_uid);
-  formulardaten.append("ausgangsstundek", vplan_start_kid);
-  formulardaten.append("zielzeit", 	vplan_ziel_std);
-  formulardaten.append("anfragenziel", 	'11');
+function cms_vplan_stunde_kopieren(zusatzbem, zwang) {
+	var zusatzbem = zusatzbem || '';
+	var zwang = zwang || 'n';
+	if ((zwang == 'j') || (zwang == 'n')) {
+		cms_laden_an('Stunde kopieren', 'Stunde wird kopiert ...');
+		var formulardaten = new FormData();
+		cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+	  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+	  formulardaten.append("ausgangsstundek", vplan_start_kid);
+	  formulardaten.append("zielzeit", 		vplan_ziel_std);
+	  formulardaten.append("zwang", 			zwang);
+	  formulardaten.append("zusatzbem", 	zusatzbem);
+	  formulardaten.append("anfragenziel", 	'11');
 
-  function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe == "ERFOLG") {
-			cms_vplan_konflikte_liste('a');
-			cms_laden_aus();
-    }
-    else {cms_fehlerbehandlung(rueckgabe);}
-  }
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_vplan_konflikte_liste('a');
+				cms_laden_aus();
+	    }
+			else if ((rueckgabe == "KONFLIKT") || (rueckgabe == "KONFLIKTL")) {
+				cms_vplan_stunde_kopieren_konfliktanzeigen(rueckgabe)
+			}
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	}
 }
 
-function cms_vplan_stunde_verlegen() {
-	cms_laden_an('Stunde verlegen', 'Stunde wird verlegt ...');
-
-	var formulardaten = new FormData();
-	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-  formulardaten.append("ausgangsstundeu", vplan_start_uid);
-  formulardaten.append("ausgangsstundek", vplan_start_kid);
-  formulardaten.append("zielzeit", 	vplan_ziel_std);
-  formulardaten.append("anfragenziel", 	'12');
-
-  function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe == "ERFOLG") {
-			cms_vplan_konflikte_liste('a');
-			cms_laden_aus();
-    }
-    else {cms_fehlerbehandlung(rueckgabe);}
-  }
-
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+function cms_vplan_stunde_kopieren_konfliktanzeigen(art) {
+	var zusatzoption = '';
+	if (art == 'KONFLIKTL') {
+		zusatzoption = '<span class="cms_button_wichtig" onclick="cms_vplan_stunde_kopieren(\'Nebenaufsicht\', \'j\')">Nebenaufsicht</span> ';
+	}
+	cms_meldung_an('warnung', 'Es entstehen Konflikte', '<p>Durch die Kopie der Stunde entstehen Konflikte. Wie soll weiter verfahren werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> '+zusatzoption+'<span class="cms_button_wichtig" onclick="cms_vplan_stunde_kopieren(\'\', \'j\')">Trotzdem!</span></p>');
 }
 
-function cms_vplan_stunde_ersetzen() {
-	cms_laden_an('Stunde ersetzen', 'Stunde wird ersetzt ...');
+function cms_vplan_stunde_verlegen(zusatzbem, zwang) {
+	var zusatzbem = zusatzbem || '';
+	var zwang = zwang || 'n';
+	if ((zwang == 'j') || (zwang == 'n')) {
+		cms_laden_an('Stunde verlegen', 'Stunde wird verlegt ...');
+		var formulardaten = new FormData();
+		cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+	  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+	  formulardaten.append("ausgangsstundek", vplan_start_kid);
+	  formulardaten.append("zielzeit", 	vplan_ziel_std);
+		formulardaten.append("zwang", 			zwang);
+		formulardaten.append("zusatzbem", 	zusatzbem);
+	  formulardaten.append("anfragenziel", 	'12');
 
-	var formulardaten = new FormData();
-	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-  formulardaten.append("ausgangsstundeu", vplan_start_uid);
-  formulardaten.append("ausgangsstundek", vplan_start_kid);
-  formulardaten.append("zielstundeu", 	vplan_ziel_uid);
-  formulardaten.append("zielstundek", 	vplan_ziel_kid);
-  formulardaten.append("anfragenziel", 	'13');
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_vplan_konflikte_liste('a');
+				cms_laden_aus();
+	    }
+			else if ((rueckgabe == "KONFLIKT") || (rueckgabe == "KONFLIKTL")) {
+				cms_vplan_stunde_verlegen_konfliktanzeigen(rueckgabe)
+			}
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
 
-  function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe == "ERFOLG") {
-			cms_vplan_konflikte_liste('a');
-			cms_laden_aus();
-    }
-    else {cms_fehlerbehandlung(rueckgabe);}
-  }
-
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	}
 }
 
-function cms_vplan_stunde_tauschen() {
-	cms_laden_an('Stunde tauschen', 'Stunde wird getauscht ...');
+function cms_vplan_stunde_verlegen_konfliktanzeigen(art) {
+	var zusatzoption = '';
+	if (art == 'KONFLIKTL') {
+		zusatzoption = '<span class="cms_button_wichtig" onclick="cms_vplan_stunde_verlegen(\'Nebenaufsicht\', \'j\')">Nebenaufsicht</span> ';
+	}
+	cms_meldung_an('warnung', 'Es entstehen Konflikte', '<p>Durch die Verlegung der Stunde entstehen Konflikte. Wie soll weiter verfahren werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> '+zusatzoption+'<span class="cms_button_wichtig" onclick="cms_vplan_stunde_verlegen(\'\', \'j\')">Trotzdem!</span></p>');
+}
 
-	var formulardaten = new FormData();
-	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-  formulardaten.append("ausgangsstundeu", vplan_start_uid);
-  formulardaten.append("ausgangsstundek", vplan_start_kid);
-  formulardaten.append("zielstundeu", 	vplan_ziel_uid);
-  formulardaten.append("zielstundek", 	vplan_ziel_kid);
-  formulardaten.append("anfragenziel", 	'14');
+function cms_vplan_stunde_ersetzen(zusatzbem, zwang) {
+	var zusatzbem = zusatzbem || '';
+	var zwang = zwang || 'n';
+	if ((zwang == 'j') || (zwang == 'n')) {
+		cms_laden_an('Stunde ersetzen', 'Stunde wird ersetzt ...');
 
-  function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe == "ERFOLG") {
-			cms_vplan_konflikte_liste('a');
-			cms_laden_aus();
-    }
-    else {cms_fehlerbehandlung(rueckgabe);}
-  }
+		var formulardaten = new FormData();
+		cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+	  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+	  formulardaten.append("ausgangsstundek", vplan_start_kid);
+	  formulardaten.append("zielstundeu", 	vplan_ziel_uid);
+	  formulardaten.append("zielstundek", 	vplan_ziel_kid);
+		formulardaten.append("zwang", 			zwang);
+		formulardaten.append("zusatzbem", 	zusatzbem);
+	  formulardaten.append("anfragenziel", 	'13');
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_vplan_konflikte_liste('a');
+				cms_laden_aus();
+	    }
+			else if ((rueckgabe == "KONFLIKT") || (rueckgabe == "KONFLIKTL")) {
+				cms_vplan_stunde_ersetzen_konfliktanzeigen(rueckgabe)
+			}
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	}
+}
+
+function cms_vplan_stunde_ersetzen_konfliktanzeigen(art) {
+	var zusatzoption = '';
+	if (art == 'KONFLIKTL') {
+		zusatzoption = '<span class="cms_button_wichtig" onclick="cms_vplan_stunde_ersetzen(\'Nebenaufsicht\', \'j\')">Nebenaufsicht</span> ';
+	}
+	cms_meldung_an('warnung', 'Es entstehen Konflikte', '<p>Durch das Ersetzen der Stunde entstehen Konflikte. Wie soll weiter verfahren werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> '+zusatzoption+'<span class="cms_button_wichtig" onclick="cms_vplan_stunde_ersetzen(\'\', \'j\')">Trotzdem!</span></p>');
+}
+
+function cms_vplan_stunde_tauschen(zwang) {
+	var zusatzbem = zusatzbem || '';
+	var zwang = zwang || 'n';
+	if ((zwang == 'j') || (zwang == 'n')) {
+		cms_laden_an('Stunde tauschen', 'Stunde wird getauscht ...');
+
+		var formulardaten = new FormData();
+		cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+	  formulardaten.append("ausgangsstundeu", vplan_start_uid);
+	  formulardaten.append("ausgangsstundek", vplan_start_kid);
+	  formulardaten.append("zielstundeu", 	vplan_ziel_uid);
+	  formulardaten.append("zielstundek", 	vplan_ziel_kid);
+		formulardaten.append("zwang", 			zwang);
+	  formulardaten.append("anfragenziel", 	'14');
+
+	  function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_vplan_konflikte_liste('a');
+				cms_laden_aus();
+	    }
+			else if (rueckgabe == "KONFLIKT") {
+				cms_vplan_stunde_tauschen_konfliktanzeigen(rueckgabe)
+			}
+	    else {cms_fehlerbehandlung(rueckgabe);}
+	  }
+
+	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	}
+}
+
+function cms_vplan_stunde_tauschen_konfliktanzeigen(art) {
+	var zusatzoption = '';
+	cms_meldung_an('warnung', 'Es entstehen Konflikte', '<p>Durch den Tausch der Stunden entstehen Konflikte. Wie soll weiter verfahren werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> '+zusatzoption+'<span class="cms_button_wichtig" onclick="cms_vplan_stunde_tauschen(\'j\')">Trotzdem!</span></p>');
 }
 
 function cms_vplan_stunde_auswaehlen(uid, kid, modus) {
@@ -1267,11 +1345,11 @@ function cms_stundendetails_laden(uid, kid, datum, uhrzeit) {
 	var uhrzeit = uhrzeit || '-';
 	cms_gesichert_laden('cms_vplan_stundendetails');
 	var fehler = false;
-	if (!cms_check_ganzzahl(uid, 0) && (uid != '-')) {fehler = true; alert(1);}
-	if (!cms_check_ganzzahl(kid, 0) && (kid != '-')) {fehler = true; alert(kid);}
-	if (!datum.match(/^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$/) && (datum != '-')) {fehler = true; alert(3);}
-	if (!uhrzeit.match(/^[0-9]{2}\:[0-9]{2}$/) && (uhrzeit != '-')) {fehler = true; alert(4);}
-	if ((uid == '-') && (kid == '-')) {if ((datum == '-') || (uhrzeit == '-')) {fehler = true; alert(5);}}
+	if (!cms_check_ganzzahl(uid, 0) && (uid != '-')) {fehler = true;}
+	if (!cms_check_ganzzahl(kid, 0) && (kid != '-')) {fehler = true;}
+	if (!datum.match(/^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$/) && (datum != '-')) {fehler = true;}
+	if (!uhrzeit.match(/^[0-9]{2}\:[0-9]{2}$/) && (uhrzeit != '-')) {fehler = true;}
+	if ((uid == '-') && (kid == '-')) {if ((datum == '-') || (uhrzeit == '-')) {fehler = true;}}
 	var stundendetailsf = document.getElementById('cms_vplan_stundendetails');
 	if ((datum != '-') && (uhrzeit != '-') && (!fehler)) {
 		datum = datum.split('.');
@@ -1281,11 +1359,11 @@ function cms_stundendetails_laden(uid, kid, datum, uhrzeit) {
 		uhrzeit = uhrzeit.split(':');
 		var std = uhrzeit[0];
 		var min = uhrzeit[1];
-		if (!cms_check_ganzzahl(tag, 1,31)) {fehler = true; alert(6);}
-		if (!cms_check_ganzzahl(monat, 1,12)) {fehler = true; alert(7);}
-		if (!cms_check_ganzzahl(jahr, 0)) {fehler = true; alert(8);}
-		if (!cms_check_ganzzahl(std, 0,23)) {fehler = true; alert(9);}
-		if (!cms_check_ganzzahl(min, 0,59)) {fehler = true; alert(10);}
+		if (!cms_check_ganzzahl(tag, 1,31)) {fehler = true;}
+		if (!cms_check_ganzzahl(monat, 1,12)) {fehler = true;}
+		if (!cms_check_ganzzahl(jahr, 0)) {fehler = true;}
+		if (!cms_check_ganzzahl(std, 0,23)) {fehler = true;}
+		if (!cms_check_ganzzahl(min, 0,59)) {fehler = true;}
 	}
 	else {
 		var tag = "-";
@@ -1381,7 +1459,12 @@ function cms_vplan_stunde_aenderungenzurueck (uid, kid) {
 		// VERTRETUNSTEXTE LADEN
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_stundendetails_laden(uid, '-');
+				if (uid == '-') {
+					document.getElementById('cms_vplan_stundendetails').innerHTML = '';
+				}
+				else {
+					cms_stundendetails_laden(uid, '-');
+				}
 				cms_vplan_konflikte_liste('a');
 				cms_laden_aus();
 			}
@@ -1520,14 +1603,14 @@ function cms_vplan_stunde_aendern (uid, kid, ort, bemerkungszusatz, zwang) {
 	var anz = document.getElementById('cms_stundendetails_vanz').value;
 
 	var fehler = false;
-	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true; alert(1);}
-	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true; alert(2);}
-	if (!cms_check_ganzzahl(jahr,0)) {fehler = true; alert(3);}
-	if (!cms_check_ganzzahl(kurs,0)) {fehler = true; alert(4);}
-	if (!cms_check_ganzzahl(raum,0)) {fehler = true; alert(5);}
-	if (!cms_check_ganzzahl(stunde,0)) {fehler = true; alert(6);}
-	if (!cms_check_toggle(anz)) {fehler = true; alert(7);}
-	if ((zwang != 'j') && (zwang != 'n')) {fehler = true; alert(8);}
+	if (!cms_check_ganzzahl(tag,1,31)) {fehler = true;}
+	if (!cms_check_ganzzahl(monat,1,12)) {fehler = true;}
+	if (!cms_check_ganzzahl(jahr,0)) {fehler = true;}
+	if (!cms_check_ganzzahl(kurs,0)) {fehler = true;}
+	if (!cms_check_ganzzahl(raum,0)) {fehler = true;}
+	if (!cms_check_ganzzahl(stunde,0)) {fehler = true;}
+	if (!cms_check_toggle(anz)) {fehler = true;}
+	if ((zwang != 'j') && (zwang != 'n')) {fehler = true;}
 
 	if ((bem.length > 0) && (bemerkungszusatz.length > 0)) {bem = bemerkungszusatz+" - "+bem;}
 	else if (bemerkungszusatz.length > 0) {bem = bemerkungszusatz;}
@@ -1653,6 +1736,7 @@ function cms_vplan_vormerkungen_loeschen() {
 		// VERTRETUNSTEXTE LADEN
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == 'ERFOLG') {
+			document.getElementById('cms_vplan_stundendetails').innerHTML = '';
 			cms_vplan_konflikte_liste('a');
 			cms_meldung_an('erfolg', 'Vorgemerkte Änderungen löschen', '<p>Die vorgemerkten Änderungen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 		}
@@ -1696,6 +1780,7 @@ function cms_vplan_regelstundenplan_zueuecksetzen() {
 			// VERTRETUNSTEXTE LADEN
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == 'ERFOLG') {
+				document.getElementById('cms_vplan_stundendetails').innerHTML = '';
 				cms_vplan_konflikte_liste('a');
 				cms_meldung_an('erfolg', 'Tag auf Regelstundenplan zurücksetzen', '<p>Die Stunden wurden zurückgesetzt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 			}
@@ -1703,4 +1788,20 @@ function cms_vplan_regelstundenplan_zueuecksetzen() {
 		}
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
+}
+
+
+function cms_vplan_drucken() {
+  cms_laden_an('Schulanmeldung drucken', 'Die Druckansicht wird vorbereitet.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("anfragenziel", '175');
+
+  function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+      cms_meldung_an('erfolg', 'Vertretungsplan drucken', '<p>Die Druckansicht wurde erstelt.</p>', '<p><a class="cms_button" target="_blank" href="drucken.php">Druckansicht öffnen</a> <span class="cms_button_nein" onclick="cms_ausblenden(\'cms_blende_o\')">Fenster schließen</span></p>');
+    }
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }

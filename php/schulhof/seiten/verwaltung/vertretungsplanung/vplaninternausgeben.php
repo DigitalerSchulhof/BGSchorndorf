@@ -66,7 +66,7 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
   if ($art == 'l') {
     // Vertretungen ausgeben
     $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL')";
-    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id JOIN raeume AS traeume ON traum = traeume.id JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON plehrer = tpersonen.id ";
+    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id ";
     $sql .= "WHERE vplananzeigen = '1' AND tbeginn >= ? AND tende <= ?) AS x ORDER BY tlehrerk ASC, tnach ASC, tvor ASC, ttit ASC";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("ii", $beginn, $ende);
@@ -89,12 +89,12 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
         }
         else if ($vplanart == 'a') {
           if (isset($SCHULSTUNDEN[date("H:i", $tbeginn)])) {$tstd = $SCHULSTUNDEN[date("H:i", $tbeginn)];} else {$tstd = date("H:i", $tbeginn)." Uhr";}
-          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
+          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {if ($pbeginn !== null) {$pstd = date("H:i", $pbeginn)." Uhr";} else {$pstd = "";}}
           $code .= "<tr><td>$tlehrer</td><td>$tstd</td><td>$tkurs</td><td>$traumbez</td><td>Änderung</td><td>$vplanbem</td><td>$plehrer</td><td>$pstd</td><td>$pkurs</td></tr>";
         }
         else if ($vplanart == 's') {
           if (isset($SCHULSTUNDEN[date("H:i", $tbeginn)])) {$tstd = $SCHULSTUNDEN[date("H:i", $tbeginn)];} else {$tstd = date("H:i", $tbeginn)." Uhr";}
-          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
+          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {if ($pbeginn !== null) {$pstd = date("H:i", $pbeginn)." Uhr";} else {$pstd = "";}}
           $code .= "<tr><td>$tlehrer</td><td>$tstd</td><td>$tkurs</td><td>$traumbez</td><td>Sondereinsatz</td><td>$vplanbem</td><td></td><td></td><td></td></tr>";
         }
       }
@@ -103,7 +103,7 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
 
     // Entfall ausgeben
     $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit, AES_DECRYPT(praeume.bezeichnung, '$CMS_SCHLUESSEL') AS praumbez, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL')";
-    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id JOIN raeume AS praeume ON praum = praeume.id JOIN raeume AS traeume ON traum = traeume.id JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON plehrer = tpersonen.id ";
+    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id LEFT JOIN raeume AS praeume ON praum = praeume.id JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id ";
     $sql .= "WHERE vplananzeigen = '1' AND (pbeginn >= ? AND pende <= ?) AND ((tende <= ? OR tbeginn >= ?) OR (tende IS NULL AND tbeginn IS NULL))) AS x ORDER BY tlehrerk ASC, tnach ASC, tvor ASC, ttit ASC, tbeginn ASC";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiii", $beginn, $ende, $beginn, $ende);
@@ -119,7 +119,7 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
         if (strlen($pkurskbez) > 0) {$pkurs = $pkurskbez;}
         else {$pkurs = $pkursbez;}
         if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
-        if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
+        if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {if ($pbeginn !== null) {$pstd = date("H:i", $pbeginn)." Uhr";} else {$pstd = "";}}
         $code .= "<tr><td>$plehrer</td><td>$pstd</td><td>$pkurs</td><td>$praumbez</td><td>Entfall</td><td>$vplanbem</td><td></td><td></td><td></td></tr>";
       }
     }
@@ -127,14 +127,14 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
   }
   else if ($art == 's') {
     // Vertretungen ausgeben
-    $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL'), reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez";
-    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id JOIN raeume AS traeume ON traum = traeume.id JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON plehrer = tpersonen.id JOIN kurseklassen ON tkurs = kurseklassen.kurs JOIN klassen ON kurseklassen.klasse = klassen.id JOIN stufen ON klassen.stufe = stufen.id ";
+    $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL'), reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez";
+    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id LEFT JOIN kurseklassen ON tkurs = kurseklassen.kurs LEFT JOIN klassen ON kurseklassen.klasse = klassen.id LEFT JOIN stufen ON tkurse.stufe = stufen.id ";
     $sql .= "WHERE vplananzeigen = '1' AND tbeginn >= ? AND tende <= ?) AS x ORDER BY reihenfolge ASC, klassenbez ASC, tbeginn ASC";
 
     $sql = $dbs->prepare($sql);
     $sql->bind_param("ii", $beginn, $ende);
     if ($sql->execute()) {
-      $sql->bind_result($pkursbez, $pkurskbez, $pbeginn, $pende, $plehrerk, $plehrervor, $plehrernach, $plehrertit, $tkursbez, $tkurskbez, $tbeginn, $tende, $tlehrerk, $tlehrervor, $tlehrernach, $tlehrertit, $traumbez, $vplanart, $vplanbem, $reihenfolge, $kbez);
+      $sql->bind_result($pkursbez, $pkurskbez, $pbeginn, $pende, $plehrerk, $plehrervor, $plehrernach, $plehrertit, $tkursbez, $tkurskbez, $tbeginn, $tende, $tlehrerk, $tlehrervor, $tlehrernach, $tlehrertit, $traumbez, $vplanart, $vplanbem, $reihenfolge, $kbez, $sbez);
       while ($sql->fetch()) {
         if (strlen($tlehrerk) > 0) {$tlehrer = $tlehrerk;}
         else {$tlehrer = cms_generiere_anzeigename($tlehrervor, $tlehrernach, $tlehrertit);}
@@ -144,6 +144,7 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
         else {$tkurs = $tkursbez;}
         if (strlen($pkurskbez) > 0) {$pkurs = $pkurskbez;}
         else {$pkurs = $pkursbez;}
+        if (strlen($kbez) == 0) {$kbez = $sbez;}
 
         if ($vplanart == 'v') {
           if (isset($SCHULSTUNDEN[date("H:i", $tbeginn)])) {$tstd = $SCHULSTUNDEN[date("H:i", $tbeginn)];} else {$tstd = date("H:i", $tbeginn)." Uhr";}
@@ -152,12 +153,12 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
         }
         else if ($vplanart == 'a') {
           if (isset($SCHULSTUNDEN[date("H:i", $tbeginn)])) {$tstd = $SCHULSTUNDEN[date("H:i", $tbeginn)];} else {$tstd = date("H:i", $tbeginn)." Uhr";}
-          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
+          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {if ($pbeginn !== null) {$pstd = date("H:i", $pbeginn)." Uhr";} else {$pstd = "";}}
           $code .= "<tr><td>$kbez</td><td>$tstd</td><td>$tkurs</td><td>$tlehrer</td><td>$traumbez</td><td>Änderung</td><td>$vplanbem</td><td>$pstd</td><td>$pkurs</td><td>$plehrer</td></tr>";
         }
         else if ($vplanart == 's') {
           if (isset($SCHULSTUNDEN[date("H:i", $tbeginn)])) {$tstd = $SCHULSTUNDEN[date("H:i", $tbeginn)];} else {$tstd = date("H:i", $tbeginn)." Uhr";}
-          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
+          if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {if ($pbeginn !== null) {$pstd = date("H:i", $pbeginn)." Uhr";} else {$pstd = "";}}
           $code .= "<tr><td>$kbez</td><td>$tstd</td><td>$tkurs</td><td>$tlehrer</td><td>$traumbez</td><td>Sondereinsatz</td><td>$vplanbem</td><td></td><td></td><td></td></tr>";
         }
       }
@@ -165,13 +166,13 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
     $sql->close();
 
     // Entfall ausgeben
-    $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit,  AES_DECRYPT(praeume.bezeichnung, '$CMS_SCHLUESSEL') AS praumbez, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL'), reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez";
-    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id JOIN raeume AS praeume ON praum = praeume.id JOIN raeume AS traeume ON traum = traeume.id JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON plehrer = tpersonen.id JOIN kurseklassen ON tkurs = kurseklassen.kurs JOIN klassen ON kurseklassen.klasse = klassen.id JOIN stufen ON klassen.stufe = stufen.id ";
+    $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit,  AES_DECRYPT(praeume.bezeichnung, '$CMS_SCHLUESSEL') AS praumbez, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL'), reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez";
+    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id LEFT JOIN raeume AS praeume ON praum = praeume.id JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id LEFT JOIN kurseklassen ON tkurs = kurseklassen.kurs LEFT JOIN klassen ON kurseklassen.klasse = klassen.id LEFT JOIN stufen ON tkurse.stufe = stufen.id ";
     $sql .= "WHERE vplananzeigen = '1' AND (pbeginn >= ? AND pende <= ?) AND ((tende <= ? OR tbeginn >= ?) OR (tende IS NULL AND tbeginn IS NULL))) AS x ORDER BY reihenfolge ASC, klassenbez ASC, tbeginn ASC";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiii", $beginn, $ende, $beginn, $ende);
     if ($sql->execute()) {
-      $sql->bind_result($pkursbez, $pkurskbez, $pbeginn, $pende, $plehrerk, $plehrervor, $plehrernach, $plehrertit, $praumbez, $tkursbez, $tkurskbez, $tbeginn, $tende, $tlehrerk, $tlehrervor, $tlehrernach, $tlehrertit, $traumbez, $vplanart, $vplanbem, $reihenfolge, $kbez);
+      $sql->bind_result($pkursbez, $pkurskbez, $pbeginn, $pende, $plehrerk, $plehrervor, $plehrernach, $plehrertit, $praumbez, $tkursbez, $tkurskbez, $tbeginn, $tende, $tlehrerk, $tlehrervor, $tlehrernach, $tlehrertit, $traumbez, $vplanart, $vplanbem, $reihenfolge, $kbez, $sbez);
       while ($sql->fetch()) {
         if (strlen($tlehrerk) > 0) {$tlehrer = $tlehrerk;}
         else {$tlehrer = cms_generiere_anzeigename($tlehrervor, $tlehrernach, $tlehrertit);}
@@ -181,8 +182,9 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
         else {$tkurs = $tkursbez;}
         if (strlen($pkurskbez) > 0) {$pkurs = $pkurskbez;}
         else {$pkurs = $pkursbez;}
+        if (strlen($kbez) == 0) {$kbez = $sbez;}
         if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
-        if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {$pstd = date("H:i", $pbeginn)." Uhr";}
+        if (isset($SCHULSTUNDEN[date("H:i", $pbeginn)])) {$pstd = $SCHULSTUNDEN[date("H:i", $pbeginn)];} else {if ($pbeginn !== null) {$pstd = date("H:i", $pbeginn)." Uhr";} else {$pstd = "";}}
         $code .= "<tr><td>$kbez</td><td>$pstd</td><td>$pkurs</td><td>$plehrer</td><td>$praumbez</td><td>Entfall</td><td>$vplanbem</td><td></td><td></td><td></td></tr>";
       }
     }

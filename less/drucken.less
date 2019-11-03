@@ -1,4 +1,4 @@
-// out: ../css/drucken.css, sourcemap: false, compress: true, autoprefixer: true
+// "out": "../css/drucken.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
 @import "standard.less";
 
 * {
@@ -85,8 +85,14 @@ p:last-child {
 h1 {
 	font-size: 14pt;
 	font-weight: bold;
-	margin-top: .5cm;
+	margin-top: 2.5cm;
 	margin-bottom: .25cm;
+	page-break-before: always;
+}
+
+#cms_druckkopf+h1 {
+	margin-top: .5cm !important;
+	page-break-before: avoid !important;
 }
 
 h2 {

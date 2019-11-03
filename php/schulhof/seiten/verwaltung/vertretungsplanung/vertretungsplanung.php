@@ -218,34 +218,6 @@ if ($zugriff) {
 
       $code .= "<div class=\"cms_spalte_i\">";
         $code .= "<div id=\"cms_vplan_stundendetails\">";
-        // $code .= "<table class=\"cms_formular\">";
-        // $code .= "<tr><th>Kurs:</th><th>Lehrer:</th><th>Raum:</th><th>Stunde:</th><th>Bemerkung:</th><th>Sichtbar:</th></tr>";
-        // $code .= "<tr><td><select id=\"cms_vplan_sondereinsatz_kurs\" name=\"cms_vplan_sondereinsatz_kurs\">";
-        // $code .= "<option value=\"-\">Aufsicht</option>";
-        // foreach ($KURSE as $e) {
-        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-        // }
-        // $code .= "</select></td>";
-        // $code .= "<td><select id=\"cms_vplan_sondereinsatz_lehrer\" name=\"cms_vplan_sondereinsatz_lehrer\">";
-        // foreach ($LEHRER as $e) {
-        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-        // }
-        // $code .= "</select></td>";
-        // $code .= "<td><select id=\"cms_vplan_sondereinsatz_raum\" name=\"cms_vplan_sondereinsatz_raum\">";
-        // foreach ($RAEUME as $e) {
-        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-        // }
-        // $code .= "</select></td>";
-        // $code .= "<td><select id=\"cms_vplan_sondereinsatz_stunde\" name=\"cms_vplan_sondereinsatz_stunde\">";
-        // foreach ($SCHULSTUNDEN as $e) {
-        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-        // }
-        // $code .= "</select></td>";
-        // $code .= "<td><input type=\"text\" id=\"cms_vplan_sondereinsatz_bem\" name=\"cms_vplan_sondereinsatz_bem\"></td>";
-        // $code .= "<td>".cms_schieber_generieren('vplan_sondereinsatz_anz',1)."</td></tr>";
-        // $code .= "</table>";
-        // $code .= "<p class=\"cms_notiz\"><b>Regelstundenplan:</b> • <b>Aktuell:</b></b></p>";
-        // $code .= "<p><span class=\"cms_button\" onclick=\"\">Änderungen übernehmen</span> <span class=\"cms_button\" onclick=\"\">Als Zusatzstunde speichern</span> <span class=\"cms_button_wichtig\" onclick=\"\">Entfall</span> <span class=\"cms_button_nein\" onclick=\"\">Änderungen löschen</span> <span class=\"cms_button_nein\" onclick=\"\">Auf Regelstundenplan zurücksetzen</span></p>";
         $code .= "</div>";
       $code .= "</div>";
 
@@ -290,7 +262,7 @@ if ($zugriff) {
         $code .= cms_generiere_nachladen('cms_vplan_konflikte_plan', 'cms_vplan_konflikte_liste(\'a\', \'s\');');
         $code .= "</div>";
       $code .= "</div>";
-      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_vormerkungen_uebernehmen()\">Änderungen übernehmen und veröffentlichen</span></p>";
+      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_vormerkungen_uebernehmen()\">Änderungen übernehmen und veröffentlichen</span> <span class=\"cms_button\" onclick=\"cms_vplan_drucken()\">Drucken</span></p>";
 
       $code .= "<h2>Anmerkungen zum Schultag</h2>";
       $code .= "<div id=\"cms_vplan_vertretungstext\">";
