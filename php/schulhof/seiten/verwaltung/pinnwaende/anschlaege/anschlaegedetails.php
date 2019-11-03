@@ -19,7 +19,7 @@ function cms_pinnwandanschlaege_ausgeben ($anschlagid, $pinnwandid) {
 	  }
 	  $sql->close();
 
-		if (($ersteller != $CMS_BENUTZERID) && !$CMS_RECHTE['Organisation']['Pinnwandanschäge bearbetien']) {$fehler = true;}
+		if (($ersteller != $CMS_BENUTZERID) && !$CMS_RECHTE['Organisation']['Pinnwandanschäge bearbeiten']) {$fehler = true;}
 	}
 
 	if (!$fehler) {

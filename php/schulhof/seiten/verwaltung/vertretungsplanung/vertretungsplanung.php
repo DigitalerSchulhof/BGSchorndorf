@@ -119,13 +119,18 @@ if ($zugriff) {
 
       // Räume laden
       $RAEUME = array();
-      $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM raeume WHERE verfuegbar = '1') AS x ORDER BY bez");
+      $sql = $dbs->prepare("SELECT DISTINCT * FROM ((SELECT raeume.id AS id, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS zusatzk, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS zusatzs FROM raeume LEFT JOIN raeumeklassen ON raeume.id = raeumeklassen.raum LEFT JOIN klassen ON raeumeklassen.klasse = klassen.id LEFT JOIN raeumestufen ON raeume.id = raeumestufen.raum LEFT JOIN stufen ON raeumestufen.stufe = stufen.id)) AS x GROUP BY id ORDER BY bezeichnung ASC");
       if ($sql->execute()) {
-        $sql->bind_result($eid, $ebez);
+        $sql->bind_result($id, $bez, $zusatzk, $zusatzs);
         while ($sql->fetch()) {
           $einzeln = array();
-          $einzeln['id'] = $eid;
-          $einzeln['bez'] = $ebez;
+          $rbez = $bez;
+          $zusatz = "";
+          if ($zusatzk !== null) {$zusatz .= ", ".$zusatzk;}
+          if ($zusatzs !== null) {$zusatz .= ", ".$zusatzs;}
+          if (strlen($zusatz) > 0) {$rbez .= " » ".substr($zusatz, 2);}
+          $einzeln['id'] = $id;
+          $einzeln['bez'] = $rbez;
           array_push($RAEUME, $einzeln);
         }
       }
@@ -209,6 +214,41 @@ if ($zugriff) {
       $code .= cms_generiere_nachladen('cms_vplan_wochenplan_k', '');
       $code .= "</div></div>";
 
+      $code .= "<div class=\"cms_clear\"></div>";
+
+      $code .= "<div class=\"cms_spalte_i\">";
+        $code .= "<div id=\"cms_vplan_stundendetails\">";
+        // $code .= "<table class=\"cms_formular\">";
+        // $code .= "<tr><th>Kurs:</th><th>Lehrer:</th><th>Raum:</th><th>Stunde:</th><th>Bemerkung:</th><th>Sichtbar:</th></tr>";
+        // $code .= "<tr><td><select id=\"cms_vplan_sondereinsatz_kurs\" name=\"cms_vplan_sondereinsatz_kurs\">";
+        // $code .= "<option value=\"-\">Aufsicht</option>";
+        // foreach ($KURSE as $e) {
+        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
+        // }
+        // $code .= "</select></td>";
+        // $code .= "<td><select id=\"cms_vplan_sondereinsatz_lehrer\" name=\"cms_vplan_sondereinsatz_lehrer\">";
+        // foreach ($LEHRER as $e) {
+        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
+        // }
+        // $code .= "</select></td>";
+        // $code .= "<td><select id=\"cms_vplan_sondereinsatz_raum\" name=\"cms_vplan_sondereinsatz_raum\">";
+        // foreach ($RAEUME as $e) {
+        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
+        // }
+        // $code .= "</select></td>";
+        // $code .= "<td><select id=\"cms_vplan_sondereinsatz_stunde\" name=\"cms_vplan_sondereinsatz_stunde\">";
+        // foreach ($SCHULSTUNDEN as $e) {
+        //   $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
+        // }
+        // $code .= "</select></td>";
+        // $code .= "<td><input type=\"text\" id=\"cms_vplan_sondereinsatz_bem\" name=\"cms_vplan_sondereinsatz_bem\"></td>";
+        // $code .= "<td>".cms_schieber_generieren('vplan_sondereinsatz_anz',1)."</td></tr>";
+        // $code .= "</table>";
+        // $code .= "<p class=\"cms_notiz\"><b>Regelstundenplan:</b> • <b>Aktuell:</b></b></p>";
+        // $code .= "<p><span class=\"cms_button\" onclick=\"\">Änderungen übernehmen</span> <span class=\"cms_button\" onclick=\"\">Als Zusatzstunde speichern</span> <span class=\"cms_button_wichtig\" onclick=\"\">Entfall</span> <span class=\"cms_button_nein\" onclick=\"\">Änderungen löschen</span> <span class=\"cms_button_nein\" onclick=\"\">Auf Regelstundenplan zurücksetzen</span></p>";
+        $code .= "</div>";
+      $code .= "</div>";
+
       $code .= "</div>";
 
       // TAGESDETAILS
@@ -237,39 +277,20 @@ if ($zugriff) {
         foreach ($LEHRER as $e) {
           $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
         }
-        $code .= "</select></td></tr></table>";
-        $code .= cms_generiere_nachladen('cms_vplan_konflikte_plan', 'cms_vplan_konflikte_liste(\'a\');');
+        $code .= "</select></td></tr>";
+        $code .= "<tr><td></td><td>";
+        $code .= "<table class=\"cms_zeitwahl\">";
+        $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_zweitkonflikte('-')\">«</span></td>";
+        // Nächsten Montag bestimmen
+        $code .= "<td>".cms_datum_eingabe('cms_vplankonflikte_zweitdatum', cms_fuehrendenull($tag-$wochentag+8), $monat, $jahr, 'cms_vplan_zweitkonflikte(\'j\');')."</td>";
+        $code .= "<td><span class=\"cms_button\" onclick=\"cms_vplan_zweitkonflikte('+')\">»</span></td></tr>";
+        $code .= "</table>";
+        $code .= "</td></tr>";
+        $code .= "</table>";
+        $code .= cms_generiere_nachladen('cms_vplan_konflikte_plan', 'cms_vplan_konflikte_liste(\'a\', \'s\');');
         $code .= "</div>";
       $code .= "</div>";
-      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_konfliktloesung_uebernehmen()\">Konfliktlösung übernehmen</span> <span class=\"cms_button_nein\" onclick=\"cms_vplan_konfliktloesung_zueuecksetzen_anzeigen()\">Konfliktlösung zurücksetzen</span></p>";
-
-      $code .= "<h3>Sondereinsatz</h3>";
-      $code .= "<table class=\"cms_formular\">";
-      $code .= "<tr><th>Kurs:</th><td><select id=\"cms_vplan_sondereinsatz_kurs\" name=\"cms_vplan_sondereinsatz_kurs\">";
-      $code .= "<option value=\"-\">Aufsicht</option>";
-      foreach ($KURSE as $e) {
-        $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-      }
-      $code .= "</select></td></tr>";
-      $code .= "<tr><th>Lehrer:</th><td><select id=\"cms_vplan_sondereinsatz_lehrer\" name=\"cms_vplan_sondereinsatz_lehrer\">";
-      foreach ($LEHRER as $e) {
-        $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-      }
-      $code .= "</select></td></tr>";
-      $code .= "<tr><th>Raum:</th><td><select id=\"cms_vplan_sondereinsatz_raum\" name=\"cms_vplan_sondereinsatz_raum\">";
-      foreach ($RAEUME as $e) {
-        $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-      }
-      $code .= "</select></td></tr>";
-      $code .= "<tr><th>Stunde:</th><td><select id=\"cms_vplan_sondereinsatz_stunde\" name=\"cms_vplan_sondereinsatz_stunde\">";
-      foreach ($SCHULSTUNDEN as $e) {
-        $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
-      }
-      $code .= "</select></td></tr>";
-      $code .= "<tr><th>Bemerkung:</th><td><input type=\"text\" id=\"cms_vplan_sondereinsatz_bem\" name=\"cms_vplan_sondereinsatz_bem\"></td></tr>";
-      $code .= "<tr><th>Anzeigen:</th><td>".cms_schieber_generieren('vplan_sondereinsatz_anz',1)."</td></tr>";
-      $code .= "</table>";
-      $code .= "<p><span class=\"cms_button\" onclick=\"cms_vplan_sondereinsatz_speichern()\">Sondereinsatz speichern</span></p>";
+      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_vormerkungen_uebernehmen()\">Änderungen übernehmen und veröffentlichen</span></p>";
 
       $code .= "<h2>Anmerkungen zum Schultag</h2>";
       $code .= "<div id=\"cms_vplan_vertretungstext\">";
@@ -279,6 +300,9 @@ if ($zugriff) {
       $code .= "</table>";
       $code .= "<p><span class=\"cms_button\" onclick=\"cms_vplan_vtexte_speichern()\">Vertretungstexte speichern</span></p>";
       $code .= "</div>";
+
+      $code .= "<h2>Nur für Notfälle!!</h2>";
+      $code .= "<p><span class=\"cms_button_nein\" onclick=\"cms_vplan_vormerkungen_loeschen_anzeigen()\">Alle Änderungen löschen</span> <span class=\"cms_button_nein\" onclick=\"cms_vplan_regelstundenplan_zueuecksetzen_anzeigen()\">Ganzen Tag auf Regelstundenplan zurücksetzen</span></p>";
 
       $code .= "</div></div>";
       $code .= "<div class=\"cms_clear\"></div>";

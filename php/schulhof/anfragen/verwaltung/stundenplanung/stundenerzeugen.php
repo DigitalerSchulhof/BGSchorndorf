@@ -10,12 +10,12 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "FEHLER";exit;}
 if (isset($_POST['zeitraum'])) {$zeitraum = $_POST['zeitraum'];} else {echo "FEHLER";exit;}
-if (isset($_POST['stufe'])) {$stufe = $_POST['stufe'];} else {echo "FEHLER";exit;}
+if (isset($_POST['kurs'])) {$kurs = $_POST['kurs'];} else {echo "FEHLER";exit;}
 if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";exit;}
 
 if (!cms_check_ganzzahl($schuljahr, 0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($zeitraum, 0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($stufe, 0)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($kurs, 0)) {echo "FEHLER";exit;}
 if (($erster != 'j') && ($erster != 'n')) {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
@@ -51,17 +51,31 @@ if (cms_angemeldet() && $zugriff) {
 	} else {$fehler = true;}
 	$sql->close();
 
-	// Prüfen, ob die Stufe zum Schuljahr passt
-	$sql = "SELECT COUNT(*), tagebuch FROM stufen WHERE id = ? AND schuljahr = ?";
+	// Prüfen, ob der Kurs zum Schuljahr passt
+	$sql = "SELECT COUNT(*), stufe FROM kurse WHERE id = ? AND schuljahr = ?";
 	$sql = $dbs->prepare($sql);
-	$sql->bind_param("ii", $stufe, $schuljahr);
+	$sql->bind_param("ii", $kurs, $schuljahr);
 	if ($sql->execute()) {
-		$sql->bind_result($anzahl, $tagebuch);
+		$sql->bind_result($anzahl, $stufe);
 		if ($sql->fetch()) {
 			if ($anzahl != 1) {$fehler = true;}
 		} else {$fehler = true;}
 	} else {$fehler = true;}
 	$sql->close();
+
+	if (!$fehler) {
+		// Prüfen, ob die Stufe ein Tagebuch verwenden muss
+		$sql = "SELECT COUNT(*), tagebuch FROM stufen WHERE id = ? AND schuljahr = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ii", $stufe, $schuljahr);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl, $tagebuch);
+			if ($sql->fetch()) {
+				if ($anzahl != 1) {$fehler = true;}
+			} else {$fehler = true;}
+		} else {$fehler = true;}
+		$sql->close();
+	}
 
 	// FERIEN in diesem Zeitraum laden
 	if (!$fehler) {
@@ -115,9 +129,9 @@ if (cms_angemeldet() && $zugriff) {
 				$REGELUNTERRICHT[$r][$t] = array();
 			}
 		}
-		$sql = "SELECT schulstunde, tag, rythmus, kurs, lehrer, raum FROM regelunterricht WHERE kurs IN (SELECT id FROM kurse WHERE schuljahr = ? AND stufe = ?)";
+		$sql = "SELECT schulstunde, tag, rythmus, kurs, lehrer, raum FROM regelunterricht WHERE kurs = ?";
 		$sql = $dbs->prepare($sql);
-		$sql->bind_param("ii", $schuljahr, $stufe);
+		$sql->bind_param("i", $kurs);
 		if ($sql->execute()) {
 			$sql->bind_result($rustd, $rutag, $rury, $ruku, $rule, $rura);
 			while ($sql->fetch()) {
@@ -153,9 +167,6 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->close();
 		}
 	}
-
-
-
 
 	if (!$fehler) {
 		// Alten Unterricht löschen

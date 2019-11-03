@@ -584,8 +584,8 @@ function cms_schuljahrfabrik_stufenkurse() {
       neuemeldung += '<h2 id="cms_laden_ueberschrift">Schuljahrfabrik – Kurse für Stufen anlegen</h2>';
       neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
       neuemeldung += '<h4>Fortschritt</h4>';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
       neuemeldung += '</div>';
       neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Stufen: <span id="cms_stundnerezeugen_ztaktuell">0</span>/'+anzstufen+' abgeschlossen</p>';
       neuemeldung += '</div>';

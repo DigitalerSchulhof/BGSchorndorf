@@ -57,14 +57,14 @@ if ($zugriff) {
     }
     $sql->close();
 
-    // Stufen aller Zeiträume suchen
-    $stufenids = "";
-    $sql = $dbs->prepare("SELECT id FROM stufen WHERE schuljahr = ? ORDER BY reihenfolge");
+    // Kurse aller Zeiträume suchen
+    $kurseids = "";
+    $sql = $dbs->prepare("SELECT id FROM kurse WHERE schuljahr = ?");
     $sql->bind_param("i", $SCHULJAHR);
     if ($sql->execute()) {
-      $sql->bind_result($sid);
+      $sql->bind_result($kid);
       while ($sql->fetch()) {
-        $stufenids .= "|".$sid;
+        $kurseids .= "|".$kid;
       }
     }
     $sql->close();
@@ -81,7 +81,7 @@ if ($zugriff) {
     else {$code .= "<tr><td class=\"cms_notiz\" colspan=\"4\">Keine aktiven zukünftigen Zeiträume gefunden.</td></tr>";}
     $code .= "</table>";
 
-    $code .= "<p><input type=\"hidden\" id=\"cms_zeitraeume\" name=\"cms_zeitraeume\" value=\"$zeitraumids\"><input type=\"hidden\" id=\"cms_stufen\" name=\"cms_stufen\" value=\"$stufenids\"><input type=\"hidden\" id=\"cms_schuljahr\" name=\"cms_schuljahr\" value=\"$SCHULJAHR\"></p>";
+    $code .= "<p><input type=\"hidden\" id=\"cms_zeitraeume\" name=\"cms_zeitraeume\" value=\"$zeitraumids\"><input type=\"hidden\" id=\"cms_kurse\" name=\"cms_kurse\" value=\"$kurseids\"><input type=\"hidden\" id=\"cms_schuljahr\" name=\"cms_schuljahr\" value=\"$SCHULJAHR\"></p>";
 
     $code .= cms_meldung("warnung", '<h4>Alte Stunden werden gelöscht</h4><p>Alle noch ausstehnden Stunden bereits erzeugter Zeiträume, inklusive aller zur Vertretung vorgemerkten Stunden werden gelöscht und neu angelegt! <b>Vertretungen müssen also neu eingegeben werden!</b></p>');
 

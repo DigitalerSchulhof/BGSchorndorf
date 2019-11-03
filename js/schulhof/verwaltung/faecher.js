@@ -163,8 +163,8 @@ function cms_faecher_import_speichern() {
       neuemeldung += '<h2 id="cms_laden_ueberschrift">Fächer importieren</h2>';
       neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
       neuemeldung += '<h4>Gesamtfortschritt</h4>';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
       neuemeldung += '</div>';
       neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Fächer: <span id="cms_importakt">0</span>/'+anz+' abgeschlossen</p></div>';
       feld.innerHTML = neuemeldung;
@@ -318,11 +318,11 @@ function cms_schulhof_faecher_bearbeiten () {
 			}
 			else if (rueckgabe.match(/DOPPELTB/)) {
 				meldung += '<li>es gibt bereits ein Fach mit dieser Bezeichnung.</li>';
-				cms_meldung_an('fehler', 'Fach bearbetien', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				cms_meldung_an('fehler', 'Fach bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe.match(/DOPPELTK/)) {
 				meldung += '<li>es gibt bereits ein Fach mit diesem Kürzel.</li>';
-				cms_meldung_an('fehler', 'Fach bearbetien', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				cms_meldung_an('fehler', 'Fach bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}

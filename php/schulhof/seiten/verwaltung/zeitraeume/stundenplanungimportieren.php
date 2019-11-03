@@ -30,7 +30,7 @@ if ($zugriff) {
 
 
   if (!$sjfehler) {
-    $code .= "<h1>Stundenplanung importieren für das Schuljahr $sjbez in Zeitraum $zbez</h1>";
+    $code .= "<h1>Stundenplanung importieren für das Schuljahr »".$sjbez."« in Zeitraum »".$zbez."«</h1>";
     $code .= "<table class=\"cms_formular\">";
     $analysieren = "cms_import_analysieren('cms_stundenplanung_import_csv', 'cms_stundenplanung_import_trennung', cms_stundenplanung_import)";
     $code .= "<tr><th>CSV-Daten:</th><td><textarea class=\"cms_textarea cms_code\" id=\"cms_stundenplanung_import_csv\" name=\"cms_stundenplanung_import_csv\" onkeyup=\"$analysieren\" onchange=\"$analysieren\"></textarea></td></tr>";
@@ -65,7 +65,7 @@ if ($zugriff) {
 
     $code .= cms_meldung('info','<h4>Fehlende Kurse</h4><p>Kurse, die noch nicht existeren, werden neu angelegt. Alle Klassenmitglieder der jeweiligen Klassen werden hinzugefügt. Bitte bearbeiten Sie nach, wer wirklich in diesen Kursen ist.</p><p>Fächer, Lehrer, Stufen, Klassen und Räume müssen bereits existieren. Wenn nicht, werden die jeweiligen Zeilen nicht beachtet.</p>');
 
-		$code .= "<p><span class=\"cms_button\" onclick=\"cms_stundenplanung_import_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung/Fächer\">Abbrechen</a></p>";
+		$code .= "<p><span class=\"cms_button\" onclick=\"cms_stundenplanung_import_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung/Zeiträume\">Abbrechen</a></p>";
   }
   else {$code .= "<h1>Stundenplanung in Zeitraum importieren</h1>".cms_meldung_bastler();}
 }

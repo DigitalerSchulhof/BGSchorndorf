@@ -1,4 +1,4 @@
-// out: ../css/vertretungsplan.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/vertretungsplan.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_vplanuebersicht {
@@ -109,4 +109,17 @@
 
 .cms_vplan_entfall {
   opacity: .5;
+}
+
+tr.cms_vplan_ausgewaehlt td {
+  background-color: @standarddunkel;
+}
+
+tr.cms_vplan_ausgewaehlt:hover td {
+  background-color: @standarddunkel !important;
+}
+
+#cms_vplan_konflikte_liste {
+  max-height: 650px;
+  overflow: scroll;
 }

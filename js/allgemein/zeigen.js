@@ -67,6 +67,19 @@ function cms_klasse_dazu (id, klasse) {
 	}
 }
 
+function cms_klasse_dazu_wennklasse (klassenname, klasse) {
+	var elemente = document.getElementsByClassName(klassenname);
+	for (var j = 0; j < elemente.length; j++) {
+		var klassen = elemente[j].className.split(" ");
+	  var i = klassen.indexOf(klasse);
+
+	  if (i < 0) {
+			klassen.push(klasse);
+	    elemente[j].className = klassen.join(" ");
+		}
+	}
+}
+
 function cms_klasse_weg (id, klasse) {
 	var element = document.getElementById(id);
   var klassen = element.className.split(" ");
@@ -75,6 +88,19 @@ function cms_klasse_weg (id, klasse) {
   if (i >= 0) {
 		klassen.splice(i, 1);
     element.className = klassen.join(" ");
+	}
+}
+
+function cms_klasse_weg_wennklasse (klassenname, klasse) {
+	var elemente = document.getElementsByClassName(klassenname);
+	for (var j = 0; j < elemente.length; j++) {
+		var klassen = elemente[j].className.split(" ");
+	  var i = klassen.indexOf(klasse);
+
+	  if (i >= 0) {
+			klassen.splice(i, 1);
+	    elemente[j].className = klassen.join(" ");
+		}
 	}
 }
 

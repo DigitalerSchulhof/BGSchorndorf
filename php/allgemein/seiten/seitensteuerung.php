@@ -168,9 +168,10 @@ else if ($CMS_URL[0] == 'Schulhof') {
     $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Gruppen/'.cms_textzulink($g).'/Gruppe_bearbeiten']   = 'php/schulhof/seiten/verwaltung/gruppen/spezifisch/bearbeiten.php';
     $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Gruppen/'.cms_textzulink($g).'/Neue_Gruppe_anlegen'] = 'php/schulhof/seiten/verwaltung/gruppen/spezifisch/neu.php';
   }
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre']                               = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahre.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Neues_Schuljahr_anlegen']       = 'php/schulhof/seiten/verwaltung/schuljahre/neuesschuljahr.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Schuljahr_bearbeiten']          = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahrbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre']                                = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahre.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Neues_Schuljahr_anlegen']        = 'php/schulhof/seiten/verwaltung/schuljahre/neuesschuljahr.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Schuljahr_bearbeiten']           = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahrbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Verantwortlichkeiten_festlegen'] = 'php/schulhof/seiten/verwaltung/schuljahre/verantwortlichkeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner']                             = 'php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrenner.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner/Neuen_Dauerbrenner_anlegen']  = 'php/schulhof/seiten/verwaltung/dauerbrenner/neuerdauerbrenner.php';

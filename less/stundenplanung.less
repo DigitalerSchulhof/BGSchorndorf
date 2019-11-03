@@ -1,4 +1,4 @@
-// out: ../css/stundenplanung.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/stundenplanung.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_stundenplan_box {
@@ -115,8 +115,9 @@
   padding: 2px 0px;
 }
 
-.cms_stundenplan_stunde, .cms_stundenplan_stunde_geloest,
-.cms_stundenplan_stunde_konflikt, .cms_stundenplan_stunde_ueberschneidung {
+.cms_stundenplan_stunde, .cms_stundenplan_stunde_entfall,
+.cms_stundenplan_stunde_geloest, .cms_stundenplan_stunde_konflikt,
+.cms_stundenplan_stunde_ueberschneidung {
   display: inline-block;
   height: 100%;
   width: 100%;
@@ -124,10 +125,11 @@
   position: relative;
   font-size: 75%;
   padding: 2px 0px;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .cms_stundenplan_stunde {background: @standardhell;}
+.cms_stundenplan_stunde_entfall {opacity: .5;}
 .cms_stundenplan_stunde_geloest {background: @infohell;}
 .cms_stundenplan_stunde_konflikt {background: @fehlerhell;}
 .cms_stundenplan_stunde_ueberschneidung {background: @warnunghell;}

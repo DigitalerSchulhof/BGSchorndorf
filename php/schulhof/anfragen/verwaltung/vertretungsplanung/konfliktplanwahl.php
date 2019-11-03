@@ -43,13 +43,18 @@ if (cms_angemeldet() && $zugriff) {
     $sql->close();
   }
   else if ($planart == 'r') {
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM raeume WHERE verfuegbar = 1) AS x ORDER BY bez";
-    $sql = $dbs->prepare($sql);
+    // Räume laden
+    $sql = $dbs->prepare("SELECT DISTINCT * FROM ((SELECT raeume.id AS id, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS zusatzk, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS zusatzs FROM raeume LEFT JOIN raeumeklassen ON raeume.id = raeumeklassen.raum LEFT JOIN klassen ON raeumeklassen.klasse = klassen.id LEFT JOIN raeumestufen ON raeume.id = raeumestufen.raum LEFT JOIN stufen ON raeumestufen.stufe = stufen.id)) AS x GROUP BY id ORDER BY bezeichnung ASC");
     if ($sql->execute()) {
-      $sql->bind_result($rid, $rbez);
+      $sql->bind_result($id, $bez, $zusatzk, $zusatzs);
       while ($sql->fetch()) {
         $a = array();
-        $a['id'] = $rid;
+        $rbez = $bez;
+        $zusatz = "";
+        if ($zusatzk !== null) {$zusatz .= ", ".$zusatzk;}
+        if ($zusatzs !== null) {$zusatz .= ", ".$zusatzs;}
+        if (strlen($zusatz) > 0) {$rbez .= " » ".substr($zusatz, 2);}
+        $a['id'] = $id;
         $a['bez'] = $rbez;
         array_push($AUSGABE, $a);
       }

@@ -273,7 +273,7 @@ function cms_stundenerzeugen_vorbereiten(sjid) {
 
 function cms_stundenerzeugen_speichern() {
   cms_laden_an('Stunden und Tagebücher erzeugen', 'Die Erzeugung wird vorbereitet ...');
-  var stufen = document.getElementById('cms_stufen').value;
+  var kurse = document.getElementById('cms_kurse').value;
   var zeitraeume = document.getElementById('cms_zeitraeume').value;
   var schuljahr = document.getElementById('cms_schuljahr').value;
 
@@ -290,16 +290,16 @@ function cms_stundenerzeugen_speichern() {
     fehler = true;
   }
 
-  if ((!cms_check_idfeld(stufen)) && (stufen.length != 0)) {
-    meldung += '<li>die Stufen des Schuljahres sind ungültig.</li>'
+  if ((!cms_check_idfeld(kurse)) && (kurse.length != 0)) {
+    meldung += '<li>die Kurse des Schuljahres sind ungültig.</li>'
     fehler = true;
   }
 
   zeitraeume = zeitraeume.substr(1);
   var zt = zeitraeume.split('|');
-  var st = (stufen.substr(1)).split('|');
+  var ks = (kurse.substr(1)).split('|');
   // Falls keine Stufen angelegt
-  if ((st.length == 1) && (st[0].length == 0)) {st = new Array();}
+  if ((ks.length == 1) && (ks[0].length == 0)) {ks = new Array();}
 
   // Prüfen, welche Zeiträume erstellt werden sollen
   var ztanlegen = new Array();
@@ -325,32 +325,32 @@ function cms_stundenerzeugen_speichern() {
     cms_meldung_an('fehler', 'Stunden und Tagebücher erzeugen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
   }
   else {
-    var anzstufen = st.length;
+    var anzkurse = ks.length;
     var anzzeitraeume = ztanlegen.length;
-    var stufennr = 0;
+    var kursenr = 0;
     var zeitraumnr = 0;
 
-    if ((anzzeitraeume > 0) && (st.length > 0)) {
+    if ((anzzeitraeume > 0) && (ks.length > 0)) {
       var feld = document.getElementById('cms_blende_i');
       var neuemeldung = '<div class="cms_spalte_i">';
       neuemeldung += '<h2 id="cms_laden_ueberschrift">Stunden und Tagebücher erzeugen</h2>';
       neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
       neuemeldung += '<h4>Gesamtfortschritt</h4>';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
       neuemeldung += '</div>';
       neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Zeiträume: <span id="cms_stundnerezeugen_ztaktuell">0</span>/'+anzzeitraeume+' abgeschlossen</p>';
-      neuemeldung += '<div id="cms_hochladen_aktuelledatei" style="display: block;">';
+      neuemeldung += '<div class="cms_fortschritt_box">';
         neuemeldung += '<h4>Fortschritt in diesem Zeitraum</h4>';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-          neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_hochladen_balken_aktuell" style="width: 0%;"></div>';
+        neuemeldung += '<div class="cms_fortschritt_o">';
+          neuemeldung += '<div class="cms_fortschritt_i" id="cms_hochladen_balken_aktuell" style="width: 0%;"></div>';
         neuemeldung += '</div>'
-        neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Stufe: <span id="cms_stundnerezeugen_staktuell">0</span>/'+anzstufen+' abgeschlossen</p>';
+        neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Kurse: <span id="cms_stundnerezeugen_ksaktuell">0</span>/'+anzkurse+' abgeschlossen</p>';
       neuemeldung += '</div></div>';
       feld.innerHTML = neuemeldung;
 
       var formulardaten = new FormData();
-      formulardaten.append("stufe",       st[stufennr]);
+      formulardaten.append("kurs",       ks[kursenr]);
       formulardaten.append("zeitraum", 	  ztanlegen[zeitraumnr]);
       formulardaten.append("schuljahr", 	schuljahr);
       formulardaten.append("erster", 	    'j');
@@ -359,13 +359,13 @@ function cms_stundenerzeugen_speichern() {
       function anfragennachbehandlung(rueckgabe) {
         if (rueckgabe == "ERFOLG") {
           // Abgeschlossene ids erhöhen:
-          stufennr++;
-          if (stufennr == anzstufen) {stufennr = 0; zeitraumnr++;}
+          kursenr++;
+          if (kursenr == anzkurse) {kursenr = 0; zeitraumnr++;}
           // Anzeige aktualisieren
           document.getElementById('cms_stundnerezeugen_ztaktuell').innerHTML = zeitraumnr;
-          document.getElementById('cms_stundnerezeugen_staktuell').innerHTML = stufennr;
+          document.getElementById('cms_stundnerezeugen_ksaktuell').innerHTML = kursenr;
           document.getElementById('cms_hochladen_balken_gesamt').style.width = (100*zeitraumnr)/anzzeitraeume+'%';
-          document.getElementById('cms_hochladen_balken_aktuell').style.width = (100*stufennr)/anzstufen+'%';
+          document.getElementById('cms_hochladen_balken_aktuell').style.width = (100*kursenr)/anzkurse+'%';
 
           if (zeitraumnr == anzzeitraeume) {
             cms_meldung_an('erfolg', 'Stunden und Tagebücher erzeugen', '<p>Die Unterrichtsstunden und Tagebücher wurden erzeugt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung\');">OK</span></p>');
@@ -373,7 +373,7 @@ function cms_stundenerzeugen_speichern() {
           else {
             // Nächste Stufe/Zeitraum starten
             var formulardaten = new FormData();
-            formulardaten.append("stufe", st[stufennr]);
+            formulardaten.append("kurs", ks[kursenr]);
             formulardaten.append("zeitraum", 	ztanlegen[zeitraumnr]);
             formulardaten.append("schuljahr", 	schuljahr);
             formulardaten.append("erster", 	    'n');

@@ -72,4 +72,80 @@ CREATE TABLE `vplantext` (
 ALTER TABLE `vplantext`
   ADD PRIMARY KEY (`zeit`,`art`);
 
--- Standardwerte setzen
+CREATE TABLE `raeumeklassen` (
+  `raum` bigint(255) UNSIGNED NOT NULL,
+  `klasse` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `raeumeklassen`
+  ADD PRIMARY KEY (`raum`,`klasse`),
+  ADD KEY `raeumeklassenklasse` (`klasse`);
+
+ALTER TABLE `raeumeklassen`
+  ADD CONSTRAINT `raeumeklassenklasse` FOREIGN KEY (`klasse`) REFERENCES `klassen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `raeumeklassenraum` FOREIGN KEY (`raum`) REFERENCES `raeume` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `raeumestufen` (
+  `raum` bigint(255) UNSIGNED NOT NULL,
+  `stufe` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `raeumestufen`
+  ADD PRIMARY KEY (`raum`,`stufe`),
+  ADD KEY `raeumestufenstufe` (`stufe`);
+
+ALTER TABLE `raeumestufen`
+  ADD CONSTRAINT `raeumestufenraum` FOREIGN KEY (`raum`) REFERENCES `raeume` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `raeumestufenstufe` FOREIGN KEY (`stufe`) REFERENCES `stufen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `stufenlehrer` (
+  `stufe` bigint(255) UNSIGNED NOT NULL,
+  `lehrer` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `stufenlehrer`
+  ADD PRIMARY KEY (`stufe`,`lehrer`),
+  ADD KEY `stufenlehrerlehrer` (`lehrer`);
+
+ALTER TABLE `stufenlehrer`
+  ADD CONSTRAINT `stufenlehrerlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `stufenlehrerstufe` FOREIGN KEY (`stufe`) REFERENCES `stufen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `klassenlehrer` (
+  `klasse` bigint(255) UNSIGNED NOT NULL,
+  `lehrer` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `klassenlehrer`
+  ADD PRIMARY KEY (`klasse`,`lehrer`),
+  ADD KEY `klassenlehrerlehrer` (`lehrer`);
+
+ALTER TABLE `klassenlehrer`
+  ADD CONSTRAINT `klassenlehrerklassen` FOREIGN KEY (`klasse`) REFERENCES `klassen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `klassenlehrerlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `klassenlehrerstellvertreter` (
+  `klasse` bigint(255) UNSIGNED NOT NULL,
+  `lehrer` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `klassenlehrerstellvertreter`
+  ADD PRIMARY KEY (`klasse`,`lehrer`),
+  ADD KEY `klassenlehrerstellvertreterlehrer` (`lehrer`);
+
+ALTER TABLE `klassenlehrerstellvertreter`
+  ADD CONSTRAINT `klassenlehrerstellvertreterklasse` FOREIGN KEY (`klasse`) REFERENCES `klassen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `klassenlehrerstellvertreterlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `stufenlehrerstellvertreter` (
+  `stufe` bigint(255) UNSIGNED NOT NULL,
+  `lehrer` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `stufenlehrerstellvertreter`
+  ADD PRIMARY KEY (`stufe`,`lehrer`),
+  ADD KEY `stufenlehrerstellvertreterlehrer` (`lehrer`);
+
+ALTER TABLE `stufenlehrerstellvertreter`
+  ADD CONSTRAINT `stufenlehrerstellvertreterlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `stufenlehrerstellvertreterstufe` FOREIGN KEY (`stufe`) REFERENCES `stufen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

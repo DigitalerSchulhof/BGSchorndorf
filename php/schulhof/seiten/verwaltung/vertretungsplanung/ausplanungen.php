@@ -25,9 +25,8 @@ if ($zugriff) {
     if ($sql->execute()) {
       $sql->bind_result($id, $vorname, $nachname, $titel, $kuerzel);
       while ($sql->fetch()) {
-        $bez = "";
-        if (strlen($kuerzel) > 0) {$bez = "$kuerzel - ";}
-        $bez .= cms_generiere_anzeigename($vorname, $nachname, $titel);
+        $bez = cms_generiere_anzeigename($vorname, $nachname, $titel);
+        if (strlen($kuerzel) > 0) {$bez = $kuerzel." - ".$bez;}
         $LEHRER .= "<option value=\"$id\">$bez</option>";
       }
     }
@@ -35,12 +34,17 @@ if ($zugriff) {
 
     // RAEUME LADEN
     $RAEUME = "";
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume) AS x ORDER BY bezeichnung ASC";
+    $sql = "SELECT DISTINCT * FROM ((SELECT raeume.id AS id, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS zusatzk, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS zusatzs FROM raeume LEFT JOIN raeumeklassen ON raeume.id = raeumeklassen.raum LEFT JOIN klassen ON raeumeklassen.klasse = klassen.id LEFT JOIN raeumestufen ON raeume.id = raeumestufen.raum LEFT JOIN stufen ON raeumestufen.stufe = stufen.id)) AS x GROUP BY id ORDER BY bezeichnung ASC";
     $sql = $dbs->prepare($sql);
     if ($sql->execute()) {
-      $sql->bind_result($id, $bez);
+      $sql->bind_result($id, $bez, $zusatzk, $zusatzs);
       while ($sql->fetch()) {
-        $RAEUME .= "<option value=\"$id\">$bez</option>";
+        $raumbez = $bez;
+        $zusatz = "";
+        if ($zusatzk !== null) {$zusatz .= ", ".$zusatzk;}
+        if ($zusatzs !== null) {$zusatz .= ", ".$zusatzs;}
+        if (strlen($zusatz) > 0) {$raumbez .= " » ".substr($zusatz, 2);}
+        $RAEUME .= "<option value=\"$id\">$raumbez</option>";
       }
     }
     $sql->close();

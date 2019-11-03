@@ -1,4 +1,4 @@
-// out: ../css/tabellen.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/tabellen.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 td.cms_notiz {
@@ -140,7 +140,8 @@ table.cms_zeitwahl {
   border-spacing: collapse;
 }
 
-table.cms_zeitwahl td+td {text-align: center;}
+table.cms_zeitwahl td {width: auto;}
+table.cms_zeitwahl td+td {text-align: center !important;}
 table.cms_zeitwahl td+td+td {text-align: right;}
 
 table.table {
@@ -172,4 +173,12 @@ th.cms_zwischenueberschrift {
 
 th.cms_zahl, td.cms_zahl {
   text-align: right !important;
+}
+
+.cms_sortieren:hover {
+  cursor: s-resize;
+}
+
+.cms_auswaehlen:hover {
+  cursor: crosshair;
 }

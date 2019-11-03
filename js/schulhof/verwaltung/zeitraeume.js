@@ -604,28 +604,28 @@ function cms_stundenplanung_import_speichern() {
     neuemeldung += '<h2 id="cms_laden_ueberschrift">Stundenplanung importieren</h2>';
     neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
     neuemeldung += '<h4>Gesamtfortschritt</h4>';
-    neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_schritte_balken" style="width: 0%;"></div>';
+    neuemeldung += '<div class="cms_fortschritt_o">';
+      neuemeldung += '<div class="cms_fortschritt_i" id="cms_stundenplanung_schritte_balken" style="width: 0%;"></div>';
     neuemeldung += '</div>';
     neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Arbeitsschritte: <span id="cms_stundenplanung_schritte">0</span>/<span id="cms_stundenplanung_schritte_alle">?</span> abgeschlossen</p>';
-    neuemeldung += '<div>';
+    neuemeldung += '<div class=\"cms_fortschritt_box\">';
       neuemeldung += '<h4>Datenanalyse</h4>';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_analyse_balken" style="width: 0%;"></div>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_stundenplanung_analyse_balken" style="width: 0%;"></div>';
       neuemeldung += '</div>'
       neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Datenanalyse: <span id="cms_stundenplanung_analyse">0</span>/2 abgeschlossen</p>';
     neuemeldung += '</div>';
-    neuemeldung += '<div>';
+    neuemeldung += '<div class=\"cms_fortschritt_box\">';
       neuemeldung += '<h4>Kurse anlegen</h4>';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_kurse_balken" style="width: 0%;"></div>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_stundenplanung_kurse_balken" style="width: 0%;"></div>';
       neuemeldung += '</div>'
       neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Kurse angelegt: <span id="cms_stundenplanung_kurse">0</span>/<span id="cms_stundenplanung_kurse_alle">?</span> abgeschlossen</p>';
     neuemeldung += '</div>';
-    neuemeldung += '<div>';
+    neuemeldung += '<div class=\"cms_fortschritt_box\">';
       neuemeldung += '<h4>Stunden platzieren</h4>';
-      neuemeldung += '<div class="cms_hochladen_fortschritt_o">';
-        neuemeldung += '<div class="cms_hochladen_fortschritt_i" id="cms_stundenplanung_stunden_balken" style="width: 0%;"></div>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_stundenplanung_stunden_balken" style="width: 0%;"></div>';
       neuemeldung += '</div>'
       neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Stunden platziert: <span id="cms_stundenplanung_stunden">0</span>/<span id="cms_stundenplanung_stunden_alle">?</span> abgeschlossen</p>';
     neuemeldung += '</div>';

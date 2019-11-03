@@ -1110,13 +1110,13 @@ function cms_dateisystem_hochladen_blende_vorbereiten() {
 	blende += '<h2 id="cms_laden_ueberschrift">Dateien hochladen</h2>';
 	blende += '<p id="cms_laden_meldung_vorher">Bitte warten...</p>';
 	blende += '<h4>Gesamtfortschritt</h4>';
-	blende += '<div class="cms_hochladen_fortschritt_o"><div class="cms_hochladen_fortschritt_i" id=\"cms_hochladen_balken_gesamt\" style=\"width:0%;\"></div></div>';
+	blende += '<div class="cms_fortschritt_o"><div class="cms_fortschritt_i" id=\"cms_hochladen_balken_gesamt\" style=\"width:0%;\"></div></div>';
 	blende += '<p class="cms_hochladen_fortschritt_anzeige">Anzahl Dateien: <span id=\"cms_hochladen_anzahl_gesamt\">'+UP_gesamtanzahl+'</span> • Gesamtgröße: <span id=\"cms_hochladen_groesse_gesamt\">'+UP_gesamtgesamtanzeige+'</span> • ';
 	blende += '<span id=\"cms_hochladen_fehler_anzeige_gesamt\">Geladen: <span id=\"cms_hochladen_fortschritt_gesamt\">0 B</span> – <span id=\"cms_hochladen_prozent_gesamt\">0 %</span></span>';
 
 	blende += '<div id="cms_hochladen_aktuelledatei">';
 	blende += '<h4 id="cms_hochladen_name_aktuell">'+UP_aktuellname+'</h4>';
-	blende += '<div class="cms_hochladen_fortschritt_o"><div class="cms_hochladen_fortschritt_i" id=\"cms_hochladen_balken_aktuell\" style=\"width:0%;\"></div></div>';
+	blende += '<div class="cms_fortschritt_o"><div class="cms_fortschritt_i" id=\"cms_hochladen_balken_aktuell\" style=\"width:0%;\"></div></div>';
 	blende += '<p class="cms_hochladen_fortschritt_anzeige">Datei: <span id=\"cms_hochladen_nummer_aktuell\">1</span> • Gesamtgröße: <span id=\"cms_hochladen_groesse_aktuell\">'+UP_aktuellgesamtanzeige+'</span> • ';
 	blende += '<span id=\"cms_hochladen_fehler_anzeige_aktuell\">Geladen: <span id=\"cms_hochladen_fortschritt_aktuell\">0 B</span> – <span id=\"cms_hochladen_prozent_aktuell\">0 %</span></span>';
 	blende += '</div>';

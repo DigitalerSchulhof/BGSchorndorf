@@ -151,7 +151,7 @@ function cms_timeout_aktualisieren () {
 	else if (uebrig < 1) {
 		// Neue Daten laden
 		var formulardaten = new FormData();
-		formulardaten.append("anfragenziel", 	'295');
+		formulardaten.append("anfragenziel", 	'296');
 		function anfragennachbehandlung(rueckgabe) {
 			if (cms_check_ganzzahl(rueckgabe,0)) {
 				CMS_SESSIONTIMEOUT = rueckgabe;
