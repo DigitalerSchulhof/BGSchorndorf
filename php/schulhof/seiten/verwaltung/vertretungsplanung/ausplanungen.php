@@ -68,13 +68,26 @@ if ($zugriff) {
 
     // KLASSEN LADEN
     $KLASSEN = "";
-    $sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, reihenfolge FROM klassen JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr IN (SELECT id FROM schuljahre WHERE beginn <= ? AND ende >= ?)) AS x ORDER BY reihenfolge, bezeichnung ASC";
+    $sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr IN (SELECT id FROM schuljahre WHERE beginn <= ? AND ende >= ?)) AS x ORDER BY reihenfolge, bezeichnung ASC";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("ii", $heute, $heute);
     if ($sql->execute()) {
       $sql->bind_result($id, $bez, $r);
       while ($sql->fetch()) {
         $KLASSEN .= "<option value=\"$id\">$bez</option>";
+      }
+    }
+    $sql->close();
+
+    // STUFEN LADEN
+    $STUFEN = "";
+    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, reihenfolge FROM stufen WHERE schuljahr IN (SELECT id FROM schuljahre WHERE beginn <= ? AND ende >= ?)) AS x ORDER BY reihenfolge, bezeichnung ASC";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("ii", $heute, $heute);
+    if ($sql->execute()) {
+      $sql->bind_result($id, $bez, $r);
+      while ($sql->fetch()) {
+        $STUFEN .= "<option value=\"$id\">$bez</option>";
       }
     }
     $sql->close();
@@ -95,7 +108,7 @@ if ($zugriff) {
     $code .= "<option value=\"".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['ende']."\" selected=\"selected\">".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['bez']."</option>";
     $code .= "</select></td></tr>";
     $code .= "<tr><th>Art:</th><td colspan=\"2\"><select id=\"cms_ausplanen_art\" name=\"cms_ausplanen_art\" onmouseup=\"cms_ausplanung_art_aendern()\" onchange=\"cms_ausplanung_art_aendern()\">";
-      $code .= "<option value=\"l\">Lehrkraft</option><option value=\"r\">Raum</option><option value=\"k\">Klassen</option>";
+      $code .= "<option value=\"l\">Lehrkraft</option><option value=\"r\">Raum</option><option value=\"k\">Klassen</option><option value=\"s\">Stufen</option>";
     $code .= "</select></td></tr>";
     $code .= "<tr id=\"cms_ausplanung_art_l\"><th>Lehrkräfte:</th><td colspan=\"2\"><select id=\"cms_ausplanen_l\" name=\"cms_ausplanen_l\">";
       $code .= $LEHRER;
@@ -115,6 +128,12 @@ if ($zugriff) {
     $code .= "<tr id=\"cms_ausplanung_grund_k\" style=\"display:none\"><th>Grund:</th><td colspan=\"2\"><select id=\"cms_ausplanen_grundk\" name=\"cms_ausplanen_grundk\">";
       $code .= "<option value=\"ex\">auf Exkursion</option><option value=\"sh\">im Schullandheim</option><option value=\"p\">bei Prüfung</option><option value=\"bv\">bei Berufsorientierung</option><option value=\"k\">krank</option><option value=\"s\">sonstiges</option>";
     $code .= "</select></td></tr>";
+    $code .= "<tr id=\"cms_ausplanung_art_s\" style=\"display:none\"><th>Stufen:</th><td id=\"cms_stufen_ausplanen\" colspan=\"2\"><select id=\"cms_ausplanen_s\" name=\"cms_ausplanen_s\">";
+      $code .= $STUFEN;
+    $code .= "</select></td></tr>";
+    $code .= "<tr id=\"cms_ausplanung_grund_s\" style=\"display:none\"><th>Grund:</th><td colspan=\"2\"><select id=\"cms_ausplanen_grunds\" name=\"cms_ausplanen_grunds\">";
+      $code .= "<option value=\"ex\">auf Exkursion</option><option value=\"sh\">im Schullandheim</option><option value=\"p\">bei Prüfung</option><option value=\"bv\">bei Berufsorientierung</option><option value=\"k\">krank</option><option value=\"s\">sonstiges</option>";
+    $code .= "</select></td></tr>";
     $code .= "</table>";
     $code .= "<p class=\"cms_notiz\">Schulstunden jeweils einschließlich.</p>";
     $code .= "<p><span class=\"cms_button\" onclick=\"cms_ausplanung_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung\">Abbrechen</a></p>";
@@ -130,7 +149,9 @@ if ($zugriff) {
     $code .= "<h3>Räume</h3>";
     $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_r', '');
     $code .= "<h3>Klassen</h3>";
-    $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_k', 'cms_ausplanen_lausgeplant();');
+    $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_k', '');
+    $code .= "<h3>Stufen</h3>";
+    $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_s', 'cms_ausplanen_lausgeplant();');
     $code .= "</div></div>";
     $code .= "<div class=\"cms_clear\"></div><div>";
   }

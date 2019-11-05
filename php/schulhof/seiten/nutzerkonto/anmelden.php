@@ -26,7 +26,7 @@ if (isset($CMS_URL[2])) {
 
 <?php
 $code = "";
-$anmeldung_moeglich = true;
+$anmeldung_moeglich = false;
 if ($anmeldung_moeglich) {
 
 	// $meldung = "<h4>Vertretungsplan</h4>";

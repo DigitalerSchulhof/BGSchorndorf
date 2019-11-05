@@ -1,5 +1,5 @@
 <?php
-function cms_vertretungsplan_komplettansicht_heute($dbs, $art) {
+function cms_vertretungsplan_komplettansicht_heute($dbs, $art, $nachladen = true) {
   // Schultag berechnen
   $jetzt = mktime(0,0,0,date('m'), date('d'), date('Y'));
   $start = $jetzt;
@@ -15,11 +15,11 @@ function cms_vertretungsplan_komplettansicht_heute($dbs, $art) {
   $beginn = mktime(0,0,0,date('m', $start), date('d', $start), date('Y', $start));
   $ende = mktime(0,0,0,date('m', $start), date('d', $start)+1, date('Y', $start))-1;
 
-  $code = cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende);
+  $code = cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende, '1', $nachladen);
   return $code;
 }
 
-function cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, $art) {
+function cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, $art, $nachladen = true) {
   // Schultag berechnen
   $jetzt = mktime(0,0,0,date('m'), date('d'), date('Y'));
   $start = $jetzt;
@@ -43,12 +43,12 @@ function cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, $art) {
   $beginn = mktime(0,0,0,date('m', $start), date('d', $start), date('Y', $start));
   $ende = mktime(0,0,0,date('m', $start), date('d', $start)+1, date('Y', $start))-1;
 
-  $code = cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende);
+  $code = cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende, '2', $nachladen);
   return $code;
 }
 
-function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
-  global $CMS_SCHLUESSEL;
+function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende, $id = '', $nachladen) {
+  global $CMS_SCHLUESSEL, $CMS_IMLN;
   $code = "";
   // Schulstunden in diesem Zeitraum laden
   $SCHULSTUNDEN = array();
@@ -103,8 +103,8 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
 
     // Entfall ausgeben
     $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit, AES_DECRYPT(praeume.bezeichnung, '$CMS_SCHLUESSEL') AS praumbez, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL')";
-    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id LEFT JOIN raeume AS praeume ON praum = praeume.id JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id ";
-    $sql .= "WHERE vplananzeigen = '1' AND (pbeginn >= ? AND pende <= ?) AND ((tende <= ? OR tbeginn >= ?) OR (tende IS NULL AND tbeginn IS NULL))) AS x ORDER BY tlehrerk ASC, tnach ASC, tvor ASC, ttit ASC, tbeginn ASC";
+    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id LEFT JOIN raeume AS praeume ON praum = praeume.id LEFT JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id LEFT JOIN personen AS tpersonen ON tlehrer = tpersonen.id ";
+    $sql .= "WHERE vplananzeigen = '1' AND (pbeginn >= ? AND pende <= ?) AND ((tende <= ? OR tbeginn >= ?) OR (vplanart = 'e'))) AS x ORDER BY tlehrerk ASC, tnach ASC, tvor ASC, ttit ASC, tbeginn ASC";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiii", $beginn, $ende, $beginn, $ende);
     if ($sql->execute()) {
@@ -167,8 +167,8 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
 
     // Entfall ausgeben
     $sql = "SELECT * FROM (SELECT AES_DECRYPT(pkurse.bezeichnung, '$CMS_SCHLUESSEL') AS pkursbez, AES_DECRYPT(pkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS pkurskurzbez, pbeginn, pende, AES_DECRYPT(plehrert.kuerzel, '$CMS_SCHLUESSEL') AS plehrerk, AES_DECRYPT(ppersonen.vorname, '$CMS_SCHLUESSEL') AS pvor, AES_DECRYPT(ppersonen.nachname, '$CMS_SCHLUESSEL') AS pnach, AES_DECRYPT(ppersonen.titel, '$CMS_SCHLUESSEL') AS ptit,  AES_DECRYPT(praeume.bezeichnung, '$CMS_SCHLUESSEL') AS praumbez, AES_DECRYPT(tkurse.bezeichnung, '$CMS_SCHLUESSEL') AS tkursbez, AES_DECRYPT(tkurse.kurzbezeichnung, '$CMS_SCHLUESSEL') AS tkurskurzbez, tbeginn, tende, AES_DECRYPT(tlehrert.kuerzel, '$CMS_SCHLUESSEL') AS tlehrerk, AES_DECRYPT(tpersonen.vorname, '$CMS_SCHLUESSEL') AS tvor, AES_DECRYPT(tpersonen.nachname, '$CMS_SCHLUESSEL') AS tnach, AES_DECRYPT(tpersonen.titel, '$CMS_SCHLUESSEL') AS ttit, AES_DECRYPT(traeume.bezeichnung, '$CMS_SCHLUESSEL') AS traumbez, vplanart, AES_DECRYPT(vplanbemerkung, '$CMS_SCHLUESSEL'), reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez";
-    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id LEFT JOIN raeume AS praeume ON praum = praeume.id JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id LEFT JOIN kurseklassen ON tkurs = kurseklassen.kurs LEFT JOIN klassen ON kurseklassen.klasse = klassen.id LEFT JOIN stufen ON tkurse.stufe = stufen.id ";
-    $sql .= "WHERE vplananzeigen = '1' AND (pbeginn >= ? AND pende <= ?) AND ((tende <= ? OR tbeginn >= ?) OR (tende IS NULL AND tbeginn IS NULL))) AS x ORDER BY reihenfolge ASC, klassenbez ASC, tbeginn ASC";
+    $sql .= " FROM unterricht LEFT JOIN kurse AS pkurse ON pkurs = pkurse.id LEFT JOIN kurse AS tkurse ON tkurs = tkurse.id LEFT JOIN raeume AS praeume ON praum = praeume.id LEFT JOIN raeume AS traeume ON traum = traeume.id LEFT JOIN lehrer AS plehrert ON plehrer = plehrert.id JOIN lehrer AS tlehrert ON tlehrer = tlehrert.id LEFT JOIN personen AS ppersonen ON plehrer = ppersonen.id JOIN personen AS tpersonen ON tlehrer = tpersonen.id LEFT JOIN kurseklassen ON tkurs = kurseklassen.kurs LEFT JOIN klassen ON kurseklassen.klasse = klassen.id LEFT JOIN stufen ON tkurse.stufe = stufen.id ";
+    $sql .= "WHERE vplananzeigen = '1' AND (pbeginn >= ? AND pende <= ?) AND ((tende <= ? OR tbeginn >= ?) OR (vplanart = 'e'))) AS x ORDER BY reihenfolge ASC, klassenbez ASC, tbeginn ASC";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiii", $beginn, $ende, $beginn, $ende);
     if ($sql->execute()) {
@@ -228,6 +228,17 @@ function cms_vertretungsplan_komplettansicht($dbs, $art, $beginn, $ende) {
       if (strlen($text) > 0) {$code = cms_meldung('info', '<h4>'.$infoart.' zum Tag</h4><p>'.cms_textaustextfeld_anzeigen($text).'</p>').$code;}
     }
   }
+
+  if (($art == 'l') && ($nachladen)) {
+    if ($CMS_IMLN) {
+      if ($id == '1') {$code .= cms_generiere_nachladen('cms_vplan_gruende_1', 'cms_vplan_gruende_1(\''.$beginn.'\');');}
+      else if ($id == '2') {$code .= cms_generiere_nachladen('cms_vplan_gruende_2', 'cms_vplan_gruende_2(\''.$beginn.'\');');}
+    }
+    else {
+      $code .= cms_meldung_geschuetzer_inhalt ();
+    }
+  }
+
   $sql->close();
 
   return "<h2>".cms_tagnamekomplett(date('N', $beginn)).", den ".date('d', $beginn).". ".cms_monatsnamekomplett(date('m', $beginn))." ".date('Y', $beginn)."</h2>".$code;

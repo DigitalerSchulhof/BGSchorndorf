@@ -224,12 +224,12 @@
 			else if ($_SESSION['DRUCKANSICHT'] == 'Vertretungsplan') {
 				include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
 				$code .= "<h1>Vertretungsplan Lehreransicht</h1>";
-				$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 'l');
-				$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 'l');
+				$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 'l', false);
+				$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 'l', false);
 
 				$code .= "<h1>Vertretungsplan Schüleransicht</h1>";
-				$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 's');
-				$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 's');
+				$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 's', false);
+				$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 's', false);
 			}
 			else {$fehler = true;}
 		}

@@ -168,10 +168,14 @@ if ($zugriff) {
       $sql->close();
 
       // WOCHENPLÄNE
-      $code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+      $code .= "<div class=\"cms_spalte_60\" id=\"cms_spalte_wochenplaene\">";
+      $code .= "<div class=\"cms_groesseaendern_rechts\" id=\"cms_groesse_aendern_wochenplaene_rechts\"></div>";
+      $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<h2>Wochenpläne ".cms_togglebutton_generieren('cms_vplan_wochenplaene', 'Koppeln', 1)."</h2>";
       $code .= "</div>";
-      $code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">";
+      $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_lehrer\">";
+      $code .= "<div class=\"cms_groesseaendern_rechts\" id=\"cms_groesse_aendern_lehrer_rechts\"></div>";
+      $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_lehrer('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanlehrer_datum', $ltag, $lmonat, $ljahr, 'cms_vplan_lehrer(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_lehrer('+')\">»</span></td></tr>";
       $code .= "<tr><td colspan=\"3\"><select id=\"cms_vplan_woche_lehrer\" name=\"cms_vplan_woche_lehrer\" onchange=\"cms_vplan_lehrer('j')\">";
@@ -183,7 +187,10 @@ if ($zugriff) {
       $code .= cms_generiere_nachladen('cms_vplan_wochenplan_l', '');
       $code .= "</div></div>";
 
-      $code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">";
+      $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_raeume\">";
+      $code .= "<div class=\"cms_groesseaendern_rechts\" id=\"cms_groesse_aendern_raeume_rechts\"></div>";
+      $code .= "<div class=\"cms_groesseaendern_links\" id=\"cms_groesse_aendern_raeume_links\"></div>";
+      $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_raum('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanraum_datum', $rtag, $rmonat, $rjahr, 'cms_vplan_raum(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_raum('+')\">»</span></td></tr>";
       $code .= "<tr><td colspan=\"3\"><select id=\"cms_vplan_woche_raum\" name=\"cms_vplan_woche_raum\" onchange=\"cms_vplan_raum('j')\">";
@@ -195,7 +202,9 @@ if ($zugriff) {
       $code .= cms_generiere_nachladen('cms_vplan_wochenplan_r', '');
       $code .= "</div></div>";
 
-      $code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">";
+      $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_klassen\">";
+      $code .= "<div class=\"cms_groesseaendern_links\" id=\"cms_groesse_aendern_klassen_links\"></div>";
+      $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_klasse('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanklasse_datum', $ktag, $kmonat, $kjahr, 'cms_vplan_klasse(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_klasse('+')\">»</span></td></tr>";
       $code .= "<tr><td colspan=\"3\"><select id=\"cms_vplan_woche_klasse\" name=\"cms_vplan_woche_klasse\" onchange=\"cms_vplan_klasse('j')\">";
@@ -224,7 +233,9 @@ if ($zugriff) {
       $code .= "</div>";
 
       // TAGESDETAILS
-      $code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
+      $code .= "<div class=\"cms_spalte_40\" id=\"cms_spalte_konflikte\">";
+      $code .= "<div class=\"cms_groesseaendern_links\" id=\"cms_groesse_aendern_konflikte_links\"></div>";
+      $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<h2>Konflikte</h2>";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_konflikte('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplankonflikte_datum', $tag, $monat, $jahr, 'cms_vplan_konflikte(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_konflikte('+')\">»</span></td>";

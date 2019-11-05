@@ -1,8 +1,9 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
-$einstellungenplaetten = true;
-$zulaessigedateienplaetten = true;
+$rechteplaetten = false;
+$internediensteplaetten = true;
+$einstellungenplaetten = false;
+$zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;
 $update = false;
@@ -785,7 +786,7 @@ if ($update) {
 }
 
 
-if ((!$rechteplaetten) && (!$dateienplaetten) && (!$einstellungenplaetten) && (!$zulaessigedateienplaetten) && (!$gremienklassen) && (!$postfachordner) && (!$update)) {
+if ((!$rechteplaetten) && (!$internediensteplaetten) && (!$dateienplaetten) && (!$einstellungenplaetten) && (!$zulaessigedateienplaetten) && (!$gremienklassen) && (!$postfachordner) && (!$update)) {
 	echo "INAKTIV";
 }
 
@@ -811,6 +812,26 @@ function cms_dateisystem_ds_loeschen($pfad) {
 		return true;
   }
   return false;
+}
+
+if ($internediensteplaetten) {
+	include_once("php/schulhof/funktionen/texttrafo.php");
+	include_once("php/allgemein/funktionen/sql.php");
+	include_once("php/schulhof/funktionen/generieren.php");
+	include_once("php/schulhof/funktionen/config.php");
+
+	$dbs = cms_verbinden('s');
+
+	$sql = "DELETE FROM internedienste";
+	$dbs->query($sql);
+	$id = 0;
+
+	$sql = "INSERT INTO internedienste (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('VPlanS', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0815', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO internedienste (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0815', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	cms_trennen($dbs);
+	echo "INTERNE DIENSTE ERNEUERT<br>";
 }
 
 

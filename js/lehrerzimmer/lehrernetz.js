@@ -31,18 +31,23 @@ function cms_lehrerzimmer_laden(id, datei, entitaet) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
-function cms_netzcheck() {
+function cms_netzcheck(zeigen) {
+	var zeigen = zeigen || 'j';
 	var anfrage = new XMLHttpRequest();
-	var feld = document.getElementById('cms_netzcheckstatus');
-	var lzfeld = document.getElementById('cms_netzcheckstatus_lz');
+	if (zeigen == 'j') {
+		var feld = document.getElementById('cms_netzcheckstatus');
+		var lzfeld = document.getElementById('cms_netzcheckstatus_lz');
+	}
 
 	if (CMS_LN_DA) {
 		var anfrage = new XMLHttpRequest();
 		anfrage.timeout = 2000;
 		anfrage.onreadystatechange = function() {
 			if (anfrage.readyState==4 && anfrage.status==200) {
-				lzfeld.innerHTML = ", Lehrerzimmer";
-				feld.style.backgroundColor = "#ffd95a";
+				if (zeigen == 'j') {
+					lzfeld.innerHTML = ", Lehrerzimmer";
+					feld.style.backgroundColor = "#ffd95a";
+				}
 				CMS_IMLN = true;
 				var formulardaten = new FormData();
 				formulardaten.append("anfragenziel", '169');
@@ -50,8 +55,10 @@ function cms_netzcheck() {
 				cms_ajaxanfrage (false, formulardaten, null);
 			}
 			else if (anfrage.readyState==4) {
-				lzfeld.innerHTML = "";
-				feld.style.backgroundColor = "#94d1ff";
+				if (zeigen == 'j') {
+					lzfeld.innerHTML = "";
+					feld.style.backgroundColor = "#94d1ff";
+				}
 				CMS_IMLN = false;
 				var formulardaten = new FormData();
 				formulardaten.append("anfragenziel", '169');

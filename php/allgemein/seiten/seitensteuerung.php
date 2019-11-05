@@ -48,7 +48,8 @@ else if ($CMS_URL[0] == 'Problembehebung') {
 else if ($CMS_URL[0] == 'Intern') {
   // PROBLEMBEHEBUNG
   $CMS_VERFUEGBARE_SEITEN['Intern'] = 'php/lehrerzimmer/seiten/intern/intern.php';
-  if (preg_match("/^Intern\/Gerätezustand(\/.*){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/geraetezustand.php';}
+  if (preg_match("/^Intern\/Schülervertretungsplan(\/[-a-zA-Z0-9]+){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/schuelervertretungsplan.php';}
+  if (preg_match("/^Intern\/Lehrervertretungsplan(\/[-a-zA-Z0-9]+){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/lehrervertretungsplan.php';}
 }
 else if ($CMS_URL[0] == 'Schulhof') {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
@@ -327,6 +328,7 @@ if (!$ausnahme) {
       if ($CMS_URL[0] == "Website") {cms_fehler("Website", "404");}
       else if ($CMS_URL[0] == "Problembehebung") {cms_fehler("Schulhof", "404");}
       else if ($CMS_URL[0] == "Schulhof") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == "Intern") {cms_fehler("Schulhof", "404");}
     }
     else {cms_fehler("Website", "404");}
   }

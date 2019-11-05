@@ -47,21 +47,18 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     $anfrage = $db->query($sql);
 
     // ID zurückgewinnen
+    $id = null;
     $sql = $db->prepare("SELECT id FROM $tabelle WHERE idvon = ? AND idzeit = ?");
   	$sql->bind_param("ii", $benutzer, $jetzt);
-
     if ($sql->execute()) {
-      $id = "";
       $sql->bind_result($id);
-      if (!$sql->fetch()) {
-        $fehler = true;
-      }
+      $sql->fetch();
     }
     else {$fehler = true;}
     $sql->close();
 
     // Persönliche Daten löschen
-    if (!$fehler) {
+    if ($id !== null) {
       $sql = $db->prepare("UPDATE $tabelle SET idvon = NULL, idzeit = NULL WHERE id = ?");
     	$sql->bind_param("i", $id);
     	$sql->execute();

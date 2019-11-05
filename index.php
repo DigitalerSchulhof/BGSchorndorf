@@ -37,7 +37,6 @@
 	$CMS_VERSION = rand(0,1000000);
 	//$CMS_VERSION = "0.5.4";
 	$TITELBILDERJS = "";
-	$CMS_STUNDENDAUER = 45;
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
 	else {
@@ -305,7 +304,6 @@
 					echo "var CMS_NETZCHECK = setInterval('cms_netzcheck()', 30000);\n";
 				}
         echo "var CMS_BENUTZERNAME = '".$_SESSION['BENUTZERNAME']."';\n";
-		    echo "var CMS_SCHULSTUNDENDAUER = $CMS_STUNDENDAUER;\n";
         $iv = substr($CMS_SESSIONID, 0, 16);
 				$nutzerid = openssl_encrypt ($CMS_BENUTZERID, 'aes128', $iv, 0, $iv);
 				echo "var CMS_BENUTZERID = '".$nutzerid."';\n";
@@ -479,8 +477,10 @@
 			echo "</script>";
 		}
 		else if (($CMS_URL[0] == 'Website') || ($CMS_URL[0] == "Intern")) {
+			echo 1;
 			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EXTERN_EVENTS."};";
+				echo "alert(1);";
+				echo "window.onload = function () {".$CMS_ONLOAD_EXTERN_EVENTS."};";
 			echo "</script>";
 		}
 		cms_erfasse_click();

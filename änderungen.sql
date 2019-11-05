@@ -149,3 +149,18 @@ ALTER TABLE `stufenlehrerstellvertreter`
 ALTER TABLE `stufenlehrerstellvertreter`
   ADD CONSTRAINT `stufenlehrerstellvertreterlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `stufenlehrerstellvertreterstufe` FOREIGN KEY (`stufe`) REFERENCES `stufen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `unterrichtkonflikt` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+
+CREATE TABLE `ausplanungstufen` (
+  `id` bigint(20) NOT NULL,
+  `stufe` bigint(20) DEFAULT NULL,
+  `grund` varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `von` bigint(20) DEFAULT NULL,
+  `bis` bigint(20) DEFAULT NULL,
+  `idvon` bigint(20) DEFAULT NULL,
+  `idzeit` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `ausplanungstufen`
+  ADD PRIMARY KEY (`id`);
