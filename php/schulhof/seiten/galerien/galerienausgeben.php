@@ -113,21 +113,37 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 	if (!$fehler) {
 		$galerie = array();
 
-		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE bezeichnung = AES_ENCRYPT('$bez', '$CMS_SCHLUESSEL') AND datum = $datum AND aktiv = 1;";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($galerie = $anfrage->fetch_assoc()) {
+		// Galerie finden
+		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND datum = ?;";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("si", $bez, $datum);
+		if ($sql->execute()) {
+			$sql->bind_result($galerie["id"], $galerie["bezeichnung"], $galerie["autor"], $galerie["datum"], $galerie["genehmigt"], $galerie["aktiv"], $galerie["oeffentlichkeit"], $galerie["beschreibung"], $galerie["vorschaubild"]);
+			if ($sql->fetch()) {
 				$gefunden = true;
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 	  }
 	  else {$fehler = true;}
+		$sql->close();
+
+		if ($gefunden) {	// Nur für Notifikation
+			if ($CMS_URL[0] == 'Schulhof') {
+				$sql = $dbs->prepare("DELETE FROM notifikationen WHERE person = ? AND art = 'g' AND zielid = ?");
+				$sql->bind_param("ii", $CMS_BENUTZERID, $galerie['id']);
+				$sql->execute();
+				$sql->close();
+			}
+		}
+
+		$gefunden = $gefunden && isset($galerie["aktiv"]) && $galerie["aktiv"];
 
 		if ($gefunden) {
 			if ($jahr != date('Y', $galerie['datum'])) {$gefunden = false;}
 			if ($monat != date('m', $galerie['datum'])) {$gefunden = false;}
 			if ($tag != date('d', $galerie['datum'])) {$gefunden = false;}
 		}
+
 		if ($gefunden) {
 			$code .= "</div>";
 			$zeiten = cms_galerie_zeiten($galerie);

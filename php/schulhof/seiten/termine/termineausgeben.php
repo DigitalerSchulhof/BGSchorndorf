@@ -230,27 +230,31 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 	// Termin finden
 	$termin = array();
-	$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, $oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, '$art' AS art FROM $tabelle WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND (beginn BETWEEN ? AND ?) AND aktiv = 1;");
+	$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, $oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, '$art' AS art, aktiv FROM $tabelle WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND (beginn BETWEEN ? AND ?);");
 	$sql->bind_param("sii", $terminbez, $datumb, $datume);
 	if ($sql->execute()) {
-		$sql->bind_result($termin['id'], $termin['bezeichnung'], $termin['ort'], $termin['beginn'], $termin['ende'], $termin['mehrtaegigt'], $termin['uhrzeitbt'], $termin['uhrzeitet'], $termin['ortt'], $termin['genehmigt'], $termin['aktiv'], $termin['oeffentlichkeit'], $termin['text'], $termin['art']);
+		$sql->bind_result($termin['id'], $termin['bezeichnung'], $termin['ort'], $termin['beginn'], $termin['ende'], $termin['mehrtaegigt'], $termin['uhrzeitbt'], $termin['uhrzeitet'], $termin['ortt'], $termin['genehmigt'], $termin['aktiv'], $termin['oeffentlichkeit'], $termin['text'], $termin['art'], $termin['aktiv']);
 		if ($sql->fetch()) {$gefunden = true;}
 		else {$fehler = true;}
 	}
 	else {$fehler = true;}
 	$sql->close();
 
-	if ($gefunden) {
-		if ($jahr != date('Y', $termin['beginn'])) {$gefunden = false;}
-		if ($monat != date('m', $termin['beginn'])) {$gefunden = false;}
-		if ($tag != date('d', $termin['beginn'])) {$gefunden = false;}
-
+	if($gefunden) {	// Nur für Notifikation
 		if ($CMS_URL[0] == 'Schulhof') {
 			$sql = $dbs->prepare("DELETE FROM notifikationen WHERE person = ? AND art = 't' AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND zielid = ?");
 			$sql->bind_param("isi", $CMS_BENUTZERID, $gruppe, $termin['id']);
 			$sql->execute();
 			$sql->close();
 		}
+	}
+
+	$gefunden = $gefunden && isset($termin["aktiv"]) && $termin["aktiv"];
+
+	if ($gefunden) {
+		if ($jahr != date('Y', $termin['beginn'])) {$gefunden = false;}
+		if ($monat != date('m', $termin['beginn'])) {$gefunden = false;}
+		if ($tag != date('d', $termin['beginn'])) {$gefunden = false;}
 	}
 
 	if ($gefunden) {
