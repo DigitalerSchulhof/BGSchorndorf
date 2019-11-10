@@ -10,10 +10,10 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Profile bearbeiten'];
+$zugriff = $CMS_RECHTE['Planung']['Schienen bearbeiten'];
 
 if (cms_angemeldet() && $zugriff) {
-	$_SESSION["PROFILBEARBEITEN"] = $id;
+	$_SESSION["SCHIENEBEARBEITEN"] = $id;
 	echo "ERFOLG";
 }
 else {

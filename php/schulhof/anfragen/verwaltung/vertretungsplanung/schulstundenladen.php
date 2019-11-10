@@ -32,8 +32,7 @@ if (cms_angemeldet() && $zugriff) {
     $sql->bind_result($id, $bez, $beginns, $beginnm, $endes, $endem);
     while ($sql->fetch()) {
       $s = array();
-      $s['beginn'] = $beginns.":".$beginnm;
-      $s['ende'] = $endes.":".$endem;
+      $s['id'] = $id;
       $s['bez'] = $bez;
       array_push($SCHULSTUNDEN, $s);
     }
@@ -43,15 +42,15 @@ if (cms_angemeldet() && $zugriff) {
 
   if ($art == 'von') {
     foreach ($SCHULSTUNDEN as $s) {
-      echo "<option value=\"".$s['beginn']."\">".$s['bez']."</option>";
+      echo "<option value=\"".$s['id']."\">".$s['bez']."</option>";
     }
   }
   else {
     if (count($SCHULSTUNDEN) > 0) {
       for ($s=0;$s<count($SCHULSTUNDEN)-1; $s++) {
-        echo "<option value=\"".$SCHULSTUNDEN[$s]['ende']."\">".$SCHULSTUNDEN[$s]['bez']."</option>";
+        echo "<option value=\"".$SCHULSTUNDEN[$s]['id']."\">".$SCHULSTUNDEN[$s]['bez']."</option>";
       }
-      echo "<option value=\"".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['ende']."\" selected=\"selected\">".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['bez']."</option>";
+      echo "<option value=\"".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['id']."\" selected=\"selected\">".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['bez']."</option>";
     }
   }
 }

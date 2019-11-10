@@ -349,7 +349,8 @@ span.cms_titelbild_knopf_aktiv {
   width: 100%;
 }
 
-.cms_groesseaendern_rechts, .cms_groesseaendern_links {
+.cms_groesseaendern {
+	right: -2px;
 	position: absolute;
 	height: 100% !important;
 	width: 4px;
@@ -357,12 +358,8 @@ span.cms_titelbild_knopf_aktiv {
 	z-index: 1;
 }
 
-.cms_groesseaendern_rechts {right: 1px;}
-.cms_groesseaendern_links {left: 1px;}
-
-.cms_groesseaendern_rechts:hover, .cms_groesseaendern_links:hover {
+.cms_groesseaendern:hover {
 	background-color: @standarddunkel;
 }
 
-.cms_groesseaendern_rechts:hover {cursor: e-resize;}
-.cms_groesseaendern_links:hover {cursor: w-resize;}
+.cms_groesseaendern:hover {cursor: ew-resize;}

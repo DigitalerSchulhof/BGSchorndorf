@@ -7,16 +7,18 @@ include_once("../../schulhof/funktionen/check.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
+if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
+
+if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Profile bearbeiten'];
+$zugriff = $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen löschen'];
 
 if (cms_angemeldet() && $zugriff) {
-	$_SESSION["PROFILBEARBEITEN"] = $id;
+	$_SESSION["SCHIENESCHULJAHR"] = $id;
 	echo "ERFOLG";
 }
 else {
-	echo "FEHLER";
+	echo "BERECHTIGUNG";
 }
 ?>

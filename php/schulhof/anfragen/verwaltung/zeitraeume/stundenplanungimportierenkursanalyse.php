@@ -57,19 +57,34 @@ if (cms_angemeldet() && $zugriff) {
 		$ek['fach'] = $einkurs[3];
 		$ek['icon'] = $einkurs[4];
 		$ek['klassen'] = $einkurs[5];
+		$ek['schienen'] = $einkurs[6];
 		array_push($K, $ek);
 	}
 
 	// Prüfen welche Kurse existieren und neue kurse speichern
 	$NK = array();
-	$sql = $dbs->prepare("SELECT COUNT(*) FROM kurse WHERE schuljahr = ? AND bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
+	$KURSEINSCHIENEN = array();
+	$sql = $dbs->prepare("SELECT id, COUNT(*) FROM kurse WHERE schuljahr = ? AND bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
 	foreach ($K as $ek) {
 		$sql->bind_param("is", $SCHULJAHR, $ek['bez']);
 		if ($sql->execute()) {
-			$sql->bind_result($check);
+			$sql->bind_result($idcheck, $check);
 			if ($sql->fetch()) {
 				if ($check == 0) {
 					array_push($NK, $ek);
+				}
+				else {
+					if (strlen($ek['schienen']) > 0) {
+						$eschienen = explode("|", substr($ek['schienen'], 1));
+						foreach ($eschienen AS $es) {
+							$schienenzuordnung = array();
+							$schienenzuordnung['schiene'] = $es;
+							$schienenzuordnung['kurs'] = $idcheck;
+							if (!in_array($schienenzuordnung, $KURSEINSCHIENEN)) {
+								array_push($KURSEINSCHIENEN, $schienenzuordnung);
+							}
+						}
+					}
 				}
 			}
 			else {$fehler = true;}
@@ -82,9 +97,18 @@ if (cms_angemeldet() && $zugriff) {
 		echo "FEHLER\n\n\n";
 	}
 	else {
+		// Kurse in Schienen einsortieren
+		$sql = $dbs->prepare("INSERT INTO schienenkurse (schiene, kurs) VALUES (?,?)");
+		foreach ($KURSEINSCHIENEN AS $k) {
+			$sql->bind_param("ii", $k['schiene'], $k['kurs']);
+			$sql->execute();
+		}
+		$sql->close();
+
 		echo "ERFOLG\n\n\n";
 		foreach ($NK as $ek) {
-			echo $ek['bez'].$trennung.$ek['kbez'].$trennung.$ek['stufe'].$trennung.$ek['fach'].$trennung.$ek['icon'].$trennung.$ek['klassen'].$trennung."\n";
+			echo $ek['bez'].$trennung.$ek['kbez'].$trennung.$ek['stufe'].$trennung.$ek['fach'].$trennung.$ek['icon'].$trennung.$ek['klassen'];
+			echo $trennung.$ek['schiene'].$trennung."\n";
 		}
 		echo "\n\n";
 	}

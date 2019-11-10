@@ -647,7 +647,7 @@ function cms_stundenplanung_import_speichern() {
     function analyseergebnisI(rueckgabe) {
       var analyseergebnis = rueckgabe.split("\n\n\n");
       var meldung = analyseergebnis[0];
-      if (meldung == "FEHLER") {
+      if (meldung != "ERFOLG") {
         var meldungtext = '<p>Die Stundenplanung konnte nicht importiert werden, denn ...</p><ul>';
         meldungtext += '<li>die Importdaten waren ungültig.</li>';
         var lehrerfehler = analyseergebnis[1];
@@ -657,12 +657,12 @@ function cms_stundenplanung_import_speichern() {
         var stufenfehler = analyseergebnis[5];
         var fachfehler = analyseergebnis[6];
         var trennungex = new RegExp(trennung,"g");
-        if (lehrerfehler.length > 0) {meldungtext += '<li>Folgende Lehrer wurden nicht gefunden: '+lehrerfehler.str_replace(trennungex, ', ')+'</li>';}
-        if (raeumefehler.length > 0) {meldungtext += '<li>Folgende Räume wurden nicht gefunden: '+raeumefehler.str_replace(trennungex, ', ')+'</li>';}
-        if (schulstundenfehler.length > 0) {meldungtext += '<li>Folgende Schulstunden wurden nicht gefunden: '+schulstundenfehler.str_replace(trennungex, ', ')+'</li>';}
-        if (klassenfehler.length > 0) {meldungtext += '<li>Folgende Klassen wurden nicht gefunden: '+klassenfehler.str_replace(trennungex, ', ')+'</li>';}
-        if (stufenfehler.length > 0) {meldungtext += '<li>Folgende Stufen wurden nicht gefunden: '+stufenfehler.str_replace(trennungex, ', ')+'</li>';}
-        if (fachfehler.length > 0) {meldungtext += '<li>Folgende Fächer wurden nicht gefunden: '+fachfehler.str_replace(trennungex, ', ')+'</li>';}
+        if (lehrerfehler.length > 0) {meldungtext += '<li>Folgende Lehrer wurden nicht gefunden: '+lehrerfehler.replace(trennungex, ', ')+'</li>';}
+        if (raeumefehler.length > 0) {meldungtext += '<li>Folgende Räume wurden nicht gefunden: '+raeumefehler.replace(trennungex, ', ')+'</li>';}
+        if (schulstundenfehler.length > 0) {meldungtext += '<li>Folgende Schulstunden wurden nicht gefunden: '+schulstundenfehler.replace(trennungex, ', ')+'</li>';}
+        if (klassenfehler.length > 0) {meldungtext += '<li>Folgende Klassen wurden nicht gefunden: '+klassenfehler.replace(trennungex, ', ')+'</li>';}
+        if (stufenfehler.length > 0) {meldungtext += '<li>Folgende Stufen wurden nicht gefunden: '+stufenfehler.replace(trennungex, ', ')+'</li>';}
+        if (fachfehler.length > 0) {meldungtext += '<li>Folgende Fächer wurden nicht gefunden: '+fachfehler.replace(trennungex, ', ')+'</li>';}
         cms_meldung_an('fehler', 'Stundenplanung importieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
       }
       else if (meldung == "ERFOLG") {
@@ -749,6 +749,8 @@ function cms_stundenplanung_import_speichern() {
                 formulardaten.append('fach', kursinfo[3]);
                 formulardaten.append('klassen', kursinfo[5]);
                 formulardaten.append('kursbezextern', '');
+                formulardaten.append('schiene', kursinfo[6]);
+                formulardaten.append('import', 'j');
                 formulardaten.append('art', 'Kurse');
                 formulardaten.append('anfragenziel', '220');
                 cms_ajaxanfrage (false, formulardaten, kurseanlegen);
@@ -875,6 +877,9 @@ function cms_stundenplanung_import_speichern() {
               formulardaten.append('anfragenziel', '353');
               cms_ajaxanfrage (false, formulardaten, abschluss);
             }
+          }
+          else {
+            cms_fehlerbehandlung(rueckgabe);
           }
         }
 

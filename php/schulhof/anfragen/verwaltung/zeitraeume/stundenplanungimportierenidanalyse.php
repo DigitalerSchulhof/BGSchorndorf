@@ -3,6 +3,7 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
+include_once("../../schulhof/funktionen/generieren.php");
 
 session_start();
 
@@ -79,6 +80,7 @@ if (cms_angemeldet() && $zugriff) {
 		$FAECHER = array();
 		$KLASSEN = array();
 		$STUFEN = array();
+		$SCHIENEN = array();
 
 		function cms_klasseninfo($klasse) {
 			$rueckgabe['klasse'] = "-";
@@ -152,6 +154,7 @@ if (cms_angemeldet() && $zugriff) {
 			$dlehrer = $daten[$lehrer-1];
 			$draum = $daten[$raum-1];
 			$dstunde = $daten[$stunde-1];
+			$dschiene = $daten[$schienen-1];
 			$dtag = $daten[$tag-1];
 			$dfach = $daten[$fach-1];
 			$klasseninfo = cms_klasseninfo($daten[$klasse-1]);
@@ -169,6 +172,7 @@ if (cms_angemeldet() && $zugriff) {
 				array_push($TAGE, $dtag);
 				if (!cms_check_ganzzahl($dtag,1,7)) {$fehler = true;}
 			}
+			if (!in_array($dschiene, $SCHIENEN)) {array_push($SCHIENEN, $dschiene);}
 
 			if ($dklasse != '-') {if (!in_array($dklasse, $KLASSEN)) {array_push($KLASSEN, $dklasse);}}
 			if (($dstufe != '-') && ($dstufe != '///BLOCKIERUNG///')) {
@@ -205,6 +209,7 @@ if (cms_angemeldet() && $zugriff) {
 		$KLASSENIDS = array();
 		$STUFENIDS = array();
 		$FACHIDS = array();
+		$SCHIENENIDS = array();
 		// Prüfen, ob all diese Entitäten existieren
 		// LEHRER
 		$sql = $dbs->prepare("SELECT id, COUNT(*) FROM lehrer WHERE kuerzel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
@@ -293,6 +298,23 @@ if (cms_angemeldet() && $zugriff) {
 			} else {$fehler = true;}
 		}
 		$sql->close();
+
+		// SCHIENEN erstellen
+		// Alte Schienen in diesem Zeitraum löschen
+		$sql = $dbs->prepare("DELETE FROM schienen WHERE zeitraum = ?");
+		$sql->bind_param("i", $ZEITRAUM);
+		$sql->execute();
+		$sql->close();
+		// Neue Schienen anlegen
+		foreach ($SCHIENEN as $E) {
+			$E = cms_texttrafo_e_db($E);
+			$sid = cms_generiere_kleinste_id('schienen');
+			$sql = $dbs->prepare("UPDATE schienen SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitraum = ? WHERE id = ?");
+			$sql->bind_param("sii", $E, $ZEITRAUM, $sid);
+			$sql->execute();
+			$sql->close();
+			$SCHIENENIDS[$E] = $sid;
+		}
 	}
 
 	if (!$fehler) {
@@ -303,6 +325,8 @@ if (cms_angemeldet() && $zugriff) {
 		$KURSEBEZ = array();
 		$UNTERRICHT = array();
 		$STATTFINDEN = "";
+		$kindex = 0;
+		$KURSINDEX = array();
 		foreach ($csvanalyse as $csvteil) {
 			$daten = explode($trennung, $csvteil);
 			$dlehrer = $daten[$lehrer-1];
@@ -310,6 +334,7 @@ if (cms_angemeldet() && $zugriff) {
 			$dstunde = $daten[$stunde-1];
 			$dtag = $daten[$tag-1];
 			$dfach = $daten[$fach-1];
+			$dschiene = $daten[$schienen-1];
 			$klasseninfo = cms_klasseninfo($daten[$klasse-1]);
 			$dklasse = $klasseninfo['klasse'];
 			$dstufe = $klasseninfo['stufe'];
@@ -328,9 +353,13 @@ if (cms_angemeldet() && $zugriff) {
 							else {$ustufe = $u['stufen'][0];}
 							$uklassen = "";
 							$uklassenids = "";
+							$uschienenids = "";
 							foreach ($u['klassen'] as $k) {
 								$uklassen .= substr($k, -1);
 								$uklassenids .= "|".$KLASSENIDS[$k];
+							}
+							foreach ($u['schienen'] as $s) {
+								$uschienenids .= "|".$SCHIENENIDS[$s];
 							}
 							$ufach = $u['fach'];
 
@@ -346,8 +375,17 @@ if (cms_angemeldet() && $zugriff) {
 								$K['kurzbez'] = $kurzbez;
 								$K['fach'] = $FACHIDS[$ufach]['id'];
 								$K['klassen'] = $uklassenids;
+								$K['schienen'] = $uschienenids;
 								array_push($KURSE, $K);
 								array_push($KURSEBEZ, $bez);
+								$KURSINDEX[$bez] = $kindex;
+								$kindex++;
+							}
+							else {
+								$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
+								foreach ($u['schienen'] as $s) {
+									if (!preg_match("/".$SCHIENENIDS[$s]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$s];}
+								}
 							}
 							$STATTFINDEN .= $bez.$trennung.$u['tag'].$trennung.$SCHULSTUNDENIDS[$u['stunde']].$trennung;
 							$STATTFINDEN .= $LEHRERIDS[$aktlehrer].$trennung.$RAEUMEIDS[$u['raum']].$trennung."\n";
@@ -370,12 +408,16 @@ if (cms_angemeldet() && $zugriff) {
 					$UNTERRICHT[$dtag][$dstunde][$draum]['tag'] = $dtag;
 					$UNTERRICHT[$dtag][$dstunde][$draum]['stunde'] = $dstunde;
 					$UNTERRICHT[$dtag][$dstunde][$draum]['raum'] = $draum;
+					$UNTERRICHT[$dtag][$dstunde][$draum]['schienen'] = array();
 				}
 				if (!in_array($dklasse, $UNTERRICHT[$dtag][$dstunde][$draum]['klassen'])) {
 					array_push($UNTERRICHT[$dtag][$dstunde][$draum]['klassen'], $dklasse);
 				}
 				if (!in_array($dstufe, $UNTERRICHT[$dtag][$dstunde][$draum]['stufen'])) {
 					array_push($UNTERRICHT[$dtag][$dstunde][$draum]['stufen'], $dstufe);
+				}
+				if (!in_array($dschiene, $UNTERRICHT[$dtag][$dstunde][$draum]['schienen'])) {
+					array_push($UNTERRICHT[$dtag][$dstunde][$draum]['schienen'], $dschiene);
 				}
 			}
 			else if (($dstufe == 'J1') || ($dstufe == 'J2')) {
@@ -397,8 +439,15 @@ if (cms_angemeldet() && $zugriff) {
 					$K['kurzbez'] = $kurzbez;
 					$K['fach'] = $FACHIDS[$dfach]['id'];
 					$K['klassen'] = "";
+					$K['schienen'] = "|".$SCHIENENIDS[$dschiene];
 					array_push($KURSE, $K);
 					array_push($KURSEBEZ, $bez);
+					$KURSINDEX[$bez] = $kindex;
+					$kindex++;
+				}
+				else {
+					$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
+					if (!preg_match("/".$SCHIENENIDS[$dschiene]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$dschiene];}
 				}
 				$STATTFINDEN .= $bez.$trennung.$dtag.$trennung;
 				$STATTFINDEN .= $SCHULSTUNDENIDS[$dstunde].$trennung;
@@ -415,9 +464,13 @@ if (cms_angemeldet() && $zugriff) {
 					else {$ustufe = $u['stufen'][0];}
 					$uklassen = "";
 					$uklassenids = "";
+					$uschienenids = "";
 					foreach ($u['klassen'] as $k) {
 						$uklassen .= substr($k, -1);
 						$uklassenids .= "|".$KLASSENIDS[$k];
+					}
+					foreach ($u['schienen'] as $s) {
+						$uschienenids .= "|".$SCHIENENIDS[$s];
 					}
 					$ufach = $u['fach'];
 
@@ -433,8 +486,17 @@ if (cms_angemeldet() && $zugriff) {
 						$K['kurzbez'] = $kurzbez;
 						$K['fach'] = $FACHIDS[$ufach]['id'];
 						$K['klassen'] = $uklassenids;
+						$K['schienen'] = $uschienenids;
 						array_push($KURSE, $K);
 						array_push($KURSEBEZ, $bez);
+						$KURSINDEX[$bez] = $kindex;
+						$kindex++;
+					}
+					else {
+						$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
+						foreach ($u['schienen'] as $s) {
+							if (!preg_match("/".$SCHIENENIDS[$s]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$s];}
+						}
 					}
 					$STATTFINDEN .= $bez.$trennung.$u['tag'].$trennung.$SCHULSTUNDENIDS[$u['stunde']].$trennung;
 					$STATTFINDEN .= $LEHRERIDS[$aktlehrer].$trennung.$RAEUMEIDS[$u['raum']].$trennung."\n";
@@ -461,7 +523,8 @@ if (cms_angemeldet() && $zugriff) {
 			$KURSTEXT .= $K['stufe'].$trennung;
 			$KURSTEXT .= $K['fach'].$trennung;
 			$KURSTEXT .= $K['icon'].$trennung;
-			$KURSTEXT .= $K['klassen'].$trennung."\n";
+			$KURSTEXT .= $K['klassen'].$trennung;
+			$KURSTEXT .= $K['schienen'].$trennung."\n";
 		}
 		echo $KURSTEXT."\n\n".$STATTFINDEN."\n\n";
 	}

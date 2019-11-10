@@ -276,9 +276,27 @@ function cms_stundenerzeugen_speichern() {
   var kurse = document.getElementById('cms_kurse').value;
   var zeitraeume = document.getElementById('cms_zeitraeume').value;
   var schuljahr = document.getElementById('cms_schuljahr').value;
+  var tag = document.getElementById('cms_zeitraum_erzeugen_ab_T').value;
+  var monat = document.getElementById('cms_zeitraum_erzeugen_ab_M').value;
+  var jahr = document.getElementById('cms_zeitraum_erzeugen_ab_J').value;
 
   var meldung = '<p>Die Stunden und Tagebücher konnten nicht erzeugt werden, denn ...</p><ul>';
   var fehler = false;
+
+  var jetzt = new Date();
+
+  if (!cms_check_ganzzahl(tag,1,31) || !cms_check_ganzzahl(monat,1,12) || !cms_check_ganzzahl(jahr,0)) {
+    meldung += '<li>das eingegebene Datum ist ungültig.</li>'
+    fehler = true;
+  }
+
+  if (!fehler) {
+    var aenderungsdatum = new Date(jahr, monat-1, tag, 0,0,0,0);
+    if (aenderungsdatum <= jetzt) {
+      meldung += '<li>das Änderungsdatum muss in der Zukunft liegen!</li>'
+      fehler = true;
+    }
+  }
 
   if (!cms_check_ganzzahl(schuljahr,0)) {
     meldung += '<li>die das Schuljahres ist ungültig.</li>'
@@ -353,6 +371,9 @@ function cms_stundenerzeugen_speichern() {
       formulardaten.append("kurs",       ks[kursenr]);
       formulardaten.append("zeitraum", 	  ztanlegen[zeitraumnr]);
       formulardaten.append("schuljahr", 	schuljahr);
+      formulardaten.append("tag", 	      tag);
+      formulardaten.append("monat", 	    monat);
+      formulardaten.append("jahr", 	      jahr);
       formulardaten.append("erster", 	    'j');
       formulardaten.append("anfragenziel", 	'294');
 
@@ -376,6 +397,9 @@ function cms_stundenerzeugen_speichern() {
             formulardaten.append("kurs", ks[kursenr]);
             formulardaten.append("zeitraum", 	ztanlegen[zeitraumnr]);
             formulardaten.append("schuljahr", 	schuljahr);
+            formulardaten.append("tag", 	      tag);
+            formulardaten.append("monat", 	    monat);
+            formulardaten.append("jahr", 	      jahr);
             formulardaten.append("erster", 	    'n');
             formulardaten.append("anfragenziel", 	'294');
 

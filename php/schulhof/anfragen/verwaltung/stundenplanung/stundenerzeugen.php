@@ -11,11 +11,17 @@ session_start();
 if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "FEHLER";exit;}
 if (isset($_POST['zeitraum'])) {$zeitraum = $_POST['zeitraum'];} else {echo "FEHLER";exit;}
 if (isset($_POST['kurs'])) {$kurs = $_POST['kurs'];} else {echo "FEHLER";exit;}
+if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER";exit;}
+if (isset($_POST['monat'])) {$monat = $_POST['monat'];} else {echo "FEHLER";exit;}
+if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER";exit;}
 if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";exit;}
 
 if (!cms_check_ganzzahl($schuljahr, 0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($zeitraum, 0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($kurs, 0)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($tag, 1,31)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($monat, 1,12)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($jahr, 0)) {echo "FEHLER";exit;}
 if (($erster != 'j') && ($erster != 'n')) {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
@@ -37,7 +43,9 @@ if (cms_angemeldet() && $zugriff) {
 	} else {$fehler = true;}
 	$sql->close();
 
-	$jetzt = time();
+	$gerade = time();
+	$jetzt = mktime(0,0,0,$monat,$tag, $jahr);
+	if ($jetzt <= $gerade) {$fehler = true;}
 
 	// Prüfen, ob der Zeitraum zum Schuljahr passt und mindestens teilweise in der Zukunft liegt
 	$sql = "SELECT COUNT(*), beginn, ende, rythmen FROM zeitraeume WHERE id = ? AND schuljahr = ? AND ende >= ?";

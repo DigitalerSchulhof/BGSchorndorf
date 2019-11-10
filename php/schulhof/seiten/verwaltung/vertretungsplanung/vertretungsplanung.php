@@ -169,12 +169,34 @@ if ($zugriff) {
 
       // WOCHENPLÄNE
       $code .= "<div class=\"cms_spalte_60\" id=\"cms_spalte_wochenplaene\">";
-      $code .= "<div class=\"cms_groesseaendern_rechts\" id=\"cms_groesse_aendern_wochenplaene_rechts\"></div>";
+      $code .= "<div class=\"cms_groesseaendern\" id=\"cms_groesseaendern_wochekonf\"></div>";
       $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<h2>Wochenpläne ".cms_togglebutton_generieren('cms_vplan_wochenplaene', 'Koppeln', 1)."</h2>";
       $code .= "</div>";
+
+      $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_klassen\">";
+      $code .= "<div class=\"cms_groesseaendern\" id=\"cms_groesseaendern_klasselehrer\"></div>";
+      $code .= "<div class=\"cms_spalte_i\">";
+      $code .= "<table class=\"cms_zeitwahl\">";
+      $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_klasse('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanklasse_datum', $ktag, $kmonat, $kjahr, 'cms_vplan_klasse(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_klasse('+')\">»</span></td></tr>";
+      $code .= "<tr><td colspan=\"3\"><select id=\"cms_vplan_woche_klasse\" name=\"cms_vplan_woche_klasse\" onchange=\"cms_vplan_klasse('j')\">";
+      $code .= "<optgroup label=\"Klassen\">";
+      foreach ($KLASSEN as $e) {
+        $code .= "<option value=\"k".$e['id']."\">".$e['bez']."</option>";
+      }
+      //$code .= "<option value=\"k-\">klassenübergreifend</option></optgroup>";
+      $code .= "<optgroup label=\"Stufen\">";
+      foreach ($STUFEN as $e) {
+        $code .= "<option value=\"s".$e['id']."\">".$e['bez']."</option>";
+      }
+      //$code .= "<option value=\"s-\">stufenübergreifend</option></optgroup>";
+      $code .= "</select></td></tr>";
+      $code .= "</table>";
+      $code .= cms_generiere_nachladen('cms_vplan_wochenplan_k', '');
+      $code .= "</div></div>";
+
       $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_lehrer\">";
-      $code .= "<div class=\"cms_groesseaendern_rechts\" id=\"cms_groesse_aendern_lehrer_rechts\"></div>";
+      $code .= "<div class=\"cms_groesseaendern\" id=\"cms_groesseaendern_lehrerraum\"></div>";
       $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_lehrer('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanlehrer_datum', $ltag, $lmonat, $ljahr, 'cms_vplan_lehrer(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_lehrer('+')\">»</span></td></tr>";
@@ -188,8 +210,6 @@ if ($zugriff) {
       $code .= "</div></div>";
 
       $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_raeume\">";
-      $code .= "<div class=\"cms_groesseaendern_rechts\" id=\"cms_groesse_aendern_raeume_rechts\"></div>";
-      $code .= "<div class=\"cms_groesseaendern_links\" id=\"cms_groesse_aendern_raeume_links\"></div>";
       $code .= "<div class=\"cms_spalte_i\">";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_raum('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanraum_datum', $rtag, $rmonat, $rjahr, 'cms_vplan_raum(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_raum('+')\">»</span></td></tr>";
@@ -202,48 +222,27 @@ if ($zugriff) {
       $code .= cms_generiere_nachladen('cms_vplan_wochenplan_r', '');
       $code .= "</div></div>";
 
-      $code .= "<div class=\"cms_spalte_3\" id=\"cms_spalte_klassen\">";
-      $code .= "<div class=\"cms_groesseaendern_links\" id=\"cms_groesse_aendern_klassen_links\"></div>";
-      $code .= "<div class=\"cms_spalte_i\">";
-      $code .= "<table class=\"cms_zeitwahl\">";
-      $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_klasse('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplanklasse_datum', $ktag, $kmonat, $kjahr, 'cms_vplan_klasse(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_klasse('+')\">»</span></td></tr>";
-      $code .= "<tr><td colspan=\"3\"><select id=\"cms_vplan_woche_klasse\" name=\"cms_vplan_woche_klasse\" onchange=\"cms_vplan_klasse('j')\">";
-      $code .= "<optgroup label=\"Klassen\">";
-      foreach ($KLASSEN as $e) {
-        $code .= "<option value=\"k".$e['id']."\">".$e['bez']."</option>";
-      }
-      $code .= "<option value=\"k-\">klassenübergreifend</option></optgroup>";
-      $code .= "<optgroup label=\"Stufen\">";
-      foreach ($STUFEN as $e) {
-        $code .= "<option value=\"s".$e['id']."\">".$e['bez']."</option>";
-      }
-      $code .= "<option value=\"s-\">stufenübergreifend</option></optgroup>";
-      $code .= "</select></td></tr>";
-      $code .= "</table>";
-      $code .= cms_generiere_nachladen('cms_vplan_wochenplan_k', '');
-      $code .= "</div></div>";
-
       $code .= "<div class=\"cms_clear\"></div>";
 
       $code .= "<div class=\"cms_spalte_i\">";
-        $code .= "<div id=\"cms_vplan_stundendetails\">";
-        $code .= "</div>";
+
       $code .= "</div>";
 
       $code .= "</div>";
 
       // TAGESDETAILS
       $code .= "<div class=\"cms_spalte_40\" id=\"cms_spalte_konflikte\">";
-      $code .= "<div class=\"cms_groesseaendern_links\" id=\"cms_groesse_aendern_konflikte_links\"></div>";
       $code .= "<div class=\"cms_spalte_i\">";
+
       $code .= "<h2>Konflikte</h2>";
       $code .= "<table class=\"cms_zeitwahl\">";
       $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_konflikte('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplankonflikte_datum', $tag, $monat, $jahr, 'cms_vplan_konflikte(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_konflikte('+')\">»</span></td>";
       $code .= "</table>";
 
       $code .= "<ul class=\"cms_reitermenue\">";
-        $code .= "<li><span id=\"cms_reiter_konflikte_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('konflikte', 0,1)\">Liste</span></li> ";
-        $code .= "<li><span id=\"cms_reiter_konflikte_1\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 1,1)\">Plan</span></li>";
+        $code .= "<li><span id=\"cms_reiter_konflikte_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('konflikte', 0,2)\">Liste</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_1\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 1,2)\">Plan</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_2\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 2,2)\">Stundendetails</span></li>";
       $code .= "</ul>";
 
       $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_konflikte_0\" style=\"display: block;\">";
@@ -261,7 +260,7 @@ if ($zugriff) {
           $code .= "<option value=\"".$e['id']."\">".$e['bez']."</option>";
         }
         $code .= "</select></td></tr>";
-        $code .= "<tr><td></td><td>";
+        $code .= "<tr><td>".cms_togglebutton_generieren('cms_vplan_konfliktplan_regelplan', 'Regelstundenplan', 0, 'cms_vplan_konflikte_plan()')."</td><td>";
         $code .= "<table class=\"cms_zeitwahl\">";
         $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_zweitkonflikte('-')\">«</span></td>";
         // Nächsten Montag bestimmen
@@ -270,10 +269,23 @@ if ($zugriff) {
         $code .= "</table>";
         $code .= "</td></tr>";
         $code .= "</table>";
-        $code .= cms_generiere_nachladen('cms_vplan_konflikte_plan', 'cms_vplan_konflikte_liste(\'a\', \'s\');');
+        $code .= cms_generiere_nachladen('cms_vplan_konflikte_plan', 'cms_vplan_alles_neuladen(\'a\', \'s\');');
         $code .= "</div>";
       $code .= "</div>";
-      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_vormerkungen_uebernehmen()\">Änderungen übernehmen und veröffentlichen</span> <span class=\"cms_button\" onclick=\"cms_vplan_drucken()\">Drucken</span></p>";
+      $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_konflikte_2\">";
+        $code .= "<div class=\"cms_reitermenue_i\">";
+        $code .= "<div id=\"cms_vplan_stundendetails\">";
+        $code .= "<p class=\"cms_notiz\">Es wurde keine Stunde ausgewählt.</p>";
+        $code .= "</div>";
+        $code .= "</div>";
+      $code .= "</div>";
+      $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_vormerkungen_uebernehmen()\">Änderungen übernehmen und veröffentlichen</span> <span class=\"cms_button\" onclick=\"cms_vplan_drucken()\">Drucken</span> <span class=\"cms_button\" onclick=\"cms_vplan_standardansicht()\">Stadardansicht</span> ";
+
+      if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
+        $code .= "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a>";
+      }
+
+      $code .= "</p>";
 
       $code .= "<h2>Anmerkungen zum Schultag</h2>";
       $code .= "<div id=\"cms_vplan_vertretungstext\">";
@@ -284,13 +296,45 @@ if ($zugriff) {
       $code .= "<p><span class=\"cms_button\" onclick=\"cms_vplan_vtexte_speichern()\">Vertretungstexte speichern</span></p>";
       $code .= "</div>";
 
-      $code .= "<h2>Nur für Notfälle!!</h2>";
+      $code .= "<h2 draggable=\"true\">Nur für Notfälle!!</h2>";
       $code .= "<p><span class=\"cms_button_nein\" onclick=\"cms_vplan_vormerkungen_loeschen_anzeigen()\">Alle Änderungen löschen</span> <span class=\"cms_button_nein\" onclick=\"cms_vplan_regelstundenplan_zueuecksetzen_anzeigen()\">Ganzen Tag auf Regelstundenplan zurücksetzen</span></p>";
+
+      $code .= "<p><input type=\"hidden\" id=\"cms_vplan_stunde_markierteklasse\" name=\"cms_vplan_stunde_markierteklasse\" value=\"XXX\"></p>";
 
       $code .= "</div></div>";
       $code .= "<div class=\"cms_clear\"></div>";
 
       echo $code;
+
+      ?>
+      <script>
+        var cms_groesseaendern_wochekonf = document.getElementById("cms_groesseaendern_wochekonf");
+        var cms_groesseaendern_klasselehrer = document.getElementById("cms_groesseaendern_klasselehrer");
+        var cms_groesseaendern_lehrerraum = document.getElementById("cms_groesseaendern_lehrerraum");
+      	cms_groesseaendern_wochekonf.addEventListener("mousedown", function(e){
+      		gedrueckte_xpos = e.x;
+      		document.addEventListener("mousemove", cms_groesse_wochenkonf_aendern, false);
+      	}, false);
+      	cms_groesseaendern_klasselehrer.addEventListener("mousedown", function(e){
+      		gedrueckte_xpos = e.x;
+      		document.addEventListener("mousemove", cms_groesse_klasselehrer_aendern, false);
+      	}, false);
+      	cms_groesseaendern_lehrerraum.addEventListener("mousedown", function(e){
+      		gedrueckte_xpos = e.x;
+      		document.addEventListener("mousemove", cms_groesse_lehrerraum_aendern, false);
+      	}, false);
+
+      	document.addEventListener("mouseup", function(){
+      	    document.removeEventListener("mousemove", cms_groesse_wochenkonf_aendern, false);
+      	}, false);
+      	document.addEventListener("mouseup", function(){
+      	    document.removeEventListener("mousemove", cms_groesse_klasselehrer_aendern, false);
+      	}, false);
+      	document.addEventListener("mouseup", function(){
+      	    document.removeEventListener("mousemove", cms_groesse_lehrerraum_aendern, false);
+      	}, false);
+      </script>
+      <?php
 
       // VOLLBILD SCHLIESSEN
       $code = "</div>";

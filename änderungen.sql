@@ -152,6 +152,37 @@ ALTER TABLE `stufenlehrerstellvertreter`
 
 ALTER TABLE `unterrichtkonflikt` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 
+CREATE TABLE `schienen` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `bezeichnung` varbinary(5000) DEFAULT NULL,
+  `zeitraum` bigint(255) UNSIGNED DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
+  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `schienen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `schienenzeitraum` (`zeitraum`);
+
+ALTER TABLE `schienen`
+  ADD CONSTRAINT `schienenzeitraum` FOREIGN KEY (`zeitraum`) REFERENCES `zeitraeume` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `schienenkurse` (
+  `schiene` bigint(255) UNSIGNED NOT NULL,
+  `kurs` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `schienenkurse`
+  ADD PRIMARY KEY (`schiene`,`kurs`),
+  ADD KEY `schienenkursekurs` (`kurs`);
+
+ALTER TABLE `schienenkurse`
+  ADD CONSTRAINT `schienenkursekurs` FOREIGN KEY (`kurs`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `schienenkurseschiene` FOREIGN KEY (`schiene`) REFERENCES `schienen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+-- LEHRERDATENBANK
+
 CREATE TABLE `ausplanungstufen` (
   `id` bigint(20) NOT NULL,
   `stufe` bigint(20) DEFAULT NULL,
@@ -164,3 +195,8 @@ CREATE TABLE `ausplanungstufen` (
 
 ALTER TABLE `ausplanungstufen`
   ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `ausplanungklassen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
+ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
+ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
+ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;

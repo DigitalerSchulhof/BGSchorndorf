@@ -98,6 +98,10 @@
   background: @standardhell;
 }
 
+.cms_vplan_stunde_markiert {
+  border: 2px dashed @standarddunkel;
+}
+
 .cms_stundenplanung_stundenfeld:hover {
   cursor: crosshair;
 }
@@ -117,7 +121,7 @@
 
 .cms_stundenplan_stunde, .cms_stundenplan_stunde_entfall,
 .cms_stundenplan_stunde_geloest, .cms_stundenplan_stunde_konflikt,
-.cms_stundenplan_stunde_ueberschneidung {
+.cms_stundenplan_stunde_ueberschneidung, .cms_stundenplan_stunde_geaendert {
   display: inline-block;
   height: 100%;
   width: 100%;
@@ -129,8 +133,9 @@
 }
 
 .cms_stundenplan_stunde {background: @standardhell;}
-.cms_stundenplan_stunde_entfall {opacity: .5;}
+.cms_stundenplan_stunde_entfall {opacity: .5; border: 2px dashed @infohell;}
 .cms_stundenplan_stunde_geloest {background: @infohell;}
+.cms_stundenplan_stunde_geaendert {background: @erfolghell;}
 .cms_stundenplan_stunde_konflikt {background: @fehlerhell;}
 .cms_stundenplan_stunde_ueberschneidung {background: @warnunghell;}
 
@@ -189,3 +194,12 @@
 .cms_wochentag_rythmus_ferien {background: @erfolghell;}
 
 .cms_stundenplan_spaltentitel .cms_notiz {color: inherit !important;}
+
+.cms_vplan_geloest {
+  color: @infodunkel !important;
+}
+
+#cms_spalte_wochenplaene, #cms_spalte_konflikte, #cms_spalte_lehrer,
+#cms_spalte_raeume, #cms_spalte_klassen {
+  overflow: hidden !important;
+}

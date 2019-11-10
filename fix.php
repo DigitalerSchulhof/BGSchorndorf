@@ -130,6 +130,9 @@ $raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 // echo "-------------------------------------------<br><br>";
 
 
+ALTER TABLE `nutzerkonten` CHANGE `benutzername` `benutzername` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `passwort` `passwort` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `passworttimeout` `passworttimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `salt` `salt` VARBINARY(100) NULL DEFAULT NULL, CHANGE `sessionid` `sessionid` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `sessiontimeout` `sessiontimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `email` `email` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `letzteanmeldung` `letzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `vorletzteanmeldung` `vorletzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `erstellt` `erstellt` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `notizen` `notizen` LONGBLOB NULL DEFAULT NULL, CHANGE `letztenotifikation` `letztenotifikation` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+
 include_once('php/allgemein/funktionen/sql.php');
 include_once("php/schulhof/funktionen/config.php");
 $dbs = cms_verbinden('s');

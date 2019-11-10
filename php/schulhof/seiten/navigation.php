@@ -483,6 +483,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Profile</a></li> ";
 	}
+	if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Schienen</a></li> ";
+	}
 	if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stundenplanung</a></li> ";
 	}

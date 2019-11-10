@@ -203,6 +203,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile']                          = 'php/schulhof/seiten/verwaltung/profile/profile.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Neues_Profil_anlegen']     = 'php/schulhof/seiten/verwaltung/profile/neuesprofil.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Profil_bearbeiten']        = 'php/schulhof/seiten/verwaltung/profile/profilbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schienen']                         = 'php/schulhof/seiten/verwaltung/schienen/schienen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schienen/Neue_Schiene_anlegen']    = 'php/schulhof/seiten/verwaltung/schienen/neueschiene.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schienen/Schiene_bearbeiten']      = 'php/schulhof/seiten/verwaltung/schienen/schienebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer']                           = 'php/schulhof/seiten/verwaltung/faecher/faecher.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen']        = 'php/schulhof/seiten/verwaltung/faecher/neuesfach.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Fächer_importieren']        = 'php/schulhof/seiten/verwaltung/faecher/importieren.php';

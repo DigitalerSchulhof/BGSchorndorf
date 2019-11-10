@@ -58,8 +58,7 @@ if ($zugriff) {
       $sql->bind_result($id, $bez, $beginns, $beginnm, $endes, $endem);
       while ($sql->fetch()) {
         $s = array();
-        $s['beginn'] = $beginns.":".$beginnm;
-        $s['ende'] = $endes.":".$endem;
+        $s['id'] = $id;
         $s['bez'] = $bez;
         array_push($SCHULSTUNDEN, $s);
       }
@@ -95,17 +94,22 @@ if ($zugriff) {
     $code .= "</div>";
     $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
     $code .= "<h2>Ausplanen</h2>";
+
+    $code .= "<table class=\"cms_zeitwahl\">";
+    $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('-')\">«</span></td><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_vplan_ausgeplant_laden(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('+')\">»</span></td></tr>";
+    $code .= "</table>";
+
     $code .= "<table class=\"cms_formular\">";
-    $code .= "<tr><th>von:</th><td>".cms_datum_eingabe('cms_ausplanung_datum_von', $tag, $monat, $jahr, 'cms_vplan_schulstunden_laden(\'von\');')."</td><td id=\"cms_ausplanung_schulstunden_von\"><select id=\"cms_ausplanung_std_von\" bis=\"cms_ausplanung_std_von\">";
+    $code .= "<tr><th>von:</th><td>".cms_datum_eingabe('cms_ausplanung_datum_von', $tag, $monat, $jahr, 'cms_vplan_schulstunden_laden_von();')."</td><td id=\"cms_ausplanung_schulstunden_von\"><select id=\"cms_ausplanung_std_von\" bis=\"cms_ausplanung_std_von\">";
     for ($s=0; $s<count($SCHULSTUNDEN); $s++) {
-      $code .= "<option value=\"".$SCHULSTUNDEN[$s]['beginn']."\">".$SCHULSTUNDEN[$s]['bez']."</option>";
+      $code .= "<option value=\"".$SCHULSTUNDEN[$s]['id']."\">".$SCHULSTUNDEN[$s]['bez']."</option>";
     }
     $code .= "</select></td></tr>";
-    $code .= "<tr><th>bis:</th><td>".cms_datum_eingabe('cms_ausplanung_datum_bis', $tag, $monat, $jahr, 'cms_vplan_schulstunden_laden(\'bis\');')."</td><td id=\"cms_ausplanung_schulstunden_bis\"><select id=\"cms_ausplanung_std_bis\" name=\"cms_ausplanung_std_bis\">";
+    $code .= "<tr><th>bis:</th><td>".cms_datum_eingabe('cms_ausplanung_datum_bis', $tag, $monat, $jahr, 'cms_vplan_schulstunden_laden_bis();')."</td><td id=\"cms_ausplanung_schulstunden_bis\"><select id=\"cms_ausplanung_std_bis\" name=\"cms_ausplanung_std_bis\">";
     for ($s=0; $s<count($SCHULSTUNDEN)-1; $s++) {
-      $code .= "<option value=\"".$SCHULSTUNDEN[$s]['ende']."\">".$SCHULSTUNDEN[$s]['bez']."</option>";
+      $code .= "<option value=\"".$SCHULSTUNDEN[$s]['id']."\">".$SCHULSTUNDEN[$s]['bez']."</option>";
     }
-    $code .= "<option value=\"".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['ende']."\" selected=\"selected\">".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['bez']."</option>";
+    $code .= "<option value=\"".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['id']."\" selected=\"selected\">".$SCHULSTUNDEN[count($SCHULSTUNDEN)-1]['bez']."</option>";
     $code .= "</select></td></tr>";
     $code .= "<tr><th>Art:</th><td colspan=\"2\"><select id=\"cms_ausplanen_art\" name=\"cms_ausplanen_art\" onmouseup=\"cms_ausplanung_art_aendern()\" onchange=\"cms_ausplanung_art_aendern()\">";
       $code .= "<option value=\"l\">Lehrkraft</option><option value=\"r\">Raum</option><option value=\"k\">Klassen</option><option value=\"s\">Stufen</option>";
@@ -134,6 +138,7 @@ if ($zugriff) {
     $code .= "<tr id=\"cms_ausplanung_grund_s\" style=\"display:none\"><th>Grund:</th><td colspan=\"2\"><select id=\"cms_ausplanen_grunds\" name=\"cms_ausplanen_grunds\">";
       $code .= "<option value=\"ex\">auf Exkursion</option><option value=\"sh\">im Schullandheim</option><option value=\"p\">bei Prüfung</option><option value=\"bv\">bei Berufsorientierung</option><option value=\"k\">krank</option><option value=\"s\">sonstiges</option>";
     $code .= "</select></td></tr>";
+    $code .= "<tr><th>Zusatztext:</th><td colspan=\"2\"><input id=\"cms_ausplanen_zusatz\" name=\"cms_ausplanen_zusatz\" type=\"text\"></td></tr>";
     $code .= "</table>";
     $code .= "<p class=\"cms_notiz\">Schulstunden jeweils einschließlich.</p>";
     $code .= "<p><span class=\"cms_button\" onclick=\"cms_ausplanung_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung\">Abbrechen</a></p>";
@@ -141,9 +146,6 @@ if ($zugriff) {
 
     $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
     $code .= "<h2>Ausgeplant</h2>";
-    $code .= "<table class=\"cms_zeitwahl\">";
-    $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('-')\">«</span></td><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_vplan_ausgeplant_laden(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('+')\">»</span></td></tr>";
-    $code .= "</table>";
     $code .= "<h3>Lehrkräfte</h3>";
     $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_l', '');
     $code .= "<h3>Räume</h3>";
@@ -151,9 +153,12 @@ if ($zugriff) {
     $code .= "<h3>Klassen</h3>";
     $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_k', '');
     $code .= "<h3>Stufen</h3>";
-    $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_s', 'cms_ausplanen_lausgeplant();');
+    $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_s', 'cms_ausplanen_neuladen();');
     $code .= "</div></div>";
     $code .= "<div class=\"cms_clear\"></div><div>";
+    if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
+      $code .= "<div class=\"cms_spalte_i\"><p><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">Vertretungsplanung</a></p></div>";
+    }
   }
 }
 else {

@@ -286,6 +286,7 @@ function cms_gruppen_eingabenpruefung(art) {
     formulardaten.append('mitglieder', mitglieder);
     formulardaten.append('vorsitz', vorsitz);
     formulardaten.append('aufsicht', aufsicht);
+    formulardaten.append('import', 'n');
     if (art == 'Stufen') {
       formulardaten.append('reihenfolge', reihenfolge);
       formulardaten.append('tagebuch', tagebuch);

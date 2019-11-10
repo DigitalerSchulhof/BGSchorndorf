@@ -7,7 +7,6 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	//include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
@@ -35,7 +34,7 @@
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
 	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.4";
+	//$CMS_VERSION = "0.5.5";
 	$TITELBILDERJS = "";
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
@@ -253,6 +252,7 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/pinnwaende.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/zeitraeume.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
@@ -477,9 +477,7 @@
 			echo "</script>";
 		}
 		else if (($CMS_URL[0] == 'Website') || ($CMS_URL[0] == "Intern")) {
-			echo 1;
 			echo "<script type=\"text/javascript\">";
-				echo "alert(1);";
 				echo "window.onload = function () {".$CMS_ONLOAD_EXTERN_EVENTS."};";
 			echo "</script>";
 		}

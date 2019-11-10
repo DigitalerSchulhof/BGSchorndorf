@@ -88,7 +88,7 @@ if (cms_angemeldet() && $zugriff) {
 		$passwortsalted = $passwort.$salt;
 		$passwortsalted = cms_texttrafo_e_db($passwortsalted);
 
-		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), passworttimeout = ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', '', ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), 0, 0, ?, '', ?)");
+		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), passworttimeout = ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
 	  $sql->bind_param("issisisii", $id, $benutzername, $passwortsalted, $passworttimeout, $salt, $schuljahr, $mail, $jetzt, $jetzt);
 	  $sql->execute();
 	  $sql->close();

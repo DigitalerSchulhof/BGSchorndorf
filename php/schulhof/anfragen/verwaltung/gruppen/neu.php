@@ -18,7 +18,9 @@ if (isset($_POST['mitglieder'])) {$mitglieder = $_POST['mitglieder'];} else {ech
 if (isset($_POST['vorsitz'])) {$vorsitz = $_POST['vorsitz'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['aufsicht'])) {$aufsicht = $_POST['aufsicht'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['import'])) {$import = $_POST['import'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
+if (($import != 'j') && ($import != 'n')) {echo "FEHLER"; exit;}
 
 if ($art == 'Stufen') {
 	if (isset($_POST['reihenfolge'])) {$reihenfolge = $_POST['reihenfolge'];} else {echo "FEHLER"; exit;}
@@ -39,6 +41,15 @@ if ($art == 'Kurse') {
 	if (isset($_POST['fach'])) {$fach = $_POST['fach'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['kursbezextern'])) {$kursbezextern = $_POST['kursbezextern'];} else {echo "FEHLER"; exit;}
+	if ($import != 'j') {
+		if (isset($_POST['schienen'])) {$kursschienen = $_POST['schienen'];} else {echo "FEHLER"; exit;}
+		if (!cms_check_idfeld($kursschienen)) {echo "FEHLER"; exit;}
+		else {
+			$SCHIENEN = array();
+			$kursschienen = substr(str_replace("|null|", "|", $kursschienen."|"), -1)
+			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", substr($kursschienen, 1));}
+		}
+	}
 }
 
 $dbs = cms_verbinden('s');
@@ -167,6 +178,20 @@ if (cms_angemeldet() && $zugriff) {
 				}
 	      else {$fehler = true;}
 	    }
+
+			if ($import == 'j') {
+				$schienenmuster = "(".implode(',', $SCHIENEN).")";
+				$sql = $dbs->prepare("SELECT COUNT(*) FROM schienen WHERE id IN $schienenmuster");
+				if ($sql->execute()) {
+					$sql->bind_result($checkanzahl);
+					if ($sql->fetch()) {
+						if ($checkanzahl != count($SCHIENEN)) {$fehler = true;}
+					}
+					else {$fehler = true;}
+				}
+				else {$fehler = true;}
+				$sql->close();
+			}
 		}
 
 		// Prüfen, ob es in diesem Schuljahr schon eine Gruppe mit dieser Bezeichnung gibt
@@ -406,10 +431,16 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->bind_param("ssiii", $kurzbezeichnung, $kursbezextern, $fach, $stufe, $id);
 			$sql->execute();
 
-
 			$sql = $dbs->prepare("INSERT INTO kurseklassen (kurs, klasse) VALUES (?, ?)");
 			foreach ($klassen as $k) {
 				$sql->bind_param("ii", $id, $k);
+				$sql->execute();
+			}
+			$sql->close();
+
+			$sql = $dbs->prepare("INSERT INTO schienenkurse (schiene, kurs) VALUES (?, ?)");
+			foreach ($SCHIENEN as $s) {
+				$sql->bind_param("ii", $s, $id);
 				$sql->execute();
 			}
 			$sql->close();
