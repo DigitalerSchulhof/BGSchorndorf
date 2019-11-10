@@ -15,17 +15,16 @@ else {
 	if ($zugriff) {
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
-		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = $id";
+		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		$sql->bind_result($vorname, $nachname, $personart);
 
 		$fehler = false;
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$vorname = $daten['vorname'];
-				$nachname = $daten['nachname'];
-				$personart = $daten['art'];
+		if ($sql->execute()) {
+			if ($sql->fetch()) {
 			}
 			else {$fehler = false;}
-			$anfrage->free();
 		}
 		else {$fehler = false;}
 
