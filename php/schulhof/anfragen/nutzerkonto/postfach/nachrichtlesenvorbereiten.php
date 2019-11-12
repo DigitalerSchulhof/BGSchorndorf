@@ -16,6 +16,7 @@ $CMS_RECHTE = cms_rechte_laden();
 if (cms_angemeldet()) {
 	$fehler = false;
 	if (!cms_check_ganzzahl($CMS_BENUTZERID)) {$fehler = true;}
+	if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 	if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {$fehler = true;}
 
 	if (!$fehler) {

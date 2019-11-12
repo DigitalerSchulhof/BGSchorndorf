@@ -23,9 +23,12 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 	if ((isset($_SESSION["POSTLESENID"])) && ($_SESSION["POSTLESENMODUS"])) {
 		$modus = $_SESSION["POSTLESENMODUS"];
 		$id = $_SESSION["POSTLESENID"];
-
 		$spalten = "";
 		if ($modus == 'eingang') {$spalten = ", alle";}
+
+		if(!cms_check_ganzzahl($id, 0)) {
+			echo cms_meldung_fehler();
+		}
 
 		$absender = "";
 		$anzeigename = "";
@@ -42,7 +45,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			$db = cms_verbinden('ü');
 			$sql = "SELECT absender, empfaenger, zeit, AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') AS papierkorb, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel,";
 			$sql .= " erstellt$spalten FROM $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID.id = $id";
-			if ($anfrage = $db->query($sql)) {
+			if ($anfrage = $db->query($sql)) {	// Safe weil ID Check
 				if ($daten = $anfrage->fetch_assoc()) {
 					$gefunden = true;
 					$absender = $daten['absender'];
@@ -72,7 +75,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			$empf = str_replace('|', ',', substr($empfaenger, 1));
 			$empfaengercode = "";
 			$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, erstellt FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id IN ($empf)";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
 				while ($daten = $anfrage->fetch_assoc()) {
 					if ($zeit > $daten['erstellt']) {$empfaengercode .= ", ".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);}
 					else {$empfaengercode .= ", "."<i>existiert nicht mehr</i>";}
