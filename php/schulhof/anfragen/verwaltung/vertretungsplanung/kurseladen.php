@@ -21,7 +21,7 @@ if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
 	$kurse = "";
 	$sql = "SELECT * FROM (SELECT kurs AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM (SELECT kurs FROM kursklassen WHERE klasse = $klasse) AS x JOIN kurse ON x.kurs = kurse.id) AS y ORDER BY bez ASC";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 		while ($daten = $anfrage->fetch_assoc()) {
 			$kurse .= "<option value=\"".$daten['id']."\">".$daten['bez']."</option>";
 		}

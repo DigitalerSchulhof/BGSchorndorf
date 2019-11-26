@@ -24,7 +24,7 @@ function cms_gruppen_links_anzeigen($dbs, $gruppe, $CMS_BENUTZERART, $CMS_BENUTZ
   $sqlaufsicht = "(SELECT AES_DECRYPT($gruppek.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahrbez, $gruppek.id AS id FROM $gruppek JOIN $gruppek"."aufsicht ON $gruppek.id = $gruppek"."aufsicht.gruppe LEFT JOIN schuljahre ON $gruppek.schuljahr = schuljahre.id WHERE person = $CMS_BENUTZERID AND ($sqlsj))";
 
   $sql = "SELECT DISTINCT * FROM ($sqlsichtbar UNION $sqlmitglied UNION $sqlaufsicht) AS x ORDER BY bezeichnung ASC";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while($daten = $anfrage->fetch_assoc()) {
       $gl = cms_textzulink($gruppe);
       $bl = cms_textzulink($daten['bezeichnung']);

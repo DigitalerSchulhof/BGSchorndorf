@@ -16,7 +16,7 @@ function cms_lehrerzimmer_gruppen_links_anzeigen ($gruppe) {
 
   $sql = "SELECT DISTINCT * FROM (($sqlsichtbar) UNION ($sqlmitglied) UNION ($sqlaufsicht)) AS gruppen ORDER BY bezeichnung ASC;";
 
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
     while ($daten = $anfrage->fetch_assoc()) {
       $ausgabe .= "<li><span class=\"cms_button\" onclick=\"cms_lehrerzimmer_gruppe_anzeigen('$gruppe', '".$daten['id']."', '".$daten['bezeichnung']."');\">".$daten['bezeichnung']."</span></li> ";
     }

@@ -12,7 +12,7 @@ if (isset($_POST['kennung'])) {$url = $_POST['kennung'];} else {$fehler = true;}
 $dbs = cms_verbinden('s');
 
 $sql = "SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')";
-if ($anfrage = $dbs->query($sql)) {
+if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
   if ($daten = $anfrage->fetch_assoc()) {
     $kennung = $daten['wert'];
     $kennungda = true;

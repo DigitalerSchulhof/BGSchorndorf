@@ -17,12 +17,15 @@ if (cms_angemeldet() && $zugriff) {
 	// Prüfen, ob Klasse in zugeordnetem Zeitraum liegt
 	$fehler = false;
 	$dbs = cms_verbinden('s');
-	$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE id = $klasse) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON schuljahre.id = klassenstufen.schuljahr JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = $zeitraum";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			if ($daten['anzahl'] != 1) {$fehler = true;}
+	$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE id = ?) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON schuljahre.id = klassenstufen.schuljahr JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+	$sql = $dbs->prepare($dbs);
+	$sql->bind_param("ii", $klasse, $zeitraum);
+	if ($sql->execute()) {
+		$sql->bind_result($anzahl);
+		if ($sql->fetch()) {
+			if ($anzahl != 1) {$fehler = true;}
 		} else {$fehler = true;}
-		$anfrage->free();
+		$sql->close();
 	} else {$fehler = true;}
 
 	if (!$fehler) {
@@ -30,7 +33,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Kurse laden
 		$sql = "SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(faecher.bezeichnung, '$CMS_SCHLUESSEL') AS fach, AES_DECRYPT(faecher.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM (SELECT kurs FROM kursklassen WHERE klasse = $klasse)";
 		$sql .= " AS x JOIN kurse ON x.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id ORDER BY fach ASC, bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID existiert
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= "<option value=\"".$daten['id']."\">".$daten['bezeichnung']." - ".$daten['fach']." (".$daten['kuerzel'].")</option>";
 			}

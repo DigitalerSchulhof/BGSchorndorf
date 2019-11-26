@@ -48,7 +48,7 @@ if ((cms_check_ganzzahl($id,0)) && (($art == 'r') || ($art == 'l'))) {
 		$anzahl = 0;
 		$sqlspalten = "$geraetetabelle.id AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, statusnr, AES_DECRYPT(meldung, '$CMS_SCHLUESSEL') AS meldung, AES_DECRYPT(kommentar, '$CMS_SCHLUESSEL') AS kommentar, zeit, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, erstellt";
 		$sql = "SELECT * FROM (SELECT $sqlspalten FROM $geraetetabelle LEFT JOIN personen ON $geraetetabelle.absender = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE standort = $id AND statusnr > 0) AS x ORDER BY bezeichnung";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 			while ($daten = $anfrage->fetch_assoc()) {
 				$geraete[$anzahl] = "";
 				$geraete[$anzahl] .= "<h3>".$daten['bezeichnung']."</h3>";

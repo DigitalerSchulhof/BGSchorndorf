@@ -34,7 +34,7 @@ if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
 	// Schuljahr suchen
 	$sql = "SELECT id FROM schuljahre WHERE $beginn BETWEEN beginn AND ende";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$schuljahr = $daten['id'];
 		} else {$sjfehler = true;}
@@ -47,7 +47,7 @@ if (cms_angemeldet() && $zugriff) {
 		$lehrer = "";
 		$sql = "SELECT tlehrkraft AS id FROM tagebuch_$schuljahr WHERE (tende BETWEEN $beginn AND $ende) OR (tbeginn BETWEEN $beginn AND $ende) OR (tbeginn < $beginn AND tende > $ende)";
 		$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM personen JOIN lehrer ON personen.id = lehrer.id WHERE personen.id NOT IN ($sql)) AS x ORDER BY nachname ASC, vorname ASC, kuerzel ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		 	while ($l = $anfrage->fetch_assoc()) {
 				$lehrer .= "<span class=\"cms_button\" onclick=\"cms_vertretungsplan_lehrer_uebernehmen('".$l['id']."')\">".cms_generiere_anzeigename($l['vorname'], $l['nachname'], $l['titel'])." (".$l['kuerzel'].")</span> ";
 			}
@@ -60,7 +60,7 @@ if (cms_angemeldet() && $zugriff) {
 		$raueme = "";
 		$sql = "SELECT traum AS id FROM tagebuch_$schuljahr WHERE (tende BETWEEN $beginn AND $ende) OR (tbeginn BETWEEN $beginn AND $ende) OR (tbeginn < $beginn AND tende > $ende)";
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM raeume WHERE id NOT IN ($sql)) AS x ORDER BY bez ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		 	while ($r = $anfrage->fetch_assoc()) {
 				$raueme .= "<span class=\"cms_button\" onclick=\"cms_vertretungsplan_raum_uebernehmen('".$r['id']."')\">".$r['bez']."</span> ";
 			}

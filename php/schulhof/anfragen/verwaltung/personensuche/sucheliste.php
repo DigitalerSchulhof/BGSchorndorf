@@ -93,7 +93,7 @@ if (cms_angemeldet() && $zugriff) {
 
 			$sql = "SELECT * FROM (SELECT personen.id AS id, nutzerkonten.id AS nutzerkonto, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, sessiontimeout$sqlspalten FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id $sqljoin) AS personen $sqlwhere ORDER BY nachname ASC, vorname ASC";
 
-			$anfrage = $dbs->query($sql);
+			$anfrage = $dbs->query($sql);	// Safe weil Eingabe Check
 
 			if ($anfrage) {
 				$jetzt = time();

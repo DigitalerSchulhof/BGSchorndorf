@@ -23,7 +23,7 @@ if ($angemeldet && $zugriff) {
 		$sql = "SELECT personen.id, zeit, erstellt, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM identitaetsdiebstahl JOIN personen ON identitaetsdiebstahl.id = personen.id JOIN nutzerkonten ON nutzerkonten.id = personen.id";
 		$sql = "SELECT * FROM ($sql) AS x ORDER BY zeit DESC";
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
 					$ausgabe .= "<td><img src=\"res/icons/klein/identitaetsdiebstahl.png\"></td>";

@@ -53,7 +53,7 @@ else {
 			$anzahl['-'] = 0;
 			$anzahl[1] = 0;
 
-			if ($anfrage = $dbp->query($sql)) {
+			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
 				while ($daten = $anfrage->fetch_assoc()) {
 					$anzahl[$daten['gelesen']] = $daten['anzahl'];
 				}
@@ -80,7 +80,7 @@ else {
 
 			$anzahl = 0;
 
-			if ($anfrage = $dbp->query($sql)) {
+			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()){
 					$anzahl = $daten['anzahl'];
 				}
@@ -105,7 +105,7 @@ else {
 
 			$anzahl = 0;
 
-			if ($anfrage = $dbp->query($sql)) {
+			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()){
 					$anzahl = $daten['anzahl'];
 				}
@@ -132,7 +132,7 @@ else {
 
 			$anzahl = 0;
 
-			if ($anfrage = $dbp->query($sql)) {
+			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()){
 					$anzahl = $daten['anzahl'];
 				}

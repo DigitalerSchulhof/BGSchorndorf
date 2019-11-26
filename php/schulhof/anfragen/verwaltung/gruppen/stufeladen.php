@@ -23,7 +23,7 @@ if (cms_angemeldet() && $zugriff) {
 	$stufen = array();
 	if ($schuljahr == '-') {$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr IS NULL ORDER BY reihenfolge";}
 	else {$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr = $schuljahr ORDER BY reihenfolge";}
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
 		while ($daten = $anfrage->fetch_assoc()) {
 			array_push($stufen, $daten);
 		}

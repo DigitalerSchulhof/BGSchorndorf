@@ -30,7 +30,7 @@ if ($CMS_IMLN) {
 		$fehler = false;
 
 		// Pflichteingaben prüfen
-		if (!cms_check_titel($bezeichnung)) {$fehler = true;}
+		if (!cms_check_titel($bezeichnung)) {$fehler = true;}	// Wichtig für anti-sql-injection unten
 
 		if ((!is_file('../../../res/ereignisse/gross/'.$icon)) || (!is_file('../../../res/ereignisse/klein/'.$icon))) {
 			$fehler = true;
@@ -47,7 +47,7 @@ if ($CMS_IMLN) {
 			// Prüfen, ob es bereits ein Gremium in dieser Bezeichnung existiert
 			$bezeichnung = cms_texttrafo_e_db($bezeichnung);
 			$sql = "SELECT COUNT(id) AS anzahl FROM $gruppek WHERE bezeichnung = AES_ENCRYPT('$bezeichnung', '$CMS_SCHLUESSEL')";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil schon geprüft
 				if ($daten = $anfrage->fetch_assoc()) {
 					if ($daten['anzahl'] != 0) {
 						$fehler = true;
@@ -70,7 +70,7 @@ if ($CMS_IMLN) {
 			if (strlen($mitgliederwhere) > 2) {
 				$mitgliederwhere = "(".substr($mitgliederwhere, 2).")";
 				$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$mitgliederwhere." AND (art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL') AND art != AES_ENCRYPT('v', '$CMS_SCHLUESSEL'));";
-				$anfrage = $dbs->query($sql);
+				$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 				if ($anfrage) {
 					if ($daten = $anfrage->fetch_assoc()) {
 						if ($daten['anzahl'] != 0) {
@@ -87,7 +87,7 @@ if ($CMS_IMLN) {
 			if (strlen($aufsichtwhere) > 2) {
 				$aufsichtwhere = "(".substr($aufsichtwhere, 2).")";
 				$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$aufsichtwhere." AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL');";
-				$anfrage = $dbs->query($sql);
+				$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 				if ($anfrage) {
 					if ($daten = $anfrage->fetch_assoc()) {
 						if ($daten['anzahl'] != 0) {
@@ -117,8 +117,10 @@ if ($CMS_IMLN) {
 			// GREMIUM EINTRAGEN
 			$dbs = cms_verbinden('s');
 			$bezeichnung = cms_texttrafo_e_db($bezeichnung);
-			$sql = "UPDATE $gruppek SET bezeichnung = AES_ENCRYPT('$bezeichnung', '$CMS_SCHLUESSEL'), sichtbar = AES_ENCRYPT('$sichtbar', '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT('$icon', '$CMS_SCHLUESSEL') WHERE id = $id";
-			$dbs->query($sql);
+			$sql = "UPDATE $gruppek SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sichtbar = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("sssi", $bezeichnung, $sichtbar, $icon, $id);
+			$sql->execute();
 
 			// Mitglieder hinzufügen
 			$mitglieder = explode("|", $mitglieder);
@@ -142,14 +144,18 @@ if ($CMS_IMLN) {
 
 				// MITGLIEDER DEM GREMIUM ZUORDNEN
 				$sqlrechte = "AES_ENCRYPT('$mv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$sch', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dho', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dru', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dum', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dlo', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$oan', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$oum', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$olo', '$CMS_SCHLUESSEL')";
-				$sql = "INSERT INTO mitgliedschaften (gruppe, gruppenid, person, vorsitz, mv, sch, dho, dru, dum, dlo, oan, oum, olo) VALUES (AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL'), $id, ".$mitglieder[$i].", AES_ENCRYPT('$vorsitz', '$CMS_SCHLUESSEL'), $sqlrechte);";
-				$dbs->query($sql);
+				$sql = "INSERT INTO mitgliedschaften (gruppe, gruppenid, person, vorsitz, mv, sch, dho, dru, dum, dlo, oan, oum, olo) VALUES (AES_ENCRYPT('?', '$CMS_SCHLUESSEL'), ?, ?, AES_ENCRYPT('?', '$CMS_SCHLUESSEL'), $sqlrechte);";
+				$sql = $dbs->prepare($sql);	// TODO: Irgendwie safe machen
+				$sql->bind_param("siis", $gruppe, $id, $mitglieder[$i], $vorsitz);
+				$sql->execute();
 			}
 
 			$aufsicht = explode("|", $aufsicht);
 			for ($i = 1; $i <count($aufsicht); $i++) {
-				$sql = "INSERT INTO aufsichten (gruppe, gruppenid, person) VALUES (AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL'), $id, ".$aufsicht[$i].");";
-				$dbs->query($sql);
+				$sql = "INSERT INTO aufsichten (gruppe, gruppenid, person) VALUES (AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?, ?);";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("sii", $gruppe, $id, $aufsicht[$i]);
+				$sql->execute();
 			}
 			cms_trennen($dbs);
 

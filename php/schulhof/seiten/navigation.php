@@ -46,7 +46,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 	$anzahl['-'] = 0;
 	$anzahl[1] = 0;
 	$dbp = cms_verbinden('p');
-	if ($anfrage = $dbp->query($sql)) {
+	if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {$anzahl[$daten['gelesen']] = $daten['anzahl'];}
 		$anfrage -> free();
 	}

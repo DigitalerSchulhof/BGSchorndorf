@@ -32,7 +32,7 @@ if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 	$beginn = mktime(0,0,0,$monat,$tag,$jahr);
 	$sql = "SELECT id FROM schuljahre WHERE $beginn BETWEEN beginn AND ende";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$schuljahr = $daten['id'];
 		} else {$fehler = true;}
@@ -53,7 +53,7 @@ if (cms_angemeldet() && $zugriff) {
 	$ktitel = array();
 	if ($kurs != '-') {
 		$sql = "SELECT * FROM (SELECT klasse AS id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe FROM (SELECT klasse FROM kursklassen WHERE kurs = $kurs) AS x JOIN klassen ON x.klasse = klassen.id JOIN klassenstufen ON klassen.klassenstufe = klassenstufen.id) AS y ORDER BY klasse ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 			while ($daten = $anfrage->fetch_assoc()) {
 				$katag = cms_vertretungsplan_stundenamtag_erzeugen($dbs, $schuljahr, $daten['id'], 'k', $beginn, $ende);
 				for ($i=0; $i<count($katag); $i++) {$ktitel[$ktitelnr] = "Klasse ".$daten['stufe'].$daten['klasse']; $ktitelnr++;}

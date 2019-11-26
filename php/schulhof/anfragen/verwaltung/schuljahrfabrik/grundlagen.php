@@ -109,7 +109,7 @@ if (cms_angemeldet() && $zugriff) {
 				$ids = "(".substr($ids, 1).")";
 				if (cms_check_idliste($ids)) {
 					$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$ids." AND art != AES_ENCRYPT('".$art."', '$CMS_SCHLUESSEL');";
-					$anfrage = $dbs->query($sql);
+					$anfrage = $dbs->query($sql);	// Safe weil ID Check
 					if ($anfrage) {
 						if ($daten = $anfrage->fetch_assoc()) {
 							if ($daten['anzahl'] != 0) {
@@ -404,21 +404,21 @@ if (cms_angemeldet() && $zugriff) {
 			vertretungstext varbinary(3000) NOT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD PRIMARY KEY (id)";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."lehrer FOREIGN KEY (lehrkraft) REFERENCES personen(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."raeume FOREIGN KEY (raum) REFERENCES raeume(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."kurse FOREIGN KEY (kurs) REFERENCES kurse(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."zeitraeume FOREIGN KEY (zeitraum) REFERENCES zeitraeume(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."tlehrer FOREIGN KEY (tlehrkraft) REFERENCES personen(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Kommentar
 		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."traeume FOREIGN KEY (traum) REFERENCES raeume(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);*/
+		$anfrage = $dbs->query($sql);*/	// Kommentar
 
 		// Schlüsselpositionen hinzufügen
 		$personen[0]['id'] = explode("|", $schulleitung);

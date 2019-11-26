@@ -159,7 +159,7 @@ function cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, $perso
 	$code = "";
 	$sql = "(SELECT person FROM $gk"."$personengruppe WHERE gruppe = $gruppenid) AS x";
 	$sql = "SELECT y.id AS id, vorname, nachname, titel, nutzerkonten.id AS nutzerkonto FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $sql ON personen.id = x.person) AS y LEFT JOIN nutzerkonten ON y.id = nutzerkonten.id ORDER BY nachname ASC, vorname ASC";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {
 			if (is_null($daten['nutzerkonto'])) {
 				$code .= "<li><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto();\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";

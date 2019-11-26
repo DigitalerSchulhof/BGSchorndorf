@@ -35,22 +35,28 @@ if (cms_angemeldet() && $zugriff) {
 	}
 	else if ($art == 'k') {
 		// Prüfe, ob die Klasse in diesen Zeitraum gehört
-		$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE klassen.id = $klasse) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON klassenstufen.schuljahr = schuljahre.id JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = $zeitraum";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] != 1) {$fehler = true;}
+		$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE klassen.id = ?) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON klassenstufen.schuljahr = schuljahre.id JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ii", $klasse, $zeitraum);
+		if ($sql->execute()) {
+			$sql->bind_param($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl != 1) {$fehler = true;}
 			} else {$fehler = true;}
-			$anfrage->free();
+			$sql->close();
 		} else {$fehler = true;}
 
 		// Prüfen, ob der Kurs der Klasse zugeordnet ist
 		if (!$fehler) {
-			$sql = "SELECT COUNT(*) AS anzahl FROM kursklassen WHERE klasse = $klasse AND kurs = $kurs";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					if ($daten['anzahl'] != 1) {$fehler = true;}
+			$sql = "SELECT COUNT(*) AS anzahl FROM kursklassen WHERE klasse = ? AND kurs = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("ii", $klasse, $kurs);
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				if ($sql->fetch() {
+					if ($anzahl != 1) {$fehler = true;}
 				} else {$fehler = true;}
-				$anfrage->free();
+				$sql->close();
 			} else {$fehler = true;}
 		}
 
@@ -58,7 +64,7 @@ if (cms_angemeldet() && $zugriff) {
 		$klassen = '|'.$klasse;
 		if (!$fehler) {
 			$sql = "SELECT DISTINCT klasse FROM kursklassen WHERE kurs = $kurs AND klasse != $klasse";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil ID existiert
 				while ($daten = $anfrage->fetch_assoc()) {
 					$klassen .= '|'.$daten['klasse'];
 				}

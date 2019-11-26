@@ -49,12 +49,11 @@ function cms_galerie_zusatzinfo($dbs, $daten) {
 	$sql = "";
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
-		$sqlsolo =
 		$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ".$daten['id'].")";
 	}
 	$sql = substr($sql, 7);
 	$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {
 			$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
 		}

@@ -8,7 +8,7 @@ function cms_schulhof_klassen_links_anzeigen () {
     $dbs = cms_verbinden('s');
     $sql = "SELECT id, bezeichnung FROM (SELECT klassen.id AS id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, reihenfolge FROM klassen JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = $CMS_BENUTZERSCHULJAHR) AS x ORDER BY reihenfolge ASC, bezeichnung ASC";
 
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $anzeigename = $daten['bezeichnung'];
         $anzeigenamelink = cms_textzulink($anzeigename);

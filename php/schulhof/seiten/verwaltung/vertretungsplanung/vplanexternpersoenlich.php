@@ -15,7 +15,7 @@ function cms_vertretungsplan_extern_persoenlich() {
   $dbs = cms_verbinden('s');
   if ($CMS_BENUTZERART == 'l') {
     $sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM lehrer WHERE id = $CMS_BENUTZERID";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       if ($daten = $anfrage->fetch_assoc()) {
         $kuerzel = $daten['kuerzel'];
       }
@@ -27,7 +27,7 @@ function cms_vertretungsplan_extern_persoenlich() {
     // HEUTIGE KLASSE SUCHEN
     $sql = "SELECT id from schuljahre WHERE beginn <= $jetzt AND ende >= $jetzt";
     $schuljahr = "";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       if ($daten = $anfrage->fetch_assoc()) {
         $schuljahr = $daten['id'];
       }
@@ -36,7 +36,7 @@ function cms_vertretungsplan_extern_persoenlich() {
 
     if ($schuljahr != "") {
       $sql = "SELECT * FROM (SELECT klassen.id AS id, AES_DECRYPT(klassenbezextern, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(stufenbezextern, '$CMS_SCHLUESSEL') AS stufe FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE schuljahr = $schuljahr AND person = $CMS_BENUTZERID) AS x ORDER BY stufe ASC, klasse ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($klassen, $daten);
         }

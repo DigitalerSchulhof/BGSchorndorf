@@ -6,7 +6,7 @@ function cms_vertretungsplan_stunde_auswaehlen($dbs, $schuljahr, $id) {
   $stunde = "-";
   $sql = "SELECT * FROM tagebuch_$schuljahr WHERE id = $id";
   $sql = "SELECT kurs, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, tlehrkraft AS lehrer, traum AS raum, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, entfall, tbeginn AS beginn, tende AS ende, tstunde AS stunde, AES_DECRYPT(vertretungstext, '$CMS_SCHLUESSEL') AS vtext FROM ($sql) AS x JOIN kurse ON x.kurs = kurse.id JOIN personen ON tlehrkraft = personen.id JOIN lehrer ON tlehrkraft = lehrer.id JOIN raeume ON traum = raeume.id";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     if ($daten = $anfrage->fetch_assoc()) {
       $stunde = $daten;
     }
@@ -16,7 +16,7 @@ function cms_vertretungsplan_stunde_auswaehlen($dbs, $schuljahr, $id) {
   $klassen = "";
   $klassenbez = "";
   $sql = "SELECT x.klasse AS klassenid, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe FROM (SELECT klasse FROM kursklassen WHERE kurs = ".$stunde['kurs'].") AS x JOIN klassen ON x.klasse = klassen.id JOIN klassenstufen ON klassen.klassenstufe = klassenstufen.id";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
     while ($daten = $anfrage->fetch_assoc()) {
       $klassen .= "|".$daten['klassenid'];
       $klassenbez .= " ".$daten['stufe'].$daten['klassenbez'];

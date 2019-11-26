@@ -28,7 +28,7 @@ if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 	$beginn = mktime(0,0,0,$monat,$tag,$jahr);
 	$sql = "SELECT id FROM schuljahre WHERE $beginn BETWEEN beginn AND ende";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$schuljahr = $daten['id'];
 		} else {$fehler = true;}

@@ -29,7 +29,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 		<?php
 		$dbp = cms_verbinden('p');
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, farbe FROM posttags_$CMS_BENUTZERID) AS tags ORDER BY titel";
-		$anfrage = $dbp->query($sql);
+		$anfrage = $dbp->query($sql);	// Safe weil keine Eingabe
 
 		$code = "";
 		if ($anfrage) {

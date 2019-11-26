@@ -11,13 +11,13 @@
       $dbs = cms_verbinden('s');
       $sql = "SELECT id, ursacher, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL') AS aktion, zeitstempel FROM auffaelliges WHERE status = 0 ORDER BY zeitstempel DESC";
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
         while ($daten = $anfrage->fetch_assoc()) {
           $liste .= '<tr>';
           $liste .= '<td><img src="res/icons/klein/auffaellig.png"></td>';
           $nameSql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id=".intval($daten["ursacher"].";");
           $name = "Gelöschte Person";
-          if ($a = $dbs->query($nameSql))
+          if ($a = $dbs->query($nameSql)) // Safe weil interne ID
           	if($d = $a->fetch_assoc())
               $name = cms_generiere_anzeigename($d["vorname"], $d["nachname"], $d["titel"]);
           $liste .= "<td alt=\"$name\">$name</td>";
@@ -100,7 +100,7 @@
       $sqld["ursacher"] = "Nicht angemeldet";
     else {
       $nameSql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id=".intval($sqld["ursacher"].";");
-      if ($a = $dbs->query($nameSql))
+      if ($a = $dbs->query($nameSql)) // Safe weil interne ID
         if($d = $a->fetch_assoc())
           $sqld["ursacher"] = cms_generiere_anzeigename($d["vorname"], $d["nachname"], $d["titel"]);
       }

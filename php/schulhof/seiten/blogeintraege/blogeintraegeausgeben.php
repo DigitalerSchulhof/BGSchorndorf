@@ -35,7 +35,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
 		$sql = "SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 			if ($downloads = $anfrage->fetch_assoc()) {
 				$downloadanzahl = $downloads['anzahl'];
 			}
@@ -81,7 +81,7 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 		}
 		$sql = substr($sql, 7);
 		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
 			}
@@ -222,7 +222,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$downloads = array();
 			// Downloads suchen
 			$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 				while ($daten = $anfrage->fetch_assoc()) {
 					array_push($downloads, $daten);
 				}
@@ -233,7 +233,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$beschluesse = array();
 			if ($art == 'in') {
 				$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-				if ($anfrage = $dbs->query($sql)) {
+				if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 					while ($daten = $anfrage->fetch_assoc()) {
 						array_push($beschluesse, $daten);
 					}

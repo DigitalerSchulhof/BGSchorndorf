@@ -25,7 +25,7 @@ if (cms_angemeldet() && $zugriff) {
 			$sql = "SELECT * FROM (SELECT personen.id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM klassenmitglieder JOIN";
 			$sql .= " personen ON klassenmitglieder.person = personen.id WHERE gruppe IN $klassen) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
 
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check	
 				while ($daten = $anfrage->fetch_assoc()) {
 					$code .= "|".$daten['id'].";".$daten['art'].";".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
 				}

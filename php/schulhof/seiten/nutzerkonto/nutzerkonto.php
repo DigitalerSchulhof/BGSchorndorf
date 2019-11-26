@@ -13,7 +13,7 @@ include_once('php/schulhof/seiten/notifikationen/notifikationen.php');
 $dbs = cms_verbinden('s');
 $jetzt = time();
 $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= $jetzt AND ende >= $jetzt";
-if ($anfrage = $dbs->query($sql)) {
+if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 	if ($daten = $anfrage->fetch_assoc()) {
 		if ($daten['id'] != $CMS_BENUTZERSCHULJAHR) {
 			$button = "<span class=\"cms_button\" onclick=\"cms_schulhof_nutzerkonto_schuljahr_einstellen(".$daten['id'].")\">".$daten['bezeichnung']."</span>";
@@ -52,7 +52,7 @@ $neuigkeiten = "";
 $db = cms_verbinden('ü');
 $sql = "$CMS_DBP_DB.posteingang_$CMS_BENUTZERID.id AS id, AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, zeit, erstellt";
 $sql = "SELECT $sql FROM $CMS_DBP_DB.posteingang_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE gelesen = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND empfaenger = $CMS_BENUTZERID";
-if ($anfrage = $db->query($sql)) {
+if ($anfrage = $db->query($sql)) {	// Safe weil keine Eingabe
 	while ($daten = $anfrage->fetch_assoc()) {
 		if ($daten['zeit'] > $daten['erstellt']) {$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);}
 		else {$anzeigename = "Nutzerkonto existiert nicht mehr";}
@@ -207,7 +207,7 @@ if ($CMS_RECHTE['Persönlich']['Notizen anlegen']) {
 	$code = "<h2>Notizen</h2>";
 	$notizen = "";
 	$sql = "SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$notizen = $daten['notizen'];
 		}

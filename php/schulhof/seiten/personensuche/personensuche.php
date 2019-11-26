@@ -25,7 +25,7 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
       $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x JOIN $namek"."mitglieder ON x.id = $namek"."mitglieder.person WHERE gruppe = $gruppenid ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $code .= "<tr id=\"$id"."_personensuche_mitglieder_".$daten['id']."\">";
           if ($daten['art'] == 'l') {$icon = 'lehrer.png';}
@@ -68,7 +68,7 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
       $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x JOIN $namek"."aufsicht ON x.id = $namek"."aufsicht.person WHERE gruppe = $gruppenid ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $code .= cms_togglebutton_generieren($id."_personensuche_aufsicht_".$daten['id'], cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']), 1, "cms_personensuche_entfernen_aufsicht('$id', '".$daten['id']."', '$gruppe')")." ";
         }
@@ -120,7 +120,7 @@ function cms_personensuche_mail_generieren($dbs, $id, $pool, $gewaehlt) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
       $sqlpool = "(".implode(',', $pool).")";
       $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere AND id IN $sqlpool) AS x ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $anzeige = "<img src=\"\">";
           if ($daten['art'] == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
@@ -186,7 +186,7 @@ function cms_personensuche_personhinzu_generieren($dbs, $id, $erlaubt, $gewaehlt
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
       $gewaehlt = "";
       $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x WHERE art IN $sqlart ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $anzeige = "<img src=\"\">";
           $gewaehlt .= '|'.$daten['id'];

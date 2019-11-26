@@ -23,6 +23,9 @@ $zugriff = false;
 if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
 else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
 
+if(!cms_check_ganzzahl($id))
+  die("FEHLER");
+
 if (($zugriff) && ($angemeldet)) {
   $fehler = false;
 
@@ -38,7 +41,7 @@ if (($zugriff) && ($angemeldet)) {
     $modusk = strtolower($modus);
     $dbs = cms_verbinden('s');
     $sql = "SELECT * FROM boxenaussen WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
       if ($daten = $anfrage->fetch_assoc()) {
         if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $ausrichtung = $daten['ausrichtung'.$modusk];
@@ -53,7 +56,7 @@ if (($zugriff) && ($angemeldet)) {
     else {$fehler = true;}
 
     $sql = "SELECT * FROM boxen WHERE boxaussen = ".$id." ORDER BY position";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
       while ($daten = $anfrage->fetch_assoc()) {
         if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $boxen[$daten['position']-1]['titel'] = $daten['titel'.$modusk];

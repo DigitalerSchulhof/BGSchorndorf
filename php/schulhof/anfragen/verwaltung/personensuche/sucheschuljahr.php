@@ -83,7 +83,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname FROM personen) AS personen $sqlwhere $sqlarterlaubt ORDER BY nachname ASC, vorname ASC";
 
-	$anfrage = $dbs->query($sql);
+	$anfrage = $dbs->query($sql);	// Safe weil Eingabe Check
 
 	if ($anfrage) {
 		while ($daten = $anfrage->fetch_assoc()) {

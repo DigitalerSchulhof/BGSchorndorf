@@ -32,7 +32,7 @@ if ($angemeldet && $zugriff) {
 		if (strlen($mitgliederwhere) > 2) {
 			$mitgliederwhere = "(".substr($mitgliederwhere, 2).")";
 			$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$mitgliederwhere." AND (art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL') AND art != AES_ENCRYPT('v', '$CMS_SCHLUESSEL'));";
-			$anfrage = $dbs->query($sql);
+			$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 			if ($anfrage) {
 				if ($daten = $anfrage->fetch_assoc()) {
 					if ($daten['anzahl'] != 0) {
@@ -60,8 +60,10 @@ if ($angemeldet && $zugriff) {
 		// i läuft über die einzelnen personen
 		// erst alle Mitglieder löschen
 		$dbs = cms_verbinden('s');
-		$sql = "DELETE FROM mitgliedschaften WHERE gruppenid = $gruppenid AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')";
-		$dbs->query($sql);
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("is", $gruppenid, $gruppe);
+		$sql->execute();
+
 		for ($i = 1; $i <count($mitglieder); $i++) {
 			// Rechte laden
 			$vorsitz = 0; $mv = 0; $sch = 0;
@@ -81,7 +83,7 @@ if ($angemeldet && $zugriff) {
 			// MITGLIEDER DEM GREMIUM ZUORDNEN
 			$sqlwerte = "AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL'), $gruppenid, ".$mitglieder[$i].", AES_ENCRYPT('$vorsitz', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$mv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$sch', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dho', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dru', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dum', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dlo', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$oan', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$oum', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$olo', '$CMS_SCHLUESSEL')";
 			$sql = "INSERT INTO mitgliedschaften (gruppe, gruppenid, person, vorsitz, mv, sch, dho, dru, dum, dlo, oan, oum, olo) VALUES ($sqlwerte);";
-			$dbs->query($sql);
+			$dbs->query($sql);	// TODO: Irgendwie safe machen
 		}
 
 		cms_trennen($dbs);

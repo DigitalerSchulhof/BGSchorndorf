@@ -12,7 +12,7 @@ function cms_gruppentermine_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS_URL
 		$sql = "SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY beginn ASC, ende ASC, bezeichnung ASC LIMIT $limit";
 
 		// Terminausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= cms_termin_link_ausgeben($dbs, $daten, $CMS_URLGANZ);
 			}
@@ -36,7 +36,7 @@ function cms_gruppenblogeintraege_ausgeben($dbs, $gruppe, $gruppenid, $limit, $a
 		$sql = "SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY datum DESC, bezeichnung ASC LIMIT $limit";
 
 		// Blogausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
 			}
@@ -59,7 +59,7 @@ function cms_gruppenbeschluesse_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS
 		$sql = "SELECT * FROM ($sql) AS x ORDER BY datum DESC, titel ASC LIMIT $limit";
 
 		// Blogausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= cms_beschluss_ausgeben($daten, true, $CMS_URLGANZ);
 			}
@@ -85,7 +85,7 @@ function cms_gruppenblogeintraege_monat_ausgeben($dbs, $gruppe, $gruppenid, $art
 		$sql = "SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY datum DESC, bezeichnung ASC";
 
 		// Blogausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
 			}
@@ -110,7 +110,7 @@ function cms_gruppenbeschluesse_jahr_ausgeben($dbs, $gruppe, $gruppenid, $CMS_UR
 		$sql = "SELECT * FROM ($sql) AS x ORDER BY datum DESC, titel ASC ";
 
 		// Blogausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= cms_beschluss_ausgeben($daten, true, $CMS_URLGANZ);
 			}

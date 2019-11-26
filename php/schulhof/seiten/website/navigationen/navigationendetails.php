@@ -4,7 +4,7 @@ function cms_anzahl_navigationsebenen($dbs, $ausgang, $max = 0) {
 	if ($ausgang == '-') {$sql = "SELECT id FROM seiten WHERE zuordnung IS NULL";}
 	else {$sql = "SELECT id FROM seiten WHERE zuordnung = '$ausgang'";}
 	$neuesmax = $max;
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 		while ($daten = $anfrage->fetch_assoc()) {
 			$maxgebot = cms_anzahl_navigationsebenen($dbs, $daten['id'], $max+1);
 			if ($maxgebot > $neuesmax) {$neuesmax = $maxgebot;}
@@ -28,7 +28,7 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 		$sql = "SELECT * FROM navigationen WHERE id = $ident";
 	}
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 		if (!($navigation = $anfrage->fetch_assoc())) {$fehler = true;}
 		$anfrage->free();
 	}
@@ -83,7 +83,7 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 			$swahl = "<i>Keine gewählt</i>";
 			if ($ebenenzusatzs != '-') {
 				$sql = "SELECT * FROM seiten WHERE id = $ebenenzusatzs";
-				if ($anfrage = $dbs->query($sql)) {
+				if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 					if ($daten = $anfrage->fetch_assoc()) {
 						$swahl = $daten['bezeichnung'];
 					}

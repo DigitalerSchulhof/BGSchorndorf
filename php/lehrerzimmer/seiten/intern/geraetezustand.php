@@ -10,7 +10,7 @@ $angemeldet = false;
 $kennungda = false;
 $code .= "<script src=\"js/lehrerzimmer/intern.js?v=$CMS_VERSION\"></script>";
 $sql = "SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')";
-if ($anfrage = $dbs->query($sql)) {
+if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
   if ($daten = $anfrage->fetch_assoc()) {
     $kennung = $daten['wert'];
     $kennungda = true;

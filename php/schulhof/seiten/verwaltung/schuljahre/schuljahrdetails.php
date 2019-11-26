@@ -29,7 +29,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 
 	if ($schuljahr != "") {
 		$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre WHERE id = $schuljahr";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 			if ($daten = $anfrage->fetch_assoc()) {
 				$bezeichnung = $daten['bezeichnung'];
 				$beginnj = date('Y', $daten['beginn']);
@@ -45,7 +45,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		// Zugeordnete Personen laden
 		// Schulleiter
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Schulleitung', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$schulleiterhidden .= "|".$daten['person'];
 			}
@@ -53,7 +53,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Stellvertrender Schulleiter
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Stellvertretende Schulleitung', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$stellschulleiterhidden .= "|".$daten['person'];
 			}
@@ -61,7 +61,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Abteilungsleiter
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Abteilungsleitung', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$abteilungsleiterhidden .= "|".$daten['person'];
 			}
@@ -69,7 +69,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Sekretariat
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Sekretariat', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$sekretariathidden .= "|".$daten['person'];
 			}
@@ -77,7 +77,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Vertretungsplanung
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Vertretungsplanung', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$vertretungsplanunghidden .= "|".$daten['person'];
 			}
@@ -85,7 +85,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Schulsozialarbeit
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Sozialarbeit', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$sozialarbeithidden .= "|".$daten['person'];
 			}
@@ -93,7 +93,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Oberstufenberatung
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Oberstufenberatung', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$oberstufenberaterhidden .= "|".$daten['person'];
 			}
@@ -101,7 +101,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Beratungslehrer
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Beratungslehrkräfte', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$beratungslehrerhidden .= "|".$daten['person'];
 			}
@@ -109,7 +109,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Verbindungslehrer
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Verbindungslehrkräfte', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$verbindungslehrerhidden .= "|".$daten['person'];
 			}
@@ -117,7 +117,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Schülersprecher
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Schülersprecher', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$schuelersprecherhidden .= "|".$daten['person'];
 			}
@@ -125,7 +125,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Elternbeirat
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Elternbeiratsvorsitzende', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$elternbeirathidden .= "|".$daten['person'];
 			}
@@ -133,7 +133,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Datenschutz
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Datenschutzbeauftragter', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$datenschutzhidden .= "|".$daten['person'];
 			}
@@ -141,7 +141,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		}
 		// Hausmeister
 		$sql = "SELECT DISTINCT person FROM schluesselposition WHERE schuljahr = $schuljahr AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Check oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$hausmeisterhidden .= "|".$daten['person'];
 			}

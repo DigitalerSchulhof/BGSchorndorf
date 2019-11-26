@@ -22,10 +22,13 @@ if ($angemeldet && $zugriff) {
 	if ($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '1') {
 		// Raum laden
 		$stundenplan = "";
-		$sql = "SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplan FROM klassen WHERE bezeichnung = AES_ENCRYPT('$klassenbezeichnung', '$CMS_SCHLUESSEL') AND schuljahr = $CMS_BENUTZERSCHULJAHR";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {$stundenplan = $daten['stundenplan'];}
-			$anfrage->free();
+		$sql = "SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') FROM klassen WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("si", $klassenbezeichnung, $CMS_BENUTZERSCHULJAHR);
+		if ($sql->execute()) {
+			$sql->bind_result($stundenplan);
+			$sql->fetch();
+			$sql->close();
 		}
 
 		if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Stundenplan verfügbar</h4><p>Für diese Klasse wurde kein Stundenplan hinterlegt.</p>");}

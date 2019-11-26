@@ -24,7 +24,7 @@ if ($zugriff) {
 	$kategorie = "";
 	$datentypen = "";
 	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(zulaessig, '$CMS_SCHLUESSEL') AS zulaessig FROM zulaessigedateien) AS zulaessigedateien ORDER BY kategorie ASC, endung ASC;";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($daten['kategorie'] != $kategorie) {
 				if ($kategorie == "Anwendungen") {
@@ -45,7 +45,7 @@ if ($zugriff) {
 
 	$max = "";
 	$sql = "SELECT MAX(id) AS max FROM zulaessigedateien";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$max = $daten['max'];
 			if ($max == null) {$max = 0;}

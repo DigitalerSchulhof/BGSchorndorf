@@ -13,7 +13,7 @@ function cms_ferienverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loesch
   $jahraktuelle = mktime(0,0,0,1,1,$jahr+1)-1;
   $sql = "SELECT * FROM ferien WHERE (beginn BETWEEN $jahraktuellb AND $jahraktuelle OR ende BETWEEN $jahraktuellb AND $jahraktuellb) ORDER BY beginn DESC, ende DESC";
 
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       if ($daten['art'] == 'f') {$icon = "ferien.png";}
       else if ($daten['art'] == 'b') {$icon = "beweglicherferientag.png";}

@@ -22,10 +22,13 @@ if ($gruppenid != "-") {
 	// Prüfen, ob die Gruppe allgemein sichtbar ist oder ob der Benutzer Mitglied der Gruppe ist
 	$dbs = cms_verbinden('s');
 	// Gremium sichtbar?
-	$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(sichtbar, '$CMS_SCHLUESSEL') AS sichtbar, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gruppek WHERE id = $gruppenid;";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			if ($daten['sichtbar'] == '1') {
+	$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(sichtbar, '$CMS_SCHLUESSEL') AS sichtbar, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gruppek WHERE id = ?;";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("i", $gruppenid);
+	if ($sql->execute()) {
+		$sql->bind_result($sichtbar);
+		if ($sql->fetch()) {
+			if ($sichtbar) {
 				$zugriff = true;
 			}
 		}
@@ -63,7 +66,7 @@ if ($gruppenid != "-") {
 		$erledigt = array();
 		$dbs = cms_verbinden('s');
 		$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, vorsitz, nutzerkonten.id AS nutzerkonto FROM ".$gruppek."mitgliedschaften JOIN personen ON ".$gruppek."mitgliedschaften.person = personen.id LEFT JOIN nutzerkonten ON nutzerkonten.id = personen.id WHERE gruppe = $gruppenid) AS mitglieder ORDER BY nachname, vorname ASC;";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Gruppe existiert, also keine sql-inj Gefahr
 			while ($daten = $anfrage->fetch_assoc()) {
 				array_push($erledigt, $daten['id']);
 				$mitgliederhidden .= "|".$daten['id'];
@@ -92,7 +95,7 @@ if ($gruppenid != "-") {
 
 		$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, nutzerkonten.id AS nutzerkonto FROM aufsichten JOIN personen ON aufsichten.person = personen.id LEFT JOIN nutzerkonten ON nutzerkonten.id = personen.id WHERE gruppenid = $gruppenid AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')) AS aufsichten ORDER BY nachname, vorname ASC;";
 
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Gruppe existiert, also keine sql-inj Gefahr
 			while ($daten = $anfrage->fetch_assoc()) {
 				if (!in_array($daten['id'], $erledigt)) {
 					$mitgliederhidden .= "|".$daten['id'];

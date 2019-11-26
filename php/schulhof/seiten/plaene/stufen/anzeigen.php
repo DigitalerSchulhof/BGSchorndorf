@@ -21,7 +21,7 @@ if ($id != "-") {
 		$jetzt = time();
 		$zeitraum = "-";
 		$sql = "SELECT id FROM zeitraeume WHERE beginn < $jetzt AND ende > $jetzt AND aktiv = 1";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			if ($daten = $anfrage->fetch_assoc()) {
 				$zeitraum = $daten['id'];
 			}

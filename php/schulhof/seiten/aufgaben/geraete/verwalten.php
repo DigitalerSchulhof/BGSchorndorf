@@ -23,7 +23,7 @@ if ($angemeldet && $zugriff) {
 		// Alle Geräte ausgeben
 		$sql = "SELECT * FROM (SELECT raeume.id AS id, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, MAX(zeit) AS zeit, MIN(statusnr) AS statusnr FROM raeumegeraete JOIN raeume ON raeumegeraete.standort = raeume.id WHERE statusnr > 0 GROUP BY id) AS defekt ORDER BY zeit DESC";
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			$sqlgeraete = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeumegeraete WHERE standort = ? AND statusnr > 0) AS x ORDER BY bezeichnung ASC");
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
@@ -74,7 +74,7 @@ if ($angemeldet && $zugriff) {
 		// Alle Leihgeräte ausgeben
 		$sql = "SELECT * FROM (SELECT leihen.id AS id, AES_DECRYPT(leihen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, MAX(zeit) AS zeit, MIN(statusnr) AS statusnr FROM leihengeraete JOIN leihen ON leihengeraete.standort = leihen.id WHERE statusnr > 0 GROUP BY id) AS defekt ORDER BY zeit DESC";
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			$sqlgeraete = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihengeraete WHERE standort = ? AND statusnr > 0) AS x ORDER BY bezeichnung ASC");
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";

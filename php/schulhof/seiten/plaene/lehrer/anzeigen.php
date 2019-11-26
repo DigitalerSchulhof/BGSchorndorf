@@ -25,10 +25,13 @@ if ($angemeldet && $zugriff) {
 		$kuerzel = explode('(', $lehrerbezeichnung);
 		$kuerzel = $kuerzel[count($kuerzel)-1];
 		$kuerzel = substr($kuerzel, 0, -1);
-		$sql = "SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE kuerzel = AES_ENCRYPT('$kuerzel', '$CMS_SCHLUESSEL')";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {$stundenplan = $daten['stundenplan'];}
-			$anfrage->free();
+		$sql = "SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') FROM lehrer WHERE kuerzel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("s", $kuerzel);
+		if ($sql->excute()) {
+			$sql->bind_result($stundenplan);
+			$sql->fetch();
+			$sql->close();
 		}
 
 		if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Stundenplan verfügbar</h4><p>Für diese Lehrkraft wurde kein Stundenplan hinterlegt.</p>");}

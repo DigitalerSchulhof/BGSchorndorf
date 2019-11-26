@@ -7,7 +7,7 @@ function cms_schulhof_stufen_links_anzeigen () {
 
     $dbs = cms_verbinden('s');
     $sql = "SELECT id, stufe, reihenfolge FROM (SELECT id, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM klassenstufen WHERE schuljahr = $CMS_BENUTZERSCHULJAHR) AS x ORDER BY reihenfolge ASC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $anzeigename = $daten['stufe'];
         $anzeigenamelink = cms_textzulink($anzeigename);

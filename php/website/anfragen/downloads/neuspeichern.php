@@ -20,6 +20,8 @@ if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} e
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
 
+if(!cms_check_ganzzahl($spalte))
+	die("FEHLER");
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
@@ -46,7 +48,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		// Prüfen, ob es eine übergeordnete Seite gibt
 		$sql = "SELECT COUNT(id) AS anzahl FROM spalten WHERE id = '$spalte'";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
 			if ($daten = $anfrage->fetch_assoc()) {
 				if ($daten['anzahl'] == 0) {
 					$fehler = true;
@@ -72,7 +74,7 @@ if (cms_angemeldet() && $zugriff) {
 		$titel = cms_texttrafo_e_db($titel);
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
 		$sql = "UPDATE downloads SET spalte = $spalte, position = $position, aktiv = '$aktiv', pfadalt = '$pfad', pfadaktuell = '$pfad', pfadneu = '$pfad', titelalt = '$titel', titelaktuell = '$titel', titelneu = '$titel', beschreibungalt = '$beschreibung', beschreibungaktuell = '$beschreibung', beschreibungneu = '$beschreibung', dateinamealt = '$dateiname', dateinameaktuell = '$dateiname', dateinameneu = '$dateiname', dateigroessealt = '$dateigroesse', dateigroesseaktuell = '$dateigroesse', dateigroesseneu = '$dateigroesse' WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 		echo "ERFOLG";
 	}
 	else {

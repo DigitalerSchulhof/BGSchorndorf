@@ -17,8 +17,10 @@ $zugriff = $CMS_RECHTE['Planung']['Vertretungen planen'];
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
 	if ($id != '-') {
-		$sql = "DELETE FROM vertretungstexte WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "DELETE FROM vertretungstexte WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		$sql->execute();
 	}
 	echo "ERFOLG";
 	cms_trennen($dbs);

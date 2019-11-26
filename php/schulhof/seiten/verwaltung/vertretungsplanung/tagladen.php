@@ -17,7 +17,7 @@ function cms_vertretungsplan_stundenamtag_erzeugen($dbs, $schuljahr, $id, $art, 
   if ($art == 'l') {
     $sql = "SELECT id, tbeginn AS beginn, tende AS ende, tstunde AS stunde, kurs, tlehrkraft AS lehrer, traum AS raum, entfall FROM tagebuch_".$schuljahr." WHERE tlehrkraft = $id AND tbeginn BETWEEN $beginn AND $ende";
     $sql = "SELECT x.id AS id, beginn, ende, stunde, kurs, lehrer, raum, entfall, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM ($sql) AS x JOIN raeume ON x.raum = raeume.id JOIN kurse ON x.kurs = kurse.id JOIN lehrer ON x.lehrer = lehrer.id ORDER BY beginn ASC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $daten['ende']--;
         $stunden = cms_vertretungsplan_stunde_einsortieren($stunden, $daten);
@@ -28,7 +28,7 @@ function cms_vertretungsplan_stundenamtag_erzeugen($dbs, $schuljahr, $id, $art, 
   else if ($art == 'r') {
     $sql = "SELECT id, tbeginn AS beginn, tende AS ende, tstunde AS stunde, kurs, tlehrkraft AS lehrer, traum AS raum, entfall FROM tagebuch_".$schuljahr." WHERE traum = $id AND tbeginn BETWEEN $beginn AND $ende";
     $sql = "SELECT x.id AS id, beginn, ende, stunde, kurs, lehrer, raum, entfall, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM ($sql) AS x JOIN raeume ON x.raum = raeume.id JOIN kurse ON x.kurs = kurse.id JOIN lehrer ON x.lehrer = lehrer.id ORDER BY beginn ASC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $daten['ende']--;
         $stunden = cms_vertretungsplan_stunde_einsortieren($stunden, $daten);
@@ -39,7 +39,7 @@ function cms_vertretungsplan_stundenamtag_erzeugen($dbs, $schuljahr, $id, $art, 
   else if ($art == 'k') {
     $sql = "SELECT id, tbeginn AS beginn, tende AS ende, tstunde AS stunde, kurs, tlehrkraft AS lehrer, traum AS raum, entfall FROM tagebuch_".$schuljahr." WHERE kurs IN (SELECT kurs FROM kursklassen WHERE klasse = $id) AND tbeginn BETWEEN $beginn AND $ende";
     $sql = "SELECT x.id AS id, beginn, ende, stunde, kurs, lehrer, raum, entfall, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM ($sql) AS x JOIN raeume ON x.raum = raeume.id JOIN kurse ON x.kurs = kurse.id JOIN lehrer ON x.lehrer = lehrer.id ORDER BY beginn ASC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $daten['ende']--;
         $stunden = cms_vertretungsplan_stunde_einsortieren($stunden, $daten);

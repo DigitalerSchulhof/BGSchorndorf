@@ -38,7 +38,7 @@ if ($zugriff) {
 
   // SQL für die gesuchten Schuljahre zusammenbauen
   $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       array_push($schuljahre, $daten);
       $alleids .= "|".$daten['id'];

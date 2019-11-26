@@ -127,16 +127,16 @@ function issue_body_machen() {
 
   $r .= "## $titel\n";
 
-  $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = $ersteller";
+  $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = ?";
+  $sql = $dbs->prepare($sql);
+  $sql->bind_param("i", $id);
   if ($anfrage = $dbs->query($sql)) {
-    if ($daten = $anfrage->fetch_assoc()) {
-      $vorname = $daten['vorname'];
-      $nachname = $daten['nachname'];
-      $titel = $daten['titel'];
-      $ersteller = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+    $sql->bind_result($id, $vorname, $nachname, $titel);
+    if ($sql->fetch()) {
+      $ersteller = cms_generiere_anzeigename($vorname, $nachname, $titel);
       $fehler = false;
     }
-    $anfrage->free();
+    $sql->close();
   }
 
   $beschreibung = explode("\n", $beschreibung);

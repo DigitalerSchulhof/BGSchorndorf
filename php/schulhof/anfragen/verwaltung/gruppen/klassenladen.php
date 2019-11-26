@@ -24,7 +24,7 @@ if (cms_angemeldet() && $zugriff) {
 	if ($schuljahr == '-') {$schuljahrtest = "schuljahr IS NULL";} else {$schuljahrtest = "schuljahr = $schuljahr";}
 	if ($stufe != '-') {$stufetest = " AND stufe = $stufe";} else {$stufetest = "";}
 	$sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.$schuljahrtest"."$stufetest) AS x ORDER BY reihenfolge ASC, bez ASC";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil Ganzzahl Check
 		while ($daten = $anfrage->fetch_assoc()) {
 			array_push($klassen, $daten);
 		}

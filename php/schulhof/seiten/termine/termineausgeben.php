@@ -36,7 +36,7 @@ function cms_termin_link_ausgeben($dbs, $daten, $internvorlink = "") {
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
 		$sql = "SELECT COUNT(*) AS anzahl FROM terminedownloads WHERE termin = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 			if ($downloads = $anfrage->fetch_assoc()) {
 				$downloadanzahl = $downloads['anzahl'];
 			}
@@ -82,7 +82,7 @@ function cms_termin_zusatzinfo($dbs, $daten) {
 		}
 		$sql = substr($sql, 7);
 		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
 			}
@@ -271,7 +271,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		$downloads = array();
 		// Downloads suchen
 		$sql = "SELECT * FROM (SELECT id, termin, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE termin = ".$termin['id'].") AS x ORDER BY titel ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				array_push($downloads, $daten);
 			}
@@ -429,7 +429,7 @@ function cms_nachste_termine_ausgeben($anzahl) {
 	$sqlferien = "SELECT id, '' AS gruppenart, '' AS gruppe, art, 1 AS genehmigt, bezeichnung, '' AS ort, beginn, ende, mehrtaegigt, 0 AS uhrzeitbt, 0 AS uhrzeitet, 0 AS ortt, 4 AS oeffentlichkeit, '' AS text FROM ferien WHERE ende > $jetzt LIMIT ".$anzahl;
 	$sql = "SELECT DISTINCT * FROM (($sqlgruppen) UNION ($sqltermine) UNION ($sqlferien) UNION $sqlintern) AS x ORDER BY beginn ASC, ende ASC LIMIT ".$anzahl;
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen ($anzahl)
 		include_once('php/schulhof/seiten/termine/termineausgeben.php');
 		while ($daten = $anfrage->fetch_assoc()) {
 			$internvorlink = "";
@@ -438,7 +438,7 @@ function cms_nachste_termine_ausgeben($anzahl) {
 				$gk = cms_textzudb($g);
 				$gid = $daten['gruppe'];
 				$sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = $gid";
-				if ($anfrage2 = $dbs->query($sql)) {
+				if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 					if ($daten2 = $anfrage2->fetch_assoc()) {
 						$schuljahrbez = $daten2['sbez'];
 						$gbez = $daten2['gbez'];

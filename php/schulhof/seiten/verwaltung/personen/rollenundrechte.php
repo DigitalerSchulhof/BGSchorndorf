@@ -54,7 +54,7 @@ if (!$fehler) {
 	$rollencode = "";
 	$sql = "SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, rollen.id AS rolle FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = $id) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle WHERE personenart = AES_ENCRYPT('$personart', '$CMS_SCHLUESSEL')) AS rollen ORDER BY bezeichnung ASC";
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($daten['person'] == $id) {$rollencode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(0, ".$daten['rolle'].")\">".$daten['bezeichnung']."</span> ";}
 			else {$rollencode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(1, ".$daten['rolle'].")\">".$daten['bezeichnung']."</span> ";}
@@ -80,7 +80,7 @@ if (!$fehler) {
 	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = $id))) AS rechte ORDER BY kategorie ASC, bezeichnung ASC";
 	$altekategorie = "";
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($altekategorie != $daten['kategorie']) {
 				$rechtecode .= "</p><h4>".$daten['kategorie']."</h4><p>";
@@ -113,7 +113,7 @@ if (!$fehler) {
 
 	$altekategorie = "";
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($altekategorie != $daten['kategorie']) {
 				$rechtecode .= "</p><h4>".$daten['kategorie']."</h4><p>";

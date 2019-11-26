@@ -52,10 +52,13 @@ if ($angemeldet && $zugriff) {
 		$dbs = cms_verbinden('s');
 		// Prüfen, ob es bereits ein Gremium in dieser Bezeichnung existiert
 		$bezeichnung = cms_texttrafo_e_db($bezeichnung);
-		$sql = "SELECT COUNT(id) AS anzahl FROM $gruppek WHERE bezeichnung = AES_ENCRYPT('$bezeichnung', '$CMS_SCHLUESSEL') AND id != $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] != 0) {
+		$sql = "SELECT COUNT(id) AS anzahl FROM $gruppek WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND id != ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("si", $bezeichnung, $id);
+		if ($sql->execute()) {
+			$sql->bind_result($anz);
+			if ($sql->fetch()) {
+				if ($anz != 0) {
 					$fehler = true;
 					echo "DOPPELT";
 				}
@@ -76,7 +79,7 @@ if ($angemeldet && $zugriff) {
 		if (strlen($mitgliederwhere) > 2) {
 			$mitgliederwhere = "(".substr($mitgliederwhere, 2).")";
 			$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$mitgliederwhere." AND (art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL') AND art != AES_ENCRYPT('v', '$CMS_SCHLUESSEL'));";
-			$anfrage = $dbs->query($sql);
+			$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 			if ($anfrage) {
 				if ($daten = $anfrage->fetch_assoc()) {
 					if ($daten['anzahl'] != 0) {
@@ -93,7 +96,7 @@ if ($angemeldet && $zugriff) {
 		if (strlen($aufsichtwhere) > 2) {
 			$aufsichtwhere = "(".substr($aufsichtwhere, 2).")";
 			$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$aufsichtwhere." AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL');";
-			$anfrage = $dbs->query($sql);
+			$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 			if ($anfrage) {
 				if ($daten = $anfrage->fetch_assoc()) {
 					if ($daten['anzahl'] != 0) {
@@ -118,16 +121,21 @@ if ($angemeldet && $zugriff) {
 		// GREMIUM EINTRAGEN
 		$dbs = cms_verbinden('s');
 		$bezeichnung = cms_texttrafo_e_db($bezeichnung);
-		$sql = "UPDATE $gruppek SET bezeichnung = AES_ENCRYPT('$bezeichnung', '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT('$icon', '$CMS_SCHLUESSEL'), sichtbar = AES_ENCRYPT('$sichtbar', '$CMS_SCHLUESSEL') WHERE id = $id";
-		$dbs->query($sql);
+		$sql = "UPDATE $gruppek SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sichtbar = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ssii", $bezeichnung, $icon, $sichtbar, $id);
+		$sql->execute();
 
 		// Mitglieder hinzufügen
 		$mitglieder = explode("|", $mitglieder);
 
 		// i läuft über die einzelnen personen
 		// erst alle Mitglieder löschen
-		$sql = "DELETE FROM mitgliedschaften WHERE gruppenid = $id AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')";
-		$dbs->query($sql);
+		$sql = "DELETE FROM mitgliedschaften WHERE gruppenid = ? AND gruppe = AES_ENCRYPT('?', '$CMS_SCHLUESSEL')";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("is", $id, $gruppe);
+		$sql->execute();
+
 		for ($i = 1; $i <count($mitglieder); $i++) {
 			// Rechte laden
 			$vorsitz = 0; $mv = 0; $sch = 0;
@@ -146,8 +154,10 @@ if ($angemeldet && $zugriff) {
 
 			// MITGLIEDER DEM GREMIUM ZUORDNEN
 			$sqlrechte = "AES_ENCRYPT('$vorsitz', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$mv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$sch', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dho', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dru', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dum', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$dlo', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$oan', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$oum', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$olo', '$CMS_SCHLUESSEL')";
-			$sql = "INSERT INTO mitgliedschaften (gruppe, gruppenid, person, vorsitz, mv, sch, dho, dru, dum, dlo, oan, oum, olo) VALUES (AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL'), $id, ".$mitglieder[$i].", $sqlrechte);";
-			$dbs->query($sql);
+			$sql = "INSERT INTO mitgliedschaften (gruppe, gruppenid, person, vorsitz, mv, sch, dho, dru, dum, dlo, oan, oum, olo) VALUES (AES_ENCRYPT('?', '$CMS_SCHLUESSEL'), ?, ?, $sqlrechte);";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("sii", $gruppe, $id, $mitglieder[$i]);
+			$sql->execute();
 		}
 
 		// Aufsicht hinzufügen
@@ -155,11 +165,15 @@ if ($angemeldet && $zugriff) {
 
 		// i läuft über die einzelnen personen
 		// erst alle Aufsichten löschen
-		$sql = "DELETE FROM aufsichten WHERE gruppenid = $id AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')";
-		$dbs->query($sql);
+		$sql = "DELETE FROM aufsichten WHERE gruppenid = ? AND gruppe = AES_ENCRYPT('?', '$CMS_SCHLUESSEL')";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("is", $id, $gruppe);
+		$sql->execute();
 		for ($i = 1; $i <count($aufsicht); $i++) {
-			$sql = "INSERT INTO aufsichten (gruppe, gruppenid, person) VALUES (AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL'), $id, ".$aufsicht[$i].");";
-			$dbs->query($sql);
+			$sql = "INSERT INTO aufsichten (gruppe, gruppenid, person) VALUES (AES_ENCRYPT('?', '$CMS_SCHLUESSEL'), ?, ?);";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("sii", $gruppe, $id, $aufsicht[$i]);
+			$sql->execute();
 		}
 
 		cms_trennen($dbs);

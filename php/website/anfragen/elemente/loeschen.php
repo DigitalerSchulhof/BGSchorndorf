@@ -24,17 +24,19 @@ if (cms_angemeldet() && $zugriff) {
 		$dbs = cms_verbinden('s');
 		// Element laden
 		$sql = "SELECT * FROM $art WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 			if ($daten = $anfrage->fetch_assoc()) {
 				cms_elemente_verschieben_loeschen($dbs, $daten['spalte'], $daten['position']);
 			}
 			$anfrage->free();
 		}
 		$sql = "DELETE FROM $art WHERE id = $id";
-		$dbs->query($sql);
+		$dbs->query($sql);	// Irgendwie safe machen
 		if ($art == 'boxenaussen') {
-			$sql = "DELETE FROM boxen WHERE boxaussen = $id";
-			$dbs->query($sql);
+			$sql = "DELETE FROM boxen WHERE boxaussen = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $id);
+			$sql->execute();
 		}
 		cms_trennen($dbs);
 		echo "ERFOLG";

@@ -45,7 +45,7 @@ function cms_galerien_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jahr) {
     $ende = mktime(0,0,0,$monat+1,1,$jahr)-1;
 
 		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE (datum BETWEEN $beginn AND $ende)";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$code .= cms_galerie_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
 			}

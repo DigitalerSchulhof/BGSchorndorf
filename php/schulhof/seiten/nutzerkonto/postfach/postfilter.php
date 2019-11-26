@@ -20,7 +20,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 	$nachrichtenanzahl = 0;
 	$dbp = cms_verbinden('p');
 	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID) AS tags ORDER BY titel ASC;";
-	if ($anfrage = $dbp->query($sql)) {
+	if ($anfrage = $dbp->query($sql)) {	// Safe weil ID Check
 		while ($daten = $anfrage->fetch_assoc()) {
 			$tagcode .= "<span class=\"cms_toggle\" id=\"cms_toggle_postfach_filter_tag".$fid."_".$daten['id']."\" onclick=\"cms_toggle_klasse('cms_toggle_postfach_filter_tag".$fid."_".$daten['id']."', 'cms_toggle_aktiv', 'cms_postfach_filter_tag".$fid."_".$daten['id']."', 'true');cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."');\">".$daten['titel']."</span> ";
 			$taghiddencode .= "<input name=\"cms_postfach_filter_tag".$fid."_".$daten['id']."\" id=\"cms_postfach_filter_tag".$fid."_".$daten['id']."\" type=\"hidden\" value=\"0\">";
@@ -30,7 +30,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 		$anfrage->free();
 	}
 	$sql = "SELECT COUNT(*) AS anzahl FROM post$modus"."_$CMS_BENUTZERID WHERE papierkorb = AES_ENCRYPT('$papierkorb', '$CMS_SCHLUESSEL')";
-	if ($anfrage = $dbp->query($sql)) {
+	if ($anfrage = $dbp->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 		if ($daten = $anfrage->fetch_assoc()) {
 			$nachrichtenanzahl = $daten['anzahl'];
 		}
@@ -101,7 +101,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 	$dbs = cms_verbinden('s');
 	$speicherdauer = 30;
 	$sql = "SELECT AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS ptage, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS atage FROM personen_einstellungen WHERE person = $CMS_BENUTZERID;";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
 		if ($daten = $anfrage->fetch_assoc()) {
 			if ($papierkorb == 1) {$speicherdauer = $daten['ptage'];}
 			else {$speicherdauer = $daten['atage'];}
@@ -162,7 +162,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 	// Nachrichten laden
 	$code = "";
 	$anzahl = 0;
-	if ($anfrage = $db->query($sql)) {
+	if ($anfrage = $db->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 		while ($daten = $anfrage->fetch_assoc()) {
 			$zeigen = true;
 			if (($modus != "eingang") && ((strlen($vorname) > 0) || (strlen($nachname) > 0))) {
@@ -175,7 +175,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				$personenfilter = substr($personenfilter, 4);
 
 				$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, erstellt FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE $empfsql) AS personen WHERE $personenfilter;";
-				if ($check = $dbs->query($sql)) {
+				if ($check = $dbs->query($sql)) {	// Safe weil keine Eingabe
 					if ($zahl = $check->fetch_assoc()) {
 						if ($zahl['anzahl'] > 0) {$gefunden = true;}
 					}
@@ -218,7 +218,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 					if (strlen($daten['empfaenger']) > 0) {
 						$empfaengersql = '('.str_replace('|', ',', substr($daten['empfaenger'], 1)).')';
 						$sql = "SELECT * FROM (SELECT COUNT(*) AS anzahl, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id IN $empfaengersql AND erstellt < ".$daten['zeit'].") AS x ORDER BY nachname ASC, vorname ASC;";
-						if ($name = $dbs->query($sql)) {
+						if ($name = $dbs->query($sql)) {	// Safe weil keine Eingabe
 							if ($namdat = $name->fetch_assoc()) {
 								$anzeigename = cms_generiere_anzeigename($namdat['vorname'], $namdat['nachname'], $namdat['titel']);
 								if ($namdat['anzahl'] > 2) {$anzeigename .= " und ".($anzahl - 1)." weitere";}
@@ -299,7 +299,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				// TAGS suchen
 				$tagcode = "";
 				$sql = "SELECT farbe FROM $CMS_DBP_DB.posttags_$CMS_BENUTZERID JOIN $CMS_DBP_DB.postgetagged$modus"."_$CMS_BENUTZERID ON id = tag WHERE nachricht = ".$daten['id'];
-				if ($taga = $db->query($sql)) {
+				if ($taga = $db->query($sql)) {	// Safe weil keine Eingabe
 					while ($tagd = $taga->fetch_assoc()) {
 						$tagcode .= "<span class=\"cms_tag_klein cms_farbbeispiel_".$tagd['farbe']."\"></span>";
 					}

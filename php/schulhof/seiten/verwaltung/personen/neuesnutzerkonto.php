@@ -12,20 +12,25 @@ if (($CMS_RECHTE['Personen']['Nutzerkonten anlegen'])) {
 		$fehler = false;
 		$dbs = cms_verbinden('s');
 		$personenid = $_SESSION['PERSONENDETAILS'];
-		$sql = "SELECT AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $personenid";
 
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$art = $daten['art'];
-				$vorname = $daten['vorname'];
-				$nachname = $daten['nachname'];
-				$titel = $daten['titel'];
-				$nutzerkonto = $daten['nutzerkonto'];
+		if(!cms_check_ganzzahl($personenid, 0)) {
+			$fehler = true;
+		} else {
+			$sql = "SELECT AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $personenid";
+
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
+				if ($daten = $anfrage->fetch_assoc()) {
+					$art = $daten['art'];
+					$vorname = $daten['vorname'];
+					$nachname = $daten['nachname'];
+					$titel = $daten['titel'];
+					$nutzerkonto = $daten['nutzerkonto'];
+				}
+				else {$fehler = true;}
+				$anfrage->free();
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
-		else {$fehler = true;}
 		cms_trennen($dbs);
 
 		$artkuerzel = '';

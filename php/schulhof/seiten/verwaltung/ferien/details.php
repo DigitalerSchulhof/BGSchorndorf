@@ -17,7 +17,7 @@ function cms_ferien_details_laden($id) {
   $dbs = cms_verbinden('s');
   if ($id != "-") {
 	  $sql = "SELECT * FROM ferien WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
 			if ($daten = $anfrage->fetch_assoc()) {
         $bez = $daten['bezeichnung'];
         $art = $daten['art'];

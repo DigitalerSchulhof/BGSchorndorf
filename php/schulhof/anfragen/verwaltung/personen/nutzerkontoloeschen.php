@@ -36,7 +36,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Prüfen, ob es sich bei dem Löschvorgang um den letzten Administrator handelt
 	$sql = "SELECT person FROM rollenzuordnung WHERE rolle = 0";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		$anzahl = 0;
 		$admindabei = false;
 		// Anzahl der Administratoren ermitteln
@@ -85,9 +85,9 @@ if (cms_angemeldet() && $zugriff) {
 
 			$dbp = cms_verbinden('p');
 			$sql = "SET FOREIGN_KEY_CHECKS = 0;";
-			$dbp->query($sql);
+			$dbp->query($sql);	// Safe weil keine Eingabe
 			$sql = "DROP TABLE postausgang_".$id.", posteingang_".$id.", postentwurf_".$id.", postgetaggedausgang_".$id.", postgetaggedeingang_".$id.", postgetaggedentwurf_".$id.", posttags_".$id.", termine_".$id.";";
-			$dbp->query($sql);
+			$dbp->query($sql);	// Safe weil ID Check
 			cms_trennen($dbp);
 
 

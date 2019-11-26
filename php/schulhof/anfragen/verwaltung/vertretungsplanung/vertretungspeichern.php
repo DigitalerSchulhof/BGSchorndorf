@@ -52,7 +52,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	if ($art == 'entfall') {
 		$sql = "UPDATE tagebuch_$schuljahr SET entfall = 1, vertretungsplan = 1, zusatstunde = 0, vertretungstext = AES_ENCRYPT('$vtext', '$CMS_SCHLUESSEL'), tbeginn = beginn, tende = ende, tlehrkraft = lehrkraft, traum = raum, tstunde = stunde WHERE id = $id";
-		$dbs->query($sql);
+		$dbs->query($sql);	// TODO: Irgendwie safe machen
 		echo "ERFOLG";
 	}
 	else {
@@ -61,23 +61,29 @@ if (cms_angemeldet() && $zugriff) {
 
 		// Gibt es den Lehrer
 		$flehrer = false;
-		$sql = "SELECT COUNT(*) AS anzahl FROM lehrer WHERE id = $lehrer";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] == 1) {$flehrer = true;}
+		$sql = "SELECT COUNT(*) AS anzahl FROM lehrer WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $lehrer);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl == 1) {$flehrer = true;}
 			}
-			$anfrage->free();
+			$sql->close();
 		}
 		if (!$flehrer) {echo "LEHRER"; $fehler = true;}
 
 		// Gibt es den Raum
 		$fraum = false;
-		$sql = "SELECT COUNT(*) AS anzahl FROM raeume WHERE id = $raum";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] == 1) {$fraum = true;}
+		$sql = "SELECT COUNT(*) AS anzahl FROM raeume WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $raum);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl == 1) {$fraum = true;}
 			}
-			$anfrage->free();
+			$sql->close();
 		}
 		if (!$fraum) {echo "RAUM"; $fehler = true;}
 
@@ -85,7 +91,7 @@ if (cms_angemeldet() && $zugriff) {
 			// Schuljahr der Zusatzstunde ermitteln
 			$schuljahr = '-';
 			$sql = "SELECT id FROM schuljahre WHERE $beginn BETWEEN beginn AND ende";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()) {
 					$schuljahr = $daten['id'];
 				}
@@ -96,12 +102,15 @@ if (cms_angemeldet() && $zugriff) {
 			if (!$fehler) {
 				// Gibt es den Kurs in diesem Schuljahr
 				$fkurs = false;
-				$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT klassenstufe FROM kurse WHERE id = $kurs) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id WHERE schuljahr = $schuljahr";
-				if ($anfrage = $dbs->query($sql)) {
-					if ($daten = $anfrage->fetch_assoc()) {
-						if ($daten['anzahl'] == 1) {$fkurs = true;}
+				$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT klassenstufe FROM kurse WHERE id = ?) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id WHERE schuljahr = ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("ii", $kurs, $schuljahr);
+				if ($sql->execute()) {
+					$sql->bind_result($anzahl);
+					if ($sql->fetch()) {
+						if ($anzahl == 1) {$fkurs = true;}
 					}
-					$anfrage->free();
+					$sql->close();
 				}
 				if (!$fkurs) {echo "ZKURS"; $fehler = true;}
 			}
@@ -110,17 +119,18 @@ if (cms_angemeldet() && $zugriff) {
 			if (!$fehler) {
 				// Versuche eine Schulstunde zu finden
 				$stunde = NULL;
-				$sql = "SELECT x.id AS stunde FROM (SELECT id, zeitraum FROM schulstunden WHERE beginnstd = AES_ENCRYPT('$bs', '$CMS_SCHLUESSEL') AND beginnmin = AES_ENCRYPT('$bm', '$CMS_SCHLUESSEL') AND endestd = AES_ENCRYPT('$es', '$CMS_SCHLUESSEL') AND endemin = AES_ENCRYPT('$em', '$CMS_SCHLUESSEL')) AS x JOIN zeitraeume ON x.zeitraum = zeitraeume.id WHERE zeitraeume.schuljahr = $schuljahr";
-				if ($anfrage = $dbs->query($sql)) {
-					if ($daten = $anfrage->fetch_assoc()) {
-						$stunde = $daten['stunde'];
-					}
-					$anfrage->free();
+				$sql = "SELECT x.id AS stunde FROM (SELECT id, zeitraum FROM schulstunden WHERE beginnstd = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND beginnmin = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND endestd = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND endemin = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS x JOIN zeitraeume ON x.zeitraum = zeitraeume.id WHERE zeitraeume.schuljahr = ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("iiiii", $bs, $bm, $es, $em, $schuljahr)
+				if ($sql->execute()) {
+					$sql->bind_param($stunde);
+					$sql->fetch();
+					$sql->close();
 				}
 
 				$id = cms_generiere_kleinste_id("tagebuch_".$schuljahr);
 				$sql = "UPDATE tagebuch_$schuljahr SET tbeginn = $beginn, tende = $ende, tlehrkraft = $lehrer, traum = $raum, tstunde = $stunde, kurs = $kurs, entfall = 0, zusatzstunde = 1, vertretungsplan = 1, vertretungstext = AES_ENCRYPT('$vtext', '$CMS_SCHLUESSEL') WHERE id = $id";
-				$dbs->query($sql);
+				$dbs->query($sql);	// Schuljahr safe machen
 				echo "ERFOLG";
 			}
 		}
@@ -129,16 +139,21 @@ if (cms_angemeldet() && $zugriff) {
 			if (!$fehler) {
 				// Versuche eine Schulstunde zu finden
 				$stunde = NULL;
-				$sql = "SELECT x.id AS stunde FROM (SELECT id, zeitraum FROM schulstunden WHERE beginnstd = AES_ENCRYPT('$bs', '$CMS_SCHLUESSEL') AND beginnmin = AES_ENCRYPT('$bm', '$CMS_SCHLUESSEL') AND endestd = AES_ENCRYPT('$es', '$CMS_SCHLUESSEL') AND endemin = AES_ENCRYPT('$em', '$CMS_SCHLUESSEL')) AS x JOIN zeitraeume ON x.zeitraum = zeitraeume.id WHERE zeitraeume.schuljahr = $schuljahr";
-				if ($anfrage = $dbs->query($sql)) {
-					if ($daten = $anfrage->fetch_assoc()) {
-						$stunde = $daten['stunde'];
-					}
-					$anfrage->free();
+				$sql = "SELECT x.id AS stunde FROM (SELECT id, zeitraum FROM schulstunden WHERE beginnstd = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND beginnmin = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND endestd = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND endemin = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS x JOIN zeitraeume ON x.zeitraum = zeitraeume.id WHERE zeitraeume.schuljahr = ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("iiiii", $bs, $bm, $es, $em, $schuljahr);
+				if ($sql->execute()) {
+					$sql->bind_result($stunde);
+					$sql->fetch();
+					$sql->close();
 				}
 
 				$sql = "UPDATE tagebuch_$schuljahr SET tbeginn = $beginn, tende = $ende, tlehrkraft = $lehrer, traum = $raum, tstunde = $stunde, entfall = 0, zusatzstunde = 0, vertretungsplan = 1, vertretungstext = AES_ENCRYPT('$vtext', '$CMS_SCHLUESSEL') WHERE id = $id";
-				$dbs->query($sql);
+				$sql = "UPDATE tagebuch_$schuljahr SET tbeginn = ?, tende = ?, tlehrkraft = ?, traum = ?, tstunde = ?, entfall = 0, zusatzstunde = 0, vertretungsplan = 1, vertretungstext = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("iiiiisi", $beginn, $ende, $lehrer, $raum, $stunde, $vtext, $id);
+				$sql->execute();
+				// $dbs->query($sql);	// TODO: Schuljahr safe machen!
 				echo "ERFOLG";
 			}
 		}

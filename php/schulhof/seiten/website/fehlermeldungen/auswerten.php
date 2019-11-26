@@ -1,9 +1,9 @@
 <?php
   /*
     Status -1 => Löschen
-    Status 0 => Offen
-    Status 1 => Wird bearbeitet
-    Status 2 => Behoben
+    Status  0 => Offen
+    Status  1 => Wird bearbeitet
+    Status  2 => Behoben
    */
   function cms_fehlermeldungen_liste() {
     global $CMS_SCHLUESSEL, $CMS_RECHTE;
@@ -16,7 +16,7 @@
       $dbs = cms_verbinden('s');
       $sql = "SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen ORDER BY status ASC, zeitstempel DESC";
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
         while ($daten = $anfrage->fetch_assoc()) {
           $liste .= '<tr class=\"cms_fehlermeldung_'.$daten["status"].'\">';
           if($daten["status"] == "2")
@@ -110,7 +110,7 @@
               $ersteller = $sqld["ersteller"];
               if($id != "") {
                 $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = $ersteller";
-                if ($anfrage = $dbs->query($sql)) {
+                if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
                   if ($daten = $anfrage->fetch_assoc()) {
                     $vorname = $daten['vorname'];
                     $nachname = $daten['nachname'];

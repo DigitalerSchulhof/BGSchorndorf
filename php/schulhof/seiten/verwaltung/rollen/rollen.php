@@ -17,7 +17,7 @@ if ($zugriff) {
 		$dbs = cms_verbinden('s');
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(personenart, '$CMS_SCHLUESSEL') AS personenart FROM rollen) AS rollen ORDER BY bezeichnung ASC";
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine ID
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
 					//icon
@@ -33,7 +33,7 @@ if ($zugriff) {
 					$kategorienzahl = 0;
 					if ($daten['id'] != 0) {
 						$sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte, rollenrechte WHERE rechte.id = rollenrechte.recht AND rolle = ".$daten['id'].") AS rechte ORDER BY kategorie ASC";
-						if ($anfrage2 = $dbs->query($sql)) {
+						if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 							while ($daten2 = $anfrage2->fetch_assoc()) {
 								$kategorien .= $daten2['kategorie'].", ";
 								$kategorienzahl ++;
@@ -42,7 +42,7 @@ if ($zugriff) {
 						}
 						$kategorien = substr($kategorien, 0, -2);
 						$sql = "SELECT COUNT(*) as anzahl FROM rechte, rollenrechte WHERE rechte.id = rollenrechte.recht AND rolle = ".$daten['id']."";
-						if ($anfrage2 = $dbs->query($sql)) {
+						if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 							if ($daten2 = $anfrage2->fetch_assoc()) {
 								$rechtezahl = $daten2['anzahl'];
 							}
@@ -62,7 +62,7 @@ if ($zugriff) {
 					// Personen mit dieser Rolle suchen
 					$sql = "SELECT vorname, nachname, titel FROM (SELECT DISTINCT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN rollenzuordnung ON personen.id = rollenzuordnung.person WHERE rolle = ".$daten['id'].") AS personen ORDER BY nachname, vorname";
 					$personen = "";
-					if ($anfrage2 = $dbs->query($sql)) {
+					if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 						while ($daten2 = $anfrage2->fetch_assoc()) {
 							$person = $daten2['vorname']." ".$daten2['nachname'];
 							if (strlen($daten2['titel'])>0) {

@@ -23,7 +23,7 @@ function cms_downloadelemente($dbs, $art, $id, $gruppe = '-', $gruppenid = '-') 
     }
 
     if (strlen($sql) > 0) {
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($downloads, $daten);
         }

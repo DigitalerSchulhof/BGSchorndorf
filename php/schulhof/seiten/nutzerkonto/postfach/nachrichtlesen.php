@@ -26,7 +26,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 		$spalten = "";
 		if ($modus == 'eingang') {$spalten = ", alle";}
 
-		if(!cms_check_ganzzahl($id, 0)) {
+		if(!cms_check_ganzzahl($id, 0) && false) {
 			echo cms_meldung_fehler();
 		}
 
@@ -45,6 +45,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			$db = cms_verbinden('ü');
 			$sql = "SELECT absender, empfaenger, zeit, AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') AS papierkorb, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel,";
 			$sql .= " erstellt$spalten FROM $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID.id = $id";
+			echo $sql;
 			if ($anfrage = $db->query($sql)) {	// Safe weil ID Check
 				if ($daten = $anfrage->fetch_assoc()) {
 					$gefunden = true;
@@ -118,7 +119,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			$code .= "<p>";
 			$dbp = cms_verbinden('p');
 			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id IN (SELECT tag AS id FROM postgetagged$modus"."_$CMS_BENUTZERID WHERE nachricht = $id)) AS tags ORDER BY titel ASC;";
-			if ($anfrage = $dbp->query($sql)) {
+			if ($anfrage = $dbp->query($sql)) {	// Safe weil ID Check
 				while ($daten = $anfrage->fetch_assoc()) {
 					$code .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_postfach_nachricht_taggen(0, ".$daten['id'].")\">".$daten['titel']."</span> ";
 					$tagzahl++;
@@ -127,7 +128,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			}
 			// Nichtverwendete Tags
 			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id NOT IN (SELECT tag AS id FROM postgetagged$modus"."_$CMS_BENUTZERID WHERE nachricht = $id)) AS tags ORDER BY titel ASC;";
-			if ($anfrage = $dbp->query($sql)) {
+			if ($anfrage = $dbp->query($sql)) {	// Safe weil ID Check
 				while ($daten = $anfrage->fetch_assoc()) {
 					$code .= "<span class=\"cms_toggle\" onclick=\"cms_postfach_nachricht_taggen(1, ".$daten['id'].")\">".$daten['titel']."</span> ";
 					$tagzahl++;

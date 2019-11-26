@@ -30,7 +30,7 @@ if (cms_angemeldet() && $zugriff) {
 	  $vtextid = "-";
 		$tagzeit = mktime(0, 0, 0, $monat, $tag, $jahr);
 	  $sql = "SELECT id, AES_DECRYPT(textschueler, '$CMS_SCHLUESSEL') AS s,  AES_DECRYPT(textlehrer, '$CMS_SCHLUESSEL') AS l FROM vertretungstexte WHERE beginn = $tagzeit";
-	  if ($anfrage = $dbs->query($sql)) {
+	  if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 	    if ($daten = $anfrage->fetch_assoc()) {
 	      $vtextschueler = $daten['s'];
 	      $vtextlehrer = $daten['l'];

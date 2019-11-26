@@ -24,7 +24,7 @@ function cms_vertretungsplan_komplettansicht_naechsterschultag($art) {
   $dbs = cms_verbinden('s');
   // Suche Schultage dieses Zeitraums
   $sql = "SELECT * FROM zeitraeume WHERE $beginn BETWEEN beginn AND ende";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zeitraum = $daten;
     }
@@ -58,7 +58,7 @@ function cms_vertretungsplan_komplettansicht_naechsterschultag($art) {
   $zeitraumok = false;
   // Prüfen, ob dieser Tag im gleichen Zeitraum liegt
   $sql = "SELECT COUNT(*) AS anzahl FROM zeitraeume WHERE id = ".$zeitraum['id']." AND $beginn BETWEEN beginn AND ende";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
     if ($daten = $anfrage->fetch_assoc()) {
       if ($daten['anzahl'] == 1) {$zeitraumok = true;}
     }
@@ -69,7 +69,7 @@ function cms_vertretungsplan_komplettansicht_naechsterschultag($art) {
     // Falls der Zeitraum nicht okay ist, lade nächsten Zeitraum
     $nzeitraum = '-';
     $sql = "SELECT id, schuljahr, MIN(beginn) AS beginn, ende, mo, di, mi, do, fr, sa, so FROM zeitraeume WHERE beginn > ".$zeitraum['ende']." ";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       if ($daten = $anfrage->fetch_assoc()) {
         $nzeitraum = $daten;
       }
@@ -119,7 +119,7 @@ function cms_vertretungsplan_komplettansicht_tag($dbs, $art, $beginn, $ende) {
 
   $vtext = "";
   $sql = "SELECT AES_DECRYPT(textschueler, '$CMS_SCHLUESSEL') AS vts, AES_DECRYPT(textlehrer, '$CMS_SCHLUESSEL') AS vtl FROM vertretungstexte WHERE beginn = $beginn";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     if ($daten = $anfrage->fetch_assoc()) {
       if ($art == 'l') {$vtext = $daten['vtl'];}
       else if ($art == 's') {$vtext = $daten['vts'];}
@@ -132,7 +132,7 @@ function cms_vertretungsplan_komplettansicht_tag($dbs, $art, $beginn, $ende) {
   // Suche das Schuljahr des gegebenen Tages
   $schuljahr = '-';
   $sql = "SELECT id FROM schuljahre WHERE $beginn BETWEEN beginn AND ende";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil Check oben
     if ($daten = $anfrage->fetch_assoc()) {
       $schuljahr = $daten['id'];
     }
@@ -153,7 +153,7 @@ function cms_vertretungsplan_komplettansicht_tag($dbs, $art, $beginn, $ende) {
     $sql2 = "SELECT entfall, zusatzstunde, AES_DECRYPT(vertretungstext, '$CMS_SCHLUESSEL') AS vtext, beginn AS tbeginn, ende AS tende, beginn AS abeginn, ende AS aende, stunde AS tstunde, kurs, lehrkraft AS tlehrkraft, raum AS traum, '0' AS heute FROM tagebuch_$schuljahr WHERE vertretungsplan = 1 AND (beginn BETWEEN $beginn AND $ende) AND NOT (tbeginn BETWEEN $beginn AND $ende)";
     $sql = "SELECT heute, AES_DECRYPT(schulstunden.bezeichnung, '$CMS_SCHLUESSEL') AS stundenbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, kurs, entfall, zusatzstunde, vtext, tbeginn, tende, abeginn, aende FROM (($sql1) UNION ($sql2)) AS y JOIN lehrer ON y.tlehrkraft = lehrer.id JOIN raeume ON y.traum = raeume.id JOIN schulstunden ON y.tstunde = schulstunden.id JOIN kurse ON y.kurs = kurse.id";
     $sql = "SELECT * FROM ($sql) AS x ORDER BY kuerzel, tbeginn";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       while ($daten = $anfrage->fetch_assoc()) {
         $tabelle .= cms_vertretungsplan_komplettansicht_vertretungsstunde_lehrer($dbs, $daten, $tag, $monat, $jahr);
       }
@@ -172,7 +172,7 @@ function cms_vertretungsplan_komplettansicht_tag($dbs, $art, $beginn, $ende) {
     $sql2 = "SELECT entfall, zusatzstunde, AES_DECRYPT(vertretungstext, '$CMS_SCHLUESSEL') AS vtext, beginn AS tbeginn, ende AS tende, beginn AS abeginn, ende AS aende, stunde AS tstunde, kurs, lehrkraft AS tlehrkraft, raum AS traum, '0' AS heute FROM tagebuch_$schuljahr WHERE vertretungsplan = 1 AND (beginn BETWEEN $beginn AND $ende) AND NOT (tbeginn BETWEEN $beginn AND $ende)";
     $sql = "SELECT DISTINCT heute, AES_DECRYPT(schulstunden.bezeichnung, '$CMS_SCHLUESSEL') AS stundenbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, y.kurs AS kurs, entfall, zusatzstunde, vtext, tbeginn, tende, abeginn, aende, reihenfolge FROM (($sql1) UNION ($sql2)) AS y JOIN lehrer ON y.tlehrkraft = lehrer.id JOIN raeume ON y.traum = raeume.id JOIN schulstunden ON y.tstunde = schulstunden.id JOIN kurse ON y.kurs = kurse.id JOIN kursklassen ON y.kurs = kursklassen.kurs JOIN klassen ON kursklassen.klasse = klassen.id JOIN klassenstufen ON klassen.klassenstufe = klassenstufen.id";
     $sql = "SELECT * FROM ($sql) AS x ORDER BY reihenfolge, klasse, tbeginn";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       while ($daten = $anfrage->fetch_assoc()) {
         $tabelle .= cms_vertretungsplan_komplettansicht_vertretungsstunde_schueler($dbs, $daten, $tag, $monat, $jahr);
       }
@@ -198,7 +198,7 @@ function cms_vertretungsplan_komplettansicht_vertretungsstunde_lehrer ($dbs, $da
   $sql = "SELECT klasse FROM kursklassen WHERE kurs = ".$daten['kurs'];
   $sql = "SELECT AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM ($sql) AS x JOIN klassen ON klassen.id = x.klasse JOIN klassenstufen ON klassen.klassenstufe = klassenstufen.id";
   $sql = "SELECT * FROM ($sql) AS y ORDER BY reihenfolge, klasse";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Irgendwie safe machen
     while ($k = $anfrage->fetch_assoc()) {
       $klassen .= " ".$k['stufe'].$k['klasse'];
     }

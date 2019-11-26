@@ -111,7 +111,7 @@ if (cms_angemeldet() && $zugriff) {
 				$klassentext = "(".implode(',', $klassen).")";
 				if (cms_check_idliste($klassentext)) {
 					$sql = "SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext";
-		      $anfrage = $dbs->query($sql);
+		      $anfrage = $dbs->query($sql);	// Safe weil ID Check
 		  		if ($anfrage) {
 		  			if ($daten = $anfrage->fetch_assoc()) {
 		  				if ($daten['anzahl'] != count($klassen)) {
@@ -169,7 +169,7 @@ if (cms_angemeldet() && $zugriff) {
         $pruefids = "(".substr(str_replace('|', ',', $mitglieder),1).")";
 				if (cms_check_idliste($pruefids)) {
 					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem";
-	        $anfrage = $dbs->query($sql);
+	        $anfrage = $dbs->query($sql);	// Safe weil ID Check
 	        if ($anfrage) {
 	          if ($daten = $anfrage->fetch_assoc()) {
 	            if ($daten['anzahl'] != 0) {
@@ -208,7 +208,7 @@ if (cms_angemeldet() && $zugriff) {
         $pruefids = "(".substr(str_replace('|', ',', $aufsicht),1).")";
 				if (cms_check_idliste($pruefids)) {
 					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea";
-	        $anfrage = $dbs->query($sql);
+	        $anfrage = $dbs->query($sql);	// Safe weil ID Check
 	        if ($anfrage) {
 	          if ($daten = $anfrage->fetch_assoc()) {
 	            if ($daten['anzahl'] != 0) {

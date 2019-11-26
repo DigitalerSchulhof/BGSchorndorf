@@ -126,7 +126,7 @@ function cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spa
     $sql = substr($sql, 7);
     $sql = "SELECT DISTINCT * FROM ($sql) AS x";
     $beteiligtegruppen = array();
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: ID Überprüfen
       while ($daten = $anfrage->fetch_assoc()) {
         array_push($beteiligtegruppen, $daten);
       }
@@ -144,7 +144,7 @@ function cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spa
       $sql = "SELECT DISTINCT id FROM ($sql) AS x";
 
       $erlaubtepersonen = "";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Prüfen ob Eingaben fake sein können
         while ($daten = $anfrage->fetch_assoc()) {
           $erlaubtepersonen .= ",".$daten['id'];
         }

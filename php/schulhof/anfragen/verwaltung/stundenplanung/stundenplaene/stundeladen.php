@@ -27,22 +27,28 @@ if (cms_angemeldet() && $zugriff) {
 
 	$dbs = cms_verbinden('s');
 	// Prüfe, ob die Klasse in diesen Zeitraum gehört
-	$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE klassen.id = $klasse) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON klassenstufen.schuljahr = schuljahre.id JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = $zeitraum";
-	if ($anfrage = $dbs->query($sql)) {
+	$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE klassen.id = ?) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON klassenstufen.schuljahr = schuljahre.id JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("ii", $klasse, $zeitraum);
+	if ($sql->execute()) {
+		$sql->bind_result($anzahl);
 		if ($daten = $anfrage->fetch_assoc()) {
-			if ($daten['anzahl'] != 1) {$fehler = true;}
+			if ($anzahl != 1) {$fehler = true;}
 		} else {$fehler = true;}
-		$anfrage->free();
+		$sql->close();
 	} else {$fehler = true;}
 
 	// Prüfen, ob der Kurs der Klasse zugeordnet ist
 	if (!$fehler) {
-		$sql = "SELECT COUNT(*) AS anzahl FROM kursklassen WHERE klasse = $klasse AND kurs = $kurs";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] != 1) {$fehler = true;}
+		$sql = "SELECT COUNT(*) AS anzahl FROM kursklassen WHERE klasse = ? AND kurs = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ii", $klasse, $kurs);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl != 1) {$fehler = true;}
 			} else {$fehler = true;}
-			$anfrage->free();
+			$sql->close();
 		} else {$fehler = true;}
 	}
 
@@ -50,7 +56,7 @@ if (cms_angemeldet() && $zugriff) {
 	$klassen = '|'.$klasse;
 	if (!$fehler) {
 		$sql = "SELECT DISTINCT klasse FROM kursklassen WHERE kurs = $kurs AND klasse != $klasse";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID existiert
 			while ($daten = $anfrage->fetch_assoc()) {
 				$klassen .= '|'.$daten['klasse'];
 			}
@@ -62,7 +68,7 @@ if (cms_angemeldet() && $zugriff) {
 	$anzahl = 0;
 	if (!$fehler) {
 		$sql = "SELECT * FROM (SELECT kurs, lehrkraft, raum FROM stunden WHERE zeitraum = $zeitraum AND tag = $tag AND stunde = $stunde AND (kurs IN (SELECT kurs FROM kursklassen WHERE klasse IN (SELECT DISTINCT klasse FROM kursklassen WHERE kurs = $kurs)) OR raum = $raum OR lehrkraft = $lehrer)) AS x";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 			while ($daten = $anfrage->fetch_assoc()) {
 				$bestehend[$anzahl]['kurs'] = $daten['kurs'];
 				$bestehend[$anzahl]['lehrkraft'] = $daten['lehrkraft'];
@@ -76,7 +82,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Stundendetails laden
 	$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(beginnstd, '$CMS_SCHLUESSEL') AS bs, AES_DECRYPT(beginnmin, '$CMS_SCHLUESSEL') AS bm, AES_DECRYPT(endestd, '$CMS_SCHLUESSEL') AS es, AES_DECRYPT(endemin, '$CMS_SCHLUESSEL') AS em FROM schulstunden WHERE id = $stunde";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil ID existiert, WENN OBEN SAFE
 		if ($daten = $anfrage->fetch_assoc()) {
 			$stunde = $daten;
 		} else {$fehler = true;}
@@ -118,7 +124,7 @@ function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus,
 
 	// Lehrerdetails laden
 	$sql = "SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM personen JOIN lehrer ON personen.id = lehrer.id WHERE personen.id = $lehrer";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 		if ($daten = $anfrage->fetch_assoc()) {
 			$lehrer = $daten;
 		} else {$fehler = true;}
@@ -127,7 +133,7 @@ function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus,
 
 	// Raumdetails laden
 	$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume WHERE id = $raum";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 		if ($daten = $anfrage->fetch_assoc()) {
 			$raum = $daten;
 		} else {$fehler = true;}
@@ -137,17 +143,20 @@ function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus,
 
 	// Klassenbezeichnungen laden
 	$klassenbezeichnungen = "";
-	$sql = "SELECT bezeichnung FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM klassen JOIN kursklassen ON klassen.id = kursklassen.klasse WHERE kursklassen.kurs = $kurs) AS x ORDER BY bezeichnung";
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$klassenbezeichnungen .= $daten['bezeichnung'];
+	$sql = "SELECT bezeichnung FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM klassen JOIN kursklassen ON klassen.id = kursklassen.klasse WHERE kursklassen.kurs = ?) AS x ORDER BY bezeichnung";
+	$sql = $dbs->prepare($sql);
+	$sql->bind_param("i", $kurs);
+	if ($sql->execute()) {
+		$sql->bind_result($bez);
+		while ($sql->fetch()) {
+			$klassenbezeichnungen .= $bez;
 		}
-		$anfrage->free();
+		$sql->close();
 	} else {$fehler = true;}
 
 	// Kurs laden
 	$sql = "SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe FROM kurse JOIN klassenstufen ON kurse.klassenstufe = klassenstufen.id WHERE kurse.id = $kurs";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 		if ($daten = $anfrage->fetch_assoc()) {
 			$kurs = $daten;
 		} else {$fehler = true;}

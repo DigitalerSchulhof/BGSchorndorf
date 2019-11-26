@@ -16,6 +16,8 @@ if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} e
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
 
+if(!cms_check_ganzzahl($spalte))
+	die("FEHLER");
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
@@ -35,7 +37,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		// Prüfen, ob es eine übergeordnete Seite gibt
 		$sql = "SELECT COUNT(id) AS anzahl FROM spalten WHERE id = '$spalte'";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
 			if ($daten = $anfrage->fetch_assoc()) {
 				if ($daten['anzahl'] == 0) {
 					$fehler = true;
@@ -62,7 +64,7 @@ if (cms_angemeldet() && $zugriff) {
 		$inhalt = str_replace('<p></p>', '', $inhalt);
 		$inhalt = cms_texttrafo_e_db($inhalt);
 		$sql = "UPDATE editoren SET spalte = $spalte, position = $position, alt = '$inhalt', aktuell = '$inhalt', neu = '$inhalt', aktiv = '$aktiv' WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 		echo "ERFOLG";
 	}
 	else {

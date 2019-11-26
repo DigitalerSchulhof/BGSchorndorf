@@ -10,7 +10,7 @@ function cms_rolle_ausgeben ($rolle) {
 	$art = "s";
 	if ($rolle != "") {
 		$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(personenart, '$CMS_SCHLUESSEL') AS personenart FROM rollen WHERE id = $rolle";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 			if ($daten = $anfrage->fetch_assoc()) {
 				$bezeichnung = $daten['bezeichnung'];
 				$art = $daten['personenart'];
@@ -39,7 +39,7 @@ function cms_rolle_ausgeben ($rolle) {
 	else {
 		$sql = "SELECT * FROM (SELECT id, rolle, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte LEFT JOIN (SELECT rolle, recht FROM rollenrechte WHERE rolle = $rolle) AS rollenrechte ON rechte.id = rollenrechte.recht) AS rechte ORDER BY kategorie ASC, bezeichnung ASC;";
 	}
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID	- TODO: Check oben
 		if ($rolle == '') {
 			while ($daten = $anfrage->fetch_assoc()) {
 				if ($altekategorie != $daten['kategorie']) {
@@ -72,11 +72,11 @@ function cms_rolle_ausgeben ($rolle) {
 	// Höchste ID ermitteln
 	$hoechsteid = '-';
 	$sql = "SELECT MAX(id) AS max FROM rechte";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$hoechsteid = $daten['max'];
-		}
-		$anfrage->free();
+	$sql = $dbs->prepare($sql);
+	if ($sql->execute()) {
+		$sql->bind_result($hoechsteid);
+		$sql->fetch();
+		$sql->close();
 	}
 	cms_trennen($dbs);
 	$code.= "<input name=\"cms_schulhof_rolle_rechtmax\" id=\"cms_schulhof_rolle_rechtmax\" type=\"hidden\" value=\"$hoechsteid\">";

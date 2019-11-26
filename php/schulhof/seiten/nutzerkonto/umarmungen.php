@@ -7,7 +7,7 @@
 
   $sql = "SELECT von, anonym, wann FROM umarmungen WHERE an = $CMS_BENUTZERID ORDER BY wann asc";
   $dbs = cms_verbinden("s");
-  $sql = $dbs->query($sql);
+  $sql = $dbs->query($sql); // Safe weil keine Eingabe
   $umarmungen = array();
   if($sql)
     while($sqld = $sql->fetch_assoc())
@@ -30,7 +30,7 @@ foreach($umarmungen as $u) {
   else {
     if(!isset($n[$v])) {
       $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = $v";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
         if ($daten = $anfrage->fetch_assoc()) {
           $vorname = $daten['vorname'];
           $nachname = $daten['nachname'];

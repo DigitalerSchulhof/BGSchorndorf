@@ -25,7 +25,7 @@ if (cms_angemeldet() && $zugriff) {
 	// Gibt es bereits einen Vertretungstext für diesen Tag?
 	$id = '-';
 	$sql = "SELECT id FROM vertretungstexte WHERE beginn = $tagzeit";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$id = $daten['id'];
 		}
@@ -36,13 +36,17 @@ if (cms_angemeldet() && $zugriff) {
 	$lehrer = cms_texttrafo_e_db($lehrer);
 
 	if ($id != '-') {
-		$sql = "UPDATE vertretungstexte SET textschueler = AES_ENCRYPT('$schueler', '$CMS_SCHLUESSEL'), textlehrer = AES_ENCRYPT('$lehrer', '$CMS_SCHLUESSEL') WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "UPDATE vertretungstexte SET textschueler = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), textlehrer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ssi", $schueler, $lehrer, $id);
+		$sql->execute();
 	}
 	else {
 		$id = cms_generiere_kleinste_id('vertretungstexte');
-		$sql = "UPDATE vertretungstexte SET textschueler = AES_ENCRYPT('$schueler', '$CMS_SCHLUESSEL'), textlehrer = AES_ENCRYPT('$lehrer', '$CMS_SCHLUESSEL'), beginn = $tagzeit WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "UPDATE vertretungstexte SET textschueler = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), textlehrer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beginn = ? WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ssii", $schueler, $lehrer, $tagzeit, $id);
+		$sql->execute();
 	}
 	echo "ERFOLG";
 	cms_trennen($dbs);

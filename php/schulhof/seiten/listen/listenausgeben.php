@@ -28,7 +28,7 @@ function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach
 		}
 
 		$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel$sqlspalten FROM personen$sqljoin WHERE art = AES_ENCRYPT('$art', '$CMS_SCHLUESSEL')) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$nr ++;
         $allenschreiben .= "|".$daten['id'];
@@ -52,7 +52,7 @@ function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach
 						if ($eltern == '1') {
 							$elterntext = "";
 							$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN schuelereltern ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ".$daten['id'].") AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-							if ($anfrageinnen = $dbs->query($sqlinnen)) {
+							if ($anfrageinnen = $dbs->query($sqlinnen)) {	// Safe weil interne ID
 								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
 									$elterntext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
 								}
@@ -65,7 +65,7 @@ function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach
 							if ($klassen == '1') {
                 $klassentext = "";
   							$sqlinnen = "SELECT * FROM (SELECT reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id JOIN stufen ON klassen.stufe = stufen.id WHERE klassenmitglieder.person = ".$daten['id'].") AS x ORDER BY reihenfolge ASC, klassenbez ASC";
-  							if ($anfrageinnen = $dbs->query($sqlinnen)) {
+  							if ($anfrageinnen = $dbs->query($sqlinnen)) {	// Safe weil interne ID
   								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
   									$klassentext .= ", ".$dateninnen['klassenbez'];
   								}
@@ -78,7 +78,7 @@ function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach
             if ($kinder == '1') {
 							$kindertext = "";
 							$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez FROM personen JOIN schuelereltern ON personen.id = schuelereltern.schueler LEFT JOIN stufenmitglieder ON schuelereltern.schueler = stufenmitglieder.person LEFT JOIN stufen ON stufenmitglieder.gruppe = stufen.id WHERE schuelereltern.eltern = ".$daten['id']." AND (stufen.schuljahr IS NULL OR stufen.schuljahr = $CMS_BENUTZERSCHULJAHR)) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-							if ($anfrageinnen = $dbs->query($sqlinnen)) {
+							if ($anfrageinnen = $dbs->query($sqlinnen)) {	// Safe weil interne ID
 								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
 									$kindertext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
                   if (!is_null($dateninnen['stufenbez'])) {$kindertext .= " (".$dateninnen['stufenbez'].")";}
@@ -234,7 +234,7 @@ function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, 
 	}
 
 	$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel$sqlspalten FROM personen $sqljoin WHERE art = AES_ENCRYPT('$art', '$CMS_SCHLUESSEL') AND $gruppenart.id = $gruppenid) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie sicher machen
 		while ($daten = $anfrage->fetch_assoc()) {
 			$nr ++;
       $allenschreiben .= "|".$daten['id'];
@@ -258,7 +258,7 @@ function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, 
 					if ($eltern == '1') {
 						$elterntext = "";
 						$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN schuelereltern ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ".$daten['id'].") AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-						if ($anfrageinnen = $dbs->query($sqlinnen)) {
+						if ($anfrageinnen = $dbs->query($sqlinnen)) {	// Safe weil interne ID
 							while ($dateninnen = $anfrageinnen->fetch_assoc()) {
 								$elterntext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
 							}
@@ -271,7 +271,7 @@ function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, 
 						if ($klassen == '1') {
               $klassentext = "";
 							$sqlinnen = "SELECT * FROM (SELECT reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id JOIN stufen ON klassen.stufe = stufen.id WHERE klassenmitglieder.person = ".$daten['id'].") AS x ORDER BY reihenfolge ASC, klassenbez ASC";
-							if ($anfrageinnen = $dbs->query($sqlinnen)) {
+							if ($anfrageinnen = $dbs->query($sqlinnen)) {	// Safe weil interne ID
 								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
 									$klassentext .= ", ".$dateninnen['klassenbez'];
 								}
@@ -284,7 +284,7 @@ function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, 
           if ($kinder == '1') {
 						$kindertext = "";
 						$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez FROM personen JOIN schuelereltern ON personen.id = schuelereltern.schueler LEFT JOIN stufenmitglieder ON schuelereltern.schueler = stufenmitglieder.person LEFT JOIN stufen ON stufenmitglieder.gruppe = stufen.id WHERE schuelereltern.eltern = ".$daten['id']." AND (stufen.schuljahr IS NULL OR stufen.schuljahr = $CMS_BENUTZERSCHULJAHR)) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-						if ($anfrageinnen = $dbs->query($sqlinnen)) {
+						if ($anfrageinnen = $dbs->query($sqlinnen)) {	// Safe weil interne ID
 							while ($dateninnen = $anfrageinnen->fetch_assoc()) {
 								$kindertext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
                 if (!is_null($dateninnen['stufenbez'])) {$kindertext .= " (".$dateninnen['stufenbez'].")";}

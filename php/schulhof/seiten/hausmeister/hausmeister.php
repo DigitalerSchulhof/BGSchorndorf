@@ -35,7 +35,7 @@ $CMS_EMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
 $hausmeisterkontakt = "";
 $sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM";
 $sql .= " schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $CMS_BENUTZERSCHULJAHR AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
-if ($anfrage = $dbs->query($sql)) {
+if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
   while ($daten = $anfrage->fetch_assoc()) {
     if (in_array($daten['id'], $CMS_EMPFAENGERPOOL)) {
       $hausmeisterkontakt .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">";

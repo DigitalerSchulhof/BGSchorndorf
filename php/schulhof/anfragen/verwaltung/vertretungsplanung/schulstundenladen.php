@@ -25,7 +25,7 @@ if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 	$beginn = mktime(0,0,0,$monat,$tag,$jahr);
 	$sql = "SELECT id FROM zeitraeume WHERE $beginn BETWEEN beginn AND ende";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$zeitraum = $daten['id'];
 		} else {$fehler = true;}
@@ -36,7 +36,7 @@ if (cms_angemeldet() && $zugriff) {
 	else {
 		$code = "";
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez, AES_DECRYPT(beginnstd, '$CMS_SCHLUESSEL') AS bs, AES_DECRYPT(beginnmin, '$CMS_SCHLUESSEL') AS bm, AES_DECRYPT(endestd, '$CMS_SCHLUESSEL') AS es, AES_DECRYPT(endemin, '$CMS_SCHLUESSEL') AS em FROM schulstunden WHERE zeitraum = $zeitraum) AS x ORDER BY bs ASC, bm ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		 	while ($s = $anfrage->fetch_assoc()) {
 				$code .= "<span class=\"cms_button\" onclick=\"cms_vertretungsplan_zeit_uebernehmen('".$s['id']."', '".$s['bs']."', '".$s['bm']."', '".$s['es']."', '".$s['em']."')\">".$s['bez']."</span> ";
 			}

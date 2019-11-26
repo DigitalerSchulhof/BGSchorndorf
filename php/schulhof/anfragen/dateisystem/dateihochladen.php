@@ -94,7 +94,7 @@ if ($angemeldet && $zugriff) {
 		// Dateiendungen laden und prüfen
 		$erlaubteendungen = array();
 		$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				array_push($erlaubteendungen, $daten['endung']);
 			}

@@ -46,7 +46,7 @@ if ($zugriff) {
 			$sqlkollegen = $dbs->prepare("SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM lehrer JOIN fachkollegen ON lehrer.id = fachkollegen.kollege WHERE fachkollegen.fach = ?");
 
 			$ausgabe = "";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {  // Safe weil interne ID
 				while ($daten = $anfrage->fetch_assoc()) {
 					$ausgabe .= "<tr>";
 						$ausgabe .= "<td><img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
