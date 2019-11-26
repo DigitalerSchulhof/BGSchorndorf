@@ -1,6 +1,6 @@
 <?php
-function cms_brotkrumen($url) {
-	global $CMS_SEITENDETAILS;
+function cms_brotkrumen($url, $favorisieren = true) {
+	global $CMS_SEITENDETAILS, $CMS_BENUTZERID, $CMS_SCHLUESSEL;
 
 	$code = "";
 	$link = "";
@@ -53,6 +53,22 @@ function cms_brotkrumen($url) {
 			if (($i == 0) && ($u == "Website")) {$u = "Startseite";}
 			$code .= " / <a class=\"cms_link\" href=\"".substr($link, 1)."\">".$u."</a>";
 		}
+	}
+
+	if($favorisieren && cms_angemeldet() && $url[0] == "Schulhof") {
+		$favorisieren = "";
+		$dbs = cms_verbinden("s");
+		$sql = "SELECT COUNT(*) FROM favoritseiten WHERE person = ? AND url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');";
+		$sql = $dbs->prepare($sql);
+		$jurl = join("/", $url);
+		$sql->bind_param("is", $CMS_BENUTZERID, $jurl);
+		$sql->execute();
+		$sql->bind_result($favorit);
+		if(!$sql->fetch())
+			$favorit = 0;
+
+		$favorisieren = "<span class=\"cms_favorisieren\" onclick=\"cms_favorisieren('".join('/', $url)."')\"><img src=\"res/icons/klein/".($favorit ? "favorit" : "favorisieren").".png\"></span>";
+		$code .= $favorisieren;
 	}
 
 	return substr($code, 3);

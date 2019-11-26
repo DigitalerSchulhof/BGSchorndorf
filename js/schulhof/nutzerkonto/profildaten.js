@@ -127,8 +127,6 @@ function cms_schulhof_nutzerkonto_passwort_aendern () {
 	}
 }
 
-
-
 /* PASSWORT WIRD GEÄNDERT */
 function cms_nutzerkonto_identitaetsdiebstahl() {
 	cms_laden_an('Indetitäsdiebstahl melden', 'Die Eingaben werden überprüft.');
@@ -209,7 +207,6 @@ function cms_identitaetsdiebstahl_loeschen(id, zeit) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
 
 function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 	cms_laden_an('Einstellungen ändern', 'Die Eingaben werden überprüft.');
@@ -316,7 +313,6 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 	}
 }
 
-
 // Schuljahr vergeben
 function cms_schulhof_nutzerkonto_schuljahr_einstellen(schuljahr) {
 	cms_laden_an('Schuljahr umstellen', 'Das aktive Schuljahr wird umgestellt.');
@@ -337,8 +333,6 @@ function cms_schulhof_nutzerkonto_schuljahr_einstellen(schuljahr) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-
-
 function cms_persoenliche_notizen_speichern() {
 	cms_laden_an('Notizen speichern', 'Die neuen Notizen werden gespeichert.');
 	var notizen = document.getElementById('cms_persoenlichenotizen').value;
@@ -351,6 +345,27 @@ function cms_persoenliche_notizen_speichern() {
 			if (notizen.length > 0) {document.getElementById('cms_persoenlichenotizen').className = "cms_notizzettel";}
 			else {document.getElementById('cms_persoenlichenotizen').className = "cms_notizzettel cms_notizzettelleer";}
 			cms_meldung_an('erfolg', 'Notizen speichern', '<p>Die Änderugnen wurden übernommen.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_favorisieren(url) {
+	var istFavorit = $(".cms_favorisieren>img").attr("src").endsWith("favorit.png");
+
+	cms_laden_an((istFavorit?'Entf':'F')+'avorisieren', 'Die Seite wird '+(istFavorit?'ent':'')+'favorisiert.');
+	var formulardaten = new FormData();
+	formulardaten.append("seite",  				url);
+	formulardaten.append("status",  			!istFavorit);
+	formulardaten.append("anfragenziel", 	'281');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_laden_aus();
+			src = istFavorit ? "res/icons/klein/favorisieren.png" : "res/icons/klein/favorit.png";
+			$(".cms_favorisieren>img").attr("src", src);
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

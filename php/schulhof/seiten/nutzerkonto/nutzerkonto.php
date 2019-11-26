@@ -156,19 +156,16 @@ echo $code;
 <div class="cms_spalte_i">
 
 <?php
+$sql = "SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL') FROM favoritseiten WHERE person = ?";
+$sql = $dbs->prepare($sql);
+$sql->bind_param("i", $CMS_BENUTZERID);
+$sql->execute();
+$sql->bind_result($furl);
 $fav = "";
-if ($CMS_BENUTZERART == 'l' || $CMS_BENUTZERART == 's') {
-		$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Stundenplan\">Stundenplan</a></li> ";
+while($sql->fetch()) {
+	$fav .= "<li><span class=\"cms_button cms_brotkrumen\" href=\"$furl\">".cms_brotkrumen(explode("/", $furl), false)."</span></li> ";
 }
-$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
-$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach/Posteingang\">Postfach</a></li> ";
-
-if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] || $CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] ||
-    (($CMS_RECHTE['Planung']['Räume sehen'] || $CMS_RECHTE['Planung']['Leihgeräte sehen']) && ($CMS_RECHTE['Technik']['Geräte-Probleme melden']))) {
-	$fav .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
-}
-
-if (strlen($fav) > 0) {echo "<h2>Häufig gesucht</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
+if (strlen($fav) > 0) {echo "<h2>Persönliche Favoriten</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
 
 ?>
 
