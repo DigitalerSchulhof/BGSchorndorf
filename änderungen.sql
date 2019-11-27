@@ -7,3 +7,4 @@ CREATE TABLE `favoritseiten` (
  `url` varchar(5000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ALTER TABLE `favoritseiten` ADD CONSTRAINT `favoritseitenperson` FOREIGN KEY (`person`) REFERENCES `nutzerkonten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `favoritseiten` ADD `bezeichnung` VARCHAR(5000) NOT NULL AFTER `url`;

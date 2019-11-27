@@ -365,7 +365,24 @@ function cms_favorisieren(url) {
 		if (rueckgabe == "ERFOLG") {
 			cms_laden_aus();
 			src = istFavorit ? "res/icons/klein/favorisieren.png" : "res/icons/klein/favorit.png";
-			$(".cms_favorisieren>img").attr("src", src);
+			$(".cms_favorisieren>img").attr("src", src).toggleClass("favorit");
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_favorit_benennen(url) {
+	cms_laden_an('Favorit umbenennen', 'Die Favorit wird umbenannt.');
+	var formulardaten = new FormData();
+	formulardaten.append("seite",  				url);
+	formulardaten.append("bezeichnung",  	$(".cms_favorit_bezeichnung>input").val());
+	formulardaten.append("anfragenziel", 	'282');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_laden_aus();
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

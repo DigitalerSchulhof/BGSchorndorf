@@ -20,12 +20,15 @@ $dbs = cms_verbinden("s");
 $seite = cms_texttrafo_e_db($seite);
 $sql = "";
 if($status) {
-  $sql = "INSERT INTO favoritseiten (person, url) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'));";
+  $sql = "INSERT INTO favoritseiten (person, url, bezeichnung) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'));";
+  $sql = $dbs->prepare($sql);
+  $bez = explode("/", $seite)[count(explode("/", $seite)) - 1];
+  $sql->bind_param("iss", $CMS_BENUTZERID, $seite, $bez);
 } else {
   $sql = "DELETE FROM favoritseiten WHERE person = ? AND url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');";
+  $sql = $dbs->prepare($sql);
+  $sql->bind_param("is", $CMS_BENUTZERID, $seite);
 }
-$sql = $dbs->prepare($sql);
-$sql->bind_param("is", $CMS_BENUTZERID, $seite);
 $sql->execute();
 
 echo "ERFOLG";

@@ -58,16 +58,19 @@ function cms_brotkrumen($url, $favorisieren = true) {
 	if($favorisieren && cms_angemeldet() && $url[0] == "Schulhof") {
 		$favorisieren = "";
 		$dbs = cms_verbinden("s");
-		$sql = "SELECT COUNT(*) FROM favoritseiten WHERE person = ? AND url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');";
+		$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM favoritseiten WHERE person = ? AND url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');";
 		$sql = $dbs->prepare($sql);
 		$jurl = join("/", $url);
 		$sql->bind_param("is", $CMS_BENUTZERID, $jurl);
 		$sql->execute();
-		$sql->bind_result($favorit);
-		if(!$sql->fetch())
-			$favorit = 0;
-
-		$favorisieren = "<span class=\"cms_favorisieren\" onclick=\"cms_favorisieren('".join('/', $url)."')\"><img src=\"res/icons/klein/".($favorit ? "favorit" : "favorisieren").".png\"></span>";
+		$sql->bind_result($bez);
+		$favorit = true;
+		if(!$sql->fetch()) {
+			$favorit = false;
+			$bez = $url[count($url)-1];	// pop ohne ändern
+		}
+		$favorisieren = "<span class=\"cms_favorisieren\"><img onclick=\"cms_favorisieren('".join('/', $url)."')\" src=\"res/icons/klein/".($favorit ? "favorit" : "favorisieren").".png\" class=\"".($favorit ? "favorit" : "")."\">"
+		 							 ." <span class=\"cms_favorit_bezeichnung\"><input type=\"text\" value=\"$bez\" onkeyup=\"cms_stopschreiben(this, function() {cms_favorit_benennen('".join('/', $url)."')})\"></input></span></span>";
 		$code .= $favorisieren;
 	}
 

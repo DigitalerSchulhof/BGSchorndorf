@@ -156,14 +156,14 @@ echo $code;
 <div class="cms_spalte_i">
 
 <?php
-$sql = "SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL') FROM favoritseiten WHERE person = ?";
+$sql = "SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM favoritseiten WHERE person = ?";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("i", $CMS_BENUTZERID);
 $sql->execute();
-$sql->bind_result($furl);
+$sql->bind_result($furl, $fbez);
 $fav = "";
 while($sql->fetch()) {
-	$fav .= "<li><span class=\"cms_button cms_brotkrumen\" href=\"$furl\">".cms_brotkrumen(explode("/", $furl), false)."</span></li> ";
+	$fav .= "<li><a class=\"cms_button\" href=\"$furl\">".$fbez."</a></li> ";
 }
 if (strlen($fav) > 0) {echo "<h2>Persönliche Favoriten</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
 
