@@ -280,7 +280,6 @@ $CMS_ZIELE[276] = '';
 $CMS_ZIELE[277] = '';
 $CMS_ZIELE[278] = 'php/schulhof/anfragen/verwaltung/schuljahrfabrik/lehrauftraege.php';
 $CMS_ZIELE[279] = 'php/schulhof/anfragen/verwaltung/stundenplanung/vorbereiten.php';
-<<<<<<< ours
 $CMS_ZIELE[280] = 'php/schulhof/anfragen/gruppen/chataktualisieren.php';
 $CMS_ZIELE[281] = 'php/website/anfragen/newsletter/newsletterdetails.php';
 $CMS_ZIELE[282] = 'php/schulhof/anfragen/verwaltung/newsletter/neuvorbereiten.php';
@@ -291,18 +290,6 @@ $CMS_ZIELE[286] = 'php/schulhof/anfragen/verwaltung/newsletter/detailsvorbereite
 $CMS_ZIELE[287] = 'php/website/anfragen/newsletter/anmelden.php';
 $CMS_ZIELE[288] = 'php/schulhof/anfragen/verwaltung/newsletter/empfaengerloeschen.php';
 $CMS_ZIELE[289] = 'php/schulhof/anfragen/verwaltung/newsletter/empfaengerbearbeiten.php';
-=======
-$CMS_ZIELE[280] = '';
-$CMS_ZIELE[281] = '';
-$CMS_ZIELE[282] = '';
-$CMS_ZIELE[283] = '';
-$CMS_ZIELE[284] = '';
-$CMS_ZIELE[285] = '';
-$CMS_ZIELE[286] = '';
-$CMS_ZIELE[287] = '';
-$CMS_ZIELE[288] = '';
-$CMS_ZIELE[289] = '';
->>>>>>> theirs
 $CMS_ZIELE[290] = 'php/schulhof/anfragen/verwaltung/zeitraeume/rythmisierenspeichern.php';
 $CMS_ZIELE[291] = 'php/schulhof/anfragen/verwaltung/zeitraeume/klonenvorbereiten.php';
 $CMS_ZIELE[292] = 'php/schulhof/anfragen/verwaltung/zeitraeume/klonenspeichern.php';
