@@ -38,7 +38,7 @@ function cms_seitenbaum_ausgeben($dbs, $oberseite, $tiefe, $bearbeiten = false) 
 				// Aktionen
 				$code .= "<td>";
 				if ($CMS_RECHTE['Website']['Seiten bearbeiten']) {
-					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$daten['id']."');\"><span class=\"cms_hinweis\">Seite bearbetien</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$daten['id']."');\"><span class=\"cms_hinweis\">Seite bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 				}
 				if ($CMS_RECHTE['Website']['Startseite festlegen'] && ($daten['status'] != 's') && ($daten['art'] == 's')) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_startseite_anzeigen('".$daten['bezeichnung']."', '".$daten['id']."');\"><span class=\"cms_hinweis\">Seite zur Startseite machen</span><img src=\"res/icons/klein/startseite.png\"></span> ";

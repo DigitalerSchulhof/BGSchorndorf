@@ -1,8 +1,9 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
-$einstellungenplaetten = true;
-$zulaessigedateienplaetten = true;
+$rechteplaetten = false;
+$internediensteplaetten = false;
+$einstellungenplaetten = false;
+$zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;
 $update = false;
@@ -94,19 +95,13 @@ if ($zulaessigedateienplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('cdr', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Grafikprogramme', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('deb', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anwendungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('divx', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Multimedia', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('dmg', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anwendungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('doc', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Dokumente', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('docx', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Dokumente', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('eps', '$CMS_SCHLUESSEL'), AES_ENCRYPT('XSonstige', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('exe', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anwendungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('fla', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Flash', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -123,8 +118,6 @@ if ($zulaessigedateienplaetten) {
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('indd', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Grafikprogramme', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('iso', '$CMS_SCHLUESSEL'), AES_ENCRYPT('XSonstige', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('jar', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anwendungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('jpeg', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Bilder', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -147,8 +140,6 @@ if ($zulaessigedateienplaetten) {
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('ogg', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Multimedia', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('pdf', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Dokumente', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
-		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('pkg', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Anwendungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO zulaessigedateien (id, endung, kategorie, zulaessig) VALUES ($id, AES_ENCRYPT('png', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Bilder', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -405,6 +396,12 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personen sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personenids importieren', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personenids bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personen den Kursen zuordnen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Persönliche Daten sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Persönliche Einstellungen ändern', '$CMS_SCHLUESSEL'))";
@@ -444,6 +441,8 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Raumpläne sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Verantwortlichkeiten festlegen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schülervertretungsplan sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stufenstundenpläne sehen', '$CMS_SCHLUESSEL'))";
@@ -461,6 +460,12 @@ if ($rechteplaetten) {
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile bearbeiten', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Profile löschen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen anlegen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Schienen löschen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Planung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Stundenplanung durchführen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
@@ -642,21 +647,23 @@ if ($einstellungenplaetten) {
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Menüseiten weiterleiten', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Klassen extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Klassen extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Schüler aktuell', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Schüler aktuell', '$CMS_SCHLUESSEL'), AES_ENCRYPT('', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Schüler Folgetag', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Schüler Folgetag', '$CMS_SCHLUESSEL'), AES_ENCRYPT('', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Lehrer aktuell', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Lehrer aktuell', '$CMS_SCHLUESSEL'), AES_ENCRYPT('', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Lehrer Folgetag', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Vertretungsplan Lehrer Folgetag', '$CMS_SCHLUESSEL'), AES_ENCRYPT('', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Lehrer extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Persönlicher Vertretungsplan nach ...', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Kursen', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Raum extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Lehrer extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Raum extern', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Stundenplan Buchungsbeginn Stunde', '$CMS_SCHLUESSEL'), AES_ENCRYPT('07', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
@@ -668,50 +675,62 @@ if ($einstellungenplaetten) {
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung an GitHub', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Feedback Anmeldung notwendig', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Fehlermeldung an GitHub', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Blogeinträge', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Blogeinträge', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Termine', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Termine', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
-	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))";
+	$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('21', '$CMS_SCHLUESSEL'))";
 	$dbs->query($sql); $id++;
 	// Postfach
 	foreach ($personen as $p) {
+		if ($p == 'Lehrer') {$genehmigung = '1';} else {$genehmigung = '0';}
 		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen persönliche Termine anlegen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen persönliche Notizen anlegen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen intern Termine vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen intern Termine vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen intern Blogeinträge vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen intern Blogeinträge vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen Termine vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen Termine vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen Blogeinträge vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen Blogeinträge vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen Galerien vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('$p dürfen Galerien vorschlagen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 	}
 	foreach ($personen as $a) {
 		foreach ($personen as $e) {
-			$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Postfach - $a dürfen $e schreiben', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+			$genehmigung = '0';
+			if ($a == 'Lehrer') {
+				if (($e == 'Lehrer') || ($e == 'Verwaltungsangestellte') || ($e == 'Externe')) {$genehmigung = '1';}
+			}
+			if ($a == 'Verwaltungsangestellte') {
+				if (($e == 'Lehrer') || ($e == 'Verwaltungsangestellte') || ($e == 'Externe')) {$genehmigung = '1';}
+			}
+			if ($a == 'Externe') {
+				if (($e == 'Lehrer') || ($e == 'Verwaltungsangestellte') || ($e == 'Externe')) {$genehmigung = '1';}
+			}
+			$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Postfach - $a dürfen $e schreiben', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 			$dbs->query($sql); $id++;
 		}
 	}
 	foreach ($personen as $p) {
+		if ($p == 'Lehrer') {$genehmigung = '1';} else {$genehmigung = '0';}
 		foreach ($gruppen as $g) {
 			foreach ($raenge as $r) {
-				$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Postfach - $p dürfen $g $r schreiben', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+				$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Postfach - $p dürfen $g $r schreiben', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 				$dbs->query($sql); $id++;
 			}
 		}
@@ -724,11 +743,13 @@ if ($einstellungenplaetten) {
 			}
 		}
 	}
+	$genehmigung = '1';
 	foreach ($gruppen as $g) {
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Genehmigungen $g Termine', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Genehmigungen $g Termine', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
-		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Genehmigungen $g Blogeinträge', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'))";
+		$sql = "INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Genehmigungen $g Blogeinträge', '$CMS_SCHLUESSEL'), AES_ENCRYPT('$genehmigung', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		if ($g == 'Fachschaften') {$genehmigung = '0';}
 	}
 
 
@@ -777,7 +798,7 @@ if ($update) {
 }
 
 
-if ((!$rechteplaetten) && (!$dateienplaetten) && (!$einstellungenplaetten) && (!$zulaessigedateienplaetten) && (!$gremienklassen) && (!$postfachordner) && (!$update)) {
+if ((!$rechteplaetten) && (!$internediensteplaetten) && (!$dateienplaetten) && (!$einstellungenplaetten) && (!$zulaessigedateienplaetten) && (!$gremienklassen) && (!$postfachordner) && (!$update)) {
 	echo "INAKTIV";
 }
 
@@ -803,6 +824,26 @@ function cms_dateisystem_ds_loeschen($pfad) {
 		return true;
   }
   return false;
+}
+
+if ($internediensteplaetten) {
+	include_once("php/schulhof/funktionen/texttrafo.php");
+	include_once("php/allgemein/funktionen/sql.php");
+	include_once("php/schulhof/funktionen/generieren.php");
+	include_once("php/schulhof/funktionen/config.php");
+
+	$dbs = cms_verbinden('s');
+
+	$sql = "DELETE FROM internedienste";
+	$dbs->query($sql);
+	$id = 0;
+
+	$sql = "INSERT INTO internedienste (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('VPlanS', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0815', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	$sql = "INSERT INTO internedienste (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0815', '$CMS_SCHLUESSEL'))";
+	$dbs->query($sql); $id++;
+	cms_trennen($dbs);
+	echo "INTERNE DIENSTE ERNEUERT<br>";
 }
 
 

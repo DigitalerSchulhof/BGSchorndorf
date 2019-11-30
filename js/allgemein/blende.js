@@ -115,29 +115,79 @@ function cms_meldung_aus () {
 	cms_ausblenden('cms_blende_o');
 }
 
-function cms_dsgvo_datenschutz() {
-	var anzeige = document.getElementById('cms_dsgvo_datenschutz');
-	// Versuch, Person in der Datenbank zu finden
-	var anfrage = new XMLHttpRequest();
-	var formulardaten = new FormData();
-	formulardaten.append("anfragenziel", 	'0');
-	anfrage.open("POST","php/oeffentlich/anfragen/anfrage.php",true);
-	anfrage.send(formulardaten);
+function cms_dsgvo_datenschutz(fenster, eA, eB) {
 
-	anzeige.parentNode.removeChild(anzeige);
-	document.getElementById('cms_geraetewahl').innerHTML = "Anzeige optimieren für: <a href=\"javascript:cms_geraet_aendern('P');\">Computer</a>, <a href=\"javascript:cms_geraet_aendern('T');\">Tablets</a> oder <a href=\"javascript:cms_geraet_aendern('H');\">Smartphones</a>.";
+	var fehler = false;
+	if ((fenster != '-') && (fenster != 'j') && (fenster != 'n')) {fehler = true;}
+	if ((eA != '-') && (eA != 'j') && (eA != 'n')) {fehler = true;}
+	if ((eB != '-') && (eB != 'j') && (eB != 'n')) {fehler = true;}
 
-	if($(".cms_kontaktformular").length)
-		location.reload();
+	if (!fehler) {
+		// Versuch, Person in der Datenbank zu finden
+		var anfrage = new XMLHttpRequest();
+		var formulardaten = new FormData();
+		formulardaten.append("anfragenziel", 	'0');
+		formulardaten.append("fenster", 	fenster);
+		formulardaten.append("einwilligungA", 	eA);
+		formulardaten.append("einwilligungB", 	eB);
+		anfrage.open("POST","php/oeffentlich/anfragen/anfrage.php",true);
+		anfrage.send(formulardaten);
+
+		var anzeige = document.getElementById('cms_dsgvo_datenschutz');
+		if ((anzeige) && (fenster == 'j')) {
+			anzeige.parentNode.removeChild(anzeige);
+		}
+
+		if (eA == 'j') {
+			var eAfeld = document.getElementById('cms_datenschutz_einwilligungA');
+			if (eAfeld) {
+				eAfeld.innerHTML = "Einwilligung A erteilt";
+				eAfeld.className = "cms_datenschutz_einwilligungerteilt";
+				eAfeld.onclick = function() {cms_dsgvo_datenschutz('-', 'n', '-');};
+			}
+
+			document.getElementById('cms_geraetewahl').innerHTML = "Anzeige optimieren für: <a href=\"javascript:cms_geraet_aendern('P');\">Computer</a>, <a href=\"javascript:cms_geraet_aendern('T');\">Tablets</a> oder <a href=\"javascript:cms_geraet_aendern('H');\">Smartphones</a>.";
+		}
+		if (eA == 'n') {
+			var eAfeld = document.getElementById('cms_datenschutz_einwilligungA');
+			if (eAfeld) {
+				eAfeld.innerHTML = "Einwilligung A verweigert";
+				eAfeld.className = "cms_datenschutz_einwilligungverweigert";
+				eAfeld.onclick = function() {cms_dsgvo_datenschutz('-', 'j', '-');};
+			}
+
+			document.getElementById('cms_geraetewahl').innerHTML = "";
+		}
+
+		if (eB == 'j') {
+			var eBfeld = document.getElementById('cms_datenschutz_einwilligungB');
+			if (eBfeld) {
+				eBfeld.innerHTML = "Einwilligung B erteilt";
+				eBfeld.className = "cms_datenschutz_einwilligungerteilt";
+				eBfeld.onclick = function() {cms_dsgvo_datenschutz('-', '-', 'n');};
+			}
+		}
+		if (eB == 'n') {
+			var eBfeld = document.getElementById('cms_datenschutz_einwilligungB');
+			if (eBfeld) {
+				eBfeld.innerHTML = "Einwilligung B verweigert";
+				eBfeld.className = "cms_datenschutz_einwilligungverweigert";
+				eBfeld.onclick = function() {cms_dsgvo_datenschutz('-', '-', 'j');};
+			}
+		}
+
+		var kontaktformulare = document.getElementsByClassName('cms_kontaktformular');
+		if (kontaktformulare.length > 0) {location.reload();}
+	}
 }
 
 
 function cms_vollbild(id) {
-	var feld = document.getElementById(id+'_wert');
+	var feld = document.getElementById(id);
 	if (feld) {
 		if (cms_check_toggle(feld.value)) {
-			if (feld.value == 1) {cms_klasse_dazu(id, 'cms_vollbild');}
-			else {cms_klasse_weg(id, 'cms_vollbild');}
+			if (feld.value == 1) {cms_klasse_dazu(id+'_F', 'cms_vollbild');}
+			else {cms_klasse_weg(id+'_F', 'cms_vollbild');}
 		}
 	}
 }

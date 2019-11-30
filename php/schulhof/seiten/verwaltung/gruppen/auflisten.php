@@ -65,19 +65,26 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
   $code = "";
 
   // Gruppen laden und auflisten
-  if ($schuljahr == '-') {$sqlwhere = "schuljahr IS NULL";}
-  else {$sqlwhere = "schuljahr = $schuljahr";}
+  if ($schuljahr == '-') {$sqlwhere = $namek.".schuljahr IS NULL";}
+  else {$sqlwhere = $namek.".schuljahr = $schuljahr";}
 
   if ($namek == 'stufen') {
     $sortierkriterium = "reihenfolge ASC,";
     $zusatzspalten = "reihenfolge, tagebuch, gfs, ";
+    $zusatzjoin = "";
+  }
+  else if (($namek == 'klassen') || ($namek == 'kurse')) {
+    $sortierkriterium = "reihenfolge ASC,";
+    $zusatzspalten = "reihenfolge,  ";
+    $zusatzjoin = "LEFT JOIN stufen ON stufe = stufen.id";
   }
   else {
     $sortierkriterium = "";
     $zusatzspalten = "";
+    $zusatzjoin = "";
   }
 
-  $sql = "SELECT * FROM (SELECT $zusatzspalten id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, COUNT(person) AS mitglieder FROM $namek LEFT JOIN $namek"."mitglieder ON $namek.id = $namek"."mitglieder.gruppe WHERE $sqlwhere GROUP BY $namek.id) AS x ORDER BY $sortierkriterium bezeichnung ASC";
+  $sql = "SELECT * FROM (SELECT $zusatzspalten $namek".".id, AES_DECRYPT($namek".".bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT($namek".".icon, '$CMS_SCHLUESSEL') AS icon, $namek".".sichtbar, COUNT(person) AS mitglieder FROM $namek LEFT JOIN $namek"."mitglieder ON $namek.id = $namek"."mitglieder.gruppe $zusatzjoin WHERE $sqlwhere GROUP BY $namek.id) AS x ORDER BY $sortierkriterium bezeichnung ASC";
 
   if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     while ($daten = $anfrage->fetch_assoc()) {

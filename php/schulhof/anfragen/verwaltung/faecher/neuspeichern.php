@@ -12,7 +12,7 @@ if (isset($_POST['bezeichnung'])) {$bezeichnung = cms_texttrafo_e_db($_POST['bez
 if (isset($_POST['kuerzel'])) {$kuerzel = cms_texttrafo_e_db($_POST['kuerzel']);} else {echo "FEHLER";exit;}
 if (isset($_POST['farbe'])) {$farbe = $_POST['farbe'];} else {echo "FEHLER";exit;}
 if (isset($_POST['icon'])) {$icon = $_POST['icon'];} else {echo "FEHLER";exit;}
-if (isset($_POST['kollegen'])) {$kollegen = $_POST['kollegen'];} else {echo "FEHLER‚";exit;}
+if (isset($_POST['kollegen'])) {$kollegen = $_POST['kollegen'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['FÄCHERSCHULJAHR'])) {$SCHULJAHR = $_SESSION['FÄCHERSCHULJAHR'];} else {echo "FEHLER";exit;}
 
 $CMS_RECHTE = cms_rechte_laden();

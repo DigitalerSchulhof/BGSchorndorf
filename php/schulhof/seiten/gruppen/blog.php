@@ -51,15 +51,13 @@ if (!$fehler) {
 
 		$bloglink = implode('/', array_slice($CMS_URL,0,6)).'/';
 
-		$code .= "<p>";
-			$code .= "<a class=\"cms_button\" href=\"$bloglink".($jahr-1)."\">".($jahr-1)."</a> ";
-			for ($i = 1; $i<=12; $i++) {
-				$monatsname = cms_monatsnamekomplett($i);
-				if ($i == $monat) {$zusatz = "_ja";} else {$zusatz = "";}
-				$code .= "<a class=\"cms_button$zusatz\" href=\"$bloglink"."$jahr/".$monatsname."\">".$monatsname."</a> ";
-			}
-			$code .= "<a class=\"cms_button\" href=\"$bloglink".($jahr+1)."\">".($jahr+1)."</a> ";
-		$code .= "</p>";
+		$code .= "<table class=\"cms_zeitwahl\"><tr><td><a class=\"cms_button\" href=\"$bloglink".($jahr-1)."\">".($jahr-1)."</a></td><td>";
+		for ($i = 1; $i<=12; $i++) {
+			$monatsname = cms_monatsnamekomplett($i);
+			if ($i == $monat) {$zusatz = "_ja";} else {$zusatz = "";}
+			$code .= "<a class=\"cms_button$zusatz\" href=\"$bloglink"."$jahr/".$monatsname."\">".$monatsname."</a> ";
+		}
+		$code .= "</td><td><a class=\"cms_button\" href=\"$bloglink".($jahr+1)."\">".($jahr+1)."</a></td></tr></table>";
 
 		$zwischenurl = implode('/', array_slice($CMS_URL,0,5));
 		$blogcode = cms_gruppenblogeintraege_monat_ausgeben($dbs, $g, $gruppenid, 'artikel', $zwischenurl, $monat, $jahr);

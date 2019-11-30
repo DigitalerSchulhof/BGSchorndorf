@@ -186,7 +186,7 @@ function cms_profile_bearbeiten_speichern () {
 				cms_meldung_an('fehler', 'Profil bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Profil anlegen', '<p>Das Profil <b>'+bezeichnung+'</b> wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Profile\');">Zurück zur Übersicht</span></p>');
+				cms_meldung_an('erfolg', 'Profil bearbeiten', '<p>Das Profil <b>'+bezeichnung+'</b> wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Profile\');">Zurück zur Übersicht</span></p>');
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}

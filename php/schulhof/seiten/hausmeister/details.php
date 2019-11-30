@@ -57,7 +57,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
       $CMS_EMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
 
 
-
+      $code .= "<p class=\"cms_zentriert\"><b>Zielzeit:</b> ".date("H:i", $ziel)." Uhr</p>";
       if ($status == 'e') {
         $code .= "<p class=\"cms_zentriert\"><span class=\"cms_auftragerledigt\">Erledigt am ".date('d.m.Y', $erledigt)." um ".date('H:i', $erledigt)." Uhr<br>";
         $code .= "von ";

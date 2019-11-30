@@ -7,16 +7,16 @@ include_once("../../schulhof/funktionen/check.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
+if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
+$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
 if (cms_angemeldet() && $zugriff) {
-	$_SESSION["STUNDENPLANZEITRAUM"] = $id;
+	$_SESSION["ZEITRAUMSTUNDENPLANIMPORT"] = $id;
 	echo "ERFOLG";
 }
 else {
-	echo "BERECHTIGUNG";
+	echo "FEHLER";
 }
 ?>

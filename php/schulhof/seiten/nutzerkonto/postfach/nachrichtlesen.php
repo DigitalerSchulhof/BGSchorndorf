@@ -20,9 +20,11 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 	<h2>Nachricht lesen</h2>
 
 	<?php
-	if ((isset($_SESSION["POSTLESENID"])) && ($_SESSION["POSTLESENMODUS"])) {
+	if ((isset($_SESSION["POSTLESENID"])) && ($_SESSION["POSTLESENMODUS"]) &&
+	    (cms_check_ganzzahl($_SESSION["POSTLESENID"], 0))) {
 		$modus = $_SESSION["POSTLESENMODUS"];
 		$id = $_SESSION["POSTLESENID"];
+		$fehler = false;
 		$spalten = "";
 		if ($modus == 'eingang') {$spalten = ", alle";}
 

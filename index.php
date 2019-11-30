@@ -7,7 +7,6 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
@@ -35,15 +34,14 @@
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
 	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.4";
+	//$CMS_VERSION = "0.5.6";
 	$TITELBILDERJS = "";
-	$CMS_STUNDENDAUER = 45;
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
 	else {
 		$CMS_GERAET = cms_welches_geraet();
-		if (isset($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {
-			if ($_SESSION['DSGVO_COOKIESAKZEPTIERT']) {$_SESSION['GERAET'] = $CMS_GERAET;}
+		if (isset($_SESSION['DSGVO_FENSTERWEG'])) {
+			if ($_SESSION['DSGVO_FENSTERWEG']) {$_SESSION['GERAET'] = $CMS_GERAET;}
 		}
 	}
 
@@ -191,7 +189,6 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bearbeiten.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/website.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplan.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/vertretungsplan.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/neuigkeiten.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/responsive.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/summernote.css?v=$CMS_VERSION\">";
@@ -259,8 +256,10 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/pinnwaende.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/zeitraeume.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
@@ -309,7 +308,6 @@
 					echo "var CMS_NETZCHECK = setInterval('cms_netzcheck()', 30000);\n";
 				}
         echo "var CMS_BENUTZERNAME = '".$_SESSION['BENUTZERNAME']."';\n";
-		    echo "var CMS_SCHULSTUNDENDAUER = $CMS_STUNDENDAUER;\n";
         $iv = substr($CMS_SESSIONID, 0, 16);
 				$nutzerid = openssl_encrypt ($CMS_BENUTZERID, 'aes128', $iv, 0, $iv);
 				echo "var CMS_BENUTZERID = '".$nutzerid."';\n";
@@ -324,16 +322,6 @@
         echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
 				$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
         if ($CMS_IMLN) {
-	        $dbsschluessel = openssl_encrypt ($CMS_SCHLUESSEL, 'aes128', $iv, 0, $iv);
-					$dbshost = openssl_encrypt ($CMS_DBS_HOST, 'aes128', $iv, 0, $iv);
-					$dbsuser = openssl_encrypt ($CMS_DBS_USER, 'aes128', $iv, 0, $iv);
-					$dbspass = openssl_encrypt ($CMS_DBS_PASS, 'aes128', $iv, 0, $iv);
-					$dbsdb = openssl_encrypt ($CMS_DBS_DB, 'aes128', $iv, 0, $iv);
-					echo "var CMS_DBS_HOST = '".$dbshost."';\n";
-					echo "var CMS_DBS_USER = '".$dbsuser."';\n";
-					echo "var CMS_DBS_PASS = '".$dbspass."';\n";
-					echo "var CMS_DBS_DB = '".$dbsdb."';\n";
-					echo "var CMS_DBS_SCHLUESSEL = '".$dbsschluessel."';\n";
 					echo "CMS_IMLN = true;\n";
         }
 				echo "var CMS_GRUPPEN = ['Gremien','Fachschaften','Klassen','Kurse','Stufen','Arbeitsgemeinschaften','Arbeitskreise','Fahrten','Wettbewerbe','Ereignisse','Sonstige Gruppen'];";
@@ -484,7 +472,7 @@
 		}
 		else if (($CMS_URL[0] == 'Website') || ($CMS_URL[0] == "Intern")) {
 			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EXTERN_EVENTS."};";
+				echo "window.onload = function () {".$CMS_ONLOAD_EXTERN_EVENTS."};";
 			echo "</script>";
 		}
 		cms_erfasse_click();

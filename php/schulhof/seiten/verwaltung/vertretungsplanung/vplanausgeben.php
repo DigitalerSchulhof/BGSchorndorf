@@ -190,7 +190,7 @@ function cms_vertretungsplan_vertretungsstunde ($daten, $tag, $monat, $jahr) {
   if ($daten['entfall'] == 1) {$titel = "Entfall";}
   else if ($daten['zusatzstunde'] == 1) {$titel = "Neu";}
   else {$titel = "Änderung";}
-  $code .= "<span class=\"cms_vertretung_info\"><h4>$titel</h4><p>".$daten['vtext']."</p></span>";
+  $code .= "<span class=\"cms_vertretung_info\"><h4>$titel</h4><p class=\"cms_notiz\">".$daten['vtext']."</p></span>";
   $code .= "<p>";
   if ($daten['zusatzstunde'] != 1) {
     $zeitvorher = '<span class="cms_vertretung_inhalt">';

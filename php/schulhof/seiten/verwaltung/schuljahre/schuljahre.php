@@ -43,7 +43,10 @@ if ($zugriff) {
 					if ($CMS_RECHTE['Planung']['Profile anlegen']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Profile</span><img src=\"res/icons/klein/profile.png\"></span> ";
 					}
-				 if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
+					if ($CMS_RECHTE['Planung']['Verantwortlichkeiten festlegen']) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_verantwortlichkeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Verantwortlichkeiten festlegen (Klassen, Stufen, Räume)</span><img src=\"res/icons/klein/verantwortlichkeiten.png\"></span> ";
+					}
+				 	if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schuljahrfabrik_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Nächstes Schuljahr aus diesem erzeugen</span><img src=\"res/icons/klein/schuljahrfabrik.png\"></span> ";
 					}
 					if ($CMS_RECHTE['Organisation']['Schuljahre löschen']) {

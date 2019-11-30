@@ -54,7 +54,7 @@ function cms_profile_ausgeben ($id, $SCHULJAHR = false) {
 		$code .= "</select></td></tr>";
 		$code .= "<tr><th>Wahlfächer:</th><td>";
 		$faecherids = "";
-		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM faecher WHERE schuljahr = ?");
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM faecher WHERE schuljahr = ?) AS x ORDER BY bezeichnung");
 		$sql->bind_param("i", $SCHULJAHR);
 		if ($sql->execute()) {
 			$sql->bind_result($fid, $fbez, $fkur);
@@ -65,11 +65,6 @@ function cms_profile_ausgeben ($id, $SCHULJAHR = false) {
 			}
 		}
 		$sql->close();
-
-		foreach ($faecher as $f) {
-
-
-		}
 		$code .= "<input type=\"hidden\" name=\"cms_profil_faecherids\" id=\"cms_profil_faecherids\" value=\"$faecherids\">";
 		$code .= "</td></tr></td></tr>";
 	$code .= "</table>";

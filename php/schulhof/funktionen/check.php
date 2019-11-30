@@ -7,7 +7,21 @@ function cms_check_mail($mail) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}^', $mail) != 1) {
+	if (preg_match('/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/', $mail) != 1) {
+		return false;
+	}
+	else return true;
+}
+
+function cms_check_uhrzeit($uhrzeit) {
+	if(is_array($uhrzeit)) {
+		$r = true;
+		foreach ($uhrzeit as $i => $u)
+			if(!cms_check_uhrzeit($u))
+				$r = false;
+		return $r;
+	}
+	if (preg_match('/^[0-9]{1,2}:[0-9-]{1,2}$/', $uhrzeit) != 1) {
 		return false;
 	}
 	else return true;
@@ -45,7 +59,7 @@ function cms_check_nametitel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
+	if (preg_match("/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
 	else return true;
@@ -234,6 +248,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			$CMS_RECHTE['Planung']['Räume sehen'] = true;
 			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
 			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
+			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'v') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
@@ -252,6 +268,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			$CMS_RECHTE['Planung']['Räume sehen'] = true;
 			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
 			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
+			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'x') {
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
@@ -582,12 +600,11 @@ function cms_schulanmeldung_einstellungen_laden() {
   return $einstellungen;
 }
 
-function cms_ist_heute($datum, $tag, $monat, $jahr) {
-  $t = date('d', $datum);
-  $m = date('m', $datum);
-  $j = date('Y', $datum);
-  if (($t == $tag) && ($m == $monat) && ($j == $jahr)) {return true;}
-  else {return false;}
+function cms_ist_heute($heute, $pruefdatum) {
+  $t = date('d', $pruefdatum) == date('d', $heute);
+  $m = date('m', $pruefdatum) == date('m', $heute);
+  $j = date('Y', $pruefdatum) == date('Y', $heute);
+  return ($t && $m && $j);
 }
 
 function cms_websitedateirechte_laden() {

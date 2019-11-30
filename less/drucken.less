@@ -1,4 +1,4 @@
-// out: ../css/drucken.css, sourcemap: false, compress: true, autoprefixer: true
+// "out": "../css/drucken.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
 @import "standard.less";
 
 * {
@@ -65,7 +65,7 @@ div#cms_druckfuss {
   display: block;
 }
 
-div#cms_druckfuss p, b {
+div#cms_druckfuss p, div#cms_druckfuss b {
 	font-size: 8pt !important;
 }
 
@@ -85,8 +85,14 @@ p:last-child {
 h1 {
 	font-size: 14pt;
 	font-weight: bold;
-	margin-top: .5cm;
+	margin-top: 2.5cm;
 	margin-bottom: .25cm;
+	page-break-before: always;
+}
+
+#cms_druckkopf+h1 {
+	margin-top: .5cm !important;
+	page-break-before: avoid !important;
 }
 
 h2 {
@@ -94,6 +100,35 @@ h2 {
 	font-weight: bold;
 	margin-top: .6cm;
 	margin-bottom: .2cm;
+}
+
+.cms_meldung h4 {
+  margin-top: 0px !important;
+}
+
+h4 {
+  margin-top: 30px;
+  margin-bottom: @absatzabstand;
+  font-weight: bold;
+  font-size: 100%;
+}
+
+b, strong {
+  font-weight: bold;
+  font-style: inherit;
+  font-size: inherit;
+  text-decoration: inherit;
+  font-family: inherit;
+}
+
+.cms_notiz {
+	margin-top: 10px;
+  color: @schriftnotiz;
+  font-size: 70% !important;
+}
+
+.cms_meldung h4 {
+  margin-top: 10px;
 }
 
 .cms_datum {
@@ -126,6 +161,10 @@ table th, table td {
 	border-bottom: 1pt solid #aaaaaa;
 }
 
+table tr:first-child th, table tr:first-child td {
+	border-top: 1pt solid #aaaaaa;
+}
+
 table th, table td, table i, table b {
 	font-size: 10pt;
 }
@@ -133,6 +172,26 @@ table th, table td, table i, table b {
 table th {
 	font-weight: bold;
 	text-align: left;
+}
+
+.cms_markierte_liste_0 td {background: @hintergrundhell;}
+.cms_markierte_liste_1 td {background: @standardhell;}
+
+.cms_vplanliste_entfall td:first-child {border-left: 1mm solid @fehlerhell; padding-left: 2mm;}
+.cms_vplanliste_neu td:first-child {border-left: 1mm solid @erfolghell; padding-left: 2mm;}
+
+.cms_meldung_info {
+	border-left: 1mm solid @infodunkel;
+	margin-top: 2mm;
+	margin-bottom: 2mm;
+	padding: 2mm;
+}
+
+.cms_meldung_vplan {
+	border-left: 1mm solid @standarddunkel;
+	margin-top: 2mm;
+	margin-bottom: 2mm;
+	padding: 2mm;
 }
 
 .cms_zwischenueberschrift {

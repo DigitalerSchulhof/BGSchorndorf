@@ -68,7 +68,7 @@ if ($angemeldet) {
 						$code .= "<p class=\"cms_pinnwand_datum\">Angeschlagen von ".date("d.m.Y", $daten['beginn'])." bis ".date("d.m.Y", $daten['ende'])."</p>";
 
 						$code .= "<div class=\"cms_pinnwand_inhalt\">";
-						$code .= $daten['inhalt'];
+						$code .= cms_ausgabe_editor($daten['inhalt']);
 						$aktionen = "";
 						if ($CMS_RECHTE['Organisation']['Pinnwandanschläge bearbeiten'] || ($daten['ersteller'] == $CMS_BENUTZERID)) {
 							$aktionen .= "<span class=\"cms_button\" onclick=\"cms_pinnwandanschlag_bearbeiten_vorbereiten(".$daten['id'].", '".cms_textzulink($bezeichnung)."')\">Bearbeiten</span> ";

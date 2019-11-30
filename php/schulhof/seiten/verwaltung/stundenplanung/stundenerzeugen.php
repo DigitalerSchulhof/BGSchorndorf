@@ -57,14 +57,14 @@ if ($zugriff) {
     }
     $sql->close();
 
-    // Stufen aller Zeiträume suchen
-    $stufenids = "";
-    $sql = $dbs->prepare("SELECT id FROM stufen WHERE schuljahr = ? ORDER BY reihenfolge");
+    // Kurse aller Zeiträume suchen
+    $kurseids = "";
+    $sql = $dbs->prepare("SELECT id FROM kurse WHERE schuljahr = ?");
     $sql->bind_param("i", $SCHULJAHR);
     if ($sql->execute()) {
-      $sql->bind_result($sid);
+      $sql->bind_result($kid);
       while ($sql->fetch()) {
-        $stufenids .= "|".$sid;
+        $kurseids .= "|".$kid;
       }
     }
     $sql->close();
@@ -81,9 +81,13 @@ if ($zugriff) {
     else {$code .= "<tr><td class=\"cms_notiz\" colspan=\"4\">Keine aktiven zukünftigen Zeiträume gefunden.</td></tr>";}
     $code .= "</table>";
 
-    $code .= "<p><input type=\"hidden\" id=\"cms_zeitraeume\" name=\"cms_zeitraeume\" value=\"$zeitraumids\"><input type=\"hidden\" id=\"cms_stufen\" name=\"cms_stufen\" value=\"$stufenids\"><input type=\"hidden\" id=\"cms_schuljahr\" name=\"cms_schuljahr\" value=\"$SCHULJAHR\"></p>";
+    $code .= "<p><input type=\"hidden\" id=\"cms_zeitraeume\" name=\"cms_zeitraeume\" value=\"$zeitraumids\"><input type=\"hidden\" id=\"cms_kurse\" name=\"cms_kurse\" value=\"$kurseids\"><input type=\"hidden\" id=\"cms_schuljahr\" name=\"cms_schuljahr\" value=\"$SCHULJAHR\"></p>";
 
-    $code .= cms_meldung("warnung", '<h4>Alte Stunden werden gelöscht</h4><p>Alle noch ausstehnden Stunden bereits erzeugter Zeiträume, inklusive aller zur Vertretung vorgemerkten Stunden werden gelöscht und neu angelegt! <b>Vertretungen müssen also neu eingegeben werden!</b></p>');
+    $code .= "<table class=\"cms_formular\">";
+  	$code .= "<tr><th>Ändern ab:</th><td>".cms_datum_eingabe ('cms_zeitraum_erzeugen_ab', date('d', time())+1)."</td></tr>";
+  	$code .= "</table>";
+
+    $code .= cms_meldung("warnung", '<h4>Alte Stunden werden gelöscht</h4><p>Alle noch ausstehenden Stunden bereits erzeugter Zeiträume, inklusive aller zur Vertretung vorgemerkten Stunden, die nach dem Änderungsdatum liegen, werden gelöscht und neu angelegt! <b>Vertretungen müssen also neu eingegeben werden!</b></p>');
 
     $code .= "<p>";
     if (strlen($zeitraumids) > 0) {$code .= "<span class=\"cms_button\" onclick=\"cms_stundenerzeugen_speichern();\">Stunden und Tagebücher erzeugen</span> ";}

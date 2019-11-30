@@ -9,7 +9,6 @@ include_once('php/schulhof/seiten/termine/termineausgeben.php');
 include_once('php/schulhof/seiten/notifikationen/notifikationen.php');
 
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
-
 $dbs = cms_verbinden('s');
 $jetzt = time();
 $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= $jetzt AND ende >= $jetzt";
@@ -100,13 +99,12 @@ if ($CMS_EINSTELLUNGEN['Vertretungsplan extern'] == '1') {
 	else {echo "<p class=\"cms_notiz\">Aktuell keine Vertretungen.</p>";}
 }
 else {
-	include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplanausgeben.php');
-	$vplanheute = cms_vertretungsplan_heute();
-	$vplannext = cms_vertretungsplan_naechsterschultag();
+	include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
+	$vplan = cms_vertretungsplan_persoenlich($dbs);
 
-	echo "<h2>Vertretungsplan</h2>";
-	if ((strlen($vplanheute) > 0) || (strlen($vplannext) > 0)) {
-		echo $vplanheute.$vplannext;
+	echo "<h2>Mein Tag</h2>";
+	if ((strlen($vplan) > 0) || (strlen($vplan) > 0)) {
+		echo $vplan;
 	}
 	else {echo "<p class=\"cms_notiz\">Aktuell keine Vertretungen.</p>";}
 }

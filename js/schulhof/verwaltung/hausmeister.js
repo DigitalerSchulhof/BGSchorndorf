@@ -17,23 +17,32 @@ function cms_hausmeisterauftrag_neu_speichern() {
 	var tag = document.getElementById('cms_hausmeisteraufrag_zieldatum_T').value;
 	var monat = document.getElementById('cms_hausmeisteraufrag_zieldatum_M').value;
 	var jahr = document.getElementById('cms_hausmeisteraufrag_zieldatum_J').value;
+	var tag = document.getElementById('cms_hausmeisteraufrag_zieldatum_T').value;
+	var std = document.getElementById('cms_hausmeisteraufrag_zieluhrzeit_h').value;
+	var min = document.getElementById('cms_hausmeisteraufrag_zieluhrzeit_m').value;
+	var zugehoerig = document.getElementById('cms_hausmeisterauftrag_zugehoerig').value;
 
 	var fehler = false;
 	var meldung = '<p>Der Auftrag konnte nicht verschickt werden, denn ...</p><ul>';
 
-	if (!cms_check_name(auftragstitel)) {
+	if ((!zugehoerig.match(/^[lr]\|[0-9]+$/)) && (zugehoerig != '')) {
+		fehler = true;
+		meldung += '<li>Die Zuordnung des Auftrags zu einem Gerät ist ungültig.</li>';
+	}
+
+	if (!cms_check_titel(auftragstitel)) {
 		fehler = true;
 		meldung += '<li>Der Titel des Auftrags ist ungültig.</li>';
 	}
 
-	if (!cms_check_ganzzahl(tag, 1, 31) || !cms_check_ganzzahl(monat, 1, 12) || !cms_check_ganzzahl(jahr, 0)) {
+	if (!cms_check_ganzzahl(tag, 1, 31) || !cms_check_ganzzahl(monat, 1, 12) || !cms_check_ganzzahl(jahr, 0) || !cms_check_ganzzahl(std, 0,23) || !cms_check_ganzzahl(min, 0,59)) {
 		fehler = true;
 		meldung += '<li>Das eingegebene Datum ist ungültig.</li>';
 	}
 	else {
 		var jetzt = new Date();
-		var start = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), 0,0,0,0);
-		var ziel = new Date(jahr, monat-1, tag, 0,0,0,0);
+		var start = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), jetzt.getHours(), jetzt.getMinutes(), 0,0);
+		var ziel = new Date(jahr, monat-1, tag, std, min, 0,0);
 		if (ziel < start) {
 			fehler = true;
 			meldung += '<li>Das Zieldatum darf nicht vor dem heutigen Datum liegen.</li>';
@@ -49,9 +58,12 @@ function cms_hausmeisterauftrag_neu_speichern() {
 		var formulardaten = new FormData();
 		formulardaten.append("titel", auftragstitel);
 		formulardaten.append("beschreibung", auftragsbeschreibung);
+		formulardaten.append("zugehoerig", zugehoerig);
 		formulardaten.append("tag", tag);
 		formulardaten.append("monat", monat);
 		formulardaten.append("jahr", jahr);
+		formulardaten.append("std", std);
+		formulardaten.append("min", min);
 		formulardaten.append("anfragenziel", 	'209');
 
 		function anfragennachbehandlung(rueckgabe) {

@@ -174,7 +174,7 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Blog/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    if($notifikationen)
+    if (($notifikationen) && ($aktiv))
       cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";

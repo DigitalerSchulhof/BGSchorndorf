@@ -96,18 +96,20 @@ if (cms_angemeldet() && $zugriff) {
 				else {
 					// Prüfen, ob diese Klassen alle in der richtige Stufe und im richtigen Schuljahr liegen
 					$klassenids = cms_generiere_sqlidliste($klassen);
-					$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM klassen WHERE id IN $klassenids AND schuljahr != ? AND stufe != ?");
-					$sql->bind_param("ii", $neuschuljahr, $STUFENINFO[$s]['id']);
-					if ($sql->execute()) {
-						$sql->bind_result($anzahl);
-						if ($sql->fetch()) {
-							if ($anzahl > 0) {$fehler = true;}
-							else {
-								$STUFENINFO[$s]['klassenids'] = $klassen;
-							}
+					if (strlen($klassenids) > 2) {
+						$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM klassen WHERE id IN $klassenids AND schuljahr != ? AND stufe != ?");
+						$sql->bind_param("ii", $neuschuljahr, $STUFENINFO[$s]['id']);
+						if ($sql->execute()) {
+							$sql->bind_result($anzahl);
+							if ($sql->fetch()) {
+								if ($anzahl > 0) {$fehler = true;}
+								else {
+									$STUFENINFO[$s]['klassenids'] = $klassen;
+								}
+							} else {$fehler = true;}
 						} else {$fehler = true;}
-					} else {$fehler = true;}
-					$sql->close();
+						$sql->close();
+					}
 				}
 			}
 		}
@@ -117,17 +119,19 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		for ($s=0; $s<count($STUFENINFO); $s++) {
 			$klassenids = cms_generiere_sqlidliste($STUFENINFO[$s]['klassenids']);
-			$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM klassen WHERE id IN $klassenids");
-			if ($sql->execute()) {
-				$sql->bind_result($kid, $kbez);
-				while ($sql->fetch()) {
-					$klasse = array();
-					$klasse['id'] = $kid;
-					$klasse['bez'] = $kbez;
-					array_push($STUFENINFO[$s]['klassen'], $klasse);
-				}
-			} else {$fehler = true;}
-			$sql->close();
+			if (strlen($klassenids) > 2) {
+				$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM klassen WHERE id IN $klassenids");
+				if ($sql->execute()) {
+					$sql->bind_result($kid, $kbez);
+					while ($sql->fetch()) {
+						$klasse = array();
+						$klasse['id'] = $kid;
+						$klasse['bez'] = $kbez;
+						array_push($STUFENINFO[$s]['klassen'], $klasse);
+					}
+				} else {$fehler = true;}
+				$sql->close();
+			}
 		}
 	}
 
@@ -138,7 +142,7 @@ if (cms_angemeldet() && $zugriff) {
 		foreach ($STUFENINFO as $s) {
 			foreach ($s['klassen'] as $k) {
 				foreach ($FAECHERINFO as $f) {
-					if (!isset($_POST['kursenachklassen_'.$k['id'].'_'.$f['id']])) {$fehler = true;}
+					if (!isset($_POST['kursenachklassen_'.$k['id'].'_'.$f['id']])) {$fehler = true; echo 'kursenachklassen_'.$k['id'].'_'.$f['id']."<br>";}
 					else {
 						if ($_POST['kursenachklassen_'.$k['id'].'_'.$f['id']] == '1') {
 							$kurs = array();
@@ -162,7 +166,7 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($kursid);
-			while ($sql-fetch()) {
+			while ($sql->fetch()) {
 				// Dateisystem erzeugen
 				$pfad = '../../../dateien/schulhof/gruppen/kurse/'.$kursid;
 				if (file_exists($pfad)) {cms_dateisystem_ordner_loeschen($pfad);}

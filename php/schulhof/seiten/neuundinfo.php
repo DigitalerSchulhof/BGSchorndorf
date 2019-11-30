@@ -6,6 +6,7 @@
 		$code .= '<li><img src="res/icons/gross/cookies.png"><br>Cookies aktiv?</li>';
 		$code .= '<li><img src="res/icons/gross/javascript.png"><br>JavaScript aktiv?</li>';
 		$code .= '<li><img src="res/icons/gross/multinutzer.png"><br>Nur ein Nutzer pro Browser zur selben Zeit!</li>';
+		$code .= '<li><img src="res/icons/gross/firefox.png"> <img src="res/icons/gross/opera.png"> <img src="res/icons/gross/safari.png"><br>Unterstützte Browser:<br>Firefox &ge; 66<br>Opera &ge; 50<br>Chrome &ge; 63<br>Safari &ge; 12<br>Edge &ge; 38</li>';
 	$code .= '</ul>';
 	echo $code;
 	?>
@@ -35,11 +36,19 @@
 	<?php
 	$aeltere = "";
 
+	$code = "<h4>Version 0.5.5 - Dienstag, den 05. November 2019</h4>";
+	$code .= "<ul>";
+		$code .= "<li>Die Bedienbarkeit des Vertretungsplans im Schulhof wurde verbessert und neue Funktionen wurden hinzugefügt. Die Ausgabe auf Monitoren wurde bereitgestellt.</li>";
+		$code .= "<li>Kleinere Fehler wurde behoben.</li>";
+		$code .= "<li>Stundenpläne können aus Untis in den digitalen Schulhof importiert werden.</li>";
+	$code .= "</ul>";
+	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_5', 'Neuerungen in Version 0.5.5 einblenden', 'Neuerungen in Version 0.5.5 ausblenden', $code, 1);
+
 	$code = "<h4>Version 0.5.4 - Freitag, den 06. September 2019</h4>";
 	$code .= "<ul>";
 		$code .= "<li>Behebung diverser kleiner Fehler und Inkomatibilitäten.</li>";
 	$code .= "</ul>";
-	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_4', 'Neuerungen in Version 0.5.4 einblenden', 'Neuerungen in Version 0.5.4 ausblenden', $code, 1);
+	$aeltere .= cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_4', 'Neuerungen in Version 0.5.4 einblenden', 'Neuerungen in Version 0.5.4 ausblenden', $code, 0);
 
 	$code = "<h4>Version 0.5.3 - Freitag, den 06. September 2019</h4>";
 	$code .= "<ul>";

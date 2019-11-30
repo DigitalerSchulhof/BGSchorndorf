@@ -80,15 +80,14 @@ if (cms_angemeldet() && $zugriff) {
 		// PASSWORT GENERIEREN
 		// 24 Stunden in Sekunden später läuft das Passwort ab
 		$passwort = cms_generiere_passwort();
-		$passworttimeout = $jetzt + 24*60*60;
+		$passworttimeout = time() + 60*60*24;
 
 		$salt = cms_generiere_passwort().cms_generiere_passwort();
-
 		$salt = cms_texttrafo_e_db($salt);
 		$passwortsalted = $passwort.$salt;
 		$passwortsalted = cms_texttrafo_e_db($passwortsalted);
 
-		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), passworttimeout = ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', '', ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), 0, 0, ?, '', ?)");
+		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
 	  $sql->bind_param("issisisii", $id, $benutzername, $passwortsalted, $passworttimeout, $salt, $schuljahr, $mail, $jetzt, $jetzt);
 	  $sql->execute();
 	  $sql->close();
@@ -111,13 +110,13 @@ if (cms_angemeldet() && $zugriff) {
 		$dbp = cms_verbinden('p');
 		$sql = "CREATE TABLE postausgang_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			absender bigint(255) UNSIGNED NOT NULL,
-			empfaenger text COLLATE utf8_unicode_ci NOT NULL,
-			zeit bigint(255) UNSIGNED NOT NULL,
-			betreff varbinary(5000) NOT NULL,
-			nachricht longblob NOT NULL,
-			papierkorb varbinary(50) NOT NULL,
-			papierkorbseit bigint(255) UNSIGNED NOT NULL,
+			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
+			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
+			betreff varbinary(5000) DEFAULT NULL,
+			nachricht longblob DEFAULT NULL,
+			papierkorb varbinary(50) DEFAULT NULL,
+			papierkorbseit bigint(255) DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -125,15 +124,15 @@ if (cms_angemeldet() && $zugriff) {
 
 		$sql = "CREATE TABLE posteingang_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			absender bigint(255) UNSIGNED NOT NULL,
-			empfaenger bigint(255) UNSIGNED NOT NULL,
-			alle text COLLATE utf8_unicode_ci NOT NULL,
-			zeit bigint(255) UNSIGNED NOT NULL,
-			betreff varbinary(5000) NOT NULL,
-			nachricht longblob NOT NULL,
-			gelesen varbinary(50) NOT NULL,
-			papierkorb varbinary(50) NOT NULL,
-			papierkorbseit bigint(255) UNSIGNED NOT NULL,
+			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
+			empfaenger bigint(255) UNSIGNED NULL DEFAULT NULL,
+			alle text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
+			betreff varbinary(5000) DEFAULT NULL,
+			nachricht longblob DEFAULT NULL,
+			gelesen varbinary(50) DEFAULT NULL,
+			papierkorb varbinary(50) DEFAULT NULL,
+			papierkorbseit bigint(255) UNSIGNED NULL DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -141,13 +140,13 @@ if (cms_angemeldet() && $zugriff) {
 
 		$sql = "CREATE TABLE postentwurf_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			absender bigint(255) UNSIGNED NOT NULL,
-			empfaenger text COLLATE utf8_unicode_ci NOT NULL,
-			zeit bigint(255) UNSIGNED NOT NULL,
-			betreff varbinary(5000) NOT NULL,
-			nachricht longblob NOT NULL,
-			papierkorb varbinary(50) NOT NULL,
-			papierkorbseit bigint(255) UNSIGNED NOT NULL,
+			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
+			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
+			betreff varbinary(5000) DEFAULT NULL,
+			nachricht longblob DEFAULT NULL,
+			papierkorb varbinary(50) DEFAULT NULL,
+			papierkorbseit bigint(255) UNSIGNED NULL DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -173,9 +172,9 @@ if (cms_angemeldet() && $zugriff) {
 
 		$sql = "CREATE TABLE posttags_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			person bigint(255) UNSIGNED NOT NULL,
-			titel varbinary(2000) NOT NULL,
-			farbe int(2) NOT NULL,
+			person bigint(255) UNSIGNED NULL DEFAULT NULL,
+			titel varbinary(2000) DEFAULT NULL,
+			farbe int(2) NOT NULL DEFAULT 0,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -183,16 +182,16 @@ if (cms_angemeldet() && $zugriff) {
 
 		$sql = "CREATE TABLE termine_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			person bigint(255) UNSIGNED NOT NULL,
-			bezeichnung varbinary(5000) NOT NULL,
-			ort varbinary(5000) NOT NULL,
-			beginn bigint(255) UNSIGNED NOT NULL,
-			ende bigint(255) UNSIGNED NOT NULL,
-			mehrtaegigt varbinary(50) NOT NULL,
-			uhrzeitbt varbinary(50) NOT NULL,
-			uhrzeitet varbinary(50) NOT NULL,
-			ortt varbinary(50) NOT NULL,
-			text longblob NOT NULL,
+			person bigint(255) UNSIGNED NULL DEFAULT NULL,
+			bezeichnung varbinary(5000) DEFAULT NULL,
+			ort varbinary(5000) DEFAULT NULL,
+			beginn bigint(255) UNSIGNED NULL DEFAULT NULL,
+			ende bigint(255) UNSIGNED NULL DEFAULT NULL,
+			mehrtaegigt varbinary(50) DEFAULT NULL,
+			uhrzeitbt varbinary(50) DEFAULT NULL,
+			uhrzeitet varbinary(50) DEFAULT NULL,
+			ortt varbinary(50) DEFAULT NULL,
+			text longblob DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
@@ -242,8 +241,8 @@ if (cms_angemeldet() && $zugriff) {
 		$dbp->query($sql);	// Safe weil interne ID
 
 		$sql = "ALTER TABLE posteingang_".$id."
-		ADD CONSTRAINT personposteingang_".$id." FOREIGN KEY (empfaenger) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD CONSTRAINT personeinposteingang_".$id." FOREIGN KEY (empfaenger) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
+		$dbp->query($sql);
 
 		$sql = "ALTER TABLE postentwurf_".$id."
 		ADD CONSTRAINT personpostentwurf_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";

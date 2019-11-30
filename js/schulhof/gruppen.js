@@ -760,7 +760,7 @@ function cms_chat_aktualisieren(art, id) {
 function cms_chat_nachricht_melden_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   if(p.hasClass("cms_chat_nachricht_gemeldet")) {
-    cms_meldung_an("warnung", "Nachricht gemeldet", "<p>Diese Nachricht wurde schon gemeldet.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span>');
+    cms_meldung_an("warnung", "Nachricht gemeldet", "<p>Diese Nachricht wurde schon gemeldet.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
     return;
   }
   var id = p.find(".cms_chat_nachricht_id").html();
@@ -855,7 +855,7 @@ function cms_chat_nachrichten_nachladen(art, id, anzahl) {
 function cms_chat_nachricht_loeschen_anzeigen(t, art, gid) {
   var p = $(t).parents(".cms_chat_nachricht_aussen");
   if(p.hasClass("cms_chat_nachricht_geloescht")) {
-    cms_meldung_an("warnung", "Nachricht gelöscht", "<p>Diese Nachricht wurde schon gelöscht.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span>');
+    cms_meldung_an("warnung", "Nachricht gelöscht", "<p>Diese Nachricht wurde schon gelöscht.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
     return;
   }
   var id = p.find(".cms_chat_nachricht_id").html();
