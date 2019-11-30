@@ -261,3 +261,47 @@ function cms_check_idfeld(text) {
 	if (text == '') {return true;}
 	return text.match(/^(\|[0-9]+)+$/);
 }
+
+function cms_check_browser() {
+    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=/\brv[ :]+(\d+)/g.exec(ua) || [];
+        return {name:'IE',version:(tem[1]||'')};
+        }
+    if(M[1]==='Chrome'){
+        tem=ua.match(/\bOPR|Edge\/(\d+)/)
+        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
+        }
+    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+    return {
+      name: M[0],
+      version: M[1]
+    };
+ }
+
+ function cms_check_browserunterstuetzung() {
+	 var browser = cms_check_browser();
+	 var unterstuetzung = false;
+
+	 if ((browser.name == "Safari") && (browser.version >= 12)) {unterstuetzung = true;}
+	 if ((browser.name == "Firefox") && (browser.version >= 70)) {unterstuetzung = true;}
+	 if ((browser.name == "Opera") && (browser.version >= 50)) {unterstuetzung = true;}
+	 if ((browser.name == "Chrome") && (browser.version >= 63)) {unterstuetzung = true;}
+	 if ((browser.name == "Edge") && (browser.version >= 38)) {unterstuetzung = true;}
+
+	 if (!browser.name) {browser.name = "unklar";}
+	 if (!browser.version) {browser.version = "unklar";}
+
+	 var testfeld = document.getElementById('cms_browsertest');
+
+	 if (testfeld) {
+		 if (unterstuetzung) {
+			 testfeld.innerHTML = '<img src="res/icons/gross/erfolg.png"><br>Der Browser untestützt alle Funktionen des Schulhofs.';
+		 }
+		 else {
+			 testfeld.innerHTML = '<img src="res/icons/gross/warnung.png"><br>Der Browser untestützt womöglich nicht alle Funktionen.<br>'+browser.name+' ('+browser.version+')';
+		 }
+	 }
+
+ }
