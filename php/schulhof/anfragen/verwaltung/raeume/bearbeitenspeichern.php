@@ -161,7 +161,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Alle vorhandenen Geräte laden
 		$gidsvorhanden = "";
 		$sql = "SELECT id FROM raeumegeraete WHERE standort = $id";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil Ganzzahl Check
 			while ($daten = $anfrage->fetch_assoc()) {
 				$gidsvorhanden .= '|'.$daten['id'];
 			}

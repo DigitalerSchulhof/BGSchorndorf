@@ -28,7 +28,7 @@ function cms_vertretungsplan_naechsterschultag() {
   $dbs = cms_verbinden('s');
   // Suche Schultage dieses Zeitraums
   $sql = "SELECT * FROM zeitraeume WHERE $beginn BETWEEN beginn AND ende";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zeitraum = $daten;
     }
@@ -62,7 +62,7 @@ function cms_vertretungsplan_naechsterschultag() {
   $zeitraumok = false;
   // Prüfen, ob dieser Tag im gleichen Zeitraum liegt
   $sql = "SELECT COUNT(*) AS anzahl FROM zeitraeume WHERE id = ".$zeitraum['id']." AND $beginn BETWEEN beginn AND ende";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
     if ($daten = $anfrage->fetch_assoc()) {
       if ($daten['anzahl'] == 1) {$zeitraumok = true;}
     }
@@ -73,7 +73,7 @@ function cms_vertretungsplan_naechsterschultag() {
     // Falls der Zeitraum nicht okay ist, lade nächsten Zeitraum
     $nzeitraum = '-';
     $sql = "SELECT id, schuljahr, MIN(beginn) AS beginn, ende, mo, di, mi, do, fr, sa, so FROM zeitraeume WHERE beginn > ".$zeitraum['ende']." ";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       if ($daten = $anfrage->fetch_assoc()) {
         $nzeitraum = $daten;
       }
@@ -124,7 +124,7 @@ function cms_vertretungsplan_tag($dbs, $beginn, $ende) {
 
   $vtext = "";
   $sql = "SELECT AES_DECRYPT(textschueler, '$CMS_SCHLUESSEL') AS vts, AES_DECRYPT(textlehrer, '$CMS_SCHLUESSEL') AS vtl FROM vertretungstexte WHERE beginn = $beginn";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     if ($daten = $anfrage->fetch_assoc()) {
       if ($CMS_BENUTZERART == 'l') {$vtext = $daten['vtl'];}
       else if ($CMS_BENUTZERART == 's') {$vtext = $daten['vts'];}
@@ -136,7 +136,7 @@ function cms_vertretungsplan_tag($dbs, $beginn, $ende) {
   // Suche das Schuljahr des gegebenen Tages
   $schuljahr = '-';
   $sql = "SELECT id FROM schuljahre WHERE $beginn BETWEEN beginn AND ende";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil Check oben
     if ($daten = $anfrage->fetch_assoc()) {
       $schuljahr = $daten['id'];
     }
@@ -156,7 +156,7 @@ function cms_vertretungsplan_tag($dbs, $beginn, $ende) {
     $sql = "SELECT entfall, zusatzstunde, AES_DECRYPT(vertretungstext, '$CMS_SCHLUESSEL') AS vtext, beginn, ende, stunde, tbeginn, tende, tstunde, kurs, lehrkraft, tlehrkraft, raum, traum FROM tagebuch_$schuljahr WHERE vertretungsplan = 1 AND (lehrkraft = $CMS_BENUTZERID OR tlehrkraft = $CMS_BENUTZERID) AND ((beginn BETWEEN $beginn AND $ende) OR (tbeginn BETWEEN $beginn AND $ende))";
     $sql = "SELECT AES_DECRYPT(schulstunden.bezeichnung, '$CMS_SCHLUESSEL') AS astundenbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS akuerzel, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS araumbez, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, entfall, zusatzstunde, vtext, beginn, ende, stunde, tbeginn, tende, tstunde, tlehrkraft, traum FROM ($sql) AS x JOIN kurse ON x.kurs = kurse.id LEFT JOIN lehrer ON x.lehrkraft = lehrer.id LEFT JOIN raeume ON x.raum = raeume.id LEFT JOIN schulstunden ON x.stunde = schulstunden.id";
     $sql = "SELECT AES_DECRYPT(schulstunden.bezeichnung, '$CMS_SCHLUESSEL') AS nstundenbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS nraumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS nkuerzel, astundenbez, akuerzel, araumbez, kursbez, entfall, zusatzstunde, vtext, beginn, ende, tbeginn, tende, tstunde FROM ($sql) AS y LEFT JOIN lehrer ON y.tlehrkraft = lehrer.id LEFT JOIN raeume ON y.traum = raeume.id LEFT JOIN schulstunden ON y.tstunde = schulstunden.id ORDER BY beginn";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       while ($daten = $anfrage->fetch_assoc()) {
         $code .= cms_vertretungsplan_vertretungsstunde($daten, $tag, $monat, $jahr);
       }
@@ -168,7 +168,7 @@ function cms_vertretungsplan_tag($dbs, $beginn, $ende) {
     $sql = "SELECT entfall, zusatzstunde, AES_DECRYPT(vertretungstext, '$CMS_SCHLUESSEL') AS vtext, beginn, ende, stunde, tbeginn, tende, tstunde, kurs, lehrkraft, tlehrkraft, raum, traum FROM tagebuch_$schuljahr WHERE vertretungsplan = 1 AND (kurs IN (SELECT kurs FROM kursschueler WHERE schueler = $CMS_BENUTZERID)) AND ((beginn BETWEEN $beginn AND $ende) OR (tbeginn BETWEEN $beginn AND $ende))";
     $sql = "SELECT AES_DECRYPT(schulstunden.bezeichnung, '$CMS_SCHLUESSEL') AS astundenbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS akuerzel, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS araumbez, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, entfall, zusatzstunde, vtext, beginn, ende, stunde, tbeginn, tende, tstunde, tlehrkraft, traum FROM ($sql) AS x JOIN kurse ON x.kurs = kurse.id LEFT JOIN lehrer ON x.lehrkraft = lehrer.id LEFT JOIN raeume ON x.raum = raeume.id LEFT JOIN schulstunden ON x.stunde = schulstunden.id";
     $sql = "SELECT AES_DECRYPT(schulstunden.bezeichnung, '$CMS_SCHLUESSEL') AS nstundenbez, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS nraumbez, AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL') AS nkuerzel, astundenbez, akuerzel, araumbez, kursbez, entfall, zusatzstunde, vtext, beginn, ende, tbeginn, tende, tstunde FROM ($sql) AS y LEFT JOIN lehrer ON y.tlehrkraft = lehrer.id LEFT JOIN raeume ON y.traum = raeume.id LEFT JOIN schulstunden ON y.tstunde = schulstunden.id ORDER BY beginn";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       while ($daten = $anfrage->fetch_assoc()) {
         $code .= cms_vertretungsplan_vertretungsstunde($daten, $tag, $monat, $jahr);
       }

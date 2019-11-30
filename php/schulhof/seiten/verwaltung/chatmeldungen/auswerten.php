@@ -17,7 +17,7 @@
       }
       $sql = substr($sql, 0, -5);
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           extract($daten);
           $liste .= '<tr>';

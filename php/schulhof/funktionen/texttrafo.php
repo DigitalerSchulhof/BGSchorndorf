@@ -9,7 +9,7 @@ function cms_texttrafo_e_event($string) {
 function cms_texttrafo_e_db($string) {
 	$string = str_replace("<br></p>", "</p>", $string);
 	if(cms_boesartig($string)) {
-		include_once "../../../php\schulhof\seiten\auffaelliges\auswerten.php";
+		include_once "../../../php/schulhof/seiten/auffaelliges/auswerten.php";
 		cms_auffaelliges_speichern(2);
 		die("BÖSE");
 	}

@@ -97,7 +97,7 @@ if (cms_angemeldet() && $zugriff) {
 	  $sql->close();
 
 		$sql = "DELETE FROM profilfaecher WHERE profil = $pid";
-		$dbs->query($sql);
+		$dbs->query($sql);	// Safe weil Existenz Check
 
 		$sql = $dbs->prepare("INSERT INTO profilfaecher (profil, fach) VALUES (?, ?)");
 		foreach ($wahlfaecher as $w) {

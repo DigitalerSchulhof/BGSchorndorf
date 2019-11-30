@@ -12,12 +12,12 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
   $dbs = cms_verbinden('s');
   if($gesamt) {
     $sql = "SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_schulhof WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_schulhof)";
-    $anfrage = $dbs->query($sql);
+    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
     if($r = $anfrage->fetch_assoc()) {
       $start = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
     }
     $sql = "SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_schulhof WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_schulhof)";
-    $anfrage = $dbs->query($sql);
+    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
     if($r = $anfrage->fetch_assoc()) {
       $ende = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
     }
@@ -28,7 +28,7 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
     return cms_meldung_fehler();
   if($start["jahr"] == $ende["jahr"] && $start["monat"] == $ende["monat"]) {
     if(!$kd)
-      echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+      echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -158,13 +158,13 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
     }
     if($r->num_rows == 0) {
       if(!$kd)
-        echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+        echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
       $kd = true;
       return;
     }
   } else {
     if(!$kd)
-      echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+      echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -340,7 +340,7 @@ function cms_besucherstatistik_schulhof_jahresplaettchen() {
   $jahr = date("Y");
   $dbs = cms_verbinden('s');
   $sql = "SELECT MIN(jahr) AS jahr FROM besucherstatistik_schulhof";
-  $anfrage = $dbs->query($sql);
+  $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
   if(!$anfrage) {
     echo cms_meldung_fehler();
     return;
@@ -348,7 +348,7 @@ function cms_besucherstatistik_schulhof_jahresplaettchen() {
   $sqld = $anfrage->fetch_assoc();
   $minJahr = intval($sqld["jahr"]);
   if($minJahr == 0) {
-    echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+    echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -374,18 +374,27 @@ function cms_erfasse_click() {
     if($CMS_ANGEMELDET) {
       $rolle = $CMS_BENUTZERART;
       $sql = "SELECT aufrufe FROM besucherstatistik_schulhof WHERE jahr = '$jahr' AND monat = '$monat' AND url = '$url' AND rolle = '$rolle'";
-      $anfrage = $dbs->query($sql);
+      $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
       if ($anfrage->fetch_assoc()) {
           $sql = "UPDATE besucherstatistik_schulhof SET aufrufe = aufrufe + 1 WHERE jahr = $jahr AND monat = $monat AND url = '$url' AND rolle = '$rolle'";
       } else {
         $sql = "INSERT into besucherstatistik_schulhof (jahr, monat, rolle, url, aufrufe) VALUES ($jahr, $monat, '$rolle', '$url', 1)";
       }
-      $dbs->query($sql);
+      $dbs->query($sql);  // Safe weil keine Eingabe
     }
   }
   $tabelle = "";
-  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) != "-" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
-    $dbs->query("INSERT INTO urls (url) VALUES ('$CMS_URLGANZ')");
+
+
+  $website =  !is_null($CMS_SEITENDETAILS)            &&  // Seitendetails
+              (strlen($CMS_SEITENDETAILS['id']) > 0)  &&  // Gültige Seite
+              (
+                cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) !== "-"                                                    ||  // Website
+                ($CMS_SEITENDETAILS["art"] === "t" || $CMS_SEITENDETAILS["art"] === "b" || $CMS_SEITENDETAILS["art"] === "g")      // Artikel
+              );
+
+
+  if($website) {
     $id = $CMS_SEITENDETAILS["id"];
     $tabelle = "besucherstatistik_website";
     if($CMS_SEITENDETAILS["art"] == "t") {
@@ -401,13 +410,13 @@ function cms_erfasse_click() {
       $id = $CMS_GALERIEID;
     }
     $sql = "SELECT aufrufe FROM $tabelle WHERE jahr = '$jahr' AND monat = '$monat' AND id = '$id'";
-    $anfrage = $dbs->query($sql);
+    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
     if ($anfrage->fetch_assoc()) {
         $sql = "UPDATE $tabelle SET aufrufe = aufrufe + 1 WHERE jahr = $jahr AND monat = $monat AND id = $id";
     } else {
       $sql = "INSERT into $tabelle (jahr, monat, id, aufrufe) VALUES ($jahr, $monat, $id, 1)";
     }
-    $anfrage = $dbs->query($sql);
+    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
   }
   cms_trennen($dbs);
 }

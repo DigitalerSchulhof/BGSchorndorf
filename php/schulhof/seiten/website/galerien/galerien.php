@@ -25,7 +25,7 @@ $jahrende = $jahrgewaehlt;
 $jahre = false;
 
 $sql = "SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM galerien";
-if ($anfrage = $dbs->query($sql)) {
+if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
   if ($daten = $anfrage->fetch_assoc()) {
     if (!is_null($daten['anfang'])) {
       $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);

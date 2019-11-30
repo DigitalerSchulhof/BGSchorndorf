@@ -7,7 +7,7 @@ function cms_schulhof_raeume_links_anzeigen () {
 
     $dbs = cms_verbinden('s');
     $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $anzeigename = $daten['bezeichnung'];
         $anzeigenamelink = cms_textzulink($anzeigename);

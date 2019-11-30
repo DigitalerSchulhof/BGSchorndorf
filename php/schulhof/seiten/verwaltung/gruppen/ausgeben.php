@@ -69,7 +69,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
         $sqlzusatz = ", stufe, fach, AES_DECRYPT(kursbezextern, '$CMS_SCHLUESSEL') AS kursbezextern, AES_DECRYPT(kurzbezeichnung, '$CMS_SCHLUESSEL') AS kurzbezeichnung";
       }
       $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, schuljahr, chataktiv$sqlzusatz FROM $namek WHERE id = $id";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         if ($daten = $anfrage->fetch_assoc()) {
           $bezeichnung = $daten['bezeichnung'];
           $sichtbar = $daten['sichtbar'];
@@ -102,7 +102,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       // Zugeordnete Klassen suchen
       if ($namek == 'kurse') {
         $sql = "SELECT klasse AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM kurseklassen JOIN klassen ON kurseklassen.klasse = klassen.id WHERE kurs = $id";
-        if ($anfrage = $dbs->query($sql)) {
+        if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
           while ($daten = $anfrage->fetch_assoc()) {
             array_push($zugeordneteklassen, $daten);
           }
@@ -112,7 +112,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
       // Mitglieder
       $sql = "SELECT gruppe, person FROM $namek"."mitglieder WHERE gruppe = $id";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $mitglieder .= "|".$daten['person'];
         }
@@ -121,7 +121,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
       // Vorsitz
       $sql = "SELECT gruppe, person FROM $namek"."vorsitz WHERE gruppe = $id";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $vorsitz .= "|".$daten['person'];
         }
@@ -130,7 +130,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
       // Aufsicht
       $sql = "SELECT gruppe, person FROM $namek"."aufsicht WHERE gruppe = $id";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           $aufsicht .= "|".$daten['person'];
         }
@@ -142,7 +142,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     if ($namek == 'stufen') {
       if ($schuljahr == '-') {$schuljahrwert = "IS NULL";} else {$schuljahrwert = " = ".$schuljahr;}
       $sql = "SELECT count(id) AS anzahl FROM stufen WHERE schuljahr $schuljahrwert";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
         if ($daten = $anfrage->fetch_assoc()) {
           $stufenanzahl = $daten['anzahl'];
         }
@@ -155,7 +155,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       $stufen = array();
       if ($schuljahr == '-') {$schuljahrwert = "IS NULL";} else {$schuljahrwert = " = ".$schuljahr;}
       $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr $schuljahrwert ORDER BY reihenfolge ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($stufen, $daten);
         }
@@ -164,7 +164,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
       $faecher = array();
       $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr $schuljahrwert) AS x ORDER BY bez ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($faecher, $daten);
         }
@@ -177,7 +177,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       $klassen = array();
       if (($stufe != '-') && (!is_null($stufe))) {$stufetest = " AND stufe = $stufe";} else {$stufetest = "";}
       $sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr $schuljahrwert"."$stufetest) AS x ORDER BY reihenfolge ASC, bez ASC";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($klassen, $daten);
         }
@@ -186,7 +186,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
       if ($id != '-') {
         $sql = "SELECT klasse FROM kurseklassen WHERE kurs = $id";
-        if ($anfrage = $dbs->query($sql)) {
+        if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
           while ($daten = $anfrage->fetch_assoc()) {
             array_push($zugeordneteklassen, $daten['klasse']);
             $allezugeordnetenklassenids .= "|".$daten['klasse'];
@@ -198,15 +198,16 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
 
     // Alle Schuljahre laden
     $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre ORDER BY ende DESC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         array_push($schuljahre, $daten);
       }
       $anfrage->free();
     }
+
     // Verwendete Icons laden
     $sql = "SELECT DISTINCT AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $namek";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         array_push($verwendeteicons, $daten['icon']);
       }

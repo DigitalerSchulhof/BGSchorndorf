@@ -24,7 +24,7 @@ $code = "<div class=\"cms_spalte_i\">";
   $freietage = array();
 
   $sql = "SELECT beginn, ende FROM ferien WHERE (beginn BETWEEN $jahraktuella AND $jahraktuelle) OR (ende BETWEEN $jahraktuella AND $jahraktuelle)";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       // 86400 Sekunden hat ein Tag
       for ($i = $daten['beginn']; $i <= $daten['ende']; $i = $i + 86400) {

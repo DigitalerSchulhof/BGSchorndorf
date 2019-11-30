@@ -22,14 +22,14 @@ if ($zugriff) {
 			$gfaelle = "";
 			$sql = "SELECT blogeintraege.id AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, aktiv, oeffentlichkeit, datum, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, erstellt, blogeintraege.idzeit AS idzeit, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, personen.id AS person FROM blogeintraege LEFT JOIN personen ON blogeintraege.idvon = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE genehmigt = 0 ORDER BY datum DESC";
 
-		  if ($anfrage = $dbs->query($sql)) {
+		  if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		    while ($daten = $anfrage->fetch_assoc()) {
 		      $gfaelle .= '<tr><td><img src="res/icons/klein/blog.png"></td><td>'.$daten['bezeichnung'].'</td>';
 		      $zuordnungen = "";
 		      foreach ($CMS_GRUPPEN as $g) {
 		        $gk = cms_textzudb($g);
 		        $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."blogeintraege JOIN $gk ON gruppe = id WHERE blogeintrag = ".$daten['id'].") AS x ORDER BY bezeichnung ASC";
-		        if ($anfrage2 = $dbs->query($sql)) {
+		        if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 		          while ($z = $anfrage2->fetch_assoc()) {
 		            $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> ";
 		          }
@@ -91,7 +91,7 @@ if ($zugriff) {
 			foreach ($CMS_GRUPPEN as $g) {
 				$gk = cms_textzudb($g);
 				$sql = "SELECT $gk".".id AS gid, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahr, $gk"."blogeintraegeintern.id AS id, AES_DECRYPT($gk"."blogeintraegeintern.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, AES_DECRYPT($gk".".bezeichnung, '$CMS_SCHLUESSEL') AS gbezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, aktiv, datum, erstellt, $gk"."blogeintraegeintern.idzeit AS idzeit, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, personen.id AS person FROM $gk"."blogeintraegeintern LEFT JOIN personen ON $gk"."blogeintraegeintern.idvon = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id JOIN $gk"." ON $gk"."blogeintraegeintern.gruppe = $gk".".id LEFT JOIN schuljahre ON $gk".".schuljahr = schuljahre.id WHERE genehmigt = 0 ORDER BY beginn DESC, ende DESC";
-			  if ($anfrage = $dbs->query($sql)) {
+			  if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			    while ($daten = $anfrage->fetch_assoc()) {
 			      $gfaelle .= '<tr><td><img src="res/icons/klein/blog.png"></td><td>'.$daten['bezeichnung'].'</td>';
 			      $zuordnungen = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$daten['gbezeichnung']."</span><img src=\"res/gruppen/klein/".$daten['icon']."\"></span> ";

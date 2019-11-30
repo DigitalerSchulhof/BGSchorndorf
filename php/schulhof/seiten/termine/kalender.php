@@ -131,7 +131,7 @@ if (!$fehler) {
     // FERIEN LADEN
     $sql = "SELECT bezeichnung, art, beginn, ende, mehrtaegigt, '' AS text, '0' AS ortt, '0' AS uhrzeitbt, '0' AS uhrzeitet, '1' AS genehmigt FROM ferien WHERE (beginn BETWEEN $suchbeginn AND $suchende) OR (ende BETWEEN $suchbeginn AND $suchende) OR";
     $sql .= " (beginn < $suchbeginn AND ende > $suchende) ORDER BY beginn ASC, ende DESC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         // Tag des Beginns erhalten
         $beginntag = ceil(($daten['beginn'] + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
@@ -165,7 +165,7 @@ if (!$fehler) {
     $sql = "SELECT * FROM ((SELECT id, '' AS gruppenart, '' AS gruppe, 'oe' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND id IN ($gruppensuche)) $sqlintern) AS x WHERE (beginn BETWEEN $suchbeginn AND $suchende) OR (ende BETWEEN $suchbeginn AND $suchende) OR";
     $sql .= " (beginn < $suchbeginn AND ende > $suchende) ORDER BY beginn ASC, ende DESC";
 
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         // Tag des Beginns erhalten
         $beginntag = ceil(($daten['beginn'] + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
@@ -196,7 +196,7 @@ if (!$fehler) {
     else {$oeffentlichausschluss = "";}
 
     $sql = "SELECT id, 'oe' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND oeffentlichkeit >= $oeffentlichkeitslimit $oeffentlichausschluss ORDER BY beginn ASC, ende DESC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         // Tag des Beginns erhalten
         $beginntag = ceil(($daten['beginn'] + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
@@ -285,7 +285,7 @@ if (!$fehler) {
       $gk = cms_textzudb($g);
       $gid = $t['id'];
       $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = $gid";
-      if ($anfrage2 = $dbs->query($sql)) {
+      if ($anfrage2 = $dbs->query($sql)) {  // Safe weil interne ID
         if ($daten2 = $anfrage2->fetch_assoc()) {
           $schuljahrbez = $daten2['sbez'];
           $gbez = $daten2['gbez'];

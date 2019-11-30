@@ -67,7 +67,7 @@ if (cms_angemeldet() && $zugriff) {
 			$pids = "(".substr($pids, 1).")";
 			if (cms_check_idliste($pids)) {
 				$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$pids." AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL');";
-				if ($anfrage = $dbs->query($sql)) {
+				if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
 					if ($daten = $anfrage->fetch_assoc()) {
 						if ($daten['anzahl'] != 0) {
 							$fehler = true;

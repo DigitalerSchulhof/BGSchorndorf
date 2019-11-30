@@ -61,7 +61,7 @@ if (cms_angemeldet() && $zugriff) {
 			$sql .= "galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = '$galerieanzahl', galerieanzahlneu = '$galerieanzahl' ";
 			$sql .= "WHERE id = $id";
 		}
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 		echo "ERFOLG";
 	}
 	else {

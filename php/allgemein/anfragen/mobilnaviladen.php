@@ -16,8 +16,8 @@ if (!cms_check_ganzzahl($id)) {$fehler = true;}
 
 $dbs = cms_verbinden();
 
-$sql = "SELECT * FROM seiten WHERE id = '$id'";
-if ($anfrage = $dbs->query($sql)) {
+$sql = "SELECT * FROM seiten WHERE id = '{$id}'";
+if ($anfrage = $dbs->query($sql)) {	// Safe weil Ganzzahl check
 	if ($daten = $anfrage->fetch_assoc()) {
 		$seite = $daten;
 	}
@@ -47,7 +47,7 @@ if (!$fehler) {
 			$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = '1'";
 			$art = 'Galerien';
 		}
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			if ($daten = $anfrage->fetch_assoc()) {
 				if (!is_null($daten['beginn'])) {
 					$jahrbeginn = min($jahrbeginn, date('Y', $daten['beginn']));

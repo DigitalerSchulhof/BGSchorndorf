@@ -60,7 +60,7 @@ if (cms_angemeldet() && $zugriff) {
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
   			$sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN ($ids)";
-  			if ($anfrage = $dbs->query($sql)) {
+  			if ($anfrage = $dbs->query($sql)) {  // Safe weil ID Check
   				if ($daten = $anfrage->fetch_assoc()) {
   					if ($daten['anzahl'] != $anzahl) {$fehler = true;}
   				}

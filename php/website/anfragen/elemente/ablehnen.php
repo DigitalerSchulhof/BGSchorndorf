@@ -13,6 +13,9 @@ if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Inhalte freigeben'];
 
+if(!cms_check_ganzzahl($id))
+	die("FEHLER");
+
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
@@ -25,12 +28,12 @@ if (cms_angemeldet() && $zugriff) {
 		else if ($art == 'downloads') {$sql = "pfadneu = pfadaktuell, titelneu = titelaktuell, beschreibungneu = beschreibungaktuell, dateinamealt = dateinameaktuell, dateigroessealt = dateigroesseaktuell";}
 		else if ($art == 'boxenaussen') {
 			$sql = "UPDATE boxen SET titelneu = titelaktuell, inhaltneu = inhaltaktuell, styleneu = styleaktuell WHERE boxaussen = '$id'";
-			$dbs->query($sql);
+			$dbs->query($sql);	// Safe weil ID Check
 			$sql = "ausrichtungneu = ausrichtungaktuell, breiteneu = breiteaktuell";
 		}
 		else if ($art == 'eventuebersichten') {$sql = "termineneu = termineaktuell, termineanzahlneu = termineanzahlaktuell, blogneu = blogaktuell, bloganzahlneu = bloganzahlaktuell, galerieneu = galerieaktuell, galerieanzahlneu = galerieanzahlaktuell";}
 		$sql = "UPDATE $art SET ".$sql."  WHERE id = $id";
-		$dbs->query($sql);
+		$dbs->query($sql);	// TODO: Irgendwie safe machen
 		cms_trennen($dbs);
 		echo "ERFOLG";
 	}

@@ -62,9 +62,17 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$sql = "UPDATE boxenaussen SET position = $position, ausrichtungneu = '$ausrichtung', breiteneu = '$breite' WHERE id = $id";}
-		else {$sql = "UPDATE boxenaussen SET position = $position, ausrichtungalt = ausrichtungaktuell, ausrichtungaktuell = '$ausrichtung', ausrichtungneu = '$ausrichtung', breitealt = breiteaktuell, breiteaktuell = '$breite', breiteneu = '$breite', aktiv = '$aktiv' WHERE id = $id";}
-		$anfrage = $dbs->query($sql);
+		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
+			$sql = "UPDATE boxenaussen SET position = ?, ausrichtungneu = ?, breiteneu = ? WHERE id = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("isii", $position, $ausrichtung, $breite, $id);
+			$sql->execute();
+		} else {
+			$sql = "UPDATE boxenaussen SET position = ?, ausrichtungalt = ausrichtungaktuell, ausrichtungaktuell = ?, ausrichtungneu = ?, breitealt = breiteaktuell, breiteaktuell = ?, breiteneu = ?, aktiv = ? WHERE id = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("issiiii", $position, $ausrichtung, $ausrichtung, $breite, $breite, $aktiv, $id);
+			$sql->execute();
+		}
 
 
 		$eingetragen = array();
@@ -99,7 +107,7 @@ if (cms_angemeldet() && $zugriff) {
 				}
 				array_push($eingetragen, $boxen[$i]['id']);
 			}
-			$dbs->query($sql);
+			$dbs->query($sql);	// TODO: Irgendwie safe machen
 			$position++;
 		}
 		// Lösche Boxen, die nicht mehr dazu gehören

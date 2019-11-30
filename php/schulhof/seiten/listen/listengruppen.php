@@ -18,7 +18,7 @@ foreach ($CMS_GRUPPEN as $g) {
   }
   $gruppenliste = "";
   if (strlen($sql) > 0) {
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         if (is_null($daten['sbez'])) {$daten['sbez'] = "Schuljahrübergreifend";}
         $gruppenliste .= "<a class=\"cms_button\" href=\"Schulhof/Listen/Gruppen/".cms_textzulink($g)."/".cms_textzulink($daten['sbez'])."/".cms_textzulink($daten['gbez'])."\">".$daten['gbez']."</a> ";

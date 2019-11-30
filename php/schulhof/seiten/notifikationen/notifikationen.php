@@ -3,7 +3,7 @@ function cms_notifikationen_ausgeben($dbs, $person) {
   global $CMS_SCHLUESSEL;
   $neuigkeiten = "";
   $sql = "SELECT id, AES_DECRYPT(gruppe, '$CMS_SCHLUESSEL') AS gruppe, gruppenid, status, art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link FROM notifikationen WHERE person = $person ORDER BY zeit DESC";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     while ($daten = $anfrage->fetch_assoc()) {
       if (($daten['status'] == 'l') || ($daten['status'] == 'a') || ($daten['status'] == 'w') || ($daten['status'] == 'e')) {
         $event = " onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"";
@@ -89,10 +89,14 @@ function cms_notifikation_gruppendetails($dbs, $gruppe, $gruppenid) {
   else {
     $gk = cms_textzudb($gruppe);
     $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk WHERE id = $gruppenid";
-    if ($anfrage = $dbs->query($sql)) {
-      if ($daten = $anfrage->fetch_assoc()) {
-        $rueckgabe['icon'] = "res/gruppen/gross/".$daten['icon'];
-        $rueckgabe['bezeichnung'] = $daten['bezeichnung'];
+    $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk WHERE id = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $gruppenid);
+    if ($sql->execute()) {
+      $sql->bind_result($bez, $icon);
+      if ($sql->fetch()) {
+        $rueckgabe['icon'] = "res/gruppen/gross/$icon";
+        $rueckgabe['bezeichnung'] = $bez;
       }
     }
   }

@@ -29,6 +29,7 @@ function cms_meldung_bastler () {
 }
 
 function cms_meldung_berechtigung () {
+	global $CMS_URLGANZ;
 	if (isset($_SESSION['BENUTZERART'])) {$art = $_SESSION['BENUTZERART'];}
 	else {$art = "";}
 
@@ -38,7 +39,8 @@ function cms_meldung_berechtigung () {
 	else {
 		$inhalt = '<p>Sie sind nicht berechtigt, diese Seite zu sehen!</p>';
 	}
-
+	include_once dirname(__FILE__)."/../../../php/schulhof/seiten/auffaelliges/auswerten.php";
+	cms_auffaelliges_speichern(0, array("pfad" => $CMS_URLGANZ));
 	return cms_meldung ("fehler", "<h4>Zugriff verweigert</h4>".$inhalt);
 }
 

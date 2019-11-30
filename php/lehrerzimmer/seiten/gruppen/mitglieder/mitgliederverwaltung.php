@@ -56,7 +56,7 @@ if (cms_angemeldet() && (strlen($mitglieder_temp) > 0)) {
 		if (strlen($suchmuster) == 0) {$suchmuster = "()";}
 
 		$sql = "SELECT id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname FROM personen WHERE id IN $suchmuster ORDER BY nachname, vorname ASC;";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
 			while ($daten = $anfrage->fetch_assoc()) {
 				$mitgliedercode .= cms_personensuche_personrechteerzeugen ('lehrerzimmer_gremien_mitglieder', 1, $daten['id'], $daten['art'], $daten['vorname'], $daten['nachname'], $daten['titel'], $rechte[$daten['id']], true);
 				$mitgliederhidden .= "|".$daten['id'];

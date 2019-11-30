@@ -36,7 +36,7 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     $jetzt = time();
     // Neue ID bestimmten und eintragen
     $sql = "SET FOREIGN_KEY_CHECKS = 0";
-    $anfrage = $db->query($sql);
+    $anfrage = $db->query($sql);  // Safe weil keine Eingabe
 
     $sql = $db->prepare("INSERT INTO $tabelle (id, idvon, idzeit) SELECT id, idvon, idzeit FROM (SELECT IFNULL(id*0,0)+? AS idvon, IFNULL(id*0,0)+? AS idzeit, IFNULL(MIN(id)+1,1) AS id FROM $tabelle WHERE id+1 NOT IN (SELECT id FROM $tabelle)) AS vorherigeid");
   	$sql->bind_param("ii", $benutzer, $jetzt);
@@ -44,7 +44,7 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
   	$sql->close();
 
 		$sql = "SET FOREIGN_KEY_CHECKS = 1";
-    $anfrage = $db->query($sql);
+    $anfrage = $db->query($sql);  // Safe weil keine Eingabe
 
     // ID zurückgewinnen
     $id = null;
@@ -228,7 +228,7 @@ function cms_kategorieicons_generieren($id, $art, $icon = 'standard.png') {
   if (strlen($sql) > 0) {
     $sql = substr($sql, 7);
     $sql = "SELECT DISTINCT icon FROM ($sql) AS x";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       while ($daten = $anfrage->fetch_assoc()) {
         array_push ($verwendet, $daten['icon']);
       }
@@ -272,14 +272,14 @@ function cms_geraeteverwalten_knopf($dbs) {
   $anzahlneu = 0;
   $anzahl = "";
   $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $anzahldefekt = $daten['anzahl'];
     }
     $anfrage->free();
   }
   $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $anzahlneu = $daten['anzahl'];
     }
@@ -309,7 +309,7 @@ function cms_terminegenehmigen_knopf($dbs) {
   }
   $sql = substr($sql, 7);
   $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zusatz = "";
       $anzahl = "";
@@ -338,7 +338,7 @@ function cms_blogeintraegegenehmigen_knopf($dbs) {
   }
   $sql = substr($sql, 7);
   $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zusatz = "";
       $anzahl = "";
@@ -357,7 +357,7 @@ function cms_galeriengenehmigen_knopf($dbs) {
   $code = "";
   $zusatz = "";
   $sql = "SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zusatz = "";
       $anzahl = "";
@@ -376,7 +376,7 @@ function cms_identitaetsdiebstaehle_knopf($dbs) {
   $code = "";
   $zusatz = "";
   $sql = "SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zusatz = "";
       $anzahl = "";
@@ -397,14 +397,14 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   $anzahlneu = 0;
   $anzahl = "";
   $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $anzahlauftraege = $daten['anzahl'];
     }
     $anfrage->free();
   }
   $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $anzahlneu = $daten['anzahl'];
     }
@@ -424,7 +424,7 @@ function cms_auffaelliges_knopf($dbs) {
   $code = "";
   $zusatz = "";
   $sql = "SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status=0";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $zusatz = "";
       $anzahl = "";
@@ -450,7 +450,7 @@ function cms_chatmeldungen_knopf($dbs) {
   }
   $sql = substr($sql, 0, -5);
   $anzahl = 0;
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       $anzahl += $daten["anzahl"];
     }
@@ -536,13 +536,13 @@ function cms_generiere_bilddaten($pfad) {
   return 'data:image/'.$typ.';base64,'.base64_encode($daten);
 }
 
-function cms_gruppeninfos_generieren ($dbs) {
+function cms_gruppeninfos_generieren ($dbs) { // QUESTION: Wofür ist das? »$gruppen« ist leer?
   global $CMS_SCHLUESSEL, $CMS_GRUPPEN;
   $gruppen = array();
   foreach ($gruppen as $a) {
     $a = cms_textzudb($a);
     $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $a) AS x ORDER BY bezeichnung";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $gruppen[$a][$daten['id']]['bezeichnung'] = $daten['bezeichnung'];
         $gruppen[$a][$daten['id']]['icon'] = $daten['icon'];
@@ -657,7 +657,7 @@ function cms_amtstraeger ($dbs, $id, $amt) {
     }
     $sql = substr($sql,7);
     $sql = "SELECT DISTINCT COUNT(*) AS anzahl FROM ($sql) AS x";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       if ($daten = $anfrage->fetch_assoc()) {
         if ($daten['anzahl'] > 0) {$amtstraeger = true;}
       }

@@ -15,17 +15,16 @@ else {
 	if ($zugriff) {
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
-		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = $id";
+		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		$sql->bind_result($vorname, $nachname, $personart);
 
 		$fehler = false;
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$vorname = $daten['vorname'];
-				$nachname = $daten['nachname'];
-				$personart = $daten['art'];
+		if ($sql->execute()) {
+			if ($sql->fetch()) {
 			}
 			else {$fehler = false;}
-			$anfrage->free();
 		}
 		else {$fehler = false;}
 
@@ -55,7 +54,7 @@ if (!$fehler) {
 	$rollencode = "";
 	$sql = "SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, rollen.id AS rolle FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = $id) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle WHERE personenart = AES_ENCRYPT('$personart', '$CMS_SCHLUESSEL')) AS rollen ORDER BY bezeichnung ASC";
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($daten['person'] == $id) {$rollencode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(0, ".$daten['rolle'].")\">".$daten['bezeichnung']."</span> ";}
 			else {$rollencode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(1, ".$daten['rolle'].")\">".$daten['bezeichnung']."</span> ";}
@@ -81,7 +80,7 @@ if (!$fehler) {
 	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = $id))) AS rechte ORDER BY kategorie ASC, bezeichnung ASC";
 	$altekategorie = "";
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($altekategorie != $daten['kategorie']) {
 				$rechtecode .= "</p><h4>".$daten['kategorie']."</h4><p>";
@@ -114,7 +113,7 @@ if (!$fehler) {
 
 	$altekategorie = "";
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if ($altekategorie != $daten['kategorie']) {
 				$rechtecode .= "</p><h4>".$daten['kategorie']."</h4><p>";

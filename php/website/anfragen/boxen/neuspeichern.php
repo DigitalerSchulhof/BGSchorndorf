@@ -35,10 +35,13 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// Prüfen, ob es eine übergeordnete Seite gibt
-		$sql = "SELECT COUNT(id) AS anzahl FROM spalten WHERE id = '$spalte'";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] == 0) {
+		$sql = "SELECT COUNT(id) AS anzahl FROM spalten WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $spalte);
+		if ($sql->execute()) {
+			$sql->bind_result($anz);
+			if ($sql->fetch()) {
+				if (!$anz) {
 					$fehler = true;
 					echo "ZUORDNUNG";
 				}
@@ -77,8 +80,10 @@ if (cms_angemeldet() && $zugriff) {
 		$dbs = cms_verbinden('s');
 		$id = cms_generiere_kleinste_id('boxenaussen');
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
-		$sql = "UPDATE boxenaussen SET spalte = $spalte, position = $position, aktiv = '$aktiv', ausrichtungalt = '$ausrichtung', ausrichtungaktuell = '$ausrichtung', ausrichtungneu = '$ausrichtung', breitealt = '$breite', breiteaktuell = '$breite', breiteneu = '$breite' WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "UPDATE boxenaussen SET spalte = ?, position = ?, aktiv = ?, ausrichtungalt = ?, ausrichtungaktuell = ?, ausrichtungneu = ?, breitealt = ?, breiteaktuell = ?, breiteneu = ? WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("iiisssiiii", $spalte, $position, $aktiv, $ausrichtung, $ausrichtung, $ausrichtung, $breite, $breite, $breite, $id);
+		$sql->execute();
 
 		// Boxen eintragen
 		$position = 1;
@@ -91,7 +96,7 @@ if (cms_angemeldet() && $zugriff) {
 			$sql .= "inhaltalt = '".$boxen[$i]['inhalt']."', inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";
 			$sql .= "stylealt = '".$boxen[$i]['style']."', styleaktuell = '".$boxen[$i]['style']."', styleneu = '".$boxen[$i]['style']."' ";
 			$sql .= "WHERE id = $bid";
-			$dbs->query($sql);
+			$dbs->query($sql);	// TODO: Irgendwie safe machen
 			$position++;
 		}
 		echo "ERFOLG";

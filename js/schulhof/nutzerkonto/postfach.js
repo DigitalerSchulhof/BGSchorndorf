@@ -38,7 +38,6 @@ function cms_postfach_senden() {
 				cms_meldung_an('erfolg', 'Nachricht versenden', '<p>Die Nachricht wurde versendet.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Posteingang\');">OK</span></p>');
 			}
 			else if (rueckgabe.match(/POOL/)) {
-				alert(rueckgabe);
 				meldung += '<li>Mindestens einem Empfänger darf nicht geschrieben werden.</li>';
 				cms_meldung_an('fehler', 'Nachricht versenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}

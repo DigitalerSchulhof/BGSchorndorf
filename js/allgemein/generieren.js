@@ -169,3 +169,12 @@ function cms_neue_captcha(uid) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+var cms_stopschreiben_timeouts = {};
+function cms_stopschreiben(element, callback) {
+  var feld = $(element);
+  if(cms_stopschreiben_timeouts[feld]) {
+    clearTimeout(cms_stopschreiben_timeouts[feld]);
+  }
+  if(feld.val())
+    cms_stopschreiben_timeouts[feld] = setTimeout(callback, 500);
+}

@@ -60,14 +60,12 @@ function cms_personaldaten_ausgeben($id) {
 							$profildaten_lehrerkuerzel = $daten2['lehrerkuerzel'];
 						}
 						else {$fehler = true;}
-						$anfrage2->free();
 					}
-					else {$fehler = true;}
-				}
 
+				}
+				else {$fehler = true;}
+				$anfrage->free();
 			}
-			else {$fehler = true;}
-			$anfrage->free();
 		}
 
 		if ($fehler) {
@@ -260,7 +258,7 @@ function cms_personaldaten_ausgeben($id) {
 				$sjakt = false;
 
 				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC";
-				$anfrage = $dbs->query($sql);
+				$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
 
 				$jetzt = time();
 
@@ -339,7 +337,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 
 		// BENUTZER LADEN
 		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, schuljahr FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id;";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// TODO: Eingaben der Funktion prüfen
 
 		if ($anfrage) {
 			if ($daten = $anfrage->fetch_assoc()) {
@@ -367,7 +365,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 				global $CMS_SCHLUESSEL;
 				$code = "";
 				$sql = "SELECT * FROM (SELECT DISTINCT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, nutzerkonten.id AS nutzerkonto FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('$position', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
-				if ($anfrage = $dbs->query($sql)) {
+				if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 					while ($daten = $anfrage->fetch_assoc()) {
 						$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
 						if (!is_null($daten['nutzerkonto'])) {
@@ -416,7 +414,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 					// ELTERN
 					$eltern = "";
 					$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = $id) AS personen ORDER BY nachname, vorname";
-					if ($anfrage = $dbs->query($sql)) {
+					if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 						while ($daten = $anfrage->fetch_assoc()) {
 							$anzeigename = $daten['vorname']." ".$daten['nachname'];
 							if (strlen($daten['titel']) > 0) {
@@ -434,7 +432,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 					// Kinder
 					$kinder = "";
 					$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = $id) AS personen ORDER BY nachname, vorname";
-					if ($anfrage = $dbs->query($sql)) {
+					if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 						while ($daten = $anfrage->fetch_assoc()) {
 							$anzeigename = $daten['vorname']." ".$daten['nachname'];
 							if (strlen($daten['titel']) > 0) {
@@ -526,16 +524,15 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL') AS benutzername, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email FROM nutzerkonten WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "SELECT AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM nutzerkonten WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 
-		if ($anfrage) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_benutzername = $daten['benutzername'];
-				$profildaten_email = $daten['email'];
-			}
-			else {$fehler = true;}
-			$anfrage->free();
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_benutzername, $profildaten_email);
+			if ($sql->fetch()) {}
+				else {$fehler = true;}
+			$sql->close();
 		}
 		else {$fehler = true;}
 
@@ -604,16 +601,15 @@ function cms_personaldaten_lehrerkuerzel_aendern($id) {
 		$fehler = false;
 		$keinlehrer = false;
 
-		$sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') FROM lehrer WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 
-		if ($anfrage) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_kuerzel = $daten['kuerzel'];
-				$profildaten_stundenplan = $daten['stundenplan'];
-			}
-			else {$keinlehrer = true;}
-			$anfrage->free();
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_kuerzel, $profildaten_stundenplan);
+			if ($sql->fetch()) {}
+				else {$keinlehrer = true;}
+			$sql->close();
 		}
 		else {$fehler = true;}
 
@@ -695,18 +691,14 @@ function cms_personaldaten_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_art = $daten['art'];
-				$profildaten_titel = $daten['titel'];
-				$profildaten_vorname = $daten['vorname'];
-				$profildaten_nachname = $daten['nachname'];
-				$profildaten_geschlecht = $daten['geschlecht'];
-				$profildaten_email = $daten['email'];
-				$anfrage->free();
-			}
-			else {$fehler = true;}
+		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_art, $profildaten_titel, $profildaten_vorname, $profildaten_nachname, $profildaten_geschlecht, $profildaten_email);
+			if ($sql->fetch()) {}
+				else {$fehler = true;}
+			$sql->close();
 		}
 
 		cms_trennen($dbs);
@@ -900,26 +892,15 @@ function cms_personaldaten_einstellungen_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') AS postmail, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS postalletage, AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS postpapierkorbtage, AES_DECRYPT(vertretungsmail, '$CMS_SCHLUESSEL') AS vertretungsmail, AES_DECRYPT(uebersichtsanzahl, '$CMS_SCHLUESSEL') AS uebersichtsanzahl, AES_DECRYPT(inaktivitaetszeit, '$CMS_SCHLUESSEL') AS inaktivitaetszeit, AES_DECRYPT(oeffentlichertermin, '$CMS_SCHLUESSEL') AS oeffentlichertermin, AES_DECRYPT(oeffentlicherblog, '$CMS_SCHLUESSEL') AS oeffentlicherblog, AES_DECRYPT(oeffentlichegalerie, '$CMS_SCHLUESSEL') AS oeffentlichegalerie FROM personen_einstellungen, personen WHERE personen.id = personen_einstellungen.person AND person = $id";
+		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') AS postmail, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS postalletage, AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS postpapierkorbtage, AES_DECRYPT(vertretungsmail, '$CMS_SCHLUESSEL') AS vertretungsmail, AES_DECRYPT(uebersichtsanzahl, '$CMS_SCHLUESSEL') AS uebersichtsanzahl, AES_DECRYPT(inaktivitaetszeit, '$CMS_SCHLUESSEL') AS inaktivitaetszeit, AES_DECRYPT(oeffentlichertermin, '$CMS_SCHLUESSEL') AS oeffentlichertermin, AES_DECRYPT(oeffentlicherblog, '$CMS_SCHLUESSEL') AS oeffentlicherblog, AES_DECRYPT(oeffentlichegalerie, '$CMS_SCHLUESSEL') AS oeffentlichegalerie FROM personen_einstellungen, personen WHERE personen.id = personen_einstellungen.person AND person = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$vorname = $daten['vorname'];
-				$nachname = $daten['nachname'];
-				$notifikationsmail = $daten['notifikationsmail'];
-				$postmail = $daten['postmail'];
-				$postalletage = $daten['postalletage'];
-				$postpapierkorbtage = $daten['postpapierkorbtage'];
-				$vertretungsmail = $daten['vertretungsmail'];
-				$uebersichtsanzahl = $daten['uebersichtsanzahl'];
-				$inaktivitaetszeit = $daten['inaktivitaetszeit'];
-				$oeffentlichertermin = $daten['oeffentlichertermin'];
-				$oeffentlicherblog = $daten['oeffentlicherblog'];
-				$oeffentlichegalerie = $daten['oeffentlichegalerie'];
-				$anfrage->free();
-
-			}
-			else {$fehler = true;}
+		if ($sql->execute()) {
+			$sql->bind_result($vorname, $nachname, $notifikationsmail, $postmail, $postalletage, $postpapierkorbtage, $vertretungsmail, $uebersichtsanzahl, $inaktivitaetszeit, $oeffentlichertermin, $oeffentlicherblog, $oeffentlichegalerie);
+			if ($sql->fetch()) {}
+				else {$fehler = true;}
+			$sql->close();
 		}
 
 		cms_trennen($dbs);

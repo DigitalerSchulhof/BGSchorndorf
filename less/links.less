@@ -24,3 +24,29 @@ a:hover, .cms_link:hover {
   color: @schriftunscheinbar;
   font-size: 80%;
 }
+
+.cms_favorisieren {
+  display: inline-block;
+  float: right;
+  text-align: right;
+  .cms_favorit_bezeichnung {
+    display: inline-block;
+    height: 16px;
+    vertical-align: top;
+    width: 0;
+    input {
+      height: 16px;
+      padding: 0;
+    }
+    transition: all 0.3s linear;
+  }
+  img {
+    cursor: pointer;
+    &.favorit ~ .cms_favorit_bezeichnung {
+      width: 60%;
+      input {
+        padding: 5px 7px;
+      }
+    }
+  }
+}

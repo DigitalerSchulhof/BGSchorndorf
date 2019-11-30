@@ -109,11 +109,11 @@ if (cms_angemeldet() && $zugriff) {
 		// Falls es eine neue Startseite gibt, alte Startseiten auf aktiv setzen
 		if ($status == 's') {
 			$sql = "UPDATE seiten SET status = 'a' WHERE status = 's'";
-			$anfrage = $dbs->query($sql);
+			$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
 		}
 		if (($art == 'b') || ($art == 't') || ($art == 'g')) {
 			$sql = "UPDATE seiten SET art = 's' WHERE art = '$art'";
-			$anfrage = $dbs->query($sql);
+			$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
 		}
 		// Neue Seite einfügen
 		$sql = $dbs->prepare("UPDATE seiten SET bezeichnung = ?, beschreibung = ?, art = ?, position = ?, sidebar = ?, status = ?, styles = ?, klassen = ? WHERE id = ?");

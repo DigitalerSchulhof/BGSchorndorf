@@ -5,7 +5,7 @@ function cms_maxpos_spalte($dbs, $spalte) {
   $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare');
   foreach ($elemente as $e) {
     $sql = "SELECT MAX(position) AS max FROM $e WHERE spalte = $spalte";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       if ($daten = $anfrage->fetch_assoc()) {
         if ($daten['max'] > $max) {$max = $daten['max'];}
       }
@@ -19,7 +19,7 @@ function cms_elemente_verschieben_einfuegen($dbs, $spalte, $position) {
   $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare');
   foreach ($elemente as $e) {
     $sql = "UPDATE $e SET position = position + 1 WHERE spalte = $spalte AND position >= $position";
-    $dbs->query($sql);
+    $dbs->query($sql);  // TODO: Irgendwie safe machen
   }
 }
 
@@ -27,7 +27,7 @@ function cms_elemente_verschieben_loeschen($dbs, $spalte, $position) {
   $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare');
   foreach ($elemente as $e) {
     $sql = "UPDATE $e SET position = position - 1 WHERE spalte = $spalte AND position >= $position";
-    $dbs->query($sql);
+    $dbs->query($sql);  // TODO: Irgendwie safe machen
   }
 }
 
@@ -38,14 +38,14 @@ function cms_elemente_verschieben_aendern($dbs, $spalte, $altpos, $neupos) {
     // Vorgängerelemente nachrutschen lassen
     foreach ($elemente as $e) {
       $sql = "UPDATE $e SET position = position - 1 WHERE spalte = '$spalte' AND position > $altpos AND position <= $neupos";
-      $dbs->query($sql);
+      $dbs->query($sql);  // TODO: Irgendwie safe machen
     }
   }
   else if ($altpos > $neupos) {
     // Nachfolgende Elemente aufrutschen lassen
     foreach ($elemente as $e) {
       $sql = "UPDATE $e SET position = position + 1 WHERE spalte = '$spalte' AND position >= $neupos AND position < $altpos";
-      $dbs->query($sql);
+      $dbs->query($sql);  // TODO: Irgendwie safe machen
     }
   }
 }

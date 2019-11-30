@@ -12,7 +12,7 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 		$stundenplan = "";
 		if ($CMS_BENUTZERART == 'l') {
 			$sql = "SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = $CMS_BENUTZERID";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()) {
 					$stundenplan = $daten['stundenplan'];
 				}
@@ -23,7 +23,7 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 		}
 		else if ($CMS_BENUTZERART == 's') {
 			$sql = "SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplan FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE person = $CMS_BENUTZERID AND schuljahr = $schuljahr";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()) {
 					$stundenplan = $daten['stundenplan'];
 				}

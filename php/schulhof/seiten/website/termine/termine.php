@@ -24,7 +24,7 @@ if ($anzeigen) {
   $jahre = false;
 
   $sql = "SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM termine";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       if (!is_null($daten['anfang'])) {
         $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);

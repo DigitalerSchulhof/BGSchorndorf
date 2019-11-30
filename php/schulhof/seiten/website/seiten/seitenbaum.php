@@ -9,7 +9,7 @@ function cms_seitenbaum_ausgeben($dbs, $oberseite, $tiefe, $bearbeiten = false) 
 	else if ($oberseite == '-') {$zuordnung = "zuordnung IS NULL";}
 
 	$sql = "SELECT * FROM seiten WHERE $zuordnung ORDER BY position";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
 		while ($daten = $anfrage->fetch_assoc()) {
 			$code .= "<tr>";
 

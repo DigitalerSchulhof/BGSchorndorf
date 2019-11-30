@@ -13,7 +13,10 @@ if (isset($_SESSION["GRUPPEID"])) {$gruppenid = $_SESSION["GRUPPEID"];} else {$g
 if (isset($_SESSION["GRUPPEBEZEICHNUNG"])) {$gruppenbezeichnung = $_SESSION["GRUPPEBEZEICHNUNG"];} else {$gruppenbezeichnung = '-';}
 if (isset($_SESSION["GRUPPE"])) {$gruppe = $_SESSION["GRUPPE"];} else {$gruppe = '-';}
 
-if ($gruppenid != "-") {
+if(!cms_check_ganzzahl($gruppenid))
+	$gruppenid = "-";
+
+if ($gruppenid != "-") {	// "-" nicht als Fallback verwenden, da oben für anti-sql-inj genutzt
 	$gruppek = strtolower($gruppe);
 	$zugriff = false;
 	$fehler = false;
@@ -38,7 +41,7 @@ if ($gruppenid != "-") {
 		// Alle Mitglieder bestimmen
 		$dbs = cms_verbinden('s');
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, vorsitz, mv, sch, dho, dru, dum, dlo, oan, oum, olo FROM ".$gruppek."mitgliedschaften JOIN personen ON ".$gruppek."mitgliedschaften.person = personen.id WHERE gruppe = $gruppenid) AS mitglieder ORDER BY nachname, vorname ASC;";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe wegen ganzzahlcheck oben
 			while ($daten = $anfrage->fetch_assoc()) {
 				$rechte['vorsitz'] = $daten['vorsitz'];
 				$rechte['mv'] = $daten['mv'];

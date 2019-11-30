@@ -67,7 +67,7 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 		$sql = "SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC";
 
 		// Blogausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				if ($daten['art'] == 'oe') {
 					$code .= cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);

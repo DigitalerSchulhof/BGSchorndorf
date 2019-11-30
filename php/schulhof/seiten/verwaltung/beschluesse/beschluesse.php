@@ -11,7 +11,7 @@ function cms_beschlusselemente($dbs, $id, $gruppe, $gruppenid) {
   if ($id != '-') {
     $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $gruppe"."blogeintragbeschluesse WHERE blogeintrag = $id) AS x ORDER BY langfristig, titel";
     if (strlen($sql) > 0) {
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
         while ($daten = $anfrage->fetch_assoc()) {
           array_push($beschluesse, $daten);
         }

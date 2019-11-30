@@ -27,7 +27,7 @@ function cms_galerie_details_laden($id, $ziel) {
   $dbs = cms_verbinden('s');
   if ($id != "-") {
 	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, notifikationen, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
 			if ($daten = $anfrage->fetch_assoc()) {
 				$bezeichnung = $daten['bezeichnung'];
   			$datum = $daten['datum'];
@@ -43,7 +43,7 @@ function cms_galerie_details_laden($id, $ziel) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."galerien JOIN $gk ON ".$gk."galerien.gruppe = $gk.id WHERE galerie = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil Check oben
   			while ($daten = $anfrage->fetch_assoc()) {
   				array_push($daten, $zugeordnet[$g]);
           $zgruppenids[$g] .= "|".$daten['id'];
@@ -53,7 +53,7 @@ function cms_galerie_details_laden($id, $ziel) {
     }
 
     $sql = "SELECT AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') as pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') as beschreibung FROM galerienbilder WHERE galerie='$id' ORDER BY id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil Check oben
       while ($daten = $anfrage->fetch_assoc()) {
         array_push($bilder, array("pfad" => $daten["pfad"], "beschreibung" => $daten["beschreibung"]));
       }

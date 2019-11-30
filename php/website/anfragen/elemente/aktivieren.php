@@ -21,11 +21,15 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
-    $sql = "UPDATE $art SET aktiv = '1' WHERE id = $id";
-    $dbs->query($sql);
+    $sql = "UPDATE ? SET aktiv = '1' WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("si", $art, $id);
+		$sql->execute();
 		if ($art == 'boxenaussen') {
-			$sql = "UPDATE boxen SET aktiv = '1' WHERE boxaussen = $id";
-	    $dbs->query($sql);
+			$sql = "UPDATE boxen SET aktiv = '1' WHERE boxaussen = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $id);
+			$sql->execute();
 		}
 		cms_trennen($dbs);
 		echo "ERFOLG";

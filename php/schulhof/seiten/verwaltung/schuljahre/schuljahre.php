@@ -18,7 +18,7 @@ if ($zugriff) {
 		$dbs = cms_verbinden('s');
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre) AS schuljahre ORDER BY beginn DESC";
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
 					$ausgabe .= "<td><img src=\"res/icons/klein/schuljahr.png\"></td>";

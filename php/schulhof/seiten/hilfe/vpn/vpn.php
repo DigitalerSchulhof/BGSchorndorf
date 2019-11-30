@@ -31,7 +31,7 @@ $vpninfo['benutzer'] = "";
 $vpninfo['passwort'] = "";
 $dbs = cms_verbinden('s');
 $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt FROM vpn";
-if ($anfrage = $dbs->query($sql)) {
+if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 	while ($daten = $anfrage->fetch_assoc()) {
 		$vpninfo[$daten['bezeichnung']] = $daten['inhalt'];
 	}

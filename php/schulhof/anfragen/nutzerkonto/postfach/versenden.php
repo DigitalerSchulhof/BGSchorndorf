@@ -101,7 +101,7 @@ if (cms_angemeldet()) {
 			$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen";
 			$sql .= " JOIN personen_einstellungen ON personen.id = personen_einstellungen.person JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') = '1' AND (personen.id IN $sqlempfaenger);";
 
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil IDs geprüft
 				while ($daten = $anfrage->fetch_assoc()) {
 					$geschlecht = $daten['geschlecht'];
 					$art = $daten['art'];

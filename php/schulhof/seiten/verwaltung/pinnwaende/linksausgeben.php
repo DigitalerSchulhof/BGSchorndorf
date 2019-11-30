@@ -12,7 +12,7 @@ function cms_pinnwaende_links_anzeigen () {
 
 	$dbs = cms_verbinden('s');
   $sql = "SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM pinnwaende WHERE $sqlwhere) AS x ORDER BY bezeichnung";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {  // Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {
       $anzeigename = $daten['bezeichnung'];
       $anzeigenamelink = cms_textzulink($anzeigename);

@@ -159,7 +159,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Alle vorhandenen Geräte laden
 		$gidsvorhanden = "";
 		$sql = "SELECT id FROM leihengeraete WHERE standort = $id";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
 			while ($daten = $anfrage->fetch_assoc()) {
 				$gidsvorhanden .= '|'.$daten['id'];
 			}

@@ -56,7 +56,7 @@ function cms_postfach_empfaengerpool_generieren($dbs) {
     $sql = "(".substr($sql,7).")";
 
     $sql = "SELECT DISTINCT x.id AS id FROM ($sql) AS x JOIN nutzerkonten ON x.id = nutzerkonten.id WHERE x.id != $CMS_BENUTZERID";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       while ($daten = $anfrage->fetch_assoc()) {
         array_push($empfaengerpool, $daten['id']);
       }

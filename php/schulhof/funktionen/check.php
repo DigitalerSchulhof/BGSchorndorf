@@ -575,7 +575,7 @@ function cms_einstellungen_laden() {
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
 	$sql = "SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen";
-	if ($anfrage=$dbs->query($sql)) {
+	if ($anfrage=$dbs->query($sql)) {	// Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {
 			$einstellungen[$daten['inhalt']] = $daten['wert'];
 		}
@@ -590,7 +590,7 @@ function cms_schulanmeldung_einstellungen_laden() {
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
 	$sql = "SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM schulanmeldung";
-	if ($anfrage=$dbs->query($sql)) {
+	if ($anfrage=$dbs->query($sql)) {	// Safe weil keine Eingabe
 		while ($daten = $anfrage->fetch_assoc()) {
 			$einstellungen[$daten['inhalt']] = $daten['wert'];
 		}

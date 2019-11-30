@@ -22,7 +22,7 @@ if (cms_angemeldet()) {
 
 	// Nachricht löschen inklusive Anhang
 	$sql = "SELECT id FROM $tabelle WHERE papierkorb = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-	if ($anfrage = $dbp->query($sql)) {
+	if ($anfrage = $dbp->query($sql)) {	// Safe weil interne ID
 		while ($daten = $anfrage->fetch_assoc()) {
 			if (file_exists("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/$modus/".$daten['id'])) {
 				cms_dateisystem_ordner_loeschen("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/$modus/".$daten['id']);
@@ -32,7 +32,7 @@ if (cms_angemeldet()) {
 	}
 
 	$sql = "DELETE FROM $tabelle WHERE papierkorb = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-	$anfrage = $dbp->query($sql);
+	$anfrage = $dbp->query($sql);	// Safe weil interne ID
 
 	cms_trennen($dbp);
 	echo "ERFOLG";

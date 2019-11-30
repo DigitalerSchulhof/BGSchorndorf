@@ -22,14 +22,14 @@ if ($zugriff) {
 			$ausgabe .= "<tbody>";
 			$gfaelle = "";
 			$sql = "SELECT termine.id AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, aktiv, oeffentlichkeit, beginn, ende, erstellt, termine.idzeit AS idzeit, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, personen.id AS person FROM termine LEFT JOIN personen ON termine.idvon = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE genehmigt = 0 ORDER BY beginn DESC, ende DESC";
-		  if ($anfrage = $dbs->query($sql)) {
+		  if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		    while ($daten = $anfrage->fetch_assoc()) {
 		      $gfaelle .= '<tr><td><img src="res/icons/klein/termine.png"></td><td>'.$daten['bezeichnung'].'</td>';
 		      $zuordnungen = "";
 		      foreach ($CMS_GRUPPEN as $g) {
 		        $gk = cms_textzudb($g);
 		        $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."termine JOIN $gk ON gruppe = id WHERE termin = ".$daten['id'].") AS x ORDER BY bezeichnung ASC";
-		        if ($anfrage2 = $dbs->query($sql)) {
+		        if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 		          while ($z = $anfrage2->fetch_assoc()) {
 		            $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> ";
 		          }
@@ -92,7 +92,7 @@ if ($zugriff) {
 
 				$sql = "SELECT $gk".".id AS gid, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahr, $gk"."termineintern.id AS id, AES_DECRYPT($gk"."termineintern.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT($gk".".bezeichnung, '$CMS_SCHLUESSEL') AS gbezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, aktiv, $gk"."termineintern.beginn AS beginn, $gk"."termineintern.ende AS ende, erstellt, $gk"."termineintern.idzeit AS idzeit, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, personen.id AS person FROM $gk"."termineintern LEFT JOIN personen ON $gk"."termineintern.idvon = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id JOIN $gk"." ON $gk"."termineintern.gruppe = $gk".".id LEFT JOIN schuljahre ON $gk".".schuljahr = schuljahre.id WHERE genehmigt = 0 ORDER BY beginn DESC, ende DESC";
 
-				if ($anfrage = $dbs->query($sql)) {
+				if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			    while ($daten = $anfrage->fetch_assoc()) {
 			      $gfaelle .= '<tr><td><img src="res/icons/klein/termine.png"></td><td>'.$daten['bezeichnung'].'</td>';
 			      $zuordnungen = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$daten['gbezeichnung']."</span><img src=\"res/gruppen/klein/".$daten['icon']."\"></span> ";

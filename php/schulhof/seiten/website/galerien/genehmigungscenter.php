@@ -16,14 +16,14 @@ if ($zugriff) {
 		$gfaelle = "";
 		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, aktiv, oeffentlichkeit, datum, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE genehmigt = 0 ORDER BY datum DESC";
 
-	  if ($anfrage = $dbs->query($sql)) {
+	  if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 	    while ($daten = $anfrage->fetch_assoc()) {
 	      $gfaelle .= '<tr><td><img src="res/icons/klein/galerie.png"></td><td>'.$daten['bezeichnung'].'</td>';
 	      $zuordnungen = "";
 	      foreach ($CMS_GRUPPEN as $g) {
 	        $gk = cms_textzudb($g);
 	        $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."galerien JOIN $gk ON gruppe = id WHERE galerie = ".$daten['id'].") AS x ORDER BY bezeichnung ASC";
-	        if ($anfrage2 = $dbs->query($sql)) {
+	        if ($anfrage2 = $dbs->query($sql)) {	// Safe weil keine Eingabe
 	          while ($z = $anfrage2->fetch_assoc()) {
 	            $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> "; ;
 	          }

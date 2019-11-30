@@ -26,7 +26,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 	$dbs = cms_verbinden('s');
 
 	$sql = "SELECT AES_DECRYPT(signatur, '$CMS_SCHLUESSEL') AS signatur FROM personen_signaturen WHERE person = $CMS_BENUTZERID";
-	$anfrage = $dbs->query($sql);
+	$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
 
 	if ($anfrage) {
 		if ($daten = $anfrage->fetch_assoc()) {

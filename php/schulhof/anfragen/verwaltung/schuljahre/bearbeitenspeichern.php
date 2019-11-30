@@ -137,13 +137,16 @@ if (cms_angemeldet() && $zugriff) {
 
 	if (!$fehler) {
 		// SUCHE ZEITÄUME, die nicht im neuen SCHULJAHRZEITRAUM liegen
-		$sql = "SELECT MIN(beginn) AS erster, MAX(ende) AS letzter FROM zeitraeume WHERE schuljahr = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
+		$sql = "SELECT MIN(beginn) AS erster, MAX(ende) AS letzter FROM zeitraeume WHERE schuljahr = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($erster, $letzter);
+			if ($sql->fetch()) {
 				$zeitraumfehler = false;
-				if (!is_null($daten['erster'])) {
-					if ($daten['erster'] < $beginnd) {$zeitraumfehler = true;}
-					if ($daten['letzter'] > $ended) {$zeitraumfehler = true;}
+				if (!is_null($erster)) {
+					if ($erster < $beginnd) {$zeitraumfehler = true;}
+					if ($letzter > $ended) {$zeitraumfehler = true;}
 				}
 				if ($zeitraumfehler) {$fehler = true; echo "ZEITRAUM";}
 			}

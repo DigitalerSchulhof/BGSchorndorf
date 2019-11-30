@@ -64,7 +64,7 @@ if (cms_angemeldet() && $zugriff) {
 
 		// Tagebuch löschen
 		$sql = "DROP TABLE tagebuch_$id";
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// Safe weil Ganzzahl Check
 
 		echo "ERFOLG";
 	}

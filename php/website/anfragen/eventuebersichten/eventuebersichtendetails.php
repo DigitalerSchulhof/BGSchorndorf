@@ -41,7 +41,7 @@ if (($zugriff) && ($angemeldet)) {
     $dbs = cms_verbinden('s');
     $modusk = strtolower($modus);
     $sql = "SELECT * FROM eventuebersichten WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
       if ($daten = $anfrage->fetch_assoc()) {
         if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $termine = $daten['termine'.$modusk];

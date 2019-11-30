@@ -20,7 +20,7 @@ if ($zugriff) {
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, verfuegbar, buchbar, externverwaltbar FROM raeume) AS raeume ORDER BY bezeichnung ASC";
 
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine ID
 
 			$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeumegeraete WHERE standort = ?) AS x ORDER BY bezeichnung ASC");
 			while ($daten = $anfrage->fetch_assoc()) {

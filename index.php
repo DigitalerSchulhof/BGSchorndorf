@@ -351,8 +351,8 @@
 				if ($CMS_SEITENDETAILS) {
 					if (($CMS_SEITENDETAILS['art'] == 'm') && ($CMS_EINSTELLUNGEN['Menüseiten weiterleiten'] == 1) && ($CMS_URL[1] != "Bearbeiten")) {
 						$weitergeleitet = false;
-						$sql = "SELECT * FROM seiten WHERE zuordnung = '".$CMS_SEITENDETAILS['id']."' ORDER BY position ASC";
-						if ($anfrage = $dbs->query($sql)) {
+						$sql = "SELECT * FROM seiten WHERE zuordnung = '{$CMS_SEITENDETAILS['id']}' ORDER BY position ASC";
+						if ($anfrage = $dbs->query($sql)) {	// Safe weil systeminterne Seitenid
 							while ((!$weitergeleitet) && ($daten = $anfrage->fetch_assoc())) {
 								if ($daten['art'] != 'm') {
 									$weitergeleitet = true;
@@ -383,8 +383,8 @@
 			if ($CMS_URL[1] == 'Termine') {$art = 't';}
 			else if ($CMS_URL[1] == 'Blog') {$art = 'b';}
 			else if ($CMS_URL[1] == 'Galerien') {$art = 'g';}
-			$sql = "SELECT * FROM seiten WHERE art = '$art' ORDER BY position ASC";
-			if ($anfrage = $dbs->query($sql)) {
+			$sql = "SELECT * FROM seiten WHERE art = '{$art}' ORDER BY position ASC";
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 				if ($daten = $anfrage->fetch_assoc()) {
 					$CMS_SEITENDETAILS = $daten;
 					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);

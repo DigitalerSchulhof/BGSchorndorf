@@ -21,7 +21,7 @@ if (cms_angemeldet() && $zugriff) {
 	$faecher = array();
 	if ($schuljahr == '-') {$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr IS NULL) AS x ORDER BY bez";}
 	else {$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr = $schuljahr) AS x ORDER BY bez";}
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil Ganzzahl Check
 		while ($daten = $anfrage->fetch_assoc()) {
 			array_push($faecher, $daten);
 		}

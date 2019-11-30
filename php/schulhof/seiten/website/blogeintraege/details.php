@@ -42,7 +42,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."blogeintraege JOIN $gk ON ".$gk."blogeintraege.gruppe = $gk.id WHERE blogeintrag = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
   			while ($daten = $anfrage->fetch_assoc()) {
   				array_push($daten, $zugeordnet[$g]);
           $zgruppenids[$g] .= "|".$daten['id'];

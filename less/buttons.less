@@ -211,33 +211,28 @@
 }
 
 /* FARBBEISPIELE */
-.cms_farbbeispiel_aktiv {
-  cursor: pointer;
-	border: 2px solid @hintergrundhell;
-}
-
-.cms_farbbeispiel {
-  cursor: pointer;
-	border: 2px solid @standardhell;
-}
-
-.cms_farbbeispiel_aktiv:hover, .cms_farbbeispiel:hover {
-  width: 20px;
-  height: 20px;
-  margin: 0;
-  margin-right: 4px;
-	border: 2px solid @hintergrunddunkel;
-}
-
 .cms_farbbeispiel, .cms_farbbeispiel_aktiv {
+  cursor: pointer;
 	border-radius: 11px;
+  border: 2px solid transparent;
 	display: inline-block;
 	width: 18px;
 	height: 18px;
-  margin: 1px;
-	margin-right: 5px;
-	line-height: 0px;
+  margin: 1px 5px 1px 1px;
 	transition: 250ms;
+
+  &:hover:not(.cms_farbbeispiel_aktiv) {
+    width: 20px;
+    height: 20px;
+    margin: 0 4px 0 0;
+    border-radius: 8px;
+  }
+  &.cms_farbbeispiel_aktiv {
+    width: 20px;
+    height: 20px;
+    margin: 0 4px 0 0;
+    border: 2px solid @hintergrundhell;
+  }
 }
 
 /* ICONAUSWAHL */

@@ -15,7 +15,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
     $sqlfelder = "hausmeisterauftraege.id AS id, status, AES_DECRYPT(hausmeisterauftraege.titel, '$CMS_SCHLUESSEL') AS titel, start, ziel, hausmeisterauftraege.idvon AS ersteller, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS pvorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS pnachname, AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL') AS ptitel, erstellt";
     $sql = "SELECT $sqlfelder FROM hausmeisterauftraege LEFT JOIN personen ON personen.id = hausmeisterauftraege.idvon LEFT JOIN nutzerkonten ON nutzerkonten.id = hausmeisterauftraege.idvon ORDER BY status DESC, ziel ASC, erstellt ASC";
 
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $eintraege .= "<tr>";
           $eintraege .= "<td><img src=\"res/icons/klein/hausmeister.png\"></td>";

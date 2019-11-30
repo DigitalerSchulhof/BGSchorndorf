@@ -23,7 +23,7 @@ if (cms_angemeldet() && $zugriff) {
 	$anzahl = 0;
 	if ($schuljahr == '-') {$sql = "SELECT COUNT(*) AS anzahl FROM stufen WHERE schuljahr IS NULL";}
 	else {$sql = "SELECT COUNT(*) AS anzahl FROM stufen WHERE schuljahr = $schuljahr";}
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil Ganzzahl Check
 		if ($daten = $anfrage->fetch_assoc()) {
 			$anzahl = $daten['anzahl'];
 		}

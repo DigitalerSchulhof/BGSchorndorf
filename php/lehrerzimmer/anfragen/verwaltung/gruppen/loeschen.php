@@ -29,31 +29,43 @@ if ($CMS_IMLN) {
 		if (!$fehler) {
 			$dbs = cms_verbinden('s');
 			// Gremium löschen
-			$sql = "DELETE FROM $gruppek WHERE id = $id";
-			$anfrage = $dbs->query($sql);
+			$sql = "DELETE FROM $gruppek WHERE id = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $id);
+			$sql->execute();
 
 			// Mitglieder löschen
-			$sql = "DELETE FROM mitgliedschaften WHERE gruppenid = $id AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')";
-			$anfrage = $dbs->query($sql);
+			$sql = "DELETE FROM mitgliedschaften WHERE gruppenid = ? AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $id, $gruppe);
+			$sql->execute();
 
 			// Aufsichten löschen
-			$sql = "DELETE FROM aufsichten WHERE gruppenid = $id AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')";
-			$anfrage = $dbs->query($sql);
+			$sql = "DELETE FROM aufsichten WHERE gruppenid = ? AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $id, $gruppe);
+			$sql->execute();
 
 			// Termine löschen
-			$sql = "DELETE FROM termine WHERE gruppenid = $id AND gruppe = AES_ENCRYPT('$gruppe', '$CMS_SCHLUESSEL')";
-			$anfrage = $dbs->query($sql);
+			$sql = "DELETE FROM termine WHERE gruppenid = ? AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $id, $gruppe);
+			$sql->execute();
 
 			// Blogeintragdownloads löschen
-			$sql = "DELETE FROM blogeintragdownloads WHERE blogeintrag IN (SELECT id AS blogeintrag FROM blogeintraege WHERE gruppenid = $id AND gruppe = '$gruppe')";
-			$anfrage = $dbs->query($sql);
+			$sql = "DELETE FROM blogeintragdownloads WHERE blogeintrag IN (SELECT id AS blogeintrag FROM blogeintraege WHERE gruppenid = ? AND gruppe = ?)";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $id, $gruppe);
+			$sql->execute();
 
 			// Blogeinträge löschen
-			$sql = "DELETE FROM blogeintraege WHERE gruppenid = $id AND gruppe = '$gruppe'";
-			$anfrage = $dbs->query($sql);
+			$sql = "DELETE FROM blogeintraege WHERE gruppenid = ? AND gruppe = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $id, $gruppe);
+			$sql->execute();
 			cms_trennen($dbs);
 
-			$pfad = '../../../dateien/schulhof/'.$gruppek.'/';
+			$pfad = '../../../dateien/schulhof/'.$gruppek.'/';	// WARNING: Löschen von Postfächern Anderer?  »../personen«
 			if ((strlen($id) > 0) && (is_dir($pfad.$id))) {
 				chmod($pfad, 0777);
 				cms_dateisystem_ordner_loeschen($pfad.$id);

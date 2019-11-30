@@ -136,7 +136,18 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			else {$fehler = true;}
 	  }
 	  else {$fehler = true;}
-	  $sql->close();
+		$sql->close();
+
+		if ($gefunden) {	// Nur für Notifikation
+			if ($CMS_URL[0] == 'Schulhof') {
+				$sql = $dbs->prepare("DELETE FROM notifikationen WHERE person = ? AND art = 'g' AND zielid = ?");
+				$sql->bind_param("ii", $CMS_BENUTZERID, $galerie['id']);
+				$sql->execute();
+				$sql->close();
+			}
+		}
+
+		$gefunden = $gefunden && isset($galerie["aktiv"]) && $galerie["aktiv"];
 
 		if ($gefunden) {
 			if ($jahr != date('Y', $galerie['datum'])) {$gefunden = false;}
@@ -190,7 +201,6 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			// Bilder Ende
 			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
-
 
 			$CMS_GALERIEID = $galerie["id"];
 			$code .= "<div class=\"cms_clear\"></div>";

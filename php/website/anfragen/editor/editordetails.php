@@ -18,6 +18,9 @@ if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} e
 $CMS_RECHTE = cms_rechte_laden();
 $angemeldet = cms_angemeldet();
 
+if(!cms_check_ganzzahl($id))
+  die("FEHLER");
+
 $zugriff = false;
 
 if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
@@ -35,7 +38,7 @@ if (($zugriff) && ($angemeldet)) {
     $neu = false;
     $dbs = cms_verbinden('s');
     $sql = "SELECT * FROM editoren WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
       if ($daten = $anfrage->fetch_assoc()) {
         if ($modus == 'Aktuell') {$inhalt = $daten['aktuell'];}
         else if ($modus == 'Neu') {$inhalt = $daten['neu'];}
