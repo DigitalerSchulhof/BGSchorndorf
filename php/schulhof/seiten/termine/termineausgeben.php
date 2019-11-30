@@ -317,7 +317,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 		$code .= cms_ausgabe_editor($termin['text']);
 
-		$code .= "<br><br>".cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
+		$code .= cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
 		$code .= "</div></div>";
 
 		if ((count($downloads) > 0) || (strlen($aktionen) > 0)) {

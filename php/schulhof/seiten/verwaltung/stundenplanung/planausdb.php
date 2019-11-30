@@ -202,7 +202,11 @@ function cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO) {
 
 function cms_stunde_ausgeben($std) {
   $style = "";
-  if (($std['farbe'] <= 4) || (($std['farbe'] >= 12) && ($std['farbe'] <= 23))) {$style = "color:#ffffff;";}
+  if ((($std['farbe'] >= 0) && ($std['farbe'] <= 8)) ||
+      (($std['farbe'] >= 16) && ($std['farbe'] <= 41)) ||
+      (($std['farbe'] >= 46) && ($std['farbe'] <= 47))) {
+    $style = "color:#ffffff;";} else {$style="";
+  }
   $code = "<span class=\"cms_stundenplan_stunde cms_farbbeispiel_".$std['farbe']."\" style=\"$style\">";
     $code .= $std['kurs']."<br>".$std['lehrer']."<br>".$std['raum'];
     if ($std['rythmus'].'' != '0') {

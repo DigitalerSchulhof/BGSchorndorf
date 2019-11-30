@@ -553,7 +553,11 @@ else {
 function cms_generiere_unterrichtsstunde($stunde, $modus) {
   $event = "";
   if ($modus == 'L') {$event = " onclick=\"cms_stundeloeschen(".$stunde['id'].")\"";}
-  if (($stunde['farbe'] <= 4) || (($stunde['farbe'] >= 12) && ($stunde['farbe'] <= 23))) {$style = "color:#ffffff;";} else {$style="";}
+  if ((($stunde['farbe'] >= 0) && ($stunde['farbe'] <= 8)) ||
+      (($stunde['farbe'] >= 16) && ($stunde['farbe'] <= 41)) ||
+      (($stunde['farbe'] >= 46) && ($stunde['farbe'] <= 47))) {
+    $style = "color:#ffffff;";} else {$style="";
+  }
   $code = "<span class=\"cms_stundenplanung_stunde cms_farbbeispiel_".$stunde['farbe']."\" style=\"$style\"$event>".$stunde['kursbez']."<br>".$stunde['lehrerbez']."<br>".$stunde['raumbez'];
   if ($stunde['rythmus'].'' != '0') {
     $code .= "<br>".chr(64+$stunde['rythmus'])." Woche";
