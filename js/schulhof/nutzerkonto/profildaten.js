@@ -393,7 +393,7 @@ function cms_favorit_benennen(fid) {
 	var formulardaten = new FormData();
 	formulardaten.append("fid",  				  fid);
 	formulardaten.append("bezeichnung",  	name);
-	formulardaten.append("anfragenziel", 	'360');
+	formulardaten.append("anfragenziel", 	'367');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
