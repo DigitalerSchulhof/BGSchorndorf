@@ -371,7 +371,7 @@ function cms_favorisieren(fid, url) {
 	formulardaten.append("fid",  					fid);
 	formulardaten.append("seite",  				url);
 	formulardaten.append("status",  			neuerwert);
-	formulardaten.append("anfragenziel", 	'281');
+	formulardaten.append("anfragenziel", 	'366');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {

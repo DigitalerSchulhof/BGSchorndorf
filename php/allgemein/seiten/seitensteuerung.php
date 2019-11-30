@@ -9,6 +9,8 @@ if ($CMS_URL[0] == 'Website') {
   // WEBSITE
   $CMS_VERFUEGBARE_SEITEN['Website/Datenschutz']                                        = 'php/website/seiten/pflicht/datenschutz.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Impressum']                                          = 'php/website/seiten/pflicht/impressum.php';
+  if(preg_match("/^Website\/Newsletter_abbestellen\/[a-zA-Z0-9]{64}$/", $CMS_URLGANZ))
+    {include("php/website/seiten/newsletter/abbestellen.php"); $ausnahme = true;}
   $CMS_VERFUEGBARE_SEITEN['Website/Feedback']                                           = 'php/website/seiten/feedback/geben.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Feedback/Danke!']                                    = 'php/website/seiten/feedback/danke.php';
   if (preg_match("/^Website\/(Termine|Galerien|Blog)$/", $CMS_URLGANZ))
@@ -305,6 +307,12 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien']                                    = 'php/schulhof/seiten/website/galerien/galerien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Neue_Galerie']                       = 'php/schulhof/seiten/website/galerien/neuegalerie.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Galerie_bearbeiten']                 = 'php/schulhof/seiten/website/galerien/galeriebearbeiten.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter']                                  = 'php/schulhof/seiten/website/newsletter/newsletter.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter/Neuer_Newsletter']                 = 'php/schulhof/seiten/website/newsletter/neuernewsletter.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter/Newsletter_bearbeiten']            = 'php/schulhof/seiten/website/newsletter/newsletterbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter/Newsletter_ansehen']               = 'php/schulhof/seiten/website/newsletter/newsletteransehen.php';
+
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Galerien_genehmigen']                        = 'php/schulhof/seiten/website/galerien/genehmigungscenter.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Auffälliges']                                = 'php/schulhof/seiten/auffaelliges/liste.php';

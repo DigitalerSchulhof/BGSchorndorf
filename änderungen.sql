@@ -1,3 +1,5 @@
+-- Änderungen sind in GitHub nachverfolgbar
+--
 -- Format:
 CREATE TABLE `favoritseiten` (
   `id` bigint(255) UNSIGNED NOT NULL,
@@ -215,6 +217,169 @@ ALTER TABLE `hausmeisterauftraege`  ADD `raumgeraet` BIGINT(255) NULL DEFAULT NU
 ALTER TABLE `hausmeisterauftraege`  ADD `leihgeraet` BIGINT(255) NULL DEFAULT NULL  AFTER `raumgeraet`;
 ALTER TABLE `hausmeisterauftraege` CHANGE `raumgeraet` `raumgeraet` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `leihgeraet` `leihgeraet` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `hausmeisterauftraege` ADD CONSTRAINT `hausmeisterauftraegeraeumegeraete` FOREIGN KEY (`raumgeraet`) REFERENCES `raeumegeraete`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `hausmeisterauftraege` ADD CONSTRAINT `hausmeisterauftraegeleihgeraete` FOREIGN KEY (`leihgeraet`) REFERENCES `leihengeraete`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+CREATE TABLE `newslettertypen` (
+  `id` bigint(255) unsigned NOT NULL,
+  `bezeichnung` varbinary(5000) DEFAULT NULL,
+  `idvon` bigint(255) DEFAULT NULL,
+  `idzeit` bigint(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `wnewsletter` (
+ `id` bigint(255) unsigned NOT NULL,
+ `spalte` bigint(255) unsigned DEFAULT NULL,
+ `position` bigint(255) unsigned DEFAULT NULL,
+ `aktiv` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `bezeichnungalt` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `bezeichnungaktuell` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `bezeichnungneu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `beschreibungalt` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `beschreibungaktuell` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `beschreibungneu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+ `typalt` bigint(255) unsigned DEFAULT NULL,
+ `typaktuell` bigint(255) unsigned DEFAULT NULL,
+ `typneu` bigint(255) unsigned DEFAULT NULL,
+ `idvon` bigint(255) unsigned DEFAULT NULL,
+ `idzeit` bigint(255) unsigned DEFAULT NULL,
+ PRIMARY KEY (`id`),
+ KEY `newsletterspalten` (`spalte`),
+ KEY `newslettertypenalt` (`typalt`),
+ KEY `newslettertypenaktuell` (`typaktuell`),
+ KEY `newslettertypenneu` (`typneu`),
+ CONSTRAINT `newsletterspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `newslettertypenaktuell` FOREIGN KEY (`typaktuell`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `newslettertypenalt` FOREIGN KEY (`typalt`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `newslettertypenneu` FOREIGN KEY (`typneu`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `newsletterempfaenger` (
+  `ìd` bigint(255) unsigned NOT NULL,
+  `name` varbinary(5000) DEFAULT NULL,
+  `email` varbinary(5000) DEFAULT NULL,
+  `newsletter` bigint(255) UNSIGNED DEFAULT NULL,
+  `token` varbinary(5000) DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
+  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `newsletterempfaenger`
+  ADD PRIMARY KEY (`ìd`),
+  ADD KEY `newsletterempfaengernewsletter` (`newsletter`);
+
+ALTER TABLE `newsletterempfaenger`
+  ADD CONSTRAINT `newsletterempfaengernewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `gremiennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppengremiennewsletter` (`gruppe`),
+ KEY `newslettergremiennewsletter` (`newsletter`),
+ CONSTRAINT `newslettergremiennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppengremiennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `gremien` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `fachschaftennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenfachschaftennewsletter` (`gruppe`),
+ KEY `newsletterfachschaftennewsletter` (`newsletter`),
+ CONSTRAINT `newsletterfachschaftennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenfachschaftennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `fachschaften` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `klassennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenklassennewsletter` (`gruppe`),
+ KEY `newsletterklassennewsletter` (`newsletter`),
+ CONSTRAINT `newsletterklassennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenklassennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `klassen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `kursenewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenkursenewsletter` (`gruppe`),
+ KEY `newsletterkursenewsletter` (`newsletter`),
+ CONSTRAINT `newsletterkursenewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenkursenewsletter` FOREIGN KEY (`gruppe`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `stufennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenstufennewsletter` (`gruppe`),
+ KEY `newsletterstufennewsletter` (`newsletter`),
+ CONSTRAINT `newsletterstufennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenstufennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `stufen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `arbeitsgemeinschaftennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenarbeitsgemeinschaftennewsletter` (`gruppe`),
+ KEY `newsletterarbeitsgemeinschaftennewsletter` (`newsletter`),
+ CONSTRAINT `newsletterarbeitsgemeinschaftennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenarbeitsgemeinschaftennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `arbeitsgemeinschaften` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `arbeitskreisenewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenarbeitskreisenewsletter` (`gruppe`),
+ KEY `newsletterarbeitskreisenewsletter` (`newsletter`),
+ CONSTRAINT `newsletterarbeitskreisenewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenarbeitskreisenewsletter` FOREIGN KEY (`gruppe`) REFERENCES `arbeitskreise` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `fahrtennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenfahrtennewsletter` (`gruppe`),
+ KEY `newsletterfahrtennewsletter` (`newsletter`),
+ CONSTRAINT `newsletterfahrtennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenfahrtennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `fahrten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `wettbewerbenewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenwettbewerbenewsletter` (`gruppe`),
+ KEY `newsletterwettbewerbenewsletter` (`newsletter`),
+ CONSTRAINT `newsletterwettbewerbenewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenwettbewerbenewsletter` FOREIGN KEY (`gruppe`) REFERENCES `wettbewerbe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `ereignissenewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppenereignissenewsletter` (`gruppe`),
+ KEY `newsletterereignissenewsletter` (`newsletter`),
+ CONSTRAINT `newsletterereignissenewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppenereignissenewsletter` FOREIGN KEY (`gruppe`) REFERENCES `ereignisse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `sonstigegruppennewsletter` (
+ `gruppe` bigint(255) unsigned DEFAULT NULL,
+ `newsletter` bigint(255) unsigned DEFAULT NULL,
+ KEY `gruppensonstigegruppennewsletter` (`gruppe`),
+ KEY `newslettersonstigegruppennewsletter` (`newsletter`),
+ CONSTRAINT `newslettersonstigegruppennewsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `gruppensonstigegruppennewsletter` FOREIGN KEY (`gruppe`) REFERENCES `sonstigegruppen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+
+
+
+
+
+
+
 
 -- LEHRERDATENBANK
 

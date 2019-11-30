@@ -87,6 +87,9 @@
     else if (($CMS_URL[1] == 'Blog') || ($CMS_URL[1] == 'Galerien') || ($CMS_URL[1] == 'Termine') || ($CMS_URL[1] == 'Voranmeldung') || ($CMS_URL[1] == 'Ferien')) {
       $code = cms_meldung('info', '<h4>Generierte Seite</h4><p>Diese Seite wird aus den Inhalten des Schulhofs generiert. Um den hier angezeigten Inhalt zu bearbeiten müssen die Daten im Schulhof verändert werden.</p>');
     }
+    else if (($CMS_URL[1] == "Newsletter_abbestellen")) {
+      $code = cms_meldung('info', '<h4>Inhaltslose Seite</h4><p>Diese Seite wird automatisch generiert und hat keinen Inhalt.</p>');
+    }
     else {
       $code = cms_meldung('info', '<h4>Fehlerseite</h4><p>Diese Seite kann nicht bearbeitet werden.</p>');
     }

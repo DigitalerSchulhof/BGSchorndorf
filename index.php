@@ -218,6 +218,8 @@
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
+
+		echo "<script src=\"js/website/newsletter.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/galerien.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für Angemeldete notwendig sind
@@ -283,6 +285,7 @@
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/newsletter.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
 		}
