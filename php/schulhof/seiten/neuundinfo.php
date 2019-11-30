@@ -45,7 +45,7 @@
 		$code .= "<li>Chats funktionieren jetzt basierend auf Sockets.</li>";
 		$code .= "<li>Beim Anmelden in den Schulhof wird überprüft, ob der Browser unterstützt wird.</li>";
 	$code .= "</ul>";
-	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_7', 'Neuerungen in Version 0.5.7 einblenden', 'Neuerungen in Version 0.5.6 ausblenden', $code, 1);
+	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_7', 'Neuerungen in Version 0.5.7 einblenden', 'Neuerungen in Version 0.5.7 ausblenden', $code, 1);
 
 	$code = "<h4>Version 0.5.6 - Samstag, den 23. November 2019</h4>";
 	$code .= "<ul>";

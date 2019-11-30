@@ -34,7 +34,7 @@
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
 	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.6";
+	//$CMS_VERSION = "0.5.7";
 	$TITELBILDERJS = "";
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
