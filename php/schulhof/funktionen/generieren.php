@@ -468,9 +468,13 @@ function cms_chatmeldungen_knopf($dbs) {
 }
 
 function cms_sonderrollen_generieren() {
-	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN;
+	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERART;
 	$code = "";
 	$dbs = cms_verbinden('s');
+  if ($CMS_BENUTZERART == 'l') {
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
+
+  }
 	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
   }

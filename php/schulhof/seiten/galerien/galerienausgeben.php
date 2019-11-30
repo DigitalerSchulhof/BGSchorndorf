@@ -5,7 +5,7 @@ function cms_galerie_link_ausgeben($dbs, $daten, $art) {
 	$code = "";
 	$bezeichnunglink = cms_textzulink($daten['bezeichnung']);
 
-	$zeiten = cms_blogeintrag_zeiten($daten);
+	$zeiten = cms_galerie_zeiten($daten);
 
 	$code .= "<li>";
 
@@ -49,7 +49,7 @@ function cms_galerie_zusatzinfo($dbs, $daten) {
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
 		$sqlsolo =
-		$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ".$daten['id'].")";
+		$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ".$daten['id'].")";
 	}
 	$sql = substr($sql, 7);
 	$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
@@ -237,7 +237,7 @@ function cms_galeriedetailansicht_galerieinfos($dbs, $daten, $zeiten) {
 	$sql = "";
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
-		$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ?)";
+		$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ?)";
 	}
 	$sql = substr($sql, 7);
 	$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");

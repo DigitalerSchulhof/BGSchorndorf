@@ -29,24 +29,33 @@ a:hover, .cms_link:hover {
   display: inline-block;
   float: right;
   text-align: right;
-  .cms_favorit_bezeichnung {
-    display: inline-block;
-    height: 16px;
-    vertical-align: top;
-    width: 0;
-    input {
-      height: 16px;
-      padding: 0;
-    }
-    transition: all 0.3s linear;
-  }
-  img {
-    cursor: pointer;
-    &.favorit ~ .cms_favorit_bezeichnung {
-      width: 60%;
-      input {
-        padding: 5px 7px;
-      }
-    }
-  }
+  position: relative;
+  font-size: @schriftgroesse !important;
+}
+
+.cms_favorisieren .cms_favorit_bezeichnung {
+  position: absolute;
+  right: 0px;
+  display: inline-block;
+  transition: all 0.3s linear;
+  width: 200px;
+  background: @hinweisehintergrund;
+  padding: 3px;
+  border-radius: @hinweiseradius;
+  padding: 0px 3px 0px 3px;
+  height: 0px;
+  overflow: hidden;
+}
+
+.cms_favorisieren .cms_favorit_bezeichnung input {
+  width: 100px;
+}
+
+.cms_favorisieren img:hover {
+  cursor: pointer;
+}
+
+.cms_favorisieren:hover .cms_favorit_bezeichnung {
+  padding: 3px;
+  height: auto;
 }

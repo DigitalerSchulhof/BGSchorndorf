@@ -154,7 +154,7 @@ echo $code;
 <div class="cms_spalte_i">
 
 <?php
-$sql = "SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM favoritseiten WHERE person = ?";
+$sql = "SELECT * FROM (SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY bezeichnung";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("i", $CMS_BENUTZERID);
 $sql->execute();
@@ -163,7 +163,7 @@ $fav = "";
 while($sql->fetch()) {
 	$fav .= "<li><a class=\"cms_button\" href=\"$furl\">".$fbez."</a></li> ";
 }
-if (strlen($fav) > 0) {echo "<h2>Persönliche Favoriten</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
+if (strlen($fav) > 0) {echo "<h2>Favoriten</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
 
 ?>
 

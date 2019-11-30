@@ -199,7 +199,7 @@
         min-width: 40%;
         max-width: 60%;
         background-color: @chatanderer;
-        border-radius: 3px;
+        border-radius: @buttonradius;
         float: left;
         padding: 5px;
         .cms_chat_nachricht_aktion {
@@ -215,13 +215,13 @@
             .cms_chat_aktion {
               // .cms_hinweis
               color: @schriftfarbehell !important;
-              background: rgba(0, 0, 0, 0.75);
+              background: @hinweisehintergrund;
               padding: 0px 5px 0px 5px;
               position: absolute;
               font-family: 'robl';
               font-weight: normal !important;
               display: none;
-              border-radius: 3px;
+              border-radius: @buttonradius;
               z-index: 50;
               width: 150px;
               overflow: visible;

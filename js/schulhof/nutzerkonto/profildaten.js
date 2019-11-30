@@ -353,20 +353,32 @@ function cms_persoenliche_notizen_speichern() {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_favorisieren(url) {
-	var istFavorit = $(".cms_favorisieren>img").attr("src").endsWith("favorit.png");
+function cms_favorisieren(fid, url) {
+	var icon = document.getElementById('cms_steite_favorit_icon');
+	var favorit = document.getElementById('cms_seite_favorit');
+	var neuerwert = '0';
 
-	cms_laden_an((istFavorit?'Entf':'F')+'avorisieren', 'Die Seite wird '+(istFavorit?'ent':'')+'favorisiert.');
+	if (favorit.value == '1') {
+		cms_laden_an('Favorit entfernen', 'Die Seite wird aus den Favoriten entfernt.');
+		neuerwert = '0';
+	}
+	else {
+		cms_laden_an('Favorit hinzufügen', 'Die Seite wird ein neuer Favorit.');
+		neuerwert = '1';
+	}
+
 	var formulardaten = new FormData();
+	formulardaten.append("fid",  					fid);
 	formulardaten.append("seite",  				url);
-	formulardaten.append("status",  			!istFavorit);
+	formulardaten.append("status",  			neuerwert);
 	formulardaten.append("anfragenziel", 	'281');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
+			if (neuerwert == '1') {icon.src = "res/icons/klein/favorit.png";}
+			else {icon.src = "res/icons/klein/favorisieren.png";}
+			favorit.value = neuerwert;
 			cms_laden_aus();
-			src = istFavorit ? "res/icons/klein/favorisieren.png" : "res/icons/klein/favorit.png";
-			$(".cms_favorisieren>img").attr("src", src).toggleClass("favorit");
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
@@ -374,16 +386,18 @@ function cms_favorisieren(url) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_favorit_benennen(url) {
+function cms_favorit_benennen(fid) {
 	cms_laden_an('Favorit umbenennen', 'Die Favorit wird umbenannt.');
+	var name = document.getElementById('cms_favoriten_bezeichnung_'+fid).value;
+
 	var formulardaten = new FormData();
-	formulardaten.append("seite",  				url);
-	formulardaten.append("bezeichnung",  	$(".cms_favorit_bezeichnung>input").val());
+	formulardaten.append("fid",  				  fid);
+	formulardaten.append("bezeichnung",  	name);
 	formulardaten.append("anfragenziel", 	'282');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_laden_aus();
+			cms_link("Schulhof/Nutzerkonto/Favoriten");
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

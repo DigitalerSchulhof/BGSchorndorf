@@ -97,6 +97,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 						$code['mobil'] .= "<li><a href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Blog\">Blog</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
+						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li>";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
 					$code['mobil'] .= "</ul>";
 				$code['mobil'] .= "</div>";
@@ -143,6 +144,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li>";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
 					$code['pc'] .= "</ul>";
 				$code['pc'] .= "</div>";

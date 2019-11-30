@@ -168,7 +168,7 @@
 
 .note-btn-primary {
   display: inline-block;
-  border-radius: 3px;
+  border-radius: @buttonradius;
   padding: 3px 7px;
   margin-bottom: 2px;
   transition: 250ms ease-in-out;
@@ -199,7 +199,7 @@ input[type="submit"].note-btn-block, input[type="reset"].note-btn-block, input[t
 button.close {
   border: 0;
   display: inline-block;
-  border-radius: 3px;
+  border-radius: @buttonradius;
   padding: 1px 7px;
   margin-bottom: 2px;
   transition: 250ms ease-in-out;
@@ -318,7 +318,7 @@ a.note-dropdown-item {
   left: 0;
   z-index: 1050;
   display: none;
-  background: rgba(0, 0, 0, 0.75);
+  background: @hinweisehintergrund;
 }
 
 .note-modal-backdrop.open {display:block;}
@@ -430,9 +430,9 @@ a.note-dropdown-item {
   max-width: 200px;
   padding: 3px 8px;
   color: @schriftfarbehell;
-  background: rgba(0, 0, 0, 0.75);
+  background: @hinweisehintergrund;
   text-align: center;
-  border-radius: 3px;
+  border-radius: @hinweiseradius;
 }
 
 .note-popover {
@@ -928,7 +928,7 @@ a.note-dropdown-item {
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: @hinweisehintergrund;
   outline: 0;
 }
 
