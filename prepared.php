@@ -11,6 +11,7 @@ foreach($CMS_GRUPPEN as $g) {
       CONSTRAINT `newsletter$gk"."newsletter` FOREIGN KEY (`newsletter`) REFERENCES `newslettertypen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
       CONSTRAINT `gruppen$gk"."newsletter` FOREIGN KEY (`gruppe`) REFERENCES `$gk` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+    echo "ALTER TABLE `$gk"."chat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;";
   }
 
 ?></div>

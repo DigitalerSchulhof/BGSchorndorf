@@ -329,7 +329,14 @@
         }
 				echo "var CMS_GRUPPEN = ['Gremien','Fachschaften','Klassen','Kurse','Stufen','Arbeitsgemeinschaften','Arbeitskreise','Fahrten','Wettbewerbe','Ereignisse','Sonstige Gruppen'];";
 	    }
+
+			// Eigene jQuery-Funktionen
     ?>
+		jQuery.fn.extend({
+			setClass: function(c, v) {
+				return v ? $(this).addClass(c) : $(this).removeClass(c);
+			}
+		});
     </script>
 </head>
 

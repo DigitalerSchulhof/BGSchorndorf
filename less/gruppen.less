@@ -173,15 +173,6 @@
 
 #cms_chat {
   #cms_chat_nachrichten {
-    #cms_chat_leer {
-      text-align: center;
-    }
-    #cms_chat_nachrichten_nachladen {
-      text-align: center;
-      color: @schriftlink;
-      cursor: pointer;
-      margin-bottom: 5px;
-    }
     .cms_chat_datum {
       text-align: center;
       margin-bottom: 10px;
@@ -303,6 +294,9 @@
       &.cms_chat_nachricht_geloescht {
         opacity: 0.7;
         .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_aktion {
+            display: none;
+          }
           .cms_chat_nachricht_nachricht {
             font-style: italic;
             font-size: 90%;
@@ -323,14 +317,6 @@
     .cms_meldung_fehler {
       display: none;
     }
-    &.cms_chat_gebannt {
-      > * {
-        display: none !important;
-      }
-      .cms_meldung_fehler {
-        display: block !important;
-      }
-    }
     div:not(.cms_meldung_fehler) {
       display: inline-block;
       float: right;
@@ -339,6 +325,72 @@
         padding: 5px;
         cursor: pointer;
       }
+    }
+  }
+
+  #cms_chat_mehr {
+    color: @schriftlink;
+    cursor: pointer;
+  }
+
+  #cms_chat_status,
+  #cms_chat_laden,
+  #cms_chat_leer,
+  #cms_chat_mehr {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    h3 {
+      margin-top: 0;
+    }
+  }
+  #cms_chat_status,
+  #cms_chat_laden,
+  #cms_chat_berechtigung,
+  #cms_chat_leer,
+  #cms_chat_mehr,
+  #cms_chat_stumm {
+    display: none;
+  }
+
+  // Nach Priorität:
+  &.cms_chat_leer { // 0
+    #cms_chat_leer {
+      display: block;
+    }
+  }
+  &.cms_chat_mehr { // 0
+    #cms_chat_mehr {
+      display: block;
+    }
+  }
+  &.cms_chat_stumm { // 0.1
+    >#cms_chat_nachricht_verfassen {
+      display: none;
+    }
+    #cms_chat_stumm {
+      display: block;
+    }
+  }
+  &.cms_chat_status { // 1
+    >* {
+      display: none;
+    }
+    #cms_chat_status {
+      display: block;
+    }
+  }
+  &.cms_chat_laden {  // 1.1
+    #cms_chat_laden {
+      display: block;
+    }
+  }
+  &.cms_chat_berechtigung { // 2
+    >* {
+      display: none;
+    }
+    #cms_chat_berechtigung {
+      display: block;
     }
   }
 }
