@@ -121,13 +121,6 @@ if (!$fehler) {
 				if ($interntermine)	{$code .= "<li><a class=\"cms_button_ja\" href=\"$CMS_URLGANZ/Termine/Neuer_Termin\">+ Neuer interner Termin</a> </li> </li> ";}
 
 				if ($internblog) {$code .= "<li><a class=\"cms_button_ja\" href=\"$CMS_URLGANZ/Blog/Neuer_Blogeintrag\">+ Neuer interner Blogeintrag</a> </li> ";}
-
-				if ($CMS_RECHTE['Website']['Termine anlegen']) {
-					$code .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('$CMS_URLGANZ')\">+ Neuer öffentlicher Termin</span></li> ";
-				}
-				if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
-					$code .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_blogeintrag('$CMS_URLGANZ')\">+ Neuer öffentlicher Blogeintrag</span></li> ";
-				}
 			$code .= "</ul>";
 
 			$personencode = "";
