@@ -1,8 +1,12 @@
 $(window).on("load", function() {
-  $("body").contextmenu(function(e) { // Body, sodass bei dynamischem Laden die Events bestehen
+  $("body").contextmenu(function(e) {
+    $("#contextmenue").html("").hide();
+
     var el = $(e.target);
     var p, a;
     if(!el)
+      return;
+    if(el.is("input"))
       return;
     if(!(p = el.parents(".cms_liste")).length)
       return;

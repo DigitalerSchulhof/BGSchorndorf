@@ -353,10 +353,14 @@ function cms_persoenliche_notizen_speichern() {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_favorisieren(fid, url) {
+function cms_favorisieren(fid, url, fw) {
 	var icon = document.getElementById('cms_steite_favorit_icon');
 	var favorit = document.getElementById('cms_seite_favorit');
 	var neuerwert = '0';
+
+	if(fw !== undefined) {
+		favorit.value = fw;
+	}
 
 	if (favorit.value == '1') {
 		cms_laden_an('Favorit entfernen', 'Die Seite wird aus den Favoriten entfernt.');
@@ -375,10 +379,7 @@ function cms_favorisieren(fid, url) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			if (neuerwert == '1') {icon.src = "res/icons/klein/favorit.png";}
-			else {icon.src = "res/icons/klein/favorisieren.png";}
-			favorit.value = neuerwert;
-			cms_laden_aus();
+			location.reload();
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
