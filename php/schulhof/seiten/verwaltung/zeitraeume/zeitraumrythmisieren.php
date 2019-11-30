@@ -130,7 +130,7 @@ if ($zugriff) {
           $fnid++;
         }
         if ($jetzt > $fe) {$ffertig = true;}
-        if (($jetzt > $fb) && (!$ffertig)) {$geradef = true;} else {$geradef = false;}
+        if (($jetzt >= $fb) && (!$ffertig)) {$geradef = true;} else {$geradef = false;}
 
         $code .= cms_wochentagfeld($wochentag, $geradef, $TAGE);
         $jetzt = mktime(0,0,0,date('m', $jetzt), date('d', $jetzt)+1, date('Y',$jetzt));
@@ -138,7 +138,7 @@ if ($zugriff) {
       }
       if ($tag != 1) {
         $woche++;
-        if (isset($RYTH[$jahr][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$jahr][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
+        if (isset($RYTH[$wochenbeginn][$kalenderwoche])) {$opt = $OPTIONEN[$RYTH[$wochenbeginn][$kalenderwoche]];} else {$opt = $OPTIONEN[1];}
         $code .= "</td><td><select name=\"cms_rythmus_$woche\" id=\"cms_rythmus_$woche\">$opt</select></td></tr>";
       }
       $code .= "</tr></table>";

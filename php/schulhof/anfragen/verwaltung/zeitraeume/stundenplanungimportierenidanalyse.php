@@ -15,6 +15,8 @@ if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['stunde'])) {$stunde = $_POST['stunde'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['fach'])) {$fach = $_POST['fach'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['raum'])) {$raum = $_POST['raum'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['rythmen'])) {$rythmen = $_POST['rythmen'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['rythmenreihenfolge'])) {$rythmenreihenfolge = $_POST['rythmenreihenfolge'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schienen'])) {$schienen = $_POST['schienen'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {$SCHULJAHR = $_SESSION['ZEITRAUMSCHULJAHR'];} else {echo "FEHLER"; exit;}
@@ -24,13 +26,13 @@ $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
 if (cms_angemeldet() && $zugriff) {
-
 	$fehler = false;
 
 	if (strlen($csv) == 0) {$fehler = true;}
 	if (strlen($trennung) == 0) {$fehler = true;}
 	if (!cms_check_ganzzahl($SCHULJAHR, 0)) {$fehler = true;}
 	if (!cms_check_ganzzahl($ZEITRAUM, 0)) {$fehler = true;}
+	if (!cms_check_ganzzahl($rythmenreihenfolge, 0)) {$fehler = true;}
 
 	if (!$fehler) {
 		$maxspalten = 0;
@@ -47,6 +49,7 @@ if (cms_angemeldet() && $zugriff) {
 		if (!cms_check_ganzzahl($raum, 1, $maxspalten)) {$fehler = true;}
 		if (!cms_check_ganzzahl($schienen, 1, $maxspalten)) {$fehler = true;}
 		if (!cms_check_ganzzahl($klasse, 1, $maxspalten)) {$fehler = true;}
+		if (!cms_check_ganzzahl($rythmen, 1, $maxspalten) && ($rythmen != '-')) {$fehler = true;}
 	}
 
 	$dbs = cms_verbinden('s');
@@ -61,10 +64,10 @@ if (cms_angemeldet() && $zugriff) {
 			} else {$fehler = true;}
 		} else {$fehler = true;}
 		$sql->close();
-		$sql = $dbs->prepare("SELECT COUNT(*) FROM zeitraeume WHERE id = ? AND schuljahr = ?");
+		$sql = $dbs->prepare("SELECT COUNT(*), rythmen FROM zeitraeume WHERE id = ? AND schuljahr = ?");
 		$sql->bind_param("ii", $ZEITRAUM, $SCHULJAHR);
 		if ($sql->execute()) {
-			$sql->bind_result($zanzahl);
+			$sql->bind_result($zanzahl, $RYTHMUS);
 			if ($sql->fetch()) {
 				if ($zanzahl != '1') {$fehler = true;}
 			} else {$fehler = true;}
@@ -105,6 +108,7 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		function cms_bg_raum($text) {
+			if (strlen($text) == 0) {return 'MPG';}
 			$text = str_replace('MPGR1', 'MPG', $text);
 			$text = str_replace('MPGR2', 'MPG', $text);
 			$text = str_replace('MPGR3', 'MPG', $text);
@@ -317,6 +321,36 @@ if (cms_angemeldet() && $zugriff) {
 		}
 	}
 
+	$RREIHENFOLGE = array();
+	if ($rythmenreihenfolge != 0) {
+		$rwoche = $rythmenreihenfolge;
+		// r gibt die Position der 1 an
+		for ($r=1; $r <= $RYTHMUS; $r++) {
+			// Rythmusstring erzeugen:
+			$rs = "";
+			// Nullen vorher
+			for ($n=1; $n<$r; $n++) {$rs .= "0";}
+			$rs .= 1;
+			// Nullen nachher
+			for ($n=$r+1; $n<=$RYTHMUS; $n++) {$rs .= "0";}
+			$RREIHENFOLGE[$rs] = $rwoche;
+			$rwoche ++;
+			if ($rwoche > $RYTHMUS) {$rwoche = 1;}
+		}
+	}
+
+	//print_r($RREIHENFOLGE);
+
+	function cms_untis_rythmen($daten, $reihenfolge) {
+		$daten = str_replace("-", "", $daten);
+		if (isset($reihenfolge[$daten])) {
+			return $reihenfolge[$daten];
+		}
+		else {
+			return '0';
+		}
+	}
+
 	if (!$fehler) {
 		// KURSE ZUSAMMENBAUEN
 		$csvanalyse = explode("\n", $csv);
@@ -335,6 +369,10 @@ if (cms_angemeldet() && $zugriff) {
 			$dtag = $daten[$tag-1];
 			$dfach = $daten[$fach-1];
 			$dschiene = $daten[$schienen-1];
+			$drythmen = '0';
+			if (($rythmenreihenfolge != '0') && ($rythmen != '-')) {
+				$drythmen = cms_untis_rythmen($daten[$rythmen-1], $RREIHENFOLGE);
+			}
 			$klasseninfo = cms_klasseninfo($daten[$klasse-1]);
 			$dklasse = $klasseninfo['klasse'];
 			$dstufe = $klasseninfo['stufe'];
@@ -345,50 +383,52 @@ if (cms_angemeldet() && $zugriff) {
 			// Kurse dieses Lehrers abschließen
 			if (($aktlehrer != "-") && ($dlehrer != $aktlehrer)) {
 				foreach ($UNTERRICHT as $t) {
-					foreach ($t as $s) {
-						foreach ($s as $u) {
-							asort($u['stufen']);
-							asort($u['klassen']);
-							if (count($u['stufen']) > 1) {$ustufe = '-';}
-							else {$ustufe = $u['stufen'][0];}
-							$uklassen = "";
-							$uklassenids = "";
-							$uschienenids = "";
-							foreach ($u['klassen'] as $k) {
-								$uklassen .= substr($k, -1);
-								$uklassenids .= "|".$KLASSENIDS[$k];
-							}
-							foreach ($u['schienen'] as $s) {
-								$uschienenids .= "|".$SCHIENENIDS[$s];
-							}
-							$ufach = $u['fach'];
-
-							$bez = $ustufe.$uklassen." ".$FACHIDS[$ufach]['bez'];
-							$kurzbez = $ustufe.$uklassen." ".$ufach;
-							if (!cms_check_titel($bez)) {$fehler = true;}
-							if (!cms_check_titel($kurzbez)) {$fehler = true;}
-							if (!in_array($bez, $KURSEBEZ)) {
-								$K = array();
-								$K['bezeichnung'] = $bez;
-								$K['icon'] = $FACHIDS[$ufach]['ico'];
-								$K['stufe'] = $STUFENIDS[$ustufe];
-								$K['kurzbez'] = $kurzbez;
-								$K['fach'] = $FACHIDS[$ufach]['id'];
-								$K['klassen'] = $uklassenids;
-								$K['schienen'] = $uschienenids;
-								array_push($KURSE, $K);
-								array_push($KURSEBEZ, $bez);
-								$KURSINDEX[$bez] = $kindex;
-								$kindex++;
-							}
-							else {
-								$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
-								foreach ($u['schienen'] as $s) {
-									if (!preg_match("/".$SCHIENENIDS[$s]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$s];}
+					foreach ($t as $r) {
+						foreach ($r as $s) {
+							foreach ($s as $u) {
+								asort($u['stufen']);
+								asort($u['klassen']);
+								if (count($u['stufen']) > 1) {$ustufe = '-';}
+								else {$ustufe = $u['stufen'][0];}
+								$uklassen = "";
+								$uklassenids = "";
+								$uschienenids = "";
+								foreach ($u['klassen'] as $k) {
+									$uklassen .= substr($k, -1);
+									$uklassenids .= "|".$KLASSENIDS[$k];
 								}
+								foreach ($u['schienen'] as $s) {
+									$uschienenids .= "|".$SCHIENENIDS[$s];
+								}
+								$ufach = $u['fach'];
+
+								$bez = $ustufe.$uklassen." ".$FACHIDS[$ufach]['bez'];
+								$kurzbez = $ustufe.$uklassen." ".$ufach;
+								if (!cms_check_titel($bez)) {$fehler = true;}
+								if (!cms_check_titel($kurzbez)) {$fehler = true;}
+								if (!in_array($bez, $KURSEBEZ)) {
+									$K = array();
+									$K['bezeichnung'] = $bez;
+									$K['icon'] = $FACHIDS[$ufach]['ico'];
+									$K['stufe'] = $STUFENIDS[$ustufe];
+									$K['kurzbez'] = $kurzbez;
+									$K['fach'] = $FACHIDS[$ufach]['id'];
+									$K['klassen'] = $uklassenids;
+									$K['schienen'] = $uschienenids;
+									array_push($KURSE, $K);
+									array_push($KURSEBEZ, $bez);
+									$KURSINDEX[$bez] = $kindex;
+									$kindex++;
+								}
+								else {
+									$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
+									foreach ($u['schienen'] as $s) {
+										if (!preg_match("/".$SCHIENENIDS[$s]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$s];}
+									}
+								}
+								$STATTFINDEN .= $bez.$trennung.$u['tag'].$trennung.$u['rythmus'].$trennung.$SCHULSTUNDENIDS[$u['stunde']].$trennung;
+								$STATTFINDEN .= $LEHRERIDS[$aktlehrer].$trennung.$RAEUMEIDS[$u['raum']].$trennung."\n";
 							}
-							$STATTFINDEN .= $bez.$trennung.$u['tag'].$trennung.$SCHULSTUNDENIDS[$u['stunde']].$trennung;
-							$STATTFINDEN .= $LEHRERIDS[$aktlehrer].$trennung.$RAEUMEIDS[$u['raum']].$trennung."\n";
 						}
 					}
 				}
@@ -401,23 +441,24 @@ if (cms_angemeldet() && $zugriff) {
 				if ($CMS_SCHULE == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
-				if (!isset($UNTERRICHT[$dtag][$dstunde][$draum])) {
-					$UNTERRICHT[$dtag][$dstunde][$draum]['klassen'] = array();
-					$UNTERRICHT[$dtag][$dstunde][$draum]['stufen'] = array();
-					$UNTERRICHT[$dtag][$dstunde][$draum]['fach'] = $dfach;
-					$UNTERRICHT[$dtag][$dstunde][$draum]['tag'] = $dtag;
-					$UNTERRICHT[$dtag][$dstunde][$draum]['stunde'] = $dstunde;
-					$UNTERRICHT[$dtag][$dstunde][$draum]['raum'] = $draum;
-					$UNTERRICHT[$dtag][$dstunde][$draum]['schienen'] = array();
+				if (!isset($UNTERRICHT[$dtag][$drythmen][$dstunde][$draum])) {
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['klassen'] = array();
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['stufen'] = array();
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['fach'] = $dfach;
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['tag'] = $dtag;
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['stunde'] = $dstunde;
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['raum'] = $draum;
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['rythmus'] = $drythmen;
+					$UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['schienen'] = array();
 				}
-				if (!in_array($dklasse, $UNTERRICHT[$dtag][$dstunde][$draum]['klassen'])) {
-					array_push($UNTERRICHT[$dtag][$dstunde][$draum]['klassen'], $dklasse);
+				if (!in_array($dklasse, $UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['klassen'])) {
+					array_push($UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['klassen'], $dklasse);
 				}
-				if (!in_array($dstufe, $UNTERRICHT[$dtag][$dstunde][$draum]['stufen'])) {
-					array_push($UNTERRICHT[$dtag][$dstunde][$draum]['stufen'], $dstufe);
+				if (!in_array($dstufe, $UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['stufen'])) {
+					array_push($UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['stufen'], $dstufe);
 				}
-				if (!in_array($dschiene, $UNTERRICHT[$dtag][$dstunde][$draum]['schienen'])) {
-					array_push($UNTERRICHT[$dtag][$dstunde][$draum]['schienen'], $dschiene);
+				if (!in_array($dschiene, $UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['schienen'])) {
+					array_push($UNTERRICHT[$dtag][$drythmen][$dstunde][$draum]['schienen'], $dschiene);
 				}
 			}
 			else if (($dstufe == 'J1') || ($dstufe == 'J2')) {
@@ -449,57 +490,59 @@ if (cms_angemeldet() && $zugriff) {
 					$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
 					if (!preg_match("/".$SCHIENENIDS[$dschiene]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$dschiene];}
 				}
-				$STATTFINDEN .= $bez.$trennung.$dtag.$trennung;
+				$STATTFINDEN .= $bez.$trennung.$dtag.$trennung.$drythmen.$trennung;
 				$STATTFINDEN .= $SCHULSTUNDENIDS[$dstunde].$trennung;
 				$STATTFINDEN .= $LEHRERIDS[$dlehrer].$trennung;
 				$STATTFINDEN .= $RAEUMEIDS[$draum].$trennung."\n";
 			}
 		}
 		foreach ($UNTERRICHT as $t) {
-			foreach ($t as $s) {
-				foreach ($s as $u) {
-					asort($u['stufen']);
-					asort($u['klassen']);
-					if (count($u['stufen']) > 1) {$ustufe = '-';}
-					else {$ustufe = $u['stufen'][0];}
-					$uklassen = "";
-					$uklassenids = "";
-					$uschienenids = "";
-					foreach ($u['klassen'] as $k) {
-						$uklassen .= substr($k, -1);
-						$uklassenids .= "|".$KLASSENIDS[$k];
-					}
-					foreach ($u['schienen'] as $s) {
-						$uschienenids .= "|".$SCHIENENIDS[$s];
-					}
-					$ufach = $u['fach'];
-
-					$bez = $ustufe.$uklassen." ".$FACHIDS[$ufach]['bez'];
-					$kurzbez = $ustufe.$uklassen." ".$ufach;
-					if (!cms_check_titel($bez)) {$fehler = true;}
-					if (!cms_check_titel($kurzbez)) {$fehler = true;}
-					if (!in_array($bez, $KURSEBEZ)) {
-						$K = array();
-						$K['bezeichnung'] = $bez;
-						$K['icon'] = $FACHIDS[$ufach]['ico'];
-						$K['stufe'] = $STUFENIDS[$ustufe];
-						$K['kurzbez'] = $kurzbez;
-						$K['fach'] = $FACHIDS[$ufach]['id'];
-						$K['klassen'] = $uklassenids;
-						$K['schienen'] = $uschienenids;
-						array_push($KURSE, $K);
-						array_push($KURSEBEZ, $bez);
-						$KURSINDEX[$bez] = $kindex;
-						$kindex++;
-					}
-					else {
-						$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
-						foreach ($u['schienen'] as $s) {
-							if (!preg_match("/".$SCHIENENIDS[$s]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$s];}
+			foreach ($t as $r) {
+				foreach ($r AS $s) {
+					foreach ($s as $u) {
+						asort($u['stufen']);
+						asort($u['klassen']);
+						if (count($u['stufen']) > 1) {$ustufe = '-';}
+						else {$ustufe = $u['stufen'][0];}
+						$uklassen = "";
+						$uklassenids = "";
+						$uschienenids = "";
+						foreach ($u['klassen'] as $k) {
+							$uklassen .= substr($k, -1);
+							$uklassenids .= "|".$KLASSENIDS[$k];
 						}
+						foreach ($u['schienen'] as $s) {
+							$uschienenids .= "|".$SCHIENENIDS[$s];
+						}
+						$ufach = $u['fach'];
+
+						$bez = $ustufe.$uklassen." ".$FACHIDS[$ufach]['bez'];
+						$kurzbez = $ustufe.$uklassen." ".$ufach;
+						if (!cms_check_titel($bez)) {$fehler = true;}
+						if (!cms_check_titel($kurzbez)) {$fehler = true;}
+						if (!in_array($bez, $KURSEBEZ)) {
+							$K = array();
+							$K['bezeichnung'] = $bez;
+							$K['icon'] = $FACHIDS[$ufach]['ico'];
+							$K['stufe'] = $STUFENIDS[$ustufe];
+							$K['kurzbez'] = $kurzbez;
+							$K['fach'] = $FACHIDS[$ufach]['id'];
+							$K['klassen'] = $uklassenids;
+							$K['schienen'] = $uschienenids;
+							array_push($KURSE, $K);
+							array_push($KURSEBEZ, $bez);
+							$KURSINDEX[$bez] = $kindex;
+							$kindex++;
+						}
+						else {
+							$bestehende = $KURSE[$KURSINDEX[$bez]]['schienen']."|";
+							foreach ($u['schienen'] as $s) {
+								if (!preg_match("/".$SCHIENENIDS[$s]."/", $bestehende)) {$KURSE[$KURSINDEX[$bez]]['schienen'] .= "|".$SCHIENENIDS[$s];}
+							}
+						}
+						$STATTFINDEN .= $bez.$trennung.$u['tag'].$trennung.$u['rythmus'].$trennung.$SCHULSTUNDENIDS[$u['stunde']].$trennung;
+						$STATTFINDEN .= $LEHRERIDS[$aktlehrer].$trennung.$RAEUMEIDS[$u['raum']].$trennung."\n";
 					}
-					$STATTFINDEN .= $bez.$trennung.$u['tag'].$trennung.$SCHULSTUNDENIDS[$u['stunde']].$trennung;
-					$STATTFINDEN .= $LEHRERIDS[$aktlehrer].$trennung.$RAEUMEIDS[$u['raum']].$trennung."\n";
 				}
 			}
 		}

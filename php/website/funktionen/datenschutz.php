@@ -226,7 +226,7 @@ function cms_schulhof_datenschutz() {
 
 
 function cms_schulhof_rechte() {
-  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_HOSTINGPARTNERIN, $CMS_NAMEDATENSCHUTZ, $CMS_SCHULE, $CMS_STRASSE, $CMS_PLZORT, $CMS_TELEFON, $CMS_TELEFAX, $CMS_MAILDATENSCHUTZ, $CMS_NAMEADMINISTRATION, $CMS_MAILADMINISTRATION;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_HOSTINGPARTNERIN;
 
   $link = "";
   $linkanzeige = "";
@@ -267,24 +267,8 @@ function cms_schulhof_rechte() {
   $code .= "<p>Die Schule muss nachweisen können, dass für die gespeicherten Daten entweder eine rechtliche Grundlage besteht, oder dass in die Speicherung eingewilligt wurde. Ferner ist die Schule in der Verantwortung die Daten so sicher wie möglich zu speichern.</p>";
 
   $code .= "<h3>Auskunftspflicht</h3>";
-  $code .= "<p>Unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> kann jederzeit eingesehen werden, welche Daten gespeichert werden, wer sie sieht, auf welcher Grundlage (Einwilligung oder Gesetz) die Daten gespeichert werden und zu welchem Zweck sie gespeichert sind. Entstehen darüber hinaus Fragen, ist die Schule verpflichtet, über die Datenhaltung und die gespeicherten personenbezogenen Daten Auskunft zu geben.</p>";
-  $code .= "<p>Die Ansprechpartner dafür ist der Datenschutzbeauftragte der Schule:</p>";
-  $code .=  "<p>$CMS_NAMEDATENSCHUTZ<br>$CMS_SCHULE<br>";
-  $code .=  "$CMS_STRASSE<br>";
-  $code .=  "$CMS_PLZORT";
-  if (strlen($CMS_TELEFON) > 0) {$code .=  "<br>Telefon: $CMS_TELEFON";}
-  if (strlen($CMS_TELEFAX) > 0) {$code .=  "<br>Fax: $CMS_TELEFAX";}
-  if (strlen($CMS_MAILDATENSCHUTZ) > 0) {$code .=  "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
-  $code .=  "</p>";
-
-  $code .= "<p>Für technische Fragen kann ein Administrator des Schulhofs kontaktiert werden:</p>";
-  $code .=  "<p>$CMS_NAMEADMINISTRATION<br>$CMS_SCHULE<br>";
-  $code .=  "$CMS_STRASSE<br>";
-  $code .=  "$CMS_PLZORT";
-  if (strlen($CMS_TELEFON) > 0) {$code .=  "<br>Telefon: $CMS_TELEFON";}
-  if (strlen($CMS_TELEFAX) > 0) {$code .=  "<br>Fax: $CMS_TELEFAX";}
-  if (strlen($CMS_MAILADMINISTRATION) > 0) {$code .=  "<br><a href=\"mailto:$CMS_MAILADMINISTRATION\">$CMS_MAILADMINISTRATION</a>";}
-  $code .=  "</p>";
+  $code .= "<p>Unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> kann jederzeit eingesehen werden, welche Daten gespeichert werden, wer sie sieht, auf welcher Grundlage (Einwilligung oder Gesetz) die Daten gespeichert werden und zu welchem Zweck sie gespeichert sind. Entstehen darüber hinaus Fragen, ist die Schule verpflichtet, über die Datenhaltung und die gespeicherten personenbezogenen Daten Auskunft zu geben. Der Ansprechpartner dafür ist der Datenschutzbeauftragte der Schule.</p>";
+  $code .= "<p>Für technische Fragen kann ein Administrator des Schulhofs kontaktiert werden.</p>";
 
   $code .= "<h3>Berichtigung</h3>";
   $code .= "<p>Sollten falsche Daten hinterlegt sein, die nicht direkt geändert werden können, so ist die Schule verpflichtet, die Daten zu berichtigen.</p>";

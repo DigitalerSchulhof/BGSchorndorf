@@ -216,11 +216,10 @@ if (cms_angemeldet() && $zugriff) {
 			  $sql->execute();
 			}
 		  $sql->close();
-
 		}
 
 		// Regelunterricht an falschen Tagen löschen
-		$sql->prepare("DELETE FROM regelunterricht WHERE schulstunde IN (SELECT id FROM schulstunden WHERE zeitraum = ?) AND tag = ?");
+		$sql = $dbs->prepare("DELETE FROM regelunterricht WHERE schulstunde IN (SELECT id FROM schulstunden WHERE zeitraum = ?) AND tag = ?");
 		if ($mo == 0) {
 			$tag = 1;
 			$sql->bind_param("ii", $zeitraumid, $tag);
@@ -258,8 +257,6 @@ if (cms_angemeldet() && $zugriff) {
 		}
 		$sql->close();
 
-
-		cms_trennen($dbs);
 		echo "ERFOLG";
 	}
 	else {

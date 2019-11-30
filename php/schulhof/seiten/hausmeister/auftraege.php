@@ -23,7 +23,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
           $eintraege .= "<td>".cms_generiere_hinweisicon($icon, $hinweis)."</td>";
           $eintraege .= "<td>".$daten['titel']."</td>";
           $eintraege .= "<td>".date("d.m.Y", $daten['start'])."</td>";
-          $eintraege .= "<td>".date("d.m.Y", $daten['ziel'])."</td>";
+          $eintraege .= "<td>".date("d.m.Y", $daten['ziel'])." um ".date("H:i", $daten['ziel'])." Uhr</td>";
           if (!is_null($daten['pvorname']) && ($daten['erstellt'] < $daten['start'])) {
             $anzeigename = cms_generiere_anzeigename($daten['pvorname'], $daten['pnachname'], $daten['ptitel']);
             if (in_array($daten['ersteller'], $CMS_EMPFAENGERPOOL)) {

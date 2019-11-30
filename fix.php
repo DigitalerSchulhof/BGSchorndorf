@@ -1,11 +1,15 @@
 <?php
-$personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
-$gruppen = array("Gremien", "Fachschaften", "Klassen", "Kurse", "Stufen", "Arbeitsgemeinschaften", "Arbeitskreise", "Fahrten", "Wettbewerbe", "Ereignisse", "Sonstige Gruppen");
-$raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
+// $personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
+// $gruppen = array("Gremien", "Fachschaften", "Klassen", "Kurse", "Stufen", "Arbeitsgemeinschaften", "Arbeitskreise", "Fahrten", "Wettbewerbe", "Ereignisse", "Sonstige Gruppen");
+// $raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 
 // foreach ($gruppen as $g) {
-// 	$gk = strtolower($g);
-// 	$gk = str_replace(" ", "", $gk);
+//  	$gk = strtolower($g);
+//  	$gk = str_replace(" ", "", $gk);
+  //echo "ALTER TABLE `$gk"."mitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;";
+  //echo "ALTER TABLE $gk"."mitglieder DROP FOREIGN KEY chatbannvon".$gk."mitglieder;<br>";
+  // echo "ALTER TABLE `$gk"."mitglieder` DROP INDEX `chatbannvon".$gk."mitglieder`;<br>";
+
 //
 // 	echo "ALTER TABLE `$gk` CHANGE `bezeichnung` `bezeichnung` VARBINARY(2000) NULL DEFAULT NULL, CHANGE `icon` `icon` VARBINARY(2000) NULL DEFAULT NULL, CHANGE `sichtbar` `sichtbar` INT(1) UNSIGNED NOT NULL DEFAULT '0', CHANGE `chataktiv` `chataktiv` INT(1) UNSIGNED NOT NULL DEFAULT '0';<br>";
 // 	echo "ALTER TABLE `$gk"."blogeintraegeintern` CHANGE `gruppe` `gruppe` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `bezeichnung` `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT '0', CHANGE `genehmigt` `genehmigt` INT(1) NOT NULL DEFAULT '0', CHANGE `aktiv` `aktiv` INT(1) NOT NULL DEFAULT '0', CHANGE `notifikationen` `notifikationen` INT(1) NOT NULL DEFAULT '0', CHANGE `text` `text` LONGBLOB NULL DEFAULT NULL, CHANGE `vorschau` `vorschau` LONGBLOB NULL DEFAULT NULL, CHANGE `autor` `autor` VARBINARY(5000) NULL DEFAULT NULL;<br>";
@@ -14,7 +18,8 @@ $raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 // 	echo "ALTER TABLE `$gk"."chat` CHANGE `gruppe` `gruppe` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `person` `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `datum` `datum` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `inhalt` `inhalt` LONGBLOB NULL DEFAULT NULL, CHANGE `loeschstatus` `loeschstatus` INT(1) UNSIGNED NULL DEFAULT NULL, CHANGE `fertig` `fertig` INT(1) NULL DEFAULT NULL;<br>";
 // 	echo "ALTER TABLE `$gk"."termineintern` CHANGE `gruppe` `gruppe` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `bezeichnung` `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `ort` `ort` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `ende` `ende` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `mehrtaegigt` `mehrtaegigt` INT(1) NULL DEFAULT NULL, CHANGE `uhrzeitbt` `uhrzeitbt` INT(1) NULL DEFAULT NULL, CHANGE `uhrzeitet` `uhrzeitet` INT(1) NULL DEFAULT NULL, CHANGE `ortt` `ortt` INT(1) NULL DEFAULT NULL, CHANGE `genehmigt` `genehmigt` INT(1) NOT NULL DEFAULT '0', CHANGE `aktiv` `aktiv` INT(1) NOT NULL DEFAULT '0', CHANGE `notifikationen` `notifikationen` INT(1) NOT NULL DEFAULT '0', CHANGE `text` `text` LONGBLOB NULL DEFAULT NULL;<br>";
 // 	echo "ALTER TABLE `$gk"."termineinterndownloads` CHANGE `termin` `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `pfad` `pfad` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `titel` `titel` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `beschreibung` `beschreibung` LONGBLOB NULL DEFAULT NULL, CHANGE `dateiname` `dateiname` INT(1) UNSIGNED NOT NULL DEFAULT '1', CHANGE `dateigroesse` `dateigroesse` INT(1) UNSIGNED NOT NULL DEFAULT '1';<br><br>";
-// }
+//}
+
 // echo "ALTER TABLE `klassen` CHANGE `stundenplanextern` `stundenplanextern` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `stufenbezextern` `stufenbezextern` VARBINARY(500) NULL DEFAULT NULL, CHANGE `klassenbezextern` `klassenbezextern` VARBINARY(500) NULL DEFAULT NULL, CHANGE `stufe` `stufe` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br><br>";
 // echo "ALTER TABLE `kurse` CHANGE `kurzbezeichnung` `kurzbezeichnung` VARBINARY(500) NULL DEFAULT NULL, CHANGE `fach` `fach` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `kursbezextern` `kursbezextern` VARBINARY(500) NULL DEFAULT NULL;<br><br>";
 // echo "ALTER TABLE `stufen` CHANGE `reihenfolge` `reihenfolge` INT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `tagebuch` `tagebuch` INT(1) UNSIGNED NULL DEFAULT '0', CHANGE `gfs` `gfs` INT(1) UNSIGNED NULL DEFAULT '0';<br><br>";
@@ -130,22 +135,29 @@ $raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 // echo "-------------------------------------------<br><br>";
 
 
-ALTER TABLE `nutzerkonten` CHANGE `benutzername` `benutzername` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `passwort` `passwort` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `passworttimeout` `passworttimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `salt` `salt` VARBINARY(100) NULL DEFAULT NULL, CHANGE `sessionid` `sessionid` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `sessiontimeout` `sessiontimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `email` `email` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `letzteanmeldung` `letzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `vorletzteanmeldung` `vorletzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `erstellt` `erstellt` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `notizen` `notizen` LONGBLOB NULL DEFAULT NULL, CHANGE `letztenotifikation` `letztenotifikation` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+// ALTER TABLE `nutzerkonten` CHANGE `benutzername` `benutzername` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `passwort` `passwort` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `passworttimeout` `passworttimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `salt` `salt` VARBINARY(100) NULL DEFAULT NULL, CHANGE `sessionid` `sessionid` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `sessiontimeout` `sessiontimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `email` `email` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `letzteanmeldung` `letzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `vorletzteanmeldung` `vorletzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `erstellt` `erstellt` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `notizen` `notizen` LONGBLOB NULL DEFAULT NULL, CHANGE `letztenotifikation` `letztenotifikation` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 
 
 include_once('php/allgemein/funktionen/sql.php');
 include_once("php/schulhof/funktionen/config.php");
 $dbs = cms_verbinden('s');
-$sql = $dbs->prepare("SELECT id FROM nutzerkonten");
+echo "<table>";
+$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), zweitid FROM personen WHERE zweitid IS NOT NULL");
 if ($sql->execute()) {
- 	$sql->bind_result($nid);
- 	while ($sql->fetch()) {
- 		echo "ALTER TABLE `postausgang_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
- 		echo "ALTER TABLE `posteingang_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `alle` `alle` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB NULL DEFAULT NULL, CHANGE `gelesen` `gelesen` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
-		echo "ALTER TABLE `postentwurf_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB NULL DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
-		echo "ALTER TABLE `posttags_$nid` CHANGE `person` `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `titel` `titel` VARBINARY(2000) NULL DEFAULT NULL, CHANGE `farbe` `farbe` INT(2) NOT NULL DEFAULT '0';<br>";
-		echo "ALTER TABLE `termine_$nid` CHANGE `person` `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `bezeichnung` `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `ort` `ort` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `ende` `ende` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `mehrtaegigt` `mehrtaegigt` VARBINARY(50) NULL DEFAULT NULL, CHANGE `uhrzeitbt` `uhrzeitbt` VARBINARY(50) NULL DEFAULT NULL, CHANGE `uhrzeitet` `uhrzeitet` VARBINARY(50) NULL DEFAULT NULL, CHANGE `ortt` `ortt` VARBINARY(50) NULL DEFAULT NULL, CHANGE `text` `text` LONGBLOB NULL DEFAULT NULL;<br><br>";
-	}
+  $nr = 1;
+  $sql->bind_result($vor, $nach, $zid);
+  while ($sql->fetch()) {
+    echo "<tr><td>$nr</td><td>$vor</td><td>$nach</td><td>$zid</td></tr>";
+    $nr++;
+  }
 }
-cms_trennen($dbs);
+echo "</table>";
+//  		echo "ALTER TABLE `postausgang_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
+//  		echo "ALTER TABLE `posteingang_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `alle` `alle` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB NULL DEFAULT NULL, CHANGE `gelesen` `gelesen` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
+// 		echo "ALTER TABLE `postentwurf_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB NULL DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
+// 		echo "ALTER TABLE `posttags_$nid` CHANGE `person` `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `titel` `titel` VARBINARY(2000) NULL DEFAULT NULL, CHANGE `farbe` `farbe` INT(2) NOT NULL DEFAULT '0';<br>";
+// 		echo "ALTER TABLE `termine_$nid` CHANGE `person` `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `bezeichnung` `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `ort` `ort` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `ende` `ende` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `mehrtaegigt` `mehrtaegigt` VARBINARY(50) NULL DEFAULT NULL, CHANGE `uhrzeitbt` `uhrzeitbt` VARBINARY(50) NULL DEFAULT NULL, CHANGE `uhrzeitet` `uhrzeitet` VARBINARY(50) NULL DEFAULT NULL, CHANGE `ortt` `ortt` VARBINARY(50) NULL DEFAULT NULL, CHANGE `text` `text` LONGBLOB NULL DEFAULT NULL;<br><br>";
+// 	}
+// }
+// cms_trennen($dbs);
 ?>

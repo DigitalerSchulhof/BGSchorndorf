@@ -10,12 +10,12 @@ if ($zugriff) {
     $code .= cms_meldung_firewall();
   }
   else {
-    if (isset($_SESSION['AUSPLANUNGTAG']) && cms_check_ganzzahl($_SESSION['AUSPLANUNGTAG'],1,31)) {$tag = $_SESSION['AUSPLANUNGTAG'];} else {$tag = date('d');}
-    if (isset($_SESSION['AUSPLANUNGMONAT']) && cms_check_ganzzahl($_SESSION['AUSPLANUNGMONAT'],1,12)) {$monat = $_SESSION['AUSPLANUNGMONAT'];} else {$monat = date('m');}
-    if (isset($_SESSION['AUSPLANUNGJAHR']) && cms_check_ganzzahl($_SESSION['AUSPLANUNGJAHR'],0)) {$jahr = $_SESSION['AUSPLANUNGJAHR'];} else {$jahr = date('Y');}
-    $_SESSION['AUSPLANUNGTAG'] = $tag;
-    $_SESSION['AUSPLANUNGMONAT'] = $monat;
-    $_SESSION['AUSPLANUNGJAHR'] = $jahr;
+    if (isset($_SESSION['AusplanungenT']) && cms_check_ganzzahl($_SESSION['AusplanungenT'],1,31)) {$tag = $_SESSION['AusplanungenT'];} else {$tag = date('d');}
+    if (isset($_SESSION['AusplanungenM']) && cms_check_ganzzahl($_SESSION['AusplanungenM'],1,12)) {$monat = $_SESSION['AusplanungenM'];} else {$monat = date('m');}
+    if (isset($_SESSION['AusplanungenJ']) && cms_check_ganzzahl($_SESSION['AusplanungenJ'],0)) {$jahr = $_SESSION['AusplanungenJ'];} else {$jahr = date('Y');}
+    $_SESSION['AusplanungenT'] = $tag;
+    $_SESSION['AusplanungenM'] = $monat;
+    $_SESSION['AusplanungenJ'] = $jahr;
     $heute = mktime(0,0,0, $monat, $tag, $jahr);
 
     // LEHRER LADEN
@@ -96,7 +96,7 @@ if ($zugriff) {
     $code .= "<h2>Ausplanen</h2>";
 
     $code .= "<table class=\"cms_zeitwahl\">";
-    $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('-')\">«</span></td><td>".cms_datum_eingabe('cms_ausplanung_datum', $tag, $monat, $jahr, 'cms_vplan_ausgeplant_laden(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('+')\">»</span></td></tr>";
+    $code .= "<tr><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('-')\">«</span></td><td>".cms_datum_eingabe('cms_vplankonflikte_datum', $tag, $monat, $jahr, 'cms_vplan_ausgeplant_laden(\'j\');')."</td><td><span class=\"cms_button\" onclick=\"cms_vplan_ausgeplant_laden('+')\">»</span></td></tr>";
     $code .= "</table>";
 
     $code .= "<table class=\"cms_formular\">";
@@ -154,6 +154,7 @@ if ($zugriff) {
     $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_k', '');
     $code .= "<h3>Stufen</h3>";
     $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_s', 'cms_ausplanen_neuladen();');
+    $code .= "<input type=\"hidden\" name=\"cms_ausplanungen_ort\" id=\"cms_ausplanungen_ort\" value=\"a\">";
     $code .= "</div></div>";
     $code .= "<div class=\"cms_clear\"></div><div>";
     if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {

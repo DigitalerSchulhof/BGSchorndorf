@@ -38,10 +38,11 @@ if (cms_angemeldet() && $zugriff) {
   $sql->close();
   cms_trennen($dbs);
 
-  $code = "<table class=\"cms_formular\">";
-  $code .= "<tr><th>Vertretungstext Schüler:</th><td><textarea name=\"cms_vplan_vtext_schueler\" id=\"cms_vplan_vtext_schueler\">$VERTRETUNGSTEXTS</textarea></td></tr>";
-  $code .= "<tr><th>Vertretungstext Lehrer:</th><td><textarea name=\"cms_vplan_vtext_lehrer\" id=\"cms_vplan_vtext_lehrer\">$VERTRETUNGSTEXTL</textarea></td></tr>";
-  $code .= "</table>";
+
+  $code = "<h4>Schüler</h4>";
+  $code .= "<div id=\"cms_vplan_vtext_schueler\">$VERTRETUNGSTEXTS</div>";
+  $code .= "<h4>Zusätzlich bei den Lehrern</h4>";
+  $code .= "<div id=\"cms_vplan_vtext_lehrer\">$VERTRETUNGSTEXTL</div>";
   $code .= "<p><span class=\"cms_button\" onclick=\"cms_vplan_vtexte_speichern()\">Vertretungstexte speichern</span></p>";
   echo $code;
 }

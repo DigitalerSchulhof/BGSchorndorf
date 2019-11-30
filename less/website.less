@@ -481,3 +481,17 @@
 .cms_auszeichnung a:hover {
   color: @schriftbuttonfusszeile !important;
 }
+
+.cms_datenschutz_einwilligungerteilt {background: @erfolgdunkel;}
+.cms_datenschutz_einwilligungverweigert {background: @fehlerdunkel;}
+
+.cms_datenschutz_einwilligungerteilt, .cms_datenschutz_einwilligungverweigert {
+  color: @schriftfarbehell;
+  padding: 3px 5px 2px 5px;
+  border-radius: 3px;
+}
+
+.cms_datenschutz_einwilligungerteilt:hover,
+.cms_datenschutz_einwilligungverweigert:hover {
+  cursor: pointer;
+}

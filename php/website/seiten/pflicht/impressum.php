@@ -3,34 +3,46 @@
 
 <h1>Impressum</h1>
 
-<h2>Ansprechpartner</h2>
-<h3>Herausgeber</h3>
-<p>Land Baden-Württemberg vertreten durch</p>
-<?php
-  echo "<p>$CMS_SCHULE<br>";
-  echo "$CMS_STRASSE<br>";
-  echo "$CMS_PLZORT";
-  if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
-  if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
-  if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
-  echo "</p>";
-?>
+<h2>Verwantwortliche Personen</h2>
+</div>
 
-<h3>Vertretungsberechtigter</h3>
-<?php echo "<p>$CMS_NAMESCHULLEITER</p>"; ?>
+<div class="cms_spalte_2"><div class="cms_spalte_i">
+  <h3>Herausgeber</h3>
+  <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
+  <?php
+    echo "<p>$CMS_NAMESCHULLEITER<br>$CMS_SCHULE<br>";
+    echo "$CMS_STRASSE<br>";
+    echo "$CMS_PLZORT";
+    if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
+    if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
+    if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
+    echo "</p>";
+  ?>
+  <p>Vertretungsberechtigte entscheiden, ggf. mit Rücksprache anderer, über den Zweck der Verarbeitung von personenbezogenen Daten und welche Mittel dazu eingesetzt werden.</p>
+</div></div>
+<div class="cms_spalte_2"><div class="cms_spalte_i">
+  <h3>Verantwortlich im Sinne des Presserechts §55 RStV</h3>
+  <?php
+    echo "<p>$CMS_NAMEPRESSERECHT";
+    if (strlen($CMS_MAILPRESSERECHT) > 0) {echo "<br><a href=\"mailto:$CMS_MAILPRESSERECHT\">$CMS_MAILPRESSERECHT</a>";}
+    echo "</p>";
+  ?>
+  <h3>Datenschutzbeauftragter</h3>
+  <?php
+    echo "<p>$CMS_NAMEDATENSCHUTZ";
+    if (strlen($CMS_MAILDATENSCHUTZ) > 0) {echo "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
+    echo "</p>";
+  ?>
+  <h3>Technische Administration</h3>
+  <?php
+    echo "<p>$CMS_NAMEADMINISTRATION";
+    if (strlen($CMS_MAILADMINISTRATION) > 0) {echo "<br><a href=\"mailto:$CMS_MAILADMINISTRATION\">$CMS_MAILADMINISTRATION</a>";}
+    echo "</p>";
+  ?>
+</div></div>
+<div class="cms_clear"></div>
 
-<h3>Datenschutzbeauftragter</h3>
-<?php
-  echo "<p>$CMS_NAMEDATENSCHUTZ<br>$CMS_SCHULE<br>";
-  echo "$CMS_STRASSE<br>";
-  echo "$CMS_PLZORT";
-  if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
-  if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
-  if (strlen($CMS_MAILDATENSCHUTZ) > 0) {echo "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
-  echo "</p>";
-?>
-
-
+<div class="cms_spalte_i">
 <h2>Rechtliche Hinweise</h2>
 <h3>Urheberrecht</h3>
 <p>Urheberrecht Texte, Bilder, Grafiken und Fotos sowie die Gestaltung dieser Internetseiten unterliegen dem Urheberrecht. Sie dürfen von Ihnen nur zum privaten und sonstigen eigenen Gebrauch im Rahmen des § 53 Urheberrechtsgesetz (UrhG) ohne jede Änderung vervielfältigt werden. Eine Verbreitung von Kopien (analog oder digital) oder Auszügen ist nur mit schriftlicher Genehmigung zulässig. Der Nachdruck und die Auswertung von Pressemitteilungen und Reden sind mit Quellenangabe gestattet. Texte, Bilder, Grafiken und sonstige Materialien können ganz oder teilweise dem Urheberrecht Dritter unterliegen. Die Inhalte Dritter sind als solche kenntlich gemacht und dürfen ohne Einwilligung des Rechteinhabers nicht vervielfältigt, öffentlich zugänglich gemacht oder öffentlich wiedergegeben werden.</p>

@@ -796,6 +796,91 @@ function cms_personaldaten_aendern($id) {
 }
 
 
+
+function cms_personenids_aendern($id) {
+	$zugriff = true;
+	$verwaltung = false;
+	// Berechtigung prüfen
+	if ($id != $_SESSION["BENUTZERID"]) {
+		global $CMS_RECHTE;
+		$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
+		$verwaltung = true;
+	}
+
+	if ($zugriff) {
+		global $CMS_SCHLUESSEL;
+		$dbs = cms_verbinden('s');
+		$fehler = false;
+
+		$z = $d = $v = null;
+
+		$sql = $dbs->prepare("SELECT COUNT(*), zweitid, drittid, viertid, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') FROM personen WHERE personen.id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl, $z, $d, $v, $vorname, $nachname, $titel);
+			if ($sql->fetch()) {
+				if ($anzahl != 1) {$fehler = true;}
+			}
+			else {$fehler = true;}
+		}
+		else {$fehler = true;}
+		$sql->close();
+		cms_trennen($dbs);
+
+		$code = "";
+
+		if ($fehler) {
+			$code .= cms_meldung_unbekannt();
+		}
+		else {
+			$code .= "<div class=\"cms_spalte_2\">";
+			$code .= "<div class=\"cms_spalte_i\">";
+			$code .= "<h3>IDs von ".cms_generiere_anzeigename($vorname, $nachname, $titel)."</h3>";
+			$code .= "<table class=\"cms_formular\">";
+				$code .= "<tr>";
+					$code .= "<th>Schulhof-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$id\" name=\"cms_personen_shid\" id=\"cms_personen_shid\" disabled=\"disabled\"></td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>Zweit-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$z\" name=\"cms_personen_zweitid\" id=\"cms_personen_zweitid\"></td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>Dritt-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$d\" name=\"cms_personen_drittid\" id=\"cms_personen_drittid\"></td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>Viert-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$v\" name=\"cms_personen_viertid\" id=\"cms_personen_viertid\"></td>";
+				$code .= "</tr>";
+			$code .= "</table>";
+
+			$code .= "</div>";
+			$code .= "</div>";
+
+
+			$code .= "<div class=\"cms_spalte_2\">";
+			$code .= "<div class=\"cms_spalte_i\">";
+			$code .= "</div>";
+			$code .= "</div>";
+
+			$code .= "<div class=\"cms_clear\"></div>";
+
+			$code .= "<div class=\"cms_spalte_i\">";
+			$code .= "<p><span class=\"cms_button\" onclick=\"cms_personen_ids_aendern();\">Änderungen speichern</span> ";
+			$code .= "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Personen\">Zurück</a>";
+			$code .= "</p>";
+			$code .= "</div>";
+		}
+	}
+	else {
+		$code .= cms_meldung_berechtigung();
+	}
+	echo $code;
+}
+
+
+
 // Einstellungen ändern
 function cms_personaldaten_einstellungen_aendern($id) {
 	global $CMS_EINSTELLUNGEN;

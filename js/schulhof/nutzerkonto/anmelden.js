@@ -160,7 +160,7 @@ function cms_timeout_aktualisieren () {
 				if (uebrig < 1) {
 					if (CMS_BENUTZERART == "s") {meldung = '<p>Die letzte Minute läuft. Du wirst aus Sicherheitsgründen bald abgemeldet! Verlängere jetzt deine Aktivitätszeit!</p>';}
 					else {meldung = '<p>Die letzte Minute läuft. Sie werden aus Sicherheitsgründen bald abgemeldet! Verlängern Sie jetzt Ihre Aktivitätszeit!</p>';}
-					cms_meldung_an('warnung', 'Die Zeit läuft ab!', meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">Verlängern</span>');
+					cms_meldung_an('warnung', 'Die Zeit läuft ab!', meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">Verlängern</span></p>');
 				}
 				else {
 					prozent = uebrig/CMS_SESSIONAKTIVITAET*100;
@@ -213,7 +213,7 @@ function cms_timeout_verlaengern() {
 			if (Number.isInteger(Number(rueckgabe))) {
 					CMS_SESSIONTIMEOUT = rueckgabe;
 					cms_timeout_aktualisieren();
-					cms_meldung_an('erfolg', 'Aktivitätszeit verlängern', '<p class="cms">Die Verlängerung wurde durchgeführt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span>');
+					cms_meldung_an('erfolg', 'Aktivitätszeit verlängern', '<p class="cms">Die Verlängerung wurde durchgeführt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 			}
 			else if (rueckgabe.length == 0) {
 				cms_abmelden('auto');

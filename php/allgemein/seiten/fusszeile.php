@@ -25,8 +25,8 @@ if ($CMS_ANGEMELDET) {
 		echo "</div>";
 
 		echo "<p class=\"cms_notiz\" id=\"cms_geraetewahl\">";
-		if (isset($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {
-			if ($_SESSION['DSGVO_COOKIESAKZEPTIERT']) {
+		if (isset($_SESSION['DSGVO_EINWILLIGUNG_A'])) {
+			if ($_SESSION['DSGVO_EINWILLIGUNG_A']) {
 				echo "Anzeige optimieren für: <a href=\"javascript:cms_geraet_aendern('P');\">Computer</a>, <a href=\"javascript:cms_geraet_aendern('T');\">Tablets</a> oder <a href=\"javascript:cms_geraet_aendern('H');\">Smartphones</a>.";
 			}
 		}
@@ -42,24 +42,21 @@ if ($CMS_ANGEMELDET) {
 <?php
 // DSGVO-Cookies
 $CMS_DSGVO_COOKIESAKZEPTIERT = false;
-if (isset($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {$CMS_DSGVO_COOKIESAKZEPTIERT = $_SESSION['DSGVO_COOKIESAKZEPTIERT'];}
+if (isset($_SESSION['DSGVO_FENSTERWEG'])) {$CMS_DSGVO_COOKIESAKZEPTIERT = $_SESSION['DSGVO_FENSTERWEG'];}
 
 if (!$CMS_DSGVO_COOKIESAKZEPTIERT) {
-	$code = "";
 
+	$code = "";
 	$code .= "<div id=\"cms_dsgvo_datenschutz\">";
   $meldung = "";
-  $meldung .= "<h4>Datenschutzhinweis</h4>";
-	$meldung .= "<p>Diese Seite speichert Cookies zu statistischen Zwecken und zur Verkürzung von Ladezeiten. Aus technischen Gründen werden weitere Daten erhoben, die keinen unmittelbaren Rückschluss auf Sie zulassen. Durch die Nutzung dieser Seite erklären Sie sich damit einverstanden.</p><p><a href=\"javascript:cms_einblenden('cms_dsgvo_datenschutz_ausfuehrlich')\">Mehr Informationen ...</a></p>";
-	$meldung .= "<div id=\"cms_dsgvo_datenschutz_ausfuehrlich\" style=\"display: none;\">";
-	$meldung .= "<p>Gespeichert werden folgende Informationen:</p><ul>";
-	$meldung .= "<li>Es werden die Zugriffe auf das Websiteangebot gezählt. Gespeichert wird die Anzahl der Zugriffe auf einzelne Seiten und Downloads pro Monat. Da der Zeitraum vergleichsweise groß ist und keine IP-Adressen gespeichert werden, sind Rückschlüsse auf Personen nicht möglich.</li>";
-	$meldung .= "<li>Aus technischen Gründen werden Informationen über Ihr System geloggt.</li>";
-	$meldung .= "<li>Für die Benutzung von Newslettern und Kontaktformularen gelten besondere <a href=\"Website/Datenschutz\">Datenschutzhinweise</a>.</li>";
-	$meldung .= "<li>Es werden Cookies verwendet, um zu prüfen, ob diese Meldung bereits gelesen wurde und um Downloads sicherer zu gestalten. Bei der Verwendung des Schulhofes werden weitere Daten gespeichert, die zur Zugriffskontrolle und damit zur Datensicherheit beitragen. Mehr Informationen unter <a href=\"Website/Datenschutz\">Datenschutz</a>.</li>";
+  $meldung .= "<h4>Datenschutzeinstellungen</h4>";
+	$meldung .= "<p>Bitte wählen, welche Daten diese Seite verarbeiten darf:</p>";
+	$meldung .= "<ul>";
+	$meldung .= "<li><b>Einwilligung A:</b> Ich gestatte dieser Website meine personenbezogenen Daten durch die Nutzung von Kontaktformularen an den gewählten Empfänger zu übermitteln. Ferner gestatte ich der Website die Art meines Gerätes in einem Cookie zu speichern, um die Ladezeit zu verbessern. Bei Smartphones wird darüberhinaus auch die geladene Navigation gespeichert.</li>";
+	$meldung .= "<li><b>Einwilligung B:</b> Ich gestatte dieser Website Inhalte Dritter anzuzeigen und erkläre mich mit den Datenschutzvereinbarungen dieser dritten Seiten einverstanden.</li>";
 	$meldung .= "</ul>";
-	$meldung .= "</div>";
-	$meldung .= "<p><span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz();\">Einverstanden</span> <a class=\"cms_button\" href=\"Website/Datenschutz\">Alle Datenschutzhinweise</a></p>";
+	$meldung .= "<p>Unter <a href=\"Website/Datenschutz\">Datenschutz</a> können diese Einstellungen jederzeit geändert werden und weitere Datenschutzinformationen ingesehen werden.</p>";
+	$meldung .= "<p><span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'j', 'n');\">Einwilligung A erteilen</span> <span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'n', 'j');\">Einwilligung B erteilen</span> <span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'j', 'j');\">Einwilligungen A und B erteilen</span> <span class=\"cms_button_nein\" onclick=\"cms_dsgvo_datenschutz('j', 'n', 'n');\">Keine Einwilligung erteilen</span> <a class=\"cms_button\" href=\"Website/Datenschutz\">Alle Datenschutzhinweise</a></p>";
   $code .= cms_meldung('warnung', $meldung);
 	$code .= "</div>";
 	echo $code;

@@ -160,6 +160,12 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Einstellungen_des_Nutzerkontos']  = 'php/schulhof/seiten/verwaltung/personen/einstellungendesnutzerkontos.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Schüler_und_Eltern_verknüpfen']   = 'php/schulhof/seiten/verwaltung/personen/schuelereltern.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Stundenplan']                     = 'php/schulhof/seiten/verwaltung/personen/stundenplan.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/IDs_importieren']                 = 'php/schulhof/seiten/verwaltung/personen/idsimportieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/IDs_bearbeiten']                  = 'php/schulhof/seiten/verwaltung/personen/idsbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_zurücksetzen']      = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungzurueck.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_importieren']       = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungimportieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_Lehrer_und_Schüler'] = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungklasseregelunterricht.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Nicht_zugeordnet_löschen']        = 'php/schulhof/seiten/verwaltung/personen/nichtzugeordnetloeschen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen']                                   = 'php/schulhof/seiten/verwaltung/rollen/rollen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen/Rolle_bearbeiten']                  = 'php/schulhof/seiten/verwaltung/rollen/rollebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen']                = 'php/schulhof/seiten/verwaltung/rollen/neuerolle.php';

@@ -5,11 +5,6 @@ function cms_gesichert_laden(id) {
 function cms_lehrerdatenbankzugangsdaten_schicken(formulardaten) {
 	formulardaten.append("nutzerid",    	CMS_BENUTZERID);
 	formulardaten.append("sessionid", 		CMS_SESSIONID);
-	formulardaten.append("dbshost", 			CMS_DBS_HOST);
-	formulardaten.append("dbsuser", 			CMS_DBS_USER);
-	formulardaten.append("dbspass", 			CMS_DBS_PASS);
-	formulardaten.append("dbsdb", 				CMS_DBS_DB);
-	formulardaten.append("dbsschluessel", CMS_DBS_SCHLUESSEL);
 	return formulardaten;
 }
 
@@ -71,5 +66,34 @@ function cms_netzcheck(zeigen) {
 	}
 	else {
 		return false;
+	}
+}
+
+
+
+var gruendeplan = new Array();
+function cms_vplan_gruende (id, zeit, art) {
+	var kennung = '';
+	if (cms_check_ganzzahl(zeit, 0) && cms_check_ganzzahl(id, 1,4) && ((art == 'a') || (art == 'k'))) {
+		if (art == 'k') {
+			kennung = document.getElementById('cms_lvplan_kennung').value;
+		}
+		gruendeplan[id] = document.getElementById('cms_vplan_gruende_'+id);
+		formulardaten = new FormData();
+		if (art == 'a') {
+			cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+		}
+		formulardaten.append("zeit", 	zeit);
+		formulardaten.append("kennung", 	 kennung);
+		formulardaten.append("art", 	art);
+		formulardaten.append("anfragenziel", 	'27');
+		// VERTRETUNSTEXTE LADEN
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe.match(/^<div class=/)) {
+				gruendeplan[id].innerHTML = rueckgabe;
+			}
+			else {gruendeplan[id].innerHTML = '';}
+		}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }

@@ -28,7 +28,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Rythmen laden
 	if (($rythmen > 1) && (!$fehler)) {
-		// Anzahl an Wochene ermitteln
+		// Anzahl an Wochen ermitteln
 		$jetzt = $zbeginn;
 		// Dauer eines Tages
 		$tagdauer = 86400;

@@ -41,7 +41,7 @@ if ($anmeldung_moeglich) {
 	$code .= "</table>";
 
 	$code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet, als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
-	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird das Verwenden von Cookies und das Verarbeiten von persönlichen Daten akzeptiert.</p>";
+	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch Einwilligung A erteilt.</p>";
 
 	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a></p>";
 }

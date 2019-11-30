@@ -46,7 +46,7 @@ if ($art == 'Kurse') {
 		if (!cms_check_idfeld($kursschienen)) {echo "FEHLER"; exit;}
 		else {
 			$SCHIENEN = array();
-			$kursschienen = substr(str_replace("|null|", "|", $kursschienen."|"), -1)
+			$kursschienen = substr(str_replace("|null|", "|", $kursschienen."|"), -1);
 			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", substr($kursschienen, 1));}
 		}
 	}

@@ -15,7 +15,7 @@ function cms_check_dateiname (datei) {
 }
 
 function cms_check_nametitel (titel) {
-	return titel.match(/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/);
+	return titel.match(/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/);
 }
 
 function cms_check_titel(titel) {

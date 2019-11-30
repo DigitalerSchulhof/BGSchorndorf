@@ -314,7 +314,9 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 		$code .= "<div class=\"cms_spalte_$spaltenart\"><div class=\"cms_spalte_i\">";
 		$code .= "<h1>".$termin['bezeichnung']."</h1>";
-		$code .= $termin['text'];
+
+		$code .= cms_ausgabe_editor($termin['text']);
+
 		$code .= "<br><br>".cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
 		$code .= "</div></div>";
 
@@ -363,6 +365,7 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen
 	if ($daten['art'] == 'oe') {
 		$sql = "";
+		$zugehoerigladen = "";
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
 			$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."termine ON $gk.id = $gk"."termine.gruppe WHERE termin = ?)";
@@ -375,6 +378,7 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 		if ($sql->execute()) {
 			$sql->bind_result($gid, $ggruppe, $gbez, $gicon);
 			while ($sql->fetch()) {
+				if (strlen($zugehoerigladen) == 0) {$zugehoerigladen = "cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahrb']."', '$ggruppe', '$gid', '$link');";}
 				$event = " onclick=\"cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahrb']."', '$ggruppe', '$gid', '$link')\"";
 				$verknuepfung .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$gicon')\"$event>$gbez</span></li>";
 			}
@@ -383,6 +387,7 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 		if (strlen($verknuepfung) > 0) {
 			$code .= "<h3>Zugehörige Gruppen</h3><ul class=\"cms_termindetails\">$verknuepfung</ul>";
 			$code .= "<div class=\"cms_zugehoerig\" id=\"cms_zugehoerig_".$daten['id']."\"></div>";
+			$code .= "<script>$zugehoerigladen</script>";
 		}
 	}
 

@@ -88,13 +88,14 @@ if (cms_angemeldet() && $zugriff) {
 	// FERIEN in diesem Zeitraum laden
 	if (!$fehler) {
 		$FERIEN = array();
-		$sql = "SELECT beginn, ende FROM ferien WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?) ORDER BY beginn ASC, ende DESC";
+		$sql = "SELECT bezeichnung, beginn, ende FROM ferien WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?) ORDER BY beginn ASC, ende DESC";
 		$sql = $dbs->prepare($sql);
-		$sql->bind_param("iiiiii", $zbeginn, $zende, $zbeginn, $zende, $zbeginn, $zende);
+		$sql->bind_param("iiiiii", $jetzt, $zende, $jetzt, $zende, $jetzt, $zende);
 		if ($sql->execute()) {
-			$sql->bind_result($fbeginn, $fende);
+			$sql->bind_result($fbez, $fbeginn, $fende);
 			while ($sql->fetch()) {
 				$f = array();
+				$f['bez'] = $fbez;
 				$f['beginn'] = $fbeginn;
 				$f['ende'] = $fende;
 				array_push($FERIEN, $f);
@@ -193,7 +194,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Falls in diesem Zeitraum Ferien existieren
 		if ($ferienzeiger < count($FERIEN)) {
 			// Falls gerade Ferien sind, auf Zeit nach Ferien einstellen
-			if (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
+			while (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
 				$jetzt = mktime(0,0,0,date('m', $FERIEN[$ferienzeiger]['ende']),date('d', $FERIEN[$ferienzeiger]['ende'])+1,date('Y', $FERIEN[$ferienzeiger]['ende']));
 				$ferienzeiger++;
 			}
@@ -245,8 +246,10 @@ if (cms_angemeldet() && $zugriff) {
 
 			// Falls in diesem Zeitraum Ferien existieren
 			if ($ferienzeiger < count($FERIEN)) {
+				//echo $jetzt." - ".$FERIEN[$ferienzeiger]['beginn']." - ".$FERIEN[$ferienzeiger]['bez']."<br>";
 				// Falls gerade Ferien sind, auf Zeit nach Ferien einstellen
 				if (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
+					//echo $jetzt." - ".$FERIEN[$ferienzeiger]['beginn']." - ".$FERIEN[$ferienzeiger]['bez']."<br>";
 					$jetzt = mktime(0,0,0,date('m', $FERIEN[$ferienzeiger]['ende']),date('d', $FERIEN[$ferienzeiger]['ende'])+1,date('Y', $FERIEN[$ferienzeiger]['ende']));
 					$ferienzeiger++;
 				}

@@ -65,7 +65,7 @@ div#cms_druckfuss {
   display: block;
 }
 
-div#cms_druckfuss p, b {
+div#cms_druckfuss p, div#cms_druckfuss b {
 	font-size: 8pt !important;
 }
 
@@ -100,6 +100,10 @@ h2 {
 	font-weight: bold;
 	margin-top: .6cm;
 	margin-bottom: .2cm;
+}
+
+.cms_meldung h4 {
+  margin-top: 0px !important;
 }
 
 h4 {
@@ -157,6 +161,10 @@ table th, table td {
 	border-bottom: 1pt solid #aaaaaa;
 }
 
+table tr:first-child th, table tr:first-child td {
+	border-top: 1pt solid #aaaaaa;
+}
+
 table th, table td, table i, table b {
 	font-size: 10pt;
 }
@@ -164,6 +172,26 @@ table th, table td, table i, table b {
 table th {
 	font-weight: bold;
 	text-align: left;
+}
+
+.cms_markierte_liste_0 td {background: @hintergrundhell;}
+.cms_markierte_liste_1 td {background: @standardhell;}
+
+.cms_vplanliste_entfall td:first-child {border-left: 1mm solid @fehlerhell; padding-left: 2mm;}
+.cms_vplanliste_neu td:first-child {border-left: 1mm solid @erfolghell; padding-left: 2mm;}
+
+.cms_meldung_info {
+	border-left: 1mm solid @infodunkel;
+	margin-top: 2mm;
+	margin-bottom: 2mm;
+	padding: 2mm;
+}
+
+.cms_meldung_vplan {
+	border-left: 1mm solid @standarddunkel;
+	margin-top: 2mm;
+	margin-bottom: 2mm;
+	padding: 2mm;
 }
 
 .cms_zwischenueberschrift {

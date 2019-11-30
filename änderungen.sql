@@ -180,6 +180,30 @@ ALTER TABLE `schienenkurse`
   ADD CONSTRAINT `schienenkursekurs` FOREIGN KEY (`kurs`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schienenkurseschiene` FOREIGN KEY (`schiene`) REFERENCES `schienen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `gremienmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `fachschaftenmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `klassenmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `kursemitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `stufenmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `arbeitsgemeinschaftenmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `arbeitskreisemitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `fahrtenmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `wettbewerbemitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `ereignissemitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;ALTER TABLE `sonstigegruppenmitglieder` CHANGE `chatbannbis` `chatbannbis` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `chatbannvon` `chatbannvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `personen` ADD `zweitid` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `geschlecht`, ADD `drittid` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zweitid`, ADD `viertid` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `drittid`;
+
+CREATE TABLE `tutorenwesen` (
+  `lehrer` bigint(255) UNSIGNED NOT NULL,
+  `schueler` bigint(255) UNSIGNED NOT NULL,
+  `schuljahr` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `tutorenwesen`
+  ADD PRIMARY KEY (`lehrer`,`schueler`,`schuljahr`),
+  ADD KEY `tutorenwesenschueler` (`schueler`),
+  ADD KEY `tutorenwesenschuljahr` (`schuljahr`);
+
+ALTER TABLE `tutorenwesen`
+  ADD CONSTRAINT `tutorenwesenlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tutorenwesenschueler` FOREIGN KEY (`schueler`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tutorenwesenschuljahr` FOREIGN KEY (`schuljahr`) REFERENCES `schuljahre` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `hausmeisterauftraege`  ADD `raumgeraet` BIGINT(255) NULL DEFAULT NULL  AFTER `erledigtvon`;
+ALTER TABLE `hausmeisterauftraege`  ADD `leihgeraet` BIGINT(255) NULL DEFAULT NULL  AFTER `raumgeraet`;
+ALTER TABLE `hausmeisterauftraege` CHANGE `raumgeraet` `raumgeraet` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `leihgeraet` `leihgeraet` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `hausmeisterauftraege` ADD CONSTRAINT `hausmeisterauftraegeraeumegeraete` FOREIGN KEY (`raumgeraet`) REFERENCES `raeumegeraete`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `hausmeisterauftraege` ADD CONSTRAINT `hausmeisterauftraegeleihgeraete` FOREIGN KEY (`leihgeraet`) REFERENCES `leihengeraete`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- LEHRERDATENBANK
 

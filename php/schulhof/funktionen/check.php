@@ -59,7 +59,7 @@ function cms_check_nametitel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
+	if (preg_match("/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
 	else return true;
@@ -600,12 +600,11 @@ function cms_schulanmeldung_einstellungen_laden() {
   return $einstellungen;
 }
 
-function cms_ist_heute($datum, $tag, $monat, $jahr) {
-  $t = date('d', $datum);
-  $m = date('m', $datum);
-  $j = date('Y', $datum);
-  if (($t == $tag) && ($m == $monat) && ($j == $jahr)) {return true;}
-  else {return false;}
+function cms_ist_heute($heute, $pruefdatum) {
+  $t = date('d', $pruefdatum) == date('d', $heute);
+  $m = date('m', $pruefdatum) == date('m', $heute);
+  $j = date('Y', $pruefdatum) == date('Y', $heute);
+  return ($t && $m && $j);
 }
 
 function cms_websitedateirechte_laden() {

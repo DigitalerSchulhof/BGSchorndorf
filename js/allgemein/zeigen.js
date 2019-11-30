@@ -4,7 +4,9 @@ function cms_einblenden(id, art) {
 }
 
 function cms_ausblenden(id) {
-	document.getElementById(id).style.display = 'none';
+	if (document.getElementById(id)) {
+		document.getElementById(id).style.display = 'none';
+	}
 }
 
 function cms_toggle_anzeigen(id, art) {

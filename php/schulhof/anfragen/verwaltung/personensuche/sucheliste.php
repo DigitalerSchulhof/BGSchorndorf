@@ -159,6 +159,11 @@ if (cms_angemeldet() && $zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', ".$daten['id'].", 'Lehrerkürzel_ändern')\"><span class=\"cms_hinweis\">Lehrerkürzel ändern</span><img src=\"res/icons/klein/kuerzel.png\"></span> ";
 					}
 
+					$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
+					if ($zugriff) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', ".$daten['id'].", 'IDs_bearbeiten')\"><span class=\"cms_hinweis\">Personenids ändern</span><img src=\"res/icons/klein/ids.png\"></span> ";
+					}
+
 					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'] && is_null($daten['nutzerkonto']);
 					if ($zugriff) {
 						$vorname = cms_texttrafo_e_event($daten['vorname']);

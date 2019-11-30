@@ -396,6 +396,12 @@ if ($rechteplaetten) {
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personen sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personenids importieren', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personenids bearbeiten', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
+		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Personen den Kursen zuordnen', '$CMS_SCHLUESSEL'))";
+		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Persönliche Daten sehen', '$CMS_SCHLUESSEL'))";
 		$dbs->query($sql); $id++;
 		$sql = "INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Personen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Persönliche Einstellungen ändern', '$CMS_SCHLUESSEL'))";

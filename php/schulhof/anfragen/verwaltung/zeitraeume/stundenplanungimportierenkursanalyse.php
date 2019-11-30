@@ -105,12 +105,12 @@ if (cms_angemeldet() && $zugriff) {
 		}
 		$sql->close();
 
-		echo "ERFOLG\n\n\n";
+		echo "ERFOLG\n\n";
 		foreach ($NK as $ek) {
-			echo $ek['bez'].$trennung.$ek['kbez'].$trennung.$ek['stufe'].$trennung.$ek['fach'].$trennung.$ek['icon'].$trennung.$ek['klassen'];
-			echo $trennung.$ek['schiene'].$trennung."\n";
+			echo "\n".$ek['bez'].$trennung.$ek['kbez'].$trennung.$ek['stufe'].$trennung.$ek['fach'].$trennung.$ek['icon'].$trennung.$ek['klassen'];
+			echo $trennung.$ek['schiene'].$trennung;
 		}
-		echo "\n\n";
+		if (count($NK) == 0) {echo "\n";}
 	}
 	cms_trennen($dbs);
 }

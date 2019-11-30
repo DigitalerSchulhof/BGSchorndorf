@@ -779,4 +779,27 @@ function cms_sql_set_fragezeichen($wert, $aes = false) {
 function cms_generiere_nachladen($id, $script) {
   return "<div id=\"$id\" class=\"cms_gesichert\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Inhalte werden geladen...<script>$script</script></p></div></div>";
 }
+
+function cms_finde_montag($tag, $monat, $jahr) {
+  $tagzeit = mktime(0,0,0, $monat, $tag, $jahr);
+  $wochentag = date('N', $tagzeit);
+  $datummo = mktime(0,0,0, $monat, $tag-$wochentag+1, $jahr);
+  $datum = array();
+  $datum['T'] = date('d', $datummo);
+  $datum['M'] = date('m', $datummo);
+  $datum['J'] = date('Y', $datummo);
+  return $datum;
+}
+
+function cms_ausgabe_editor($text) {
+  if (preg_match("/<iframe/", $text)) {
+    $CMS_DSGVO_EINWILLIGUNG_B = false;
+    if (isset($_SESSION['DSGVO_EINWILLIGUNG_B'])) {$CMS_DSGVO_EINWILLIGUNG_B = $_SESSION['DSGVO_EINWILLIGUNG_B'];}
+    if ($CMS_DSGVO_EINWILLIGUNG_B) {return $text;}
+    else {return cms_meldung_einwilligungB();}
+  }
+  else {
+    return $text;
+  }
+}
 ?>

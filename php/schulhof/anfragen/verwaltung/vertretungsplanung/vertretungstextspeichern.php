@@ -14,6 +14,14 @@ if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['lehrer'])) {$lehrer = cms_texttrafo_e_db($_POST['lehrer']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['schueler'])) {$schueler = cms_texttrafo_e_db($_POST['schueler']);} else {echo "FEHLER"; exit;}
 
+$lehrer = str_replace('<br></p>', '</p>', $lehrer);
+$lehrer = str_replace('<p></p>', '', $lehrer);
+$lehrer = cms_texttrafo_e_db($lehrer);
+
+$schueler = str_replace('<br></p>', '</p>', $schueler);
+$schueler = str_replace('<p></p>', '', $schueler);
+$schueler = cms_texttrafo_e_db($schueler);
+
 if (!cms_check_ganzzahl($tag,1,31)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}

@@ -37,7 +37,12 @@ else {
 
 			include_once("php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php");
 			if ($zeitraum != '-') {
-				echo cms_stundenplan_erzeugen($dbs, $zeitraum, $personart, $personid, false);
+				if ($personart == 'l') {
+					$code .= cms_lehrerregelplan_aus_db($dbs, $personid, $zeitraum);
+				}
+				else {
+					$code .= cms_personenregelplan_aus_db($dbs, $personid, $zeitraum);
+				}
 			}
 			else {
 				echo cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');

@@ -22,8 +22,8 @@ if ($angemeldet && $zugriff) {
 	}
 	else {
 		include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
-		$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 'l');
-		$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 'l');
+		$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 'l', 'a');
+		$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 'l', 'a');
 	}
 }
 else {

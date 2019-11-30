@@ -80,15 +80,14 @@ if (cms_angemeldet() && $zugriff) {
 		// PASSWORT GENERIEREN
 		// 24 Stunden in Sekunden später läuft das Passwort ab
 		$passwort = cms_generiere_passwort();
-		$passworttimeout = $jetzt + 24*60*60;
+		$passworttimeout = time() + 60*60*24;
 
 		$salt = cms_generiere_passwort().cms_generiere_passwort();
-
 		$salt = cms_texttrafo_e_db($salt);
 		$passwortsalted = $passwort.$salt;
 		$passwortsalted = cms_texttrafo_e_db($passwortsalted);
 
-		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), passworttimeout = ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
+		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
 	  $sql->bind_param("issisisii", $id, $benutzername, $passwortsalted, $passworttimeout, $salt, $schuljahr, $mail, $jetzt, $jetzt);
 	  $sql->execute();
 	  $sql->close();
@@ -113,7 +112,7 @@ if (cms_angemeldet() && $zugriff) {
 			id bigint(255) UNSIGNED NOT NULL,
 			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
 			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-			zeit bigint(255) UNSIGNED NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
 			betreff varbinary(5000) DEFAULT NULL,
 			nachricht longblob DEFAULT NULL,
 			papierkorb varbinary(50) DEFAULT NULL,
@@ -128,7 +127,7 @@ if (cms_angemeldet() && $zugriff) {
 			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
 			empfaenger bigint(255) UNSIGNED NULL DEFAULT NULL,
 			alle text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-			zeit bigint(255) UNSIGNED NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
 			betreff varbinary(5000) DEFAULT NULL,
 			nachricht longblob DEFAULT NULL,
 			gelesen varbinary(50) DEFAULT NULL,
@@ -143,7 +142,7 @@ if (cms_angemeldet() && $zugriff) {
 			id bigint(255) UNSIGNED NOT NULL,
 			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
 			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-			zeit bigint(255) UNSIGNED NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
 			betreff varbinary(5000) DEFAULT NULL,
 			nachricht longblob DEFAULT NULL,
 			papierkorb varbinary(50) DEFAULT NULL,

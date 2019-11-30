@@ -491,8 +491,8 @@ function cms_mobilnavigation($dbs) {
 		}
 		$navicode .= "</div>";
 
-		if (isset($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {
-			if ((isset($_SESSION['MOBILNAVIGATION'])) && ($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {
+		if (isset($_SESSION['DSGVO_EINWILLIGUNG_A'])) {
+			if ((isset($_SESSION['MOBILNAVIGATION'])) && ($_SESSION['DSGVO_EINWILLIGUNG_A'])) {
 				$_SESSION['MOBILNAVIGATION'] = $navicode;
 			}
 		}

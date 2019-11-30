@@ -339,9 +339,15 @@ function cms_editoren_ausgeben($e) {
     if ($CMS_URL[1] == 'Bearbeiten') {
       $code .= cms_element_bearbeiten($e, 'editoren', $CMS_URL[2]);
     }
-    if ($CMS_URL[2] == 'Aktuell') {$code .= $e['aktuell'];}
-    else if ($CMS_URL[2] == 'Alt') {$code .= $e['alt'];}
-    else if ($CMS_URL[2] == 'Neu') {$code .= $e['neu'];}
+    if ($CMS_URL[2] == 'Aktuell') {
+      $code .= cms_ausgabe_editor($e['aktuell']);
+    }
+    else if ($CMS_URL[2] == 'Alt') {
+      $code .= cms_ausgabe_editor($e['alt']);
+    }
+    else if ($CMS_URL[2] == 'Neu') {
+      $code .= cms_ausgabe_editor($e['neu']);
+    }
     if ($CMS_URL[1] == 'Bearbeiten') {
       $code .= "</div>";
     }
@@ -458,7 +464,7 @@ function cms_box_ausgeben($boxen, $ausrichtung, $breite, $zusatz) {
       $code .= "<h4>".$boxen['titel'.$zusatz]."</h4>";
       $code .= "</div>";
       $code .= "<div class=\"cms_box_inhalt\">";
-        $code .= $boxen['inhalt'.$zusatz];
+        $code .= cms_ausgabe_editor($boxen['inhalt'.$zusatz]);
       $code .= "</div>";
       $code .= "<div class=\"cms_clear\"></div>";
     $code .= "</div>";
@@ -593,8 +599,9 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
       $felder = 0;
 
       $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\">";
-        if(!isset($_SESSION["DSGVO_COOKIESAKZEPTIERT"]))
-          $code .= cms_meldung("fehler", "<h4>Cookies</h4>Für die Verwendung des Kontaktformulars muss der Verwendung von Cookies zugestimmt werden!");
+        $CMS_EINWILLIGUNG_A = false;
+        if (isset($_SESSION["DSGVO_EINWILLIGUNG_A"])) {$CMS_EINWILLIGUNG_A = $_SESSION["DSGVO_EINWILLIGUNG_A"];}
+        if (!$CMS_EINWILLIGUNG_A) {$code .= cms_meldung_einwilligungA();}
         else {
         $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
           $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";

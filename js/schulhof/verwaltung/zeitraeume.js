@@ -517,6 +517,8 @@ function cms_stundenplanung_import_speichern() {
 	var stunde = document.getElementById('cms_stundenplanung_import_stunde').value;
 	var fach = document.getElementById('cms_stundenplanung_import_fach').value;
 	var raum = document.getElementById('cms_stundenplanung_import_raum').value;
+	var rythmenreihenfolge = document.getElementById('cms_stundenplanung_import_rythmenreihenfolge').value;
+	var rythmen = document.getElementById('cms_stundenplanung_import_rythmen').value;
 	var schienen = document.getElementById('cms_stundenplanung_import_schienen').value;
 	var klasse = document.getElementById('cms_stundenplanung_import_klasse').value;
 	var csv = document.getElementById('cms_stundenplanung_import_csv').value;
@@ -588,8 +590,18 @@ function cms_stundenplanung_import_speichern() {
 		fehler = true;
 	}
 
+	if (!cms_check_ganzzahl(rythmen, 1, maxspalten) && (rythmen != '-')) {
+		meldung += '<li>die Auswahl für die Rythmen ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
 	if (!cms_check_ganzzahl(klasse, 1, maxspalten)) {
 		meldung += '<li>die Auswahl für die Klasse ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(rythmenreihenfolge, 0)) {
+		meldung += '<li>die Auswahl für die Rythmenreihenfolge ist ungültig oder wurde nicht getätigt.</li>';
 		fehler = true;
 	}
 
@@ -640,6 +652,8 @@ function cms_stundenplanung_import_speichern() {
     formulardaten.append("stunde", stunde);
     formulardaten.append("fach", fach);
     formulardaten.append("raum", raum);
+    formulardaten.append("rythmen", rythmen);
+    formulardaten.append("rythmenreihenfolge", rythmenreihenfolge);
     formulardaten.append("schienen", schienen);
     formulardaten.append("klasse", klasse);
     formulardaten.append("anfragenziel", 	'298');
@@ -668,8 +682,14 @@ function cms_stundenplanung_import_speichern() {
       else if (meldung == "ERFOLG") {
         var kurse = analyseergebnis[1];
         var kurseeinzeln = kurse.split("\n");
+        if ((kurseeinzeln.length == 1) && (kurseeinzeln[0].length == 0)) {
+          kurseeinzeln = new Array();
+        }
         var stunden = analyseergebnis[2];
         var stundeneinzeln = stunden.split("\n");
+        if ((stundeneinzeln.length == 1) && (stundeneinzeln[0].length == 0)) {
+          stundeneinzeln = new Array();
+        }
 
         var analysenr = 1;
         var analyseanzahl = 2;
@@ -698,6 +718,9 @@ function cms_stundenplanung_import_speichern() {
           else if (meldung == "ERFOLG") {
             var kurse = analyseergebnis[1];
             var kurseeinzeln = kurse.split("\n");
+            if ((kurseeinzeln.length == 1) && (kurseeinzeln[0].length == 0)) {
+              kurseeinzeln = new Array();
+            }
             var analysenr = 2;
             var analyseanzahl = 2;
             var kursenr = 0;
@@ -706,6 +729,12 @@ function cms_stundenplanung_import_speichern() {
             var stundenanzahl = stundeneinzeln.length;
             var gesamtnr = analysenr + kursenr + stundennr;
             var gesamtanzahl = kurseanzahl + stundenanzahl + analyseanzahl + 1;
+            var analyseprozent = (analysenr/analyseanzahl)*100;
+            if (analyseanzahl == 0) {analyseprozent = 100;}
+            var kurseprozent = (kursenr/kurseanzahl)*100;
+            if (kurseanzahl == 0) {kurseprozent = 100;}
+            var stundenprozent = (stundennr/stundenanzahl)*100;
+            if (stundenanzahl == 0) {stundenprozent = 100;}
             document.getElementById("cms_stundenplanung_analyse").innerHTML = analysenr;
             document.getElementById("cms_stundenplanung_kurse").innerHTML = kursenr;
             document.getElementById("cms_stundenplanung_stunden").innerHTML = stundennr;
@@ -713,9 +742,9 @@ function cms_stundenplanung_import_speichern() {
             document.getElementById("cms_stundenplanung_kurse_alle").innerHTML = kurseanzahl;
             document.getElementById("cms_stundenplanung_stunden_alle").innerHTML = stundenanzahl;
             document.getElementById("cms_stundenplanung_schritte_alle").innerHTML = gesamtanzahl;
-            document.getElementById("cms_stundenplanung_analyse_balken").style.width = (analysenr/analyseanzahl)*100+'%';
-            document.getElementById("cms_stundenplanung_kurse_balken").style.width = (kursenr/kurseanzahl)*100+'%';
-            document.getElementById("cms_stundenplanung_stunden_balken").style.width = (stundennr/stundenanzahl)*100+'%';
+            document.getElementById("cms_stundenplanung_analyse_balken").style.width = analyseprozent+'%';
+            document.getElementById("cms_stundenplanung_kurse_balken").style.width = kurseprozent+'%';
+            document.getElementById("cms_stundenplanung_stunden_balken").style.width = stundenprozent+'%';
             document.getElementById("cms_stundenplanung_schritte_balken").style.width = (gesamtnr/gesamtanzahl)*100+'%';
 
             function kurseanlegen(rueckgabe) {
@@ -760,12 +789,12 @@ function cms_stundenplanung_import_speichern() {
                 var stundeninfo = stundeneinzeln[stundennr].split(trennung);
                 formulardaten = new FormData();
                 formulardaten.append('nr', stundennr);
-                formulardaten.append('schulstunde', stundeninfo[2]);
+                formulardaten.append('schulstunde', stundeninfo[3]);
                 formulardaten.append('tag', stundeninfo[1]);
-                formulardaten.append('rythmus', '0');
+                formulardaten.append('rythmus', stundeninfo[2]);
                 formulardaten.append('kurs', stundeninfo[0]);
-                formulardaten.append('lehrer', stundeninfo[3]);
-                formulardaten.append('raum', stundeninfo[4]);
+                formulardaten.append('lehrer', stundeninfo[4]);
+                formulardaten.append('raum', stundeninfo[5]);
                 formulardaten.append('anfragenziel', '352');
                 cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
               }
@@ -797,12 +826,12 @@ function cms_stundenplanung_import_speichern() {
                 var stundeninfo = stundeneinzeln[stundennr].split(trennung);
                 formulardaten = new FormData();
                 formulardaten.append('nr', stundennr);
-                formulardaten.append('schulstunde', stundeninfo[2]);
+                formulardaten.append('schulstunde', stundeninfo[3]);
                 formulardaten.append('tag', stundeninfo[1]);
-                formulardaten.append('rythmus', '0');
+                formulardaten.append('rythmus', stundeninfo[2]);
                 formulardaten.append('kurs', stundeninfo[0]);
-                formulardaten.append('lehrer', stundeninfo[3]);
-                formulardaten.append('raum', stundeninfo[4]);
+                formulardaten.append('lehrer', stundeninfo[4]);
+                formulardaten.append('raum', stundeninfo[5]);
                 formulardaten.append('anfragenziel', '352');
                 cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
               }
