@@ -592,7 +592,7 @@ function cms_vertretungsplan_persoenlich($dbs) {
   $mende = mktime(0,0,0,date('m', $start), date('d', $start)+1, date('Y', $start))-1;
 
   $code = "";
-  $code .= "<div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde\">Regelstunde</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_geaendert\">Geändert</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_ausfall\">Entfall</span></div><div class=\"clear\"></div></div>";
+
   $code .= "<ul class=\"cms_reitermenue\">";
     $code .= "<li><span id=\"cms_reiter_meintag_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('meintag', 0,1)\">".cms_tagname(date('N', $hbeginn))." ".date("d.m", $hbeginn)."</span></li> ";
     $code .= "<li><span id=\"cms_reiter_meintag_1\" class=\"cms_reiter\" onclick=\"cms_reiter('meintag', 1,1)\">".cms_tagname(date('N', $mbeginn))." ".date("d.m", $mbeginn)."</span></li> ";
@@ -608,6 +608,8 @@ function cms_vertretungsplan_persoenlich($dbs) {
     $code .= cms_vertretungsplan_tagesansicht($dbs, $mbeginn, $mende);
     $code .= "</div>";
   $code .= "</div>";
+  
+  $code .= "<div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde\">Regelstunde</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_geaendert\">Geändert</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_ausfall\">Entfall</span></div><div class=\"clear\"></div></div>";
 
   return $code;
 }
