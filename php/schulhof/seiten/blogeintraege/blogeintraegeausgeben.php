@@ -282,7 +282,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				if ($blogeintrag['art'] == 'oe') {$code .= "<p><img src=\"".$blogeintrag['vorschaubild']."\"></p>";}
 				else {$code .= "<p><img src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
 			}
-			$code .= $blogeintrag['text'];
+			$code .= cms_ausgabe_editor($blogeintrag['text']);
 			$code .= "<br><br>".cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
 
 			$code .= "</div></div>";
@@ -345,6 +345,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen
 	if ($daten['art'] == 'oe') {
 		$sql = "";
+		$zugehoerigladen = "";
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
 			$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ?)";
@@ -357,6 +358,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 		if ($sql->execute()) {
 			$sql->bind_result($gid, $ggruppe, $gbez, $gicon);
 			while ($sql->fetch()) {
+				if (strlen($zugehoerigladen) == 0) {$zugehoerigladen = "cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahr']."', '$ggruppe', '$gid', '$link');";}
 				$event = " onclick=\"cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahr']."', '$ggruppe', '$gid', '$link')\"";
 				$verknuepfung .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$gicon')\"$event>$gbez</span></li>";
 			}
@@ -365,6 +367,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 		if (strlen($verknuepfung) > 0) {
 			$code .= "<h3>Zugehörige Gruppen</h3><ul class=\"cms_termindetails\">$verknuepfung</ul>";
 			$code .= "<div class=\"cms_zugehoerig\" id=\"cms_zugehoerig_".$daten['id']."\"></div>";
+			$code .= "<script>$zugehoerigladen</script>";
 		}
 	}
 

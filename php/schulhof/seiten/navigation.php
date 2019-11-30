@@ -6,7 +6,7 @@ function cms_schulhofnavigation () {
 	$nutzerkonto = cms_schulhofnavigation_nutzerkonto($dbs);
 	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$informationen = cms_schulhofnavigation_informationen($dbs);}
 	$gruppen = cms_schulhofnavigation_gruppen($dbs);
-	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$plaene = cms_schulhofnavigation_plaene($dbs);}
+	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'x')) {$plaene = cms_schulhofnavigation_plaene($dbs);}
 	$verwaltung = cms_schulhofnavigation_verwaltung($dbs);
 
 	$mobil = "<span id=\"cms_mobilnavigation\" onclick=\"cms_einblenden('cms_mobilmenue_a')\"><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span></span>";
@@ -22,7 +22,7 @@ function cms_schulhofnavigation () {
 	$mobil .= $nutzerkonto['mobil'];
 	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$mobil .= $informationen['mobil'];}
 	$mobil .= $gruppen['mobil'];
-	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$mobil .= $plaene['mobil'];}
+	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'x')) {$mobil .= $plaene['mobil'];}
 	$mobil .= $verwaltung['mobil'];
 	$mobil .= "</div>";
 	$mobil .= "</div>";
@@ -32,7 +32,7 @@ function cms_schulhofnavigation () {
 	$pc .= $nutzerkonto['pc'];
 	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$pc .= $informationen['pc'];}
 	$pc .= $gruppen['pc'];
-	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l')) {$pc .= $plaene['pc'];}
+	if (($CMS_BENUTZERART == 'v') || ($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'x')) {$pc .= $plaene['pc'];}
 	$pc .= $verwaltung['pc'];
 	$pc .= "</ul>";
 
@@ -93,8 +93,9 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['mobil'] .= "<ul>";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
-						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Mein_Stundenplan\">Stundenplan</a></li> ";}
+						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['mobil'] .= "<li><a href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['mobil'] .= "<li><a href=\"Schulhof/Termine\">Kalender</a></li> ";
+						$code['mobil'] .= "<li><a href=\"Schulhof/Blog\">Blog</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
 					$code['mobil'] .= "</ul>";
@@ -138,8 +139,9 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
-						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Stundenplan\">Stundenplan</a></li> ";}
+						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
 					$code['pc'] .= "</ul>";
@@ -147,12 +149,10 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 			$code['pc'] .= "</div>";
 			$code['pc'] .= "<div class=\"cms_spalte_4\">";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
-					if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
 					$code['pc'] .= "<h3>Gruppen</h3>";
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= $meinegruppenpc;
 					$code['pc'] .= "</ul>";
-					}
 				$code['pc'] .= "</div>";
 			$code['pc'] .= "</div>";
 			$code['pc'] .= "<div class=\"cms_spalte_4\">";
@@ -334,6 +334,11 @@ function cms_schulhofnavigation_plaene($dbs) {
 	$lehrer = cms_schulhof_lehrer_links_anzeigen();
 	$klassen = cms_schulhof_klassen_links_anzeigen();
 	if ($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '0') {$stufen = cms_schulhof_stufen_links_anzeigen();}
+	else $stufen = "";
+
+	if (strlen($vertretungen.$raeume.$leihgeraete.$lehrer.$klassen.$stufen) == 0) {
+		return "";
+	}
 
 	$code['mobil'] = "<h3>Pläne</h3>";
 	$code['mobil'] .= "<div id=\"cms_mobilmenue_seite_p\">";
@@ -481,6 +486,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Profile</a></li> ";
 	}
+	if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Schienen</a></li> ";
+	}
 	if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stundenplanung</a></li> ";
 	}
@@ -488,7 +496,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
 	}
 	if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
-		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">Vertretungsplan</a></li> ";
+		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">Vertretungsplan</a></li> ";
 	}
 	if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";

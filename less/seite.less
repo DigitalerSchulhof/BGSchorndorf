@@ -1,4 +1,4 @@
-// out: ../css/seite.css, sourcemap: false, compress: true, autoprefixer: true
+// "out": "../css/seite.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
 @import "standard.less";
 
 * {
@@ -236,6 +236,17 @@ span.cms_titelbild_knopf_aktiv {
   position: relative;
 }
 
+.cms_vollbild .cms_rechtsbuendig {
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	z-index: 2;
+}
+
+.cms_vollbild .cms_vollbild_innen > .cms_spalte_i:first-child {
+	padding: 0px;
+}
+
 .cms_button_vollbild_schliessen, .cms_button_vollbild_oeffnen {
   position: absolute !important;
   top: 10px;
@@ -247,10 +258,30 @@ span.cms_titelbild_knopf_aktiv {
 }
 
 /* COMPUTER & TABLET */
+.cms_spalte_2, .cms_spalte_23, .cms_spalte_25, .cms_spalte_15, .cms_spalte_3, .cms_spalte_6,
+.cms_spalte_60, .cms_spalte_40, .cms_spalte_20, .cms_spalte_4, .cms_spalte_34 {
+	position: relative;
+}
+
 .cms_optimierung_P .cms_spalte_2,
 .cms_optimierung_T .cms_spalte_2 {
   float: left;
   width: 50%;
+}
+.cms_optimierung_P .cms_spalte_23,
+.cms_optimierung_T .cms_spalte_23 {
+  float: left;
+  width: 66.66%;
+}
+.cms_optimierung_P .cms_spalte_25,
+.cms_optimierung_T .cms_spalte_25 {
+  float: left;
+  width: 40%;
+}
+.cms_optimierung_P .cms_spalte_15,
+.cms_optimierung_T .cms_spalte_15 {
+  float: left;
+  width: 20%;
 }
 
 .cms_optimierung_P .cms_spalte_3,
@@ -277,7 +308,7 @@ span.cms_titelbild_knopf_aktiv {
   width: 40%;
 }
 
-.cms_optimierung_P .cms_spalte_20,		//Bl
+.cms_optimierung_P .cms_spalte_20,
 .cms_optimierung_T .cms_spalte_20 {
   float: left;
   width: 20%;
@@ -322,3 +353,18 @@ span.cms_titelbild_knopf_aktiv {
   float: none;
   width: 100%;
 }
+
+.cms_groesseaendern {
+	right: 0px;
+	position: absolute;
+	height: 100% !important;
+	width: 4px;
+	transition: 250ms ease-in-out;
+	z-index: 1;
+}
+
+.cms_groesseaendern:hover {
+	background-color: @standarddunkel;
+}
+
+.cms_groesseaendern:hover {cursor: ew-resize;}

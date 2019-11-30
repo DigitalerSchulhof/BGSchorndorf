@@ -8,13 +8,47 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	session_start();
 	$CMS_ANGEMELDET = cms_angemeldet();
-	$CMS_RECHTE = cms_rechte_laden();
+	if ($CMS_ANGEMELDET) {
+
+		// Nutzerdaten laden
+		$CMS_BENUTZERNAME = $_SESSION['BENUTZERNAME'];
+		$CMS_SESSIONID = $_SESSION['SESSIONID'];
+		$CMS_SESSIONTIMEOUT = $_SESSION['SESSIONTIMEOUT'];
+		$CMS_SESSIONAKTIVITAET = $_SESSION['SESSIONAKTIVITAET'];
+		$CMS_BENUTZERUEBERSICHTANZAHL = $_SESSION['BENUTZERUEBERSICHTANZAHL'];
+		$CMS_BENUTZERTITEL = $_SESSION['BENUTZERTITEL'];
+		$CMS_BENUTZERVORNAME = $_SESSION['BENUTZERVORNAME'];
+		$CMS_BENUTZERNACHNAME = $_SESSION['BENUTZERNACHNAME'];
+		$CMS_BENUTZERID = $_SESSION['BENUTZERID'];
+		$CMS_BENUTZERART = $_SESSION['BENUTZERART'];
+		$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];
+
+
+		// Timeout verlängern, da der Nutzer aktiv war
+		if ($_SESSION['SESSIONTIMEOUT'] > time()) {
+			cms_timeout_verlaengern();
+		}
+
+		// Rechte des Benutzers laden
+		$CMS_RECHTE = cms_rechte_laden();
+	}
+
+	if (isset($_SESSION['IMLN'])) {
+		if ($_SESSION['IMLN'] == 1) {
+			$CMS_IMLN = true;
+		}
+		else {
+			$CMS_IMLN = false;
+		}
+	}
+	else {
+		$CMS_IMLN = false;
+	}
 ?>
 <html>
 <head>
@@ -31,7 +65,50 @@
 	// <!-- Einbindung der Stylesheets -->
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css\">";
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css\">";
+	echo "<script src=\"js/allgemein/check.js\"></script>";
+	echo "<script src=\"js/allgemein/anfragen.js\"></script>";
+	if ($CMS_ANGEMELDET) {
+		echo "<script src=\"js/lehrerzimmer/lehrernetz.js\"></script>";
+		echo "<script src=\"js/lehrerzimmer/lehrernetz.js\"></script>";
+	}
 	?>
+	<script><?php
+		if ($CMS_ANGEMELDET) {
+			if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
+				echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";
+				if (isset($_SESSION['IMLN'])) {
+					if ($_SESSION['IMLN'] == 1) {
+						echo "var CMS_IMLN = true;\n";
+					}
+					else {
+						echo "var CMS_IMLN = false;\n";
+					}
+				}
+				else {
+					echo "var CMS_IMLN = false;\n";
+				}
+			}
+			echo "var CMS_BENUTZERNAME = '".$_SESSION['BENUTZERNAME']."';\n";
+			$iv = substr($CMS_SESSIONID, 0, 16);
+			$nutzerid = openssl_encrypt ($CMS_BENUTZERID, 'aes128', $iv, 0, $iv);
+			echo "var CMS_BENUTZERID = '".$nutzerid."';\n";
+			echo "var CMS_SESSIONID = '".$_SESSION['SESSIONID']."';\n";
+			echo "var CMS_SESSIONTIMEOUT = ".$_SESSION['SESSIONTIMEOUT'].";\n";
+			echo "var CMS_SESSIONAKTIVITAET = ".$_SESSION['SESSIONAKTIVITAET'].";\n";
+			echo "var CMS_BENUTZERTITEL = '".$_SESSION['BENUTZERTITEL']."';\n";
+			echo "var CMS_BENUTZERVORNAME = '".$_SESSION['BENUTZERVORNAME']."';\n";
+			echo "var CMS_BENUTZERNACHNAME = '".$_SESSION['BENUTZERNACHNAME']."';\n";
+			echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
+			echo "var CMS_MAX_DATEI = ".$CMS_MAX_DATEI.";\n";
+			echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
+			$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
+			if ($CMS_IMLN) {
+				echo "CMS_IMLN = true;\n";
+			}
+			echo "var CMS_GRUPPEN = ['Gremien','Fachschaften','Klassen','Kurse','Stufen','Arbeitsgemeinschaften','Arbeitskreise','Fahrten','Wettbewerbe','Ereignisse','Sonstige Gruppen'];";
+		}
+	?>
+	</script>
 </head>
 <body>
 	<div class="cms_druckseite">
@@ -221,6 +298,23 @@
 					else {$fehler = true;}
 				}
 				else {$fehler = true;}
+			}
+			else if (($_SESSION['DRUCKANSICHT'] == 'Vertretungsplan') && (isset($_SESSION['DRUCKVPLANDATUMV'])) && (isset($_SESSION['DRUCKVPLANDATUMB']))) {
+				include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
+				// Kennung laden
+				$sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL')");
+				if ($sql->execute()) {
+				  $sql->bind_result($kennung);
+				  $sql->fetch();
+				}
+				$sql->close();
+
+				$code .= "<h1>Vertretungsplan Lehreransicht</h1>";
+				$code .= "<input type=\"hidden\" name=\"cms_lvplan_kennung\" id =\"cms_lvplan_kennung\" value=\"$kennung\">";
+				$code .= cms_vertretungsplan_komplettansicht($dbs, 'l', $_SESSION['DRUCKVPLANDATUMV'], $_SESSION['DRUCKVPLANDATUMB'], '1', 'k');
+
+				$code .= "<h1>Vertretungsplan Schüleransicht</h1>";
+				$code .= cms_vertretungsplan_komplettansicht($dbs, 's', $_SESSION['DRUCKVPLANDATUMV'], $_SESSION['DRUCKVPLANDATUMB'], '1', 'k');
 			}
 			else {$fehler = true;}
 		}

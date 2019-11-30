@@ -31,7 +31,7 @@ if ($angemeldet) {
 
 		if ($zugriff) {
 			$code .= "<h1>$bezeichnung</h1>";
-			$code .= $inhalt;
+			$code .= cms_ausgabe_editor($inhalt);
 		}
 		else {
 			$code .= "<h1>Dauerbrenneransicht</h1>";

@@ -26,7 +26,6 @@ function cms_zugehoerig_laden (feldid, jahr, gruppe, gruppenid, url) {
         feld.innerHTML = rueckgabe;
       }
   		else {feld.innerHTML = rueckgabe;}
-  		//else {feld.innerHTML = '<p class="cms_notiz">– ungültige Anfrage –</p>';}
   	}
 
   	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

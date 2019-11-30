@@ -96,10 +96,10 @@ if ($zugriff) {
 
 
   }
-  else {$code .= "<h1>Stundenplanzeiträume</h1>".cms_meldung_bastler();}
+  else {$code .= "<h1>Profile</h1>".cms_meldung_bastler();}
 }
 else {
-  $code .= "<h1>Stundenplanzeiträume</h1>".cms_meldung_berechtigung();
+  $code .= "<h1>Profile</h1>".cms_meldung_berechtigung();
 }
 
 echo $code;

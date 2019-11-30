@@ -1,4 +1,4 @@
-// out: ../css/formulare.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/formulare.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 input, textarea, select, .cms_wahl {
@@ -18,6 +18,17 @@ input, textarea, select, .cms_wahl {
 textarea.cms_textarea {
   width: 100%;
   height: 250px;
+}
+
+.cms_code {
+  background: @hintergrunddunkel;
+  color: @schriftfarbehell;
+  font-family: monospace;
+}
+
+.cms_code:hover, .cms_code:focus {
+  background: @standarddunkel;
+  color: @schriftfarbehell;
 }
 
 input:hover, input:focus,

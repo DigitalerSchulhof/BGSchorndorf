@@ -68,16 +68,9 @@ if ($zugriff) {
   $code .= "</p>";
   echo $code;
 
-  if (is_null($SCHULJAHR) || is_null($SCHULJAHRNEU) ||$SCHULJAHR == 'null' || $SCHULJAHRNEU == 'null') {
+  if (is_null($SCHULJAHRNEU) || $SCHULJAHRNEU == 'null') {
     echo cms_meldung('info', '<h4>Informationen fehlen</h4><p>Bitte wählen Sie ein Stammschuljahr und ein Zielschuljahr aus.</p>');
     $sjfehler = true;
-  }
-
-  if (!$sjfehler) {
-    if ($SCHULJAHR == $SCHULJAHRNEU) {
-      echo cms_meldung('info', '<h4>Schuljahrauswahl ungültig</h4><p>Das Stammschuljahr und das Zielschuljahr sind identisch.</p>');
-      $sjfehler = true;
-    }
   }
   $code = "";
 

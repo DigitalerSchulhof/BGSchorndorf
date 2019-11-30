@@ -149,10 +149,13 @@ function cms_einstellungen_gruppen_aendern() {
 function cms_einstellungen_stundenplaene_aendern() {
 	cms_laden_an('Stundenplan-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 	var vplanextern = document.getElementById('cms_vertretungsplan_extern').value;
+	var vplanpersoenlich = document.getElementById('cms_vertretungsplan_persoenlich').value;
 	var vplanschueleraktuell = document.getElementById('cms_vertretungsplan_schueler_aktuell').value;
 	var vplanschuelerfolgetag = document.getElementById('cms_vertretungsplan_schueler_folgetag').value;
 	var vplanlehreraktuell = document.getElementById('cms_vertretungsplan_lehrer_aktuell').value;
 	var vplanlehrerfolgetag = document.getElementById('cms_vertretungsplan_lehrer_folgetag').value;
+	var vplanskennung = document.getElementById('cms_schulhof_intern_svplankennung').value;
+	var vplanlkennung = document.getElementById('cms_schulhof_intern_lvplankennung').value;
 	var lehrerstundenplaene = document.getElementById('cms_lehrerstundenplaene').value;
 	var klassenstundenplaene = document.getElementById('cms_klassenstundenplaene').value;
 	var raumstundenplaene = document.getElementById('cms_raumstundenplaene').value;
@@ -169,11 +172,26 @@ function cms_einstellungen_stundenplaene_aendern() {
 		fehler = true;
 	}
 
+	if ((vplanpersoenlich != 'Klassen') && (vplanpersoenlich != 'Kursen')) {
+		meldung += '<li>Die Auswahl für die Ausgabe des persönlichen Vertretungsplans ist ungültig.</li>';
+		fehler = true;
+	}
+
 	if (vplanextern == 1) {
 		if ((vplanschueleraktuell.length == 0) || (vplanschuelerfolgetag.length == 0) || (vplanlehreraktuell.length == 0) || (vplanlehrerfolgetag.length == 0)) {
 			meldung += '<li>Es müssen für den aktuellen und den Folgetag Dateien für den Vertretungsplan sowohl für Schüler, als auch für Lehrer ausgewählt werden.</li>';
 			fehler = true;
 		}
+	}
+
+	if (!cms_check_titel(vplanskennung)) {
+		meldung += '<li>die Vertretungsplankennung für den Schülervertretungsplan enthält ungültige Zeichen.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_titel(vplanlkennung)) {
+		meldung += '<li>die Vertretungsplankennung für den Lehrervertretungsplan enthält ungültige Zeichen.</li>';
+		fehler = true;
 	}
 
 	if (!cms_check_toggle(lehrerstundenplaene)) {
@@ -223,6 +241,8 @@ function cms_einstellungen_stundenplaene_aendern() {
 		formulardaten.append("vplanschuelerfolgetag", 			vplanschuelerfolgetag);
 		formulardaten.append("vplanlehreraktuell", 					vplanlehreraktuell);
 		formulardaten.append("vplanlehrerfolgetag", 				vplanlehrerfolgetag);
+		formulardaten.append("vplanskennung", 							vplanskennung);
+		formulardaten.append("vplanlkennung", 							vplanlkennung);
 		formulardaten.append("lehrerstundenplaene", 				lehrerstundenplaene);
 		formulardaten.append("klassenstundenplaene", 				klassenstundenplaene);
 		formulardaten.append("raumstundenplaene", 					raumstundenplaene);

@@ -227,3 +227,95 @@ function cms_schulhof_schuljahr_bearbeiten_speichern() {
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
+
+
+function cms_verantwortlichkeiten_vorbereiten (id) {
+	cms_laden_an('Verantwortlichkeiten vorbereiten', 'Die Berechtigung wird geprüft.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", id);
+	formulardaten.append("anfragenziel", 	'354');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Verwaltung/Schuljahre/Verantwortlichkeiten_festlegen');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_verantwlortlichkeiten_speichern() {
+	cms_laden_an('Verantwortlichkeiten bearbeiten', 'Die Eingaben werden überprüft.');
+	var klassen = document.getElementById('cms_verantwortlichkeiten_klassen').value;
+	var stufen = document.getElementById('cms_verantwortlichkeiten_stufen').value;
+	var klasseninfo = "";
+	var stufeninfo = "";
+
+	var meldung = '<p>Die Verantwortlichkeiten konnten nicht gespeichert werden, denn ...</p><ul>';
+	var fehler = false;
+	var aktionnoetig = false;
+
+	// Pflichteingaben prüfen
+	if (klassen.length > 0) {
+		klassen = (klassen.substr(1)).split("|");
+		for (var i=0; i<klassen.length; i++) {
+			if (cms_check_ganzzahl(klassen[i], 0)) {
+				var lehr = document.getElementById('cms_verantwortlichkeiten_kl_'+klassen[i]);
+				var stel = document.getElementById('cms_verantwortlichkeiten_ks_'+klassen[i]);
+				var raum = document.getElementById('cms_verantwortlichkeiten_kr_'+klassen[i]);
+				if (lehr && stel && raum &&
+					  (cms_check_ganzzahl(lehr.value, 0) || lehr.value == '-') &&
+					  (cms_check_ganzzahl(stel.value, 0) || stel.value == '-') &&
+					  (cms_check_ganzzahl(raum.value, 0) || raum.value == '-')) {
+					klasseninfo += klassen[i]+';'+lehr.value+';'+stel.value+';'+raum.value+'|';
+				}
+				else {fehler = true;}
+			}
+			else {fehler = true;}
+		}
+	}
+	if (stufen.length > 0) {
+		stufen = (stufen.substr(1)).split("|");
+		for (var i=0; i<stufen.length; i++) {
+			if (cms_check_ganzzahl(stufen[i], 0)) {
+				var lehr = document.getElementById('cms_verantwortlichkeiten_sl_'+stufen[i]);
+				var stel = document.getElementById('cms_verantwortlichkeiten_ss_'+stufen[i]);
+				var raum = document.getElementById('cms_verantwortlichkeiten_sr_'+stufen[i]);
+				if (lehr && stel && raum &&
+					  (cms_check_ganzzahl(lehr.value, 0) || lehr.value == '-') &&
+					  (cms_check_ganzzahl(stel.value, 0) || stel.value == '-') &&
+					  (cms_check_ganzzahl(raum.value, 0) || raum.value == '-')) {
+					stufeninfo += stufen[i]+';'+lehr.value+';'+stel.value+';'+raum.value+'|';
+				}
+				else {fehler = true;}
+			}
+			else {fehler = true;}
+		}
+	}
+	if (fehler) {
+		meldung += '<li>die Zuordnungen sind ungültig.</li>';
+		cms_meldung_an('fehler', 'Schuljahr bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		if (stufeninfo.length > 0) {stufeninfo = stufeninfo.substr(0,stufeninfo.length-1);}
+		if (klasseninfo.length > 0) {klasseninfo = klasseninfo.substr(0,klasseninfo.length-1);}
+
+		cms_laden_an('Verantwortlichkeiten bearbeiten', 'Die Verantwortlichkeiten werden gespeichert.');
+
+		var formulardaten = new FormData();
+		formulardaten.append("klasseninfo",   klasseninfo);
+		formulardaten.append("stufeninfo", 		stufeninfo);
+		formulardaten.append("anfragenziel", 	'355');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Verantwortlichkeiten bearbeiten', '<p>Die Verantwortlichkeiten werden gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schuljahre\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}

@@ -8,7 +8,7 @@ $zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
 if ($zugriff) {
 	$code = "";
 
-	$personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
+	$personen = array("Lehrer", "Schüler", "Verwaltungsangestellte", "Eltern", "Externe");
 	$gruppen = $CMS_GRUPPEN;
 	$raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 
@@ -231,6 +231,17 @@ if ($zugriff) {
 		$code .= "</div>";
 	$code .= "</div>";
 
+	$kennungS = "";
+	$kennungL = "";
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanS', '$CMS_SCHLUESSEL') OR  inhalt = AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL')");
+	if ($sql->execute()) {
+		$sql->bind_result($kinhalt, $kwert);
+	  while ($sql->fetch()) {
+	    if ($kinhalt == "VPlanS") {$kennungS = $kwert;}
+		  if ($kinhalt == "VPlanL") {$kennungL = $kwert;}
+	  }
+	}
+	$sql->close();
 
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_3\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
@@ -242,6 +253,13 @@ if ($zugriff) {
 		$code .= "<th>Untis-Vertretungsplan verwenden:</th>";
 		$code .= "<td>".cms_schieber_generieren('vertretungsplan_extern',$einstellungen['Vertretungsplan extern'], 'cms_vertretungsplan_einstellungen_anzeigen()')."</td>";
 		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Persönlicher Vertretungsplan nach ...</th><td><select id=\"cms_vertretungsplan_persoenlich\" name=\"cms_vertretungsplan_persoenlich\">";
+		if ($einstellungen['Persönlicher Vertretungsplan nach ...'] == 'Klassen') {$selected = "selected=\"selected\"";} else {$selected = "";}
+		$code .= "<option value=\"Klassen\" $selected>Klassen</option>";
+		if ($einstellungen['Persönlicher Vertretungsplan nach ...'] == 'Kursen') {$selected = "selected=\"selected\"";} else {$selected = "";}
+		$code .= "<option value=\"Kursen\" $selected>Kursen</option>";
+		$code .= "</select></td></tr>";
 		if ($einstellungen['Vertretungsplan extern'] == 1) {$style = "display: table-row";}
 		else {$style = "display: none";}
 		$code .= "<tr id=\"cms_vertretungsplan_schueler_aktuell_F\" style=\"$style\">";
@@ -259,6 +277,20 @@ if ($zugriff) {
 		$code .= "<tr id=\"cms_vertretungsplan_lehrer_folgetag_F\" style=\"$style\">";
 		$code .= "<th>Lehrer Folgetag</th>";
 		$code .= "<td>".cms_dateiwahl_knopf ('schulhof/stundenplaene', 'cms_vertretungsplan_lehrer_folgetag', 's', 'Vertretungsplan', '-', 'download', $einstellungen['Vertretungsplan Lehrer Folgetag'])."</td>";
+		$code .= "</tr>";
+		$code .= "</table>";
+
+		$code .= "<h3>Kennungen für die internen Dienste</h3>";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr>";
+		$code .= "<th>Kennung Schüler:</th>";
+		$code .= "<td><input name=\"cms_schulhof_intern_svplankennung\" id=\"cms_schulhof_intern_svplankennung\" value=\"$kennungS\"></td>";
+		$code .= "<td><span class=\"cms_button\" onclick=\"cms_kennung_generieren('cms_schulhof_intern_svplankennung')\">Generieren</span></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Kennung Lehrer:</th>";
+		$code .= "<td><input name=\"cms_schulhof_intern_lvplankennung\" id=\"cms_schulhof_intern_lvplankennung\" value=\"$kennungL\"></td>";
+		$code .= "<td><span class=\"cms_button\" onclick=\"cms_kennung_generieren('cms_schulhof_intern_lvplankennung')\">Generieren</span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";
@@ -429,7 +461,7 @@ if ($zugriff) {
 		$code .= "</tr>";
 		$code .= "</table>";
 
-		$code .= "<h3>Geräteverwaltung</h3>";
+		$code .= "<h3>Kennung für die internen Dienste</h3>";
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Kennung:</th>";

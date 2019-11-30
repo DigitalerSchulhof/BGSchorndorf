@@ -108,7 +108,7 @@ if (cms_angemeldet() && $zugriff) {
 			$sqlwhere .= " AND id != ".$e;
 		}
 		$sql = "DELETE FROM boxen WHERE boxaussen = $id".$sqlwhere;
-		$dbs->query();
+		$dbs->query($sql);
 
 		echo "ERFOLG";
 	}

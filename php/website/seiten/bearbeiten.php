@@ -73,7 +73,7 @@
             $code .= "<span class=\"cms_iconbutton cms_button_website_aktivieren\" onclick=\"cms_element_alleaktivieren('".$CMS_SEITENDETAILS['id']."', '".$CMS_URL[2]."', '$CMS_ZUSATZ')\">Aktivieren</span> ";
           }
           if ($CMS_RECHTE['Website']['Seiten bearbeiten']) {
-            $code .= "<span class=\"cms_iconbutton cms_button_website_bearbeiten\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$CMS_SEITENDETAILS['id']."');\">Seite bearbetien</span> ";
+            $code .= "<span class=\"cms_iconbutton cms_button_website_bearbeiten\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$CMS_SEITENDETAILS['id']."');\">Seite bearbeiten</span> ";
           }
           if ($CMS_RECHTE['Website']['Seiten löschen']) {
             $code .= "<span class=\"cms_iconbutton cms_button_nein cms_button_website_loeschen\" onclick=\"cms_schulhof_website_seite_loeschen_anzeigen('".$CMS_SEITENDETAILS['bezeichnung']."', '".$CMS_SEITENDETAILS['id']."');\">Seite löschen</span> ";

@@ -27,10 +27,10 @@ if (cms_angemeldet() && $zugriff) {
 
 	$dbs = cms_verbinden('s');
 
-	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM hausmeisterauftraege WHERE id = ?");
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), raumgeraet, leihgeraet AS titel FROM hausmeisterauftraege WHERE id = ?");
 	$sql->bind_param("i", $id);
 	if ($sql->execute()) {
-	  $sql->bind_result($anzahl, $titel);
+	  $sql->bind_result($anzahl, $titel, $raumgeraet, $leihgeraet);
 	  if ($sql->fetch()) {
 			if ($anzahl != 1) {
 				$fehler = true;
@@ -46,6 +46,23 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->bind_param("siii", $art, $jetzt, $CMS_BENUTZERID, $id);
 	  $sql->execute();
 	  $sql->close();
+
+		// Möglichen Gerätestatus ändern
+		if (($raumgeraet !== null) || ($leihgeraet !== null)) {
+			if ($raumgeraet !== null) {
+				$gid = $raumgeraet;
+				$sql = $dbs->prepare("UPDATE raeumegeraete SET statusnr = ? WHERE id = ?");
+			}
+			if ($leihgeraet !== null) {
+				$gid = $leihgeraet;
+				$sql = $dbs->prepare("UPDATE leihengeraete SET statusnr = ? WHERE id = ?");
+			}
+			if ($art == "e") {$statusnr = 5;}
+			else {$statusnr = 2;}
+			$sql->bind_param("ii", $statusnr, $gid);
+			$sql->execute();
+			$sql->close();
+		}
 
 		// Notifikation verschicken
 		if ($art == "e") {$status = "e";} else {$status = "w";}

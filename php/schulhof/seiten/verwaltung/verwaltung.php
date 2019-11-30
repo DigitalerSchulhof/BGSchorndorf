@@ -190,15 +190,15 @@ if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile
 	$code .=  "</li>";
 	$tabzahl++;
 }
-/*if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
 			$code .=  "<h3>Schienen</h3>";
 			$code .=  "<p>Für jede Klassenstufe Unterricht festlegen, der parallel laufen muss.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 	$tabzahl++;
-}*/
+}
 if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
@@ -219,7 +219,7 @@ if ($CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen']) {
 }
 if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">";
 			$code .=  "<h3>Vertretungsplan</h3>";
 			$code .=  "<p>Schulstunden ändern, verschieben oder entfallen lassen.</p>";
 		$code .=  "</a>";

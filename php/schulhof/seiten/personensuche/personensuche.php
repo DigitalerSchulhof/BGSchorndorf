@@ -1,14 +1,14 @@
 <?php
 function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gewaehlt, $gewaehlt2 = "", $namek = "") {
-  global $CMS_GRUPPENMITGLIEDER, $CMS_SCHLUESSEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
   $aktiv = 0;
   $namek = cms_textzudb($gruppe);
   $artg = cms_vornegross($art);
-  $eltern = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Eltern'];
-  $schueler = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Schüler'];
-  $lehrer = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Lehrer'];
-  $verwaltung = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Verwaltung'];
-  $extern = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Extern'];
+  $eltern = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Eltern'];
+  $schueler = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Schüler'];
+  $lehrer = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Lehrer'];
+  $verwaltung = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Verwaltungsangestellte'];
+  $extern = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Externe'];
 
   $code = "";
 

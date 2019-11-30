@@ -146,9 +146,10 @@ function cms_schulhof_verwaltung_personen_benutzerkonto_aendern () {
 
 /* BENUTZERNAME WIRD GEÄNDERT */
 function cms_schulhof_verwaltung_personen_lehrerkuerzel_aendern () {
-	cms_laden_an('Benutzername ändern', 'Die Eingaben werden überprüft.');
+	cms_laden_an('Lehrerkürzel ändern', 'Die Eingaben werden überprüft.');
 	var lehrerkuerzel = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_lehrerkuerzel').value;
-	var stundenplan = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_stundenplan').value;
+	var splan = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_stundenplan');
+	if (splan) {stundenplan = splan.value;} else {stundenplan = '';}
 	var id = document.getElementById('cms_schulhof_verwaltung_personen_profildaten_lehrerkuerzel_id').value;
 
 
@@ -191,12 +192,16 @@ function cms_schulhof_verwaltung_personen_persoenlich_aendern(art) {
 	var fehler = false;
 
 	// Pflichteingaben prüfen
-	if (vorname.length == 0) {
-		meldung += '<li>es wurde kein Vorname eingegeben.</li>';
+	if (!cms_check_name(vorname)) {
+		meldung += '<li>es wurde ein ungültiger Vorname eingegeben.</li>';
 		fehler = true;
 	}
-	if (nachname.length == 0) {
-		meldung += '<li>es wurde kein Nachname eingegeben.</li>';
+	if (!cms_check_name(nachname)) {
+		meldung += '<li>es wurde ein ungültiger Nachname eingegeben.</li>';
+		fehler = true;
+	}
+	if (!cms_check_nametitel(titel)) {
+		meldung += '<li>es wurde ein ungültiger Titel eingegeben.</li>';
 		fehler = true;
 	}
 	if ((geschlecht != 'w') && (geschlecht != "m") && (geschlecht != "u")) {
@@ -581,7 +586,7 @@ function cms_schulhof_verwaltung_details_vorbreiten(anrede, id, ziel) {
 	var fehler = false;
 
 	if ((ziel != 'Neues_Nutzerkonto_anlegen') && (ziel != 'Nutzerkonto_bearbeiten') && (ziel != 'Lehrerkürzel_ändern') && (ziel != 'Rollen_und_Rechte')
-	    && (ziel != 'Schüler_und_Eltern_verknüpfen') && (ziel != 'Details') && (ziel != 'Stundenplan') && (ziel != 'Bearbeiten')) {
+	    && (ziel != 'Schüler_und_Eltern_verknüpfen') && (ziel != 'Details') && (ziel != 'Stundenplan') && (ziel != 'Bearbeiten') && (ziel != 'IDs_bearbeiten')) {
 		meldung += '<li>das gewünschte Ziel ist ungültig.</li>';
 		fehler = true;
 	}
@@ -633,6 +638,7 @@ function cms_schulhof_verwaltung_nutzerkonto_neu_speichern() {
 		formulardaten.append("anfragenziel", 	'135');
 
 		function anfragennachbehandlung(rueckgabe) {
+
 			if (rueckgabe == "BENUTZERDOPPELT") {
 				meldung += '<li>es gibt bereits einen Benutzer mit diesem Benutzernamen.</li>';
 				cms_meldung_fehler('fehler', 'Neues Nutzerkonto anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -668,6 +674,436 @@ function cms_schulhof_verwaltung_nutzerkonto_loeschen(anzeigename, id) {
 			cms_meldung_an('erfolg', 'Nutzerkonto löschen', '<p>Das Nutzerkonto wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+function cms_personen_ids_aendern() {
+	cms_laden_an('Personen-IDs ändern', 'Die Eingaben werden überprüft.');
+	var zweit = document.getElementById('cms_personen_zweitid').value;
+	var dritt = document.getElementById('cms_personen_drittid').value;
+	var viert = document.getElementById('cms_personen_viertid').value;
+	var meldung = '<p>Die Personen-IDs konnten nicht geändert werden, denn ...</p><ul>';
+	var fehler = false;
+
+	if (!cms_check_ganzzahl(zweit,0) && (zweit.length != 0)) {
+		meldung += '<li>es wurde keine gültige Zweit-ID eingegeben.</li>';
+		fehler = true;
+	}
+	if (!cms_check_ganzzahl(dritt,0) && (dritt.length != 0)) {
+		meldung += '<li>es wurde keine gültige Dritt-ID eingegeben.</li>';
+		fehler = true;
+	}
+	if (!cms_check_ganzzahl(viert,0) && (viert.length != 0)) {
+		meldung += '<li>es wurde keine gültige Viert-ID eingegeben.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Personen-IDs ändern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Personen-IDs ändern', 'Die Personen-IDs werden geändert.');
+
+		var formulardaten = new FormData();
+		formulardaten.append("zweit",  zweit);
+		formulardaten.append("dritt",  dritt);
+		formulardaten.append("viert",  viert);
+		formulardaten.append("anfragenziel", 	'373');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Personen-IDs ändern', '<p>Die Personen-IDs wurden geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_kurszuordnung_zuruecksetzen_anzeigen() {
+	cms_meldung_an('warnung', 'Kurszuordnungen zurücksetzen', '<p>Achtung! Sie sind im Begriff alle Zuordnungen von Schülern und Lehrern in Kurse im gewählten Schuljahr zu entfernen! Sind Sie sicher, dass Sie fortfahren möchten?</p><p>Die Kurse und darin enthaltene Eintragungen (Blogs, Termine, ...) und Dateien bleiben bestehen.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_kurszuordnung_zuruecksetzen()">Zurücksetzen durchführen</span></p>');
+}
+
+
+function cms_kurszuordnung_zuruecksetzen() {
+	cms_laden_an('Kurszuordnungen zurücksetzen', 'Die Eingaben werden überprüft.');
+	var sj = document.getElementById('cms_kurszuordnung_zurueck_schuljahr').value;
+	var meldung = '<p>Die Kurszuordnungen konnten nicht zurückgesetzt werden, denn ...</p><ul>';
+	var fehler = false;
+
+	if (!cms_check_ganzzahl(sj,0)) {
+		meldung += '<li>es wurde kein gültiges Schuljahr gewählt.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Kurszuordnungen zurücksetzen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Kurszuordnungen zurücksetzen', 'Die Kurszuordnungen werden zurückgesetzt.');
+
+		var formulardaten = new FormData();
+		formulardaten.append("sj",  sj);
+		formulardaten.append("anfragenziel", 	'374');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Kurszuordnungen zurücksetzen', '<p>Die Kurszuordnungen wurden zurückgesetzt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_personenimport_speichern() {
+	cms_laden_an('Personen-IDs importieren', 'Die Eingaben werden überprüft.');
+	var personenart = document.getElementById('cms_personenimport_art').value;
+	var idslot = document.getElementById('cms_personenimport_idslot').value;
+	var id = document.getElementById('cms_personenimport_id').value;
+	var vornach = document.getElementById('cms_personenimport_vornach').value;
+	var nachvor = document.getElementById('cms_personenimport_nachvor').value;
+	var nach = document.getElementById('cms_personenimport_nach').value;
+	var vor = document.getElementById('cms_personenimport_vor').value;
+
+	var csv = document.getElementById('cms_personenimport_csv').value;
+	var trennung = document.getElementById('cms_personenimport_trennung').value;
+
+	var meldung = '<p>Die Personen-IDs konnten nicht importiert werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+	if (csv.length == 0) {
+		meldung += '<li>es wurden keine Datensätze eingegeben.</li>';
+		fehler = true;
+	}
+
+	if (trennung.length == 0) {
+		meldung += '<li>es wurde kein Trennsymbol eingegeben.</li>';
+		fehler = true;
+	}
+
+  var maxspalten = 0;
+  if (!fehler) {
+    // Inhalte analysieren
+    var csvanalyse = csv.split("\n");
+    for (var i=0; i<csvanalyse.length; i++) {
+      var aktspalten = csvanalyse[i].split(trennung).length;
+      if (aktspalten > maxspalten) {maxspalten = aktspalten;}
+    }
+  }
+
+	if ((personenart != 's') && (personenart != 'l') && (personenart != 'x') && (personenart != 'e') && (personenart != 'v')) {
+		meldung += '<li>die Auswahl für die Personenart ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if ((idslot != 'zweitid') && (idslot != 'drittid') && (idslot != 'viertid')) {
+		meldung += '<li>die Auswahl für den ID-Slot ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(id, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für die ID ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(vornach, 1, maxspalten) && (vornach != '-')) {
+		meldung += '<li>die Auswahl für »Vorname, Nachname« ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(nachvor, 1, maxspalten) && (nachvor != '-')) {
+		meldung += '<li>die Auswahl für »Nachname, Vorname« ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(nach, 1, maxspalten) && (nach != '-')) {
+		meldung += '<li>die Auswahl für den Nachnamen ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(vor, 1, maxspalten) && (vor != '-')) {
+		meldung += '<li>die Auswahl für den Vorname ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	var kombinationsfehler = true;
+	if (((vornach != '-') && (nachvor == '-') && (vor == '-') && (nach == '-')) ||
+	    ((vornach == '-') && (nachvor != '-') && (vor == '-') && (nach == '-')) ||
+	 	  ((vornach == '-') && (nachvor == '-') && (vor != '-') && (nach != '-')))
+	{
+		kombinationsfehler = false;
+	}
+	if (kombinationsfehler) {
+		meldung += '<li>es muss entweder eine Spalte für Vor- und Nachname zusammen, oder beide Spalten zu Vor- und Nachnamen einzeln angegeben werden.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Personen-IDs importieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+    var formulardaten = new FormData();
+    formulardaten.append("csv", csv);
+    formulardaten.append("trennung", trennung);
+    formulardaten.append("personenart", personenart);
+    formulardaten.append("idslot", idslot);
+    formulardaten.append("id", id);
+    formulardaten.append("vornach", vornach);
+    formulardaten.append("nachvor", nachvor);
+    formulardaten.append("vor", vor);
+    formulardaten.append("nach", nach);
+    formulardaten.append("anfragenziel", 	'372');
+
+    function anfragennachbehandlung(rueckgabe) {
+      var ergebnis = rueckgabe.split("\n\n\n");
+      var meldung = ergebnis[0];
+      var problemfaelle = ergebnis[1];
+      if (meldung == "ERFOLG") {
+				if (problemfaelle.length > 0) {
+					cms_meldung_an('warnung', 'Personen-IDs importieren', '<p>Die Personenids wurden erfolgreich importiert.</p><p>Einigen Personen konnte keine ID zugewiesen werden:</p><ul>'+problemfaelle+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				}
+				else {
+					cms_meldung_an('erfolg', 'Personen-IDs importieren', '<p>Die Personenids wurden erfolgreich importiert.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				}
+      }
+      else {
+				cms_meldung_an('fehler', 'Personen-IDs importieren', '<p>Die Importdatei genügt nicht den Anforderungen an das Eingabeformat.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
+    }
+
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_kurszuordnungimport_stufen_laden() {
+	var feld = document.getElementById('cms_kurszuordnungimport_stufe');
+	feld.innerHTML = "";
+	var sj = document.getElementById('cms_kurszuordnungimport_schuljahr').value;
+	var fehler = false;
+	if (!cms_check_ganzzahl(sj, 0)) {fehler = true;}
+
+	if (!fehler) {
+    var formulardaten = new FormData();
+    formulardaten.append("sj", 	sj);
+    formulardaten.append("anfragenziel", 	'376');
+
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe.match(/^<option/)) {
+				feld.innerHTML = rueckgabe;
+      }
+    }
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_kurszuordnungklassenregelunterricht_speichern() {
+	cms_laden_an('Kurszuordnung durch Klassen und Regelunterricht', 'Die Eingaben werden überprüft.');
+	var sj = document.getElementById('cms_kurszuordnungls_schuljahr').value;
+	var meldung = '<p>Die Kurszuordnungen konnten nicht durchgeführt werden, denn ...</p><ul>';
+	var fehler = false;
+
+	if (!cms_check_ganzzahl(sj,0)) {
+		meldung += '<li>es wurde kein gültiges Schuljahr gewählt.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Kurszuordnung durch Klassen und Regelunterricht', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Kurszuordnung durch Klassen und Regelunterricht', 'Die Kurszuordnungen werden durchgeführt.');
+
+		var formulardaten = new FormData();
+		formulardaten.append("sj",  sj);
+		formulardaten.append("anfragenziel", 	'377');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Kurszuordnung durch Klassen und Regelunterricht', '<p>Die Kurszuordnungen wurden durchgeführt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_kurszuordnungimport_speichern() {
+	cms_laden_an('Kurszuordnung importieren', 'Die Eingaben werden überprüft.');
+	var sj = document.getElementById('cms_kurszuordnungimport_schuljahr').value;
+	var stufe = document.getElementById('cms_kurszuordnungimport_stufe').value;
+	var kurs = document.getElementById('cms_kurszuordnungimport_kurs').value;
+	var tutor = document.getElementById('cms_kurszuordnungimport_tutor').value;
+	var schueler = document.getElementById('cms_kurszuordnungimport_schueler').value;
+	var idart = document.getElementById('cms_kurszuordnungimport_idart').value;
+
+	var csv = document.getElementById('cms_kurszuordnungimport_csv').value;
+	var trennung = document.getElementById('cms_kurszuordnungimport_trennung').value;
+
+	var meldung = '<p>Die Kurszuordnung konnten nicht importiert werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+	if (csv.length == 0) {
+		meldung += '<li>es wurden keine Datensätze eingegeben.</li>';
+		fehler = true;
+	}
+
+	if (trennung.length == 0) {
+		meldung += '<li>es wurde kein Trennsymbol eingegeben.</li>';
+		fehler = true;
+	}
+
+  var maxspalten = 0;
+  if (!fehler) {
+    // Inhalte analysieren
+    var csvanalyse = csv.split("\n");
+    for (var i=0; i<csvanalyse.length; i++) {
+      var aktspalten = csvanalyse[i].split(trennung).length;
+      if (aktspalten > maxspalten) {maxspalten = aktspalten;}
+    }
+  }
+
+	if (!cms_check_ganzzahl(sj, 0)) {
+		meldung += '<li>die Auswahl für das Schuljahr ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(stufe, 0)) {
+		meldung += '<li>die Auswahl für die Stufe ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(kurs, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für den Kurs ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(tutor, 1, maxspalten) && (tutor != '-')) {
+		meldung += '<li>die Auswahl für den Tutor ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(schueler, 1, maxspalten)) {
+		meldung += '<li>die Auswahl für die Schüler ist ungültig oder wurde nicht getätigt.</li>';
+		fehler = true;
+	}
+
+	if ((idart != 'zweit') && (idart != 'dritt') && (idart != 'viert') && (idart != 'sh')) {
+		meldung += '<li>die Auswahl für die Vergleichs-ID ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Kurszuordnung importieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+    var formulardaten = new FormData();
+    formulardaten.append("csv", csv);
+    formulardaten.append("trennung", trennung);
+    formulardaten.append("sj", sj);
+    formulardaten.append("stufe", stufe);
+    formulardaten.append("kurs", kurs);
+    formulardaten.append("tutor", tutor);
+    formulardaten.append("schueler", schueler);
+    formulardaten.append("idart", idart);
+    formulardaten.append("anfragenziel", 	'375');
+
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Kurszuordnung importieren', '<p>Die Kurszuordnung wurde erfolgreich importiert.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+      }
+      else {
+				cms_meldung_an('fehler', 'Kurszuordnung importieren', '<p>Die Importdatei genügt nicht den Anforderungen an das Eingabeformat.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
+    }
+
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_nicht_zugeordnet_schueler_laden() {
+	var schuelerfeld = document.getElementById('cms_nicht_zugeordnet_schueler_feld');
+	schuelerfeld.innerHTML = cms_ladeicon();
+
+	var sj = document.getElementById('cms_nicht_zugeordnet_schuljahr').value;
+	var fehler = false;
+
+	if (!cms_check_ganzzahl(sj,0)) {fehler = true;}
+
+	if (fehler) {
+		schuelerfeld.innerHTML = '<p class=\"cms_notiz\">-- Beim Laden der Schüler ist ein Fehler aufgetreten. --</p>';
+	}
+	else {
+		var formulardaten = new FormData();
+		formulardaten.append("sj",  sj);
+		formulardaten.append("anfragenziel", 	'379');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe.match(/^<p/) || rueckgabe.match(/^<ul/)) {
+				schuelerfeld.innerHTML = rueckgabe;
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_nicht_zugeordnet_loeschen_anzeigen() {
+	cms_meldung_an('warnung', 'Nicht zugeordnete Schüler löschen', '<p>Achtung! Sie sind im Begriff alle Nutzerkonten und Personeneinträge der Schüler zu löschen, die vorher aufgeführt wurden. Die Personen werden per Mail von der Löschung benachrichtigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_nicht_zugeordnet_loeschen()">Löschung durchführen</span></p>');
+}
+
+
+function cms_nicht_zugeordnet_loeschen() {
+	var personenids = document.getElementById('cms_nicht_zugeordnet_schueler').value;
+	if (personenids.length > 0) {
+		var personen = (personenids.substr(1)).split('|');
+		var personennr = 0;
+		var feld = document.getElementById('cms_blende_i');
+		var neuemeldung = '<div class="cms_spalte_i">';
+		neuemeldung += '<h2 id="cms_laden_ueberschrift">Nicht zugeordnete Schüler löschen</h2>';
+		neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
+		neuemeldung += '<h4>Gesamtfortschritt</h4>';
+		neuemeldung += '<div class="cms_fortschritt_o">';
+			neuemeldung += '<div class="cms_fortschritt_i" id="cms_personen_fortschritt_balken" style="width: 0%;"></div>';
+		neuemeldung += '</div>';
+		neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Personen: <span id="cms_personen_fortschritt">0</span>/<span id="cms_personen_alle">'+personen.length+'</span> abgeschlossen</p>';
+		neuemeldung += '</div>';
+		feld.innerHTML = neuemeldung;
+	}
+
+	var formulardaten = new FormData();
+	formulardaten.append("id",     		   personen[personennr]);
+	formulardaten.append("anfragenziel", '125');
+
+	function anfragennachbehandlung(rueckgabe) {
+		personennr++;
+		var prozent = (100 * personennr)/personen.length;
+		document.getElementById('cms_personen_fortschritt_balken').style.width = prozent+'%';
+		document.getElementById('cms_personen_fortschritt').innerHTML = personennr;
+
+		if (personennr < personen.length) {
+			var formulardaten = new FormData();
+			formulardaten.append("id",     		   personen[personennr]);
+			formulardaten.append("anfragenziel", '125');
+			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		}
+		else {
+			cms_meldung_an('erfolg', 'Nicht zugeordnete Schüler löschen', '<p>Die Personen wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
+		}
 	}
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

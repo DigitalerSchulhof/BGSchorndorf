@@ -54,7 +54,8 @@ function cms_schulhof_nutzerkonto_benutzerkonto_aendern () {
 function cms_schulhof_nutzerkonto_lehrerkuerzel_aendern () {
 	cms_laden_an('Lehrerkürzel ändern', 'Die Eingaben werden überprüft.');
 	var lehrerkuerzel = document.getElementById('cms_schulhof_nutzerkonto_profildaten_lehrerkuerzel').value;
-	var stundenplan = document.getElementById('cms_schulhof_nutzerkonto_profildaten_stundenplan').value;
+	var stunden = document.getElementById('cms_schulhof_nutzerkonto_profildaten_stundenplan');
+	if (stunden) {var stundenplan = stunden.value;} else {var stundenplan = "";}
 
 	var formulardaten = new FormData();
 	formulardaten.append("lehrerkuerzel", lehrerkuerzel);
