@@ -2,6 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <h1>Newsletter ansehen</h1>
+</div>
 
 <?php
   if(!$CMS_RECHTE["Website"]["Newsletter bearbeiten"] && !$CMS_RECHTE["Website"]["Newsletter Empfängerliste sehen"])
@@ -16,6 +17,5 @@
     echo cms_newsletter_details_laden($_SESSION["NEWSLETTERID"], $_SESSION["NEWSLETTERZIEL"]);
   }
 ?>
-
 
 <div class="cms_clear"></div>

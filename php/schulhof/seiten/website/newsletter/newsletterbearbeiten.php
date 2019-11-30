@@ -2,6 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <h1>Newsletter bearbeiten</h1>
+</div>
 
 <?php
   if(!$CMS_RECHTE["Website"]["Newsletter bearbeiten"])

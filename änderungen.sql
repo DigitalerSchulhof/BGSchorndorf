@@ -256,7 +256,7 @@ CREATE TABLE `wnewsletter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `newsletterempfaenger` (
-  `ìd` bigint(255) unsigned NOT NULL,
+  `id` bigint(255) unsigned NOT NULL,
   `name` varbinary(5000) DEFAULT NULL,
   `email` varbinary(5000) DEFAULT NULL,
   `newsletter` bigint(255) UNSIGNED DEFAULT NULL,

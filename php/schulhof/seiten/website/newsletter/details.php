@@ -77,7 +77,7 @@ function cms_newsletter_details_laden($id, $ziel) {
           $code .= '<tr><th></th><th>Name</th><th>eMailadresse</th><th>Aktionen</th></tr>';
         $code .= "</thead>";
         $code .= '<tbody id="cms_verwaltung_newsletter_empfaenger">';
-          $sql = "SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM newsletterempfaenger WHERE newsletter = ?";
+          $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM newsletterempfaenger WHERE newsletter = ?) AS x ORDER BY name";
           $sql = $dbs->prepare($sql);
           $sql->bind_param("i", $id);
           $sql->bind_result($eid, $name, $mail);
@@ -88,7 +88,7 @@ function cms_newsletter_details_laden($id, $ziel) {
               if($CMS_RECHTE["Website"]["Newsletter Empfänger bearbeiten"])
                 $aktionen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_newsletter_empfaenger_bearbeiten('".($eid)."')\"><span class=\"cms_hinweis\">Empfänger bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
               if($CMS_RECHTE["Website"]["Newsletter Empfänger löschen"])
-                $aktionen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_newsletter_empfaenger_loeschen_vorbereiten('".($eid)."')\"><span class=\"cms_hinweis\">Empfänger entfernen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
+                $aktionen .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_newsletter_empfaenger_loeschen_vorbereiten('".($eid)."')\"><span class=\"cms_hinweis\">Empfänger entfernen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
               return $aktionen;
             })()."</td></tr>";
 

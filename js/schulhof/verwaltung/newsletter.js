@@ -68,10 +68,10 @@ function cms_newsletter_empfaenger_anlegen(id) {
 				$("<img></img>", {src: "res/icons/klein/richtig.png"})
 			).click(function() {cms_newsletter_empfaenger_anlegen_ok(id);})
 		).append(" ").append(
-			$("<span>", {class: "cms_aktion_klein"}).html(
+			$("<span>", {class: "cms_aktion_klein cms_button_wichtig"}).html(
 				$("<span></span>", {class: "cms_hinweis"}).html("Abbrechen")
 			).append(
-				$("<img></img>", {src: "res/icons/klein/loeschen.png"})
+				$("<img></img>", {src: "res/icons/klein/abbrechen.png"})
 			).click(function() {location.reload()})
 		)
 	).appendTo(liste);
@@ -134,10 +134,10 @@ function cms_newsletter_empfaenger_bearbeiten(id) {
 			$("<img></img>", {src: "res/icons/klein/richtig.png"})
 		).click(function() {cms_newsletter_empfaenger_bearbeiten_ok(id);})
 	).append(" ").append(
-		$("<span>", {class: "cms_aktion_klein"}).html(
+		$("<span>", {class: "cms_aktion_klein cms_button_wichtig"}).html(
 			$("<span></span>", {class: "cms_hinweis"}).html("Abbrechen")
 		).append(
-			$("<img></img>", {src: "res/icons/klein/loeschen.png"})
+			$("<img></img>", {src: "res/icons/klein/abbrechen.png"})
 		).click(function() {location.reload()})
 	)
 }
