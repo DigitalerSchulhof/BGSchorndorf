@@ -152,6 +152,9 @@ function cms_wnewsletter_anmelden(element) {
   var name = box.find(".cms_newsletter_name").val();
   var mail = box.find(".cms_newsletter_mail").val();
 
+  var uid = box.find(".cms_spamschutz").data("uuid");
+  var code = box.find(".cms_spamverhinderung").val();
+
   var meldung = '<p>Die Anmeldung konnte nicht gesendet werden, denn ...</p><ul>';
   var fehler = false;
 
@@ -165,6 +168,11 @@ function cms_wnewsletter_anmelden(element) {
     fehler = true;
   }
 
+  if(!code) {
+    meldung += '<li>die Sicherheitsabfrage wurde nicht eingegeben.</li>';
+    fehler = true;
+  }
+
   if (fehler) {
     cms_meldung_an('fehler', 'Anmeldung absenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
   }
@@ -175,6 +183,8 @@ function cms_wnewsletter_anmelden(element) {
     formulardaten.append("id", 	          id);
     formulardaten.append("name", 	        name);
     formulardaten.append("mail", 	        mail);
+    formulardaten.append("uid", 	        uid);
+    formulardaten.append("code", 	        code);
 
     formulardaten.append("anfragenziel", 	'287');
 
@@ -183,8 +193,9 @@ function cms_wnewsletter_anmelden(element) {
         cms_meldung_an('erfolg', 'Zum Newsletter anmelden', '<p>Die Anmeldung wurde erfolgreich abgesandt!</p>', '<p><span class="cms_button" onclick="location.reload()">Zurück</span></p>');
       } else if(rueckgabe == "MAIL") {
         cms_meldung_an('fehler', 'Zum Newsletter anmelden', '<p>Die eMailadresse ist bereits registriert!</p>', '<p><span class="cms_button" onclick=" cms_meldung_aus()">Zurück</span></p>');
-      }
-      else {cms_fehlerbehandlung(rueckgabe);}
+      }	else if (rueckgabe == "CODE") {
+        cms_meldung_an('fehler', 'Kontaktformular absenden', '<p>Der Sicherheitscode ist nicht korrekt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus(); cms_neue_captcha(\''+uid+'\')">Korrigieren</span></p>');
+      } else {cms_fehlerbehandlung(rueckgabe);}
     }
 
     cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

@@ -4,13 +4,17 @@ include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
 include_once("../../schulhof/funktionen/generieren.php");
+session_start();
 
-postLesen(array("name", "mail", "id"));
-
+postLesen(array("name", "mail", "id", "uid", "code"));
 if(!cms_check_name($name) || !cms_check_mail($mail))
   die("FEHLER");
-
 $dbs = cms_verbinden("s");
+
+if (isset($_SESSION['SPAMSCHUTZ_'.$uid])) {$codevergleich = $_SESSION['SPAMSCHUTZ_'.$uid];} else {echo "FEHLER"; exit;}
+unset($_SESSION['SPAMSCHUTZ_'.$uid]);
+
+if ($code != $codevergleich) {echo "CODE"; exit;}
 
 // Newsletter prüfen
 $sql = "SELECT * FROM newslettertypen WHERE id = ?";

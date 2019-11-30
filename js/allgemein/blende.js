@@ -176,8 +176,9 @@ function cms_dsgvo_datenschutz(fenster, eA, eB) {
 			}
 		}
 
-		var kontaktformulare = document.getElementsByClassName('cms_kontaktformular');
-		if (kontaktformulare.length > 0) {location.reload();}
+		var dsgvo_a = document.getElementsByClassName('cms_himweis_dsgvo_a').length;
+		var dsgvo_b = document.getElementsByClassName('cms_himweis_dsgvo_b').length;
+		if ((dsgvo_a && eA == 'j') ||(dsgvo_b && eB == 'j')) {location.reload();}
 	}
 }
 

@@ -681,6 +681,10 @@ function cms_newsletter_ausgeben($dbs, $k) {
       $jetzt = time();
 
       $code .= "<div class=\"cms_newsletter_box_a\"><div class=\"cms_newsletter_box_i\"><h2>$bezeichnung</h2>";
+      $CMS_EINWILLIGUNG_A = false;
+      if (isset($_SESSION["DSGVO_EINWILLIGUNG_A"])) {$CMS_EINWILLIGUNG_A = $_SESSION["DSGVO_EINWILLIGUNG_A"];}
+      if (!$CMS_EINWILLIGUNG_A) {$code .= cms_meldung_einwilligungA();}
+      else {
         if($beschreibung)
           $code .= "<p>$beschreibung</p>";
         $code .= "<table class=\"cms_formular\" id=\"cms_newsletter_tabelle_".$k["id"]."\">";
@@ -688,7 +692,6 @@ function cms_newsletter_ausgeben($dbs, $k) {
           $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_newsletter_name\" autocomplete=\"name\"></td></tr>";
           $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_newsletter_mail\" autocomplete=\"email\"></td></tr>";
           $code .= "<tr></tr>";
-          $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
 
           $zuordnungen = "";
           foreach ($CMS_GRUPPEN as $g) {
@@ -705,8 +708,13 @@ function cms_newsletter_ausgeben($dbs, $k) {
           if(strlen($zuordnungen) > 0)
             $code .= "<tr><td colspan=\"2\">$zuordnungen</td></tr>";
 
-          $code .= "</table>";
+          $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
+          $code .= "<tr></tr>";
+          $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
+          $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
 
+          $code .= "</table>";
+      }
       $code .= "</div></div>";
 
       $code .= "<div class=\"cms_clear\"></div>";
