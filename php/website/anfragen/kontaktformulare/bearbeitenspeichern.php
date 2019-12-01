@@ -30,11 +30,11 @@ if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
-	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true;}
-	if (($kopie != 0) && ($kopie != 1) && ($kopie != 2)) {$fehler = true;}
-	if (($anhang != 0) && ($anhang != 1)) {$fehler = true;}
-	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
-	if (!cms_check_ganzzahl($ids, 0))	$fehler = true;
+	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true; echo 1;}
+	if (($kopie != 0) && ($kopie != 1) && ($kopie != 2)) {$fehler = true; echo 2;}
+	if (($anhang != 0) && ($anhang != 1)) {$fehler = true; echo 3;}
+	if (!cms_check_ganzzahl($position,0)) {$fehler = true; echo 4;}
+	if (!cms_check_ganzzahl($ids, 0))	{$fehler = true; echo 5; print_r($ids);}
 
 	if(!((count($ids) == count($namen)) && (count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
 		$fehler = true;

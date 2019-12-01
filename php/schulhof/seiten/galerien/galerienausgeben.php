@@ -178,25 +178,49 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			$code .= "<h1>".$galerie['bezeichnung']."</h1>";
 			$code .= "<p>".$galerie['beschreibung']."</p>";
 
-			$code .= "<div id=\"cms_galerie_bilder\">";
-				foreach($bilder as $bild) {
-					$code .= "<div class=\"cms_galerie_bild\">";
-						$code .= "<img src=\"".$bild["pfad"]."\">";
-						$code .= "<div class=\"cms_galerie_beschreibung\">".$bild["beschreibung"]."</div>";
-					$code .= "</div>";
-				}
-				$code .= "<div id=\"cms_galerie_laden\">".cms_ladeicon()."<h3>Die Galerie wird geladen...</h3></div>";
-				$code .= "<div id=\"cms_galerie_dots\">";
-					for($i = 0; $i < count($bilder); $i++)
-						$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";
-				$code .= "</div>";
-				$code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
-				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
+			$wahlknoepfe = "";
+			$bildercode = "";
+			if (count($bilder) > 1) {
+				$bildercode = "<li style=\"opacity: 1;\" id=\"cms_galeriebilder_0\"><img src=\"".$bilder[0]["pfad"]."\"></li>";
+				$wahlknoepfe = "<span id=\"cms_galeriebilder_knopf_0\" class=\"cms_galeriebild_knopf_aktiv\" onclick=\"cms_galeriebild_zeigen('0')\"></span> ";
+			}
+			for ($i=1; $i<count($bilder); $i++) {
+				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_galeriebilder_$i\"><img src=\"".$bilder[$i]["pfad"]."\">";
+				if (strlen($bilder[$i]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[$i]["beschreibung"]."</p>";}
+				$bildercode .= "</li>";
+				$wahlknoepfe .= "<span id=\"cms_galeriebilder_knopf_$i\" class=\"cms_galeriebild_knopf\" onclick=\"cms_galeriebild_zeigen('$i')\"></span> ";
+			}
+			if (strlen($bildercode) > 0) {
+				$code .= '<div id="cms_galeriebild_o">';
+					$code .= "<p class=\"cms_galeriebilder_wahl\">$wahlknoepfe</p>";
+					$code .= '<ul id="cms_galeriebild_m">';
+					$code .= $bildercode;
+					$code .= '</ul>';
+					$code .= "<div class=\"cms_clear\"></div>";
+					$code .= "<input type=\"hidden\" id=\"cms_galeriebilder_anzahl\" id=\"cms_galeriebilder_anzahl\" value=\"".(count($bilder))."\">";
+					$code .= "<input type=\"hidden\" id=\"cms_galeriebilder_angezeigt\" id=\"cms_galeriebilder_angezeigt\" value=\"0\">";
+					$code .= '<span class="cms_galeriebilder_voriges" onclick="cms_galeriebild_voriges()"></span><span class="cms_galeriebilder_naechstes" onclick="cms_galeriebild_naechstes()"></span>';
+				$code .= '</div>';
+				$code .= "<script>cms_galeriebilder_starten();</script>";
+			}
 
-				// Bilder Ende
-				$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
-				$CMS_GALERIEID = $galerie["id"];
-			$code .= "</div>";
+			// foreach($bilder as $bild) {
+			// 	$code .= "<div class=\"cms_galerie_bild\">";
+			// 		$code .= "<img src=\"".$bild["pfad"]."\">";
+			// 		$code .= "<div class=\"cms_galerie_beschreibung\">".$bild["beschreibung"]."</div>";
+			// 	$code .= "</div>";
+			// }
+			// $code .= "<div id=\"cms_galerie_laden\">".cms_ladeicon()."<h3>Die Galerie wird geladen...</h3></div>";
+			// $code .= "<div id=\"cms_galerie_dots\">";
+			// 	for($i = 0; $i < count($bilder); $i++)
+			// 		$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";
+			// $code .= "</div>";
+			// $code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\"></div>";
+			// $code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\"></div>";
+
+			// Bilder Ende
+			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
+			$CMS_GALERIEID = $galerie["id"];
 
 			$code .= "</div></div>";
 			$code .= "<div class=\"cms_clear\"></div>";

@@ -1,73 +1,63 @@
-$(window).on("load", function() {
-  if($("#cms_galerie_bilder").length) {
-    galerie.zeigen(0);
-    galerie.starteLoop();
-    galerie.keydownSetzen();
+var galeriebilderzeit;
+
+function cms_galeriebilder_starten() {
+  galeriebilderzeit = window.setTimeout('cms_galeriebilder_wechseln()', 7000);
+}
+
+function cms_galeriebilder_wechseln() {
+  var anzahl = document.getElementById('cms_galeriebilder_anzahl');
+  var angezeigt = document.getElementById('cms_galeriebilder_angezeigt');
+
+  var z = anzahl.value;
+  var a = angezeigt.value;
+  var n = (parseInt(a)+1)%z;
+
+  if (z > 1) {
+    cms_galeriebildaendern(a, n);
   }
-});
+}
 
-var galerie = {
-  index: null,
-  interval: null,
-  zeigen: function(i, auto) {
-    if(i.jQuery) {
-      if(!i.parents("#cms_galerie_bilder").length || !i.is(".cms_galerie_bild"))
-        return false;
-      else
-        i = i.index(".cms_galerie_bild");
-    }
+function cms_galeriebild_voriges() {
+  var anzahl = document.getElementById('cms_galeriebilder_anzahl');
+  var angezeigt = document.getElementById('cms_galeriebilder_angezeigt');
 
-    $(".cms_galerie_bild").removeClass("cms_galerie_zeigen");
-    galerie.index = i;
-    galerie.dotZeigen();
-    if(!auto) {
-      clearInterval(galerie.interval);
-      galerie.interval = null;
-      setTimeout(function() {
-        galerie.starteLoop();
-      }, 6000); // Bei manuellen Wechsel 6s warten
-    }
-    return $("#cms_galerie_bilder").find(".cms_galerie_bild:eq("+i+")").addClass("cms_galerie_zeigen");
-  },
-  dotZeigen: function(i) {
-    i !== 0 && (i = i || galerie.index);
-    $("#cms_galerie_dots").find(".cms_galerie_dot").removeClass("cms_galerie_zeigen");
-    $("#cms_galerie_dots").find(".cms_galerie_dot:eq("+i+")").addClass("cms_galerie_zeigen");
-  },
-  vor: function(i, auto) {
-    i = i || 1;
-    auto = auto || false;
-    galerie.next(-i);
-  },
-  next: function(i, auto) {
-    i = i || 1;
-    auto = auto || false;
-    if(galerie.index+i >= $(".cms_galerie_bild").length)
-      galerie.index = 0-i;
-    if(galerie.index+i < 0)
-      galerie.index = $(".cms_galerie_bild").length;
+  var z = anzahl.value;
+  var a = angezeigt.value;
+  var n = (parseInt(a)-1)%z;
+  n = (n+parseInt(z))%z;
 
-    galerie.zeigen(galerie.index+i, auto);
-  },
-  starteLoop: function() {
-    if(galerie.interval)
-      return;
-    galerie.interval = setInterval(function() {
-      galerie.next(1, true)
-    }, 3000);
-  },
-  keydownSetzen: function() {
-    $(document).keydown(function(e) {
-        switch(e.which) {
-            case 37:
-              galerie.vor();
-              break;
-            case 39:
-              galerie.next();
-              break;
-            default: return;
-        }
-        e.preventDefault();
-    });
+  if (z > 1) {
+    cms_galeriebildaendern(a, n);
   }
+}
+
+function cms_galeriebild_naechstes() {cms_galeriebilder_wechseln();}
+
+function cms_galeriebild_zeigen(n) {
+  var anzahl = document.getElementById('cms_galeriebilder_anzahl');
+  var angezeigt = document.getElementById('cms_galeriebilder_angezeigt');
+
+  var z = anzahl.value;
+  var a = angezeigt.value;
+
+  if (z > 1) {
+    cms_galeriebildaendern(a, n);
+  }
+}
+
+function cms_galeriebildaendern(alt, neu) {
+  var angezeigt = document.getElementById('cms_galeriebilder_angezeigt');
+  var ausblenden = document.getElementById('cms_galeriebilder_'+alt);
+  var einblenden = document.getElementById('cms_galeriebilder_'+neu);
+  var ausblendenknopf = document.getElementById('cms_galeriebilder_knopf_'+alt);
+  var einblendenknopf = document.getElementById('cms_galeriebilder_knopf_'+neu);
+
+  ausblenden.style.opacity = 0;
+  einblenden.style.opacity = 1;
+  ausblendenknopf.className = "cms_galeriebild_knopf";
+  einblendenknopf.className = "cms_galeriebild_knopf_aktiv";
+
+  angezeigt.value = neu;
+  window.clearTimeout(galeriebilderzeit);
+  galeriebilderzeit = window.setTimeout('cms_galeriebilder_wechseln()', 7000);
 }
