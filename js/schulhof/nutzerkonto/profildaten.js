@@ -353,6 +353,10 @@ function cms_persoenliche_notizen_speichern() {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
+function cms_favorit_loeschen_anzeigen(fid, url) {
+	cms_meldung_an('warnung', 'Favorit löschen', '<p>Soll dieser Favorit wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_favorisieren(\''+fid+'\', \''+url+'\', \'1\')">Löschung durchführen</span></p>');
+}
+
 function cms_favorisieren(fid, url, fw) {
 	var icon = document.getElementById('cms_steite_favorit_icon');
 	var favorit = document.getElementById('cms_seite_favorit');

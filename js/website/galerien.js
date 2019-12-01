@@ -1,5 +1,5 @@
 $(window).on("load", function() {
-  if($("#cms_hauptteil_i>#cms_galerie_bilder").length) {
+  if($("#cms_galerie_bilder").length) {
     galerie.zeigen(0);
     galerie.starteLoop();
     galerie.keydownSetzen();

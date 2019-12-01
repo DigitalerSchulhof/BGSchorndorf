@@ -24,7 +24,8 @@ var CMS_DATEIICONS = ["3gp", "7z", "ace", "ai", "aif", "aiff", "amr",
 
 window.addEventListener("dragover", function() {event.preventDefault();}, false);
 
-function cms_dateisystem_upload_dateiendazu(feldid, event) {
+function cms_dateisystem_upload_dateiendazu(feldid) {
+	//alert(feldid);
 	event.stopPropagation();
 	event.preventDefault();
 

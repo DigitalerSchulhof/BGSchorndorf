@@ -54,7 +54,7 @@ function cms_galerie_zusatzinfo($dbs, $daten) {
 	$sql = substr($sql, 7);
 	$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
 	if ($sql->execute()) {
-		$sql->bind_result($icon, $bez);
+		$sql->bind_result($bez, $icon);
 		while ($sql->fetch()) {
 			$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$icon')\">$bez</span> ";
 		}
@@ -176,12 +176,7 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 			$code .= "<h1>".$galerie['bezeichnung']."</h1>";
-			if($galerie["vorschaubild"] != "") {
-				$code .= "<img src=\"".$galerie["vorschaubild"]."\">";
-			}
 			$code .= "<p>".$galerie['beschreibung']."</p>";
-			$code .= "</div></div>";
-			$code .= "<div class=\"cms_clear\"></div>";
 
 			$code .= "<div id=\"cms_galerie_bilder\">";
 				foreach($bilder as $bild) {
@@ -197,12 +192,16 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 				$code .= "</div>";
 				$code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
 				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
+
+				// Bilder Ende
+				$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
+				$CMS_GALERIEID = $galerie["id"];
 			$code .= "</div>";
 
-			// Bilder Ende
-			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
+			$code .= "</div></div>";
+			$code .= "<div class=\"cms_clear\"></div>";
 
-			$CMS_GALERIEID = $galerie["id"];
+
 			$code .= "<div class=\"cms_clear\"></div>";
 		}
 		else {
@@ -235,6 +234,7 @@ function cms_galeriedetailansicht_galerieinfos($dbs, $daten, $zeiten) {
 	$verknuepfung = "";
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen
 	$sql = "";
+	$zugehoerigladen = "";
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
 		$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ?)";

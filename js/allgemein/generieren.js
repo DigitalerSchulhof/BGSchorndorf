@@ -131,12 +131,10 @@ function cms_uebernehmen(idvon, idzu) {
 }
 
 function cms_farbbeispiel_waehlen(nr, id) {
-	if (isNaN(nr)) {nr = 0;}
-	if (nr % 1 != 0) {nr = 0;}
-	if (nr > 47) {nr = 0;}
+  if (!cms_check_ganzzahl(nr,0,63)) {nr = 0;}
 
 	// Alle deaktivieren
-	for (var i=0; i<48; i++) {
+	for (var i=0; i<64; i++) {
 		feld = document.getElementById('cms_farbbeispiel_'+i);
 		feld.className = "cms_farbbeispiel cms_farbbeispiel_"+i;
 	}

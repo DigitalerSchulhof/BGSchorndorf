@@ -1,4 +1,5 @@
 <?php
+
 // $personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
 // $gruppen = array("Gremien", "Fachschaften", "Klassen", "Kurse", "Stufen", "Arbeitsgemeinschaften", "Arbeitskreise", "Fahrten", "Wettbewerbe", "Ereignisse", "Sonstige Gruppen");
 // $raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
@@ -138,20 +139,20 @@
 // ALTER TABLE `nutzerkonten` CHANGE `benutzername` `benutzername` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `passwort` `passwort` VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `passworttimeout` `passworttimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `salt` `salt` VARBINARY(100) NULL DEFAULT NULL, CHANGE `sessionid` `sessionid` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `sessiontimeout` `sessiontimeout` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `email` `email` VARBINARY(3000) NULL DEFAULT NULL, CHANGE `letzteanmeldung` `letzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `vorletzteanmeldung` `vorletzteanmeldung` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `erstellt` `erstellt` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `notizen` `notizen` LONGBLOB NULL DEFAULT NULL, CHANGE `letztenotifikation` `letztenotifikation` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 
 
-include_once('php/allgemein/funktionen/sql.php');
-include_once("php/schulhof/funktionen/config.php");
-$dbs = cms_verbinden('s');
-echo "<table>";
-$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), zweitid FROM personen WHERE zweitid IS NOT NULL");
-if ($sql->execute()) {
-  $nr = 1;
-  $sql->bind_result($vor, $nach, $zid);
-  while ($sql->fetch()) {
-    echo "<tr><td>$nr</td><td>$vor</td><td>$nach</td><td>$zid</td></tr>";
-    $nr++;
-  }
-}
-echo "</table>";
+// include_once('php/allgemein/funktionen/sql.php');
+// include_once("php/schulhof/funktionen/config.php");
+// $dbs = cms_verbinden('s');
+// echo "<table>";
+// $sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), zweitid FROM personen WHERE zweitid IS NOT NULL");
+// if ($sql->execute()) {
+//   $nr = 1;
+//   $sql->bind_result($vor, $nach, $zid);
+//   while ($sql->fetch()) {
+//     echo "<tr><td>$nr</td><td>$vor</td><td>$nach</td><td>$zid</td></tr>";
+//     $nr++;
+//   }
+// }
+// echo "</table>";
 //  		echo "ALTER TABLE `postausgang_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
 //  		echo "ALTER TABLE `posteingang_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `alle` `alle` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB NULL DEFAULT NULL, CHANGE `gelesen` `gelesen` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
 // 		echo "ALTER TABLE `postentwurf_$nid` CHANGE `absender` `absender` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `empfaenger` `empfaenger` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '', CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NOT NULL DEFAULT '0', CHANGE `betreff` `betreff` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `nachricht` `nachricht` LONGBLOB NULL DEFAULT NULL, CHANGE `papierkorb` `papierkorb` VARBINARY(50) NULL DEFAULT NULL, CHANGE `papierkorbseit` `papierkorbseit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";

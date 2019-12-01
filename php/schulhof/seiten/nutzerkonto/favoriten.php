@@ -12,9 +12,9 @@ if ($sql->execute()) {
 		$tabellencode .= "<tr><td><img src=\"res/icons/klein/favorit.png\"></td>";
 		$tabellencode .= "<td>$furl</td>";
 		$tabellencode .= "<td><input type=\"text\" name=\"cms_favoriten_bezeichnung_$fid\" id=\"cms_favoriten_bezeichnung_$fid\" value=\"$fbez\"></td>";
-		$tabellencode .= "<td><span class=\"cms_aktion_klein\" onclick=\"cms_favorit_benennen('$fid')\"><span class=\"cms_hinweis\">Umbenennen</span><img src=\"res/icons/klein/umbennen.png\"></span> "
-										."<span class=\"cms_aktion_klein\" onclick=\"cms_link('$furl')\"><span class=\"cms_hinweis\">Seite aufrufen</span><img src=\"res/icons/klein/springen.png\"></span> "
-										."<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_favorisieren('$fid', '$furl', 1)\"><span class=\"cms_hinweis\">Favorit entfernen</span><img src=\"res/icons/klein/loeschen.png\"></span></td></tr>";
+		$tabellencode .= "<td><span class=\"cms_aktion_klein\" onclick=\"cms_favorit_benennen('$fid')\"><span class=\"cms_hinweis\">Umbenennen</span><img src=\"res/icons/klein/umbennen.png\"></span> ";
+		$tabellencode .= "<span class=\"cms_aktion_klein\" onclick=\"cms_link('$furl')\"><span class=\"cms_hinweis\">Seite aufrufen</span><img src=\"res/icons/klein/springen.png\"></span> ";
+		$tabellencode .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_favorit_loeschen_anzeigen('$fid', '$furl')\"><span class=\"cms_hinweis\">Favorit entfernen</span><img src=\"res/icons/klein/loeschen.png\"></span></td></tr>";
 	}
 }
 $sql->close();
