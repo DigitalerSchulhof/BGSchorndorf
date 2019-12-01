@@ -2,7 +2,9 @@
   function cms_auffaellig_liste() {
     global $CMS_SCHLUESSEL, $CMS_RECHTE;
 
-    $ausgabe = "<h2>Auffälliges Verhalten</h2><table class=\"cms_liste\">";
+    $ausgabe = "<h2>Auffälliges Verhalten</h2>".
+               "<span class=\"cms_button cms_button_nein\" onclick=\"cms_auffaelliges_alle_loeschen_vorbereiten()\">Alle Meldungen löschen</span>";
+    $ausgabe .= "<table class=\"cms_liste\">";
       $ausgabe .= "<thead>";
         $ausgabe .= "<tr><th></th><th>Benutzer</th><th>Typ</th><th>Aktion</th><th>Datum</th><th>Aktionen</th></tr>";
       $ausgabe .= "</thead>";

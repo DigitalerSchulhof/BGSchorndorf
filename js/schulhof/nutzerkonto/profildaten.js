@@ -388,7 +388,7 @@ function cms_favorisieren(fid, url, fw) {
 }
 
 function cms_favorit_benennen(fid) {
-	cms_laden_an('Favorit umbenennen', 'Die Favorit wird umbenannt.');
+	cms_laden_an('Favorit umbenennen', 'Der Favorit wird umbenannt.');
 	var name = document.getElementById('cms_favoriten_bezeichnung_'+fid).value;
 
 	var formulardaten = new FormData();

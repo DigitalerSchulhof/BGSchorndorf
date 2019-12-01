@@ -282,16 +282,38 @@ function cms_check_browser() {
 
  function cms_check_browserunterstuetzung() {
 	 var browser = cms_check_browser();
-	 var unterstuetzung = false;
+	 var cookietest = function() {
+	     var i, j, cookies, found;
+	     document.cookie = 'testcookiesenabled=1';
+	     for (i=0; i<2; i++) {
+	         found = false;
+	         cookies = document.cookie.split(';');
+	         j = cookies.length;
+	         while(j--) {
+	             while (cookies[j].charAt(0)==' ') {// trim spaces
+	                 cookies[j] = cookies[j].substring(1);
+	             }
+	             if (cookies[j].indexOf('testcookiesenabled=')==0) {
+	                 found = true;
+	                 break;
+	             }
+	         }
+	         if (!found) {
+	             return i;
+	         }
+	         // Delete test cookie.
+	         document.cookie = 'testcookiesenabled=; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+	     }
+			 return false;
+	 };
 
-	 if ((browser.name == "Safari") && (browser.version >= 12)) {unterstuetzung = true;}
-	 if ((browser.name == "Firefox") && (browser.version >= 70)) {unterstuetzung = true;}
-	 if ((browser.name == "Opera") && (browser.version >= 50)) {unterstuetzung = true;}
-	 if ((browser.name == "Chrome") && (browser.version >= 63)) {unterstuetzung = true;}
-	 if ((browser.name == "Edge") && (browser.version >= 38)) {unterstuetzung = true;}
+	 if ((browser.name == "Safari") && (browser.version >= 12)) 	{unterstuetzung = true;}
+	 if ((browser.name == "Firefox") && (browser.version >= 70)) 	{unterstuetzung = true;}
+	 if ((browser.name == "Opera") && (browser.version >= 50)) 		{unterstuetzung = true;}
+	 if ((browser.name == "Chrome") && (browser.version >= 63)) 	{unterstuetzung = true;}
+	 if ((browser.name == "Edge") && (browser.version >= 38)) 		{unterstuetzung = true;}
 
-	 if (!browser.name) {browser.name = "unklar";}
-	 if (!browser.version) {browser.version = "unklar";}
+	 if(!cookietest())																						{unterstuetzung = false;}
 
 	 var testfeld = document.getElementById('cms_browsertest');
 
@@ -299,9 +321,5 @@ function cms_check_browser() {
 		 if (unterstuetzung) {
 			 testfeld.innerHTML = '<img src="res/icons/gross/erfolg.png"><br>Der Browser untestützt alle Funktionen des Schulhofs.';
 		 }
-		 else {
-			 testfeld.innerHTML = '<img src="res/icons/gross/warnung.png"><br>Der Browser untestützt womöglich nicht alle Funktionen.<br>'+browser.name+' ('+browser.version+')';
-		 }
 	 }
-
  }

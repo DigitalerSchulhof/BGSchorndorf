@@ -154,11 +154,11 @@ echo $code;
 <div class="cms_spalte_i">
 
 <?php
-$sql = "SELECT * FROM (SELECT AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY bezeichnung";
+$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY id";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("i", $CMS_BENUTZERID);
 $sql->execute();
-$sql->bind_result($furl, $fbez);
+$sql->bind_result($fid, $furl, $fbez);
 $fav = "";
 while($sql->fetch()) {
 	$fav .= "<li><a class=\"cms_button\" href=\"$furl\">".$fbez."</a></li> ";

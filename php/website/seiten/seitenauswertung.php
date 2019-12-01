@@ -705,14 +705,10 @@ function cms_newsletter_ausgeben($dbs, $k) {
             }
           }
 
-          if(strlen($zuordnungen) > 0)
-            $code .= "<tr><td colspan=\"2\">$zuordnungen</td></tr>";
-
           $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
           $code .= "<tr></tr>";
           $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
-          $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
-
+          $code .= "<tr><td>$zuordnungen</td><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
           $code .= "</table>";
       }
       $code .= "</div></div>";
