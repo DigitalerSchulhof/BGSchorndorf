@@ -2,7 +2,7 @@
 @import "standard.less";
 
 .cms_notiz, .cms_hochladen_fortschritt_anzeige {
-  color: @schriftnotiz;
+  color: @notiz_color;
   font-size: 70% !important;
 }
 
@@ -11,8 +11,8 @@
 }
 
 p, ul, ol, table, li {
-  margin-top: @absatzabstand;
-  margin-bottom: @absatzabstand;
+  margin-top: @standardabsatz_schulhof_margin;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 h1 {
@@ -39,7 +39,7 @@ h3 {
 
 h4 {
   margin-top: 30px;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
   font-weight: bold;
   font-size: 100%;
 }
@@ -53,7 +53,7 @@ h3+h4 {
 }
 
 p.cms_notiz+h1, p.cms_brotkrumen + h1 {
-  margin-top: @brotkrumenabstand;
+  margin-top: @standardabsatz_brotkrumen_margin;
 }
 
 .cms_termine_jahresuebersicht + p.cms_notiz {
@@ -127,11 +127,11 @@ blockquote {
 }
 
 pre, .cms_konsole {
-  background: @hintergrunddunkel;
-  color: @schriftfarbehell;
+  background: @standarddunkel_background;
+  color: @standardschrifthell_color;
   padding: 10px;
   font-family: monospace;
-  border-radius: @buttonradius;
+  border-radius: @button_radius;
 }
 
 .cms_zentriert {
@@ -154,17 +154,17 @@ pre, .cms_konsole {
 
 .cms_hauptteil_inhalt p, .cms_hauptteil_inhalt ul, .cms_hauptteil_inhalt ol,
 .cms_hauptteil_inhalt table, .cms_download_anzeige, .cms_boxen_u, .cms_boxen_n {
-  margin-top: @absatzabstandwebsite;
-  margin-bottom: @absatzabstandwebsite;
+  margin-top: @standardabsatz_website_margin;
+  margin-bottom: @standardabsatz_website_margin;
 }
 
 .cms_hauptteil_inhalt h4 {
-  margin-bottom: @absatzabstandwebsite;
+  margin-bottom: @standardabsatz_website_margin;
 }
 
 .cms_download_anzeige * {
   line-height: 1.2em;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_uebersicht * {

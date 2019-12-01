@@ -12,7 +12,7 @@
   text-align: center;
   width: 60%;
   font-weight: bold;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
 }
 
 .cms_termine_jahrueberischt_knoepfe_nachher {
@@ -24,18 +24,18 @@
 .cms_termine_jahrueberischt_knoepfe_vorher .cms_button,
 .cms_termine_jahrueberischt_knoepfe_nachher .cms_button {
   font-weight: bold !important;
-  color: @standarddunkel!important;
+  color: @schattiertdunkel_background!important;
 }
 
 .cms_termine_jahrueberischt_knoepfe_vorher .cms_button:hover,
 .cms_termine_jahrueberischt_knoepfe_nachher .cms_button:hover {
   font-weight: bold !important;
-  color: @schriftfarbehell!important;
+  color: @standardschrifthell_color!important;
 }
 
 .cms_termine_jahrueberischt_allemonate_namen {
   padding-top: 5px;
-  border-top: 1px solid @standardhell;
+  border-top: 1px solid @schattierthell_background;
 }
 
   .cms_termine_jahrueberischt_monat {
@@ -44,7 +44,7 @@
     text-align: center;
     float: left;
     display: block;
-    color: @standarddunkel;
+    color: @schattiertdunkel_background;
     font-weight: bold;
   }
 
@@ -74,9 +74,11 @@
       width: 100%;
       float: left;
       display: block;
-      background-color: @themafarbe1;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      background-color: @zeitleiste_balken_background;
+      border-top-left-radius: @zeitleiste_balken_radiustl;
+      border-top-right-radius: @zeitleiste_balken_radiustr;
+      border-bottom-left-radius: @zeitleiste_balken_radiusbl;
+      border-bottom-right-radius: @zeitleiste_balken_radiusbr;
       bottom: 0px;
       position: absolute;
       transition: 500ms ease-in-out;
@@ -84,14 +86,14 @@
 
     .cms_termine_jahrueberischt_monathoehe.cms_jahresuebersicht_aktuell,
     .cms_termine_jahrueberischt_monathoehe:hover {
-      background-color: @themafarbe3;
+      background-color: @zeitleiste_balkenhover_background;
       transform: translate(0px) !important;
       cursor: pointer
     }
 
 .cms_element_editor {
-  margin-top: @absatzabstand;
-  margin-bottom: @absatzabstand;
+  margin-top: @standardabsatz_schulhof_margin;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_download_anzeige {
@@ -99,10 +101,10 @@
   background-position: 5px 5px;
   min-height: 44px;
   background-repeat: no-repeat;
-  background-color: @standardhell;
-  border: 1px solid @standardhell;
+  background-color: @schattierthell_background;
+  border: 1px solid @schattierthell_background;
   transition: 500ms ease-in-out;
-  border-left: 3px solid @standarddunkel;
+  border-left: 3px solid @schattiertdunkel_background;
   line-height: 1em !important;
 }
 
@@ -112,11 +114,11 @@
 }
 
 .cms_download_anzeige:hover {
-  background-color: @standarddunkel;
+  background-color: @schattiertdunkel_background;
   cursor: pointer;
 }
 
-.cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @schriftfarbehell;}
+.cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @standardschrifthell_color;}
 
 .cms_download_inaktiv {opacity: .5;}
 .cms_download_inaktiv:hover {cursor: not-allowed;}
@@ -129,25 +131,28 @@
 .cms_website_menuepunkte_ja {
   display: block;
   padding: 5px;
-  background: @erfolghell;
-  border-top: 1px solid @standardhell;
-  border-bottom: 1px solid @standardhell;
+  background: @erfolg_background;
+  border-top: 1px solid @schattierthell_background;
+  border-bottom: 1px solid @schattierthell_background;
   font-weight: bold;
   transition: 500ms ease-in-out;
 }
 
 .cms_website_menuepunkte_ja:hover {
-  background: @erfolgdunkel;
-  color: @schriftfarbehell;
+  background: @erfolg_akzent;
+  color: @standardschrifthell_color;
   cursor: pointer;
 }
 
 .cms_website_menuepunkte h3:last-child {margin-bottom: 0px;}
 
 .cms_zugehoerig {
-  background: @standardhell;
+  background: @zugehoerig_background;
   padding: 5px;
-  border-radius: 5px;
+  border-top-right-radius: @zugehoerig_radiustr;
+  border-top-left-radius: @zugehoerig_radiustl;
+  border-bottom-right-radius: @zugehoerig_radiusbr;
+  border-bottom-left-radius: @zugehoerig_radiusbl;
   margin-top: 10px;
   opacity: 0;
   text-align: center !important;
@@ -169,7 +174,7 @@
 .cms_zugehoerig td:nth-child(2) {text-align: center;}
 .cms_zugehoerig td:nth-child(3) {text-align: right;}
 
-.cms_zugehoerig h4 {margin-top: 10px; color: @standarddunkel; text-align: left; padding-left: 5px;}
+.cms_zugehoerig h4 {margin-top: 10px; color: @schattiertdunkel_background; text-align: left; padding-left: 5px;}
 .cms_zugehoerig ul {padding: 0px; margin: 0px;}
 .cms_zugehoerig li {padding: 0px; margin: 0px; list-style-type: none;}
 .cms_zugehoerig li a {
@@ -177,15 +182,15 @@
   transition: 250ms ease-in-out;
   padding: 2px 5px;
   margin-bottom: 6px;
-  border-radius: @buttonradius;
-  background: @standardhell;
-  color: @schriftfarbedunkel;
+  border-radius: @button_radius;
+  background: @schattierthell_background;
+  color: @standardschriftdunkel_color;
   text-align: left;
 }
 .cms_zugehoerig li a:hover {
   cursor: pointer;
-  background: @themafarbe3;
-  color: @schriftfarbehell;
+  background: @zugehoerighover_background;
+  color: @zugehoerighover_color;
 }
 .cms_zugehoerig li:last-child a {margin-bottom: 0px;}
 .cms_zugehoerig li a span.cms_zugehoerig_datum {
@@ -204,8 +209,8 @@
 }
 
 .cms_box_u, .cms_box_n {
-  background-color: @hintergrundhell;
-  border-radius: @buttonradius;
+  background-color: @standardhell_background;
+  border-radius: @button_radius;
 }
 
 .cms_box_n {
@@ -216,7 +221,7 @@
 
 .cms_box_u {
   width: 100%;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
   display: flex;
 }
 
@@ -239,7 +244,7 @@
 .cms_box_u .cms_box_titel {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
-  border-right: 1px solid @hintergrunddunkel;
+  border-right: 1px solid @standarddunkel_background;
 }
 
 .cms_box_u .cms_box_inhalt {
@@ -250,7 +255,7 @@
 .cms_box_n .cms_box_titel {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border-bottom: 1px solid @hintergrunddunkel;
+  border-bottom: 1px solid @standarddunkel_background;
 }
 
 .cms_box_n .cms_box_inhalt {
@@ -258,12 +263,12 @@
   border-bottom-right-radius: 3px;
 }
 
-.cms_box_1 .cms_box_titel, .cms_box_1 .cms_box_inhalt {background-color: @hintergrundhell;}
+.cms_box_1 .cms_box_titel, .cms_box_1 .cms_box_inhalt {background-color: @standardhell_background;}
 .cms_box_2 .cms_box_titel, .cms_box_3 .cms_box_titel,
 .cms_box_4 .cms_box_titel, .cms_box_5 .cms_box_titel
-{background-color: @standardhell;}
+{background-color: @schattierthell_background;}
 
-.cms_box_2 .cms_box_inhalt, .cms_box_2 {background-color: @hintergrundhell;}
+.cms_box_2 .cms_box_inhalt, .cms_box_2 {background-color: @standardhell_background;}
 .cms_box_3 .cms_box_inhalt, .cms_box_3 {background-color: @themafarbe1;}
 .cms_box_4 .cms_box_inhalt, .cms_box_4 {background-color: @themafarbe2;}
 .cms_box_5 .cms_box_inhalt, .cms_box_5 {background-color: @themafarbe3;}
@@ -271,12 +276,12 @@
 .cms_box_3 .cms_box_inhalt *, .cms_box_4 .cms_box_inhalt *,
 .cms_box_5 .cms_box_inhalt *, .cms_box_3 .cms_box_inhalt .cms_button:hover,
 .cms_box_4 .cms_box_inhalt .cms_button:hover, .cms_box_5 .cms_box_inhalt .cms_button:hover
-{color: @schriftfarbehell;}
+{color: @standardschrifthell_color;}
 
 .cms_box_3 .cms_box_inhalt .cms_button, .cms_box_4 .cms_box_inhalt .cms_button,
 .cms_box_5 .cms_box_inhalt .cms_button, .cms_box_3 .cms_box_inhalt .note-editor *,
 .cms_box_4 .cms_box_inhalt .note-editor *, .cms_box_5 .cms_box_inhalt .note-editor *
-{color: @schriftfarbedunkel!important;}
+{color: @standardschriftdunkel_color!important;}
 
 .cms_optimierung_H .cms_eventuebersicht_box_termine,
 .cms_optimierung_T .cms_eventuebersicht_aussen_t .cms_eventuebersicht_box_termine,
@@ -337,16 +342,16 @@
 }
 
 #cms_mobilmenue_i .cms_websitesuche input {
-  border: 1px solid @standarddunkel!important;
+  border: 1px solid @schattiertdunkel_background!important;
 }
 
 .cms_websitesuche input {
-  background-color: @hintergrundhell;
+  background-color: @standardhell_background;
   padding: 0px;
   margin: 0px;
   width: 100%;
   padding: 2px 6px;
-  border: 1px solid @standardhell;
+  border: 1px solid @schattierthell_background;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom-left-radius: 0px;
@@ -354,7 +359,7 @@
 }
 
 .cms_websitesuche input:hover {
-  border: 1px solid @standarddunkel;
+  border: 1px solid @schattiertdunkel_background;
 }
 
 .cms_websitesuche #cms_websitesuche_pc_ergebnisse,
@@ -362,7 +367,7 @@
   border-top: 3px solid @themafarbe1;
   padding: 7px;
   width: 100%;
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-left-radius: 3px;
@@ -378,10 +383,10 @@
 .cms_websitesuche #cms_websitesuche_pc_ergebnisse {position: absolute;}
 .cms_websitesuche #cms_websitesuche_mobil_ergebnisse {
   position: relative;
-  border-left: 1px solid @standarddunkel;
-  border-right: 1px solid @standarddunkel;
-  border-bottom: 1px solid @standarddunkel;
-  background-color: @standardhell;
+  border-left: 1px solid @schattiertdunkel_background;
+  border-right: 1px solid @schattiertdunkel_background;
+  border-bottom: 1px solid @schattiertdunkel_background;
+  background-color: @schattierthell_background;
 }
 
 .cms_websitesuche_schliessen {
@@ -398,7 +403,7 @@
 
 .cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li,
 .cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li {
-  margin: 0px 0px @absatzabstand 0px;
+  margin: 0px 0px @standardabsatz_schulhof_margin 0px;
   padding: 0px;
   display: block;
   width: 100%;
@@ -413,21 +418,21 @@
   display: block;
   padding: 5px;
   width: 100%;
-  background: @standardhell;
-  color: @schriftfarbedunkel;
-  border-radius: @buttonradius;
+  background: @schattierthell_background;
+  color: @standardschriftdunkel_color;
+  border-radius: @button_radius;
   transform: 250ms ease-in-out;
 }
 
 .cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li a:hover,
 .cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li a:hover {
   background: @themafarbe3;
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   transform: none;
 }
 
 .cms_websitesuche h3 {
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
   padding: 0px 5px;
 }
 .cms_websitesuche .cms_notiz {
@@ -449,7 +454,7 @@
   position: static;
   top: auto;
   right: auto;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_auszeichnung a {
@@ -470,7 +475,7 @@
 
 .cms_auszeichnung a:hover {
   transform: translate(0px) !important;
-  background-color: @buttonfusszeileh!important;
+  background-color: @fusszeile_buttonhover_background !important;
 }
 
 .cms_auszeichnung img {max-height: 150px;}
@@ -479,16 +484,16 @@
 .cms_auszeichnung .cms_unescoprojektschule {text-align: left;}
 
 .cms_auszeichnung a:hover {
-  color: @schriftbuttonfusszeile !important;
+  color: @fusszeile_buttonhover_color !important;
 }
 
-.cms_datenschutz_einwilligungerteilt {background: @erfolgdunkel;}
-.cms_datenschutz_einwilligungverweigert {background: @fehlerdunkel;}
+.cms_datenschutz_einwilligungerteilt {background: @erfolg_akzent;}
+.cms_datenschutz_einwilligungverweigert {background: @fehler_akzent;}
 
 .cms_datenschutz_einwilligungerteilt, .cms_datenschutz_einwilligungverweigert {
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   padding: 3px 5px 2px 5px;
-  border-radius: @buttonradius;
+  border-radius: @button_radius;
 }
 
 .cms_datenschutz_einwilligungerteilt:hover,

@@ -8,9 +8,9 @@ input, textarea, select, .cms_wahl {
   border-top-left-radius: 3px;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
-  background: @formularfeld;
+  background: @formularfeld_background;
   border: none;
-  border-bottom: 1px solid @formularfeldfokus;
+  border-bottom: 1px solid @formularfeldfocus_background;
   width: 100%;
   transition: 500ms ease-in-out;
 }
@@ -21,20 +21,22 @@ textarea.cms_textarea {
 }
 
 .cms_code {
-  background: @hintergrunddunkel;
-  color: @schriftfarbehell;
+  background: @standarddunkel_background;
+  color: @standardschrifthell_color;
   font-family: monospace;
 }
 
 .cms_code:hover, .cms_code:focus {
-  background: @standarddunkel;
-  color: @schriftfarbehell;
+  background: @schattiertdunkel_background;
+  color: @standardschrifthell_color;
 }
 
-input:hover, input:focus,
-textarea:hover, textarea:focus,
-select:hover, select:focus {
-  background: @formularfeldfokus;
+input:hover, textarea:hover, select:hover {
+  background: @formularfeldhover_background;
+}
+
+input:focus, textarea:focus, select:focus {
+  background: @formularfeldfocus_background;
 }
 
 input.cms_klein {
@@ -74,13 +76,13 @@ input.cms_input_J {
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	background: @standardhell;
+	background: @schattierthell_background;
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 	display: none;
 	z-index: 2;
 	margin-bottom: 20px;
-  box-shadow: @hintergrundhell 0px 0px 7px;
+  box-shadow: @standardhell_background 0px 0px 7px;
 }
 
 .cms_personensuche_feld input {
@@ -124,7 +126,7 @@ input.cms_input_J {
 
 
 .cms_schieber_o_aktiv, .cms_schieber_o_inaktiv {
-  border: 1px solid @hintergrundhell;
+  border: 1px solid @standardhell_background;
   border-radius: 11px;
   display: inline-block;
   width: 40px;
@@ -133,11 +135,11 @@ input.cms_input_J {
 }
 
 .cms_schieber_o_aktiv {
-  background: @erfolghell;
+  background: @erfolg_background;
 }
 
 .cms_schieber_o_inaktiv {
-  background: @fehlerhell;
+  background: @fehler_background;
 }
 
 .cms_schieber_o_aktiv .cms_schieber_i {
@@ -152,13 +154,13 @@ input.cms_input_J {
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  background: @hintergrundhell;
+  background: @standardhell_background;
   display: inline-block;
   transition: 250ms ease-in-out;
 }
 
 .cms_schieber_o_aktiv:hover, .cms_schieber_o_inaktiv:hover {
-	border: 1px solid @hintergrunddunkel;
+	border: 1px solid @standarddunkel_background;
 	cursor: pointer;
 }
 
@@ -187,15 +189,15 @@ input.cms_input_J {
 }
 
 .cms_notizzettel {
-  background-color: @infohell;
+  background-color: @info_background;
   height: 200px;
   resize: vertical;
 }
 
 .cms_notizzettelleer {
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
 }
 
 .cms_notizzettel:hover, .cms_notizzettel:focus {
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
 }

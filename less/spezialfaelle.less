@@ -2,7 +2,7 @@
 @import "standard.less";
 
 #cms_neuerungenverlauf p + h4 {
-  margin-top: @absatzabstand;
+  margin-top: @standardabsatz_schulhof_margin;
 }
 
 .cms_sichtbar {
@@ -19,7 +19,7 @@
 
 #cms_dsgvo_datenschutz .cms_meldung {
   margin: 0px;
-  box-shadow: 0px 0px 10px @fehlerdunkel;
+  box-shadow: 0px 0px 10px @fehler_akzent;
 }
 
 #cms_netzcheckstatus span {font-size: inherit;}
@@ -29,13 +29,13 @@
 }
 
 .cms_absender {text-align: right;}
-.cms_empfaenger, .cms_anhangtitel {color: @standarddunkel;}
+.cms_empfaenger, .cms_anhangtitel {color: @schattiertdunkel_background;}
 
 .cms_postfach_papierkorb_aussen {
   width: 6px;
   height: 23px;
-  background: @fehlerhell;
-  border-radius: @buttonradius;
+  background: @fehler_background;
+  border-radius: @button_radius;
   display: inline-block;
   line-height: 0px;
   position: relative;
@@ -46,8 +46,8 @@
 .cms_postfach_papierkorb_innen {
   width: 6px;
   height: 23px;
-  background: @erfolghell;
-  border-radius: @buttonradius;
+  background: @erfolg_background;
+  border-radius: @button_radius;
   display: block;
   position: absolute;
   bottom: 0px;
@@ -84,18 +84,18 @@
 .cms_signatur, .cms_originalnachricht_meta {
   margin-top: 15px;
   padding-top:5px;
-  border-top: 1px dotted @standarddunkel;
-  color: @standarddunkel;
+  border-top: 1px dotted @schattiertdunkel_background;
+  color: @schattiertdunkel_background;
   font-size: 80%;
 }
 
 .cms_originalnachricht {
   padding-left: 5px;
-  border-left: 2px solid @standardhell;
+  border-left: 2px solid @schattierthell_background;
 }
 
 #cms_geraeteproblem_kommentar {
-  color: @fehlerdunkel;
+  color: @fehler_akzent;
 }
 
 #cms_geraeteproblem {
@@ -112,7 +112,7 @@
   left: 0px;
   z-index: 1000;
   padding: 10px 10px 30px 10px;
-  background: @warnunghell;
+  background: @warnung_background;
   display: none;
 }
 
@@ -144,7 +144,7 @@
   z-index: 2;
   width: 100%;
   max-width: 800px;
-  background: @standardhell;
+  background: @schattierthell_background;
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 10px;
@@ -158,15 +158,15 @@
   font-weight: bold;
   padding: 5px !important;
   border-radius: 5px;
-  color: @schriftfarbehell;
-  background-color: @fehlerdunkel;
+  color: @standardschrifthell_color;
+  background-color: @fehler_akzent;
 }
 
 .cms_auftragausstehend {
   padding: 5px !important;
   border-radius: 5px;
-  color: @schriftfarbehell;
-  background-color: @fehlerdunkel;
+  color: @standardschrifthell_color;
+  background-color: @fehler_akzent;
   display: inline-block;
   text-align: center;
   font-size: 80%;
@@ -175,8 +175,8 @@
 .cms_auftragerledigt {
   padding: 5px !important;
   border-radius: 5px;
-  color: @schriftfarbehell;
-  background-color: @erfolgdunkel;
+  color: @standardschrifthell_color;
+  background-color: @erfolg_akzent;
   display: inline-block;
   text-align: center;
   font-size: 80%;
@@ -184,7 +184,7 @@
 
 .cms_spamschutz {
   border-radius: 5px;
-  border: 1px solid @hintergrundhell;
+  border: 1px solid @standardhell_background;
 }
 
 .cms_vorlaeufig {
@@ -195,7 +195,7 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  background: @hintergrundhell;
+  background: @standardhell_background;
   top: 0px;
   left: 0px;
   z-index: 10000000;
@@ -212,7 +212,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 20%;
-  border-right: 5px solid @hintergrundhell;
+  border-right: 5px solid @standardhell_background;
 }
 
 .cms_problemmeldunginnen {
@@ -239,11 +239,11 @@
 
 .cms_problemmeldung_standort {font-weight:bold;}
 
-.cms_problem1 .cms_problemmeldunginnen, .cms_geraetelegende1 {background: @infohell; border: 2px solid @infodunkel;}
-.cms_problem2 .cms_problemmeldunginnen, .cms_geraetelegende2 {background: @warnunghell; border: 2px solid @warnungdunkel;}
-.cms_problem3 .cms_problemmeldunginnen, .cms_geraetelegende3 {background: @fehlerhell; border: 2px solid @fehlerdunkel;}
-.cms_problem4 .cms_problemmeldunginnen, .cms_geraetelegende4 {background: @standarddunkel; border: 2px solid @hintergrunddunkel;}
-.cms_problem5 .cms_problemmeldunginnen, .cms_geraetelegende5 {background: @hintergrundhell; border: 2px solid @standardhell;}
+.cms_problem1 .cms_problemmeldunginnen, .cms_geraetelegende1 {background: @info_background; border: 2px solid @info_akzent;}
+.cms_problem2 .cms_problemmeldunginnen, .cms_geraetelegende2 {background: @warnung_background; border: 2px solid @warnung_akzent;}
+.cms_problem3 .cms_problemmeldunginnen, .cms_geraetelegende3 {background: @fehler_background; border: 2px solid @fehler_akzent;}
+.cms_problem4 .cms_problemmeldunginnen, .cms_geraetelegende4 {background: @schattiertdunkel_background; border: 2px solid @standarddunkel_background;}
+.cms_problem5 .cms_problemmeldunginnen, .cms_geraetelegende5 {background: @standardhell_background; border: 2px solid @schattierthell_background;}
 
 .cms_gesichert {
   margin-top: 20px;

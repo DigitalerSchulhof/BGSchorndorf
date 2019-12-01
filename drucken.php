@@ -58,7 +58,7 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link type="image/png" href="res/logos/bglogo.png" rel="shortcut icon">
+	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">";
 	<title>Druckansicht – <?php echo $CMS_SCHULE." ".$CMS_ORT;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
@@ -117,7 +117,7 @@
 		$fehler = false;
 		$code = "<div id=\"cms_druckkopf\">";
 			$code .= "<span id=\"cms_logo\">";
-				$code .= "<img id=\"cms_logo_bild\" src=\"res/logos/bglogodruck.png\">";
+				$code .= "<img id=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGODRUCK\">";
 				$code .= "<span id=\"cms_logo_schrift\">";
 					$code .= "<span id=\"cms_logo_o\">$CMS_SCHULE</span>";
 					$code .= "<span id=\"cms_logo_u\">$CMS_ORT</span>";
