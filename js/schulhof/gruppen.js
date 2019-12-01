@@ -593,6 +593,7 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
 /*
   0: Init
   1: Verbinden
@@ -616,6 +617,10 @@ var socketChat = {
   rechte: {
     loeschen: false,
     stummschalten: false
+  },
+  server: {
+    ip: null,
+    port: null
   },
   stummTimeout: null,
   statusSetzen: function(nachricht, laden) {
@@ -648,7 +653,7 @@ var socketChat = {
     socketChat.status = 1;
     if(socketChat.verbindenInterval)
       clearInterval(socketChat.verbindenInterval)
-    socketChat.socket = new WebSocket("ws://localhost:12345");
+    socketChat.socket = new WebSocket("wss://"+socketChat.server.ip+":"+socketChat.server.port);
     socketChat.eventsSetzten();
   },
   senden: function(nachricht) {

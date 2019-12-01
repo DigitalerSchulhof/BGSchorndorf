@@ -122,7 +122,7 @@ function cms_gruppenbeschluesse_jahr_ausgeben($dbs, $gruppe, $gruppenid, $CMS_UR
 }
 
 function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
-	GLOBAL $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
+	GLOBAL $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_EINSTELLUNGEN, $CMS_SOCKET_IP, $CMS_SOCKET_PORT;
 	$limit = 20;
 	$namecache = array();
 	$nachrichten = array();
@@ -196,7 +196,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 		}
 
 	$code .= "</div>";
-	$code .= "<script>$(window).on('load', function() {socketChat.init('$g', '$gruppenid');})</script>";
+	$code .= "<script>socketChat.server.ip='$CMS_SOCKET_IP';socketChat.server.port='$CMS_SOCKET_PORT';$(window).on('load', function() {socketChat.init('$g', '$gruppenid');})</script>";
 	return $code;
 }
 ?>
