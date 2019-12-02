@@ -89,17 +89,20 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->execute();
 			$sql->close();
 
-			$sql = "UPDATE kontaktformulareempfaenger SET ";
+			$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = $id, ";
 			$sql .= cms_sql_an(array("name", "beschreibung", "mail"));
 			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = ? AND kontaktformular = $id";
+			$sql .= "WHERE id = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("ssssssi", $name, $name, $beschreibung, $beschreibung, $mail, $mail, $id);
-			for ($i=0; $i < count($ids); $i++) {
+			foreach ($ids as $i => $id) {
 				$id = $ids[$i];
 				$name = $namen[$i];
 				$mail = $mails[$i];
 				$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
+				if($id === "") {
+					$id = cms_generiere_kleinste_id('kontaktformulareempfaenger');
+				}
 				$sql->execute();
 			}
 			$sql->close();
