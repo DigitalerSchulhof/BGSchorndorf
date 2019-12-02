@@ -321,5 +321,8 @@ function cms_check_browser() {
 		 if (unterstuetzung) {
 			 testfeld.innerHTML = '<img src="res/icons/gross/erfolg.png"><br>Der Browser untestützt alle Funktionen des Schulhofs.';
 		 }
+		 else {
+			 testfeld.innerHTML = '<img src="res/icons/gross/warnung.png"><br>Der Browser untestützt womöglich nicht alle Funktionen.<br>'+browser.name+' ('+browser.version+')';
+		 }
 	 }
  }
