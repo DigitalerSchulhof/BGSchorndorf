@@ -445,28 +445,40 @@
 
 .cms_optimierung_P .cms_auszeichnung,
 .cms_optimierung_T .cms_auszeichnung {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  text-align: right;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_optimierung_H .cms_auszeichnung {
-  position: static;
-  top: auto;
-  right: auto;
+  text-align: center;
   margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_auszeichnung li {
+  padding: 0px;
+  margin: @auszeichnung_margin;
+  display: inline-block;
 }
 
 .cms_auszeichnung a {
   padding: 10px;
-  display: inline-block;
-  border-radius: 10px;
+  display: block;
+  margin: 0px;
+  text-align: center;
+  border-top-left-radius: @auszeichnung_radiustl;
+  border-top-right-radius: @auszeichnung_radiustr;
+  border-bottom-left-radius: @auszeichnung_radiusbl;
+  border-bottom-right-radius: @auszeichnung_radiusbr;
+  background: @auszeichnung_background;
+  color: @auszeichnung_color;
 }
 
 .cms_auszeichnung p, .cms_auszeichnung b {
   line-height: 1.5em !important;
   font-size: 10px !important;
 }
+
+.cms_auszeichnung img {max-height: 150px;}
 
 .cms_auszeichnung b {
   padding: 0px !important;
@@ -475,17 +487,10 @@
 
 .cms_auszeichnung a:hover {
   transform: translate(0px) !important;
-  background-color: @fusszeile_buttonhover_background !important;
+  background: @auszeichnunghover_background;
+  color: @auszeichnunghover_color;
 }
 
-.cms_auszeichnung img {max-height: 150px;}
-
-.cms_auszeichnung .cms_unescotempel {text-align: right;}
-.cms_auszeichnung .cms_unescoprojektschule {text-align: left;}
-
-.cms_auszeichnung a:hover {
-  color: @fusszeile_buttonhover_color !important;
-}
 
 .cms_datenschutz_einwilligungerteilt {background: @erfolg_akzent;}
 .cms_datenschutz_einwilligungverweigert {background: @fehler_akzent;}

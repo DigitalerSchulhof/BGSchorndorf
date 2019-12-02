@@ -19,10 +19,24 @@ if ($CMS_ANGEMELDET) {
 		<?php
 		echo cms_navigation_ausgeben('f');
 
-		echo "<div class=\"cms_auszeichnung\">";
-		echo "<a href=\"https://www.unesco.de/bildung/unesco-projektschulen\" target=\"_blank\" class=\"cms_unescotempel\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescotempel.png\"/></p><p>Organisation<br>der Vereinten Nationen<br>für Bildung, Wirtschaft<br>und Kultur</p></a>";
-		echo "<a href=\"https://bg.schorndorf.de/Website/Seiten/Aktuell/Startseite/Schulprofil/UNESCO-Projektschule\" class=\"cms_unescoprojektschule\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescoprojektschule.png\"/></p><p>Burg-Gymnasium<br>Schorndorf<br>Mitglied des Netzwerks der<br>UNESCO-Projektschulen</p></a>";
-		echo "</div>";
+		$auszeichnungen = "";
+		$sql = $dbs->prepare("SELECT bild, bezeichnung, link, ziel FROM auszeichnungen WHERE aktiv = 1 ORDER BY reihenfolge");
+		if ($sql->execute()) {
+			$sql->bind_result($abild, $abez, $alink, $aziel);
+			while ($sql->fetch()) {
+				$auszeichnungen .= "<li><a href=\"$alink\" target=\"$aziel\"><p><img src=\"$abild\"/></p><p>$abez</p></a></li>";
+			}
+		}
+		$sql->close();
+
+		echo "<ul class=\"cms_auszeichnung\">";
+		echo "<li><a href=\"https://www.unesco.de/bildung/unesco-projektschulen\" target=\"_blank\" class=\"cms_unescotempel\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescotempel.png\"/></p><p>Organisation<br>der Vereinten Nationen<br>für Bildung, Wirtschaft<br>und Kultur</p></a></li>";
+		echo "<li><a href=\"https://bg.schorndorf.de/Website/Seiten/Aktuell/Startseite/Schulprofil/UNESCO-Projektschule\" class=\"cms_unescoprojektschule\"><p><img src=\"dateien/website/Faecher/UNESCO/Logos/unescoprojektschule.png\"/></p><p>Burg-Gymnasium<br>Schorndorf<br>Mitglied des Netzwerks der<br>UNESCO-Projektschulen</p></a></li>";
+		echo "</ul>";
+
+		if (strlen($auszeichnungen) > 0) {
+			echo "<ul class=\"cms_auszeichnung\">".$auszeichnungen."</ul>";
+		}
 
 		echo "<p class=\"cms_notiz\" id=\"cms_geraetewahl\">";
 		if (isset($_SESSION['DSGVO_EINWILLIGUNG_A'])) {
