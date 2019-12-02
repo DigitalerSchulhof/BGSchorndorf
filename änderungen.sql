@@ -382,7 +382,7 @@ CREATE TABLE `auszeichnungen` (
   `idzeit` bigint(255) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `auszeichnungen` ADD `aktiv` TINYINT(1) UNSIGNED NOT NULL AFTER `reihenfolge`;
+ALTER TABLE `auszeichnungen` ADD `aktiv` TINYINT(1) UNSIGNED DEFAULT NULL AFTER `reihenfolge`;
 
 ALTER TABLE `auszeichnungen`
   ADD PRIMARY KEY (`id`);

@@ -558,6 +558,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($CMS_RECHTE['Website']['Titelbilder hochladen'] || $CMS_RECHTE['Website']['Titelbilder umbenennen'] || $CMS_RECHTE['Website']['Titelbilder löschen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Titelbilder\">Titelbilder</a></li> ";
 	}
+	if ($CMS_RECHTE['Website']['Auszeichnungen anlegen'] || $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] || $CMS_RECHTE['Website']['Auszeichnungen löschen']) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Auszeichnungen\">Auszeichnungen</a></li> ";
+	}
 	if ($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a></li> ";
 	}

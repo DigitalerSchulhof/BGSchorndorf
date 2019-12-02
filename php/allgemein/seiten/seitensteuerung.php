@@ -296,6 +296,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Hauptnavigationen']                           = 'php/schulhof/seiten/website/hauptnavigationen/hauptnavigationen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Dateien']                                     = 'php/schulhof/seiten/website/dateien/dateien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Titelbilder']                                 = 'php/schulhof/seiten/website/titelbilder/titelbilder.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Auszeichnungen']                              = 'php/schulhof/seiten/website/auszeichnungen/auszeichnungen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Auszeichnungen/Auszeichnung_anlegen']         = 'php/schulhof/seiten/website/auszeichnungen/neueauszeichnung.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Auszeichnungen/Auszeichnung_bearbeiten']      = 'php/schulhof/seiten/website/auszeichnungen/auszeichnungbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine']                                     = 'php/schulhof/seiten/website/termine/termine.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine/Neuer_Termin']                        = 'php/schulhof/seiten/website/termine/neuertermin.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine/Termin_bearbeiten']                   = 'php/schulhof/seiten/website/termine/terminbearbeiten.php';

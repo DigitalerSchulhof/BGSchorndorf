@@ -424,6 +424,15 @@ if ($CMS_RECHTE['Website']['Titelbilder hochladen'] || $CMS_RECHTE['Website']['T
 	$code .=  "</li>";
 	$tabzahl++;
 }
+if ($CMS_RECHTE['Website']['Auszeichnungen anlegen'] || $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] || $CMS_RECHTE['Website']['Auszeichnungen löschen']) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auszeichnungen\" href=\"Schulhof/Website/Auszeichnungen\">";
+			$code .=  "<h3>Auszeichnungen</h3>";
+			$code .=  "<p>Auszeichnungen anlegen, bearbeiten, löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 if ($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen']) {	//B
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_besucherstatistik\" href=\"Schulhof/Website/Besucherstatistiken\">";
