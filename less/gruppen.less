@@ -2,7 +2,7 @@
 @import "standard.less";
 
 .cms_uebersicht .cms_ersteller {
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
   display: none;
 }
 
@@ -24,7 +24,7 @@
 
 .cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
   cursor: pointer;
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
 }
 
 .cms_blogliste_details:hover {
@@ -35,9 +35,9 @@
   margin-bottom: 0px;
 }
 
-.cms_beschluss_angenommen {color: @erfolgdunkel;}
-.cms_beschluss_abgelehnt {color: @fehlerdunkel;}
-.cms_beschluss_vertagt {color: @standarddunkel;}
+.cms_beschluss_angenommen {color: @erfolg_akzent;}
+.cms_beschluss_abgelehnt {color: @fehler_akzent;}
+.cms_beschluss_vertagt {color: @schattiertdunkel_background;}
 
 .cms_beschlusseintrag p.cms_beschlussicons {
   margin: 0px;
@@ -67,7 +67,7 @@
 }
 
 .cms_aktionen_uebersicht li:last-child > p {
-  border-bottom: 1px solid @standardhell;
+  border-bottom: 1px solid @schattierthell_background;
 }
 
 .cms_gruppen_oeffentlich_art {
@@ -89,15 +89,15 @@
   border-radius: 8px;
 }
 
-.cms_oe {background: @infohell;}
-.cms_in {background: @warnunghell;}
+.cms_oe {background: @info_background;}
+.cms_in {background: @warnung_background;}
 
 .cms_beschluss {
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   padding: 5px;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
   display: block;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_beschluss h4, .cms_beschluss p {
@@ -106,23 +106,23 @@
 }
 
 .cms_beschluss:hover {
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   display: block;
 }
 
 .cms_beschluss_pro {
-  border-left: 3px solid @erfolgdunkel;
-  background: @erfolghell;
+  border-left: 3px solid @erfolg_akzent;
+  background: @erfolg_background;
 }
 
 .cms_beschluss_contra {
-  border-left: 3px solid @fehlerdunkel;
-  background: @fehlerhell;
+  border-left: 3px solid @fehler_akzent;
+  background: @fehler_background;
 }
 
 .cms_beschluss_enthaltung {
-  border-left: 3px solid @standarddunkel;
-  background: @standardhell;
+  border-left: 3px solid @schattiertdunkel_background;
+  background: @schattierthell_background;
 }
 
 .cms_beschluss_stimmen {
@@ -130,15 +130,15 @@
   margin-bottom: 0px;
 }
 
-.cms_beschluss_stimmen_pro {background: @erfolgdunkel;}
-.cms_beschluss_stimmen_contra {background: @fehlerdunkel;}
-.cms_beschluss_stimmen_enthaltung {background: @standarddunkel;}
+.cms_beschluss_stimmen_pro {background: @erfolg_akzent;}
+.cms_beschluss_stimmen_contra {background: @fehler_akzent;}
+.cms_beschluss_stimmen_enthaltung {background: @schattiertdunkel_background;}
 
 .cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
   display: inline-block;
   padding: 2px 7px;
   font-weight: bold;
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   text-align: center;
   min-width: 25px;
 }
@@ -156,8 +156,8 @@
 .cms_beschluss_langfristig {
   margin-left: 10px;
   border-radius: 7px;
-  color: @schriftfarbedunkel;
-  background: @hintergrundhell;
+  color: @standardschriftdunkel_color;
+  background: @standardhell_background;
 }
 
 .cms_beschlussuebersicht_jahr {
@@ -168,7 +168,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 25%;
-  border-right: 10px solid @hintergrundhell;
+  border-right: 10px solid @standardhell_background;
 }
 
 #cms_chat {
@@ -190,7 +190,7 @@
         min-width: 40%;
         max-width: 60%;
         background-color: @chatanderer;
-        border-radius: @buttonradius;
+        border-radius: @button_radius;
         float: left;
         padding: 5px;
         .cms_chat_nachricht_aktion {
@@ -205,14 +205,14 @@
             cursor: pointer;
             .cms_chat_aktion {
               // .cms_hinweis
-              color: @schriftfarbehell !important;
-              background: @hinweisehintergrund;
+              color: @standardschrifthell_color !important;
+              background: @hinweise_background;
               padding: 0px 5px 0px 5px;
               position: absolute;
               font-family: 'robl';
               font-weight: normal !important;
               display: none;
-              border-radius: @buttonradius;
+              border-radius: @button_radius;
               z-index: 50;
               width: 150px;
               overflow: visible;
@@ -280,7 +280,7 @@
       &.cms_chat_nachricht_gemeldet {
         opacity: 0.8;
         .cms_chat_nachricht_innen {
-          background-color: mix(@fehlerhell, white);
+          background-color: mix(@fehler_background, white);
           .cms_chat_nachricht_aktion {
             &[data-aktion=mehr] {
               [data-mehr=melden] {
@@ -329,7 +329,7 @@
   }
 
   #cms_chat_mehr {
-    color: @schriftlink;
+    color: @standardlink_color;
     cursor: pointer;
   }
 

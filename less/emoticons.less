@@ -5,11 +5,11 @@
   margin-top: 10px;
   .cms_reaktion {
     display: inline-block;
-    background-color: @formularfeld;
+    background-color: @formularfeld_background;
     width: 35px;
     height: 35px;
     text-align: center;
-    border-radius: @buttonradius;
+    border-radius: @button_radius;
     cursor: pointer;
     margin-right: 5px;
     img {
@@ -23,7 +23,7 @@
       height: 35px;
     }
     &.cms_reagiert {
-      background-color: darken(@formularfeld, 10%);
+      background-color: darken(@formularfeld_background, 10%);
     }
   }
   #cms_neue_reaktion {
@@ -35,8 +35,8 @@
       position: absolute;
       left: 40px;
       top: 0;
-      background-color: @formularfeld;
-      border-radius: @buttonradius;
+      background-color: @formularfeld_background;
+      border-radius: @button_radius;
       z-index: 3;
       width: 4*(35px);
       max-height: 4*(35px);
@@ -45,7 +45,7 @@
   .cms_notiz {
     display: none;
     a:hover {
-      color: @schriftlink !important;
+      color: @standardlink_color !important;
     }
   }
   &.cms_noch_anmelden {

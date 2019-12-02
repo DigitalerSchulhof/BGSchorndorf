@@ -42,11 +42,12 @@
 	$code = "<h4>Version 0.5.7 - Samstag, den 29. November 2019</h4>";
 	$code .= "<ul>";
 		$code .= "<li>In Listen erscheinen mit einem Rechtsklick Kontextmenüs zur Ausführung von Aktionen.</li>";
+		$code .= "<li>Alle Seiten im Scholhof können durch den Benutzer als persönliche Favoritenseite markiert werden, sodass ein schnelleres Navigieren zu den meistgesuchten Seiten möglich ist.</li>";
 		$code .= "<li>Newsletter können angelegt werden. Über die Website kann man sich für Newsletter registieren. Per Link in einem Newsletter kann man sich wieder abmelden.</li>";
 		$code .= "<li>Chats funktionieren jetzt basierend auf Sockets.</li>";
 		$code .= "<li>Beim Anmelden in den Schulhof wird überprüft, ob der Browser unterstützt wird.</li>";
 	$code .= "</ul>";
-	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_7', 'Neuerungen in Version 0.5.7 einblenden', 'Neuerungen in Version 0.5.6 ausblenden', $code, 1);
+	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_7', 'Neuerungen in Version 0.5.7 einblenden', 'Neuerungen in Version 0.5.7 ausblenden', $code, 1);
 
 	$code = "<h4>Version 0.5.6 - Samstag, den 23. November 2019</h4>";
 	$code .= "<ul>";

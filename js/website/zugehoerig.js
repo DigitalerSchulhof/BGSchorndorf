@@ -1,11 +1,6 @@
 function cms_zugehoerig_laden (feldid, jahr, gruppe, gruppenid, url) {
   var feld = document.getElementById(feldid);
   var inhalt = feld.innerHTML;
-  if(inhalt) {
-    feld.innerHTML = "";
-    feld.style.opacity = 0;
-    return;
-  }
   feld.innerHTML = cms_ladeicon()+'<p class="cms_notiz">Die zugehörigen Inhalte für das Jahr '+jahr+' werden geladen.</p>';
   feld.style.opacity = 1;
 

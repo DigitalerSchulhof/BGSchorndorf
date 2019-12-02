@@ -7,15 +7,17 @@
 
 .cms_kopfnavigation li {
   list-style-type: none;
-  display: inline-block;
+  display: @navi_bereiche_display;
   margin-left: 3px;
   margin-right: 0px;
 }
 
+.cms_kopfnavigation li:first-child {
+  display: @navi_suche_display;
+}
+
 .cms_optimierung_P .cms_fussnavigation, .cms_optimierung_T .cms_fussnavigation {
-  min-height: 160px;
-  padding-right: 285px;
-  margin-bottom: 20px;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_optimierung_H .cms_fussnavigation {
@@ -28,7 +30,7 @@
   position: static !important;
   top: auto !important;
   right: auto !important;
-  margin-bottom: @absatzabstand !important;
+  margin-bottom: @standardabsatz_schulhof_margin !important;
   text-align: center;
 }
 
@@ -44,8 +46,10 @@
 .cms_hauptnavigation {
   text-align: right;
   position: absolute;
-  bottom: 0px;
-  right: 10px;
+  bottom: @navi_haupt_bottom;
+  top: @navi_haupt_top;
+  left: @navi_haupt_left;
+  right: @navi_haupt_right;
   margin-top: 0px;
   margin-bottom: 0px;
 }
@@ -53,17 +57,18 @@
 .cms_hauptnavigation > li {
   list-style-type: none;
   display: inline-block;
-  margin-left: 5px !important;
-  margin-bottom: 0px;
+  margin: @navi_haupt_li_margin;
 }
 
 .cms_hauptnavigation .cms_kategorie1,
 #cms_kopfnavigation > li > a, #cms_kopfnavigation > li > span {
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  border-top-right-radius: @navi_haupt_li_a_radiustr;
+  border-top-left-radius: @navi_haupt_li_a_radiustl;
+  border-bottom-right-radius: @navi_haupt_li_a_radiusbr;
+  border-bottom-left-radius: @navi_haupt_li_a_radiusbl;
   display: inline-block;
-  background-color: @hintergrundhell;
-  color: @themafarbe1;
+  background-color: @navi_haupt_li_a_background;
+  color: @navi_haupt_li_a_color;
   padding: 7px 10px;
   font-weight: bold;
   line-height: 20px;
@@ -74,7 +79,7 @@
 
 .cms_unternavigation_o {
   position: fixed;
-  top: 82px;
+  top: @navi_schulhof_top;
   left: 0px;
   width: 100%;
   transition: 500ms ease-in-out;
@@ -95,13 +100,13 @@
 #cms_hauptnavigation > li:hover > span.cms_kategorie1,
 #cms_kopfnavigation li:hover > a,
 #cms_kopfnavigation li:hover > span {
-  background-color: @themafarbe1;
-  color: @schriftfarbehell;
+  background-color: @navi_haupt_lihover_a_background;
+  color: @navi_haupt_lihover_a_color;
 }
 
 #cms_kopfnavigation > li {
   position: relative;
-  height: 34px;
+  height: @navi_haupt_li_a_height;
 }
 
 #cms_kopfnavigation span {
@@ -113,11 +118,13 @@
 }
 
 #cms_kopfnavigation > li > .cms_naviuntermenue {
-  background: @standardhell;
+  background: @schattierthell_background;
   width: 200px;
   position: absolute;
-  right: 0px;
-  top: 32px;
+  right: @navi_haupt_untermenue_right;
+  left: @navi_haupt_untermenue_left;
+  top: @navi_haupt_untermenue_top;
+  bottom: @navi_haupt_untermenue_bottom;
   overflow: hidden;
   max-height: 0px;
   transition: 500ms ease-in-out;
@@ -138,25 +145,25 @@
   display: block;
   text-align: left;
   padding: 0px;
-  margin: @absatzabstand 0px @absatzabstand 0px;
+  margin: @standardabsatz_schulhof_margin 0px @standardabsatz_schulhof_margin 0px;
 }
 
 #cms_kopfnavigation > li ul li a,
 #cms_kopfnavigation > li ul li span {
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   display: block;
   padding: 3px 7px;
-  border-radius: @buttonradius;
+  border-radius: @button_radius;
 }
 
 #cms_kopfnavigation > li ul li a:hover,
 #cms_kopfnavigation > li ul li span:hover {
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   cursor: pointer;
 }
 
 .cms_unternavigation_m {
-  background: @standardhell;
+  background: @schattierthell_background;
   border-bottom: 3px solid @themafarbe1;
   border-top: 3px solid @themafarbe1;
   width: @seitenbreite;
@@ -188,16 +195,16 @@
 }
 
 .cms_navigation > li {
-  border-top: 1px solid @standardhell;
+  border-top: 1px solid @schattierthell_background;
 }
 
 .cms_navigation > li:last-child {
-  border-bottom: 1px solid @standardhell;
+  border-bottom: 1px solid @schattierthell_background;
 }
 
 .cms_navigation > li a,
 .cms_navigation > li span {
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   display: block;
   padding: 10px 5px;
   transition: 500ms ease-in-out;
@@ -205,24 +212,24 @@
 
 .cms_navigation > li a:hover,
 .cms_navigation > li span:hover {
-  color: @schriftfarbedunkel;
-  background: @standardhell;
+  color: @standardschriftdunkel_color;
+  background: @schattierthell_background;
   transform: translate(0px) !important;
   cursor: pointer;
 }
 
 .cms_navigation > li > .cms_navigation_aktiveseite {
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   background: @themafarbe1;
 }
 
 .cms_navigation > li > .cms_navigation_aktiveseite:hover {
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   background: @themafarbe1;
 }
 
 .cms_navigation > li li .cms_navigation_aktiveseite {
-  background: @standardhell;
+  background: @schattierthell_background;
 }
 
 .cms_navigation .cms_naviuntermenue {
@@ -237,7 +244,7 @@
 
 #cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
   width: 100%;
-  background: @erfolghell;
+  background: @erfolg_background;
   border-radius: 5px;
   transition: 100ms ease-in-out;
 }
@@ -254,11 +261,11 @@
   width: 100%;
   border-radius: 5px;
   margin-bottom: 3px;
-  background: @fehlerhell;
+  background: @fehler_background;
 }
 
 #cms_aktivitaet_out, #cms_maktivitaet_out {
-  border: 1px solid @hintergrundhell;
+  border: 1px solid @standardhell_background;
 }
 
 .cms_optimierung_P #cms_mobilnavigation {display: none;}
@@ -271,7 +278,7 @@
   border-top-left-radius: 5px;
   display: inline-block;
   background-color: @themafarbe1 !important;
-  color: @schriftfarbehell !important;
+  color: @standardschrifthell_color !important;
   padding: 4px 10px;
   font-weight: bold;
   line-height: 20px;
@@ -291,7 +298,7 @@
   width: 20px;
   height: 4px;
   border-radius: 2px;
-  background-color: @schriftfarbehell;
+  background-color: @standardschrifthell_color;
   margin: 4px 0;
   display: block;
 }
@@ -303,7 +310,7 @@
   top: 0px;
   width: 100%;
   height: 100%;
-  background: @standardhell;
+  background: @schattierthell_background;
   z-index: 100000;
   overflow-y: scroll;
 }
@@ -356,25 +363,25 @@
   margin: 0px;
 }
 
-#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @standarddunkel;}
-#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @standarddunkel;}
+#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattiertdunkel_background;}
+#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattiertdunkel_background;}
 
 #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
   padding: 5px;
   transition: 250ms ease-in-out;
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   display: inline-block;
-  border-radius: @buttonradius;
+  border-radius: @button_radius;
   position: relative;
 }
 
 #cms_mobilmenue_seiten li .cms_meldezahl {
   position: absolute;
   padding: 3px 5px;
-  background: @standarddunkel;
+  background: @schattiertdunkel_background;
   border-radius: 10px;
   opacity: 1;
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   display: block;
   top: 3px;
   right: 4px;
@@ -386,13 +393,13 @@
 }
 
 #cms_mobilmenue_seiten li .cms_meldezahl_wichtig {
-  background: @fehlerdunkel !important;
+  background: @fehler_akzent !important;
 }
 
 #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
   transform: translate(0px) !important;
   cursor: pointer;
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
 }
 
 #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {width: 90%;}
@@ -402,11 +409,11 @@
 }
 
 #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {background-color: @themafarbe3;}
-#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {background-color: @standarddunkel;}
+#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {background-color: @schattiertdunkel_background;}
 
 #cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
   cursor: default !important;
-  color: @schriftfarbedunkel !important;
+  color: @standardschriftdunkel_color !important;
   background-color: transparent !important;
 }
 
@@ -450,11 +457,11 @@
 .cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
   display: block;
   padding: 5px 5px 5px 47px;
-  border-top: 1px solid @standardhell;
+  border-top: 1px solid @schattierthell_background;
   background-repeat: no-repeat;
   background-position: 5px 5px;
   min-height: 42px;
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   position: relative;
 }
 
@@ -471,7 +478,7 @@
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
 .cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
-    border-bottom: 1px solid @standardhell;
+    border-bottom: 1px solid @schattierthell_background;
 }
 
 .cms_uebersicht li a p,
@@ -522,20 +529,20 @@
 }
 
 .cms_uebersicht a:hover {
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
   transform: translateX(0) translateY(0);
   cursor: pointer;
 }
 
 .cms_uebersicht .cms_blog_keinhover {
   cursor: default !important;
-  background-color: @hintergrundhell !important;
+  background-color: @standardhell_background !important;
 }
 
 
 .cms_anteilbalken_innen {
   width: 100%;
-  background: @fehlerhell;
+  background: @fehler_background;
   border-radius: 5px;
   transition: 100ms ease-in-out;
 }
@@ -548,12 +555,12 @@
   width: 100%;
   border-radius: 5px;
   margin-bottom: 3px;
-  background: @standardhell;
+  background: @schattierthell_background;
 }
 
 .cms_anteilbalken_notiz {
   text-align: center;
   margin-bottom: 20px;
   font-size: 70%;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
 }

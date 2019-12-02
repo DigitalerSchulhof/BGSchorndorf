@@ -63,7 +63,6 @@ function cms_personaldaten_ausgeben($id) {
 					}
 
 				}
-				else {$fehler = true;}
 				$anfrage->free();
 			}
 		}

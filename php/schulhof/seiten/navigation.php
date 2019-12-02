@@ -558,6 +558,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($CMS_RECHTE['Website']['Titelbilder hochladen'] || $CMS_RECHTE['Website']['Titelbilder umbenennen'] || $CMS_RECHTE['Website']['Titelbilder löschen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Titelbilder\">Titelbilder</a></li> ";
 	}
+	if ($CMS_RECHTE['Website']['Auszeichnungen anlegen'] || $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] || $CMS_RECHTE['Website']['Auszeichnungen löschen']) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Auszeichnungen\">Auszeichnungen</a></li> ";
+	}
 	if ($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a></li> ";
 	}
@@ -575,7 +578,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($zugriff) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Emoticons\">Emoticons</a></li> ";
 	}
-	$zugriff = ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE["Newsletter bearbeiten"]);
+	$zugriff = ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE['Website']['Newsletter bearbeiten']);
 	if ($zugriff) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Newsletter\">Newsletter</a></li> ";
 	}

@@ -90,7 +90,7 @@ if (cms_angemeldet()) {
 		$sql->bind_param("i", $id);
 
 		if ($sql->execute()) {
-		  $id = "";
+		  //$id = "";
 		  $sql->bind_result($wbetreff, $wnachricht, $wzeit, $wvorname, $wnachname, $wtitel, $werstellt);
 		  if ($sql->fetch()) {
 				$POSTEMPFAENGER = '';
@@ -116,7 +116,7 @@ if (cms_angemeldet()) {
 		$sql = $dbp->prepare("SELECT AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, $spalte FROM post$modus"."_$CMS_BENUTZERID WHERE id = ?");
 		$sql->bind_param("i", $id);
 		if ($sql->execute()) {
-		  $id = "";
+		  //$id = "";
 		  $sql->bind_result($bbetreff, $bnachricht, $bempfaenger);
 		  if ($sql->fetch()) {
 				$empfaenger = substr(str_replace('|'.$CMS_BENUTZERID.'|', '|', $bempfaenger.'|'), 0, -1);
@@ -137,7 +137,7 @@ if (cms_angemeldet()) {
 		$sql = $dbp->prepare("SELECT AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht FROM post$modus"."_$CMS_BENUTZERID WHERE id = ?");
 		$sql->bind_param("i", $id);
 		if ($sql->execute()) {
-		  $id = "";
+		  //$id = "";
 		  $sql->bind_result($ebetreff, $enachricht);
 		  if ($sql->fetch()) {
 				$POSTEMPFAENGER = '';
@@ -157,7 +157,7 @@ if (cms_angemeldet()) {
 		$sql->bind_param("i", $id);
 
 		if ($sql->execute()) {
-		  $id = "";
+		  //$id = "";
 		  $sql->bind_result($abetreff, $anachricht, $azeit, $aabsender, $avorname, $anachname, $atitel, $aerstellt);
 		  if ($sql->fetch()) {
 				$POSTEMPFAENGER = '|'.$aabsender;
@@ -182,7 +182,7 @@ if (cms_angemeldet()) {
 		$sql->bind_param("i", $id);
 
 		if ($sql->execute()) {
-		  $id = "";
+		  //$id = "";
 		  $sql->bind_result($abetreff, $anachricht, $azeit, $aalle, $aabsender, $avorname, $anachname, $atitel, $aerstellt);
 		  if ($sql->fetch()) {
 				$empfaenger = substr(str_replace('|'.$CMS_BENUTZERID.'|', '|', $aalle.'|'.$aabsender.'|'), 0, -1);

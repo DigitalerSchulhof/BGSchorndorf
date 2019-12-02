@@ -1,6 +1,4 @@
 -- Änderungen sind in GitHub nachverfolgbar
---
-<<<<<<< ours
 -- Format:
 CREATE TABLE `favoritseiten` (
   `id` bigint(255) UNSIGNED NOT NULL,
@@ -373,7 +371,21 @@ CREATE TABLE `sonstigegruppennewsletter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+CREATE TABLE `auszeichnungen` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `bild` varchar(3000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bezeichnung` varchar(5000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link` varchar(3000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ziel` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reihenfolge` bigint(255) UNSIGNED DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `auszeichnungen` ADD `aktiv` TINYINT(1) UNSIGNED DEFAULT NULL AFTER `reihenfolge`;
+
+ALTER TABLE `auszeichnungen`
+  ADD PRIMARY KEY (`id`);
 
 
 

@@ -24,7 +24,7 @@ if (cms_angemeldet() && $zugriff) {
 	// Pflichteingaben prüfen
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 	if (!cms_check_titel($kuerzel)) {$fehler = true;}
-	if (!cms_check_ganzzahl($farbe,0,47)) {$fehler = true;}
+	if (!cms_check_ganzzahl($farbe,0,63)) {$fehler = true;}
 	if (!cms_check_dateiname($icon)) {$fehler = true;}
 
 	if (!$fehler) {

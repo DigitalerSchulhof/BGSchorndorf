@@ -14,7 +14,7 @@
 }
 
 body {
-  background: @seitenhintergrund;
+  background: @seitenbackground;
 }
 
 .cms_druckseite {
@@ -42,7 +42,7 @@ body {
 
 #cms_logo_o, #cms_logo_u {
   position: relative;
-  color: @logofarbe;
+  color: @logo_schrift_farbe;
   font-size: 25pt;
   padding: 2px 0px 0px 0px;
   display: block;
@@ -108,7 +108,7 @@ h2 {
 
 h4 {
   margin-top: 30px;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
   font-weight: bold;
   font-size: 100%;
 }
@@ -123,7 +123,7 @@ b, strong {
 
 .cms_notiz {
 	margin-top: 10px;
-  color: @schriftnotiz;
+  color: @notiz_color;
   font-size: 70% !important;
 }
 
@@ -174,21 +174,21 @@ table th {
 	text-align: left;
 }
 
-.cms_markierte_liste_0 td {background: @hintergrundhell;}
-.cms_markierte_liste_1 td {background: @standardhell;}
+.cms_markierte_liste_0 td {background: @standardhell_background;}
+.cms_markierte_liste_1 td {background: @schattierthell_background;}
 
-.cms_vplanliste_entfall td:first-child {border-left: 1mm solid @fehlerhell; padding-left: 2mm;}
-.cms_vplanliste_neu td:first-child {border-left: 1mm solid @erfolghell; padding-left: 2mm;}
+.cms_vplanliste_entfall td:first-child {border-left: 1mm solid @fehler_background; padding-left: 2mm;}
+.cms_vplanliste_neu td:first-child {border-left: 1mm solid @erfolg_background; padding-left: 2mm;}
 
 .cms_meldung_info {
-	border-left: 1mm solid @infodunkel;
+	border-left: 1mm solid @info_akzent;
 	margin-top: 2mm;
 	margin-bottom: 2mm;
 	padding: 2mm;
 }
 
 .cms_meldung_vplan {
-	border-left: 1mm solid @standarddunkel;
+	border-left: 1mm solid @schattiertdunkel_background;
 	margin-top: 2mm;
 	margin-bottom: 2mm;
 	padding: 2mm;

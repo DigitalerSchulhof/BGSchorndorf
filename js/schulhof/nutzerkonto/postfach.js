@@ -230,7 +230,7 @@ function cms_postfach_neuertag() {
 	var meldung = '<p>Der neue Tag konnte nicht angelegt werden, denn ...</p><ul>';
 	var fehler = false;
 
-	if ((isNaN(farbe)) || (farbe % 1 != 0) || (farbe > 47)) {
+	if (!cms_check_ganzzahl(farbe,0,63)) {
 		meldung += '<li>es wurde keine Farbe ausgewählt.</li>';
 		fehler = true;
 	}
@@ -312,7 +312,7 @@ function cms_postfach_tag_bearbeiten() {
 	var meldung = '<p>Der Tag konnte nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
 
-	if ((isNaN(farbe)) || (farbe % 1 != 0) || (farbe > 47)) {
+	if (!cms_check_ganzzahl(farbe,0,63)) {
 		meldung += '<li>es wurde keine Farbe ausgewählt.</li>';
 		fehler = true;
 	}
