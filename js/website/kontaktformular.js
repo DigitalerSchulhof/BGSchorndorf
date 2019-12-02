@@ -84,7 +84,6 @@ function cms_kontaktformulare_neu_speichern(zusatz) {
 
   $.each(namen, function(i, n) {
     if(!cms_check_nametitel(n) || !n) {
-      alert(n);
       meldung += '<li>der Name eines Empfängers ist ungültig.</li>';
       fehler = true;
       return false;
@@ -196,7 +195,6 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
 
   $.each(namen, function(i, n) {
     if(!cms_check_nametitel(n) || !n) {
-      alert(n);
       meldung += '<li>der Name eines Empfängers ist ungültig.</li>';
       fehler = true;
       return false;
@@ -235,7 +233,6 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
 		formulardaten.append("anfragenziel", 	'266');
 
     function anfragennachbehandlung(rueckgabe) {
-      alert(rueckgabe);
       if (rueckgabe == "ERFOLG") {
         cms_meldung_an('erfolg', 'Kontaktformular bearbeiten', '<p>Das Kontaktformular wurde bearbeitet.</p>', '<p><span class="cms_button" onclick="cms_link(\'Website/Bearbeiten/Aktuell/'+zusatz+'\');">Zurück zur Seite</span></p>');
       }
