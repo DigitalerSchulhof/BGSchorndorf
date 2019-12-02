@@ -22,6 +22,8 @@ if (strlen($bild) == 0) {echo "FEHLER";exit;}
 if (strlen($bezeichnung) == 0) {echo "FEHLER";exit;}
 if (($ziel != '_self') && ($ziel != '_blank')) {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
+if (!preg_match("/^dateien\/website\/([\_\-a-zA-Z0-9]+\/)*[\_\-a-zA-Z0-9]+\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $bild)) {echo "FEHLER"; exit;}
+if (!preg_match("/^(https?:\/\/)?[a-zA-ZÄÖÜäöü]+[\_\-a-zA-ZÄÖÜäöü\.\/]*$/", $link)) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'];

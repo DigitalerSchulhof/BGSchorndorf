@@ -5,7 +5,7 @@
 </div>
 
 <div class="cms_spalte_2"><div class="cms_spalte_i">
-  <h3>Verwantwortliche Personen</h3>
+  <h3>Verantwortliche Personen</h3>
   <h4>Herausgeber</h4>
   <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
   <?php

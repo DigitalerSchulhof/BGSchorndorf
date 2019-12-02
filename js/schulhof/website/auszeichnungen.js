@@ -25,6 +25,11 @@ function cms_auszeichnung_eingabenpruefen() {
 		fehler = true;
 	}
 
+	if (link.length == 0) {
+		meldung += '<li>es wurde kein Link eingegeben.</li>';
+		fehler = true;
+	}
+
 	if ((ziel != '_self') && (ziel != '_blank')) {
 		meldung += '<li>es wurde ein ungültiges Ziel gewählt.</li>';
 		fehler = true;
