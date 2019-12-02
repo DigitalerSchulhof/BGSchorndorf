@@ -39,6 +39,12 @@
 	<?php
 	$aeltere = "";
 
+	$code = "<h4>Version 0.5.8 - Samstag, den ??. Dezember 2019</h4>";
+	$code .= "<ul>";
+		$code .= "<li>Auszeichnungen können nun über den Schulhof verändert werden.</li>";
+	$code .= "</ul>";
+	$aeltere .=  cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_8', 'Neuerungen in Version 0.5.8 einblenden', 'Neuerungen in Version 0.5.8 ausblenden', $code, 0);
+
 	$code = "<h4>Version 0.5.7 - Samstag, den 29. November 2019</h4>";
 	$code .= "<ul>";
 		$code .= "<li>In Listen erscheinen mit einem Rechtsklick Kontextmenüs zur Ausführung von Aktionen.</li>";
@@ -47,7 +53,7 @@
 		$code .= "<li>Chats funktionieren jetzt basierend auf Sockets.</li>";
 		$code .= "<li>Beim Anmelden in den Schulhof wird überprüft, ob der Browser unterstützt wird.</li>";
 	$code .= "</ul>";
-	echo cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_7', 'Neuerungen in Version 0.5.7 einblenden', 'Neuerungen in Version 0.5.7 ausblenden', $code, 1);
+	$aeltere .=  cms_toggleeinblenden_generieren ('cms_neuerungenverlaufknopf_0_5_7', 'Neuerungen in Version 0.5.7 einblenden', 'Neuerungen in Version 0.5.7 ausblenden', $code, 0);
 
 	$code = "<h4>Version 0.5.6 - Samstag, den 23. November 2019</h4>";
 	$code .= "<ul>";
