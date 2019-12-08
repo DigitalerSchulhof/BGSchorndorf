@@ -16,6 +16,9 @@ if (isset($_POST['extern'])) {$extern = $_POST['extern'];} else {echo "FEHLER"; 
 if (isset($_POST['nname'])) {$nname = $_POST['nname'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['vname'])) {$vname = $_POST['vname'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
+if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER"; exit;}
+
+if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 
@@ -76,7 +79,7 @@ if (cms_angemeldet() && $zugriff) {
 
 		if (strlen($klasse) > 0) {
 			$sqlspalten = ", AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez";
-			$sqljoin = "JOIN klassenmitglieder ON klassenmitglieder.person = personen.id JOIN klassen ON klassenmitglieder.gruppe = klassen.id";
+			$sqljoin = "JOIN klassenmitglieder ON klassenmitglieder.person = personen.id JOIN klassen ON klassenmitglieder.gruppe = klassen.id WHERE klassen.schuljahr = $CMS_BENUTZERSCHULJAHR";
 			if ($aenderung) {
 				$sqlwhere .= " AND ";
 			}

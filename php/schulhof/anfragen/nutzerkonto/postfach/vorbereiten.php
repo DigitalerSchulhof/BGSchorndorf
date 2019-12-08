@@ -1,7 +1,7 @@
 <?php
 
 function cms_postfach_empfaengerpool_generieren($dbs) {
-  global $CMS_EINSTELLUNGEN, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN;
+  global $CMS_EINSTELLUNGEN, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
   $empfaengerpool = array();
   $sql = "";
   $limit = 4;
@@ -36,19 +36,19 @@ function cms_postfach_empfaengerpool_generieren($dbs) {
   foreach ($CMS_GRUPPEN AS $g) {
     if ($CMS_EINSTELLUNGEN["Postfach - $benutzergruppe dürfen $g Mitglieder schreiben"] == 1) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT person AS id FROM $gk"."mitglieder WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID))";
+      $sql .= " UNION (SELECT person AS id FROM $gk"."mitglieder WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND schuljahr = $CMS_BENUTZERSCHULJAHR))";
     }
   }
   foreach ($CMS_GRUPPEN AS $g) {
     if ($CMS_EINSTELLUNGEN["Postfach - $benutzergruppe dürfen $g Vorsitzende schreiben"] == 1) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT person AS id FROM $gk"."vorsitz WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID)))";
+      $sql .= " UNION (SELECT person AS id FROM $gk"."vorsitz WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit AND schuljahr = $CMS_BENUTZERSCHULJAHR) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND schuljahr = $CMS_BENUTZERSCHULJAHR)))";
     }
   }
   if ($CMS_EINSTELLUNGEN["Postfach - $benutzergruppe dürfen $g Aufsicht schreiben"] == 1) {
     foreach ($CMS_GRUPPEN AS $g) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT person AS id FROM $gk"."aufsicht WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID)))";
+      $sql .= " UNION (SELECT person AS id FROM $gk"."aufsicht WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit AND schuljahr = $CMS_BENUTZERSCHULJAHR) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND schuljahr = $CMS_BENUTZERSCHULJAHR)))";
     }
   }
 
