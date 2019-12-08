@@ -33,7 +33,7 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postfilter.php");
 		<tr>
 			<th></th><th>Empfänger</th><th>Betreff</th><th>Datum</th><th>Uhrzeit</th><th>Aktionen</th>
 		</tr>
-	<tbody id="cms_postfach_gesendet_liste">
+	<tbody id="cms_postfach_ausgang_liste">
 		<?php
 		echo cms_postfach_nachrichten_listen ('ausgang', '-', 0, $heutet, '', '', '', '', 0, 25);
 		?>
