@@ -390,6 +390,7 @@ ALTER TABLE `auszeichnungen`
 ALTER TABLE `galerienbilder` CHANGE `id` `id` BIGINT(255) UNSIGNED NOT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 
 ALTER TABLE `galerien` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+ALTER TABLE `voranmeldung_eltern` CHANGE `idvon` `idvon` BIGINT(255) NULL, CHANGE `idzeit` `idzeit` BIGINT(255) NULL;
 
 
 

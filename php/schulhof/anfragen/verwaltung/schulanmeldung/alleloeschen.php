@@ -13,8 +13,8 @@ $zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen löschen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
-	$sql = "DELETE FROM voranmeldung_schueler";
-	$dbs->query($sql);	// Safe weil keine Einfgabe
+	$sql = $dbs->prepare("DELETE FROM voranmeldung_schueler");
+	$sql->execute();
 	cms_trennen($dbs);
 	echo "ERFOLG";
 }

@@ -81,16 +81,14 @@ if (cms_angemeldet() && $zugriff) {
 		$sqlwhere = "WHERE ".substr($sqlwhere,4);
 	}
 
-	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname FROM personen) AS personen $sqlwhere $sqlarterlaubt ORDER BY nachname ASC, vorname ASC";
-
-	$anfrage = $dbs->query($sql);	// Safe weil Eingabe Check
-
-	if ($anfrage) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$ausgabe .= $daten['id'].",".$daten['art'].",".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']).";";
+	$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname FROM personen) AS personen $sqlwhere $sqlarterlaubt ORDER BY nachname ASC, vorname ASC");
+	if ($sql->execute()) {
+		$sql->bind_result($pid, $part, $ptitel, $pnachname, $pvorname);
+		while ($sql->fetch()) {
+			$ausgabe .= "$pid,$part,".cms_generiere_anzeigename($pvorname, $pnachname, $ptitel).";";
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 	cms_trennen($dbs);
 
 	echo $ausgabe;
