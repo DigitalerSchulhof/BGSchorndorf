@@ -364,18 +364,31 @@
 				if ($CMS_SEITENDETAILS) {
 					if (($CMS_SEITENDETAILS['art'] == 'm') && ($CMS_EINSTELLUNGEN['Menüseiten weiterleiten'] == 1) && ($CMS_URL[1] != "Bearbeiten")) {
 						$weitergeleitet = false;
-						$sql = "SELECT * FROM seiten WHERE zuordnung = '{$CMS_SEITENDETAILS['id']}' ORDER BY position ASC";
-						if ($anfrage = $dbs->query($sql)) {	// Safe weil systeminterne Seitenid
-							while ((!$weitergeleitet) && ($daten = $anfrage->fetch_assoc())) {
-								if ($daten['art'] != 'm') {
+						$sql = $dbs->prepare("SELECT * FROM seiten WHERE zuordnung = ? ORDER BY position ASC");
+						$sql->bind_param("s", $CMS_SEITENDETAILS['id']);
+						if ($sql->execute()) {
+							$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+							while ((!$weitergeleitet) && ($sql->fetch())) {
+								if ($sart != 'm') {
 									$weitergeleitet = true;
-									$CMS_SEITENDETAILS = $daten;
-									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
+									$CMS_SEITENDETAILS['id'] = $sid;
+									$CMS_SEITENDETAILS['art'] = $sart;
+									$CMS_SEITENDETAILS['position'] = $sposition;
+									$CMS_SEITENDETAILS['zuordnung'] = $szuordnung;
+									$CMS_SEITENDETAILS['bezeichnung'] = $sbezeichnung;
+									$CMS_SEITENDETAILS['beschreibung'] = $sbeschreibung;
+									$CMS_SEITENDETAILS['sidebar'] = $ssidebar;
+									$CMS_SEITENDETAILS['status'] = $sstatus;
+									$CMS_SEITENDETAILS['styles'] = $sstyles;
+									$CMS_SEITENDETAILS['klassen'] = $sklassen;
+									$CMS_SEITENDETAILS['idvon'] = $sidvon;
+									$CMS_SEITENDETAILS['idzeit'] = $sidzeit;
+									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 									$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
 								}
 							}
-							$anfrage->free();
 						}
+						$sql->close();
 					}
 					else if (($CMS_SEITENDETAILS['art'] == 't') || ($CMS_SEITENDETAILS['art'] == 'b') || ($CMS_SEITENDETAILS['art'] == 'g')) {
 						$CMS_URL = array();
@@ -396,16 +409,27 @@
 			if ($CMS_URL[1] == 'Termine') {$art = 't';}
 			else if ($CMS_URL[1] == 'Blog') {$art = 'b';}
 			else if ($CMS_URL[1] == 'Galerien') {$art = 'g';}
-			$sql = "SELECT * FROM seiten WHERE art = '{$art}' ORDER BY position ASC";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()) {
-					$CMS_SEITENDETAILS = $daten;
-					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
-					//$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
-					//print_r($CMS_URL);
+			$sql = $dbs->prepare("SELECT * FROM seiten WHERE art = ? ORDER BY position ASC");
+			$sql->bind_param("s", $art);
+			if ($sql->execute()) {
+				$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+				if ($sql->fetch()) {
+					$CMS_SEITENDETAILS['id'] = $sid;
+					$CMS_SEITENDETAILS['art'] = $sart;
+					$CMS_SEITENDETAILS['position'] = $sposition;
+					$CMS_SEITENDETAILS['zuordnung'] = $szuordnung;
+					$CMS_SEITENDETAILS['bezeichnung'] = $sbezeichnung;
+					$CMS_SEITENDETAILS['beschreibung'] = $sbeschreibung;
+					$CMS_SEITENDETAILS['sidebar'] = $ssidebar;
+					$CMS_SEITENDETAILS['status'] = $sstatus;
+					$CMS_SEITENDETAILS['styles'] = $sstyles;
+					$CMS_SEITENDETAILS['klassen'] = $sklassen;
+					$CMS_SEITENDETAILS['idvon'] = $sidvon;
+					$CMS_SEITENDETAILS['idzeit'] = $sidzeit;
+					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 			if (!isset($CMS_URL[2])) {$CMS_URL[2] = date('Y');}
 		}
 		$CMS_URLGANZ = implode('/', $CMS_URL);

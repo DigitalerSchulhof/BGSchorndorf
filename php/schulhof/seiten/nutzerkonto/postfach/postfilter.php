@@ -401,7 +401,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_papierkorb_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">In den Papierkorb</span><img src=\"res/icons/klein/papierkorb.png\"></span> ";
 			}
 			else {
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_zuruecklegen('$modus', '".$betreffevent."', '".$loeschendatum."', ".$daten['id'].")\"><span class=\"cms_hinweis\">Zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
+				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_zuruecklegen('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
 				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_loeschen_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 			}
 			$code .= $speicherfrist;

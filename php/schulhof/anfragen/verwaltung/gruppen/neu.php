@@ -124,10 +124,16 @@ if (cms_angemeldet() && $zugriff) {
 				$faechertext = "(".implode(',', $faecher).")";
 				if (cms_check_idliste($faechertext)) {
 					$faecher = array();
-					$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest";
-		  		if ($anfrage = $dbs->query($sql)) {
-		  			while ($daten = $anfrage->fetch_assoc()) {
-		  				array_push($faecher, $daten);
+					$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest");
+		  		if ($sql->execute()) {
+						$sql->bind_param($fid, $fbez, $fkurz, $ficon);
+		  			while ($sql->fetch()) {
+							$f = array();
+							$f['id'] = $fid;
+							$f['bezeichnung'] = $fbez;
+							$f['kuerzel'] = $fkurz;
+							$f['icon'] = $ficon;
+		  				array_push($faecher, $f);
 		  			}
 		  			$anfrage->free();
 		  		}
@@ -162,19 +168,19 @@ if (cms_angemeldet() && $zugriff) {
 			if (count($klassen) != 0) {
 				$klassentext = "(".implode(',', $klassen).")";
 				if (cms_check_idliste($klassentext)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext";
-		      $anfrage = $dbs->query($sql);	// Safe weil ID Check
-		  		if ($anfrage) {
-		  			if ($daten = $anfrage->fetch_assoc()) {
-		  				if ($daten['anzahl'] != count($klassen)) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext");
+		  		if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+		  			if ($sql->fetch()) {
+		  				if ($checkanzahl != count($klassen)) {
 		  					$fehler = true;
 		  					echo "KLASSEN";
 		  				}
 		  			}
 		  			else {$fehler = true;}
-		  			$anfrage->free();
 		  		}
 		      else {$fehler = true;}
+					$sql->close();
 				}
 	      else {$fehler = true;}
 	    }
@@ -229,19 +235,19 @@ if (cms_angemeldet() && $zugriff) {
         $pruefids = "(".substr(str_replace('|', ',', $mitglieder),1).")";
 
 				if (cms_check_idliste($pruefids)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem";
-	        $anfrage = $dbs->query($sql);	// Safe weil ID Check
-	        if ($anfrage) {
-	          if ($daten = $anfrage->fetch_assoc()) {
-	            if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem");
+	        if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+	          if ($sql->fetch()) {
+	            if ($checkanzahl != 0) {
 	              $fehler = true;
 	              echo "MITGLIEDER";
 	            }
 	          }
 	          else {$fehler = true;}
-	          $anfrage->free();
 	        }
 	        else {$fehler = true;}
+					$sql->close();
 				}
         else {$fehler = true;}
       }
@@ -268,19 +274,19 @@ if (cms_angemeldet() && $zugriff) {
       else {
         $pruefids = "(".substr(str_replace('|', ',', $aufsicht),1).")";
 				if (cms_check_idliste($pruefids)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea";
-	        $anfrage = $dbs->query($sql);	// Safe weil ID Check
-	        if ($anfrage) {
-	          if ($daten = $anfrage->fetch_assoc()) {
-	            if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea");
+	        if ($sql->execute()) {
+						$sql->bind_param($checkanzahl);
+	          if ($sql->fetch()) {
+	            if ($checkanzahl != 0) {
 	              $fehler = true;
 	              echo "AUFSICHT";
 	            }
 	          }
 	          else {$fehler = true;}
-	          $anfrage->free();
 	        }
 	        else {$fehler = true;}
+					$sql->close();
 				}
       }
     }

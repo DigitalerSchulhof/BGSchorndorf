@@ -2,7 +2,10 @@
 
 function cms_postfach_empfaengerpool_generieren($dbs) {
   global $CMS_EINSTELLUNGEN, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
+
   $empfaengerpool = array();
+  if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {return $empfaengerpool;}
+  if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {return $empfaengerpool;}
   $sql = "";
   $limit = 4;
 
@@ -53,15 +56,17 @@ function cms_postfach_empfaengerpool_generieren($dbs) {
   }
 
   if (strlen($sql) > 0) {
-    $sql = "(".substr($sql,7).")";
+    $tabellen = "(".substr($sql,7).")";
 
-    $sql = "SELECT DISTINCT x.id AS id FROM ($sql) AS x JOIN nutzerkonten ON x.id = nutzerkonten.id WHERE x.id != $CMS_BENUTZERID";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push($empfaengerpool, $daten['id']);
+    $sql = $dbs->prepare("SELECT DISTINCT x.id AS id FROM ($tabellen) AS x JOIN nutzerkonten ON x.id = nutzerkonten.id WHERE x.id != ?");
+    $sql->bind_param("i", $CMS_BENUTZERID);
+    if ($sql->execute()) {
+      $sql->bind_result($eid);
+      while ($sql->fetch()) {
+        array_push($empfaengerpool, $eid);
       }
-      $anfrage->free();
     }
+    $sql->close();
     return $empfaengerpool;
   }
   else {return $empfaengerpool;}

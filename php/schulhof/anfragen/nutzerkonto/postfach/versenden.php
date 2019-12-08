@@ -17,7 +17,9 @@ if (isset($_POST['betreff'])) {$betreff = $_POST['betreff'];} else {echo "FEHLER
 if (isset($_POST['nachricht'])) {$nachricht = $_POST['nachricht'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
+if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
@@ -101,13 +103,10 @@ if (cms_angemeldet()) {
 			$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen";
 			$sql .= " JOIN personen_einstellungen ON personen.id = personen_einstellungen.person JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') = '1' AND (personen.id IN $sqlempfaenger);";
 
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil IDs geprüft
-				while ($daten = $anfrage->fetch_assoc()) {
-					$geschlecht = $daten['geschlecht'];
-					$art = $daten['art'];
-					$titel = $daten['titel'];
-					$vorname = $daten['vorname'];
-					$nachname = $daten['nachname'];
+			$sql = $dbs->prepare($sql);
+			if ($sql->execute()) {
+				$sql->bind_result($vorname, $nachname, $titel, $email, $geschlecht, $art);
+				while ($sql->fetch()) {
 
 					// BENACHRICHTIGUNG VERSCHICKEN
 					$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
@@ -124,10 +123,10 @@ if (cms_angemeldet()) {
 					if (strlen($titel) > 0) {$empfaenger = $titel." ".$vorname." ".$nachname;}
 					else {$empfaenger = $vorname." ".$nachname;}
 					$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Neue Nachricht';
-					$mailerfolg = cms_mailsenden($empfaenger, $daten['email'], $betreff, $text[1], $text[0]);
+					$mailerfolg = cms_mailsenden($empfaenger, $email, $betreff, $text[1], $text[0]);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 		}
 
 		cms_trennen($dbs);

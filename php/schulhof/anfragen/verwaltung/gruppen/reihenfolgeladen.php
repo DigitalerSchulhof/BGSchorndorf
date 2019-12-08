@@ -21,14 +21,19 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Finde Anzahl an Gruppen
 	$anzahl = 0;
-	if ($schuljahr == '-') {$sql = "SELECT COUNT(*) AS anzahl FROM stufen WHERE schuljahr IS NULL";}
-	else {$sql = "SELECT COUNT(*) AS anzahl FROM stufen WHERE schuljahr = $schuljahr";}
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil Ganzzahl Check
-		if ($daten = $anfrage->fetch_assoc()) {
-			$anzahl = $daten['anzahl'];
-		}
-		$anfrage->free();
+	if ($schuljahr == '-') {
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM stufen WHERE schuljahr IS NULL");
 	}
+	else {
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM stufen WHERE schuljahr = ?");
+		$sql->bind_param("i", $schuljahr);
+	}
+	if ($sql->execute()) {
+		$sql->bind_result($anzahl);
+		$sql->fetch();
+		if ($anzahl === null) {$anzahl = 0;}
+	}
+	$sql->close();
 
 	$code = "";
 	for ($i = 1; $i <= $anzahl; $i++) {

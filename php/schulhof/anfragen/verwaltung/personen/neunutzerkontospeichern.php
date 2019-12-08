@@ -108,7 +108,7 @@ if (cms_angemeldet() && $zugriff) {
 		mkdir("../../../dateien/schulhof/personen/".$id."/postfach/entwuerfe", 0775);
 
 		$dbp = cms_verbinden('p');
-		$sql = "CREATE TABLE postausgang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postausgang_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
 			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
 			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -119,10 +119,10 @@ if (cms_angemeldet() && $zugriff) {
 			papierkorbseit bigint(255) DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE posteingang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE posteingang_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
 			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
 			empfaenger bigint(255) UNSIGNED NULL DEFAULT NULL,
@@ -135,10 +135,10 @@ if (cms_angemeldet() && $zugriff) {
 			papierkorbseit bigint(255) UNSIGNED NULL DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postentwurf_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postentwurf_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
 			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
 			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
@@ -149,38 +149,38 @@ if (cms_angemeldet() && $zugriff) {
 			papierkorbseit bigint(255) UNSIGNED NULL DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postgetaggedausgang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postgetaggedausgang_".$id." (
 			tag bigint(255) UNSIGNED NOT NULL,
 			nachricht bigint(255) UNSIGNED NOT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postgetaggedeingang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postgetaggedeingang_".$id." (
 			tag bigint(255) UNSIGNED NOT NULL,
 			nachricht bigint(255) UNSIGNED NOT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postgetaggedentwurf_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postgetaggedentwurf_".$id." (
 			tag bigint(255) UNSIGNED NOT NULL,
 			nachricht bigint(255) UNSIGNED NOT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE posttags_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE posttags_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
 			person bigint(255) UNSIGNED NULL DEFAULT NULL,
 			titel varbinary(2000) DEFAULT NULL,
 			farbe int(2) NOT NULL DEFAULT 0,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE termine_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE termine_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
 			person bigint(255) UNSIGNED NULL DEFAULT NULL,
 			bezeichnung varbinary(5000) DEFAULT NULL,
@@ -194,82 +194,82 @@ if (cms_angemeldet() && $zugriff) {
 			text longblob DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);	// Safe weil interne ID
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postausgang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postausgang_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY nachrichtengesendetpersonen (absender);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY nachrichtengesendetpersonen (absender);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posteingang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE posteingang_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY nachrichteneingangpersonen (empfaenger);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY nachrichteneingangpersonen (empfaenger);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postentwurf_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postentwurf_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY nachrichtenentwurf (absender);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY nachrichtenentwurf (absender);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedausgang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedausgang_".$id."
 		ADD UNIQUE KEY tag (tag,nachricht),
-		ADD KEY nachrichtposttaggedausgang_".$id." (nachricht);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY nachrichtposttaggedausgang_".$id." (nachricht);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedeingang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedeingang_".$id."
 		ADD UNIQUE KEY tag (tag,nachricht),
-		ADD KEY nachrichtposttaggedeingang_".$id." (nachricht);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY nachrichtposttaggedeingang_".$id." (nachricht);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedentwurf_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedentwurf_".$id."
 		ADD UNIQUE KEY tag (tag,nachricht),
-		ADD KEY nachrichtposttaggedentwurf_".$id." (nachricht);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY nachrichtposttaggedentwurf_".$id." (nachricht);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posttags_".$id."
+		$sql = $dbp->prepare("ALTER TABLE posttags_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY postfachtagspersonen (person);";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD KEY postfachtagspersonen (person);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE termine_".$id."
-		ADD KEY personentermine_".$id." (person);";
-		$dbp->query($sql);	// Safe weil interne ID
+		$sql = $dbp->prepare("ALTER TABLE termine_".$id."
+		ADD KEY personentermine_".$id." (person);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postausgang_".$id."
-		ADD CONSTRAINT personpostausgang_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		$sql = $dbp->prepare("ALTER TABLE postausgang_".$id."
+		ADD CONSTRAINT personpostausgang_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posteingang_".$id."
-		ADD CONSTRAINT personeinposteingang_".$id." FOREIGN KEY (empfaenger) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE posteingang_".$id."
+		ADD CONSTRAINT personeinposteingang_".$id." FOREIGN KEY (empfaenger) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postentwurf_".$id."
-		ADD CONSTRAINT personpostentwurf_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		$sql = $dbp->prepare("ALTER TABLE postentwurf_".$id."
+		ADD CONSTRAINT personpostentwurf_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedausgang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedausgang_".$id."
 		ADD CONSTRAINT nachrichtposttaggedausgang_".$id." FOREIGN KEY (nachricht) REFERENCES postausgang_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT tagposttaggedausgang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD CONSTRAINT tagposttaggedausgang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedeingang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedeingang_".$id."
 		ADD CONSTRAINT nachrichtposttaggedeingang_".$id." FOREIGN KEY (nachricht) REFERENCES posteingang_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT tagposttaggedeingang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD CONSTRAINT tagposttaggedeingang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedentwurf_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedentwurf_".$id."
 		ADD CONSTRAINT nachrichtposttaggedentwurf_".$id." FOREIGN KEY (nachricht) REFERENCES postentwurf_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT tagposttaggedentwurf_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		ADD CONSTRAINT tagposttaggedentwurf_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posttags_".$id."
-		ADD CONSTRAINT personenposttags_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		$sql = $dbp->prepare("ALTER TABLE posttags_".$id."
+		ADD CONSTRAINT personenposttags_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE termine_".$id."
-		ADD CONSTRAINT personentermine_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);	// Safe weil interne ID
+		$sql = $dbp->prepare("ALTER TABLE termine_".$id."
+		ADD CONSTRAINT personentermine_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
 		cms_trennen($dbp);
 

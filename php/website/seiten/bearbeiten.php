@@ -66,6 +66,7 @@
             $code .= "<a class=\"cms_iconbutton cms_button_website_dateien\" href=\"Schulhof/Website/Dateien\">Dateien</a> ";
           }
           if (($CMS_RECHTE['Website']['Inhalte freigeben']) && ($CMS_URL[2] == 'Neu')) {
+            $CMS_ZUSATZ = implode('/', array_slice($CMS_URL, 3));
             $code .= "<span class=\"cms_iconbutton cms_button_website_freigeben\" onclick=\"cms_element_allefreigeben('".$CMS_SEITENDETAILS['id']."', '".$CMS_URL[2]."', '$CMS_ZUSATZ')\">Freigeben</span> ";
           }
           if ($CMS_RECHTE['Website']['Inhalte freigeben']) {

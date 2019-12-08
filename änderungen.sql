@@ -387,9 +387,9 @@ ALTER TABLE `auszeichnungen` ADD `aktiv` TINYINT(1) UNSIGNED DEFAULT NULL AFTER 
 ALTER TABLE `auszeichnungen`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `galerienbilder` CHANGE `id` `id` BIGINT(255) UNSIGNED NOT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 
-
-
+ALTER TABLE `galerien` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 
 
 
