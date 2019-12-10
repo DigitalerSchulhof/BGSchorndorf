@@ -108,12 +108,15 @@ if (cms_angemeldet() && $zugriff) {
 		}
 		// Falls es eine neue Startseite gibt, alte Startseiten auf aktiv setzen
 		if ($status == 's') {
-			$sql = "UPDATE seiten SET status = 'a' WHERE status = 's'";
-			$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
+			$sql = $dbs->prepare("UPDATE seiten SET status = 'a' WHERE status = 's'");
+			$sql->execute();
+		  $sql->close();
 		}
 		if (($art == 'b') || ($art == 't') || ($art == 'g')) {
-			$sql = "UPDATE seiten SET art = 's' WHERE art = '$art'";
-			$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
+			$sql = $dbs->prepare("UPDATE seiten SET art = 's' WHERE art = ?");
+			$sql->bind_param("s", $art);
+			$sql->execute();
+		  $sql->close();
 		}
 		// Neue Seite einfügen
 		$sql = $dbs->prepare("UPDATE seiten SET bezeichnung = ?, beschreibung = ?, art = ?, position = ?, sidebar = ?, status = ?, styles = ?, klassen = ? WHERE id = ?");

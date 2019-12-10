@@ -99,12 +99,14 @@ function cms_dateiwaehler_ordner($pfad, $netz, $bereich, $id, $feldid, $art, $ex
 	else if ($art == 'video') {$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND kategorie = AES_ENCRYPT('Multimedia', '$CMS_SCHLUESSEL')";}
 	else {$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')";}
 	$dbs = cms_verbinden('s');
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-		while ($daten = $anfrage->fetch_assoc()) {
-			array_push($zulaessig, $daten['endung']);
+	$sql = $dbs->prepare($sql);
+	if ($sql->execute()) {
+		$sql->bind_result($eendung);
+		while ($sql->fetch()) {
+			array_push($zulaessig, $eendung);
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 	cms_trennen($dbs);
 
 	$anzeigepfad = $pfad;
@@ -694,15 +696,16 @@ function cms_db_tabellengroesse($datenbank, $tabellen) {
 	if (strlen($tabellencode) > 0) {
 		$tabellencode = '('.substr($tabellencode, 4).')';
 		$db = cms_verbinden('ü');
-		$sql = "SELECT SUM(data_length + index_length) AS groesse FROM information_schema.tables WHERE table_schema = '$datenbank' AND $tabellencode";
-		if ($anfrage = $db->query($sql)) {	// TODO: Irgendwie safe machen
-			if ($daten = $anfrage->fetch_assoc()) {
-				$groesse = $daten['groesse'];
-			}
-			$anfrage->free();
+		$sql = $db->prepare("SELECT SUM(data_length + index_length) AS groesse FROM information_schema.tables WHERE table_schema = ? AND $tabellencode");
+		$sql->bind_param("s", $datenbank);
+		if ($sql->execute()) {
+			$sql->bind_result($groesse);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 	cms_trennen($db);
+	if ($groesse === null) {$groesse = 0;}
 	return $groesse;
 }
 ?>

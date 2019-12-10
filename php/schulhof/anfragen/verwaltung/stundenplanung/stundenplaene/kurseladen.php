@@ -31,14 +31,17 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$code = "";
 		// Kurse laden
-		$sql = "SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(faecher.bezeichnung, '$CMS_SCHLUESSEL') AS fach, AES_DECRYPT(faecher.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM (SELECT kurs FROM kursklassen WHERE klasse = $klasse)";
-		$sql .= " AS x JOIN kurse ON x.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id ORDER BY fach ASC, bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID existiert
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= "<option value=\"".$daten['id']."\">".$daten['bezeichnung']." - ".$daten['fach']." (".$daten['kuerzel'].")</option>";
+		$sql = "SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(faecher.bezeichnung, '$CMS_SCHLUESSEL') AS fach, AES_DECRYPT(faecher.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM (SELECT kurs FROM kursklassen WHERE klasse = ?) ";
+		$sql .= "AS x JOIN kurse ON x.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id ORDER BY fach ASC, bezeichnung ASC";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $klasse)
+		if ($sql->execute()) {
+			$sql->bind_result($kursid, $kursbez, $kursfach, $kurskurz);
+			while ($sql->fetch()) {
+				$code .= "<option value=\"$kursid\">$kursbez - $kursfach ($kurskurz)</option>";
 			}
-			$anfrage->free();
 		} else {$fehler = true;}
+		$sql->close();
 	}
 	cms_trennen($dbs);
 

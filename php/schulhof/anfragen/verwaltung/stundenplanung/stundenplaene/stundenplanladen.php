@@ -63,13 +63,15 @@ if (cms_angemeldet() && $zugriff) {
 		// Weitere Klassen suchen, denen dieser Kurs zugeordnet ist
 		$klassen = '|'.$klasse;
 		if (!$fehler) {
-			$sql = "SELECT DISTINCT klasse FROM kursklassen WHERE kurs = $kurs AND klasse != $klasse";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil ID existiert
-				while ($daten = $anfrage->fetch_assoc()) {
-					$klassen .= '|'.$daten['klasse'];
+			$sql = prepare("SELECT DISTINCT klasse FROM kursklassen WHERE kurs = ? AND klasse != ?");
+			$sql->bind_param("ii", $kurs, $klasse);
+			if ($sql->execute()) {
+				$sql->bind_result($klasseid);
+				while ($sql->fetch()) {
+					$klassen .= '|'.$klasseid;
 				}
-				$anfrage->free();
 			} else {$fehler = true;}
+			$sql->close();
 		}
 
 		// Klassenstundenpläne erzeugen

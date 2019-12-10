@@ -67,15 +67,16 @@ if (cms_angemeldet() && $zugriff) {
       $idsk = "(".$ids.")";
       if (cms_check_idliste($idsk)) {
         $anzahl = count(explode(',', $ids));
-        $sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $idsk";
-        if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-          if ($daten = $anfrage->fetch_assoc()) {
-            if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+        $sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $idsk");
+        if ($dbs->execute()) {
+          $sql->bind_result($checkanzahl);
+          if ($sql->fetch()) {
+            if ($checkanzahl != $anzahl) {$fehler = true;}
           }
           else {$fehler = true;}
-          $anfrage->free();
         }
         else {$fehler = true;}
+        $sql->close();
       }
       else {$fehler = true;}
 		}

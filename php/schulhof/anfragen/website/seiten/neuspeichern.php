@@ -120,8 +120,9 @@ if (cms_angemeldet() && $zugriff) {
 
 		// Falls es eine neue Startseite gibt, alte Startseite auf aktiv setzen
 		if ($status == 's') {
-			$sql = "UPDATE seiten SET status = 'a' WHERE status = 's'";
-			$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
+			$sql = $dbs->prepare("UPDATE seiten SET status = 'a' WHERE status = 's'");
+		  $sql->execute();
+		  $sql->close();
 		}
 		if (($art == 'b') || ($art == 't') || ($art == 'g')) {
 			$sql = $dbs->prepare("UPDATE seiten SET art = 's' WHERE art = ?");
