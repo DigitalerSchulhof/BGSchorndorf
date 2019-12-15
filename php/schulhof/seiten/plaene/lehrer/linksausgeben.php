@@ -21,7 +21,7 @@ function cms_schulhof_lehrer_links_anzeigen () {
     else {$ausgabe = '<p class="cms_notiz">Keine Lehrkräfte angelegt</p>';}
   }
   else {
-    $ausgabe = cms_meldung_berechtigung();
+    $ausgabe = "<p class=\"cms_notiz\">Keine Lehrerstundenpläne verfügbar.</p>";
   }
   return $ausgabe;
 }

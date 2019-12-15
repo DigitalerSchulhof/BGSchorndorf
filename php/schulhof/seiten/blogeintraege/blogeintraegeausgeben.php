@@ -34,13 +34,13 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	// Prüfen, ob Downloads vorliegen
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
-		$sql = "SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-			if ($downloads = $anfrage->fetch_assoc()) {
-				$downloadanzahl = $downloads['anzahl'];
-			}
-			$anfrage->free();
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ?");
+		$sql->bind_param("i", $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($downloadanzahl);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
@@ -80,13 +80,14 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ".$daten['id'].")";
 		}
 		$sql = substr($sql, 7);
-		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
+		$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
+		if ($sql->execute()) {
+			$sql->bind_result($kbez, $kicon);
+			while ($sql->fetch()) {
+				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$kicon')\">$kbez</span> ";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 	}
 	if (strlen($code > 0)) {$code = "<p>".$code."</p>";}
 	return $code;
@@ -221,24 +222,45 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 			$downloads = array();
 			// Downloads suchen
-			$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-				while ($daten = $anfrage->fetch_assoc()) {
-					array_push($downloads, $daten);
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($did, $dbeintrag, $dpfad, $dtitel, $dbeschr, $ddateiname, $ddateigroesse);
+				while ($sql->fetch()) {
+					$D = array();
+					$D['id'] = $did;
+					$D['blogeintrag'] = $dbeintrag;
+					$D['pfad'] = $dpfad;
+					$D['titel'] = $dtitel;
+					$D['beschreibung'] = $dbeschr;
+					$D['dateiname'] = $ddateiname;
+					$D['dateigroesse'] = $ddateigroesse;
+					array_push($downloads, $D);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 
 			// Beschlüsse laden
 			$beschluesse = array();
 			if ($art == 'in') {
-				$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-				if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-					while ($daten = $anfrage->fetch_assoc()) {
-						array_push($beschluesse, $daten);
+				$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+				$sql->bind_param("i", $blogeintrag['id']);
+				if ($sql->execute()) {
+					$sql->bind_result($bid, $bbeintrag, $btitel, $blangfristig, $bbeschreibung, $bpro, $bcontra, $benthaltung);
+					while ($sql->fetch()) {
+						$B = array();
+						$B['id'] = $bid;
+						$B['blogeintrag'] = $bbeintrag;
+						$B['titel'] = $btitel;
+						$B['langfristig'] = $blangfristig;
+						$B['beschreibung'] = $bbeschreibung;
+						$B['pro'] = $bpro;
+						$B['contra'] = $bcontra;
+						$B['enthaltung'] = $benthaltung;
+						array_push($beschluesse, $B);
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 			}
 
 			// Aktionen ermitteln, falls im Schulhof

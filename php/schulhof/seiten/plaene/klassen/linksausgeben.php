@@ -22,7 +22,7 @@ function cms_schulhof_klassen_links_anzeigen () {
     else {$ausgabe = '<p class="cms_notiz">Keine Klassen angelegt</p>';}
   }
   else {
-    $ausgabe = cms_meldung_berechtigung();
+    $ausgabe = "<p class=\"cms_notiz\">Keine Klassenstundenpläne verfügbar.</p>";
   }
   return $ausgabe;
 }

@@ -14,7 +14,7 @@ function cms_schulhof_vertretungen_links_anzeigen () {
     $ausgabe = "<ul>".$ausgabe."</ul>";
   }
   else {
-    $ausgabe = cms_meldung_berechtigung();
+    $ausgabe = "<p class=\"cms_notiz\">Keine Vertretungspläne verfügbar.</p>";
   }
   return $ausgabe;
 }

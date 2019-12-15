@@ -135,9 +135,9 @@ if (cms_angemeldet() && $zugriff) {
 							$f['icon'] = $ficon;
 		  				array_push($faecher, $f);
 		  			}
-		  			$anfrage->free();
 		  		}
 		      else {$fehler = true;}
+					$sql->close();
 				}
 				else {$fehler = true;}
 			}

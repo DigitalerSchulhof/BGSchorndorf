@@ -21,7 +21,7 @@ function cms_schulhof_stufen_links_anzeigen () {
     else {$ausgabe = '<p class="cms_notiz">Keine Klassenstufen angelegt</p>';}
   }
   else {
-    $ausgabe = cms_meldung_berechtigung();
+    $ausgabe = "<p class=\"cms_notiz\">Keine Stufenpläne verfügbar.</p>";
   }
   return $ausgabe;
 }

@@ -35,16 +35,18 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     else if ($netz == "p") {$db = cms_verbinden('p');}
     $jetzt = time();
     // Neue ID bestimmten und eintragen
-    $sql = "SET FOREIGN_KEY_CHECKS = 0";
-    $anfrage = $db->query($sql);  // Safe weil keine Eingabe
+    $sql = $db->prepare("SET FOREIGN_KEY_CHECKS = 0;");
+    $sql->execute();
+    $sql->close();
 
     $sql = $db->prepare("INSERT INTO $tabelle (id, idvon, idzeit) SELECT id, idvon, idzeit FROM (SELECT IFNULL(id*0,0)+? AS idvon, IFNULL(id*0,0)+? AS idzeit, IFNULL(MIN(id)+1,1) AS id FROM $tabelle WHERE id+1 NOT IN (SELECT id FROM $tabelle)) AS vorherigeid");
   	$sql->bind_param("ii", $benutzer, $jetzt);
   	$sql->execute();
   	$sql->close();
 
-		$sql = "SET FOREIGN_KEY_CHECKS = 1";
-    $anfrage = $db->query($sql);  // Safe weil keine Eingabe
+		$sql = $db->prepare("SET FOREIGN_KEY_CHECKS = 1;");
+    $sql->execute();
+    $sql->close();
 
     // ID zurückgewinnen
     $id = null;
@@ -227,13 +229,14 @@ function cms_kategorieicons_generieren($id, $art, $icon = 'standard.png') {
   }
   if (strlen($sql) > 0) {
     $sql = substr($sql, 7);
-    $sql = "SELECT DISTINCT icon FROM ($sql) AS x";
-    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push ($verwendet, $daten['icon']);
+    $sql = $dbs->prepare("SELECT DISTINCT icon FROM ($sql) AS x");
+    if ($sql->execute()) {
+      $sql->bind_result($kicon);
+      while ($sql->fetch()) {
+        array_push ($verwendet, $kicon);
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
   cms_trennen($dbs);
@@ -271,20 +274,18 @@ function cms_geraeteverwalten_knopf($dbs) {
   $anzahldefekt = 0;
   $anzahlneu = 0;
   $anzahl = "";
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahldefekt = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahldefekt);
+    $sql->fetch();
   }
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahlneu = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql->close();
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlneu);
+    $sql->fetch();
   }
+  $sql->close();
   $zusatz = '';
   if ($anzahlneu > 0) {
     $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahldefekt</span>";
@@ -308,19 +309,20 @@ function cms_terminegenehmigen_knopf($dbs) {
     }
   }
   $sql = substr($sql, 7);
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
@@ -337,57 +339,60 @@ function cms_blogeintraegegenehmigen_knopf($dbs) {
     }
   }
   $sql = substr($sql, 7);
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
 function cms_galeriengenehmigen_knopf($dbs) {
   $code = "";
   $zusatz = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">Galerien genehmigen".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
 function cms_identitaetsdiebstaehle_knopf($dbs) {
   $code = "";
   $zusatz = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\">Identitätsdiebstähle behandeln".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
@@ -396,20 +401,18 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   $anzahlauftraege = 0;
   $anzahlneu = 0;
   $anzahl = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahlauftraege = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlauftraege);
+    $sql->fetch();
   }
-  $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahlneu = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql->close();
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlneu);
+    $sql->fetch();
   }
+  $sql->close();
   $zusatz = '';
   if ($anzahlneu > 0) {
     $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span>";
@@ -423,19 +426,20 @@ function cms_hausmeisterauftraege_knopf($dbs) {
 function cms_auffaelliges_knopf($dbs) {
   $code = "";
   $zusatz = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status=0";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status=0");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Neues auffälliges Verhalten ".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
@@ -450,12 +454,14 @@ function cms_chatmeldungen_knopf($dbs) {
   }
   $sql = substr($sql, 0, -5);
   $anzahl = 0;
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    while ($daten = $anfrage->fetch_assoc()) {
-      $anzahl += $daten["anzahl"];
+  $sql = $dbs->prepare($sql);
+  if ($sql->execute()) {
+    $sql->bind_result($dgruppe, $danzahl);
+    while ($sql->fetch()) {
+      $anzahl += $danzahl;
     }
-    $anfrage->free();
   }
+  $sql->close();
   $zusatz = "";
   if ($anzahl > 0) {
     $zusatz = "cms_meldezahl_wichtig";
@@ -540,20 +546,21 @@ function cms_generiere_bilddaten($pfad) {
   return 'data:image/'.$typ.';base64,'.base64_encode($daten);
 }
 
-function cms_gruppeninfos_generieren ($dbs) { // QUESTION: Wofür ist das? »$gruppen« ist leer?
+function cms_gruppeninfos_generieren ($dbs) {
   global $CMS_SCHLUESSEL, $CMS_GRUPPEN;
   $gruppen = array();
-  foreach ($gruppen as $a) {
+  foreach ($CMS_GRUPPEN as $a) {
     $a = cms_textzudb($a);
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $a) AS x ORDER BY bezeichnung";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      while ($daten = $anfrage->fetch_assoc()) {
-        $gruppen[$a][$daten['id']]['bezeichnung'] = $daten['bezeichnung'];
-        $gruppen[$a][$daten['id']]['icon'] = $daten['icon'];
-        $gruppen[$a][$daten['id']]['id'] = $daten['id'];
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $a) AS x ORDER BY bezeichnung");
+    if ($sql->execute()) {
+      $sql->bind_result($gid, $gbez, $gicon);
+      while ($sql->fetch()) {
+        $gruppen[$a][$gid]['bezeichnung'] = $gbez;
+        $gruppen[$a][$gid]['icon'] = $gicon;
+        $gruppen[$a][$gid]['id'] = $gid;
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
   return $gruppen;
 }
@@ -660,13 +667,14 @@ function cms_amtstraeger ($dbs, $id, $amt) {
       }
     }
     $sql = substr($sql,7);
-    $sql = "SELECT DISTINCT COUNT(*) AS anzahl FROM ($sql) AS x";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      if ($daten = $anfrage->fetch_assoc()) {
-        if ($daten['anzahl'] > 0) {$amtstraeger = true;}
+    $sql = $dbs->prepare("SELECT DISTINCT COUNT(*) AS anzahl FROM ($sql) AS x");
+    if ($sql->execute()) {
+      $sql->bind_result($checkanzahl);
+      if ($sql->fetch()) {
+        if ($checkanzahl > 0) {$amtstraeger = true;}
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
   return $amtstraeger;
 }

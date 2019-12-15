@@ -56,7 +56,7 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 		else if ($CMS_BENUTZERART == 'v') {$oelimit = 2;}
 		else {$oelimit = 3;}
 
-		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art, '' AS schuljahr, '' AS sjbez, '' AS gbez, '' AS gart FROM blogeintraege WHERE (id IN ($sqlm) OR oeffentlichkeit >= $oelimit) AND (datum BETWEEN $beginn AND $ende) AND aktiv = 1";
+		$sqloe = "(SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art, '' AS schuljahr, '' AS sjbez, '' AS gbez, '' AS gart FROM blogeintraege WHERE (id IN ($sqlm) OR oeffentlichkeit >= $oelimit) AND (datum BETWEEN $beginn AND $ende) AND aktiv = 1)";
 
 		$sqlin = "";
 		foreach ($CMS_GRUPPEN as $g) {
@@ -64,18 +64,33 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 			$sqlin .= " UNION (SELECT $gk"."blogeintraegeintern.id, AES_DECRYPT($gk"."blogeintraegeintern.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, NULL AS vorschaubild, 'in' AS art, schuljahr, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, '$g' AS gart FROM $gk"."blogeintraegeintern JOIN $gk ON gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID) AND (datum BETWEEN $beginn AND $ende) AND aktiv = 1)";
 		}
 
-		$sql = "SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC";
-
+		$sql = $dbs->prepare("SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC");
 		// Blogausgabe erzeugen
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			while ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['art'] == 'oe') {
-					$code .= cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
+		if ($sql->execute()) {
+			$sql->bind_result($bid, $bbez, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart, $bschuljahr, $bsjbez, $bgbez, $bgart);
+			while ($sql->fetch()) {
+				$B = array();
+				$B['id'] = $bid;
+				$B['bezeichnung'] = $bbez;
+				$B['autor'] = $bautor;
+				$B['datum'] = $bdatum;
+				$B['genehmigt'] = $bgenehmigt;
+				$B['aktiv'] = $baktib;
+				$B['text'] = $btext;
+				$B['vorschau'] = $bvorschau;
+				$B['vorschaubild'] = $bvorschaubild;
+				$B['art'] = $bart;
+				$B['schuljahr'] = $bschuljahr;
+				$B['sjbez'] = $bsjbez;
+				$B['gbez'] = $bgbez;
+				$B['gart'] = $bgart;
+				if ($B['art'] == 'oe') {
+					$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $CMS_URLGANZ);
 				}
-				else if ($daten['art'] == 'in') {
-					if (is_null($daten['sjbez'])) {$daten['sjbez'] = "Schuljahrübergreifend";}
-					$vorlink = "Schulhof/Gruppen/".cms_textzulink($daten['sjbez'])."/".cms_textzulink($daten['gart'])."/".cms_textzulink($daten['gbez']);
-					$code .= cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $vorlink);
+				else if ($B['art'] == 'in') {
+					if (is_null($B['sjbez'])) {$B['sjbez'] = "Schuljahrübergreifend";}
+					$vorlink = "Schulhof/Gruppen/".cms_textzulink($B['sjbez'])."/".cms_textzulink($B['gart'])."/".cms_textzulink($B['gbez']);
+					$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $vorlink);
 				}
 
 			}

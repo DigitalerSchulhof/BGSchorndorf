@@ -24,7 +24,7 @@ function cms_schulhof_raeume_links_anzeigen () {
     else {$ausgabe = '<p class="cms_notiz">Keine Räume angelegt</p>';}
   }
   else {
-    $ausgabe = cms_meldung_berechtigung();
+    $ausgabe = "<p class=\"cms_notiz\">Keine Raumpläne verfügbar.</p>";
   }
   return $ausgabe;
 }

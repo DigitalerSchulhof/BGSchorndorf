@@ -150,22 +150,24 @@ echo $code;
 function cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, $personengruppe) {
 	global $CMS_SCHLUESSEL;
 	$code = "";
-	$sql = "(SELECT person FROM $gk"."$personengruppe WHERE gruppe = $gruppenid) AS x";
-	$sql = "SELECT y.id AS id, vorname, nachname, titel, nutzerkonten.id AS nutzerkonto FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $sql ON personen.id = x.person) AS y LEFT JOIN nutzerkonten ON y.id = nutzerkonten.id ORDER BY nachname ASC, vorname ASC";
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-		while ($daten = $anfrage->fetch_assoc()) {
-			if (is_null($daten['nutzerkonto'])) {
-				$code .= "<li><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto();\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";
+	$sql = "(SELECT person FROM $gk"."$personengruppe WHERE gruppe = ?) AS x";
+	$sql = $dbs->prepare("SELECT y.id AS id, vorname, nachname, titel, nutzerkonten.id AS nutzerkonto FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $sql ON personen.id = x.person) AS y LEFT JOIN nutzerkonten ON y.id = nutzerkonten.id ORDER BY nachname ASC, vorname ASC");
+	$sql->bind_param("i", $gruppenid);
+	if ($sql->execute()) {
+		$sql->bind_result($pid, $pvor, $pnach, $ptitel, $pnutzer);
+		while ($sql->fetch()) {
+			if (is_null($pnutzer)) {
+				$code .= "<li><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto();\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";
 			}
-			else if (in_array($daten['id'], $schreibpool)) {
-				$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";
+			else if (in_array($pid, $schreibpool)) {
+				$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";
 			}
 			else {
-				$code .= "<li><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben();\">".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])."</span></li> ";
+				$code .= "<li><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben();\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";
 			}
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 
 	if (strlen($code) > 0) {$code = "<h3>".cms_vornegross($personengruppe)."</h3><ul class=\"cms_aktionen_liste\">".$code."</ul>";}
 	return $code;

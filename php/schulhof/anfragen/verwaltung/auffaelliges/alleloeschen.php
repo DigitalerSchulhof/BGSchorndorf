@@ -17,7 +17,7 @@ if (cms_angemeldet()) {
 	}
 	$weilreference0 = 0;
 	$dbs = cms_verbinden('s');
-	$sql = $dbs->prepare("DELETE FROM auffaelliges WHERE notizen = '';");
+	$sql = $dbs->prepare("DELETE FROM auffaelliges;");
   $sql->execute();
 	$sql->close();
 	echo "ERFOLG";

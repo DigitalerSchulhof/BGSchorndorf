@@ -150,9 +150,9 @@ if (cms_angemeldet() && $zugriff) {
 				}
 				if ($zeitraumfehler) {$fehler = true; echo "ZEITRAUM";}
 			}
-			$anfrage->free();
 		}
 		else {$fehler = true;}
+		$sql->close();
 	}
 
 	if (!$fehler) {
