@@ -112,7 +112,7 @@
 		$CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 		$CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 		$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];
-
+		$CMS_BENUTZERFEHLER = !cms_check_sessionvars();
 
 		// Timeout verlängern, da der Nutzer aktiv war
 		if ($_SESSION['SESSIONTIMEOUT'] > time()) {

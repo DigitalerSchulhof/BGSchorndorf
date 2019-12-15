@@ -2,28 +2,45 @@
 function cms_notifikationen_ausgeben($dbs, $person) {
   global $CMS_SCHLUESSEL;
   $neuigkeiten = "";
-  $sql = "SELECT id, AES_DECRYPT(gruppe, '$CMS_SCHLUESSEL') AS gruppe, gruppenid, status, art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link FROM notifikationen WHERE person = $person ORDER BY zeit DESC";
-  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-    while ($daten = $anfrage->fetch_assoc()) {
-      if (($daten['status'] == 'l') || ($daten['status'] == 'a') || ($daten['status'] == 'w') || ($daten['status'] == 'e')) {
-        $event = " onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"";
-      }
-      else {$event = " onclick=\"cms_link('".$daten['link']."')\"";}
-      $neuigkeiten .= "<li class=\"cms_neuigkeit\">";
-        $gruppe = cms_notifikation_gruppendetails($dbs, $daten['gruppe'], $daten['gruppenid']);
-        $neuigkeiten .= "<span class=\"cms_neuigkeit_icon\"><img src=\"".$gruppe['icon']."\"></span> ";
-        $art = cms_notifikation_art_ermitteln($daten['status'],$daten['art']);
-        $neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>".$gruppe['bezeichnung']."<br>$art</h4></p>";
-        $neuigkeiten .= "<p>".$daten['titel']."</p>";
-        if ($daten['art'] != 'a') {$neuigkeiten .= "<p class=\"cms_neuigkeit_vorschau\">".$daten['vorschau']."</p>";}
-        $neuigkeiten .= "</span>";
-        $neuigkeiten .= "<span class=\"cms_neuigkeit_schliessen cms_button_nein\" onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"><span class=\"cms_hinweis\">Neuigkeit schließen</span>&times;</span>";
-        if (($daten['status'] != 'l') && ($daten['status'] != 'a') && ($daten['art'] != 'a')) {
-          $neuigkeiten .= "<span class=\"cms_neuigkeit_oeffnen cms_button_ja\" onclick=\"cms_link('".$daten['link']."')\"><span class=\"cms_hinweis\"> Neuigkeit öffnen</span>»</span>";
-        }
-        $neuigkeiten .= "</li>";
+  $NOTIFIKATIONEN = array();
+  $sql = $dbs->prepare("SELECT id, AES_DECRYPT(gruppe, '$CMS_SCHLUESSEL') AS gruppe, gruppenid, status, art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link FROM notifikationen WHERE person = ? ORDER BY zeit DESC");
+  $sql->bind_param("i", $person);
+  if ($sql->execute()) {
+    $sql->bind_result($nid, $ngruppe, $ngruppenid, $nstatus, $nart, $ntitel, $nvorschau, $nlink);
+    while ($sql->fetch()) {
+      $N = array();
+      $N['id'] = $nid;
+      $N['gruppe'] = $ngruppe;
+      $N['gruppenid'] = $ngruppenid;
+      $N['status'] = $nstatus;
+      $N['art'] = $nart;
+      $N['titel'] = $ntitel;
+      $N['vorschau'] = $nvorschau;
+      $N['link'] = $nlink;
+      array_push($NOTIFIKATIONEN, $N);
     }
-    $anfrage->free();
+  }
+  $sql->close();
+
+
+  foreach ($NOTIFIKATIONEN AS $daten) {
+    if (($daten['status'] == 'l') || ($daten['status'] == 'a') || ($daten['status'] == 'w') || ($daten['status'] == 'e')) {
+      $event = " onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"";
+    }
+    else {$event = " onclick=\"cms_link('".$daten['link']."')\"";}
+    $neuigkeiten .= "<li class=\"cms_neuigkeit\">";
+      $gruppe = cms_notifikation_gruppendetails($dbs, $daten['gruppe'], $daten['gruppenid']);
+      $neuigkeiten .= "<span class=\"cms_neuigkeit_icon\"><img src=\"".$gruppe['icon']."\"></span> ";
+      $art = cms_notifikation_art_ermitteln($daten['status'],$daten['art']);
+      $neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>".$gruppe['bezeichnung']."<br>$art</h4></p>";
+      $neuigkeiten .= "<p>".$daten['titel']."</p>";
+      if ($daten['art'] != 'a') {$neuigkeiten .= "<p class=\"cms_neuigkeit_vorschau\">".$daten['vorschau']."</p>";}
+      $neuigkeiten .= "</span>";
+      $neuigkeiten .= "<span class=\"cms_neuigkeit_schliessen cms_button_nein\" onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"><span class=\"cms_hinweis\">Neuigkeit schließen</span>&times;</span>";
+      if (($daten['status'] != 'l') && ($daten['status'] != 'a') && ($daten['art'] != 'a')) {
+        $neuigkeiten .= "<span class=\"cms_neuigkeit_oeffnen cms_button_ja\" onclick=\"cms_link('".$daten['link']."')\"><span class=\"cms_hinweis\"> Neuigkeit öffnen</span>»</span>";
+      }
+    $neuigkeiten .= "</li>";
   }
 
   return $neuigkeiten;

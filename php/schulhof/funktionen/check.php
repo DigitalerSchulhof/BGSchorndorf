@@ -142,6 +142,11 @@ function cms_check_idfeld($text) {
 // Prüft, ob der Nutzer, der in der Session steht, angemeldet ist
 function cms_angemeldet () {
 	$angemeldet = false;
+
+	$sessionfehler = !cms_check_sessionvars();
+
+	if ($sessionfehler) {return false;}
+
   if (isset($_SESSION['BENUTZERNAME'])) {
     $jetzt = time();
 
@@ -767,6 +772,17 @@ function sqlLesen($row, $feld) {
 
 	if(isset($row[$feld]))
 		$$feld = $row[$feld];
+}
+
+function cms_check_sessionvars() {
+	if (!isset($_SESSION['BENUTZERID'])) {return false;}
+	if (!isset($_SESSION['BENUTZERSCHULJAHR'])) {return false;}
+	if (!isset($_SESSION['BENUTZERART'])) {return false;}
+
+	if (!cms_check_ganzzahl($_SESSION['BENUTZERID'])) {return false;}
+	if ((!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR'])) && ($_SESSION['BENUTZERSCHULJAHR'] != '-')) {return false;}
+	if (($_SESSION['BENUTZERART'] != 's') && ($_SESSION['BENUTZERART'] != 'l') && ($_SESSION['BENUTZERART'] != 'v') && ($_SESSION['BENUTZERART'] != 'e') && ($_SESSION['BENUTZERART'] != 'x')) {return false;}
+	return true;
 }
 
 ?>

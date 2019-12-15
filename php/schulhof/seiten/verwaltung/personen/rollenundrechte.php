@@ -63,7 +63,7 @@ if (!$fehler) {
 	}
 
 	if ($rollencode == "") {
-		$$rollencode = "<p class=\"cms_notiz\">Keine Rollen verfügbar</p>";
+		$rollencode = "<p class=\"cms_notiz\">Keine Rollen verfügbar</p>";
 	}
 
 	echo $rollencode;

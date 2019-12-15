@@ -46,10 +46,12 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 	$anzahl['-'] = 0;
 	$anzahl[1] = 0;
 	$dbp = cms_verbinden('p');
-	if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
-		while ($daten = $anfrage->fetch_assoc()) {$anzahl[$daten['gelesen']] = $daten['anzahl'];}
-		$anfrage -> free();
+	$sql = $dbp->prepare($sql);
+	if ($sql->execute()) {
+		$sql->bind_result($gelesen, $anzgelesen);
+		while ($sql->fetch()) {$anzahl[$gelesen] = $anzgelesen;}
 	}
+	$sql->close();
 	cms_trennen($dbp);
 	$gesamt = $anzahl['-'] + $anzahl[1];
 	$meldezahl = "";

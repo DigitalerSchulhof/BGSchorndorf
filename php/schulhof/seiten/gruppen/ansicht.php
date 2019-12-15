@@ -109,7 +109,7 @@ if (!$fehler) {
 				else if ($CMS_BENUTZERART == 's') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Schüler dürfen $g Mitglieder schreiben"];}
 				else if ($CMS_BENUTZERART == 'v') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Verwaltungsangestellte dürfen $g Mitglieder schreiben"];}
 				else if ($CMS_BENUTZERART == 'x') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Externe dürfen $g Mitglieder schreiben"];}
-				else {$$allenschreiben = false;}
+				else {$allenschreiben = false;}
 				if ($GRUPPENRECHTE['mitglied'] && $allenschreiben) {$code .= "<li><span onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('gruppe', '', '', '', '$g', '$gruppenid')\" class=\"cms_button\">Allen schreiben</span></li> ";}
 				if ($GRUPPENRECHTE['bearbeiten']) {
 					$code .= "<li><a class=\"cms_button\" onclick=\"cms_gruppen_bearbeiten_vorbereiten('$g', '$gruppenid', '$CMS_URLGANZ')\">Gruppe bearbeiten</a> </li> ";
