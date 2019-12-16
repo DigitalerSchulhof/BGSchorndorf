@@ -160,7 +160,7 @@ function cms_personengruppe_ausgeben($dbs, $gk, $gruppenid, $schreibpool, $perso
 				$code .= "<li><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto();\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";
 			}
 			else if (in_array($pid, $schreibpool)) {
-				$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";
+				$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";
 			}
 			else {
 				$code .= "<li><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben();\">".cms_generiere_anzeigename($pvor, $pnach, $ptitel)."</span></li> ";

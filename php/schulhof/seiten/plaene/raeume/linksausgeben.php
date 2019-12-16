@@ -6,15 +6,16 @@ function cms_schulhof_raeume_links_anzeigen () {
   if ($CMS_RECHTE['Planung']['Räume sehen']) {
 
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      while ($daten = $anfrage->fetch_assoc()) {
-        $anzeigename = $daten['bezeichnung'];
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;");
+    if ($sql->execute()) {
+      $sql->bind_result($rid, $rbez);
+      while ($sql->fetch()) {
+        $anzeigename = $rbez;
         $anzeigenamelink = cms_textzulink($anzeigename);
         $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Räume/$anzeigenamelink\">".$anzeigename."</a></li> ";
       }
-      $anfrage->free();
     }
+    $sql->close();
     cms_trennen($dbs);
     if ($CMS_RECHTE['Organisation']['Räume anlegen']) {
       $ausgabe .= "<li><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Räume/Neuen_Raum_anlegen\">+ Neuen Raum anlegen</a></li>";

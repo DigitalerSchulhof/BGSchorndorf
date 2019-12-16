@@ -11,24 +11,24 @@ if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 	 		(($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '1') && ($CMS_BENUTZERART == 's'))) {
 		$stundenplan = "";
 		if ($CMS_BENUTZERART == 'l') {
-			$sql = "SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = $CMS_BENUTZERID";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()) {
-					$stundenplan = $daten['stundenplan'];
-				}
-				$anfrage->free();
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = ?");
+			$sql->bind_param("i", $CMS_BENUTZERID);
+			if ($sql->execute()) {
+				$sql->bind_result($studenplan);
+				$sql->fetch();
 			}
+			$sql->close();
 			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_lehrerplan_aus_datei($stundenplan);
 		}
 		else if ($CMS_BENUTZERART == 's') {
-			$sql = "SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplan FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE person = $CMS_BENUTZERID AND schuljahr = $schuljahr";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()) {
-					$stundenplan = $daten['stundenplan'];
-				}
-				$anfrage->free();
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplan FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE person = ? AND schuljahr = ?");
+			$sql->bind_param("ii", $CMS_BENUTZERID, $schuljahr);
+			if ($sql->execute()) {
+				$sql->bind_result($studenplan);
+				$sql->fetch();
 			}
+			$sql->close();
 			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_klassenplan_aus_datei($stundenplan);
 		}

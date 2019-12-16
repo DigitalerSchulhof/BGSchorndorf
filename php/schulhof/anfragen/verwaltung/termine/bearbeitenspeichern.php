@@ -68,7 +68,7 @@ if (cms_angemeldet() && $zugriff) {
       if (cms_check_idliste($idsk)) {
         $anzahl = count(explode(',', $ids));
         $sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $idsk");
-        if ($dbs->execute()) {
+        if ($sql->execute()) {
           $sql->bind_result($checkanzahl);
           if ($sql->fetch()) {
             if ($checkanzahl != $anzahl) {$fehler = true;}

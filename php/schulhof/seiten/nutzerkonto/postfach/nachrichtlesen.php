@@ -47,23 +47,21 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			// Nachricht laden
 			$db = cms_verbinden('ü');
 			$sql = "SELECT absender, empfaenger, zeit, AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') AS papierkorb, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel,";
-			$sql .= " erstellt$spalten FROM $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID.id = $id";
-			if ($anfrage = $db->query($sql)) {	// Safe weil ID Check
-				if ($daten = $anfrage->fetch_assoc()) {
+			$sql .= " erstellt$spalten FROM $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE $CMS_DBP_DB.post$modus"."_$CMS_BENUTZERID.id = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $id);
+			if ($sql->execute()) {
+				if ($modus == 'eingang') {$sql->bind_result($absender, $empfaenger, $zeit, $betreff, $nachricht, $papierkorb, $pvor, $pnach, $ptitel, $perstellt, $ealle);}
+				else {$sql->bind_result($absender, $empfaenger, $zeit, $betreff, $nachricht, $papierkorb, $pvor, $pnach, $ptitel, $perstellt);}
+				if ($sql->fetch()) {
 					$gefunden = true;
-					$absender = $daten['absender'];
-					$empfaenger = $daten['empfaenger'];
-					$zeit = $daten['zeit'];
 					$datum = date('d.m.Y H:i', $zeit);
-					$betreff = $daten['betreff'];
-					$nachricht = $daten['nachricht'];
-					$papierkorb = $daten['papierkorb'];
-					if ($zeit > $daten['erstellt']) {$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);}
+					if ($zeit > $perstellt) {$anzeigename = cms_generiere_anzeigename($pvor, $pnach, $ptitel);}
 					else {$anzeigename = "<i>existiert nicht mehr</i>";}
-					if ($modus == 'eingang') {$empfaenger = $daten['alle'];}
+					if ($modus == 'eingang') {$empfaenger = $ealle;}
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 			cms_trennen($db);
 		}
 
@@ -75,16 +73,21 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			$code .= "</p>";
 
 			// Empfänger laden
-			$empf = str_replace('|', ',', substr($empfaenger, 1));
+			$empf = "(".str_replace('|', ',', substr($empfaenger, 1)).")";
 			$empfaengercode = "";
-			$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, erstellt FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id IN ($empf)";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
-				while ($daten = $anfrage->fetch_assoc()) {
-					if ($zeit > $daten['erstellt']) {$empfaengercode .= ", ".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);}
-					else {$empfaengercode .= ", "."<i>existiert nicht mehr</i>";}
+			if (cms_check_idliste($empf)) {
+				$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, erstellt FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id IN $empf");
+				if ($sql->execute()) {
+					$sql->bind_result($evor, $enach, $etitel, $eerstellt);
+					while ($sql->fetch()) {
+						if ($zeit > $eerstellt) {$empfaengercode .= ", ".cms_generiere_anzeigename($evor, $enach, $etitel);}
+						else {$empfaengercode .= ", "."<i>existiert nicht mehr</i>";}
+					}
 				}
-				$anfrage->free();
+				$sql->close();
 			}
+
+
 
 			if (strlen($empfaengercode) > 0) {$empfaengercode = substr($empfaengercode,2);}
 
@@ -120,23 +123,27 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 			// Verwendete Tags
 			$code .= "<p>";
 			$dbp = cms_verbinden('p');
-			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id IN (SELECT tag AS id FROM postgetagged$modus"."_$CMS_BENUTZERID WHERE nachricht = $id)) AS tags ORDER BY titel ASC;";
-			if ($anfrage = $dbp->query($sql)) {	// Safe weil ID Check
-				while ($daten = $anfrage->fetch_assoc()) {
-					$code .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_postfach_nachricht_taggen(0, ".$daten['id'].")\">".$daten['titel']."</span> ";
+			$sql = $dbp->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id IN (SELECT tag AS id FROM postgetagged$modus"."_$CMS_BENUTZERID WHERE nachricht = ?)) AS tags ORDER BY titel ASC;");
+			$sql->bind_param("i", $id);
+			if ($sql->execute()) {
+				$sql->bind_result($tid, $ttit);
+				while ($sql->fetch()) {
+					$code .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_postfach_nachricht_taggen(0, $tid)\">$ttit</span> ";
 					$tagzahl++;
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 			// Nichtverwendete Tags
-			$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id NOT IN (SELECT tag AS id FROM postgetagged$modus"."_$CMS_BENUTZERID WHERE nachricht = $id)) AS tags ORDER BY titel ASC;";
-			if ($anfrage = $dbp->query($sql)) {	// Safe weil ID Check
-				while ($daten = $anfrage->fetch_assoc()) {
-					$code .= "<span class=\"cms_toggle\" onclick=\"cms_postfach_nachricht_taggen(1, ".$daten['id'].")\">".$daten['titel']."</span> ";
+			$sql = $dbp->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id NOT IN (SELECT tag AS id FROM postgetagged$modus"."_$CMS_BENUTZERID WHERE nachricht = ?)) AS tags ORDER BY titel ASC;");
+			$sql->bind_param("i", $id);
+			if ($sql->execute()) {
+				$sql->bind_result($tid, $ttit);
+				while ($sql->fetch()) {
+					$code .= "<span class=\"cms_toggle\" onclick=\"cms_postfach_nachricht_taggen(1, $tid)\">$ttit</span> ";
 					$tagzahl++;
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 			cms_trennen($dbp);
 			$code .= "</p>";
 

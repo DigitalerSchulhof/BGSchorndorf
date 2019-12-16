@@ -6,15 +6,16 @@ function cms_schulhof_leihgeraete_links_anzeigen () {
   if ($CMS_RECHTE['Planung']['Leihgeräte sehen']) {
 
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihen WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      while ($daten = $anfrage->fetch_assoc()) {
-        $anzeigename = $daten['bezeichnung'];
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihen WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;");
+    if ($sql->execute()) {
+      $sql->bind_result($lid, $lbez);
+      while ($sql->fetch()) {
+        $anzeigename = $lbez;
         $anzeigenamelink = cms_textzulink($anzeigename);
         $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Leihgeräte/$anzeigenamelink\">".$anzeigename."</a></li> ";
       }
-      $anfrage->free();
     }
+    $sql->close();
     cms_trennen($dbs);
     if ($CMS_RECHTE['Organisation']['Leihgeräte anlegen']) {
       $ausgabe .= "<li><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Leihgeräte/Neue_Leihgeräte_anlegen\">+ Neue Leihgeräte anlegen</a></li>";

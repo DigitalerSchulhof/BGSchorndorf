@@ -11,16 +11,18 @@ include_once('php/schulhof/seiten/notifikationen/notifikationen.php');
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
 $dbs = cms_verbinden('s');
 $jetzt = time();
-$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= $jetzt AND ende >= $jetzt";
-if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-	if ($daten = $anfrage->fetch_assoc()) {
-		if ($daten['id'] != $CMS_BENUTZERSCHULJAHR) {
-			$button = "<span class=\"cms_button\" onclick=\"cms_schulhof_nutzerkonto_schuljahr_einstellen(".$daten['id'].")\">".$daten['bezeichnung']."</span>";
-			echo cms_meldung('warnung', '<p>Es ist nicht das aktuelle Schuljahr ausgewählt. Damit die Gruppen und Ansprechpartner aktuell sind, muss das Schuljahr <b>'.$daten['bezeichnung'].'</b> ausgewählt werden:</p><p>'.$button.'</p>');
+$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= ? AND ende >= ?");
+$sql->bind_param("ii", $jetzt, $jetzt);
+if ($sql->execute()) {
+	$sql->bind_result($sjid, $sjbez);
+	if ($sql->fetch()) {
+		if ($sjid != $CMS_BENUTZERSCHULJAHR) {
+			$button = "<span class=\"cms_button\" onclick=\"cms_schulhof_nutzerkonto_schuljahr_einstellen($sjid)\">$sjbez</span>";
+			echo cms_meldung('warnung', '<p>Es ist nicht das aktuelle Schuljahr ausgewählt. Damit die Gruppen und Ansprechpartner aktuell sind, muss das Schuljahr <b>'.$sjbez.'</b> ausgewählt werden:</p><p>'.$button.'</p>');
 		}
 	}
-	$anfrage->free();
 }
+$sql->close();
 
 /* Direkt nach der Anmeldung letzten Login ausgeben */
 if (isset($_SESSION['LETZTENLOGINANZEIGEN'])) {$letzterlogin = $_SESSION['LETZTENLOGINANZEIGEN'];} else {$letzterlogin = '-';}
@@ -50,27 +52,29 @@ $neuigkeiten = "";
 // Ungelesene Nachrichten auslesen
 $db = cms_verbinden('ü');
 $sql = "$CMS_DBP_DB.posteingang_$CMS_BENUTZERID.id AS id, AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, zeit, erstellt";
-$sql = "SELECT $sql FROM $CMS_DBP_DB.posteingang_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE gelesen = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND empfaenger = $CMS_BENUTZERID";
-if ($anfrage = $db->query($sql)) {	// Safe weil keine Eingabe
-	while ($daten = $anfrage->fetch_assoc()) {
-		if ($daten['zeit'] > $daten['erstellt']) {$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);}
+$sql = $dbs->prepare("SELECT $sql FROM $CMS_DBP_DB.posteingang_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE gelesen = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND empfaenger = ?");
+$sql->bind_param("i", $CMS_BENUTZERID);
+if ($sql->execute()) {
+	$sql->bind_result($nid, $nbetreff, $nnachricht, $nvor, $nnach, $ntitel, $nzeit, $nerstellt);
+	while ($sql->fetch()) {
+		if ($nzeit > $nerstellt) {$anzeigename = cms_generiere_anzeigename($nvor, $nnach, $ntitel);}
 		else {$anzeigename = "Nutzerkonto existiert nicht mehr";}
-		$nachricht = explode(' ', $daten['nachricht']);
+		$nachricht = explode(' ', $nnachricht);
 		if (count($nachricht) > 20) {$nachricht = array_splice($nachricht,0,20);}
 		$nachricht = strip_tags(implode(' ', $nachricht));
-		$betreffevent = cms_texttrafo_e_event($daten['betreff']);
-		$tag = cms_tagname(date ("w", $daten['zeit']));
-		$datum = date ("d.m.Y", $daten['zeit']);
-		$uhrzeit = date ("H:i", $daten['zeit']);
-		$lesen = "cms_postfach_nachricht_lesen('eingang', '".$anzeigename."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$daten['id']."')";
+		$betreffevent = cms_texttrafo_e_event($nbetreff);
+		$tag = cms_tagname(date ("w", $nzeit));
+		$datum = date ("d.m.Y", $nzeit);
+		$uhrzeit = date ("H:i", $nzeit);
+		$lesen = "cms_postfach_nachricht_lesen('eingang', '".$anzeigename."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '$nid')";
 		$neuigkeiten .= "<li class=\"cms_neuigkeit cms_postneuigkeit\" onclick=\"$lesen\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/nachricht.png\"></span>";
 		$neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Postfach<br>Neue Nachricht</h4>";
-		$neuigkeiten .= "<p>".$daten['betreff']."</p><p class=\"cms_neuigkeit_vorschau\">$tag $datum um $uhrzeit von $anzeigename</p>";
+		$neuigkeiten .= "<p>$nbetreff</p><p class=\"cms_neuigkeit_vorschau\">$tag $datum um $uhrzeit von $anzeigename</p>";
 		$neuigkeiten .= "<p class=\"cms_neuigkeit_vorschau\">".$nachricht."</p>";
 		$neuigkeiten .= "</span></li>";
 	}
-	$anfrage->free();
 }
+$sql->close();
 if (strlen($neuigkeiten) > 0) {$neuigkeiten = "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 cms_trennen($db);
 
@@ -201,13 +205,12 @@ if (strlen($sonderrollencodeverwaltung) != 0) {
 if ($CMS_RECHTE['Persönlich']['Notizen anlegen']) {
 	$code = "<h2>Notizen</h2>";
 	$notizen = "";
-	$sql = "SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID";
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-		if ($daten = $anfrage->fetch_assoc()) {
-			$notizen = $daten['notizen'];
-		}
-		$anfrage->free();
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");
+	if ($sql->execute()) {
+		$sql->bind_result($notizen);
+		$sql->fetch();
 	}
+	$sql->close();
 
 	if (strlen($notizen) == 0) {$zusatzklasse = " cms_notizzettelleer";} else {$zusatzklasse = "";}
 	$code .= "<p><textarea id=\"cms_persoenlichenotizen\" class=\"cms_notizzettel$zusatzklasse\">$notizen</textarea></p>";

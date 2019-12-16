@@ -35,13 +35,13 @@ function cms_termin_link_ausgeben($dbs, $daten, $internvorlink = "") {
 	// Prüfen, ob Downloads vorliegen
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
-		$sql = "SELECT COUNT(*) AS anzahl FROM terminedownloads WHERE termin = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-			if ($downloads = $anfrage->fetch_assoc()) {
-				$downloadanzahl = $downloads['anzahl'];
-			}
-			$anfrage->free();
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM terminedownloads WHERE termin = ?");
+		$sql->bind_param("i", $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($downloadanzahl);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
@@ -78,16 +78,18 @@ function cms_termin_zusatzinfo($dbs, $daten) {
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
 			$sqlsolo =
-			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."termine ON $gk.id = $gk"."termine.gruppe WHERE termin = ".$daten['id'].")";
+			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."termine ON $gk.id = $gk"."termine.gruppe WHERE termin = ?)";
 		}
 		$sql = substr($sql, 7);
-		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
+		$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
+		$sql->bind_param("iiiiiiiiiii", $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($tbez, $ticon);
+			while ($sql->fetch()) {
+				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$ticon')\">$tbez</span> ";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 	}
 	if (($daten['art'] == 'f') || ($daten['art'] == 'b') || ($daten['art'] == 't') || ($daten['art'] == 's')) {
 		if ($daten['art'] == 'f') {$icon = 'ferien.png'; $feriengruppe = "Ferien";}

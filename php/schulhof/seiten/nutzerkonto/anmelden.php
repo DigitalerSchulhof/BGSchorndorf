@@ -47,8 +47,8 @@ if ($anmeldung_moeglich) {
 }
 else {
 	$dbs = cms_verbinden('s');
-	$sql = "UPDATE nutzerkonten SET sessiontimeout = 0, sessionid = ''";
-	$dbs->query($sql);	// Safe weil keine Eingabe
+	$sql = $dbs->prepare("UPDATE nutzerkonten SET sessiontimeout = 0, sessionid = ''");
+	$sql->execute();
 	$meldung = "<h4>Wartung des Schulhofs</h4>";
 	$meldung .= "<p>Der Schulhof wird momentan gewartet. Daher sind keine Anmeldungen möglich. Aktive Benutzer wurden abgemeldet.</p>";
 	$code .= cms_meldung('bauarbeiten', $meldung);

@@ -47,26 +47,21 @@ else {
 			// Zählen wie viele Nachrichten vorhanden
 			$dbp = cms_verbinden('p');
 
-			$sql = "SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;";
-
-			//echo $sql;
-
+			$sql = $dbp->prepare("SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;");
 			$anzahl['-'] = 0;
 			$anzahl[1] = 0;
-
-			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
-				while ($daten = $anfrage->fetch_assoc()) {
-					$anzahl[$daten['gelesen']] = $daten['anzahl'];
+			if ($sql->execute()) {
+				$sql->bind_result($pngelesen, $pnganzahl);
+				while ($sql->fetch()) {
+					$anzahl[$pngelesen] = $pnganzahl;
 				}
-				$anfrage -> free();
 			}
+			$sql->close();
 
 			$gesamt = $anzahl['-'] + $anzahl[1];
 
-			$text = "Nachrichten";
-			if ($gesamt == 1) {
-				$text = "Nachricht";
-			}
+			if ($gesamt == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p><b>".$anzahl['-']." neue</b> von $gesamt $text</p>";
 			?>
@@ -77,21 +72,16 @@ else {
 			<h3>Entwürfe</h3>
 			<?php
 
-			$sql = "SELECT COUNT(*) AS anzahl FROM postentwurf_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'";
-
+			$sql = $dbp->prepare("SELECT COUNT(*) AS anzahl FROM postentwurf_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'");
 			$anzahl = 0;
-
-			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()){
-					$anzahl = $daten['anzahl'];
-				}
-				$anfrage -> free();
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				$sql->fetch();
 			}
+			$sql->close();
 
-			$text = "Nachrichten";
-			if ($anzahl == 1) {
-				$text = "Nachricht";
-			}
+			if ($anzahl == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p>$anzahl $text</p>";
 			?>
@@ -102,21 +92,16 @@ else {
 			<h3>Postausgang</h3>
 			<?php
 
-			$sql = "SELECT COUNT(*) AS anzahl FROM postausgang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'";
-
+			$sql = $dbp->prepare("SELECT COUNT(*) AS anzahl FROM postausgang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'");
 			$anzahl = 0;
-
-			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()){
-					$anzahl = $daten['anzahl'];
-				}
-				$anfrage -> free();
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				$sql->fetch();
 			}
+			$sql->close();
 
-			$text = "Nachrichten";
-			if ($anzahl == 1) {
-				$text = "Nachricht";
-			}
+			if ($anzahl == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p>$anzahl $text</p>";
 			?>
@@ -130,20 +115,16 @@ else {
 
 			$sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '1') UNION ALL (SELECT COUNT(*) AS anzahl FROM postentwurf_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '1') UNION ALL ";
 			$sql.= "(SELECT COUNT(*) AS anzahl FROM postausgang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '1')) AS nachrichtenpapierkorb";
-
+			$sql = $dbp->prepare($sql);
 			$anzahl = 0;
-
-			if ($anfrage = $dbp->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()){
-					$anzahl = $daten['anzahl'];
-				}
-				$anfrage -> free();
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				$sql->fetch();
 			}
+			$sql->close();
 
-			$text = "Nachrichten";
-			if ($anzahl == 1) {
-				$text = "Nachricht";
-			}
+			if ($anzahl == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p>$anzahl $text</p>";
 
