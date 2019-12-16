@@ -406,6 +406,7 @@ artikel:
     termine: Termine genehmigen
     galerien: Galerien genehmigen
   öffentlich: # Auf der Website und im Schulhof
+    knotenname: "Sichtbarkeit: Öffentlich"
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten
@@ -419,6 +420,7 @@ artikel:
       bearbeiten: Galerien bearbeiten
       löschen: Galerien löschen
   schulhof: # Nur im Schulhof
+    knotenname: "Sichtbarkeit: Schulhof"
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten
@@ -432,6 +434,7 @@ artikel:
       bearbeiten: Galerien bearbeiten
       löschen: Galerien löschen
   lehrer: # Nur für Lehrer
+    knotenname: "Sichtbarkeit: Lehrer"
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten
@@ -445,7 +448,7 @@ artikel:
       bearbeiten: Galerien bearbeiten
       löschen: Galerien löschen
   lehrerundverwaltung: # Nur für Lehrer und Verwaltungsangestellte
-    knotenname: Lehrer und Verwaltungsangestellte
+    knotenname: "Sichtbarkeit: Lehrer und Verwaltungsangestellte"
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten

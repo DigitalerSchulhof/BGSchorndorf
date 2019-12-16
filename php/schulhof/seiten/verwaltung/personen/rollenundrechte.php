@@ -69,8 +69,8 @@ else {
 
 				$cms_desnutzersrechte = array();
 				$cms_derrollerechte = array();
-				cms_rechte_laden_n($id, $cms_desnutzersrechte);
-				cms_rechte_laden_r($id, $cms_derrollerechte);
+				cms_rechte_laden_nutzer($id, $cms_desnutzersrechte);
+				cms_rechte_laden_rollen($id, $cms_derrollerechte);
 
 				$recht_machen = function($pfad, $recht, $kinder = null, $unterstes = false) use (&$recht_machen, $cms_desnutzersrechte, $cms_derrollerechte) {
 					$code = "";
@@ -125,6 +125,7 @@ else {
 				echo "<div class=\"cms_spalte_2\">";
 					echo "<span class=\"cms_button_ja\" onclick=\"cms_rechte_speichern()\">Speichern</span> <span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Personen')\">Abbrechen</span>";
 					echo "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+					echo "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this)\">Alle ausklappen</span>";
 				echo "</div>";
 				echo "<div class=\"cms_spalte_2\">";
 					echo "<h3>Legende</h3>";

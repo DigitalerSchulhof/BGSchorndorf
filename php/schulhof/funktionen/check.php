@@ -163,8 +163,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 	global $CMS_SCHLUESSEL;
 	cms_allerechte_laden();
 
-	cms_rechte_laden_n($aktiverbenutzer);
-	cms_rechte_laden_r($aktiverbenutzer);
+	cms_rechte_laden_nutzer($aktiverbenutzer);
+	cms_rechte_laden_rollen($aktiverbenutzer);
 	// Verbindung zur Datenbank herstellen
 	$BENUTZERIDTEST = "-";
 	$BENUTZERARTTEST = "-";

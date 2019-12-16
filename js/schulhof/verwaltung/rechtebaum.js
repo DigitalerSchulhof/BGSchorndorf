@@ -3,6 +3,7 @@ $(document).ready(function() {
     $(this).toggleClass("cms_recht_eingeklappt");
     $(this).siblings(".cms_rechtekinder").slideToggle("slow");
   });
+  $("#cms_rechtepapa>.cms_recht>.icon").removeClass("icon");
   $(".cms_recht_beschreibung").click(function() {
     var r = $(this).parent(".cms_recht:not(.cms_recht_rolle)");
     if(!r.length)
@@ -69,4 +70,14 @@ function cms_rechte_speichern() {
   }
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_alle_rechte_ausklappen(box) {
+  if($(box).html() == "Alle ausklappen") {
+    $(".cms_recht>.icon").removeClass("cms_recht_eingeklappt").siblings(".cms_rechtekinder").slideDown("slow");
+    $(box).html("Alle einklappen");
+  } else {
+    $(".cms_recht>.icon").addClass("cms_recht_eingeklappt").siblings(".cms_rechtekinder").slideUp("slow");
+    $(box).html("Alle ausklappen");
+  }
 }
