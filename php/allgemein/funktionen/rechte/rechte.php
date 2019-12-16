@@ -85,6 +85,10 @@
     global $CMS_SCHLUESSEL, $cms_nutzerrechte, $cms_allerechte;
     if(!RECHTEPRUEFEN && $cms_nutzerrechte === true)  // Alle Rechte
       return true;
+
+    if($recht === "*" && count($cms_nutzerrechte))
+      return true;
+
     $dbs = cms_verbinden("s");
 
     $person = $_SESSION['BENUTZERID'];
@@ -132,7 +136,7 @@
       $ergebnisse[$p] = $hat ? "1" : "0";
     }
     if(RECHTEPRUEFEN && $cms_nutzerrechte === true)  // Alle Rechte
-    return true;
+      return true;
     $rechte = explode(" ", $recht);
     foreach($ergebnisse as $i => $e)
       $rechte[$i] = $e;
