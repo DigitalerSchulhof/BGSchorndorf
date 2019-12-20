@@ -8,6 +8,8 @@ $gremienklassen = false;
 $postfachordner = false;
 $update = false;
 
+// Hi
+
 $personen = array("Lehrer", "Verwaltungsangestellte", "Schüler", "Eltern", "Externe");
 $gruppen = array("Gremien", "Fachschaften", "Klassen", "Kurse", "Stufen", "Arbeitsgemeinschaften", "Arbeitskreise", "Fahrten", "Wettbewerbe", "Ereignisse", "Sonstige Gruppen");
 $raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
