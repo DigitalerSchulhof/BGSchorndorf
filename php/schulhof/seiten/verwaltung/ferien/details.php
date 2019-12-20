@@ -16,16 +16,13 @@ function cms_ferien_details_laden($id) {
   // Falls ein bestehender Ferientermin geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = "SELECT * FROM ferien WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-			if ($daten = $anfrage->fetch_assoc()) {
-        $bez = $daten['bezeichnung'];
-        $art = $daten['art'];
-        $beginn = $daten['beginn'];
-        $ende = $daten['ende'];
-			}
-			$anfrage->free();
+	  $sql = $dbs->prepare("SELECT * FROM ferien WHERE id = ?");
+    $sql->bind_param("i", $id);
+		if ($sql->execute()) {
+      $sql->bind_result($id, $bez, $art, $beginn, $ende, $mehrtaegigt, $idvon, $idzeit);
+			$sql->fetch();
 		}
+    $sql->close();
   }
 
 	if ($fehler) {$zugriff = false;}

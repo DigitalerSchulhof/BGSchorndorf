@@ -24,17 +24,18 @@ $jahranfang = $jahrgewaehlt;
 $jahrende = $jahrgewaehlt;
 $jahre = false;
 
-$sql = "SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM ferien";
-if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-  if ($daten = $anfrage->fetch_assoc()) {
-    if (!is_null($daten['anfang'])) {
-      $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);
-      $jahrende = max(date('Y', $daten['ende']), $jahrende);
+$sql = $dbs->prepare("SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM ferien");
+if ($sql->execute()) {
+  $sql->bind_result($fbeginn, $fende);
+  if ($sql->fetch()) {
+    if (!is_null($fbeginn)) {
+      $jahranfang = min(date('Y', $fbeginn), $jahranfang);
+      $jahrende = max(date('Y', $fende), $jahrende);
       $jahre = true;
     }
   }
-  $anfrage->free();
 }
+$sql->close();
 
 $spalten = 7;
 $aktionen = false;

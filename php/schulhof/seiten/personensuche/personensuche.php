@@ -51,7 +51,7 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
             $code .= "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('$id', '$pid', '".$gruppe."')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
             $code .= "</tr>";
             $vorsitzwert = 0;
-            if (in_array($pid, $vorsitzarray)) {$vorsitzwert = 1;}
+            if (in_array($pid."", $vorsitzarray)) {$vorsitzwert = 1;}
             $vorsitzcode .= cms_togglebutton_generieren($id."_personensuche_vorsitz_".$pid, $pname, $vorsitzwert, "cms_personensuche_vorsitz_aktualisieren('$id')")." ";
           }
         }

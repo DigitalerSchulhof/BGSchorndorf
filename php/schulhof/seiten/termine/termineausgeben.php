@@ -272,13 +272,23 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 		$downloads = array();
 		// Downloads suchen
-		$sql = "SELECT * FROM (SELECT id, termin, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE termin = ".$termin['id'].") AS x ORDER BY titel ASC";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			while ($daten = $anfrage->fetch_assoc()) {
-				array_push($downloads, $daten);
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, termin, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE termin = ?) AS x ORDER BY titel ASC");
+		$sql -> bind_param("i", $termin['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($did, $dtermin, $dpfad, $dtitel, $dbeschreibung, $ddateiname, $ddateigroesse);
+			while ($sql->fetch()) {
+				$D = array();
+				$D['id'] = $did;
+				$D['termin'] = $dtermin;
+				$D['pfad'] = $dpfad;
+				$D['titel'] = $dtitel;
+				$D['beschreibung'] = $dbeschreibung;
+				$D['dateiname'] = $ddateiname;
+				$D['dateigroesse'] = $ddateigroesse;
+				array_push($downloads, $D);
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 
 		$aktionen = "";
 		if ($CMS_URL[0] == "Schulhof") {
@@ -293,7 +303,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termin_ablehnen('Termine', '".$termin['id']."', '$linkl')\">Termin ablehnen</span> ";
 				}
 				if ($CMS_RECHTE['Website']['Termine löschen']) {
-					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termine_loeschen_vorbereiten('".$termin['id']."', '".$daten['bezeichnung']."', '$linkl')\">Termin löschen</span> ";
+					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termine_loeschen_vorbereiten('".$termin['id']."', '".$termin['bezeichnung']."', '$linkl')\">Termin löschen</span> ";
 				}
 			}
 			else if ($termin['art'] == 'in') {
@@ -402,6 +412,8 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 
 function cms_nachste_termine_ausgeben($anzahl) {
 	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART;
+	if (!cms_check_ganzzahl($anzahl, 0)) {return "";}
+
 	$code = "";
 	$jetzt = time();
 
@@ -434,30 +446,52 @@ function cms_nachste_termine_ausgeben($anzahl) {
 
 	$dbs = cms_verbinden('s');
 	$sqlferien = "SELECT id, '' AS gruppenart, '' AS gruppe, art, 1 AS genehmigt, bezeichnung, '' AS ort, beginn, ende, mehrtaegigt, 0 AS uhrzeitbt, 0 AS uhrzeitet, 0 AS ortt, 4 AS oeffentlichkeit, '' AS text FROM ferien WHERE ende > $jetzt LIMIT ".$anzahl;
-	$sql = "SELECT DISTINCT * FROM (($sqlgruppen) UNION ($sqltermine) UNION ($sqlferien) UNION $sqlintern) AS x ORDER BY beginn ASC, ende ASC LIMIT ".$anzahl;
+	$sql = $dbs->prepare("SELECT DISTINCT * FROM (($sqlgruppen) UNION ($sqltermine) UNION ($sqlferien) UNION $sqlintern) AS x ORDER BY beginn ASC, ende ASC LIMIT ".$anzahl);
 
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen ($anzahl)
+	$TERMINE = array();
+	if ($sql->execute()) {
 		include_once('php/schulhof/seiten/termine/termineausgeben.php');
-		while ($daten = $anfrage->fetch_assoc()) {
-			$internvorlink = "";
-			if ($daten['art'] == 'in') {
-				$g = $daten['gruppenart'];
-				$gk = cms_textzudb($g);
-				$gid = $daten['gruppe'];
-				$sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = $gid";
-				if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
-					if ($daten2 = $anfrage2->fetch_assoc()) {
-						$schuljahrbez = $daten2['sbez'];
-						$gbez = $daten2['gbez'];
-						if (is_null($schuljahrbez)) {$schuljahrbez = "Schuljahrübergreifend";}
-						$internvorlink = "Schulhof/Gruppen/".cms_textzulink($schuljahrbez)."/".cms_textzulink($g)."/".cms_textzulink($gbez);
-					}
-					$anfrage2->free();
+		$sql->bind_result($tid, $tgruppenart, $tgruppe, $tart, $tgenehmigt, $tbezeichnung, $tort, $tbeginn, $tende, $tmehrtaegigt, $tuhrzeitbt, $tuhrzeitet, $tortt, $toeffentlichkeit, $ttext);
+		while ($sql->fetch()) {
+			$T = array();
+			$T['id'] = $tid;
+			$T['gruppenart'] = $tgruppenart;
+			$T['gruppe'] = $tgruppe;
+			$T['art'] = $tart;
+			$T['genehmigt'] = $tgenehmigt;
+			$T['bezeichnung'] = $tbezeichnung;
+			$T['ort'] = $tort;
+			$T['beginn'] = $tbeginn;
+			$T['ende'] = $tende;
+			$T['mehrtaegigt'] = $tmehrtaegigt;
+			$T['uhrzeitbt'] = $tuhrzeitbt;
+			$T['uhrzeitet'] = $tuhrzeitet;
+			$T['ortt'] = $tortt;
+			$T['oeffentlichkeit'] = $toeffentlichkeit;
+			$T['text'] = $ttext;
+			array_push($TERMINE, $T);
+		}
+	}
+	$sql->close();
+
+	foreach ($TERMINE as $T) {
+		$internvorlink = "";
+		if ($T['art'] == 'in') {
+			$g = $T['gruppenart'];
+			$gk = cms_textzudb($g);
+			$gid = $T['gruppe'];
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = ?");
+			$sql->bind_param("i", $gid);
+			if ($sql->execute()) {
+				$sql->bind_result($schuljahrbez, $gbez);
+				if ($sql->fetch()) {
+					if (is_null($schuljahrbez)) {$schuljahrbez = "Schuljahrübergreifend";}
+					$internvorlink = "Schulhof/Gruppen/".cms_textzulink($schuljahrbez)."/".cms_textzulink($g)."/".cms_textzulink($gbez);
 				}
 			}
-			$code .= cms_termin_link_ausgeben($dbs, $daten, $internvorlink);
+			$sql->close();
 		}
-		$anfrage->free();
+		$code .= cms_termin_link_ausgeben($dbs, $T, $internvorlink);
 	}
 	cms_trennen($dbs);
 	return $code;
