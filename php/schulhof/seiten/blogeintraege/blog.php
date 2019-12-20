@@ -64,6 +64,7 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 			$sqlin .= " UNION (SELECT $gk"."blogeintraegeintern.id, AES_DECRYPT($gk"."blogeintraegeintern.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, NULL AS vorschaubild, 'in' AS art, schuljahr, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, '$g' AS gart FROM $gk"."blogeintraegeintern JOIN $gk ON gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID) AND (datum BETWEEN $beginn AND $ende) AND aktiv = 1)";
 		}
 
+		$BLOGS = array();
 		$sql = $dbs->prepare("SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC");
 		// Blogausgabe erzeugen
 		if ($sql->execute()) {
@@ -75,7 +76,7 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 				$B['autor'] = $bautor;
 				$B['datum'] = $bdatum;
 				$B['genehmigt'] = $bgenehmigt;
-				$B['aktiv'] = $baktib;
+				$B['aktiv'] = $baktiv;
 				$B['text'] = $btext;
 				$B['vorschau'] = $bvorschau;
 				$B['vorschaubild'] = $bvorschaubild;
@@ -84,17 +85,20 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 				$B['sjbez'] = $bsjbez;
 				$B['gbez'] = $bgbez;
 				$B['gart'] = $bgart;
-				if ($B['art'] == 'oe') {
-					$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $CMS_URLGANZ);
-				}
-				else if ($B['art'] == 'in') {
-					if (is_null($B['sjbez'])) {$B['sjbez'] = "Schuljahrübergreifend";}
-					$vorlink = "Schulhof/Gruppen/".cms_textzulink($B['sjbez'])."/".cms_textzulink($B['gart'])."/".cms_textzulink($B['gbez']);
-					$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $vorlink);
-				}
-
+				array_push($BLOGS, $B);
 			}
-			$anfrage->free();
+		}
+		$sql->close();
+
+		foreach ($BLOGS AS $B) {
+			if ($B['art'] == 'oe') {
+				$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $CMS_URLGANZ);
+			}
+			else if ($B['art'] == 'in') {
+				if (is_null($B['sjbez'])) {$B['sjbez'] = "Schuljahrübergreifend";}
+				$vorlink = "Schulhof/Gruppen/".cms_textzulink($B['sjbez'])."/".cms_textzulink($B['gart'])."/".cms_textzulink($B['gbez']);
+				$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $vorlink);
+			}
 		}
 	}
 

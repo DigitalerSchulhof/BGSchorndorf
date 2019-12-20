@@ -13,7 +13,6 @@ if (isset($_POST['kennung'])) {$kennung = $_POST['kennung'];} else {echo "FEHLER
 if ($art != 'l') {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$dbl = cms_verbinden('l');
 if (!$fehler) {
   $inhalt = "VPlan".strtoupper($art);
   $gefunden = false;
@@ -96,6 +95,5 @@ if (!$fehler) {
 else {
   echo "FEHLER";
 }
-cms_trennen($dbl);
 cms_trennen($dbs);
 ?>

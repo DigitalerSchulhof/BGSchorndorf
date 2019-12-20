@@ -34,7 +34,7 @@
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
 	//$CMS_VERSION = rand(0,1000000);
-	$CMS_VERSION = "0.5.71";
+	$CMS_VERSION = "0.5.72";
 	$TITELBILDERJS = "";
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
@@ -513,8 +513,9 @@
 				echo "window.onload = function () {".$CMS_ONLOAD_EXTERN_EVENTS."};";
 			echo "</script>";
 		}
-		cms_erfasse_click();
-
+		if ($CMS_URL[0] != 'Intern') {
+			cms_erfasse_click();
+		}
 		?>
 	</div>
 

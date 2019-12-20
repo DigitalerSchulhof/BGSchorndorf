@@ -387,6 +387,7 @@ function cms_erfasse_click() {
 
 
   $website =  !is_null($CMS_SEITENDETAILS)            &&  // Seitendetails
+              (isset($CMS_SEITENDETAILS['id']))  &&  // Gültige Seite
               (strlen($CMS_SEITENDETAILS['id']) > 0)  &&  // Gültige Seite
               (
                 cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) !== "-"                                                    ||  // Website

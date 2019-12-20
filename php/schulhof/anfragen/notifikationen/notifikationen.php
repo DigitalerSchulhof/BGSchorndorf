@@ -151,7 +151,7 @@ function cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spa
       $erlaubtepersonen = "";
       if ($sql->execute()) {
         $sql->bind_result($pid);
-        while ($daten = $anfrage->fetch_assoc()) {
+        while ($sql->fetch()) {
           $erlaubtepersonen .= ",".$pid;
         }
       }
