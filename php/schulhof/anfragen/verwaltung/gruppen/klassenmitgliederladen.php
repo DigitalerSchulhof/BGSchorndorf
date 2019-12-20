@@ -24,13 +24,14 @@ if (cms_angemeldet() && $zugriff) {
 			// Finde Anzahl an Gruppen
 			$sql = "SELECT * FROM (SELECT personen.id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM klassenmitglieder JOIN";
 			$sql .= " personen ON klassenmitglieder.person = personen.id WHERE gruppe IN $klassen) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-
-			if ($anfrage = $dbs->query($sql)) {
-				while ($daten = $anfrage->fetch_assoc()) {
-					$code .= "|".$daten['id'].";".$daten['art'].";".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+			$sql = $dbs->prepare($sql);
+			if ($sql->execute()) {
+				$sql->bind_result($pid, $pvorname, $pnachname, $ptitel, $part)
+				while ($sql->fetch()) {
+					$code .= "|".$pid.";".$part.";".cms_generiere_anzeigename($pvorname, $pnachname, $ptitel);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 		}
 		echo $code;
 	}

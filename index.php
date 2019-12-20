@@ -7,7 +7,6 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
@@ -35,16 +34,15 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.4";
+	//$CMS_VERSION = rand(0,1000000);
+	$CMS_VERSION = "0.5.72";
 	$TITELBILDERJS = "";
-	$CMS_STUNDENDAUER = 45;
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
 	else {
 		$CMS_GERAET = cms_welches_geraet();
-		if (isset($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {
-			if ($_SESSION['DSGVO_COOKIESAKZEPTIERT']) {$_SESSION['GERAET'] = $CMS_GERAET;}
+		if (isset($_SESSION['DSGVO_FENSTERWEG'])) {
+			if ($_SESSION['DSGVO_FENSTERWEG']) {$_SESSION['GERAET'] = $CMS_GERAET;}
 		}
 	}
 
@@ -115,7 +113,7 @@
 		$CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 		$CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 		$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];
-
+		$CMS_BENUTZERFEHLER = !cms_check_sessionvars();
 
 		// Timeout verlängern, da der Nutzer aktiv war
 		if ($_SESSION['SESSIONTIMEOUT'] > time()) {
@@ -192,7 +190,6 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bearbeiten.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/website.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplan.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/vertretungsplan.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/neuigkeiten.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/responsive.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/summernote.css?v=$CMS_VERSION\">";
@@ -202,6 +199,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/rechtebaum.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
@@ -217,12 +215,15 @@
     echo "<script src=\"js/allgemein/check.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/download.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/allgemein/suche.js?v=$CMS_VERSION\"></script>";
+    echo "<script src=\"js/allgemein/contextmenue.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/schulhof/nutzerkonto/anmelden.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/zugehoerig.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
+
+		echo "<script src=\"js/website/newsletter.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/galerien.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für Angemeldete notwendig sind
@@ -261,12 +262,15 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/pinnwaende.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/zeitraeume.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/seiten.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/hauptnavigationen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/dateien.js?v=$CMS_VERSION\"></script>";
@@ -286,6 +290,7 @@
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/newsletter.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/rechtebaum.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
@@ -312,7 +317,6 @@
 					echo "var CMS_NETZCHECK = setInterval('cms_netzcheck()', 30000);\n";
 				}
         echo "var CMS_BENUTZERNAME = '".$_SESSION['BENUTZERNAME']."';\n";
-		    echo "var CMS_SCHULSTUNDENDAUER = $CMS_STUNDENDAUER;\n";
         $iv = substr($CMS_SESSIONID, 0, 16);
 				$nutzerid = openssl_encrypt ($CMS_BENUTZERID, 'aes128', $iv, 0, $iv);
 				echo "var CMS_BENUTZERID = '".$nutzerid."';\n";
@@ -327,21 +331,18 @@
         echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
 				$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
         if ($CMS_IMLN) {
-	        $dbsschluessel = openssl_encrypt ($CMS_SCHLUESSEL, 'aes128', $iv, 0, $iv);
-					$dbshost = openssl_encrypt ($CMS_DBS_HOST, 'aes128', $iv, 0, $iv);
-					$dbsuser = openssl_encrypt ($CMS_DBS_USER, 'aes128', $iv, 0, $iv);
-					$dbspass = openssl_encrypt ($CMS_DBS_PASS, 'aes128', $iv, 0, $iv);
-					$dbsdb = openssl_encrypt ($CMS_DBS_DB, 'aes128', $iv, 0, $iv);
-					echo "var CMS_DBS_HOST = '".$dbshost."';\n";
-					echo "var CMS_DBS_USER = '".$dbsuser."';\n";
-					echo "var CMS_DBS_PASS = '".$dbspass."';\n";
-					echo "var CMS_DBS_DB = '".$dbsdb."';\n";
-					echo "var CMS_DBS_SCHLUESSEL = '".$dbsschluessel."';\n";
 					echo "CMS_IMLN = true;\n";
         }
 				echo "var CMS_GRUPPEN = ['Gremien','Fachschaften','Klassen','Kurse','Stufen','Arbeitsgemeinschaften','Arbeitskreise','Fahrten','Wettbewerbe','Ereignisse','Sonstige Gruppen'];";
 	    }
+
+			// Eigene jQuery-Funktionen
     ?>
+		jQuery.fn.extend({
+			setClass: function(c, v) {
+				return v ? $(this).addClass(c) : $(this).removeClass(c);
+			}
+		});
     </script>
 </head>
 
@@ -366,18 +367,31 @@
 				if ($CMS_SEITENDETAILS) {
 					if (($CMS_SEITENDETAILS['art'] == 'm') && ($CMS_EINSTELLUNGEN['Menüseiten weiterleiten'] == 1) && ($CMS_URL[1] != "Bearbeiten")) {
 						$weitergeleitet = false;
-						$sql = "SELECT * FROM seiten WHERE zuordnung = '".$CMS_SEITENDETAILS['id']."' ORDER BY position ASC";
-						if ($anfrage = $dbs->query($sql)) {
-							while ((!$weitergeleitet) && ($daten = $anfrage->fetch_assoc())) {
-								if ($daten['art'] != 'm') {
+						$sql = $dbs->prepare("SELECT * FROM seiten WHERE zuordnung = ? ORDER BY position ASC");
+						$sql->bind_param("s", $CMS_SEITENDETAILS['id']);
+						if ($sql->execute()) {
+							$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+							while ((!$weitergeleitet) && ($sql->fetch())) {
+								if ($sart != 'm') {
 									$weitergeleitet = true;
-									$CMS_SEITENDETAILS = $daten;
-									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
+									$CMS_SEITENDETAILS['id'] = $sid;
+									$CMS_SEITENDETAILS['art'] = $sart;
+									$CMS_SEITENDETAILS['position'] = $sposition;
+									$CMS_SEITENDETAILS['zuordnung'] = $szuordnung;
+									$CMS_SEITENDETAILS['bezeichnung'] = $sbezeichnung;
+									$CMS_SEITENDETAILS['beschreibung'] = $sbeschreibung;
+									$CMS_SEITENDETAILS['sidebar'] = $ssidebar;
+									$CMS_SEITENDETAILS['status'] = $sstatus;
+									$CMS_SEITENDETAILS['styles'] = $sstyles;
+									$CMS_SEITENDETAILS['klassen'] = $sklassen;
+									$CMS_SEITENDETAILS['idvon'] = $sidvon;
+									$CMS_SEITENDETAILS['idzeit'] = $sidzeit;
+									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 									$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
 								}
 							}
-							$anfrage->free();
 						}
+						$sql->close();
 					}
 					else if (($CMS_SEITENDETAILS['art'] == 't') || ($CMS_SEITENDETAILS['art'] == 'b') || ($CMS_SEITENDETAILS['art'] == 'g')) {
 						$CMS_URL = array();
@@ -398,16 +412,27 @@
 			if ($CMS_URL[1] == 'Termine') {$art = 't';}
 			else if ($CMS_URL[1] == 'Blog') {$art = 'b';}
 			else if ($CMS_URL[1] == 'Galerien') {$art = 'g';}
-			$sql = "SELECT * FROM seiten WHERE art = '$art' ORDER BY position ASC";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					$CMS_SEITENDETAILS = $daten;
-					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
-					//$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
-					//print_r($CMS_URL);
+			$sql = $dbs->prepare("SELECT * FROM seiten WHERE art = ? ORDER BY position ASC");
+			$sql->bind_param("s", $art);
+			if ($sql->execute()) {
+				$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+				if ($sql->fetch()) {
+					$CMS_SEITENDETAILS['id'] = $sid;
+					$CMS_SEITENDETAILS['art'] = $sart;
+					$CMS_SEITENDETAILS['position'] = $sposition;
+					$CMS_SEITENDETAILS['zuordnung'] = $szuordnung;
+					$CMS_SEITENDETAILS['bezeichnung'] = $sbezeichnung;
+					$CMS_SEITENDETAILS['beschreibung'] = $sbeschreibung;
+					$CMS_SEITENDETAILS['sidebar'] = $ssidebar;
+					$CMS_SEITENDETAILS['status'] = $sstatus;
+					$CMS_SEITENDETAILS['styles'] = $sstyles;
+					$CMS_SEITENDETAILS['klassen'] = $sklassen;
+					$CMS_SEITENDETAILS['idvon'] = $sidvon;
+					$CMS_SEITENDETAILS['idzeit'] = $sidzeit;
+					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 			if (!isset($CMS_URL[2])) {$CMS_URL[2] = date('Y');}
 		}
 		$CMS_URLGANZ = implode('/', $CMS_URL);
@@ -475,6 +500,7 @@
 		include_once("php/allgemein/seiten/blende.php");
 		cms_trennen($dbs);
 	?>
+	<div id="contextmenue"></div>
 
 	<div id="cms_javascript">
 		<?php
@@ -487,11 +513,12 @@
 		}
 		else if (($CMS_URL[0] == 'Website') || ($CMS_URL[0] == "Intern")) {
 			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EXTERN_EVENTS."};";
+				echo "window.onload = function () {".$CMS_ONLOAD_EXTERN_EVENTS."};";
 			echo "</script>";
 		}
-		cms_erfasse_click();
-
+		if ($CMS_URL[0] != 'Intern') {
+			cms_erfasse_click();
+		}
 		?>
 	</div>
 

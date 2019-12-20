@@ -15,7 +15,7 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
   $jahraktuelle = mktime(0,0,0,1,1,$jahr+1)-1;
   $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, genehmigt, aktiv, oeffentlichkeit, datum, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE (datum BETWEEN $jahraktuellb AND $jahraktuelle) ORDER BY datum DESC";
 
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       if ($daten['genehmigt'] == 1) {$klasse = '';} else {$klasse = ' class="cms_vorlaeufig"';}
       $schulhofblogeintraege .= '<tr'.$klasse.'><td><img src="res/icons/klein/blog.png"></td><td>'.$daten['bezeichnung'].'</td>';
@@ -23,7 +23,7 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
       foreach ($CMS_GRUPPEN as $g) {
         $gk = cms_textzudb($g);
         $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."blogeintraege JOIN $gk ON gruppe = id WHERE blogeintrag = ".$daten['id'].") AS x ORDER BY bezeichnung ASC";
-        if ($anfrage2 = $dbs->query($sql)) {
+        if ($anfrage2 = $dbs->query($sql)) {  // Safe weil interne ID
           while ($z = $anfrage2->fetch_assoc()) {
             $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> "; ;
           }

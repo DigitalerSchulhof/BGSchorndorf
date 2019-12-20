@@ -2,6 +2,10 @@ function cms_check_mail (mail) {
 	return mail.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/);
 }
 
+function cms_check_uhrzeit (uhrzeit) {
+	return uhrzeit.match(/^[0-9]{1,2}:[0-9]{1,2}$/);
+}
+
 function cms_check_name (name) {
 	return name.match(/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ ]+$/);
 }
@@ -11,7 +15,7 @@ function cms_check_dateiname (datei) {
 }
 
 function cms_check_nametitel (titel) {
-	return titel.match(/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/);
+	return titel.match(/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/);
 }
 
 function cms_check_titel(titel) {
@@ -257,3 +261,65 @@ function cms_check_idfeld(text) {
 	if (text == '') {return true;}
 	return text.match(/^(\|[0-9]+)+$/);
 }
+
+function cms_check_browser() {
+    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=/\brv[ :]+(\d+)/g.exec(ua) || [];
+        return {name:'IE',version:(tem[1]||'')};
+        }
+    if(M[1]==='Chrome'){
+        tem=ua.match(/\bOPR|Edge\/(\d+)/)
+        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
+        }
+    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+    return {
+      name: M[0],
+      version: M[1]
+    };
+ }
+
+ function cms_check_browserunterstuetzung() {
+	 var browser = cms_check_browser();
+	 var cookietest = function() {
+	     var i, j, cookies, found;
+	     document.cookie = 'testcookiesenabled=1';
+	     for (i=0; i<2; i++) {
+	         found = false;
+	         cookies = document.cookie.split(';');
+	         j = cookies.length;
+	         while(j--) {
+	             while (cookies[j].charAt(0)==' ') {// trim spaces
+	                 cookies[j] = cookies[j].substring(1);
+	             }
+	             if (cookies[j].indexOf('testcookiesenabled=')==0) {
+	                 found = true;
+	                 break;
+	             }
+	         }
+	         if (!found) {
+	             return i;
+	         }
+	         // Delete test cookie.
+	         document.cookie = 'testcookiesenabled=; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+	     }
+			 return false;
+	 };
+
+	 if ((browser.name == "Safari") && (browser.version >= 12)) 	{unterstuetzung = true;}
+	 if ((browser.name == "Firefox") && (browser.version >= 70)) 	{unterstuetzung = true;}
+	 if ((browser.name == "Opera") && (browser.version >= 50)) 		{unterstuetzung = true;}
+	 if ((browser.name == "Chrome") && (browser.version >= 63)) 	{unterstuetzung = true;}
+	 if ((browser.name == "Edge") && (browser.version >= 38)) 		{unterstuetzung = true;}
+
+	 if(!cookietest())																						{unterstuetzung = false;}
+
+	 var testfeld = document.getElementById('cms_browsertest');
+
+	 if (testfeld) {
+		 if (unterstuetzung) {
+			 testfeld.innerHTML = '<img src="res/icons/gross/erfolg.png"><br>Der Browser untestützt alle Funktionen des Schulhofs.';
+		 }
+	 }
+ }

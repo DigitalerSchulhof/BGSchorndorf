@@ -15,12 +15,13 @@ else {
 
 		// PERSON LADEN
 		$personart = "-";
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = $personid";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$personart = $daten['art'];
-			}
-			$anfrage->free();
+		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $personid);
+		if ($sql->execute()) {
+			$sql->bind_result($personart);
+			$sql->fetch();
+			$sql->close();
 		}
 
 		if ($personart != '-') {
@@ -28,16 +29,22 @@ else {
 			$jetzt = time();
 			$zeitraum = "-";
 			$sql = "SELECT id FROM zeitraeume WHERE beginn < $jetzt AND ende > $jetzt AND aktiv = 1";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					$zeitraum = $daten['id'];
-				}
-				$anfrage->free();
+			$sql->prepare($sql);
+			$sql->bind_param("ii", $jetzt, $jetzt);
+			if ($sql->execute()) {
+				$sql->bind_result($zeitraum);
+				$sql->fetch();
+				$sql->close();
 			}
 
-			include_once("php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php");
+			include_once("php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php");
 			if ($zeitraum != '-') {
-				echo cms_stundenplan_erzeugen($dbs, $zeitraum, $personart, $personid, false);
+				if ($personart == 'l') {
+					$code .= cms_lehrerregelplan_aus_db($dbs, $personid, $zeitraum);
+				}
+				else {
+					$code .= cms_personenregelplan_aus_db($dbs, $personid, $zeitraum);
+				}
 			}
 			else {
 				echo cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');

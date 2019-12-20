@@ -31,7 +31,7 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 	else {$zuordnung = "";}
 
 	$sql = "SELECT MAX(position) AS max FROM seiten WHERE $sqlzuordnung";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 		if ($daten = $anfrage->fetch_assoc()) {
 			$maxpos = $daten['max'];
 		}

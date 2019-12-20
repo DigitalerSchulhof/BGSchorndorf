@@ -16,7 +16,7 @@ function cms_gruppen_verwaltung_listeausgeben($name, $anlegen, $bearbeiten, $loe
     $schuljahre = "<span class=\"cms_button_ja\" id=\"cms_gruppen_schuljahr_-\" onclick=\"cms_gruppen_listeausgeben('$name', '-')\">Schuljahrübergreifend</span> ";
     $dbs = cms_verbinden('s');
     $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, id FROM schuljahre ORDER BY beginn DESC";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $schuljahre .= "<span class=\"cms_button\" id=\"cms_gruppen_schuljahr_".$daten['id']."\" onclick=\"cms_gruppen_listeausgeben('$name', '".$daten['id']."')\">".$daten['bezeichnung']."</span> ";
         $schuljahrids .= "|".$daten['id'];
@@ -65,21 +65,28 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
   $code = "";
 
   // Gruppen laden und auflisten
-  if ($schuljahr == '-') {$sqlwhere = "schuljahr IS NULL";}
-  else {$sqlwhere = "schuljahr = $schuljahr";}
+  if ($schuljahr == '-') {$sqlwhere = $namek.".schuljahr IS NULL";}
+  else {$sqlwhere = $namek.".schuljahr = $schuljahr";}
 
   if ($namek == 'stufen') {
     $sortierkriterium = "reihenfolge ASC,";
     $zusatzspalten = "reihenfolge, tagebuch, gfs, ";
+    $zusatzjoin = "";
+  }
+  else if (($namek == 'klassen') || ($namek == 'kurse')) {
+    $sortierkriterium = "reihenfolge ASC,";
+    $zusatzspalten = "reihenfolge,  ";
+    $zusatzjoin = "LEFT JOIN stufen ON stufe = stufen.id";
   }
   else {
     $sortierkriterium = "";
     $zusatzspalten = "";
+    $zusatzjoin = "";
   }
 
-  $sql = "SELECT * FROM (SELECT $zusatzspalten id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, COUNT(person) AS mitglieder FROM $namek LEFT JOIN $namek"."mitglieder ON $namek.id = $namek"."mitglieder.gruppe WHERE $sqlwhere GROUP BY $namek.id) AS x ORDER BY $sortierkriterium bezeichnung ASC";
+  $sql = "SELECT * FROM (SELECT $zusatzspalten $namek".".id, AES_DECRYPT($namek".".bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT($namek".".icon, '$CMS_SCHLUESSEL') AS icon, $namek".".sichtbar, COUNT(person) AS mitglieder FROM $namek LEFT JOIN $namek"."mitglieder ON $namek.id = $namek"."mitglieder.gruppe $zusatzjoin WHERE $sqlwhere GROUP BY $namek.id) AS x ORDER BY $sortierkriterium bezeichnung ASC";
 
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     while ($daten = $anfrage->fetch_assoc()) {
       $code .= "<tr>";
       $code .= "<td><img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
@@ -88,7 +95,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
       // Vorsitzende ausgeben
       $sql = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $namek"."vorsitz ON personen.id = $namek"."vorsitz.person WHERE gruppe = ".$daten['id'].") AS x ORDER BY nachname ASC, vorname ASC";
       $vorsitz = "";
-      if ($anfrage2 = $dbs->query($sql)) {
+      if ($anfrage2 = $dbs->query($sql)) {  // TODO: Eingaben der Funktion prüfen
         while ($daten2 = $anfrage2->fetch_assoc()) {
           $vorsitz .= ", ".cms_generiere_anzeigename($daten2['vorname'], $daten2['nachname'], $daten2['titel']);
         }
@@ -99,7 +106,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
       // Aufsichten ausgeben
       $sql = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN $namek"."aufsicht ON personen.id = $namek"."aufsicht.person WHERE gruppe = ".$daten['id'].") AS x ORDER BY nachname ASC, vorname ASC";
       $aufsicht = "";
-      if ($anfrage2 = $dbs->query($sql)) {
+      if ($anfrage2 = $dbs->query($sql)) {  // TODO: Eingaben der Funktion prüfen
         while ($daten2 = $anfrage2->fetch_assoc()) {
           $aufsicht .= ", ".cms_generiere_anzeigename($daten2['vorname'], $daten2['nachname'], $daten2['titel']);
         }

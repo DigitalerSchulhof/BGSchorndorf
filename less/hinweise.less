@@ -1,4 +1,4 @@
-// out: ../css/hinweise.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/hinweise.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_hinweis_aussen {
@@ -12,19 +12,23 @@
 }
 
 .cms_hinweis {
-  color: @schriftfarbehell !important;
-  background: rgba(0, 0, 0, 0.75);
+  color: @standardschrifthell_color !important;
+  background: @hinweise_background;
   padding: 0px 5px 0px 5px;
   position: absolute;
   font-family: 'robl';
   font-weight: normal !important;
   display: block;
-  border-radius: 3px;
+  border-top-left-radius: @hinweise_radiustl;
+  border-top-right-radius: @hinweise_radiustr;
+  border-bottom-left-radius: @hinweise_radiusbl;
+  border-bottom-right-radius: @hinweise_radiusbr;
   z-index: 50;
   width: 150px;
   overflow: visible;
   left: 0px;
   bottom: 25px;
+  transition-delay: 1s;
   transition: 250ms ease-in-out 500ms;
   max-height: 0px;
   overflow: hidden;

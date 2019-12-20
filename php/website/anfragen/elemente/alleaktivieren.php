@@ -21,15 +21,18 @@ if (cms_angemeldet() && $zugriff) {
 		$dbs = cms_verbinden('s');
 		// Alle Spalten der Seite
 		$sql = "SELECT id FROM spalten WHERE seite = '$seite'";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($spalten = $anfrage->fetch_assoc()) {
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $seite);
+		if ($sql->execute()) {
+			$sql->bind_result($sid);
+			while ($sql->fetch()) {
 				// Alle Elemente dieser Spalte aktivieren
 				foreach ($elemente as $e) {
-					$sql = "UPDATE $e SET aktiv = '1' WHERE spalte = '".$spalten['id']."'";
-					$dbs->query($sql);
+					$sql = "UPDATE $e SET aktiv = '1' WHERE spalte = '$sid'";
+					$dbs->query($sql);	// Safe weil interne ID
 					if ($e == 'boxenaussen') {
-						$sql = "UPDATE boxen SET aktiv = '1' WHERE boxaussen IN (SELECT id AS boxaussen FROM boxenaussen WHERE spalte = '".$spalten['id']."')";
-						$dbs->query($sql);
+						$sql = "UPDATE boxen SET aktiv = '1' WHERE boxaussen IN (SELECT id AS boxaussen FROM boxenaussen WHERE spalte = '$sid')";
+						$dbs->query($sql);	// Safe weil interne ID
 					}
 				}
 			}

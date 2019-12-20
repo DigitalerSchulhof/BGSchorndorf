@@ -30,12 +30,12 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
   $dbs = cms_verbinden('s');
   if($gesamt) {
     $sql = "SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_$tabelle)";
-    $anfrage = $dbs->query($sql);
+    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
     if($r = $anfrage->fetch_assoc()) {
       $start = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
     }
     $sql = "SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_$tabelle)";
-    $anfrage = $dbs->query($sql);
+    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
     if($r = $anfrage->fetch_assoc()) {
       $ende = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
     }
@@ -146,16 +146,17 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
           $sql = "SELECT bezeichnung AS titel FROM seiten WHERE id = $id";
         }
 
-        // Titel getten
-        if ($anfrage = $dbs->query($sql)) {
-          if ($daten = $anfrage->fetch_assoc()) {
-            $bereich = $daten["titel"];
-            $dbs->query($sql);
-          }else
+        // Titel laden falls vorhanden
+        if($sql) {
+          $sql = $dbs->prepare($sql);
+          $sql->bind_param("i", $id);
+          $sql->bind_result($bereich);
+          $sql->execute();
+          if(!$sql->fetch())
             if($geloescht === "false")
               continue;
-          $anfrage->free();
         }
+
         $datenHBar[$bereich] = (isset($datenHBar[$bereich])?$datenHBar[$bereich]:0)+$sqld["sum"];
       }
     }
@@ -197,7 +198,7 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
     // Startseite holen
     if($startseite === "false") {
       $sql = "SELECT bezeichnung FROM seiten WHERE status = 's'";
-      $sql = $dbs->query($sql);
+      $sql = $dbs->query($sql); // Safe weil keine Eingabe
       $startseite = $sql->fetch_assoc()["bezeichnung"];
       unset($datenHBar[$startseite]);
     }
@@ -320,7 +321,7 @@ function cms_besucherstatistik_website_jahresplaettchen($typ) {
   $jahr = date("Y");
   $dbs = cms_verbinden('s');
   $sql = "SELECT MIN(jahr) AS jahr FROM besucherstatistik_$tabelle";
-  $anfrage = $dbs->query($sql);
+  $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
   if(!$anfrage) {
     echo cms_meldung_fehler();
     return;

@@ -40,7 +40,7 @@ if (cms_angemeldet() && $zugriff) {
 		$inhalt = cms_texttrafo_e_db($inhalt);
 		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$sql = "UPDATE editoren SET position = $position, neu = '$inhalt' WHERE id = $id";}
 		else {$sql = "UPDATE editoren SET position = $position, alt = aktuell, aktuell = '$inhalt', neu = '$inhalt', aktiv = '$aktiv' WHERE id = $id";}
-		$anfrage = $dbs->query($sql);
+		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 		echo "ERFOLG";
 	}
 	else {

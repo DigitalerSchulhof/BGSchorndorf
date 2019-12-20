@@ -11,7 +11,7 @@ if ($zugriff) {
 	$aufgenommen = 0;
 
 	$sql = "SELECT COUNT(id) AS anzahl FROM voranmeldung_schueler WHERE akzeptiert = AES_ENCRYPT('ja', '$CMS_SCHLUESSEL')";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$aufgenommen = $daten['anzahl'];
 		}
@@ -19,7 +19,7 @@ if ($zugriff) {
 	}
 
 	$sql = "SELECT COUNT(id) AS anzahl FROM voranmeldung_schueler";
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 		if ($daten = $anfrage->fetch_assoc()) {
 			$eingegangen = $daten['anzahl'];
 		}
@@ -70,7 +70,7 @@ if ($zugriff) {
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL') AS geburtsdatum, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert, AES_DECRYPT(eingegangen, '$CMS_SCHLUESSEL') AS eingegangen FROM voranmeldung_schueler) AS schueler ORDER BY nachname ASC, vorname ASC, geburtsdatum ASC, ort ASC";
 
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
 					$ausgabe .= "<td>".$daten['vorname']."</td>";

@@ -1,11 +1,11 @@
-// out: ../css/meldungen.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/meldungen.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_meldung {
-	background-color: @standardhell;
+	background-color: @schattierthell_background;
 	background-repeat: no-repeat;
 	background-position: 5px 5px;
-	border-left: 4px solid @standarddunkel;
+	border-left: 4px solid @schattiertdunkel_background;
 	padding: 10px 10px 10px 10px;
 	margin: 10px 0px;
 	min-height: 42px;
@@ -17,79 +17,79 @@
 }
 
 .cms_meldung_laden {
-	background-color: @hintergrundhell;
-	border: 3px dashed @standardhell;
+	background-color: @standardhell_background;
+	border: 3px dashed @schattierthell_background;
 	padding: 5px;
 	margin: 10px 0px;
 	text-align: center;
-	color: @standarddunkel;
+	color: @schattiertdunkel_background;
 }
 
 .cms_meldung_info {
-	background-color: @infohell;
-	border-color: @infodunkel;
+	background-color: @info_background;
+	border-color: @info_akzent;
 }
 
 .cms_meldung_vplan {
-	background-color: @standardhell;
-	border-color: @standarddunkel;
-	opacity: .3;
+	background-color: @schattierthell_background;
+	border-color: @schattiertdunkel_background;
+	opacity: 1;
 }
 
 .cms_meldung_erfolg {
-	background-color: @erfolghell;
-	border-color: @erfolgdunkel;
+	background-color: @erfolg_background;
+	border-color: @erfolg_akzent;
 }
 
 .cms_meldung_fehler {
-	background-color: @fehlerhell;
-	border-color: @fehlerdunkel;
+	background-color: @fehler_background;
+	border-color: @fehler_akzent;
 }
 
 .cms_meldung_warnung {
-	background-color: @warnunghell;
-	border-color: @warnungdunkel;
+	background-color: @warnung_background;
+	border-color: @warnung_akzent;
 }
 
 .cms_meldung_bauarbeiten {
-	background-color: @warnunghell;
-	border-color: @warnungdunkel;
+	background-color: @warnung_background;
+	border-color: @warnung_akzent;
 }
 
 .cms_meldung_firewall {
-	background-color: @infohell;
-	border-color: @infodunkel;
+	background-color: @info_background;
+	border-color: @info_akzent;
 }
 
 .cms_gesichertedaten {
 	font-family: inherit;
-	background-color: @hauptteilhintergrund;
-	border: 2px dashed @erfolghell;
+	background-color: @standardhell_background;
+	border: 2px dashed @erfolg_background;
 	padding: 5px;
 	margin: 10px 0px;
 }
 
 .cms_geschuetzerinhalt {
 	font-family: inherit;
-	background-color: @hauptteilhintergrund;
-	color: @standarddunkel;
-	border: 2px dashed @fehlerhell;
+	background-color: @standardhell_background;
+	color: @schattiertdunkel_background;
+	border: 2px dashed @fehler_background;
 	padding: 5px;
 	margin: 10px 0px;
 }
 
 .cms_geschuetzerinhalt p, .cms_ladebox {
-	color: @standarddunkel;
+	color: @schattiertdunkel_background;
 	text-align: center;
 }
 
 .cms_ladebox {
-	border: 2px dashed @standarddunkel;
+	border: 2px dashed @schattiertdunkel_background;
 	padding: 10px;
 }
 
 .cms_systemvoraussetzung {
-	background: @standardhell;
+	background: @schattierthell_background;
 	border-radius: 5px;
 }
 

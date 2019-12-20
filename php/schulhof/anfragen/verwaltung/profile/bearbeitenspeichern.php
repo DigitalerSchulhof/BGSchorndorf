@@ -96,8 +96,9 @@ if (cms_angemeldet() && $zugriff) {
 	  $sql->execute();
 	  $sql->close();
 
-		$sql = "DELETE FROM profilfaecher WHERE profil = $pid";
-		$dbs->query($sql);
+		$sql = $dbs->prepare("DELETE FROM profilfaecher WHERE profil = ?");
+		$sql->bind_param("i", $pid);
+		$sql->execute();
 
 		$sql = $dbs->prepare("INSERT INTO profilfaecher (profil, fach) VALUES (?, ?)");
 		foreach ($wahlfaecher as $w) {

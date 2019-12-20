@@ -158,13 +158,15 @@ if (cms_angemeldet() && $zugriff) {
 		// Geräte
 		// Alle vorhandenen Geräte laden
 		$gidsvorhanden = "";
-		$sql = "SELECT id FROM leihengeraete WHERE standort = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$gidsvorhanden .= '|'.$daten['id'];
+		$sql = $dbs->prepare("SELECT id FROM leihengeraete WHERE standort = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($lid);
+			while ($sql->fetch()) {
+				$gidsvorhanden .= '|'.$lid;
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		$gidsvorhanden = $gidsvorhanden."|";
 
 		$gids = explode('|', $geraeteids);

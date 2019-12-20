@@ -57,15 +57,16 @@ if (cms_angemeldet() && $zugriff) {
       $ids = "(".substr($ids, 1).")";
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
-  			$sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids";
-  			if ($anfrage = $dbs->query($sql)) {
-  				if ($daten = $anfrage->fetch_assoc()) {
-  					if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids");
+  			if ($sql->execute()) {
+          $sql->bind_result($checkanzahl);
+  				if ($sql->fetch()) {
+  					if ($checkanzahl != $anzahl) {$fehler = true;}
   				}
   				else {$fehler = true;}
-  				$anfrage->free();
   			}
   			else {$fehler = true;}
+        $sql->close();
       }
 			else {$fehler = true;}
 		}
@@ -156,7 +157,7 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Galerien/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    if($notifikationen)
+    if (($notifikationen) && ($aktiv))
       cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";

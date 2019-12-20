@@ -1,4 +1,4 @@
-// out: ../css/kalender.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/kalender.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_kalenderuebersicht {
@@ -11,33 +11,33 @@
 }
 
 .cms_kalender_kw, .cms_kalender_tag {font-weight: bold; padding: 6px 0px 5px 0px;}
-.cms_kalender_kw {color: @standarddunkel;}
+.cms_kalender_kw {color: @schattiertdunkel_background;}
 
 .cms_kalender_kwzahl, .cms_kalender_tagzahl {font-weight: normal;}
-.cms_kalender_kwzahl {color: @standarddunkel;}
+.cms_kalender_kwzahl {color: @schattiertdunkel_background;}
 
 .cms_kalenderzahl {
-  color: @schriftfarbedunkel;
+  color: @standardschriftdunkel_color;
   padding: 6px 0px 5px 0px;
   border-radius: 7px;
   text-align: center;
   display: inline-block;
   width: 100%;
-  border: 3px solid @hintergrundhell;
+  border: 3px solid @standardhell_background;
   line-height: 1;
 }
 
 .cms_kalenderzahl:hover {
-  border: 3px solid @standarddunkel;
-  color: @schriftfarbedunkel;
+  border: 3px solid @schattiertdunkel_background;
+  color: @standardschriftdunkel_color;
 }
 
-.cms_kalenderzahl_heute {border: 3px solid @fehlerdunkel;}
-.cms_kalenderzahl_gewaehlt {background: @infohell !important;}
-.cms_kalenderzahl_persoenlich {background: @fehlerhell;}
-.cms_kalenderzahl_oeffentlich {background: @warnunghell;}
-.cms_kalenderzahl_ferien {background: @erfolghell;}
-.cms_kalenderzahl_sichtbar {background: @standardhell;}
+.cms_kalenderzahl_heute {border: 3px solid @fehler_akzent;}
+.cms_kalenderzahl_gewaehlt {background: @info_background !important;}
+.cms_kalenderzahl_persoenlich {background: @fehler_background;}
+.cms_kalenderzahl_oeffentlich {background: @warnung_background;}
+.cms_kalenderzahl_ferien {background: @erfolg_background;}
+.cms_kalenderzahl_sichtbar {background: @schattierthell_background;}
 
 .cms_kalender {
   &.cms_kalender_wocheansicht {

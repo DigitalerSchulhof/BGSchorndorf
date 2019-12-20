@@ -47,7 +47,7 @@
   $dbs = cms_verbinden("s");
 
   $sql = "SELECT aktiv, betreffaktuell as betreff, kopieaktuell as kopie, anhangaktuell as anhang FROM kontaktformulare WHERE id = $id";
-  $sql = $dbs->query($sql);
+  $sql = $dbs->query($sql); // Safe weil ID Check
   if(!$sql)
     die("FEHLER");
   if(!$sqld = $sql->fetch_assoc())
@@ -56,7 +56,7 @@
   sqlLesen($sqld, array("aktiv", "betreff", "kopie", "anhang"));
 
   $sql = "SELECT nameaktuell as name, mailaktuell as e_mail FROM kontaktformulareempfaenger WHERE id = $empfaenger AND kontaktformular = $id";
-  $sql = $dbs->query($sql);
+  $sql = $dbs->query($sql); // Safe weil ID Check
   if(!$sql)
     die("FEHLER");
   if(!$sqld = $sql->fetch_assoc())

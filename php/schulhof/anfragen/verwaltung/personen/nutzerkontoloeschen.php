@@ -35,24 +35,25 @@ if (cms_angemeldet() && $zugriff) {
 	$adminfehler = false;
 
 	// Prüfen, ob es sich bei dem Löschvorgang um den letzten Administrator handelt
-	$sql = "SELECT person FROM rollenzuordnung WHERE rolle = 0";
-	if ($anfrage = $dbs->query($sql)) {
+	$sql = $dbs->prepare("SELECT person FROM rollenzuordnung JOIN nutzerkonten ON person = nutzerkonten.id WHERE rolle = 0");
+	if ($sql->execute()) {	// Safe weil keine Eingabe
 		$anzahl = 0;
 		$admindabei = false;
 		// Anzahl der Administratoren ermitteln
 		// Prüfen, ob der zu löschende Nutzer ein Administrator ist
-		while ($admin = $anfrage->fetch_assoc()) {
+		$sql->bind_result($admin);
+		while ($sql->fetch()) {
 			$anzahl++;
-			if ($admin['person'] == $id) {
+			if ($admin == $id) {
 				$admindabei = true;
 			}
 		}
 		if (($anzahl == 1) && ($admindabei)) {
 			$adminfehler = true;
 		}
-		$anfrage->free();
 	}
 	else {$adminfehler = true;}
+	$sql->close();
 
 	cms_trennen($dbs);
 
@@ -84,10 +85,10 @@ if (cms_angemeldet() && $zugriff) {
 
 
 			$dbp = cms_verbinden('p');
-			$sql = "SET FOREIGN_KEY_CHECKS = 0;";
-			$dbp->query($sql);
-			$sql = "DROP TABLE postausgang_".$id.", posteingang_".$id.", postentwurf_".$id.", postgetaggedausgang_".$id.", postgetaggedeingang_".$id.", postgetaggedentwurf_".$id.", posttags_".$id.", termine_".$id.";";
-			$dbp->query($sql);
+			$sql = $dbp->prepare("SET FOREIGN_KEY_CHECKS = 0;");
+			$sql->execute();
+			$sql = $dbp->prepare("DROP TABLE postausgang_".$id.", posteingang_".$id.", postentwurf_".$id.", postgetaggedausgang_".$id.", postgetaggedeingang_".$id.", postgetaggedentwurf_".$id.", posttags_".$id.", termine_".$id.";");
+			$sql->execute();
 			cms_trennen($dbp);
 
 

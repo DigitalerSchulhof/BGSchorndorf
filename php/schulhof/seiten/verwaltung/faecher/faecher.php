@@ -46,7 +46,7 @@ if ($zugriff) {
 			$sqlkollegen = $dbs->prepare("SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM lehrer JOIN fachkollegen ON lehrer.id = fachkollegen.kollege WHERE fachkollegen.fach = ?");
 
 			$ausgabe = "";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {  // Safe weil interne ID
 				while ($daten = $anfrage->fetch_assoc()) {
 					$ausgabe .= "<tr>";
 						$ausgabe .= "<td><img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
@@ -89,7 +89,7 @@ if ($zugriff) {
     $code .= "</table>";
 
     if ($CMS_RECHTE['Planung']['Fächer anlegen']) {
-      $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a></p>";
+      $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a> <a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Fächer_importieren\">+ Neue Fächer importieren</a></p>";
     }
 
 

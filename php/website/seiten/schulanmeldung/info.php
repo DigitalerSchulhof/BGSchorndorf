@@ -23,7 +23,7 @@ if ($rueckgabe['zulaessig']) {
     $jetzt = time();
     $datenschutz = "";
     $sql = "SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht FROM schuljahre JOIN schluesselposition ON schuljahre.id = schluesselposition.schuljahr JOIN personen ON personen.id = schluesselposition.person WHERE (beginn <= $jetzt AND ende >= $jetzt) AND position = AES_ENCRYPT('Datenschutzbeauftragter', '$CMS_SCHLUESSEL') ORDER BY nachname";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       while ($daten = $anfrage->fetch_assoc()) {
         $id = $daten['id'];
         $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);

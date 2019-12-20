@@ -1,10 +1,10 @@
-// out: ../css/voranmeldung.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/voranmeldung.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_voranmeldung_navigation {
   display: flex;
   flex-wrap: nowrap;
-  margin: @absatzabstand 0px @absatzabstand 0px;
+  margin: @standardabsatz_schulhof_margin 0px @standardabsatz_schulhof_margin 0px;
   padding: 0px;
 }
 
@@ -19,8 +19,8 @@
 
 .cms_voranmeldung_navigation li {
   padding: 10px;
-  background: @button;
-  color: @schriftbutton;
+  background: @button_background;
+  color: @button_color;
   display: block;
   list-style-type: none;
   margin: 0px;
@@ -29,38 +29,38 @@
 }
 
 .cms_voranmeldung_navigation li:hover {
-  background: @buttonh;
-  color: @schriftbuttonh;
+  background: @buttonhover_background;
+  color: @buttonhover_color;
   cursor: pointer;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen {
-  background: @erfolghell;
-  color: @schriftbutton;
+  background: @erfolg_background;
+  color: @button_color;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen:hover {
-  background: @erfolgdunkel;
-  color: @schriftbuttonh;
+  background: @erfolg_akzent;
+  color: @buttonhover_color;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_aktuell {
-  background: @infohell !important;
-  color: @schriftbutton !important;
+  background: @info_background !important;
+  color: @button_color !important;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_aktuell:hover {
-  background: @infodunkel !important;
-  color: @schriftbuttonh !important;
+  background: @info_akzent !important;
+  color: @buttonhover_color !important;
   cursor: default !important;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_fehler {
-  background: @fehlerhell;
-  color: @schriftbutton;
+  background: @fehler_background;
+  color: @button_color;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_fehler:hover {
-  background: @fehlerdunkel;
-  color: @schriftbuttonh;
+  background: @fehler_akzent;
+  color: @buttonhover_color;
 }

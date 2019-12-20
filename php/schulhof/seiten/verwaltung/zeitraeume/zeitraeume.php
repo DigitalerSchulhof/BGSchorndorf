@@ -74,6 +74,9 @@ if ($zugriff) {
             if (($CMS_RECHTE['Planung']['Stundenplanzeiträume rythmisieren'] && ($rythmen > 1))) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_rythmisieren_vorbereiten($zid);\"><span class=\"cms_hinweis\">Zeitraum rythmisieren</span><img src=\"res/icons/klein/zeitraumrythmen.png\"></span> ";
             }
+            if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
+              $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_stundenplanung_importieren_vorbereiten($zid);\"><span class=\"cms_hinweis\">Stundenplanung importieren</span><img src=\"res/icons/klein/importieren.png\"></span> ";
+            }
             if ($CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
               $zeilen .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_zeitraeume_loeschen_anzeigen('$zbez', $zid);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
             }
@@ -83,7 +86,7 @@ if ($zugriff) {
 
         if (strlen($zeilen) > 0) {$code .= $zeilen;}
         else {
-          $code .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
+          $code .= "<tr><td class=\"cms_notiz\" colspan=\"8\">- keine Datensätze gefunden -</td></tr>";
         }
       }
       $sql->close();

@@ -16,6 +16,9 @@ if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} e
 $CMS_RECHTE = cms_rechte_laden();
 $angemeldet = cms_angemeldet();
 
+if(!cms_check_ganzzahl($id) && $id != "-")
+  die("FEHLER");
+
 $zugriff = false;
 
 if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
@@ -41,7 +44,7 @@ if (($zugriff) && ($angemeldet)) {
     $modusk = strtolower($modus);
     $sql = "SELECT * FROM kontaktformulare WHERE id = $id";
     if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
         if ($daten = $anfrage->fetch_assoc()) {
           $betreff = $daten['betreff'.$modusk];
           $kopie = $daten['kopie'.$modusk];
@@ -52,7 +55,7 @@ if (($zugriff) && ($angemeldet)) {
         $anfrage->free();
       } else $fehler = true;
       $sql = "SELECT id, name$modusk as name, beschreibung$modus as beschreibung, mail$modusk as mail FROM kontaktformulareempfaenger WHERE kontaktformular = $id";
-      if($sql = $dbs->query($sql))
+      if($sql = $dbs->query($sql))  // TODO: Irgendwie safe machen
         while($sqld = $sql->fetch_assoc()) {
           array_push($ids, $sqld["id"]);
           array_push($namen, $sqld["name"]);

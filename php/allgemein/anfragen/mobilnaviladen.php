@@ -16,15 +16,28 @@ if (!cms_check_ganzzahl($id)) {$fehler = true;}
 
 $dbs = cms_verbinden();
 
-$sql = "SELECT * FROM seiten WHERE id = '$id'";
-if ($anfrage = $dbs->query($sql)) {
-	if ($daten = $anfrage->fetch_assoc()) {
-		$seite = $daten;
+$sql = $dbs->prepare("SELECT * FROM seiten WHERE id = ?");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+	if ($sql->fetch()) {
+		$seite['id'] = $sid;
+		$seite['art'] = $sart;
+		$seite['position'] = $sposition;
+		$seite['zuordnung'] = $szuordnung;
+		$seite['bezeichnung'] = $sbezeichnung;
+		$seite['beschreibung'] = $sbeschreibung;
+		$seite['sidebar'] = $ssidebar;
+		$seite['status'] = $sstatus;
+		$seite['styles'] = $sstyles;
+		$seite['klassen'] = $sklassen;
+		$seite['idvon'] = $sidvon;
+		$seite['idzeit'] = $sidzeit;
 	}
 	else {$fehler = true;}
-	$anfrage->free();
 }
 else {$fehler = true;}
+$sql->close();
 
 if (!$fehler) {
 	if (($seite['art'] == 's') || ($seite['art'] == 'm')) {
@@ -36,26 +49,27 @@ if (!$fehler) {
 		$jahrende = $jahrbeginn;
 		$art = '';
 		if ($seite['art'] == 't') {
-			$sql = "SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')";
+			$sql = $dbs->prepare("SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlichkeit = 4 AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')");
 			$art = 'Termine';
 		}
 		if ($seite['art'] == 'b') {
-			$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = '1'";
+			$sql = $dbs->prepare("SELECT MIN(datum) AS beginn, MAX(datum) AS ende FROM blogeintraege WHERE aktiv = '1'");
 			$art = 'Blog';
 		}
 		if ($seite['art'] == 'g') {
-			$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = '1'";
+			$sql = $dbs->prepare("SELECT MIN(datum) AS beginn, MAX(datum) AS ende FROM galerien WHERE aktiv = '1'");
 			$art = 'Galerien';
 		}
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if (!is_null($daten['beginn'])) {
-					$jahrbeginn = min($jahrbeginn, date('Y', $daten['beginn']));
-					$jahrende = max($jahrende, date('Y', $daten['ende']));
+		if ($sql->execute()) {
+			$sql->bind_result($beginn, $ende);
+			if ($sql->fetch()) {
+				if (!is_null($beginn)) {
+					$jahrbeginn = min($jahrbeginn, date('Y', $beginn));
+					$jahrende = max($jahrende, date('Y', $ende));
 				}
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		$monat = cms_monatsnamekomplett(date('n', $jetzt));
 		$code = "";
 		for ($i = $jahrende; $i>=$jahrbeginn; $i--) {

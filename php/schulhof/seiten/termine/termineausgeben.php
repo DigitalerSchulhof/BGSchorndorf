@@ -35,13 +35,13 @@ function cms_termin_link_ausgeben($dbs, $daten, $internvorlink = "") {
 	// Prüfen, ob Downloads vorliegen
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
-		$sql = "SELECT COUNT(*) AS anzahl FROM terminedownloads WHERE termin = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {
-			if ($downloads = $anfrage->fetch_assoc()) {
-				$downloadanzahl = $downloads['anzahl'];
-			}
-			$anfrage->free();
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM terminedownloads WHERE termin = ?");
+		$sql->bind_param("i", $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($downloadanzahl);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
@@ -78,16 +78,18 @@ function cms_termin_zusatzinfo($dbs, $daten) {
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
 			$sqlsolo =
-			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."termine ON $gk.id = $gk"."termine.gruppe WHERE termin = ".$daten['id'].")";
+			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."termine ON $gk.id = $gk"."termine.gruppe WHERE termin = ?)";
 		}
 		$sql = substr($sql, 7);
-		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
+		$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
+		$sql->bind_param("iiiiiiiiiii", $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id'], $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($tbez, $ticon);
+			while ($sql->fetch()) {
+				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$ticon')\">$tbez</span> ";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 	}
 	if (($daten['art'] == 'f') || ($daten['art'] == 'b') || ($daten['art'] == 't') || ($daten['art'] == 's')) {
 		if ($daten['art'] == 'f') {$icon = 'ferien.png'; $feriengruppe = "Ferien";}
@@ -230,27 +232,31 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 	// Termin finden
 	$termin = array();
-	$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, $oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, '$art' AS art FROM $tabelle WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND (beginn BETWEEN ? AND ?) AND aktiv = 1;");
+	$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, $oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, '$art' AS art, aktiv FROM $tabelle WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND (beginn BETWEEN ? AND ?);");
 	$sql->bind_param("sii", $terminbez, $datumb, $datume);
 	if ($sql->execute()) {
-		$sql->bind_result($termin['id'], $termin['bezeichnung'], $termin['ort'], $termin['beginn'], $termin['ende'], $termin['mehrtaegigt'], $termin['uhrzeitbt'], $termin['uhrzeitet'], $termin['ortt'], $termin['genehmigt'], $termin['aktiv'], $termin['oeffentlichkeit'], $termin['text'], $termin['art']);
+		$sql->bind_result($termin['id'], $termin['bezeichnung'], $termin['ort'], $termin['beginn'], $termin['ende'], $termin['mehrtaegigt'], $termin['uhrzeitbt'], $termin['uhrzeitet'], $termin['ortt'], $termin['genehmigt'], $termin['aktiv'], $termin['oeffentlichkeit'], $termin['text'], $termin['art'], $termin['aktiv']);
 		if ($sql->fetch()) {$gefunden = true;}
 		else {$fehler = true;}
 	}
 	else {$fehler = true;}
 	$sql->close();
 
-	if ($gefunden) {
-		if ($jahr != date('Y', $termin['beginn'])) {$gefunden = false;}
-		if ($monat != date('m', $termin['beginn'])) {$gefunden = false;}
-		if ($tag != date('d', $termin['beginn'])) {$gefunden = false;}
-
+	if($gefunden) {	// Nur für Notifikation
 		if ($CMS_URL[0] == 'Schulhof') {
 			$sql = $dbs->prepare("DELETE FROM notifikationen WHERE person = ? AND art = 't' AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND zielid = ?");
 			$sql->bind_param("isi", $CMS_BENUTZERID, $gruppe, $termin['id']);
 			$sql->execute();
 			$sql->close();
 		}
+	}
+
+	$gefunden = $gefunden && isset($termin["aktiv"]) && $termin["aktiv"];
+
+	if ($gefunden) {
+		if ($jahr != date('Y', $termin['beginn'])) {$gefunden = false;}
+		if ($monat != date('m', $termin['beginn'])) {$gefunden = false;}
+		if ($tag != date('d', $termin['beginn'])) {$gefunden = false;}
 	}
 
 	if ($gefunden) {
@@ -267,7 +273,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		$downloads = array();
 		// Downloads suchen
 		$sql = "SELECT * FROM (SELECT id, termin, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE termin = ".$termin['id'].") AS x ORDER BY titel ASC";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				array_push($downloads, $daten);
 			}
@@ -314,8 +320,10 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 		$code .= "<div class=\"cms_spalte_$spaltenart\"><div class=\"cms_spalte_i\">";
 		$code .= "<h1>".$termin['bezeichnung']."</h1>";
-		$code .= $termin['text'];
-		$code .= "<br><br>".cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
+
+		$code .= cms_ausgabe_editor($termin['text']);
+
+		$code .= cms_artikel_reaktionen("t", $termin["id"], $gruppenid);
 		$code .= "</div></div>";
 
 		if ((count($downloads) > 0) || (strlen($aktionen) > 0)) {
@@ -363,6 +371,7 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen
 	if ($daten['art'] == 'oe') {
 		$sql = "";
+		$zugehoerigladen = "";
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
 			$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."termine ON $gk.id = $gk"."termine.gruppe WHERE termin = ?)";
@@ -375,6 +384,7 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 		if ($sql->execute()) {
 			$sql->bind_result($gid, $ggruppe, $gbez, $gicon);
 			while ($sql->fetch()) {
+				if (strlen($zugehoerigladen) == 0) {$zugehoerigladen = "cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahrb']."', '$ggruppe', '$gid', '$link');";}
 				$event = " onclick=\"cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahrb']."', '$ggruppe', '$gid', '$link')\"";
 				$verknuepfung .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$gicon')\"$event>$gbez</span></li>";
 			}
@@ -383,6 +393,7 @@ function cms_termindetailansicht_termininfos($dbs, $daten, $zeiten) {
 		if (strlen($verknuepfung) > 0) {
 			$code .= "<h3>Zugehörige Gruppen</h3><ul class=\"cms_termindetails\">$verknuepfung</ul>";
 			$code .= "<div class=\"cms_zugehoerig\" id=\"cms_zugehoerig_".$daten['id']."\"></div>";
+			$code .= "<script>$zugehoerigladen</script>";
 		}
 	}
 
@@ -408,7 +419,7 @@ function cms_nachste_termine_ausgeben($anzahl) {
 
 	foreach ($CMS_GRUPPEN AS $g) {
 		$gk = cms_textzudb($g);
-		$sqlgruppen .= " UNION SELECT DISTINCT termin FROM $gk"."termine WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID UNION SELECT gruppe FROM $gk"."aufsicht WHERE person = $CMS_BENUTZERID)";
+		$sqlgruppen .= " UNION SELECT DISTINCT termin FROM $gk"."termine WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID UNION SELECT gruppe FROM $gk"."aufsicht WHERE person = $CMS_BENUTZERID) AND aktiv = 1";
 
 		//$sqlgruppen .= " UNION (SELECT DISTINCT termin FROM ((SELECT id FROM $gk JOIN $gk"."mitglieder ON $gk.id = $gk"."mitglieder.gruppe WHERE person = $CMS_BENUTZERID) UNION (SELECT id FROM $gk JOIN $gk"."aufsicht ON $gk.id = $gk"."aufsicht.gruppe WHERE person = $CMS_BENUTZERID)) AS x";
 		//$sqlgruppen .= " JOIN $gk"."termine ON x.id = $gk"."termine.gruppe JOIN termine ON $gk"."termine.termin = termine.id WHERE ende > $jetzt ORDER BY beginn ASC, ende ASC LIMIT $anzahl)";
@@ -419,13 +430,13 @@ function cms_nachste_termine_ausgeben($anzahl) {
 
 	$sqlintern = substr($sqlintern, 7);
 
-	$sqlgruppen = "SELECT termine.id AS id, '' AS gruppenart, '' AS gruppe, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE id IN (".substr($sqlgruppen,7).") AND ende > $jetzt ORDER BY  beginn ASC, ende ASC LIMIT $anzahl";
+	$sqlgruppen = "SELECT termine.id AS id, '' AS gruppenart, '' AS gruppe, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE id IN (".substr($sqlgruppen,7).") AND ende > $jetzt ORDER BY beginn ASC, ende ASC LIMIT $anzahl";
 
 	$dbs = cms_verbinden('s');
 	$sqlferien = "SELECT id, '' AS gruppenart, '' AS gruppe, art, 1 AS genehmigt, bezeichnung, '' AS ort, beginn, ende, mehrtaegigt, 0 AS uhrzeitbt, 0 AS uhrzeitet, 0 AS ortt, 4 AS oeffentlichkeit, '' AS text FROM ferien WHERE ende > $jetzt LIMIT ".$anzahl;
 	$sql = "SELECT DISTINCT * FROM (($sqlgruppen) UNION ($sqltermine) UNION ($sqlferien) UNION $sqlintern) AS x ORDER BY beginn ASC, ende ASC LIMIT ".$anzahl;
 
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen ($anzahl)
 		include_once('php/schulhof/seiten/termine/termineausgeben.php');
 		while ($daten = $anfrage->fetch_assoc()) {
 			$internvorlink = "";
@@ -434,7 +445,7 @@ function cms_nachste_termine_ausgeben($anzahl) {
 				$gk = cms_textzudb($g);
 				$gid = $daten['gruppe'];
 				$sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = $gid";
-				if ($anfrage2 = $dbs->query($sql)) {
+				if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
 					if ($daten2 = $anfrage2->fetch_assoc()) {
 						$schuljahrbez = $daten2['sbez'];
 						$gbez = $daten2['gbez'];

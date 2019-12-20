@@ -10,7 +10,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
@@ -21,18 +21,19 @@ if (cms_angemeldet()) {
 	$tabelle = "post$modus"."_".$CMS_BENUTZERID;
 
 	// Nachricht löschen inklusive Anhang
-	$sql = "SELECT id FROM $tabelle WHERE papierkorb = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-	if ($anfrage = $dbp->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			if (file_exists("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/$modus/".$daten['id'])) {
-				cms_dateisystem_ordner_loeschen("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/$modus/".$daten['id']);
+	$sql = $dbp->prepare("SELECT id FROM $tabelle WHERE papierkorb = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');");
+	if ($sql->execute()) {
+		$sql->bind_result($nid);
+		while ($sql->fetch()) {
+			if (file_exists("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/$modus/$nid")) {
+				cms_dateisystem_ordner_loeschen("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/$modus/$nid");
 			}
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 
-	$sql = "DELETE FROM $tabelle WHERE papierkorb = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-	$anfrage = $dbp->query($sql);
+	$sql = $dbp->prepare("DELETE FROM $tabelle WHERE papierkorb = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');");
+	$sql->execute();
 
 	cms_trennen($dbp);
 	echo "ERFOLG";

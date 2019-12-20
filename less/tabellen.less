@@ -1,15 +1,15 @@
-// out: ../css/tabellen.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/tabellen.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 td.cms_notiz {
   text-align: center !important;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
 }
 
 th.cms_zwischenueberschrift,
 th.cms_zwischenueberschrift *  {
   text-align: center !important;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
   font-weight: bold;
 }
 
@@ -22,7 +22,7 @@ table .cms_senkrecht {
 .cms_formular {
   border-collapse: collapse;
   border-spacing: 0px;
-  background: @tabelleformular;
+  background: @formular_background;
   width: 100%;
 }
 
@@ -76,9 +76,9 @@ table .cms_senkrecht {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0px;
-  background: @hauptteilhintergrund;
-  border-top: 1px @standardhell solid;
-  border-bottom: 1px @standardhell solid;
+  background: @standardhell_background;
+  border-top: 1px @schattierthell_background solid;
+  border-bottom: 1px @schattierthell_background solid;
   margin-bottom: 7px;
   tr.min, td.min {
     width: 1%;
@@ -90,8 +90,8 @@ table .cms_senkrecht {
   font-weight: bold;
   padding: 3px 7px;
   text-align: left;
-  border-top: 1px @standardhell solid;
-  border-bottom: 1px @standardhell solid;
+  border-top: 1px @schattierthell_background solid;
+  border-bottom: 1px @schattierthell_background solid;
   line-height: 1.5em;
   transition: 250ms ease-in-out;
 }
@@ -100,7 +100,7 @@ table .cms_senkrecht {
   font-weight: normal;
   padding: 3px 7px;
   text-align: left;
-  border-bottom: 1px @standardhell solid;
+  border-bottom: 1px @schattierthell_background solid;
   transition: 250ms ease-in-out;
 }
 
@@ -109,12 +109,12 @@ table .cms_senkrecht {
 }
 
 .cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
-	background: @standardhell;
+	background: @schattierthell_background;
 }
 
 .cms_postfach_liste .cms_postfach_vorschau {
   border-top: none;
-  background: @standardhell;
+  background: @schattierthell_background;
   display: none;
 }
 
@@ -130,12 +130,23 @@ table .cms_senkrecht {
 .cms_tabelle_zwischentitel {
   font-weight: bold !important;
   text-align: center !important;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
 }
+
+table.cms_zeitwahl {
+  width: 100%;
+  margin-bottom: @standardabsatz_schulhof_margin;
+  border-collapse: collapse;
+  border-spacing: collapse;
+}
+
+table.cms_zeitwahl td {width: auto;}
+table.cms_zeitwahl td:nth-child(2) {text-align: center !important;}
+table.cms_zeitwahl td:nth-child(3) {text-align: right;}
 
 table.table {
   width: 100%;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
   border-collapse: collapse;
   border-spacing: collapse;
 }
@@ -143,7 +154,7 @@ table.table {
 table.table td {
   border: none !important;
   padding: 3px;
-  border-right: 1px solid @hintergrundhell !important;
+  border-right: 1px solid @standardhell_background !important;
   background-color: #dddddd;
 }
 
@@ -157,9 +168,17 @@ table.table tr:nth-child(2n+1) td {
 
 th.cms_zwischenueberschrift {
   text-align: center;
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
 }
 
 th.cms_zahl, td.cms_zahl {
   text-align: right !important;
+}
+
+.cms_sortieren:hover {
+  cursor: s-resize;
+}
+
+.cms_auswaehlen:hover {
+  cursor: crosshair;
 }

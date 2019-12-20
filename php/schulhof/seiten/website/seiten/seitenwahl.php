@@ -16,7 +16,7 @@ function cms_seitenwahl_seiten ($dbs, $id, $oberseite, $sichtbar = false) {
 	$code = "";
 	if ($oberseite == '-') {$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung IS NULL ORDER BY position";}
 	else {$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung = '$oberseite' ORDER BY position";}
-	if ($anfrage = $dbs->query($sql)) {
+	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
 		if (!$sichtbar) {$style = " style=\"display: none;\"";} else {$style = "";}
 		$code .= "<ul$style class=\"$id"."_wahl_gruppe_".$oberseite."\">";
 		$anzahl = 0;

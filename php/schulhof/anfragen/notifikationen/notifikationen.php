@@ -116,22 +116,28 @@ function cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spa
   $rsql = "SELECT nutzerkonten.id AS id, $spalten FROM personen_einstellungen JOIN nutzerkonten ON personen_einstellungen.person = nutzerkonten.id JOIN personen ON personen.id = nutzerkonten.id WHERE $einstellungsspalte = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND nutzerkonten.id != ?";
 
   $hinzufuegen = "";
+  $fehler = false;
   if ($eintrag['gruppenid'] < 3) {
     // Zugrordnete Gruppen des Termins ermitteln
     $sql = "";
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
+      if (!cms_check_ganzzahl($eintrag['zielid'],0)) {$fehler = true;}
       $sql .= " UNION (SELECT gruppe AS gruppenid, '$gk' AS gruppe FROM $gk"."termine WHERE termin = ".$eintrag['zielid'].")";
     }
     $sql = substr($sql, 7);
-    $sql = "SELECT DISTINCT * FROM ($sql) AS x";
+    $sql = $dbs->prepare("SELECT DISTINCT * FROM ($sql) AS x");
     $beteiligtegruppen = array();
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push($beteiligtegruppen, $daten);
+    if ($sql->execute()) {
+      $sql->bind_result($gruppeid, $gruppeart);
+      while ($sql->fetch()) {
+        $g = array();
+        $g['gruppenid'] = $gruppeid;
+        $g['gruppe'] = $gruppeart;
+        array_push($beteiligtegruppen, $g);
       }
-      $anfrage->free();
     }
+    $sql->close();
 
     if (count($beteiligtegruppen) > 0) {
       // Mitglieder ermitteln
@@ -141,16 +147,18 @@ function cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spa
       }
       $sql = substr($sql, 7);
       // Gruppenmitglieder bestimmen
-      $sql = "SELECT DISTINCT id FROM ($sql) AS x";
-
+      $sql = $dbs->prepare("SELECT DISTINCT id FROM ($sql) AS x");
       $erlaubtepersonen = "";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          $erlaubtepersonen .= ",".$daten['id'];
+      if ($sql->execute()) {
+        $sql->bind_result($pid);
+        while ($sql->fetch()) {
+          $erlaubtepersonen .= ",".$pid;
         }
-        $anfrage->free();
       }
-      $hinzufuegen = " OR nutzerkonten.id IN (".substr($erlaubtepersonen, 1).")";
+      $sql->close();
+      if (strlen($erlaubtepersonen) > 0) {
+        $hinzufuegen = " OR nutzerkonten.id IN (".substr($erlaubtepersonen, 1).")";
+      }
     }
 
     if ($eintrag['gruppenid'] > 1) {$hinzufuegen .= " OR art = AES_ENCRYPT('v', '$CMS_SCHLUESSEL')";}

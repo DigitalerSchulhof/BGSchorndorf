@@ -9,7 +9,7 @@ $zugriff = $CMS_RECHTE['Website']['Emoticons verwalten'];
 $code = "";
 
 $sql = cms_sql_mit_aes(array("id", "aktiv"), "emoticons");
-$sql = $dbs->query($sql);
+$sql = $dbs->query($sql); // Safe weil keine Eingabe
 if ($zugriff) {
   $code .= "</div><div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
     $code .= "<h2>Reaktionen auf Artikel</h2>";

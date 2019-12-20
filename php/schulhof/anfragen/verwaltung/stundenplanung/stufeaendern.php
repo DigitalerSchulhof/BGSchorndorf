@@ -18,7 +18,6 @@ if (cms_angemeldet() && $zugriff) {
 	$_SESSION['STUNDENPLANUNGSTUFEN'] = $id;
 	$_SESSION['STUNDENPLANUNGKLASSEN'] = 'x';
 	$_SESSION['STUNDENPLANUNGKURSE'] = 'x';
-	$_SESSION['STUNDENPLANUNGLEHRER'] = 'x';
 	echo "ERFOLG";
 }
 else {

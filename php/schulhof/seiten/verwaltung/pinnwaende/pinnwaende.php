@@ -20,7 +20,7 @@ if ($zugriff) {
 		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, sichtbars, sichtbarl, sichtbare, sichtbarv, sichtbarx, schreibens, schreibenl, schreibene, schreibenv, schreibenx FROM pinnwaende) AS pinnwaende ORDER BY bezeichnung ASC";
 
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {
+		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
 					$ausgabe .= "<td><img src=\"res/icons/klein/pinnwaende.png\"></td>";

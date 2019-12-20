@@ -45,7 +45,7 @@ if ($zugriff) {
 
       $sql = "SELECT * FROM (SELECT profile.id AS pid, AES_DECRYPT(profile.bezeichnung, '$CMS_SCHLUESSEL') AS pbez, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, reihenfolge, profile.art AS art FROM profile JOIN stufen ON profile.stufe = stufen.id WHERE profile.schuljahr = $SCHULJAHR) AS x ORDER BY reihenfolge ASC, pbez ASC";
 
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
         while ($daten = $anfrage->fetch_assoc()) {
           $pid = $daten['pid'];
           $pbez = $daten['pbez'];
@@ -61,7 +61,7 @@ if ($zugriff) {
             $faecher = "";
 
             $sqlfaecher = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS fbez FROM profilfaecher JOIN faecher ON profilfaecher.fach = faecher.id WHERE profilfaecher.profil = $pid";
-            if ($anfrage2 = $dbs->query($sqlfaecher)) {
+            if ($anfrage2 = $dbs->query($sqlfaecher)) { // Safe weil interne ID
               while ($daten2 = $anfrage2->fetch_assoc()) {
                 $faecher .= ", ".$daten2['fbez'];
               }
@@ -96,10 +96,10 @@ if ($zugriff) {
 
 
   }
-  else {$code .= "<h1>Stundenplanzeiträume</h1>".cms_meldung_bastler();}
+  else {$code .= "<h1>Profile</h1>".cms_meldung_bastler();}
 }
 else {
-  $code .= "<h1>Stundenplanzeiträume</h1>".cms_meldung_berechtigung();
+  $code .= "<h1>Profile</h1>".cms_meldung_berechtigung();
 }
 
 echo $code;

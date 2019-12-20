@@ -10,7 +10,7 @@
       $dbs = cms_verbinden('s');
       $sql = "SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback ORDER BY zeitstempel DESC";
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
         while ($daten = $anfrage->fetch_assoc()) {
           $liste .= '<tr>';
           $liste .= '<td><img src="res/icons/klein/feedback.png"></td>';

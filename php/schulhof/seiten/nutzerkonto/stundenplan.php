@@ -7,60 +7,95 @@
 // PROFILDATEN LADEN
 if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {
 	$dbs = cms_verbinden();
-	// Aktuellen Zeitraum laden
-	$jetzt = time();
-	$zeitraum = "-";
-	$sql = "SELECT id FROM zeitraeume WHERE beginn < $jetzt AND ende > $jetzt AND aktiv = 1";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$zeitraum = $daten['id'];
-		}
-		$anfrage->free();
-	}
-	$schuljahr = "-";
-	$sql = "SELECT id FROM schuljahre WHERE beginn < $jetzt AND ende > $jetzt";
-	if ($anfrage = $dbs->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$schuljahr = $daten['id'];
-		}
-		$anfrage->free();
-	}
-
 	if ((($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] == '1') && ($CMS_BENUTZERART == 'l')) ||
 	 		(($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] == '1') && ($CMS_BENUTZERART == 's'))) {
 		$stundenplan = "";
 		if ($CMS_BENUTZERART == 'l') {
-			$sql = "SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = $CMS_BENUTZERID";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					$stundenplan = $daten['stundenplan'];
-				}
-				$anfrage->free();
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = ?");
+			$sql->bind_param("i", $CMS_BENUTZERID);
+			if ($sql->execute()) {
+				$sql->bind_result($studenplan);
+				$sql->fetch();
 			}
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+			$sql->close();
+			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_lehrerplan_aus_datei($stundenplan);
 		}
 		else if ($CMS_BENUTZERART == 's') {
-			$sql = "SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplan FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE person = $CMS_BENUTZERID AND schuljahr = $schuljahr";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					$stundenplan = $daten['stundenplan'];
-				}
-				$anfrage->free();
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(stundenplanextern, '$CMS_SCHLUESSEL') AS stundenplan FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE person = ? AND schuljahr = ?");
+			$sql->bind_param("ii", $CMS_BENUTZERID, $schuljahr);
+			if ($sql->execute()) {
+				$sql->bind_result($studenplan);
+				$sql->fetch();
 			}
-			include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+			$sql->close();
+			include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 			$code .= cms_klassenplan_aus_datei($stundenplan);
 		}
-
+		$code .= "</div>";
 	}
 	else if ((($CMS_EINSTELLUNGEN['Stundenplan Lehrer extern'] != '1') && ($CMS_BENUTZERART == 'l')) ||
 	 				 (($CMS_EINSTELLUNGEN['Stundenplan Klassen extern'] != '1') && ($CMS_BENUTZERART == 's'))) {
-		include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
-		if ($zeitraum != '-') {
-			$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, $CMS_BENUTZERART, $CMS_BENUTZERID, false);
+		if (cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR)) {
+			$zeitraum = "-";
+			if (isset($_SESSION['MEINSTUNDENPLANZEITRAUM']) && (cms_check_ganzzahl($_SESSION['MEINSTUNDENPLANZEITRAUM'],0) || ($_SESSION['MEINSTUNDENPLANZEITRAUM'] == '-'))) {
+				$zeitraum = $_SESSION['MEINSTUNDENPLANZEITRAUM'];
+			}
+			else {
+				$jetzt = time();
+				$sql = "SELECT id FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 AND beginn <= ? AND ende >= ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("iii", $CMS_BENUTZERSCHULJAHR, $jetzt, $jetzt);
+				if ($sql->execute()) {
+					$sql->bind_result($z);
+					if ($sql->fetch()) {
+						$zeitraum = $z;
+					}
+				}
+				$sql->close();
+			}
+
+			if (cms_check_ganzzahl($zeitraum,0) || ($zeitraum == '-')) {
+				$zeitraumwahl = "";
+				// Alle aktiven Zeiträume dieses Schuljahres laden
+				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 ORDER BY beginn DESC";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+				if ($sql->execute()) {
+					$sql->bind_result($zid, $zbez);
+					while ($sql->fetch()) {
+						if ($zeitraum == '-') {$zeitraum = $zid;}
+						if ($zeitraum == $zid) {$wert = 1;} else {$wert = 0;}
+						$zeitraumwahl .= cms_togglebutton_generieren ('cms_zeitraumwahl_'.$zid, $zbez, $wert, "cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '$zid')")." ";
+					}
+				}
+				$sql->close();
+				if (strlen($zeitraumwahl) == 0) {"<p class=\"cms_notiz\">Keine Zeiträume gefunden</p>";}
+					else {$zeitraumwahl = "<p>".$zeitraumwahl."</p>";}
+
+				if (strlen($zeitraumwahl) > 0) {
+					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
+					if ($CMS_BENUTZERART == 'l') {
+						$code .= $zeitraumwahl;
+						$code .= cms_lehrerregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+					}
+					else {
+						$code .= $zeitraumwahl;
+						$code .= cms_personenregelplan_aus_db($dbs, $CMS_BENUTZERID, $zeitraum);
+					}
+					$code .= "<div class=\"cms_clear\"></div>";
+				}
+				else {
+					$code .= "<p class=\"cms_notiz\">Im gewählten Schuljahr stehen im Moment keine Stundenpläne zur Verfügung.</p>";
+					$code .= "</div>";
+				}
+			}
+			else {
+				$code .= cms_meldung_bastler();
+			}
 		}
 		else {
-			$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
+			$code .= cms_meldung('info', '<h4>Kein Schuljahr ausgewählt</h4><p>In diesem Nutzerkonto wurde kein Schuljahr ausgewählt.</p><p><a class="cms_button" href="Schulhof/Nutzerkonto/Mein_Profil">Profildaten</a></p>');
 		}
 	}
 	cms_trennen($dbs);
@@ -70,8 +105,4 @@ else {
 	echo cms_meldung_bastler();
 }
 ?>
-
-</div>
-
-
 <div class="cms_clear"></div>

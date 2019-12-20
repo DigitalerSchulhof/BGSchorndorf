@@ -19,13 +19,15 @@ if (cms_valide_gruppe($g)) {
   }
   $gruppenliste = "";
   if (strlen($sql) > 0) {
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
-        if (is_null($daten['sbez'])) {$daten['sbez'] = "Schuljahrübergreifend";}
-        $gruppenliste .= "<a class=\"cms_button\" href=\"Schulhof/Listen/Gruppen/".cms_textzulink($g)."/".cms_textzulink($daten['sbez'])."/".cms_textzulink($daten['gbez'])."\">".$daten['gbez']."</a> ";
+    $sql = $dbs->prepare($sql);
+    if ($sql->execute()) {
+      $sql->bind_result($gid, $gbez, $sbez);
+      while ($sql->fetch()) {
+        if (is_null($sbez)) {$sbez = "Schuljahrübergreifend";}
+        $gruppenliste .= "<a class=\"cms_button\" href=\"Schulhof/Listen/Gruppen/".cms_textzulink($g)."/".cms_textzulink($sbez)."/".cms_textzulink($gbez)."\">$gbez</a> ";
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
   if (strlen($gruppenliste) > 0) {

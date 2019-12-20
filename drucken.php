@@ -8,13 +8,47 @@
 	include_once("php/schulhof/funktionen/check.php");
 	include_once("php/schulhof/funktionen/meldungen.php");
 	include_once("php/schulhof/funktionen/generieren.php");
-	include_once("php/lehrerzimmer/seiten/gesicherteteile.php");
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	session_start();
 	$CMS_ANGEMELDET = cms_angemeldet();
-	$CMS_RECHTE = cms_rechte_laden();
+	if ($CMS_ANGEMELDET) {
+
+		// Nutzerdaten laden
+		$CMS_BENUTZERNAME = $_SESSION['BENUTZERNAME'];
+		$CMS_SESSIONID = $_SESSION['SESSIONID'];
+		$CMS_SESSIONTIMEOUT = $_SESSION['SESSIONTIMEOUT'];
+		$CMS_SESSIONAKTIVITAET = $_SESSION['SESSIONAKTIVITAET'];
+		$CMS_BENUTZERUEBERSICHTANZAHL = $_SESSION['BENUTZERUEBERSICHTANZAHL'];
+		$CMS_BENUTZERTITEL = $_SESSION['BENUTZERTITEL'];
+		$CMS_BENUTZERVORNAME = $_SESSION['BENUTZERVORNAME'];
+		$CMS_BENUTZERNACHNAME = $_SESSION['BENUTZERNACHNAME'];
+		$CMS_BENUTZERID = $_SESSION['BENUTZERID'];
+		$CMS_BENUTZERART = $_SESSION['BENUTZERART'];
+		$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];
+
+
+		// Timeout verlängern, da der Nutzer aktiv war
+		if ($_SESSION['SESSIONTIMEOUT'] > time()) {
+			cms_timeout_verlaengern();
+		}
+
+		// Rechte des Benutzers laden
+		$CMS_RECHTE = cms_rechte_laden();
+	}
+
+	if (isset($_SESSION['IMLN'])) {
+		if ($_SESSION['IMLN'] == 1) {
+			$CMS_IMLN = true;
+		}
+		else {
+			$CMS_IMLN = false;
+		}
+	}
+	else {
+		$CMS_IMLN = false;
+	}
 ?>
 <html>
 <head>
@@ -24,14 +58,57 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link type="image/png" href="res/logos/bglogo.png" rel="shortcut icon">
+	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">";
 	<title>Druckansicht – <?php echo $CMS_SCHULE." ".$CMS_ORT;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 	// <!-- Einbindung der Stylesheets -->
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css\">";
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css\">";
+	echo "<script src=\"js/allgemein/check.js\"></script>";
+	echo "<script src=\"js/allgemein/anfragen.js\"></script>";
+	if ($CMS_ANGEMELDET) {
+		echo "<script src=\"js/lehrerzimmer/lehrernetz.js\"></script>";
+		echo "<script src=\"js/lehrerzimmer/lehrernetz.js\"></script>";
+	}
 	?>
+	<script><?php
+		if ($CMS_ANGEMELDET) {
+			if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
+				echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";
+				if (isset($_SESSION['IMLN'])) {
+					if ($_SESSION['IMLN'] == 1) {
+						echo "var CMS_IMLN = true;\n";
+					}
+					else {
+						echo "var CMS_IMLN = false;\n";
+					}
+				}
+				else {
+					echo "var CMS_IMLN = false;\n";
+				}
+			}
+			echo "var CMS_BENUTZERNAME = '".$_SESSION['BENUTZERNAME']."';\n";
+			$iv = substr($CMS_SESSIONID, 0, 16);
+			$nutzerid = openssl_encrypt ($CMS_BENUTZERID, 'aes128', $iv, 0, $iv);
+			echo "var CMS_BENUTZERID = '".$nutzerid."';\n";
+			echo "var CMS_SESSIONID = '".$_SESSION['SESSIONID']."';\n";
+			echo "var CMS_SESSIONTIMEOUT = ".$_SESSION['SESSIONTIMEOUT'].";\n";
+			echo "var CMS_SESSIONAKTIVITAET = ".$_SESSION['SESSIONAKTIVITAET'].";\n";
+			echo "var CMS_BENUTZERTITEL = '".$_SESSION['BENUTZERTITEL']."';\n";
+			echo "var CMS_BENUTZERVORNAME = '".$_SESSION['BENUTZERVORNAME']."';\n";
+			echo "var CMS_BENUTZERNACHNAME = '".$_SESSION['BENUTZERNACHNAME']."';\n";
+			echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
+			echo "var CMS_MAX_DATEI = ".$CMS_MAX_DATEI.";\n";
+			echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
+			$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
+			if ($CMS_IMLN) {
+				echo "CMS_IMLN = true;\n";
+			}
+			echo "var CMS_GRUPPEN = ['Gremien','Fachschaften','Klassen','Kurse','Stufen','Arbeitsgemeinschaften','Arbeitskreise','Fahrten','Wettbewerbe','Ereignisse','Sonstige Gruppen'];";
+		}
+	?>
+	</script>
 </head>
 <body>
 	<div class="cms_druckseite">
@@ -40,7 +117,7 @@
 		$fehler = false;
 		$code = "<div id=\"cms_druckkopf\">";
 			$code .= "<span id=\"cms_logo\">";
-				$code .= "<img id=\"cms_logo_bild\" src=\"res/logos/bglogodruck.png\">";
+				$code .= "<img id=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGODRUCK\">";
 				$code .= "<span id=\"cms_logo_schrift\">";
 					$code .= "<span id=\"cms_logo_o\">$CMS_SCHULE</span>";
 					$code .= "<span id=\"cms_logo_u\">$CMS_ORT</span>";
@@ -62,9 +139,12 @@
 
 						// DATENSÄTZE LADEN
 						$ansprechpartner2 = 0;
-						$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(rufname, '$CMS_SCHLUESSEL') AS rufname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL') AS geburtsdatum, AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL') AS geburtsort, AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL') AS geburtsland, AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL') AS muttersprache, AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL') AS verkehrssprache, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(religion, '$CMS_SCHLUESSEL') AS religion, AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL') AS religionsunterricht, AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL') AS staatsangehoerigkeit, AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL') AS zstaatsangehoerigkeit, AES_DECRYPT(strasse, '$CMS_SCHLUESSEL') AS strasse, AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL') AS hausnummer, AES_DECRYPT(plz, '$CMS_SCHLUESSEL') AS plz, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(teilort, '$CMS_SCHLUESSEL') AS teilort, AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL') AS telefon1, AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL') AS telefon2, AES_DECRYPT(handy1, '$CMS_SCHLUESSEL') AS handy1, AES_DECRYPT(handy2, '$CMS_SCHLUESSEL') AS handy2, AES_DECRYPT(mail, '$CMS_SCHLUESSEL') AS mail, AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert FROM voranmeldung_schueler WHERE id = $id";
-						if ($anfrage = $dbs->query($sql)) {
-							if ($daten = $anfrage->fetch_assoc()) {
+						$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(rufname, '$CMS_SCHLUESSEL') AS rufname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL') AS geburtsdatum, AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL') AS geburtsort, AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL') AS geburtsland, AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL') AS muttersprache, AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL') AS verkehrssprache, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(religion, '$CMS_SCHLUESSEL') AS religion, AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL') AS religionsunterricht, AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL') AS staatsangehoerigkeit, AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL') AS zstaatsangehoerigkeit, AES_DECRYPT(strasse, '$CMS_SCHLUESSEL') AS strasse, AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL') AS hausnummer, AES_DECRYPT(plz, '$CMS_SCHLUESSEL') AS plz, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(teilort, '$CMS_SCHLUESSEL') AS teilort, AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL') AS telefon1, AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL') AS telefon2, AES_DECRYPT(handy1, '$CMS_SCHLUESSEL') AS handy1, AES_DECRYPT(handy2, '$CMS_SCHLUESSEL') AS handy2, AES_DECRYPT(mail, '$CMS_SCHLUESSEL') AS mail, AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert FROM voranmeldung_schueler WHERE id = ?";
+						$sql = $dbs->prepare($sql);
+						$sql->bind_param("i", $id);
+						if ($sql->execute()) {
+							$r = $sql->get_result();
+							if ($daten = $r->fetch_array(MYSQLI_NUM)) {
 								$sakzeptiert = $daten['akzeptiert'];
 								if ($sakzeptiert == 'ja') {$sakzeptiert = 1;} else {$sakzeptiert = 0;}
 								$svorname = $daten['vorname'];
@@ -97,12 +177,15 @@
 								$geburtsdatumgeladen = true;
 								$einschulunggeladen = true;
 							}
-							$anfrage->free();
+							$sql->close();
 						}
 
-						$sql = "SELECT id, AES_DECRYPT(nummer, '$CMS_SCHLUESSEL') AS nummer, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(sorgerecht, '$CMS_SCHLUESSEL') AS sorgerecht, AES_DECRYPT(briefe, '$CMS_SCHLUESSEL') AS briefe, AES_DECRYPT(strasse, '$CMS_SCHLUESSEL') AS strasse, AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL') AS hausnummer, AES_DECRYPT(plz, '$CMS_SCHLUESSEL') AS plz, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(teilort, '$CMS_SCHLUESSEL') AS teilort, AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL') AS telefon1, AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL') AS telefon2, AES_DECRYPT(handy, '$CMS_SCHLUESSEL') AS handy, AES_DECRYPT(mail, '$CMS_SCHLUESSEL') AS mail FROM voranmeldung_eltern WHERE schueler = $id";
-						if ($anfrage = $dbs->query($sql)) {
-							while ($daten = $anfrage->fetch_assoc()) {
+						$sql = "SELECT id, AES_DECRYPT(nummer, '$CMS_SCHLUESSEL') AS nummer, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(sorgerecht, '$CMS_SCHLUESSEL') AS sorgerecht, AES_DECRYPT(briefe, '$CMS_SCHLUESSEL') AS briefe, AES_DECRYPT(strasse, '$CMS_SCHLUESSEL') AS strasse, AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL') AS hausnummer, AES_DECRYPT(plz, '$CMS_SCHLUESSEL') AS plz, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(teilort, '$CMS_SCHLUESSEL') AS teilort, AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL') AS telefon1, AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL') AS telefon2, AES_DECRYPT(handy, '$CMS_SCHLUESSEL') AS handy, AES_DECRYPT(mail, '$CMS_SCHLUESSEL') AS mail FROM voranmeldung_eltern WHERE schueler = ?";
+						$sql = $dbs->prepare($dbs);
+						$sql->bind_param("i", $id);
+						if ($sql->execute()) {
+							$r = $sql->get_result();
+							while ($daten = $r->fetch_array(MYSQLI_NUM)) {
 								if ($daten['nummer'] == 'zwei') {$ansprechpartner2 = 1;}
 								$ansprechpartner[$daten['nummer']]['vorname'] = $daten['vorname'];
 								$ansprechpartner[$daten['nummer']]['nachname'] = $daten['nachname'];
@@ -119,7 +202,7 @@
 								$ansprechpartner[$daten['nummer']]['handy'] = $daten['handy'];
 								$ansprechpartner[$daten['nummer']]['mail'] = $daten['mail'];
 							}
-							$anfrage->free();
+							$sql->close();
 						}
 
 						$code .= "<div class=\"cms_spalten\"><div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
@@ -221,6 +304,23 @@
 					else {$fehler = true;}
 				}
 				else {$fehler = true;}
+			}
+			else if (($_SESSION['DRUCKANSICHT'] == 'Vertretungsplan') && (isset($_SESSION['DRUCKVPLANDATUMV'])) && (isset($_SESSION['DRUCKVPLANDATUMB']))) {
+				include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
+				// Kennung laden
+				$sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL')");
+				if ($sql->execute()) {
+				  $sql->bind_result($kennung);
+				  $sql->fetch();
+				}
+				$sql->close();
+
+				$code .= "<h1>Vertretungsplan Lehreransicht</h1>";
+				$code .= "<input type=\"hidden\" name=\"cms_lvplan_kennung\" id =\"cms_lvplan_kennung\" value=\"$kennung\">";
+				$code .= cms_vertretungsplan_komplettansicht($dbs, 'l', $_SESSION['DRUCKVPLANDATUMV'], $_SESSION['DRUCKVPLANDATUMB'], '1', 'k');
+
+				$code .= "<h1>Vertretungsplan Schüleransicht</h1>";
+				$code .= cms_vertretungsplan_komplettansicht($dbs, 's', $_SESSION['DRUCKVPLANDATUMV'], $_SESSION['DRUCKVPLANDATUMB'], '1', 'k');
 			}
 			else {$fehler = true;}
 		}

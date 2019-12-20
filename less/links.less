@@ -1,26 +1,42 @@
-// out: ../css/links.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/links.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 a, .cms_link {
   font-size: inherit;
   text-decoration: none;
-  color: @schriftlink;
+  color: @standardlink_color;
   transition: 500ms ease-in-out;
   display: inline-block;
 }
 
 a:hover, .cms_link:hover {
-  color: @schriftlinkh;
+  color: @standardlinkhover_color;
   display: inline-block;
   cursor: pointer;
 }
 
-.cms_notiz a:hover {
-  color: @schriftbuttonfusszeileh !important;
+#cms_fusszeile_o .cms_notiz a:hover {
+  color: @fusszeile_linkhover_color !important;
+  display: inline-block;
+}
+
+#cms_fusszeile_o .cms_notiz a {
+  color: @fusszeile_link_color !important;
   display: inline-block;
 }
 
 .cms_brotkrumen {
-  color: @schriftunscheinbar;
+  color: @unscheinbar_color;
   font-size: 80%;
+}
+
+.cms_favorisieren {
+  display: inline-block;
+  float: right;
+  text-align: right;
+  position: relative;
+}
+
+.cms_favorisieren img:hover {
+  cursor: pointer;
 }

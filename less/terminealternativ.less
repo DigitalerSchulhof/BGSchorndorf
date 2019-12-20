@@ -1,16 +1,16 @@
-// out: ../css/termine.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/termine.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_terminuebersicht {
   padding: 0px;
   margin: 0px;
-  border-bottom: 1px solid @standardhell;
+  border-bottom: 1px solid @schattierthell_background;
 }
 
 .cms_terminuebersicht li {
   padding: 0px;
   margin: 0px;
-  border-bottom: 10px solid @hintergrundhell;
+  border-bottom: 10px solid @standardhell_background;
   list-style-type: none;
   display: block;
 }
@@ -25,12 +25,12 @@
   position: relative;
   transition: 250ms ease-in-out;
   min-height: 70px;
-  border: 1px solid @standardhell;
+  border: 1px solid @schattierthell_background;
   background: #eeeeee;
 }
 
 .cms_terminlink .cms_terminlinkinnen {
-  background: @hintergrundhell;
+  background: @standardhell_background;
   border: 1px solid @themafarbe1;
   padding: 10px 10px 5px 80px;
   position: relative;
@@ -56,7 +56,7 @@
   font-size: 110%;
   font-weight: bold;
   margin-top: 2px;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
 }
 
 .cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
@@ -67,11 +67,11 @@
 .cms_terminlink p:last-child {margin-bottom: 0px;}
 
 .cms_terminlink:hover {
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
 }
 .cms_terminlink:hover .cms_button {
-  background-color: @buttonh;
-  color: @schriftbuttonh;
+  background-color: @buttonhover_background;
+  color: @buttonhover_color;
 }
 
 .cms_terminlink .cms_kalenderblaetter {
@@ -104,9 +104,9 @@
 .cms_terminlink .cms_kalenderblatt_monat {
   background: @themafarbe1;
   font-weight: bold;
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   font-size: 10px;
-  border: 1px solid @standardhell;
+  border: 1px solid @schattierthell_background;
   border-bottom: none;
   padding: 2px 0px;
   border-top-right-radius: 3px;
@@ -114,21 +114,21 @@
 }
 
 .cms_terminlink .cms_kalenderblatt_tagnr {
-  background: @hintergrundhell;
+  background: @standardhell_background;
   font-weight: normal;
   color: @themafarbe3;
   font-size: 18px;
-  border-left: 1px solid @standardhell;
-  border-right: 1px solid @standardhell;
+  border-left: 1px solid @schattierthell_background;
+  border-right: 1px solid @schattierthell_background;
   padding: 2px 0px;
 }
 
 .cms_terminlink .cms_kalenderblatt_tagbez {
-  background: @hintergrundhell;
+  background: @standardhell_background;
   font-weight: normal;
   color: @themafarbe1;
   font-size: 10px;
-  border: 1px solid @standardhell;
+  border: 1px solid @schattierthell_background;
   border-top: none;
   padding: 2px 0px;
   border-bottom-right-radius: 3px;
@@ -173,9 +173,9 @@
 .cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {
   background: @themafarbe1;
   font-weight: bold;
-  color: @schriftfarbehell;
+  color: @standardschrifthell_color;
   font-size: 20px;
-  border: 2px solid @standardhell;
+  border: 2px solid @schattierthell_background;
   border-bottom: none;
   padding: 4px 0px;
   border-top-right-radius: 5px;
@@ -183,21 +183,21 @@
 }
 
 .cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {
-  background: @hintergrundhell;
+  background: @standardhell_background;
   font-weight: normal;
   color: @themafarbe3;
   font-size: 45px;
-  border-left: 2px solid @standardhell;
-  border-right: 2px solid @standardhell;
+  border-left: 2px solid @schattierthell_background;
+  border-right: 2px solid @schattierthell_background;
   padding: 8px 0px 4px 0px;
 }
 
 .cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
-  background: @hintergrundhell;
+  background: @standardhell_background;
   font-weight: normal;
   color: @themafarbe1;
   font-size: 20px;
-  border: 2px solid @standardhell;
+  border: 2px solid @schattierthell_background;
   border-top: none;
   padding: 4px 0px;
   border-bottom-right-radius: 5px;
@@ -248,13 +248,13 @@
   width:8.33333%;
   font-weight: bold;
   padding: 2px 5px;
-  border-right: 1px solid @standardhell;
+  border-right: 1px solid @schattierthell_background;
 }
 
 .cms_ferienkalender td {
   padding: 2px 5px;
-  border-right: 1px solid @standardhell;
-  border-top: 1px solid @standardhell;
+  border-right: 1px solid @schattierthell_background;
+  border-top: 1px solid @schattierthell_background;
 }
 
 .cms_ferienkalender td:last-child,
@@ -268,5 +268,5 @@
   text-align: center;
 }
 
-.cms_ferienkalender_we {background-color: @infohell;}
-.cms_ferienkalender_frei {background-color: @erfolghell;}
+.cms_ferienkalender_we {background-color: @info_background;}
+.cms_ferienkalender_frei {background-color: @erfolg_background;}

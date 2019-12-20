@@ -62,10 +62,6 @@ if (cms_angemeldet() && $zugriff) {
 	  $sql->execute();
 	  $sql->close();
 
-		// Tagebuch löschen
-		$sql = "DROP TABLE tagebuch_$id";
-		$anfrage = $dbs->query($sql);
-
 		echo "ERFOLG";
 	}
 	else {

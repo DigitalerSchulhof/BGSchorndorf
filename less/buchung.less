@@ -1,4 +1,4 @@
-// out: ../css/buchung.css, sourcemap: false, compress: true, autoprefixer: true
+// "out": "../css/buchung.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
 @import "standard.less";
 
 #cms_neue_buchung {
@@ -22,16 +22,16 @@
 
 .cms_buchungsspalte {
   width: 13%;
-  border-left: 3px solid @hintergrundhell;
+  border-left: 3px solid @standardhell_background;
 }
 
 .cms_buchungsspalte_ferien {
-  background: @erfolghell;
+  background: @erfolg_background;
 }
 
 .cms_buchungsspalte .cms_buchungsspaltetitel {
   font-weight: bold;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
   position: absolute;
   top: -40px;
   text-align: center;
@@ -42,13 +42,13 @@
 .cms_buchungsuhrzeit {
   display: inline-block;
   position: absolute;
-  color: @standarddunkel;
+  color: @schattiertdunkel_background;
   opacity: .5;
 }
 
 .cms_buchungsuhrzeitlinien {
   width: 100%;
-  border-top: 1px solid @standarddunkel;
+  border-top: 1px solid @schattiertdunkel_background;
   opacity: .5;
   position: absolute;
   left: 0px;
@@ -63,9 +63,9 @@
   left: 2%;
 }
 
-.cms_buchung_blockierung {background: @standardhell; border: 1px solid @standarddunkel;}
-.cms_buchung_selbst {background: @infohell; border: 1px solid @infodunkel;}
-.cms_buchung_fremd {background: @warnunghell; border: 1px solid @warnungdunkel;}
+.cms_buchung_blockierung {background: @schattierthell_background; border: 1px solid @schattiertdunkel_background;}
+.cms_buchung_selbst {background: @info_background; border: 1px solid @info_akzent;}
+.cms_buchung_fremd {background: @warnung_background; border: 1px solid @warnung_akzent;}
 
 .cms_buchung_zeit, .cms_buchung_von, .cms_buchung_aktion {
   display: block;

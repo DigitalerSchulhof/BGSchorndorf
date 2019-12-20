@@ -29,9 +29,9 @@ $code = "";
 $anmeldung_moeglich = true;
 if ($anmeldung_moeglich) {
 
-	/*$meldung = "<h4>Fehler beim Update</h4>";
-	$meldung .= "<p>Beim Anwenden einer neuen besseren Datenverschlüsselung sind bedauerlicherweise Fehler aufgetreten. Dadurch wurden alle Anhänge und Dateien in Gruppen unbrauchbar. Entschuldigen Sie bitte diesen Fehler! Solange Sie diese Meldung sehen, sind diese Daten nicht verfügbar. <b>Bitte laden Sie bis diese Meldung verschwindet keine Daten hoch, damit die alten Daten widerhergestellt werden können!</b></p>";
-	$code .= cms_meldung('info', $meldung);*/
+	// $meldung = "<h4>Vertretungsplan</h4>";
+	// $meldung .= "<p>Bis auf Weiteres sind im Schulhof keine Vertretungen hinterlegt. An der Lösung des Problems wird gearbeitet.</p>";
+	// $code .= cms_meldung('info', $meldung);
 
 	$code .= "<p>Um den Schulhof zu betreten, ist eine Anmeldung nötig ...</p>";
 
@@ -41,14 +41,14 @@ if ($anmeldung_moeglich) {
 	$code .= "</table>";
 
 	$code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet, als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
-	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird das Verwenden von Cookies und das Verarbeiten von persönlichen Daten akzeptiert.</p>";
+	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch Einwilligung A erteilt.</p>";
 
 	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a></p>";
 }
 else {
 	$dbs = cms_verbinden('s');
-	$sql = "UPDATE nutzerkonten SET sessiontimeout = 0, sessionid = ''";
-	$dbs->query($sql);
+	$sql = $dbs->prepare("UPDATE nutzerkonten SET sessiontimeout = 0, sessionid = ''");
+	$sql->execute();
 	$meldung = "<h4>Wartung des Schulhofs</h4>";
 	$meldung .= "<p>Der Schulhof wird momentan gewartet. Daher sind keine Anmeldungen möglich. Aktive Benutzer wurden abgemeldet.</p>";
 	$code .= cms_meldung('bauarbeiten', $meldung);

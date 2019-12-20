@@ -54,7 +54,8 @@ function cms_schulhof_nutzerkonto_benutzerkonto_aendern () {
 function cms_schulhof_nutzerkonto_lehrerkuerzel_aendern () {
 	cms_laden_an('Lehrerkürzel ändern', 'Die Eingaben werden überprüft.');
 	var lehrerkuerzel = document.getElementById('cms_schulhof_nutzerkonto_profildaten_lehrerkuerzel').value;
-	var stundenplan = document.getElementById('cms_schulhof_nutzerkonto_profildaten_stundenplan').value;
+	var stunden = document.getElementById('cms_schulhof_nutzerkonto_profildaten_stundenplan');
+	if (stunden) {var stundenplan = stunden.value;} else {var stundenplan = "";}
 
 	var formulardaten = new FormData();
 	formulardaten.append("lehrerkuerzel", lehrerkuerzel);
@@ -126,8 +127,6 @@ function cms_schulhof_nutzerkonto_passwort_aendern () {
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
-
-
 
 /* PASSWORT WIRD GEÄNDERT */
 function cms_nutzerkonto_identitaetsdiebstahl() {
@@ -209,7 +208,6 @@ function cms_identitaetsdiebstahl_loeschen(id, zeit) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
 
 function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 	cms_laden_an('Einstellungen ändern', 'Die Eingaben werden überprüft.');
@@ -316,7 +314,6 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 	}
 }
 
-
 // Schuljahr vergeben
 function cms_schulhof_nutzerkonto_schuljahr_einstellen(schuljahr) {
 	cms_laden_an('Schuljahr umstellen', 'Das aktive Schuljahr wird umgestellt.');
@@ -337,8 +334,6 @@ function cms_schulhof_nutzerkonto_schuljahr_einstellen(schuljahr) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-
-
 function cms_persoenliche_notizen_speichern() {
 	cms_laden_an('Notizen speichern', 'Die neuen Notizen werden gespeichert.');
 	var notizen = document.getElementById('cms_persoenlichenotizen').value;
@@ -351,6 +346,63 @@ function cms_persoenliche_notizen_speichern() {
 			if (notizen.length > 0) {document.getElementById('cms_persoenlichenotizen').className = "cms_notizzettel";}
 			else {document.getElementById('cms_persoenlichenotizen').className = "cms_notizzettel cms_notizzettelleer";}
 			cms_meldung_an('erfolg', 'Notizen speichern', '<p>Die Änderugnen wurden übernommen.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_favorit_loeschen_anzeigen(fid, url) {
+	cms_meldung_an('warnung', 'Favorit löschen', '<p>Soll dieser Favorit wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_favorisieren(\''+fid+'\', \''+url+'\', \'1\')">Löschung durchführen</span></p>');
+}
+
+function cms_favorisieren(fid, url, fw) {
+	var icon = document.getElementById('cms_steite_favorit_icon');
+	var favorit = document.getElementById('cms_seite_favorit');
+	var neuerwert = '0';
+
+	if(fw !== undefined) {
+		favorit.value = fw;
+	}
+
+	if (favorit.value == '1') {
+		cms_laden_an('Favorit entfernen', 'Die Seite wird aus den Favoriten entfernt.');
+		neuerwert = '0';
+	}
+	else {
+		cms_laden_an('Favorit hinzufügen', 'Die Seite wird ein neuer Favorit.');
+		neuerwert = '1';
+	}
+
+	var formulardaten = new FormData();
+	formulardaten.append("fid",  					fid);
+	formulardaten.append("seite",  				url);
+	formulardaten.append("status",  			neuerwert);
+	formulardaten.append("anfragenziel", 	'366');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			location.reload();
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_favorit_benennen(fid) {
+	cms_laden_an('Favorit umbenennen', 'Der Favorit wird umbenannt.');
+	var name = document.getElementById('cms_favoriten_bezeichnung_'+fid).value;
+
+	var formulardaten = new FormData();
+	formulardaten.append("fid",  				  fid);
+	formulardaten.append("bezeichnung",  	name);
+	formulardaten.append("anfragenziel", 	'367');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Nutzerkonto/Favoriten");
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

@@ -66,6 +66,7 @@
             $code .= "<a class=\"cms_iconbutton cms_button_website_dateien\" href=\"Schulhof/Website/Dateien\">Dateien</a> ";
           }
           if (($CMS_RECHTE['Website']['Inhalte freigeben']) && ($CMS_URL[2] == 'Neu')) {
+            $CMS_ZUSATZ = implode('/', array_slice($CMS_URL, 3));
             $code .= "<span class=\"cms_iconbutton cms_button_website_freigeben\" onclick=\"cms_element_allefreigeben('".$CMS_SEITENDETAILS['id']."', '".$CMS_URL[2]."', '$CMS_ZUSATZ')\">Freigeben</span> ";
           }
           if ($CMS_RECHTE['Website']['Inhalte freigeben']) {
@@ -73,7 +74,7 @@
             $code .= "<span class=\"cms_iconbutton cms_button_website_aktivieren\" onclick=\"cms_element_alleaktivieren('".$CMS_SEITENDETAILS['id']."', '".$CMS_URL[2]."', '$CMS_ZUSATZ')\">Aktivieren</span> ";
           }
           if ($CMS_RECHTE['Website']['Seiten bearbeiten']) {
-            $code .= "<span class=\"cms_iconbutton cms_button_website_bearbeiten\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$CMS_SEITENDETAILS['id']."');\">Seite bearbetien</span> ";
+            $code .= "<span class=\"cms_iconbutton cms_button_website_bearbeiten\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$CMS_SEITENDETAILS['id']."');\">Seite bearbeiten</span> ";
           }
           if ($CMS_RECHTE['Website']['Seiten löschen']) {
             $code .= "<span class=\"cms_iconbutton cms_button_nein cms_button_website_loeschen\" onclick=\"cms_schulhof_website_seite_loeschen_anzeigen('".$CMS_SEITENDETAILS['bezeichnung']."', '".$CMS_SEITENDETAILS['id']."');\">Seite löschen</span> ";
@@ -86,6 +87,9 @@
     }
     else if (($CMS_URL[1] == 'Blog') || ($CMS_URL[1] == 'Galerien') || ($CMS_URL[1] == 'Termine') || ($CMS_URL[1] == 'Voranmeldung') || ($CMS_URL[1] == 'Ferien')) {
       $code = cms_meldung('info', '<h4>Generierte Seite</h4><p>Diese Seite wird aus den Inhalten des Schulhofs generiert. Um den hier angezeigten Inhalt zu bearbeiten müssen die Daten im Schulhof verändert werden.</p>');
+    }
+    else if (($CMS_URL[1] == "Newsletter_abbestellen")) {
+      $code = cms_meldung('info', '<h4>Inhaltslose Seite</h4><p>Diese Seite wird automatisch generiert und hat keinen Inhalt.</p>');
     }
     else {
       $code = cms_meldung('info', '<h4>Fehlerseite</h4><p>Diese Seite kann nicht bearbeitet werden.</p>');

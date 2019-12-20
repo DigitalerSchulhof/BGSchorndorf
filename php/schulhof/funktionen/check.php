@@ -7,7 +7,21 @@ function cms_check_mail($mail) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}^', $mail) != 1) {
+	if (preg_match('/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/', $mail) != 1) {
+		return false;
+	}
+	else return true;
+}
+
+function cms_check_uhrzeit($uhrzeit) {
+	if(is_array($uhrzeit)) {
+		$r = true;
+		foreach ($uhrzeit as $i => $u)
+			if(!cms_check_uhrzeit($u))
+				$r = false;
+		return $r;
+	}
+	if (preg_match('/^[0-9]{1,2}:[0-9-]{1,2}$/', $uhrzeit) != 1) {
 		return false;
 	}
 	else return true;
@@ -30,6 +44,13 @@ function cms_check_titel($titel) {
 	else return true;
 }
 
+function cms_check_url($url) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ\/_ ]+$/", $url) != 1) {
+		return false;
+	}
+	return true;
+}
+
 function cms_check_dateiname($datei) {
 	if (preg_match("/^[\-\_a-zA-Z0-9]{1,244}\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $datei) != 1) {
 		return false;
@@ -45,7 +66,7 @@ function cms_check_nametitel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
+	if (preg_match("/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
 	else return true;
@@ -121,6 +142,11 @@ function cms_check_idfeld($text) {
 // Prüft, ob der Nutzer, der in der Session steht, angemeldet ist
 function cms_angemeldet () {
 	$angemeldet = false;
+
+	$sessionfehler = !cms_check_sessionvars();
+
+	if ($sessionfehler) {return false;}
+
   if (isset($_SESSION['BENUTZERNAME'])) {
     $jetzt = time();
 
@@ -237,6 +263,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			$CMS_RECHTE['Planung']['Räume sehen'] = true;
 			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
 			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
+			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'v') {
 			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
@@ -255,6 +283,8 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 			$CMS_RECHTE['Planung']['Räume sehen'] = true;
 			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
 			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
+			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
+			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
 		}
 		else if ($CMS_BENUTZERART == 'x') {
 			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
@@ -559,13 +589,14 @@ function cms_einstellungen_laden() {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
-	$sql = "SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen";
-	if ($anfrage=$dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$einstellungen[$daten['inhalt']] = $daten['wert'];
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen");
+	if ($sql->execute()) {
+		$sql->bind_result($einhalt, $ewert);
+		while ($sql->fetch()) {
+			$einstellungen[$einhalt] = $ewert;
 		}
-		$anfrage->free();
 	}
+	$dbs->close();
 	cms_trennen($dbs);
   return $einstellungen;
 }
@@ -574,23 +605,23 @@ function cms_schulanmeldung_einstellungen_laden() {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
-	$sql = "SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM schulanmeldung";
-	if ($anfrage=$dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$einstellungen[$daten['inhalt']] = $daten['wert'];
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM schulanmeldung");
+	if ($sql->execute()) {
+		$sql->bind_result($einhalt, $ewert);
+		while ($sql->fetch()) {
+			$einstellungen[$einhalt] = $ewert;
 		}
-		$anfrage->free();
 	}
+	$dbs->close();
 	cms_trennen($dbs);
   return $einstellungen;
 }
 
-function cms_ist_heute($datum, $tag, $monat, $jahr) {
-  $t = date('d', $datum);
-  $m = date('m', $datum);
-  $j = date('Y', $datum);
-  if (($t == $tag) && ($m == $monat) && ($j == $jahr)) {return true;}
-  else {return false;}
+function cms_ist_heute($heute, $pruefdatum) {
+  $t = date('d', $pruefdatum) == date('d', $heute);
+  $m = date('m', $pruefdatum) == date('m', $heute);
+  $j = date('Y', $pruefdatum) == date('Y', $heute);
+  return ($t && $m && $j);
 }
 
 function cms_websitedateirechte_laden() {
@@ -744,6 +775,17 @@ function sqlLesen($row, $feld) {
 
 	if(isset($row[$feld]))
 		$$feld = $row[$feld];
+}
+
+function cms_check_sessionvars() {
+	if (!isset($_SESSION['BENUTZERID'])) {return false;}
+	if (!isset($_SESSION['BENUTZERSCHULJAHR'])) {return false;}
+	if (!isset($_SESSION['BENUTZERART'])) {return false;}
+
+	if (!cms_check_ganzzahl($_SESSION['BENUTZERID'])) {return false;}
+	if ((!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR'])) && ($_SESSION['BENUTZERSCHULJAHR'] != '-')) {return false;}
+	if (($_SESSION['BENUTZERART'] != 's') && ($_SESSION['BENUTZERART'] != 'l') && ($_SESSION['BENUTZERART'] != 'v') && ($_SESSION['BENUTZERART'] != 'e') && ($_SESSION['BENUTZERART'] != 'x')) {return false;}
+	return true;
 }
 
 ?>

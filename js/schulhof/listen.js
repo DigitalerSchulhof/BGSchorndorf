@@ -50,7 +50,6 @@ function cms_listen_personenliste_laden(art) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-
 function cms_listen_gruppenliste_laden(gruppe, gruppenid) {
   var tabelle = document.getElementById('cms_gruppenliste');
   tabelle.innerHTML = '<p class="cms_notiz cms_zentriert">'+cms_ladeicon()+'<br><br>Die Suche läuft. Bitte warten ...</p>';

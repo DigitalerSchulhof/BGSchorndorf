@@ -24,6 +24,9 @@ $zugriff = false;
 if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
 else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
 
+if(!cms_check_ganzzahl($id))
+  die("FEHLER");
+
 if (($zugriff) && ($angemeldet)) {
   $fehler = false;
 
@@ -39,7 +42,7 @@ if (($zugriff) && ($angemeldet)) {
     $neu = false;
     $dbs = cms_verbinden('s');
     $sql = "SELECT * FROM downloads WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
       if ($daten = $anfrage->fetch_assoc()) {
         if ($modus == 'Aktuell') {
           $pfad = $daten['pfadaktuell'];

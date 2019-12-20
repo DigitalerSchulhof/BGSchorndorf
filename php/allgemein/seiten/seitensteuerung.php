@@ -9,6 +9,8 @@ if ($CMS_URL[0] == 'Website') {
   // WEBSITE
   $CMS_VERFUEGBARE_SEITEN['Website/Datenschutz']                                        = 'php/website/seiten/pflicht/datenschutz.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Impressum']                                          = 'php/website/seiten/pflicht/impressum.php';
+  if(preg_match("/^Website\/Newsletter_abbestellen\/[a-zA-Z0-9]{64}$/", $CMS_URLGANZ))
+    {include("php/website/seiten/newsletter/abbestellen.php"); $ausnahme = true;}
   $CMS_VERFUEGBARE_SEITEN['Website/Feedback']                                           = 'php/website/seiten/feedback/geben.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Feedback/Danke!']                                    = 'php/website/seiten/feedback/danke.php';
   if (preg_match("/^Website\/(Termine|Galerien|Blog)$/", $CMS_URLGANZ))
@@ -48,7 +50,8 @@ else if ($CMS_URL[0] == 'Problembehebung') {
 else if ($CMS_URL[0] == 'Intern') {
   // PROBLEMBEHEBUNG
   $CMS_VERFUEGBARE_SEITEN['Intern'] = 'php/lehrerzimmer/seiten/intern/intern.php';
-  if (preg_match("/^Intern\/Gerätezustand(\/.*){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/geraetezustand.php';}
+  if (preg_match("/^Intern\/Schülervertretungsplan(\/[-a-zA-Z0-9]+){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/schuelervertretungsplan.php';}
+  if (preg_match("/^Intern\/Lehrervertretungsplan(\/[-a-zA-Z0-9]+){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/lehrervertretungsplan.php';}
 }
 else if ($CMS_URL[0] == 'Schulhof') {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
@@ -83,6 +86,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Neuen_Tag_anlegen']         = 'php/schulhof/seiten/nutzerkonto/postfach/neuertag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                              = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Umarmungen']                              = 'php/schulhof/seiten/nutzerkonto/umarmungen.php';
 
   // Aufgaben
@@ -159,6 +163,12 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Einstellungen_des_Nutzerkontos']  = 'php/schulhof/seiten/verwaltung/personen/einstellungendesnutzerkontos.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Schüler_und_Eltern_verknüpfen']   = 'php/schulhof/seiten/verwaltung/personen/schuelereltern.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Stundenplan']                     = 'php/schulhof/seiten/verwaltung/personen/stundenplan.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/IDs_importieren']                 = 'php/schulhof/seiten/verwaltung/personen/idsimportieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/IDs_bearbeiten']                  = 'php/schulhof/seiten/verwaltung/personen/idsbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_zurücksetzen']      = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungzurueck.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_importieren']       = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungimportieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_Lehrer_und_Schüler'] = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungklasseregelunterricht.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Nicht_zugeordnet_löschen']        = 'php/schulhof/seiten/verwaltung/personen/nichtzugeordnetloeschen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen']                                   = 'php/schulhof/seiten/verwaltung/rollen/rollen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen/Rolle_bearbeiten']                  = 'php/schulhof/seiten/verwaltung/rollen/rollebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen']                = 'php/schulhof/seiten/verwaltung/rollen/neuerolle.php';
@@ -168,9 +178,10 @@ else if ($CMS_URL[0] == 'Schulhof') {
     $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Gruppen/'.cms_textzulink($g).'/Gruppe_bearbeiten']   = 'php/schulhof/seiten/verwaltung/gruppen/spezifisch/bearbeiten.php';
     $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Gruppen/'.cms_textzulink($g).'/Neue_Gruppe_anlegen'] = 'php/schulhof/seiten/verwaltung/gruppen/spezifisch/neu.php';
   }
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre']                               = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahre.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Neues_Schuljahr_anlegen']       = 'php/schulhof/seiten/verwaltung/schuljahre/neuesschuljahr.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Schuljahr_bearbeiten']          = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahrbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre']                                = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahre.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Neues_Schuljahr_anlegen']        = 'php/schulhof/seiten/verwaltung/schuljahre/neuesschuljahr.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Schuljahr_bearbeiten']           = 'php/schulhof/seiten/verwaltung/schuljahre/schuljahrbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuljahre/Verantwortlichkeiten_festlegen'] = 'php/schulhof/seiten/verwaltung/schuljahre/verantwortlichkeiten.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner']                             = 'php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrenner.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Dauerbrenner/Neuen_Dauerbrenner_anlegen']  = 'php/schulhof/seiten/verwaltung/dauerbrenner/neuerdauerbrenner.php';
@@ -192,19 +203,26 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Personen_in_Kursen'] = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/kursepersonen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik/Lehraufträge']       = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/lehrauftraege.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schuljahrfabrik']                  = 'php/schulhof/seiten/verwaltung/schuljahrfabrik/schuljahrfabrik.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen'] = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']    = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_rythmisieren']  = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumrythmisieren.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_klonen']        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumklonen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume']                            = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraeume.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen']     = 'php/schulhof/seiten/verwaltung/zeitraeume/neuerzeitraum.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_bearbeiten']        = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_rythmisieren']      = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumrythmisieren.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Zeitraum_klonen']            = 'php/schulhof/seiten/verwaltung/zeitraeume/zeitraumklonen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Zeiträume/Stundenplanung_importieren'] = 'php/schulhof/seiten/verwaltung/zeitraeume/stundenplanungimportieren.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile']                          = 'php/schulhof/seiten/verwaltung/profile/profile.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Neues_Profil_anlegen']     = 'php/schulhof/seiten/verwaltung/profile/neuesprofil.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Profile/Profil_bearbeiten']        = 'php/schulhof/seiten/verwaltung/profile/profilbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schienen']                         = 'php/schulhof/seiten/verwaltung/schienen/schienen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schienen/Neue_Schiene_anlegen']    = 'php/schulhof/seiten/verwaltung/schienen/neueschiene.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Schienen/Schiene_bearbeiten']      = 'php/schulhof/seiten/verwaltung/schienen/schienebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer']                           = 'php/schulhof/seiten/verwaltung/faecher/faecher.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen']        = 'php/schulhof/seiten/verwaltung/faecher/neuesfach.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Fächer_importieren']        = 'php/schulhof/seiten/verwaltung/faecher/importieren.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Fächer/Fach_bearbeiten']           = 'php/schulhof/seiten/verwaltung/faecher/fachbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Stundenplanung']                   = 'php/schulhof/seiten/verwaltung/stundenplanung/stundenplanung.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Stunden_und_Tagebücher_erzeugen']  = 'php/schulhof/seiten/verwaltung/stundenplanung/stundenerzeugen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Ausplanungen']                     = 'php/schulhof/seiten/verwaltung/vertretungsplanung/ausplanungen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Planung/Vertretungsplanung']               = 'php/schulhof/seiten/verwaltung/vertretungsplanung/vertretungsplanung.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume']                                    = 'php/schulhof/seiten/verwaltung/raeume/raeume.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Räume/Neuen_Raum_anlegen']                 = 'php/schulhof/seiten/verwaltung/raeume/neuerraum.php';
@@ -278,6 +296,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Hauptnavigationen']                           = 'php/schulhof/seiten/website/hauptnavigationen/hauptnavigationen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Dateien']                                     = 'php/schulhof/seiten/website/dateien/dateien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Titelbilder']                                 = 'php/schulhof/seiten/website/titelbilder/titelbilder.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Auszeichnungen']                              = 'php/schulhof/seiten/website/auszeichnungen/auszeichnungen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Auszeichnungen/Auszeichnung_anlegen']         = 'php/schulhof/seiten/website/auszeichnungen/neueauszeichnung.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Auszeichnungen/Auszeichnung_bearbeiten']      = 'php/schulhof/seiten/website/auszeichnungen/auszeichnungbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine']                                     = 'php/schulhof/seiten/website/termine/termine.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine/Neuer_Termin']                        = 'php/schulhof/seiten/website/termine/neuertermin.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Termine/Termin_bearbeiten']                   = 'php/schulhof/seiten/website/termine/terminbearbeiten.php';
@@ -289,6 +310,12 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien']                                    = 'php/schulhof/seiten/website/galerien/galerien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Neue_Galerie']                       = 'php/schulhof/seiten/website/galerien/neuegalerie.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Galerien/Galerie_bearbeiten']                 = 'php/schulhof/seiten/website/galerien/galeriebearbeiten.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter']                                  = 'php/schulhof/seiten/website/newsletter/newsletter.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter/Neuer_Newsletter']                 = 'php/schulhof/seiten/website/newsletter/neuernewsletter.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter/Newsletter_bearbeiten']            = 'php/schulhof/seiten/website/newsletter/newsletterbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Newsletter/Newsletter_ansehen']               = 'php/schulhof/seiten/website/newsletter/newsletteransehen.php';
+
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Galerien_genehmigen']                        = 'php/schulhof/seiten/website/galerien/genehmigungscenter.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Auffälliges']                                = 'php/schulhof/seiten/auffaelliges/liste.php';
@@ -322,6 +349,7 @@ if (!$ausnahme) {
       if ($CMS_URL[0] == "Website") {cms_fehler("Website", "404");}
       else if ($CMS_URL[0] == "Problembehebung") {cms_fehler("Schulhof", "404");}
       else if ($CMS_URL[0] == "Schulhof") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == "Intern") {cms_fehler("Schulhof", "404");}
     }
     else {cms_fehler("Website", "404");}
   }

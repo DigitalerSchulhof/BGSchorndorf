@@ -46,7 +46,7 @@ function cms_termin_details_laden($id, $ziel) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."termine JOIN $gk ON ".$gk."termine.gruppe = $gk.id WHERE termin = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) {
+      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
   			while ($daten = $anfrage->fetch_assoc()) {
   				array_push($daten, $zugeordnet[$g]);
           $zgruppenids[$g] .= "|".$daten['id'];

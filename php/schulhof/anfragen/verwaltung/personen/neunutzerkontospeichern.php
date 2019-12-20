@@ -80,15 +80,14 @@ if (cms_angemeldet() && $zugriff) {
 		// PASSWORT GENERIEREN
 		// 24 Stunden in Sekunden später läuft das Passwort ab
 		$passwort = cms_generiere_passwort();
-		$passworttimeout = $jetzt + 24*60*60;
+		$passworttimeout = time() + 60*60*24;
 
 		$salt = cms_generiere_passwort().cms_generiere_passwort();
-
 		$salt = cms_texttrafo_e_db($salt);
 		$passwortsalted = $passwort.$salt;
 		$passwortsalted = cms_texttrafo_e_db($passwortsalted);
 
-		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), passworttimeout = ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', '', ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), 0, 0, ?, '', ?)");
+		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
 	  $sql->bind_param("issisisii", $id, $benutzername, $passwortsalted, $passworttimeout, $salt, $schuljahr, $mail, $jetzt, $jetzt);
 	  $sql->execute();
 	  $sql->close();
@@ -109,168 +108,168 @@ if (cms_angemeldet() && $zugriff) {
 		mkdir("../../../dateien/schulhof/personen/".$id."/postfach/entwuerfe", 0775);
 
 		$dbp = cms_verbinden('p');
-		$sql = "CREATE TABLE postausgang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postausgang_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			absender bigint(255) UNSIGNED NOT NULL,
-			empfaenger text COLLATE utf8_unicode_ci NOT NULL,
-			zeit bigint(255) UNSIGNED NOT NULL,
-			betreff varbinary(5000) NOT NULL,
-			nachricht longblob NOT NULL,
-			papierkorb varbinary(50) NOT NULL,
-			papierkorbseit bigint(255) UNSIGNED NOT NULL,
+			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
+			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
+			betreff varbinary(5000) DEFAULT NULL,
+			nachricht longblob DEFAULT NULL,
+			papierkorb varbinary(50) DEFAULT NULL,
+			papierkorbseit bigint(255) DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE posteingang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE posteingang_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			absender bigint(255) UNSIGNED NOT NULL,
-			empfaenger bigint(255) UNSIGNED NOT NULL,
-			alle text COLLATE utf8_unicode_ci NOT NULL,
-			zeit bigint(255) UNSIGNED NOT NULL,
-			betreff varbinary(5000) NOT NULL,
-			nachricht longblob NOT NULL,
-			gelesen varbinary(50) NOT NULL,
-			papierkorb varbinary(50) NOT NULL,
-			papierkorbseit bigint(255) UNSIGNED NOT NULL,
+			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
+			empfaenger bigint(255) UNSIGNED NULL DEFAULT NULL,
+			alle text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
+			betreff varbinary(5000) DEFAULT NULL,
+			nachricht longblob DEFAULT NULL,
+			gelesen varbinary(50) DEFAULT NULL,
+			papierkorb varbinary(50) DEFAULT NULL,
+			papierkorbseit bigint(255) UNSIGNED NULL DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postentwurf_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postentwurf_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			absender bigint(255) UNSIGNED NOT NULL,
-			empfaenger text COLLATE utf8_unicode_ci NOT NULL,
-			zeit bigint(255) UNSIGNED NOT NULL,
-			betreff varbinary(5000) NOT NULL,
-			nachricht longblob NOT NULL,
-			papierkorb varbinary(50) NOT NULL,
-			papierkorbseit bigint(255) UNSIGNED NOT NULL,
+			absender bigint(255) UNSIGNED NULL DEFAULT NULL,
+			empfaenger text COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+			zeit bigint(255) UNSIGNED DEFAULT NULL,
+			betreff varbinary(5000) DEFAULT NULL,
+			nachricht longblob DEFAULT NULL,
+			papierkorb varbinary(50) DEFAULT NULL,
+			papierkorbseit bigint(255) UNSIGNED NULL DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postgetaggedausgang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postgetaggedausgang_".$id." (
 			tag bigint(255) UNSIGNED NOT NULL,
 			nachricht bigint(255) UNSIGNED NOT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postgetaggedeingang_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postgetaggedeingang_".$id." (
 			tag bigint(255) UNSIGNED NOT NULL,
 			nachricht bigint(255) UNSIGNED NOT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE postgetaggedentwurf_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE postgetaggedentwurf_".$id." (
 			tag bigint(255) UNSIGNED NOT NULL,
 			nachricht bigint(255) UNSIGNED NOT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE posttags_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE posttags_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			person bigint(255) UNSIGNED NOT NULL,
-			titel varbinary(2000) NOT NULL,
-			farbe int(2) NOT NULL,
+			person bigint(255) UNSIGNED NULL DEFAULT NULL,
+			titel varbinary(2000) DEFAULT NULL,
+			farbe int(2) NOT NULL DEFAULT 0,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "CREATE TABLE termine_".$id." (
+		$sql = $dbp->prepare("CREATE TABLE termine_".$id." (
 			id bigint(255) UNSIGNED NOT NULL,
-			person bigint(255) UNSIGNED NOT NULL,
-			bezeichnung varbinary(5000) NOT NULL,
-			ort varbinary(5000) NOT NULL,
-			beginn bigint(255) UNSIGNED NOT NULL,
-			ende bigint(255) UNSIGNED NOT NULL,
-			mehrtaegigt varbinary(50) NOT NULL,
-			uhrzeitbt varbinary(50) NOT NULL,
-			uhrzeitet varbinary(50) NOT NULL,
-			ortt varbinary(50) NOT NULL,
-			text longblob NOT NULL,
+			person bigint(255) UNSIGNED NULL DEFAULT NULL,
+			bezeichnung varbinary(5000) DEFAULT NULL,
+			ort varbinary(5000) DEFAULT NULL,
+			beginn bigint(255) UNSIGNED NULL DEFAULT NULL,
+			ende bigint(255) UNSIGNED NULL DEFAULT NULL,
+			mehrtaegigt varbinary(50) DEFAULT NULL,
+			uhrzeitbt varbinary(50) DEFAULT NULL,
+			uhrzeitet varbinary(50) DEFAULT NULL,
+			ortt varbinary(50) DEFAULT NULL,
+			text longblob DEFAULT NULL,
 			idvon bigint(255) UNSIGNED DEFAULT NULL,
 			idzeit bigint(255) UNSIGNED DEFAULT NULL
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		$dbp->query($sql);
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postausgang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postausgang_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY nachrichtengesendetpersonen (absender);";
-		$dbp->query($sql);
+		ADD KEY nachrichtengesendetpersonen (absender);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posteingang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE posteingang_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY nachrichteneingangpersonen (empfaenger);";
-		$dbp->query($sql);
+		ADD KEY nachrichteneingangpersonen (empfaenger);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postentwurf_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postentwurf_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY nachrichtenentwurf (absender);";
-		$dbp->query($sql);
+		ADD KEY nachrichtenentwurf (absender);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedausgang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedausgang_".$id."
 		ADD UNIQUE KEY tag (tag,nachricht),
-		ADD KEY nachrichtposttaggedausgang_".$id." (nachricht);";
-		$dbp->query($sql);
+		ADD KEY nachrichtposttaggedausgang_".$id." (nachricht);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedeingang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedeingang_".$id."
 		ADD UNIQUE KEY tag (tag,nachricht),
-		ADD KEY nachrichtposttaggedeingang_".$id." (nachricht);";
-		$dbp->query($sql);
+		ADD KEY nachrichtposttaggedeingang_".$id." (nachricht);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedentwurf_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedentwurf_".$id."
 		ADD UNIQUE KEY tag (tag,nachricht),
-		ADD KEY nachrichtposttaggedentwurf_".$id." (nachricht);";
-		$dbp->query($sql);
+		ADD KEY nachrichtposttaggedentwurf_".$id." (nachricht);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posttags_".$id."
+		$sql = $dbp->prepare("ALTER TABLE posttags_".$id."
 		ADD PRIMARY KEY (id),
-		ADD KEY postfachtagspersonen (person);";
-		$dbp->query($sql);
+		ADD KEY postfachtagspersonen (person);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE termine_".$id."
-		ADD KEY personentermine_".$id." (person);";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE termine_".$id."
+		ADD KEY personentermine_".$id." (person);");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postausgang_".$id."
-		ADD CONSTRAINT personpostausgang_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE postausgang_".$id."
+		ADD CONSTRAINT personpostausgang_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posteingang_".$id."
-		ADD CONSTRAINT personposteingang_".$id." FOREIGN KEY (empfaenger) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE posteingang_".$id."
+		ADD CONSTRAINT personeinposteingang_".$id." FOREIGN KEY (empfaenger) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postentwurf_".$id."
-		ADD CONSTRAINT personpostentwurf_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE postentwurf_".$id."
+		ADD CONSTRAINT personpostentwurf_".$id." FOREIGN KEY (absender) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedausgang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedausgang_".$id."
 		ADD CONSTRAINT nachrichtposttaggedausgang_".$id." FOREIGN KEY (nachricht) REFERENCES postausgang_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT tagposttaggedausgang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		ADD CONSTRAINT tagposttaggedausgang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedeingang_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedeingang_".$id."
 		ADD CONSTRAINT nachrichtposttaggedeingang_".$id." FOREIGN KEY (nachricht) REFERENCES posteingang_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT tagposttaggedeingang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		ADD CONSTRAINT tagposttaggedeingang_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE postgetaggedentwurf_".$id."
+		$sql = $dbp->prepare("ALTER TABLE postgetaggedentwurf_".$id."
 		ADD CONSTRAINT nachrichtposttaggedentwurf_".$id." FOREIGN KEY (nachricht) REFERENCES postentwurf_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT tagposttaggedentwurf_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		ADD CONSTRAINT tagposttaggedentwurf_".$id." FOREIGN KEY (tag) REFERENCES posttags_".$id." (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE posttags_".$id."
-		ADD CONSTRAINT personenposttags_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE posttags_".$id."
+		ADD CONSTRAINT personenposttags_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
-		$sql = "ALTER TABLE termine_".$id."
-		ADD CONSTRAINT personentermine_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$dbp->query($sql);
+		$sql = $dbp->prepare("ALTER TABLE termine_".$id."
+		ADD CONSTRAINT personentermine_".$id." FOREIGN KEY (person) REFERENCES $CMS_DBS_DB.personen (id) ON DELETE CASCADE ON UPDATE CASCADE;");
+		$sql->execute();
 
 		cms_trennen($dbp);
 

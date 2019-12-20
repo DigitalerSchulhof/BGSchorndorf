@@ -1,4 +1,4 @@
-// out: ../css/buttons.css, sourcemap: false, compress: true, autoprefixer: true
+// "out": "../css/buttons.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
 @import "standard.less";
 
 /* NORMALE BUTTONS */
@@ -9,13 +9,16 @@
 .cms_fussnavigation a, .cms_fussnavigation span {
   border: 1px solid transparent;
   display: inline-block;
-  border-radius: 3px;
+  border-radius: @button_radius;
   padding: 3px 7px;
   margin-bottom: 2px;
   transition: 250ms ease-in-out;
   position: relative;
   line-height: 1.5em;
+  text-align: center;
 }
+
+.cms_konfliktstunde {font-size: 75%;}
 
 .cms_button:hover, .cms_button_ja:hover, .cms_button_nein:hover, .cms_button_wichtig:hover,
 .cms_iconbutton, .cms_iconbutton_ja,
@@ -28,96 +31,96 @@
 .cms_toggle:hover, .cms_toggle_inaktiv:hover {
   transform: translate(0px) !important;
   cursor: pointer;
-  background-color: @erfolgdunkel;
-  color: @schriftfarbehell !important;
+  background-color: @erfolg_akzent;
+  color: @standardschrifthell_color !important;
 }
 
 .cms_toggle_aktiv:hover {
   transform: translate(0px) !important;
   cursor: pointer;
-  background-color: @fehlerdunkel !important;
-  color: @schriftfarbehell !important;
+  background-color: @fehler_akzent !important;
+  color: @standardschrifthell_color !important;
 }
 
 .cms_button, .cms_iconbutton, .cms_aktion_klein, .cms_datentypwahl, .cms_toggle,
 .cms_toggle_aktiv, .cms_toggle_inaktiv {
-  background-color: @button;
-  color: @schriftbutton;
+  background-color: @button_background;
+  color: @button_color;
 }
 
 .cms_button:hover, .cms_iconbutton:hover, .cms_aktion_klein:hover, .cms_datentypwahl:hover {
-  background-color: @buttonh;
-  color: @schriftbuttonh;
+  background-color: @buttonhover_background;
+  color: @buttonhover_color;
 }
 
 .cms_unternavigation_i .cms_button {
-  background-color: @hauptteilhintergrund !important;
-  color: @schriftbutton !important;
+  background-color: @standardhell_background !important;
+  color: @button_color !important;
 }
 
 .cms_unternavigation_i .cms_button:hover {
-  background-color: @standarddunkel !important;
-  color: @schriftbuttonh !important;
+  background-color: @schattiertdunkel_background !important;
+  color: @buttonhover_color !important;
 }
 
 .cms_button_ja, .cms_aktion_ja, .cms_iconbutton_ja, .cms_ja {
-  background-color: @erfolghell !important;
-  color: @schriftbutton !important;
+  background-color: @erfolg_background !important;
+  color: @button_color !important;
 }
 
 .cms_button_ja:hover, .cms_aktion_ja:hover, .cms_iconbutton_ja:hover, .cms_ja:hover {
-  background-color: @erfolgdunkel !important;
-  color: @schriftbuttonh !important;
+  background-color: @erfolg_akzent !important;
+  color: @buttonhover_color !important;
 }
 
 .cms_button_nein, .cms_aktion_nein, .cms_iconbutton_nein {
-  background-color: @fehlerhell;
-  color: @schriftbutton;
+  background-color: @fehler_background;
+  color: @button_color;
 }
 
 .cms_button_nein:hover, .cms_aktion_nein:hover, .cms_iconbutton_nein:hover {
-  background-color: @fehlerdunkel;
-  color: @schriftbuttonh;
+  background-color: @fehler_akzent;
+  color: @buttonhover_color;
 }
 
 .cms_button_wichtig, .cms_aktion_wichtig {
-  background-color: @warnunghell;
-  color: @schriftbutton;
+  background-color: @warnung_background;
+  color: @button_color;
 }
 
 .cms_button_wichtig:hover, .cms_aktion_wichtig:hover {
-  background-color: @warnungdunkel;
-  color: @schriftbuttonh;
+  background-color: @warnung_akzent;
+  color: @buttonhover_color;
 }
 
 .cms_toggle_aktiv_fest {
-    background-color: @erfolgdunkel;
-    color: @schriftfarbehell;
+    background-color: @erfolg_akzent;
+    color: @standardschrifthell_color;
 }
 
 .cms_button_eingeschraenkt, .cms_iconbutton_eingeschraenkt {
-  color: @standarddunkel;
-  border: 1px dashed @fehlerhell;
-  background-color: @hintergrundhell;
+  color: @schattiertdunkel_background;
+  border: 1px dashed @fehler_background;
+  background-color: @standardhell_background;
 }
 
 .cms_button_passiv {
-  color: @standardhell;
-  border: 1px solid @standardhell;
-  background-color: @hintergrundhell;
+  color: @schattierthell_background;
+  border: 1px solid @schattierthell_background;
+  background-color: @standardhell_background;
 }
 
 .cms_button_passivda {
-  color: @schriftfarbedunkel;
-  border: 1px solid @hintergrunddunkel;
-  background-color: @hintergrundhell;
+  color: @standardschriftdunkel_color;
+  border: 1px solid @standarddunkel_background;
+  background-color: @standardhell_background;
 }
 
 .cms_button_anonymFragezeichen, .cms_button_anonymFragezeichen:hover{
-  background-color: @fehlerhell;
-  color: @schriftbutton;
+  background-color: @fehler_background;
+  color: @button_color;
   &:hover {
-    color: @schriftbuttonh;
+    color: @buttonhover_color;
   }
 }
 
@@ -127,61 +130,61 @@
 }
 
 #cms_kopfzeile_i .cms_button {
-  background-color: @buttonkopfzeile;
-  color: @schriftbuttonkopfzeile;
+  background-color: @kopfzeile_button_background;
+  color: @kopfzeile_button_color;
 }
 
 #cms_kopfzeile_i .cms_button:hover, #cms_kopfzeile_i .cms_button_aktiv {
-  background-color: @buttonkopfzeileh;
-  color: @schriftbuttonkopfzeileh;
+  background-color: @kopfzeile_buttonhover_background;
+  color: @kopfzeile_buttonhover_color;
 }
 
 #cms_fusszeile_i .cms_button, .cms_fussnavigation a, .cms_fussnavigation span {
-  background-color: @buttonfusszeile;
-  color: @schriftbuttonfusszeile;
+  background-color: @fusszeile_button_background;
+  color: @fusszeile_button_color;
 }
 
 #cms_fusszeile_i li.cms_footer_feedback a {
-  color: @fehlerhell;
+  color: @fehler_background;
 }
 
 #cms_fusszeile_i li.cms_footer_feedback a:hover {
-  color: @schriftbuttonfusszeileh;
-  background-color: @fehlerdunkel;
+  background-color: @fusszeile_buttonhover_background;
+  color: @fusszeile_buttonhover_color;
 }
 
 #cms_fusszeile_i .cms_button:hover, .cms_fussnavigation a:hover,
 .cms_fussnavigation span:hover {
-  background-color: @buttonfusszeileh;
-  color: @schriftbuttonfusszeileh;
+  background-color: @fusszeile_buttonhover_background;
+  color: @fusszeile_buttonhover_color;
 }
 
 /* TOGGLES */
 .cms_toggle {
-  background-color: @standardhell;
+  background-color: @schattierthell_background;
 }
 
 .cms_toggle_aktiv {
-  background-color: @erfolghell;
+  background-color: @erfolg_background;
 }
 
 #cms_geraeteproblem .cms_toggle_aktiv {
-  background-color: @fehlerhell;
+  background-color: @fehler_background;
 }
 
 #cms_geraeteproblem .cms_toggle_aktiv:hover {
-  background-color: @fehlerdunkel;
-  color: @schriftbuttonh;
+  background-color: @fehler_akzent;
+  color: @buttonhover_color;
 }
 
 .cms_toggle:hover {
-  background-color: @buttonh;
-  color: @schriftbuttonh;
+  background-color: @buttonhover_background;
+  color: @buttonhover_color;
 }
 
 .cms_toggle_aktiv:hover {
-  background-color: @erfolgdunkel;
-  color: @schriftbuttonh;
+  background-color: @erfolg_akzent;
+  color: @buttonhover_color;
 }
 
 /* ICONBUTTONS */
@@ -195,7 +198,7 @@
 /* KLEINE BUTTONS */
 .cms_aktion_klein {
   padding: 2px 2px 3px 3px;
-  border-radius: 3px;
+  border-radius: @button_radius;
   display: inline-block;
   line-height: 0px;
   position: relative;
@@ -228,26 +231,26 @@
     width: 20px;
     height: 20px;
     margin: 0 4px 0 0;
-    border: 2px solid @hintergrundhell;
+    border: 2px solid @standardhell_background;
   }
 }
 
 /* ICONAUSWAHL */
 .cms_kategorie_icon_aktiv {
-	border: 2px solid @hintergrundhell;
-  background-color: @hintergrundhell;
+	border: 2px solid @standardhell_background;
+  background-color: @standardhell_background;
 }
 
 .cms_kategorie_icon {
-	border: 2px solid @standardhell;
+	border: 2px solid @schattierthell_background;
 }
 
 .cms_kategorie_icon.cms_icon_verwendet {
-	background-color: @standarddunkel;
+	background-color: @schattiertdunkel_background;
 }
 
 .cms_kategorie_icon_aktiv:hover, .cms_kategorie_icon:hover {
-	border: 2px solid @hintergrunddunkel;
+	border: 2px solid @standarddunkel_background;
   cursor: pointer;
 }
 
@@ -270,8 +273,8 @@
   bottom: 1px;
   padding: 2px 5px;
   border-radius: 10px;
-  background: @standarddunkel;
-  color: @schriftfarbehell;
+  background: @schattiertdunkel_background;
+  color: @standardschrifthell_color;
   font-size: 70%;
   transition: 250ms ease-in-out;
   display: inline-block;
@@ -279,7 +282,7 @@
 }
 
 .cms_meldezahl_wichtig {
-  background: @fehlerdunkel;
+  background: @fehler_akzent;
 }
 
 .cms_button:hover .cms_meldezahl {

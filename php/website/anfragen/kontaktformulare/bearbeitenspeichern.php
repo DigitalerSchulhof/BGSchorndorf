@@ -34,7 +34,10 @@ if (cms_angemeldet() && $zugriff) {
 	if (($kopie != 0) && ($kopie != 1) && ($kopie != 2)) {$fehler = true;}
 	if (($anhang != 0) && ($anhang != 1)) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
-	if (!cms_check_ganzzahl($ids, 0))	$fehler = true;
+
+	foreach($ids as $k => $v)
+		if($v !== "")
+			if (!cms_check_ganzzahl($v, 0))			 $fehler = true;
 
 	if(!((count($ids) == count($namen)) && (count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
 		$fehler = true;
@@ -86,17 +89,20 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->execute();
 			$sql->close();
 
-			$sql = "UPDATE kontaktformulareempfaenger SET ";
+			$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = $id, ";
 			$sql .= cms_sql_an(array("name", "beschreibung", "mail"));
 			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = ? AND kontaktformular = $id";
+			$sql .= "WHERE id = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("ssssssi", $name, $name, $beschreibung, $beschreibung, $mail, $mail, $id);
-			for ($i=0; $i < count($ids); $i++) {
+			foreach ($ids as $i => $id) {
 				$id = $ids[$i];
 				$name = $namen[$i];
 				$mail = $mails[$i];
 				$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
+				if($id === "") {
+					$id = cms_generiere_kleinste_id('kontaktformulareempfaenger');
+				}
 				$sql->execute();
 			}
 			$sql->close();

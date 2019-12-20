@@ -95,7 +95,7 @@ function cms_seitendetails_erzeugen($dbs, $pfad) {
   $seitenid = cms_pfad_aufloesen($dbs, $pfad);
   if ($seitenid !== '-') {
     $sql = "SELECT * FROM seiten WHERE id = $seitenid";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       if ($daten = $anfrage->fetch_assoc()) {
         $seite = $daten;
       }
@@ -108,7 +108,7 @@ function cms_seitendetails_erzeugen($dbs, $pfad) {
 function cms_startseitendetails_erzeugen($dbs) {
   $seite = array();
   $sql = "SELECT * FROM seiten WHERE art = 's'";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     if ($daten = $anfrage->fetch_assoc()) {
       $seite = $daten;
     }
@@ -158,7 +158,7 @@ function cms_seite_ausgeben($dbs) {
 
 
               $sql = "SELECT id FROM spalten WHERE seite = ".$seite['id']." ORDER BY zeile ASC, position ASC";
-              if ($anfrage = $dbs->query($sql)) {
+              if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
                 while ($spalte = $anfrage->fetch_assoc()) {
                   $code .= cms_spalte_ausgeben($dbs, $spalte['id']);
                 }
@@ -173,7 +173,7 @@ function cms_seite_ausgeben($dbs) {
               $mcode = "";
               $sql = "SELECT id, bezeichnung, beschreibung, art FROM seiten WHERE zuordnung = ".$seite['id']." ORDER BY position";
               $pfad = cms_seitenpfadlink_erzeugen(cms_seitenpfad_id_erzeugen($dbs, $seite['id']));
-              if ($anfrage = $dbs->query($sql)) {
+              if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
                 while ($s = $anfrage->fetch_assoc()) {
                   if ($s['art'] == 'g') {$jahr = date('Y'); $link = "Website/Galerien/$jahr/".cms_monatsnamekomplett(date('n'));}
                   else if ($s['art'] == 't') {$jahr = date('Y'); $link = "Website/Termine/$jahr/".cms_monatsnamekomplett(date('n'));}
@@ -214,7 +214,6 @@ function cms_seite_ausgeben($dbs) {
   }
 }
 
-
 function cms_spalte_ausgeben($dbs, $spalte) {
   global $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_URL, $CMS_ELEMENTE;
   $code = "";
@@ -223,13 +222,14 @@ function cms_spalte_ausgeben($dbs, $spalte) {
   // Suche Elemente
   foreach ($CMS_ELEMENTE as $element) {
     $sql = "SELECT * FROM $element WHERE spalte = $spalte";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machne
       while ($e = $anfrage->fetch_assoc()) {
         if ($element == 'editoren') {$elementcode[$e['position']] = cms_editoren_ausgeben($e);}
         if ($element == 'downloads') {$elementcode[$e['position']] = cms_downloads_ausgeben($e);}
         if ($element == 'boxenaussen') {$elementcode[$e['position']] = cms_boxenaussen_ausgeben($dbs, $e);}
         if ($element == 'eventuebersichten') {$elementcode[$e['position']] = cms_eventuebersichten_ausgeben($dbs, $e);}
         if ($element == 'kontaktformulare') {$elementcode[$e['position']] = cms_kontaktformulare_ausgeben($dbs, $e);}
+        if ($element == 'wnewsletter') {$elementcode[$e['position']] = cms_newsletter_ausgeben($dbs, $e);}
       }
       $anfrage->free();
     }
@@ -239,6 +239,7 @@ function cms_spalte_ausgeben($dbs, $spalte) {
   if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && ($CMS_RECHTE['Website']['Inhalte anlegen'])) {
     $code .= cms_neues_element($spalte, $position, $CMS_URL[2]);
   }
+
   for ($i = 1; $i <= count($elementcode); $i++) {
     $code .= $elementcode[$i];
     $position++;
@@ -261,11 +262,12 @@ function cms_neues_element($spalte, $position, $version) {
   $code .= "<div class=\"cms_website_neu_menue\" id=\"cms_website_neu_menue_$spalte"."_$position\" style=\"display: none;\">";
     $code .= "<p class=\"cms_website_neu_menue_box\">";
     $parameter = "'-', '$spalte', '$position', '$version', '".cms_seitenpfadlink_zusammensetzen($CMS_ZUSATZ)."'";
-    r("website.elemente.editor.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_editor\" onclick=\"cms_editoren_anzeigen($parameter)\">+ Neuer Editor</span> ";
-    r("website.elemente.download.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_download\" onclick=\"cms_downloads_anzeigen($parameter)\">+ Neuer Download</span> ";
-    r("website.elemente.boxen.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
-    r("website.elemente.eventübersicht.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
-    r("website.elemente.kontaktformular.anlegen") && $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_editor\" onclick=\"cms_editoren_anzeigen($parameter)\">+ Neuer Editor</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_download\" onclick=\"cms_downloads_anzeigen($parameter)\">+ Neuer Download</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_boxen\" onclick=\"cms_boxenaussen_anzeigen($parameter)\">+ Neue Boxen</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_newsletter\" onclick=\"cms_wnewsletter_anzeigen($parameter)\">+ Neues Newsletteranmeldeformular</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_website_schliessen\" onclick=\"cms_ausblenden('cms_website_neu_menue_$spalte"."_$position')\">Menü schließen</span> ";
     $code .= "</p>";
     $code .= "<div class=\"cms_website_neu_element\" id=\"cms_website_neu_element_$spalte"."_$position\"></div>";
@@ -327,6 +329,7 @@ function cms_ist_aktuell($art, $e, $innen = false) {
 }
 
 
+
 function cms_editoren_ausgeben($e) {
   global $CMS_URL;
   // Inaktiv für den Benutzer
@@ -338,16 +341,21 @@ function cms_editoren_ausgeben($e) {
     if ($CMS_URL[1] == 'Bearbeiten') {
       $code .= cms_element_bearbeiten($e, 'editoren', $CMS_URL[2]);
     }
-    if ($CMS_URL[2] == 'Aktuell') {$code .= $e['aktuell'];}
-    else if ($CMS_URL[2] == 'Alt') {$code .= $e['alt'];}
-    else if ($CMS_URL[2] == 'Neu') {$code .= $e['neu'];}
+    if ($CMS_URL[2] == 'Aktuell') {
+      $code .= cms_ausgabe_editor($e['aktuell']);
+    }
+    else if ($CMS_URL[2] == 'Alt') {
+      $code .= cms_ausgabe_editor($e['alt']);
+    }
+    else if ($CMS_URL[2] == 'Neu') {
+      $code .= cms_ausgabe_editor($e['neu']);
+    }
     if ($CMS_URL[1] == 'Bearbeiten') {
       $code .= "</div>";
     }
     return $code;
   }
 }
-
 
 function cms_downloads_ausgeben($e) {
   global $CMS_URL;
@@ -399,13 +407,12 @@ function cms_downloads_ausgeben($e) {
   }
 }
 
-
 function cms_boxenaussen_ausgeben($dbs, $e) {
   global $CMS_URL;
   // Inaktiv für den Benutzer
   $boxxen = array();
   $sql = "SELECT * FROM boxen WHERE boxaussen = ".$e['id']." ORDER BY position ASC";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
     while ($daten = $anfrage->fetch_assoc()) {
       array_push($boxxen, $daten);
     }
@@ -457,14 +464,13 @@ function cms_box_ausgeben($boxen, $ausrichtung, $breite, $zusatz) {
       $code .= "<h4>".$boxen['titel'.$zusatz]."</h4>";
       $code .= "</div>";
       $code .= "<div class=\"cms_box_inhalt\">";
-        $code .= $boxen['inhalt'.$zusatz];
+        $code .= cms_ausgabe_editor($boxen['inhalt'.$zusatz]);
       $code .= "</div>";
       $code .= "<div class=\"cms_clear\"></div>";
     $code .= "</div>";
   }
   return $code;
 }
-
 
 function cms_eventuebersichten_ausgeben($dbs, $e) {
   global $CMS_SCHLUESSEL, $CMS_URL;
@@ -501,7 +507,7 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
       $blogcode = "";
       if ($blog == 1) {
         $sql = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND datum < $jetzt ORDER BY datum DESC LIMIT ".$bloganzahl;
-        if ($anfrage = $dbs->query($sql)) {
+        if ($anfrage = $dbs->query($sql)) { // Safe weil Einstellung ist numerisch
           include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
           while ($daten = $anfrage->fetch_assoc()) {
             $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
@@ -516,7 +522,7 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
         $sqlferien = "SELECT id, art, 1 AS genehmigt, bezeichnung, '' AS ort, beginn, ende, mehrtaegigt, 0 AS uhrzeitbt, 0 AS uhrzeitet, 0 AS ortt, 4 AS oeffentlichkeit, '' AS text FROM ferien WHERE ende > $jetzt LIMIT ".$termineanzahl;
         $sql = "SELECT * FROM (($sqltermine) UNION ($sqlferien)) AS x ORDER BY beginn ASC, ende ASC LIMIT ".$termineanzahl;
 
-        if ($anfrage = $dbs->query($sql)) {
+        if ($anfrage = $dbs->query($sql)) { // Safe weil Einstellung ist numerisch
           include_once('php/schulhof/seiten/termine/termineausgeben.php');
           while ($daten = $anfrage->fetch_assoc()) {
             $termincode .= cms_termin_link_ausgeben($dbs, $daten);
@@ -528,7 +534,7 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
       $galeriecode = "";
       if ($galerie == 1) {
         $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE aktiv = 1 AND genehmigt = 1 ORDER BY datum ASC LIMIT 0,".$galerieanzahl;
-        if ($anfrage = $dbs->query($sql)) {
+        if ($anfrage = $dbs->query($sql)) { // Safe weil Einstellung ist numerisch
           include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
           while ($daten = $anfrage->fetch_assoc()) {
             $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, "artikel");
@@ -584,7 +590,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     $sql->close();
 
     $sql = "SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ".$k['id'];
-    $sql = $dbs->query($sql);
+    $sql = $dbs->query($sql); // TODO: Irgendwie safe machen
 
     if(!$sql)
       return "<p class=\"cms_notiz\">Für das Formular sind keine Empfänger hinterlegt.</p>";
@@ -597,9 +603,10 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
 
       $felder = 0;
 
-      $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\"><h2>Kontakt</h2>";
-        if(!isset($_SESSION["DSGVO_COOKIESAKZEPTIERT"]))
-          $code .= cms_meldung("fehler", "<h4>Cookies</h4>Für die Verwendung des Kontaktformulars muss der Verwendung von Cookies zugestimmt werden!");
+      $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\">";
+        $CMS_EINWILLIGUNG_A = false;
+        if (isset($_SESSION["DSGVO_EINWILLIGUNG_A"])) {$CMS_EINWILLIGUNG_A = $_SESSION["DSGVO_EINWILLIGUNG_A"];}
+        if (!$CMS_EINWILLIGUNG_A) {$code .= cms_meldung_einwilligungA();}
         else {
         $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
           $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
@@ -628,7 +635,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
             $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
           if($kopie)
             $code .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
-          $code .= "<tr><th>Sicherheitsabfrage zur Spamverhidnerung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
+          $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
           $code .= "<tr></tr>";
           $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
           $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_kontaktformular_absenden(this)\">Absenden</span></td></tr>";
@@ -648,6 +655,74 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     return $code;
   }
 }
+
+function cms_newsletter_ausgeben($dbs, $k) {
+  global $CMS_SCHLUESSEL, $CMS_URL, $CMS_GRUPPEN;
+  // Inaktiv für den Benutzer
+  if (($CMS_URL[1] == 'Seiten') && ($k['aktiv'] == '0')) {
+    return "";
+  }
+  else {
+    $code = "";
+    $zusatz = strtolower($CMS_URL[2]);
+    $zusatzklasse = "";
+    $bezeichnung = $k['bezeichnung'.$zusatz];
+    $beschreibung = $k['beschreibung'.$zusatz];
+    $typ = $k["typ".$zusatz];
+    $aktiv = $k['aktiv'];
+
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= cms_element_bearbeiten($k, 'wnewsletter', $CMS_URL[2]);
+    }
+
+    $aussenklasse = " cms_newsletter_aussen_";
+
+    $code .= "<div class=\"cms_newsletter cms_newsletter$aussenklasse\">";
+      $jetzt = time();
+
+      $code .= "<div class=\"cms_newsletter_box_a\"><div class=\"cms_newsletter_box_i\"><h2>$bezeichnung</h2>";
+      $CMS_EINWILLIGUNG_A = false;
+      if (isset($_SESSION["DSGVO_EINWILLIGUNG_A"])) {$CMS_EINWILLIGUNG_A = $_SESSION["DSGVO_EINWILLIGUNG_A"];}
+      if (!$CMS_EINWILLIGUNG_A) {$code .= cms_meldung_einwilligungA();}
+      else {
+        if($beschreibung)
+          $code .= "<p>$beschreibung</p>";
+        $code .= "<table class=\"cms_formular\" id=\"cms_newsletter_tabelle_".$k["id"]."\">";
+          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_newsletter_id\" value=\"".$typ."\"></th></tr>";
+          $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_newsletter_name\" autocomplete=\"name\"></td></tr>";
+          $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_newsletter_mail\" autocomplete=\"email\"></td></tr>";
+          $code .= "<tr></tr>";
+
+          $zuordnungen = "";
+          foreach ($CMS_GRUPPEN as $g) {
+            $gk = cms_textzudb($g);
+            $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = $typ) AS x ORDER BY bezeichnung ASC";
+            if ($anfrage2 = $dbs->query($sql)) {
+              while ($z = $anfrage2->fetch_assoc()) {
+                $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> ";
+              }
+              $anfrage2->free();
+            }
+          }
+
+          $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
+          $code .= "<tr></tr>";
+          $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
+          $code .= "<tr><td>$zuordnungen</td><td><span class=\"cms_button_ja\" onclick=\"cms_wnewsletter_anmelden(this)\">Zum Newsletter anmelden</span></td></tr>";
+          $code .= "</table>";
+      }
+      $code .= "</div></div>";
+
+      $code .= "<div class=\"cms_clear\"></div>";
+
+    $code .= "</div>";
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= "</div>";
+    }
+    return $code;
+  }
+}
+
 
 
 function cms_zeitabhaengig_aus_schulhof() {
@@ -673,7 +748,7 @@ function cms_zeitabhaengig_aus_schulhof() {
     $dbs = cms_verbinden('s');
     // Seite laden
     $sql = "SELECT * FROM seiten WHERE art = '$seitenart'";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
       if ($daten = $anfrage->fetch_assoc()) {
         $seite = $daten;
         $CMS_SEITENDETAILS = $seite;
@@ -716,7 +791,7 @@ function cms_zeitabhaengig_aus_schulhof() {
             $monatende = mktime(0, 0, 0, $i+1, 1, $jahr)-1;
             if ($CMS_URL[1] == 'Termine') {$sql = $sqlrumpf."((beginn >= $monatbeginn AND beginn <= $monatende) OR (ende >= $monatbeginn AND ende <= $monatende) OR (beginn <= $monatbeginn AND ende >= $monatende))";}
             else {$sql = $sqlrumpf."(datum BETWEEN $monatbeginn AND $monatende)";}
-            if ($anfrage = $dbs->query($sql)) {
+            if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
               if ($daten = $anfrage->fetch_assoc()) {
                 $hoehe = 10*$daten['anzahl'];
                 if ($hoehe > 100) {$hoehe = 100;}
@@ -748,10 +823,10 @@ function cms_zeitabhaengig_aus_schulhof() {
         else {
           $termincode = "";
           $sql = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND ((beginn >= $mb AND beginn <= $me) OR (ende >= $mb AND ende <= $me) OR (beginn <= $mb AND ende >= $me)) ORDER BY beginn ASC, ende ASC";
-          if ($anfrage = $dbs->query($sql)) {
+          if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
             include_once('php/schulhof/seiten/termine/termineausgeben.php');
             while ($daten = $anfrage->fetch_assoc()) {
-              $termincode .= cms_termin_link_ausgeben($dbs, $daten);;
+              $termincode .= cms_termin_link_ausgeben($dbs, $daten);
             }
             $anfrage->free();
           }
@@ -774,7 +849,7 @@ function cms_zeitabhaengig_aus_schulhof() {
           $monat = date('n', $mb);
           $jahr = date('Y', $mb);
           $sql = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND (datum BETWEEN $mb AND $me) ORDER BY datum DESC";
-          if ($anfrage = $dbs->query($sql)) {
+          if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
             include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
             while ($daten = $anfrage->fetch_assoc()) {
               $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
@@ -799,7 +874,7 @@ function cms_zeitabhaengig_aus_schulhof() {
           $monat = date('n', $mb);
           $jahr = date('Y', $mb);
           $sql = "SELECT id, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND (datum BETWEEN $mb AND $me) ORDER BY datum DESC";
-          if ($anfrage = $dbs->query($sql)) {
+          if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
             include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
             while ($daten = $anfrage->fetch_assoc()) {
               $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, 'artikel');

@@ -34,13 +34,13 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	// Prüfen, ob Downloads vorliegen
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
-		$sql = "SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {
-			if ($downloads = $anfrage->fetch_assoc()) {
-				$downloadanzahl = $downloads['anzahl'];
-			}
-			$anfrage->free();
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ?");
+		$sql->bind_param("i", $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($downloadanzahl);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
@@ -80,13 +80,14 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ".$daten['id'].")";
 		}
 		$sql = substr($sql, 7);
-		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
+		$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
+		if ($sql->execute()) {
+			$sql->bind_result($kbez, $kicon);
+			while ($sql->fetch()) {
+				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$kicon')\">$kbez</span> ";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 	}
 	if (strlen($code > 0)) {$code = "<p>".$code."</p>";}
 	return $code;
@@ -167,10 +168,10 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 	if (!$fehler) {
 		// Blogeintrag finden
 		$blogeintrag = array();
-		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, $oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, $vorschaubild AS vorschaubild, '$art' AS art FROM $tabelle WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND datum = ? AND aktiv = 1;");
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, $oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, $vorschaubild AS vorschaubild, '$art' AS art, aktiv FROM $tabelle WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND datum = ?;");
 		$sql->bind_param("si", $blogeintragbez, $datum);
 		if ($sql->execute()) {
-	    $sql->bind_result($bid, $bbez, $bautor, $bdatum, $bgenehmigt, $baktiv, $boeff, $btext, $bvorschau, $bvorschbild, $bart);
+	    $sql->bind_result($bid, $bbez, $bautor, $bdatum, $bgenehmigt, $baktiv, $boeff, $btext, $bvorschau, $bvorschbild, $bart, $aktiv);
 	    if ($sql->fetch()) {
 				$blogeintrag['id'] = $bid;
 				$blogeintrag['bezeichnung'] = $bbez;
@@ -183,6 +184,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				$blogeintrag['vorschau'] = $bvorschau;
 				$blogeintrag['vorschaubild'] = $bvorschbild;
 				$blogeintrag['art'] = $bart;
+				$blogeintrag['aktiv'] = $aktiv;
 				$gefunden = true;
 			}
 			else {$fehler = true;}
@@ -190,17 +192,21 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 	  else {$fehler = true;}
 	  $sql->close();
 
-		if ($gefunden) {
-			if ($jahr != date('Y', $blogeintrag['datum'])) {$gefunden = false;}
-			if ($monat != date('m', $blogeintrag['datum'])) {$gefunden = false;}
-			if ($tag != date('d', $blogeintrag['datum'])) {$gefunden = false;}
-
+		if ($gefunden) {	// Nur für Notifikation
 			if ($CMS_URL[0] == 'Schulhof') {
 				$sql = $dbs->prepare("DELETE FROM notifikationen WHERE person = ? AND art = 'b' AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND zielid = ?");
 			  $sql->bind_param("isi", $CMS_BENUTZERID, $gruppe, $blogeintrag['id']);
 			  $sql->execute();
 			  $sql->close();
 			}
+		}
+
+		$gefunden = $gefunden && isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"];
+
+		if($gefunden) {
+			if ($jahr != date('Y', $blogeintrag['datum'])) {$gefunden = false;}
+			if ($monat != date('m', $blogeintrag['datum'])) {$gefunden = false;}
+			if ($tag != date('d', $blogeintrag['datum'])) {$gefunden = false;}
 		}
 
 		if (($gefunden) && ($art == 'oe')) {
@@ -216,24 +222,45 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 			$downloads = array();
 			// Downloads suchen
-			$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-			if ($anfrage = $dbs->query($sql)) {
-				while ($daten = $anfrage->fetch_assoc()) {
-					array_push($downloads, $daten);
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($did, $dbeintrag, $dpfad, $dtitel, $dbeschr, $ddateiname, $ddateigroesse);
+				while ($sql->fetch()) {
+					$D = array();
+					$D['id'] = $did;
+					$D['blogeintrag'] = $dbeintrag;
+					$D['pfad'] = $dpfad;
+					$D['titel'] = $dtitel;
+					$D['beschreibung'] = $dbeschr;
+					$D['dateiname'] = $ddateiname;
+					$D['dateigroesse'] = $ddateigroesse;
+					array_push($downloads, $D);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 
 			// Beschlüsse laden
 			$beschluesse = array();
 			if ($art == 'in') {
-				$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-				if ($anfrage = $dbs->query($sql)) {
-					while ($daten = $anfrage->fetch_assoc()) {
-						array_push($beschluesse, $daten);
+				$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+				$sql->bind_param("i", $blogeintrag['id']);
+				if ($sql->execute()) {
+					$sql->bind_result($bid, $bbeintrag, $btitel, $blangfristig, $bbeschreibung, $bpro, $bcontra, $benthaltung);
+					while ($sql->fetch()) {
+						$B = array();
+						$B['id'] = $bid;
+						$B['blogeintrag'] = $bbeintrag;
+						$B['titel'] = $btitel;
+						$B['langfristig'] = $blangfristig;
+						$B['beschreibung'] = $bbeschreibung;
+						$B['pro'] = $bpro;
+						$B['contra'] = $bcontra;
+						$B['enthaltung'] = $benthaltung;
+						array_push($beschluesse, $B);
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 			}
 
 			// Aktionen ermitteln, falls im Schulhof
@@ -282,8 +309,8 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				if ($blogeintrag['art'] == 'oe') {$code .= "<p><img src=\"".$blogeintrag['vorschaubild']."\"></p>";}
 				else {$code .= "<p><img src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
 			}
-			$code .= $blogeintrag['text'];
-			$code .= "<br><br>".cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
+			$code .= cms_ausgabe_editor($blogeintrag['text']);
+			$code .= cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
 
 			$code .= "</div></div>";
 
@@ -345,6 +372,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen
 	if ($daten['art'] == 'oe') {
 		$sql = "";
+		$zugehoerigladen = "";
 		foreach ($CMS_GRUPPEN as $g) {
 			$gk = cms_textzudb($g);
 			$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ?)";
@@ -357,6 +385,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 		if ($sql->execute()) {
 			$sql->bind_result($gid, $ggruppe, $gbez, $gicon);
 			while ($sql->fetch()) {
+				if (strlen($zugehoerigladen) == 0) {$zugehoerigladen = "cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahr']."', '$ggruppe', '$gid', '$link');";}
 				$event = " onclick=\"cms_zugehoerig_laden('cms_zugehoerig_".$daten['id']."', '".$zeiten['jahr']."', '$ggruppe', '$gid', '$link')\"";
 				$verknuepfung .= "<li><span class=\"cms_termindetails_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$gicon')\"$event>$gbez</span></li>";
 			}
@@ -365,6 +394,7 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 		if (strlen($verknuepfung) > 0) {
 			$code .= "<h3>Zugehörige Gruppen</h3><ul class=\"cms_termindetails\">$verknuepfung</ul>";
 			$code .= "<div class=\"cms_zugehoerig\" id=\"cms_zugehoerig_".$daten['id']."\"></div>";
+			$code .= "<script>$zugehoerigladen</script>";
 		}
 	}
 

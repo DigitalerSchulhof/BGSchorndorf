@@ -50,8 +50,10 @@ if ($angemeldet) {
 			$code .= "</div><div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 			// Alte Anschläge löschen
 			$jetzt = time();
-			$sql = "DELETE FROM pinnwandanschlag WHERE ende < $jetzt";
-			$dbs->query($sql);
+			$sql = "DELETE FROM pinnwandanschlag WHERE ende < ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $jetzt);
+			$sql->execute();
 
 			include_once('php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');
       $CMS_EMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
@@ -59,14 +61,14 @@ if ($angemeldet) {
 			$sqlfelder = "pinnwandanschlag.id AS id, AES_DECRYPT(pinnwandanschlag.titel, '$CMS_SCHLUESSEL') AS atitel, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, beginn, ende, pinnwandanschlag.idvon AS ersteller, pinnwandanschlag.idzeit AS perstellt, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL') AS ptitel, erstellt";
 			$code .= "<div class=\"cms_pinnwand_anschlaege\">";
 			$sql = "SELECT $sqlfelder FROM pinnwandanschlag LEFT JOIN personen ON pinnwandanschlag.idvon = personen.id LEFT JOIN nutzerkonten ON pinnwandanschlag.idvon = nutzerkonten.id WHERE pinnwand = $id AND beginn < $jetzt ORDER BY ende ASC, beginn ASC";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 				while ($daten = $anfrage->fetch_assoc()) {
 					$code .= "<div class=\"cms_pinnwand_anschlag_aussen\"><div class=\"cms_pinnwand_anschlag_innen\">";
 						$code .= "<h3 class=\"cms_pinnwand_titel\">".$daten['atitel']."</h3>";
 						$code .= "<p class=\"cms_pinnwand_datum\">Angeschlagen von ".date("d.m.Y", $daten['beginn'])." bis ".date("d.m.Y", $daten['ende'])."</p>";
 
 						$code .= "<div class=\"cms_pinnwand_inhalt\">";
-						$code .= $daten['inhalt'];
+						$code .= cms_ausgabe_editor($daten['inhalt']);
 						$aktionen = "";
 						if ($CMS_RECHTE['Organisation']['Pinnwandanschläge bearbeiten'] || ($daten['ersteller'] == $CMS_BENUTZERID)) {
 							$aktionen .= "<span class=\"cms_button\" onclick=\"cms_pinnwandanschlag_bearbeiten_vorbereiten(".$daten['id'].", '".cms_textzulink($bezeichnung)."')\">Bearbeiten</span> ";
@@ -97,7 +99,7 @@ if ($angemeldet) {
 
 			$anschlaege = "";
 			$sql = "SELECT $sqlfelder FROM pinnwandanschlag LEFT JOIN personen ON pinnwandanschlag.idvon = personen.id LEFT JOIN nutzerkonten ON pinnwandanschlag.idvon = nutzerkonten.id WHERE pinnwand = $id AND beginn > $jetzt ORDER BY ende ASC, beginn ASC";
-			if ($anfrage = $dbs->query($sql)) {
+			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
 				while ($daten = $anfrage->fetch_assoc()) {
 					$anschlaege .= "<div class=\"cms_pinnwand_anschlag_aussen\"><div class=\"cms_pinnwand_anschlag_innen\">";
 						$anschlaege .= "<h3 class=\"cms_pinnwand_titel\">".$daten['atitel']."</h3>";

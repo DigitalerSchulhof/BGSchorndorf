@@ -13,7 +13,8 @@ function cms_internertermin_details_laden($id, $gruppe, $gruppenid) {
 	$zugriff = false;
 	$fehler = false;
 
-  if ($GRUPPENRECHTE['termine']) {$zugriff = true;}
+  if ($id != '-') {if ($GRUPPENRECHTE['termine']) {$zugriff = true;}}
+  else {if (cms_internterminvorschlag($GRUPPENRECHTE)) {$zugriff = true;}}
 
   $bez = '';
   $ort = '';

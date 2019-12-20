@@ -27,72 +27,110 @@ function cms_listen_personenliste_ausgeben($dbs, $schreibenpool, $art, $postfach
 			$sqljoin .= " LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id";
 		}
 
-		$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel$sqlspalten FROM personen$sqljoin WHERE art = AES_ENCRYPT('$art', '$CMS_SCHLUESSEL')) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$nr ++;
-        $allenschreiben .= "|".$daten['id'];
-				$tabelle .= "<tr>";
-					$tabelle .= "<td>$nr</td>";
-					$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-					$tabelle .= "<td>$anzeigename</td>";
-					if ($postfach == '1') {
-						if (is_null($daten['nutzerkonto'])) {
-							$tabelle .= "<td><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto()\">Nachricht schreiben</span></td>";
-						}
-						else if (in_array($daten['id'], $schreibenpool)) {
-							$tabelle .= "<td><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">Nachricht schreiben</span></td>";
-						}
-						else {
-							$tabelle .= "<td><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben()\">Nachricht schreiben</span></td>";
-						}
-					}
-
-					if ($art == 's' || $art == 'sv') {
-						if ($eltern == '1') {
-							$elterntext = "";
-							$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN schuelereltern ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ".$daten['id'].") AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-							if ($anfrageinnen = $dbs->query($sqlinnen)) {
-								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
-									$elterntext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
-								}
-								$anfrageinnen->free();
-							}
-							$tabelle .= "<td>".substr($elterntext, 2)."</td>";
-						}
-					}
-					if ($art == 's' || $art == 'sv' || $art == 'l') {
-							if ($klassen == '1') {
-                $klassentext = "";
-  							$sqlinnen = "SELECT * FROM (SELECT reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id JOIN stufen ON klassen.stufe = stufen.id WHERE klassenmitglieder.person = ".$daten['id'].") AS x ORDER BY reihenfolge ASC, klassenbez ASC";
-  							if ($anfrageinnen = $dbs->query($sqlinnen)) {
-  								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
-  									$klassentext .= ", ".$dateninnen['klassenbez'];
-  								}
-  								$anfrageinnen->free();
-  							}
-  							$tabelle .= "<td>".substr($klassentext, 2)."</td>";
-              }
-					}
-					if ($art == 'e' || $art == 'ev') {
-            if ($kinder == '1') {
-							$kindertext = "";
-							$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez FROM personen JOIN schuelereltern ON personen.id = schuelereltern.schueler LEFT JOIN stufenmitglieder ON schuelereltern.schueler = stufenmitglieder.person LEFT JOIN stufen ON stufenmitglieder.gruppe = stufen.id WHERE schuelereltern.eltern = ".$daten['id']." AND (stufen.schuljahr IS NULL OR stufen.schuljahr = $CMS_BENUTZERSCHULJAHR)) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-							if ($anfrageinnen = $dbs->query($sqlinnen)) {
-								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
-									$kindertext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
-                  if (!is_null($dateninnen['stufenbez'])) {$kindertext .= " (".$dateninnen['stufenbez'].")";}
-								}
-								$anfrageinnen->free();
-							}
-							$tabelle .= "<td>".substr($kindertext, 2)."</td>";
-						}
-					}
-
-					if ($leer == '1') {$tabelle .= "<td></td>";}
-				$tabelle .= "</tr>";
+		$LISTE = array();
+		$sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel$sqlspalten FROM personen$sqljoin WHERE art = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS x ORDER BY nachname ASC, vorname ASC, titel ASC");
+		$sql->bind_param("s", $art);
+		if ($sql->execute()) {
+			if ($postfach == '1') {
+				$sql->bind_result($pid, $pvor, $pnach, $ptit, $pnutzerkonto);
 			}
-			$anfrage->free();
+			else {
+				$sql->bind_result($pid, $pvor, $pnach, $ptit);
+				$pnutzerkonto = null;
+			}
+
+			while ($sql->fetch()) {
+				$P = array();
+				$P['id'] = $pid;
+				$P['vorname'] = $pvor;
+				$P['nachname'] = $pnach;
+				$P['titel'] = $ptit;
+				$P['nutzerkonto'] = $pnutzerkonto;
+				$P['eltern'] = "";
+				$P['klassen'] = "";
+				$P['kinder'] = "";
+				array_push($LISTE, $P);
+			}
+		}
+		$sql->close();
+
+
+
+		if (($art == 's' || $art == 'sv') && ($eltern == '1')) {
+			$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN schuelereltern ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ?) AS x ORDER BY nachname ASC, vorname ASC, titel ASC");
+			for ($i=0; $i<count($LISTE); $i++) {
+				$sql->bind_param("i", $LISTE[$i]['id']);
+				if ($sql->execute()) {
+					$sql->bind_result($evor, $enach, $etit);
+					while ($sql->fetch()) {
+						$LISTE[$i]['eltern'] .= ", ".cms_generiere_anzeigename($evor, $enach, $etit);
+					}
+				}
+			}
+			$sql->close();
+		}
+		if (($art == 's' || $art == 'sv' || $art == 'l') && ($klassen == '1')) {
+			$sql = $dbs->prepare("SELECT * FROM (SELECT reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id JOIN stufen ON klassen.stufe = stufen.id WHERE klassenmitglieder.person = ?) AS x ORDER BY reihenfolge ASC, klassenbez ASC");
+			for ($i=0; $i<count($LISTE); $i++) {
+				$sql->bind_param("i", $LISTE[$i]['id']);
+				if ($sql->execute()) {
+					$sql->bind_result($kreihe, $kbez);
+					while ($sql->fetch()) {
+						$LISTE[$i]['klassen'] .= ", ".$kbez;
+					}
+				}
+			}
+			$sql->close();
+		}
+		if (($art == 'e' || $art == 'ev') && ($kinder == '1')) {
+			$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez FROM personen JOIN schuelereltern ON personen.id = schuelereltern.schueler LEFT JOIN stufenmitglieder ON schuelereltern.schueler = stufenmitglieder.person LEFT JOIN stufen ON stufenmitglieder.gruppe = stufen.id WHERE schuelereltern.eltern = ? AND (stufen.schuljahr IS NULL OR stufen.schuljahr = ?)) AS x ORDER BY nachname ASC, vorname ASC, titel ASC");
+			for ($i=0; $i<count($LISTE); $i++) {
+				$sql->bind_param("ii", $LISTE[$i]['id'], $CMS_BENUTZERSCHULJAHR);
+				if ($sql->execute()) {
+					$sql->bind_result($kvor, $knach, $ktitel, $kstufe);
+					while ($sql->fetch()) {
+						$LISTE[$i]['klassen'] .= ", ".cms_generiere_anzeigename($kvor, $knach, $ktitel);
+						if (!is_null($kstufe)) {$LISTE[$i]['klassen'] .= " ($kstufe)";}
+					}
+				}
+			}
+			$sql->close();
+		}
+
+
+
+		// Ausgeben
+		foreach ($LISTE as $daten) {
+			$nr ++;
+			$allenschreiben .= "|".$daten['id'];
+			$tabelle .= "<tr>";
+				$tabelle .= "<td>$nr</td>";
+				$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+				$tabelle .= "<td>$anzeigename</td>";
+				if ($postfach == '1') {
+					if (is_null($daten['nutzerkonto'])) {
+						$tabelle .= "<td><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto()\">Nachricht schreiben</span></td>";
+					}
+					else if (in_array($daten['id'], $schreibenpool)) {
+						$tabelle .= "<td><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">Nachricht schreiben</span></td>";
+					}
+					else {
+						$tabelle .= "<td><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben()\">Nachricht schreiben</span></td>";
+					}
+				}
+
+				if ($art == 's' || $art == 'sv') {
+					if ($eltern == '1') {$tabelle .= "<td>".substr($daten['eltern'], 2)."</td>";}
+				}
+				if ($art == 's' || $art == 'sv' || $art == 'l') {
+						if ($klassen == '1') {$tabelle .= "<td>".substr($daten['klassen'], 2)."</td>";}
+				}
+				if ($art == 'e' || $art == 'ev') {
+					if ($kinder == '1') {$tabelle .= "<td>".substr($daten['kinder'], 2)."</td>";}
+				}
+
+				if ($leer == '1') {$tabelle .= "<td></td>";}
+			$tabelle .= "</tr>";
 		}
 	}
 
@@ -233,73 +271,112 @@ function cms_listen_gruppenliste_personen_ausgeben($dbs, $art, $personengruppe, 
 		$sqljoin .= " LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id";
 	}
 
-	$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel$sqlspalten FROM personen $sqljoin WHERE art = AES_ENCRYPT('$art', '$CMS_SCHLUESSEL') AND $gruppenart.id = $gruppenid) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$nr ++;
-      $allenschreiben .= "|".$daten['id'];
-			$tabelle .= "<tr>";
-				$tabelle .= "<td>$nr</td>";
-				$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-				$tabelle .= "<td>$anzeigename</td>";
-				if ($postfach == '1') {
-					if (is_null($daten['nutzerkonto'])) {
-						$tabelle .= "<td><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto()\">Nachricht schreiben</span></td>";
-					}
-					else if (in_array($daten['id'], $schreibenpool)) {
-						$tabelle .= "<td><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">Nachricht schreiben</span></td>";
-					}
-					else {
-						$tabelle .= "<td><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben()\">Nachricht schreiben</span></td>";
-					}
-				}
+	$LISTE = array();
 
-				if ($art == 's' || $art == 'sv') {
-					if ($eltern == '1') {
-						$elterntext = "";
-						$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN schuelereltern ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ".$daten['id'].") AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-						if ($anfrageinnen = $dbs->query($sqlinnen)) {
-							while ($dateninnen = $anfrageinnen->fetch_assoc()) {
-								$elterntext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
-							}
-							$anfrageinnen->free();
-						}
-						$tabelle .= "<td>".substr($elterntext, 2)."</td>";
-					}
-				}
-				if ($art == 's' || $art == 'sv' || $art == 'l') {
-						if ($klassen == '1') {
-              $klassentext = "";
-							$sqlinnen = "SELECT * FROM (SELECT reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id JOIN stufen ON klassen.stufe = stufen.id WHERE klassenmitglieder.person = ".$daten['id'].") AS x ORDER BY reihenfolge ASC, klassenbez ASC";
-							if ($anfrageinnen = $dbs->query($sqlinnen)) {
-								while ($dateninnen = $anfrageinnen->fetch_assoc()) {
-									$klassentext .= ", ".$dateninnen['klassenbez'];
-								}
-								$anfrageinnen->free();
-							}
-							$tabelle .= "<td>".substr($klassentext, 2)."</td>";
-            }
-				}
-				if ($art == 'e' || $art == 'ev') {
-          if ($kinder == '1') {
-						$kindertext = "";
-						$sqlinnen = "SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez FROM personen JOIN schuelereltern ON personen.id = schuelereltern.schueler LEFT JOIN stufenmitglieder ON schuelereltern.schueler = stufenmitglieder.person LEFT JOIN stufen ON stufenmitglieder.gruppe = stufen.id WHERE schuelereltern.eltern = ".$daten['id']." AND (stufen.schuljahr IS NULL OR stufen.schuljahr = $CMS_BENUTZERSCHULJAHR)) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
-						if ($anfrageinnen = $dbs->query($sqlinnen)) {
-							while ($dateninnen = $anfrageinnen->fetch_assoc()) {
-								$kindertext .= ", ".cms_generiere_anzeigename($dateninnen['vorname'], $dateninnen['nachname'], $dateninnen['titel']);
-                if (!is_null($dateninnen['stufenbez'])) {$kindertext .= " (".$dateninnen['stufenbez'].")";}
-							}
-							$anfrageinnen->free();
-						}
-						$tabelle .= "<td>".substr($kindertext, 2)."</td>";
-					}
-				}
-
-				if ($leer == '1') {$tabelle .= "<td></td>";}
-			$tabelle .= "</tr>";
+	$sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel$sqlspalten FROM personen $sqljoin WHERE art = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND $gruppenart.id = $gruppenid) AS x ORDER BY nachname ASC, vorname ASC, titel ASC");
+	$sql->bind_param("s", $art);
+	if ($sql->execute()) {
+		if ($postfach == '1') {
+			$sql->bind_result($pid, $pvor, $pnach, $ptitel, $pnutzerkonto);
 		}
-		$anfrage->free();
+		else {
+			$sql->bind_result($pid, $pvor, $pnach, $ptitel);
+			$pnutzerkonto = null;
+		}
+		while ($sql->fetch()) {
+			$P = array();
+			$P['id'] = $pid;
+			$P['vorname'] = $pvor;
+			$P['nachname'] = $pnach;
+			$P['titel'] = $ptitel;
+			$P['nutzerkonto'] = $pnutzerkonto;
+			$P['eltern'] = "";
+			$P['klassen'] = "";
+			$P['kinder'] = "";
+			array_push($LISTE, $P);
+		}
 	}
+	$sql->close();
+
+
+	if (($art == 's' || $art == 'sv') && ($eltern == '1')) {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN schuelereltern ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ?) AS x ORDER BY nachname ASC, vorname ASC, titel ASC");
+		for ($i=0; $i<count($LISTE); $i++) {
+			$sql->bind_param("i", $LISTE[$i]['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($evor, $enach, $etit);
+				while ($sql->fetch()) {
+					$LISTE[$i]['eltern'] .= ", ".cms_generiere_anzeigename($evor, $enach, $etit);
+				}
+			}
+		}
+		$sql->close();
+	}
+	if (($art == 's' || $art == 'sv' || $art == 'l') && ($klassen == '1')) {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT reihenfolge, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS klassenbez FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id JOIN stufen ON klassen.stufe = stufen.id WHERE klassenmitglieder.person = ?) AS x ORDER BY reihenfolge ASC, klassenbez ASC");
+		for ($i=0; $i<count($LISTE); $i++) {
+			$sql->bind_param("i", $LISTE[$i]['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($kreihe, $kbez);
+				while ($sql->fetch()) {
+					$LISTE[$i]['klassen'] .= ", ".$kbez;
+				}
+			}
+		}
+		$sql->close();
+	}
+	if (($art == 'e' || $art == 'ev') && ($kinder == '1')) {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufenbez FROM personen JOIN schuelereltern ON personen.id = schuelereltern.schueler LEFT JOIN stufenmitglieder ON schuelereltern.schueler = stufenmitglieder.person LEFT JOIN stufen ON stufenmitglieder.gruppe = stufen.id WHERE schuelereltern.eltern = ? AND (stufen.schuljahr IS NULL OR stufen.schuljahr = ?)) AS x ORDER BY nachname ASC, vorname ASC, titel ASC");
+		for ($i=0; $i<count($LISTE); $i++) {
+			$sql->bind_param("ii", $LISTE[$i]['id'], $CMS_BENUTZERSCHULJAHR);
+			if ($sql->execute()) {
+				$sql->bind_result($kvor, $knach, $ktitel, $kstufe);
+				while ($sql->fetch()) {
+					$LISTE[$i]['klassen'] .= ", ".cms_generiere_anzeigename($kvor, $knach, $ktitel);
+					if (!is_null($kstufe)) {$LISTE[$i]['klassen'] .= " ($kstufe)";}
+				}
+			}
+		}
+		$sql->close();
+	}
+
+
+
+
+	// Ausgabe
+	foreach ($LISTE as $daten) {
+		$nr ++;
+		$allenschreiben .= "|".$daten['id'];
+		$tabelle .= "<tr>";
+			$tabelle .= "<td>$nr</td>";
+			$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+			$tabelle .= "<td>$anzeigename</td>";
+			if ($postfach == '1') {
+				if (is_null($daten['nutzerkonto'])) {
+					$tabelle .= "<td><span class=\"cms_button_passiv\" onclick=\"cms_meldung_keinkonto()\">Nachricht schreiben</span></td>";
+				}
+				else if (in_array($daten['id'], $schreibenpool)) {
+					$tabelle .= "<td><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">Nachricht schreiben</span></td>";
+				}
+				else {
+					$tabelle .= "<td><span class=\"cms_button_passivda\" onclick=\"cms_meldung_nichtschreiben()\">Nachricht schreiben</span></td>";
+				}
+			}
+
+			if ($art == 's' || $art == 'sv') {
+				if ($eltern == '1') {$tabelle .= "<td>".substr($daten['eltern'], 2)."</td>";}
+			}
+			if ($art == 's' || $art == 'sv' || $art == 'l') {
+					if ($klassen == '1') {$tabelle .= "<td>".substr($daten['klassen'], 2)."</td>";}
+			}
+			if ($art == 'e' || $art == 'ev') {
+				if ($kinder == '1') {$tabelle .= "<td>".substr($daten['kinder'], 2)."</td>";}
+			}
+
+			if ($leer == '1') {$tabelle .= "<td></td>";}
+		$tabelle .= "</tr>";
+	}
+
 
 	if (strlen($tabelle) > 0) {$code .= $tabelle;}
   else {$code = "";}

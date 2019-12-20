@@ -1,9 +1,9 @@
-// out: ../css/neuigkeiten.css, sourcemap: false, compress: true, autoprefixer: false
+// "out": "../css/neuigkeiten.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
 @import "standard.less";
 
 .cms_neuigkeiten {
   padding: 0px;
-  margin-bottom: @absatzabstand;
+  margin-bottom: @standardabsatz_schulhof_margin;
   display: flex;
   flex-wrap: wrap;
 }
@@ -13,7 +13,7 @@
   padding: 10px;
   list-style-type: none;
   margin: 0px;
-  background: @infohell;
+  background: @info_background;
   display: inline-block;
   transition: 250ms ease-in-out;
   position: relative;
@@ -28,7 +28,7 @@
 }
 
 .cms_neuigkeit:hover {
-  background: @standardhell;
+  background: @schattierthell_background;
 }
 
 .cms_neuigkeit_icon {

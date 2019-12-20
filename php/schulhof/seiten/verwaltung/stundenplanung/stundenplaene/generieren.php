@@ -5,7 +5,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   $fehler = false;
   // Zeitraum laden
   $sql = "SELECT mo, di, mi, do, fr, sa, so FROM zeitraeume WHERE id = $zeitraum";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
     if ($daten = $anfrage->fetch_assoc()) {
       $tage = array();
       $taganzahl = 1;
@@ -23,7 +23,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   // Schulstunden in diesem Zeitraum
   $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(beginnstd, '$CMS_SCHLUESSEL') AS bs, AES_DECRYPT(beginnmin, '$CMS_SCHLUESSEL') AS bm, AES_DECRYPT(endestd, '$CMS_SCHLUESSEL') AS es, AES_DECRYPT(endemin, '$CMS_SCHLUESSEL') AS em FROM schulstunden WHERE zeitraum = $zeitraum)";
   $sql .= " AS x ORDER BY bs ASC, bm ASC, es ASC, em ASC, bezeichnung ASC";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil Check oben
     $stunden = array();
     $stundenzahl = 0;
     while ($daten = $anfrage->fetch_assoc()) {
@@ -43,7 +43,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   if ($art == 'l') {
     $beschriftung = "Lehrkraft ";
     $sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM lehrer JOIN personen ON personen.id = lehrer.id WHERE personen.id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       if ($daten = $anfrage->fetch_assoc()) {
         $beschriftung .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel'])." (".$daten['kuerzel'].")";
       }
@@ -55,7 +55,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
     // stunden mit raum
     $sqlvor = "(SELECT AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, raum, kurs, tag, stunde FROM $sqlvor JOIN raeume ON stunden.raum = raeume.id) AS stdraum";
     $sql = "SELECT AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, raumbez, raum, kurs, tag, stunde FROM $sqlvor JOIN kurse ON stdraum.kurs = kurse.id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $zwischen = array();
         $zwischen['raum'] = $daten['raum'];
@@ -71,7 +71,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   else if ($art == 's') {
     $beschriftung = "Schüler ";
     $sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE personen.id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       if ($daten = $anfrage->fetch_assoc()) {
         $beschriftung .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
       }
@@ -84,7 +84,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
     $sqlvor = "(SELECT AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL') AS raumbez, raum, kurs, tag, stunde, lehrkraft FROM $sqlvor JOIN raeume ON stunden.raum = raeume.id) AS stdraum";
     $sqlvor = "(SELECT AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, raumbez, raum, kurs, tag, stunde, lehrkraft FROM $sqlvor JOIN kurse ON stdraum.kurs = kurse.id) AS stdraumk";
     $sql = "SELECT kursbez, raumbez, raum, kurs, tag, stunde, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM $sqlvor JOIN lehrer ON stdraumk.lehrkraft = lehrer.id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $zwischen = array();
         $zwischen['raum'] = $daten['raum'];
@@ -100,7 +100,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   else if ($art == 'r') {
     $beschriftung = "Raumplan ";
     $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
       if ($daten = $anfrage->fetch_assoc()) {
         $beschriftung .= $daten['bezeichnung'];
       }
@@ -112,7 +112,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
     // stunden mit lehrer
     $sqlvor = "(SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerbez, lehrkraft, kurs, tag, stunde FROM $sqlvor JOIN lehrer ON stunden.lehrkraft = lehrer.id) AS stdlehrer";
     $sql = "SELECT AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kursbez, lehrerbez, lehrkraft, kurs, tag, stunde FROM $sqlvor JOIN kurse ON stdlehrer.kurs = kurse.id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $zwischen = array();
         $zwischen['lehrer'] = $daten['lehrkraft'];
@@ -128,7 +128,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   else if ($art == 'k') {
     $beschriftung = "Klasse ";
     $sql = "SELECT AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe FROM klassen JOIN klassenstufen ON klassen.klassenstufe = klassenstufen.id WHERE klassen.id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingben der Funktion prüfen
       if ($daten = $anfrage->fetch_assoc()) {
         $beschriftung .= $daten['stufe'].$daten['bezeichnung'];
       }
@@ -142,7 +142,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
     // stunden mit raum und lehrer
     $sqlvor = "(SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerbez, raumbez, raum, lehrkraft, tag, stunde, kurs FROM $sqlvor JOIN lehrer ON stdraum.lehrkraft = lehrer.id) AS stdrl";
     $sql = "SELECT AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kurs, lehrerbez, raumbez, raum, lehrkraft, tag, stunde FROM $sqlvor JOIN kurse ON stdrl.kurs = kurse.id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $zwischen = array();
         $zwischen['lehrer'] = $daten['lehrkraft'];
@@ -158,7 +158,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
   else if ($art == 'stufe') {
     $beschriftung = "Klassenstufe ";
     $sql = "SELECT AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe FROM klassenstufen WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingben der Funktion prüfen
       if ($daten = $anfrage->fetch_assoc()) {
         $beschriftung .= $daten['stufe'];
       }
@@ -172,7 +172,7 @@ function cms_stundenplan_erzeugen ($dbs, $zeitraum, $art, $id, $aktion = true) {
     // stunden mit raum und lehrer
     $sqlvor = "(SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerbez, raumbez, raum, lehrkraft, tag, stunde, kurs FROM $sqlvor JOIN lehrer ON stdraum.lehrkraft = lehrer.id) AS stdrl";
     $sql = "SELECT AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS kurs, lehrerbez, raumbez, raum, lehrkraft, tag, stunde FROM $sqlvor JOIN kurse ON stdrl.kurs = kurse.id";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // TODO: Eingben der Funktion prüfen
       while ($daten = $anfrage->fetch_assoc()) {
         $zwischen = array();
         $zwischen['lehrer'] = $daten['lehrkraft'];

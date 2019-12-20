@@ -16,19 +16,18 @@ function cms_gruppen_mitgliedschaften_anzeigen($dbs, $gruppe, $CMS_BENUTZERART, 
 
   $sqlmitglied = "(SELECT AES_DECRYPT($gruppek.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahrbez, $gruppek.id AS id FROM $gruppek JOIN $gruppek"."mitglieder ON $gruppek.id = $gruppek"."mitglieder.gruppe LEFT JOIN schuljahre ON $gruppek.schuljahr = schuljahre.id WHERE person = $CMS_BENUTZERID AND $sqlsj)";
   $sqlaufsicht = "(SELECT AES_DECRYPT($gruppek.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahrbez, $gruppek.id AS id FROM $gruppek JOIN $gruppek"."aufsicht ON $gruppek.id = $gruppek"."aufsicht.gruppe LEFT JOIN schuljahre ON $gruppek.schuljahr = schuljahre.id WHERE person = $CMS_BENUTZERID AND $sqlsj)";
-
-  $sql = "SELECT DISTINCT * FROM ($sqlmitglied UNION $sqlaufsicht) AS x ORDER BY bezeichnung ASC";
-  
-  if ($anfrage = $dbs->query($sql)) {
-    while($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT DISTINCT * FROM ($sqlmitglied UNION $sqlaufsicht) AS x ORDER BY bezeichnung ASC");
+  if ($sql->execute()) {
+    $sql->bind_result($mbez, $msjbez, $mgid);
+    while($sql->fetch()) {
       $gl = cms_textzulink($gruppe);
-      $bl = cms_textzulink($daten['bezeichnung']);
-      if ($daten['schuljahrbez'] != null) {$sl = cms_textzulink($daten['schuljahrbez']);}
+      $bl = cms_textzulink($mbez);
+      if ($msjbez != null) {$sl = cms_textzulink($msjbez);}
       else {$sl = "Schuljahrübergreifend";}
-      $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Gruppen/$sl/$gl/$bl\">".$daten['bezeichnung']."</a></li> ";
+      $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Gruppen/$sl/$gl/$bl\">$mbez</a></li> ";
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   if (strlen($code) > 0) {$code = "<ul>".$code."</ul>";}
 

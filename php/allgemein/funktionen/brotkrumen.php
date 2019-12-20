@@ -1,6 +1,6 @@
 <?php
-function cms_brotkrumen($url) {
-	global $CMS_SEITENDETAILS;
+function cms_brotkrumen($url, $favorisieren = true) {
+	global $CMS_SEITENDETAILS, $CMS_BENUTZERID, $CMS_SCHLUESSEL;
 
 	$code = "";
 	$link = "";
@@ -53,6 +53,36 @@ function cms_brotkrumen($url) {
 			if (($i == 0) && ($u == "Website")) {$u = "Startseite";}
 			$code .= " / <a class=\"cms_link\" href=\"".substr($link, 1)."\">".$u."</a>";
 		}
+	}
+
+	if($favorisieren && cms_angemeldet() && $url[0] == "Schulhof") {
+		$fid = "";
+		$favorisieren = "";
+		$dbs = cms_verbinden("s");
+		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM favoritseiten WHERE person = ? AND url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');";
+		$sql = $dbs->prepare($sql);
+		$jurl = join("/", $url);
+		$sql->bind_param("is", $CMS_BENUTZERID, $jurl);
+		$sql->execute();
+		$sql->bind_result($fid, $bez);
+		$favorit = true;
+		if(!$sql->fetch()) {
+			$favorit = false;
+			$bez = $url[count($url)-1];	// pop ohne ändern
+		}
+
+		if ($favorit) {
+			$favoritwert = 1;
+			$icon = "res/icons/klein/favorit.png";
+			$klasse = "cms_favorit";
+		}
+		else {
+			$favoritwert = 0;
+			$icon = "res/icons/klein/favorisieren.png";
+			$klasse = "";
+		}
+		$favorisieren = "<span class=\"cms_favorisieren\"><img id=\"cms_steite_favorit_icon\" onclick=\"cms_favorisieren('$fid', '".join('/', $url)."')\" src=\"$icon\"><input type=\"hidden\" value=\"$favoritwert\" name=\"cms_seite_favorit\" id=\"cms_seite_favorit\"></span>";
+		$code .= $favorisieren;
 	}
 
 	return substr($code, 3);

@@ -13,7 +13,8 @@ function cms_internerblogeintrag_details_laden($id, $gruppe, $gruppenid) {
 	$zugriff = false;
 	$fehler = false;
 
-  if ($GRUPPENRECHTE['blogeintraege']) {$zugriff = true;}
+  if ($id != '-') {if ($GRUPPENRECHTE['blogeintraege']) {$zugriff = true;}}
+  else {if (cms_internblogvorschlag($GRUPPENRECHTE)) {$zugriff = true;}}
 
   $bez = '';
   $datum = time();

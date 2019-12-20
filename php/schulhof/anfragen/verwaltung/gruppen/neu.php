@@ -18,7 +18,9 @@ if (isset($_POST['mitglieder'])) {$mitglieder = $_POST['mitglieder'];} else {ech
 if (isset($_POST['vorsitz'])) {$vorsitz = $_POST['vorsitz'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['aufsicht'])) {$aufsicht = $_POST['aufsicht'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['import'])) {$import = $_POST['import'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
+if (($import != 'j') && ($import != 'n')) {echo "FEHLER"; exit;}
 
 if ($art == 'Stufen') {
 	if (isset($_POST['reihenfolge'])) {$reihenfolge = $_POST['reihenfolge'];} else {echo "FEHLER"; exit;}
@@ -39,6 +41,15 @@ if ($art == 'Kurse') {
 	if (isset($_POST['fach'])) {$fach = $_POST['fach'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['kursbezextern'])) {$kursbezextern = $_POST['kursbezextern'];} else {echo "FEHLER"; exit;}
+	if ($import != 'j') {
+		if (isset($_POST['schienen'])) {$kursschienen = $_POST['schienen'];} else {echo "FEHLER"; exit;}
+		if (!cms_check_idfeld($kursschienen)) {echo "FEHLER"; exit;}
+		else {
+			$SCHIENEN = array();
+			$kursschienen = substr(str_replace("|null|", "|", $kursschienen."|"), -1);
+			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", substr($kursschienen, 1));}
+		}
+	}
 }
 
 $dbs = cms_verbinden('s');
@@ -113,14 +124,20 @@ if (cms_angemeldet() && $zugriff) {
 				$faechertext = "(".implode(',', $faecher).")";
 				if (cms_check_idliste($faechertext)) {
 					$faecher = array();
-					$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM faecher WHERE id IN $faechertext";
-		  		if ($anfrage = $dbs->query($sql)) {
-		  			while ($daten = $anfrage->fetch_assoc()) {
-		  				array_push($faecher, $daten);
+					$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest");
+		  		if ($sql->execute()) {
+						$sql->bind_param($fid, $fbez, $fkurz, $ficon);
+		  			while ($sql->fetch()) {
+							$f = array();
+							$f['id'] = $fid;
+							$f['bezeichnung'] = $fbez;
+							$f['kuerzel'] = $fkurz;
+							$f['icon'] = $ficon;
+		  				array_push($faecher, $f);
 		  			}
-		  			$anfrage->free();
 		  		}
 		      else {$fehler = true;}
+					$sql->close();
 				}
 				else {$fehler = true;}
 			}
@@ -151,28 +168,42 @@ if (cms_angemeldet() && $zugriff) {
 			if (count($klassen) != 0) {
 				$klassentext = "(".implode(',', $klassen).")";
 				if (cms_check_idliste($klassentext)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext";
-		      $anfrage = $dbs->query($sql);
-		  		if ($anfrage) {
-		  			if ($daten = $anfrage->fetch_assoc()) {
-		  				if ($daten['anzahl'] != count($klassen)) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext");
+		  		if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+		  			if ($sql->fetch()) {
+		  				if ($checkanzahl != count($klassen)) {
 		  					$fehler = true;
 		  					echo "KLASSEN";
 		  				}
 		  			}
 		  			else {$fehler = true;}
-		  			$anfrage->free();
 		  		}
 		      else {$fehler = true;}
+					$sql->close();
 				}
 	      else {$fehler = true;}
 	    }
+
+			if ($import == 'j') {
+				$schienenmuster = "(".implode(',', $SCHIENEN).")";
+				$sql = $dbs->prepare("SELECT COUNT(*) FROM schienen WHERE id IN $schienenmuster");
+				if ($sql->execute()) {
+					$sql->bind_result($checkanzahl);
+					if ($sql->fetch()) {
+						if ($checkanzahl != count($SCHIENEN)) {$fehler = true;}
+					}
+					else {$fehler = true;}
+				}
+				else {$fehler = true;}
+				$sql->close();
+			}
 		}
 
 		// Prüfen, ob es in diesem Schuljahr schon eine Gruppe mit dieser Bezeichnung gibt
 		$bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
+		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $artk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND $schuljahrtest");
 	  $sql->bind_param("s", $bezeichnung);
 	  if ($sql->execute()) {
 	    $sql->bind_result($anzahl);
@@ -204,19 +235,19 @@ if (cms_angemeldet() && $zugriff) {
         $pruefids = "(".substr(str_replace('|', ',', $mitglieder),1).")";
 
 				if (cms_check_idliste($pruefids)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem";
-	        $anfrage = $dbs->query($sql);
-	        if ($anfrage) {
-	          if ($daten = $anfrage->fetch_assoc()) {
-	            if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem");
+	        if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+	          if ($sql->fetch()) {
+	            if ($checkanzahl != 0) {
 	              $fehler = true;
 	              echo "MITGLIEDER";
 	            }
 	          }
 	          else {$fehler = true;}
-	          $anfrage->free();
 	        }
 	        else {$fehler = true;}
+					$sql->close();
 				}
         else {$fehler = true;}
       }
@@ -243,19 +274,19 @@ if (cms_angemeldet() && $zugriff) {
       else {
         $pruefids = "(".substr(str_replace('|', ',', $aufsicht),1).")";
 				if (cms_check_idliste($pruefids)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea";
-	        $anfrage = $dbs->query($sql);
-	        if ($anfrage) {
-	          if ($daten = $anfrage->fetch_assoc()) {
-	            if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea");
+	        if ($sql->execute()) {
+						$sql->bind_param($checkanzahl);
+	          if ($sql->fetch()) {
+	            if ($checkanzahl != 0) {
 	              $fehler = true;
 	              echo "AUFSICHT";
 	            }
 	          }
 	          else {$fehler = true;}
-	          $anfrage->free();
 	        }
 	        else {$fehler = true;}
+					$sql->close();
 				}
       }
     }
@@ -317,7 +348,7 @@ if (cms_angemeldet() && $zugriff) {
         } else {$fehler = true;}
 				if (isset($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
           if (cms_check_toggle($_POST['mitglieder'.$i.'nachrichtloeschen'])) {
-            $M[$anzahl]['nachrichtloeschen'] = $_POST['nachrichtloeschen'.$i.'nachrichtloeschen'];
+            $M[$anzahl]['nachrichtloeschen'] = $_POST['mitglieder'.$i.'nachrichtloeschen'];
           } else {$fehler = true;}
         } else {$fehler = true;}
 				if (isset($_POST['mitglieder'.$i.'nutzerstummschalten'])) {
@@ -375,11 +406,13 @@ if (cms_angemeldet() && $zugriff) {
 				$kursid = cms_generiere_kleinste_id('kurse');
 				array_push($faecherkurse, $kursid);
 				$kursbezeichnung = $bezeichnung." ".$f['bezeichnung'];
+				$kursicon = $f['icon'];
 				$kurskurzbezeichnung = $bezeichnung." ".$f['kuerzel'];
 				$kursbezextern = $f['kuerzel'];
 				$kursfach = $f['id'];
-				$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT('kurse.png', '$CMS_SCHLUESSEL'), sichtbar = ?, schuljahr = $schuljahrsetzen, chataktiv = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kursbezextern = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, stufe = $stufe WHERE id = ?");
-				$sql->bind_param("siissii", $kursbezeichnung, $sichtbar, $chat, $kurskurzbezeichnung, $kursbezextern, $kursfach, $kursid);
+				$sql = $dbs->prepare("UPDATE kurse SET bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), icon = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sichtbar = ?, schuljahr = $schuljahrsetzen, chataktiv = ?, kurzbezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kursbezextern = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), fach = ?, stufe = $stufe WHERE id = ?");
+
+				$sql->bind_param("ssiissii", $kursbezeichnung, $kursicon, $sichtbar, $chat, $kurskurzbezeichnung, $kursbezextern, $kursfach, $kursid);
 				$sql->execute();
 				$sql->close();
 
@@ -404,10 +437,16 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->bind_param("ssiii", $kurzbezeichnung, $kursbezextern, $fach, $stufe, $id);
 			$sql->execute();
 
-
 			$sql = $dbs->prepare("INSERT INTO kurseklassen (kurs, klasse) VALUES (?, ?)");
 			foreach ($klassen as $k) {
 				$sql->bind_param("ii", $id, $k);
+				$sql->execute();
+			}
+			$sql->close();
+
+			$sql = $dbs->prepare("INSERT INTO schienenkurse (schiene, kurs) VALUES (?, ?)");
+			foreach ($SCHIENEN as $s) {
+				$sql->bind_param("ii", $s, $id);
 				$sql->execute();
 			}
 			$sql->close();
@@ -415,20 +454,12 @@ if (cms_angemeldet() && $zugriff) {
 
     if (strlen($mitglieder) > 0) {
       // Mitglieder eintragen
-			$sql1 = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			$sql = $dbs->prepare("INSERT INTO $artk"."mitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       foreach ($M as $i) {
-				$sql1->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
-				$sql1->execute();
-
-				if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
-					$sql2 = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					foreach ($faecherkurse as $k) {
-						$sql2->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
-						$sql2->execute();
-					}
-				}
-				$sql->close();
+				$sql->bind_param("iiiiiiiiiii", $id, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
+				$sql->execute();
       }
+			$sql->close();
 
       // Vorsitz eintragen
 			if (strlen($vorsitz) > 0) {
@@ -437,6 +468,17 @@ if (cms_angemeldet() && $zugriff) {
 					$sql->bind_param("ii", $id, $i);
 					$sql->execute();
 	      }
+				$sql->close();
+			}
+
+			if (($art == 'Klassen') && (count($faecherkurse) > 0)) {
+				$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				foreach ($faecherkurse as $k) {
+					foreach ($M as $i) {
+						$sql->bind_param("iiiiiiiiiii", $k, $i['id'], $i['dateiupload'], $i['dateidownload'], $i['dateiloeschen'], $i['dateiumbenennen'], $i['termine'], $i['blogeintraege'], $i['chatten'], $i['nachrichtloeschen'], $i['nutzerstummschalten']);
+						$sql->execute();
+		      }
+				}
 				$sql->close();
 			}
     }

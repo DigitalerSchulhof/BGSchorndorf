@@ -23,24 +23,23 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
 
   // Schuljahr und Zeitraum laden
   $dbs = cms_verbinden('s');
-  $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, schuljahr, zeitraeume.beginn AS beginn, zeitraeume.ende AS ende FROM zeitraeume JOIN schuljahre ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = $zeitraum";
-  if ($anfrage = $dbs->query($sql)) {
-    if ($daten = $anfrage->fetch_assoc()) {
-      $schuljahr = $daten['schuljahr'];
-      $schuljahrbez = $daten['bezeichnung'];
-      $beginn = $daten['beginn'];
-      $ende = $daten['ende'];
+  $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, schuljahr, zeitraeume.beginn AS beginn, zeitraeume.ende AS ende FROM zeitraeume JOIN schuljahre ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+  $sql = $dbs->prepare($sql);
+  $sql->bind_param("i", $zeitraum);
+  if ($sql->execute() {
+    $sql->bind_result($schuljahrbez, $schuljahr, $beginn, $ende);
+    if ($sql->fetch()) {
       $zeitraumbez = cms_tagnamekomplett(date('N', $beginn)).", den ".date('d', $beginn).". ".cms_monatsnamekomplett(date('n', $beginn))." ".date('Y', $beginn)." bis ";
       $zeitraumbez .= cms_tagnamekomplett(date('N', $ende)).", den ".date('d', $ende).". ".cms_monatsnamekomplett(date('n', $ende))." ".date('Y', $ende);
     } else {$fehler = true;}
-    $anfrage->free();
+    $sql->close();
   } else {$fehler = true;}
 
   // Lehrer suchen
   $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM personen JOIN lehrer ON personen.id = lehrer.id)";
   $sql .= " AS x ORDER BY nachname ASC, vorname ASC, kuerzel ASC";
   $lehreroptionen = "";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       if ($lehrkraft == '-') {$lehrkraft = $daten['id'];}
       $lehreroptionen .= "<option id=\"cms_stundenplanung_lehrkraft_".$daten['id']."\" value=\"".$daten['id']."\">";
@@ -53,7 +52,7 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
   // Räume suchen
   $sql = "SELECT * FROM (SELECT id AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume) AS x ORDER BY bezeichnung ASC";
   $raumoptionen = "";
-  if ($anfrage = $dbs->query($sql)) {
+  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
     while ($daten = $anfrage->fetch_assoc()) {
       if ($raum == '-') {$raum = $daten['id'];}
       $raumoptionen .= "<option id=\"cms_stundenplanung_raum_".$daten['id']."\" value=\"".$daten['id']."\">";
@@ -67,7 +66,7 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
     // Klassen suchen
     $sql = "SELECT * FROM (SELECT reihenfolge, klassen.id AS id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe FROM klassen JOIN klassenstufen ON klassen.klassenstufe = klassenstufen.id WHERE schuljahr = $schuljahr) AS x ORDER BY reihenfolge ASC, stufe ASC, bezeichnung ASC";
     $klassenoptionen = "";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       while ($daten = $anfrage->fetch_assoc()) {
         if ($klasse == '-') {$klasse = $daten['id'];}
         $klassenoptionen .= "<option id=\"cms_stundenplanung_klasse_".$daten['id']."\" value=\"".$daten['id']."\">";
@@ -85,7 +84,7 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
     $sql = "SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(faecher.bezeichnung, '$CMS_SCHLUESSEL') AS fach, AES_DECRYPT(faecher.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM (SELECT kurs FROM kursklassen WHERE klasse = $klasse)";
 		$sql .= " AS x JOIN kurse ON x.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id ORDER BY fach ASC, bezeichnung ASC";
     $kursoptionen = "";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       while ($daten = $anfrage->fetch_assoc()) {
         if ($kurs == '-') {$kurs = $daten['id'];}
         $kursoptionen .= "<option id=\"cms_stundenplanung_kurs_".$daten['id']."\" value=\"".$daten['id']."\">";
@@ -102,7 +101,7 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
   if (!$fehler && !$meldefehler) {
     // Kurse suchen
     $sql = "SELECT klasse FROM (SELECT klasse, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM kursklassen JOIN klassen ON kursklassen.klasse = klassen.id WHERE kurs = $kurs AND klasse != $klasse) AS x ORDER BY bezeichnung";
-    if ($anfrage = $dbs->query($sql)) {
+    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
       if (strlen($klasse) > 0) {$klasse = "|".$klasse;}
       while ($daten = $anfrage->fetch_assoc()) {
         $klassen .= "|".$daten['klasse'];

@@ -163,15 +163,15 @@ if (r("schulhof.planung.schuljahre.profile.*")) {	// TODO: Beschreibung
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-/*if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {	// TODO: Recht + Beschreibung
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
 			$code .=  "<h3>Schienen</h3>";
 			$code .=  "<p>Für jede Klassenstufe Unterricht festlegen, der parallel laufen muss.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
-}*/
-if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {	// TODO: Recht + Beschreibung
+}
+if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
 			$code .=  "<h3>Stundenplanung</h3>";
@@ -189,7 +189,7 @@ if (r("schulhof.planung.schuljahre.stundentagebücher.*")) {	// TODO: Recht + Be
 }
 if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplan\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">";
 			$code .=  "<h3>Vertretungsplan</h3>";
 			$code .=  "<p>Schulstunden ändern, verschieben oder entfallen lassen.</p>";
 		$code .=  "</a>";
@@ -362,6 +362,15 @@ if (r("website.titelbilder.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
+if ($CMS_RECHTE['Website']['Auszeichnungen anlegen'] || $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] || $CMS_RECHTE['Website']['Auszeichnungen löschen']) {	// TODO: Recht + Beschreibung
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auszeichnungen\" href=\"Schulhof/Website/Auszeichnungen\">";
+			$code .=  "<h3>Auszeichnungen</h3>";
+			$code .=  "<p>Auszeichnungen anlegen, bearbeiten, löschen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
+}
 if (r("statistik.besucher.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_besucherstatistik\" href=\"Schulhof/Website/Besucherstatistiken\">";
@@ -401,6 +410,15 @@ if (r("*") && false) {	// TODO: Recht
 			$code .=  "<p>Emoticons verwalten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
+}
+if ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE["Newsletter bearbeiten"]) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">";
+			$code .=  "<h3>Newsletter</h3>";
+			$code .=  "<p>Newsletter und Mailinglisten verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+	$tabzahl++;
 }
 
 if ($code) {
@@ -513,21 +531,9 @@ if ($code) {
 		</a>
 	</li>
 	<li>
-		<a class="cms_uebersicht_verwaltung_neuerungen" href="Schulhof/Verwaltung/Neuerungen/">
-			<h3>Neuerungen</h3>
-			<p>Neuerungen verwalten sowie Personen zuordnen, die Neuerungen schreiben dürfen. Neuerungen werden vor der Anmeldung zum Schulhof angezeigt. Durch Updates werden automatisch Neuerungen eingespielt. Diese können ergänzt, umgeschrieben oder entfernt werden.</p>
-		</a>
-	</li>
-	<li>
 		<a class="cms_uebersicht_verwaltung_speicherplatz" href="Schulhof/Verwaltung/Speicherplatz/">
 			<h3>Speicherplatz</h3>
 			<p>Statistiken über die Verwendung des Online-Speichers, sowie Einstellungen von Speicherlimits.</p>
-		</a>
-	</li>
-	<li>
-		<a class="cms_uebersicht_verwaltung_update" href="Schulhof/Verwaltung/Update/">
-			<h3>Update</h3>
-			<p>Softwareerneuerungen einspielen.</p>
 		</a>
 	</li>
 	<li>
@@ -552,7 +558,8 @@ if ($code) {
 <div class="cms_clear"></div>
 <?php
 	/*
-		Nimmt a)
+		Nimmt
+		a)
 			1 - Ein Array und verbindet die Inhalte mit ,,,und. Inhalte mit dem Wert "false" werden ausgelassen
 		b)
 			1 - Einen String, in dem "$" mit aufzaehlen(2) ersetzt wird. Ist aufzaehlen(2) leer, wird nichts zurückgegeben.

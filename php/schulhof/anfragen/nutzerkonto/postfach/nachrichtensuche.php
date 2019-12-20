@@ -29,13 +29,12 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 $CMS_RECHTE = cms_rechte_laden();
 $zugriff = true;
 
-
 if (cms_angemeldet()) {
 	$fehler = false;
 	if (!cms_check_ganzzahl($CMS_BENUTZERID)) {$fehler = true;}
 	if (!cms_check_name($vorname) && (strlen($vorname) != 0)) {$fehler = true;}
-	if (!cms_check_name($nachname) && (strlen($vorname) != 0)) {$fehler = true;}
-	if (!cms_check_name($betreff) && (strlen($vorname) != 0)) {$fehler = true;}
+	if (!cms_check_name($nachname) && (strlen($nachname) != 0)) {$fehler = true;}
+	if (!cms_check_nametitel($betreff) && (strlen($betreff) != 0)) {$fehler = true;}
 	if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {$fehler = true;}
 
 	if (!$fehler) {
