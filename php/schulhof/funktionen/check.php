@@ -775,12 +775,12 @@ function sqlLesen($row, $feld) {
 }
 
 function cms_check_sessionvars() {
+
 	if (!isset($_SESSION['BENUTZERID'])) {return false;}
-	if (!isset($_SESSION['BENUTZERSCHULJAHR'])) {return false;}
 	if (!isset($_SESSION['BENUTZERART'])) {return false;}
 
 	if (!cms_check_ganzzahl($_SESSION['BENUTZERID'])) {return false;}
-	if ((!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR'])) && ($_SESSION['BENUTZERSCHULJAHR'] != '-')) {return false;}
+	if (($_SESSION['BENUTZERSCHULJAHR'] !== null) && (!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR']))) {return false;}
 	if (($_SESSION['BENUTZERART'] != 's') && ($_SESSION['BENUTZERART'] != 'l') && ($_SESSION['BENUTZERART'] != 'v') && ($_SESSION['BENUTZERART'] != 'e') && ($_SESSION['BENUTZERART'] != 'x')) {return false;}
 	return true;
 }

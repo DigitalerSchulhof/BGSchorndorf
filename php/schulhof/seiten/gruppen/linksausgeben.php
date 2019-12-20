@@ -14,9 +14,14 @@ function cms_gruppen_links_anzeigen($dbs, $gruppe, $CMS_BENUTZERART, $CMS_BENUTZ
 
   if ($pur) {
     if ($CMS_BENUTZERSCHULJAHR == '-') {$sqlsj = "schuljahr IS NULL";}
+    else if ($CMS_BENUTZERSCHULJAHR === null) {$sqlsj = "schuljahr IS NULL";}
     else {$sqlsj = "schuljahr = $CMS_BENUTZERSCHULJAHR";}
   }
-  else {$sqlsj = "schuljahr IS NULL OR schuljahr = $CMS_BENUTZERSCHULJAHR";}
+  else {
+    if ($CMS_BENUTZERSCHULJAHR == '-') {$sqlsj = "schuljahr IS NULL";}
+    else if ($CMS_BENUTZERSCHULJAHR === null) {$sqlsj = "schuljahr IS NULL";}
+    else {$sqlsj = "(schuljahr IS NULL OR schuljahr = $CMS_BENUTZERSCHULJAHR)";}
+  }
 
   $sqlsichtbar = "(SELECT AES_DECRYPT($gruppek.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahrbez, $gruppek.id AS id FROM $gruppek LEFT JOIN schuljahre ON $gruppek.schuljahr = schuljahre.id WHERE sichtbar >= $limit AND ($sqlsj))";
 

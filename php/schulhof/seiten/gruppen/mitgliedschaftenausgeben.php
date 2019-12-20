@@ -10,12 +10,18 @@ function cms_gruppen_mitgliedschaften_anzeigen($dbs, $gruppe, $CMS_BENUTZERART, 
 
   if ($pur) {
     if ($CMS_BENUTZERSCHULJAHR == '-') {$sqlsj = "schuljahr IS NULL";}
+    else if ($CMS_BENUTZERSCHULJAHR === null) {$sqlsj = "schuljahr IS NULL";}
     else {$sqlsj = "schuljahr = $CMS_BENUTZERSCHULJAHR";}
   }
-  else {$sqlsj = "(schuljahr IS NULL OR schuljahr = $CMS_BENUTZERSCHULJAHR)";}
+  else {
+    if ($CMS_BENUTZERSCHULJAHR == '-') {$sqlsj = "schuljahr IS NULL";}
+    else if ($CMS_BENUTZERSCHULJAHR === null) {$sqlsj = "schuljahr IS NULL";}
+    else {$sqlsj = "(schuljahr IS NULL OR schuljahr = $CMS_BENUTZERSCHULJAHR)";}
+  }
 
   $sqlmitglied = "(SELECT AES_DECRYPT($gruppek.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahrbez, $gruppek.id AS id FROM $gruppek JOIN $gruppek"."mitglieder ON $gruppek.id = $gruppek"."mitglieder.gruppe LEFT JOIN schuljahre ON $gruppek.schuljahr = schuljahre.id WHERE person = $CMS_BENUTZERID AND $sqlsj)";
   $sqlaufsicht = "(SELECT AES_DECRYPT($gruppek.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS schuljahrbez, $gruppek.id AS id FROM $gruppek JOIN $gruppek"."aufsicht ON $gruppek.id = $gruppek"."aufsicht.gruppe LEFT JOIN schuljahre ON $gruppek.schuljahr = schuljahre.id WHERE person = $CMS_BENUTZERID AND $sqlsj)";
+
   $sql = $dbs->prepare("SELECT DISTINCT * FROM ($sqlmitglied UNION $sqlaufsicht) AS x ORDER BY bezeichnung ASC");
   if ($sql->execute()) {
     $sql->bind_result($mbez, $msjbez, $mgid);

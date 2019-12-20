@@ -99,7 +99,6 @@
 
 	// Prüfen, ob ein Nutzer angemeldet ist
 	if ($CMS_ANGEMELDET) {
-
 		// Nutzerdaten laden
 		$CMS_BENUTZERNAME = $_SESSION['BENUTZERNAME'];
 		$CMS_SESSIONID = $_SESSION['SESSIONID'];
@@ -268,7 +267,6 @@
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/seiten.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/hauptnavigationen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/dateien.js?v=$CMS_VERSION\"></script>";
@@ -450,10 +448,12 @@
 				}
 			}
 			$wahlknoepfe = "";
-			if (count($bilder) > 1) {
-				$TITELBILDERJS = "cms_titelbilder_starten();";
+			if (count($bilder) > 0) {
 				$bildercode .= "<li style=\"opacity: 1;\" id=\"cms_hauptbilder_0\"><img src=\"dateien/titelbilder/".$bilder[0]."\"></li>";
 				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_0\" class=\"cms_titelbild_knopf_aktiv\" onclick=\"cms_titelbild_zeigen('0')\"></span> ";
+			}
+			if (count($bilder) > 1) {
+				$TITELBILDERJS = "cms_titelbilder_starten();";
 			}
 			for ($i=1; $i<count($bilder); $i++) {
 				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_hauptbilder_$i\"><img src=\"dateien/titelbilder/".$bilder[$i]."\"></li>";
