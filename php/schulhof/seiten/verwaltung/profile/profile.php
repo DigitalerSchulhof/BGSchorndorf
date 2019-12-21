@@ -43,49 +43,56 @@ if ($zugriff) {
 
 
 
-      $sql = "SELECT * FROM (SELECT profile.id AS pid, AES_DECRYPT(profile.bezeichnung, '$CMS_SCHLUESSEL') AS pbez, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, reihenfolge, profile.art AS art FROM profile JOIN stufen ON profile.stufe = stufen.id WHERE profile.schuljahr = $SCHULJAHR) AS x ORDER BY reihenfolge ASC, pbez ASC";
+      $sql = $dbs->prepare("SELECT * FROM (SELECT profile.id AS pid, AES_DECRYPT(profile.bezeichnung, '$CMS_SCHLUESSEL') AS pbez, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, reihenfolge, profile.art AS art FROM profile JOIN stufen ON profile.stufe = stufen.id WHERE profile.schuljahr = ?) AS x ORDER BY reihenfolge ASC, pbez ASC");
+      $sql->bind_param("i", $SCHULJAHR);
 
-      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-        while ($daten = $anfrage->fetch_assoc()) {
-          $pid = $daten['pid'];
-          $pbez = $daten['pbez'];
-          $sbez = $daten['sbez'];
-          $part = $daten['art'];
-
-          $zeilen .= "<tr>";
-            $zeilen .= "<td><img src=\"res/icons/klein/profile.png\"></td>";
-            if ($part == 'p') {$zeilen .= "<td>".cms_generiere_hinweisicon("pflichtprofil", "Pflichtprofil")."</td>";}
-            else {$zeilen .= "<td>".cms_generiere_hinweisicon("wahlprofil", "Wahlprofil")."</td>";}
-            $zeilen .= "<td>$pbez</td>";
-            $zeilen .= "<td>$sbez</td>";
-            $faecher = "";
-
-            $sqlfaecher = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS fbez FROM profilfaecher JOIN faecher ON profilfaecher.fach = faecher.id WHERE profilfaecher.profil = $pid";
-            if ($anfrage2 = $dbs->query($sqlfaecher)) { // Safe weil interne ID
-              while ($daten2 = $anfrage2->fetch_assoc()) {
-                $faecher .= ", ".$daten2['fbez'];
-              }
-              $anfrage2->free();
-            }
-
-            if (strlen($faecher) > 0) {$faecher = substr($faecher, 2);}
-            $zeilen .= "<td>".$faecher."</td>";
-            $zeilen .= "<td>";
-            if ($CMS_RECHTE['Planung']['Profile bearbeiten']) {
-              $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_bearbeiten_vorbereiten($pid);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
-            }
-            if ($CMS_RECHTE['Planung']['Profile löschen']) {
-              $zeilen .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_profile_loeschen_anzeigen('$pbez', $pid);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
-            }
-            $zeilen .= "</td>";
-          $zeilen .= "</tr>";
+      $PROFILE = array();
+      if ($sql->execute()) {
+        $sql->bind_result($pid, $pbez, $sbez, $preihe, $part);
+        while ($sql->fetch()) {
+          $P = array();
+          $P['id'] = $pid;
+          $P['pbez'] = $pbez;
+          $P['sbez'] = $sbez;
+          $P['part'] = $part;
+          array_push($PROFILE, $P);
         }
+      }
+      $sql->close();
 
-        if (strlen($zeilen) > 0) {$code .= $zeilen;}
-        else {
-          $code .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
-        }
-        $anfrage->free();
+      $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS fbez FROM profilfaecher JOIN faecher ON profilfaecher.fach = faecher.id WHERE profilfaecher.profil = ?");
+      foreach ($PROFILE AS $P) {
+        $zeilen .= "<tr>";
+          $zeilen .= "<td><img src=\"res/icons/klein/profile.png\"></td>";
+          if ($P['part'] == 'p') {$zeilen .= "<td>".cms_generiere_hinweisicon("pflichtprofil", "Pflichtprofil")."</td>";}
+          else {$zeilen .= "<td>".cms_generiere_hinweisicon("wahlprofil", "Wahlprofil")."</td>";}
+          $zeilen .= "<td>".$P['pbez']."</td>";
+          $zeilen .= "<td>".$P['sbez']."</td>";
+          $faecher = "";
+          $sql->bind_param("i", $P['id']);
+          if ($sql->execute()) {
+            $sql->bind_result($fbez);
+            while ($sql->fetch()) {
+              $faecher .= ", ".$fbez;
+            }
+          }
+          if (strlen($faecher) > 0) {$faecher = substr($faecher, 2);}
+          $zeilen .= "<td>".$faecher."</td>";
+          $zeilen .= "<td>";
+          if ($CMS_RECHTE['Planung']['Profile bearbeiten']) {
+            $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_bearbeiten_vorbereiten(".$P['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+          }
+          if ($CMS_RECHTE['Planung']['Profile löschen']) {
+            $zeilen .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_profile_loeschen_anzeigen('".$P['pbez']."', ".$P['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+          }
+          $zeilen .= "</td>";
+        $zeilen .= "</tr>";
+      }
+      $sql->close();
+
+      if (strlen($zeilen) > 0) {$code .= $zeilen;}
+      else {
+        $code .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
       }
 
     $code .= "</table>";

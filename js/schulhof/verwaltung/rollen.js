@@ -13,7 +13,7 @@ function cms_schulhof_rolle_neu_speichern() {
 		meldung += '<li>es wurde keine Bezeichnung eingegeben.</li>';
 		fehler = true;
 	}
-	if ((art != 's') && (art != 'l') && (art != 'e') && (art != 'v')) {
+	if ((art != 's') && (art != 'l') && (art != 'e') && (art != 'v') && (art != 'x')) {
 		meldung += '<li>es wurde keine korrekte Personengruppe ausgewählt.</li>';
 		fehler = true;
 	}
@@ -128,7 +128,7 @@ function cms_schulhof_rolle_bearbeiten_speichern() {
 		meldung += '<li>es wurde keine Bezeichnung eingegeben.</li>';
 		fehler = true;
 	}
-	if ((art != 's') && (art != 'l') && (art != 'e') && (art != 'v')) {
+	if ((art != 's') && (art != 'l') && (art != 'e') && (art != 'v') && (art != 'x')) {
 		meldung += '<li>es wurde keine korrekte Personengruppe ausgewählt.</li>';
 		fehler = true;
 	}

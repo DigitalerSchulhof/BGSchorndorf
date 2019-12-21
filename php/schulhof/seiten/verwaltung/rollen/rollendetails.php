@@ -9,14 +9,13 @@ function cms_rolle_ausgeben ($rolle) {
 	$bezeichnung = "";
 	$art = "s";
 	if ($rolle != "") {
-		$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(personenart, '$CMS_SCHLUESSEL') AS personenart FROM rollen WHERE id = $rolle";
-		if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-			if ($daten = $anfrage->fetch_assoc()) {
-				$bezeichnung = $daten['bezeichnung'];
-				$art = $daten['personenart'];
-			}
-			$anfrage->free();
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(personenart, '$CMS_SCHLUESSEL') AS personenart FROM rollen WHERE id = ?");
+		$sql->bind_param("i", $rolle);
+		if ($sql->execute()) {
+			$sql->bind_result($bezeichnung, $art);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 
 	$anfang = "<h3>Rollendetails</h3>";
@@ -27,6 +26,7 @@ function cms_rolle_ausgeben ($rolle) {
 				if ($art == "l") {$anfang .= "<option value=\"l\" selected=\"selected\">Lehrer</option>";} else {$anfang .= "<option value=\"l\">Lehrer</option>";}
 				if ($art == "e") {$anfang .= "<option value=\"e\" selected=\"selected\">Eltern</option>";} else {$anfang .= "<option value=\"e\">Eltern</option>";}
 				if ($art == "v") {$anfang .= "<option value=\"v\" selected=\"selected\">Verwaltung</option>";} else {$anfang .= "<option value=\"v\">Verwaltung</option>";}
+				if ($art == "x") {$anfang .= "<option value=\"x\" selected=\"selected\">Externe</option>";} else {$anfang .= "<option value=\"x\">Externe</option>";}
 			$anfang .= "</select></td>";
 		$anfang .= "</tr>";
 		$anfang .= "<tr><th>Bezeichnung:</th><td><input type=\"text\" name=\"cms_schulhof_rolle_bezeichnung\" id=\"cms_schulhof_rolle_bezeichnung\" value=\"".$bezeichnung."\"></td></tr>";
@@ -34,40 +34,43 @@ function cms_rolle_ausgeben ($rolle) {
 
 
 	if ($rolle == '') {
-		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte) AS rechte ORDER BY kategorie ASC, bezeichnung ASC;";
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte) AS rechte ORDER BY kategorie ASC, bezeichnung ASC;");
 	}
 	else {
-		$sql = "SELECT * FROM (SELECT id, rolle, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte LEFT JOIN (SELECT rolle, recht FROM rollenrechte WHERE rolle = $rolle) AS rollenrechte ON rechte.id = rollenrechte.recht) AS rechte ORDER BY kategorie ASC, bezeichnung ASC;";
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, rolle, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte LEFT JOIN (SELECT rolle, recht FROM rollenrechte WHERE rolle = ?) AS rollenrechte ON rechte.id = rollenrechte.recht) AS rechte ORDER BY kategorie ASC, bezeichnung ASC;");
+		$sql->bind_param("i", $rolle);
 	}
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID	- TODO: Check oben
+	if ($sql->execute()) {
 		if ($rolle == '') {
-			while ($daten = $anfrage->fetch_assoc()) {
-				if ($altekategorie != $daten['kategorie']) {
-					$altekategorie = $daten['kategorie'];
-					$code .= "</p><h3>".$daten['kategorie']."</h3><p>";
+			$sql->bind_result($rid, $rbez, $rkat);
+			while ($sql->fetch()) {
+				if ($altekategorie != $rkat) {
+					$altekategorie = $rkat;
+					$code .= "</p><h3>$rkat</h3><p>";
 				}
-				$code .= "<span class=\"cms_toggle\" id=\"cms_toggle_schulhof_rolle_recht".$daten['id']."\" onclick=\"cms_toggle_klasse('cms_toggle_schulhof_rolle_recht".$daten['id']."', 'cms_toggle_aktiv', 'cms_schulhof_rolle_recht".$daten['id']."', 'true');\">".$daten['bezeichnung']."</span> ";
-				$hiddencode .= "<input name=\"cms_schulhof_rolle_recht".$daten['id']."\" id=\"cms_schulhof_rolle_recht".$daten['id']."\" type=\"hidden\" value=\"0\">";
+				$code .= "<span class=\"cms_toggle\" id=\"cms_toggle_schulhof_rolle_recht$rid\" onclick=\"cms_toggle_klasse('cms_toggle_schulhof_rolle_recht$rid', 'cms_toggle_aktiv', 'cms_schulhof_rolle_recht$rid', 'true');\">$rbez</span> ";
+				$hiddencode .= "<input name=\"cms_schulhof_rolle_recht$rid\" id=\"cms_schulhof_rolle_recht$rid\" type=\"hidden\" value=\"0\">";
 			}
 		}
 		else {
-			while ($daten = $anfrage->fetch_assoc()) {
-				if ($altekategorie != $daten['kategorie']) {
-					$altekategorie = $daten['kategorie'];
-					$code .= "</p><h3>".$daten['kategorie']."</h3><p>";
+			$sql->bind_result($rid, $rrolle, $rbez, $rkat);
+			while ($sql->fetch()) {
+				if ($altekategorie != $rkat) {
+					$altekategorie = $rkat;
+					$code .= "</p><h3>$rkat</h3><p>";
 				}
 				$anzeigeklasse = "cms_toggle";
 				$wert = '0';
-				if ($daten['rolle'] == $rolle) {
+				if ($rrolle == $rolle) {
 					$anzeigeklasse = "cms_toggle cms_toggle_aktiv";
 					$wert = '1';
 				}
-				$code .= "<span class=\"$anzeigeklasse\" id=\"cms_toggle_schulhof_rolle_recht".$daten['id']."\" onclick=\"cms_toggle_klasse('cms_toggle_schulhof_rolle_recht".$daten['id']."', 'cms_toggle_aktiv', 'cms_schulhof_rolle_recht".$daten['id']."', 'true');\">".$daten['bezeichnung']."</span> ";
-				$hiddencode .= "<input name=\"cms_schulhof_rolle_recht".$daten['id']."\" id=\"cms_schulhof_rolle_recht".$daten['id']."\" type=\"hidden\" value=\"$wert\">";
+				$code .= "<span class=\"$anzeigeklasse\" id=\"cms_toggle_schulhof_rolle_recht$rid\" onclick=\"cms_toggle_klasse('cms_toggle_schulhof_rolle_recht$rid', 'cms_toggle_aktiv', 'cms_schulhof_rolle_recht$rid', 'true');\">$rbez</span> ";
+				$hiddencode .= "<input name=\"cms_schulhof_rolle_recht$rid\" id=\"cms_schulhof_rolle_recht$rid\" type=\"hidden\" value=\"$wert\">";
 			}
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 
 	// Höchste ID ermitteln
 	$hoechsteid = '-';

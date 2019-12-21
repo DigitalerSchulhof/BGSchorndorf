@@ -25,7 +25,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Pflichteingaben prüfen
 	if (strlen($bezeichnung) == 0) {$fehler = true;}
-	if (($art != 's') && ($art != 'l') && ($art != 'e') && ($art != 'v')) {$fehler = true;}
+	if (($art != 's') && ($art != 'l') && ($art != 'e') && ($art != 'v') && ($art != 'x')) {$fehler = true;}
 	if (strlen($rechte) == 0) {$fehler = true;}
 	if ($id == '') {$fehler = true;}
 	// Administrator darf nicht verändert werden
