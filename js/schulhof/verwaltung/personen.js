@@ -276,7 +276,7 @@ function cms_schulhof_verwaltung_personen_rolle_vergeben(anschalten, rolle) {
 	formulardaten.append("anfragenziel", 	'126');
 
 	function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe == "ADMINFEHLER") {
+		if (rueckgabe.match(/ADMINFEHLER/)) {
 			cms_meldung_an('fehler', 'Rolle entfernen', '<p>Es muss immer einen Administrator geben. Diese Rolle darf nicht von allen Personen entfernt werden.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 		}
 		else if (rueckgabe == "ERFOLG") {

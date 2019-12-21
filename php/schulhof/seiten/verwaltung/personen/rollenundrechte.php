@@ -52,15 +52,17 @@ if (!$fehler) {
 	echo "<h3>Für $vorname $nachname verfügbare Rollen</h3>";
 
 	$rollencode = "";
-	$sql = "SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, rollen.id AS rolle FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = $id) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle WHERE personenart = AES_ENCRYPT('$personart', '$CMS_SCHLUESSEL')) AS rollen ORDER BY bezeichnung ASC";
+	$sql = $dbs->prepare("SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, rollen.id AS rolle FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = ?) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle WHERE personenart = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS rollen ORDER BY bezeichnung ASC");
+	$sql->bind_param("is", $id, $personart);
 
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-		while ($daten = $anfrage->fetch_assoc()) {
-			if ($daten['person'] == $id) {$rollencode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(0, ".$daten['rolle'].")\">".$daten['bezeichnung']."</span> ";}
-			else {$rollencode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(1, ".$daten['rolle'].")\">".$daten['bezeichnung']."</span> ";}
+	if ($sql->execute()) {
+		$sql->bind_result($pid, $rbez, $rid);
+		while ($sql->fetch()) {
+			if ($pid == $id) {$rollencode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(0, $rid)\">$rbez</span> ";}
+			else {$rollencode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(1, $rid)\">$rbez</span> ";}
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 
 	if ($rollencode == "") {
 		$rollencode = "<p class=\"cms_notiz\">Keine Rollen verfügbar</p>";
@@ -77,21 +79,22 @@ if (!$fehler) {
 	<?php
 
 	$rechtecode = "";
-	$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = $id))) AS rechte ORDER BY kategorie ASC, bezeichnung ASC";
+	$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = ?))) AS rechte ORDER BY kategorie ASC, bezeichnung ASC");
+	$sql->bind_param("i", $id);
 	$altekategorie = "";
-
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-		while ($daten = $anfrage->fetch_assoc()) {
-			if ($altekategorie != $daten['kategorie']) {
-				$rechtecode .= "</p><h4>".$daten['kategorie']."</h4><p>";
-				$altekategorie = $daten['kategorie'];
+	if ($sql->execute()) {
+		$sql->bind_result($rid, $rkat, $rbez);
+		while ($sql->fetch()) {
+			if ($altekategorie != $rkat) {
+				$rechtecode .= "</p><h4>$rkat</h4><p>";
+				$altekategorie = $rkat;
 			}
-			$rechtecode .= "<span class=\"cms_toggle_aktiv_fest\">".$daten['bezeichnung']."</span> ";
+			$rechtecode .= "<span class=\"cms_toggle_aktiv_fest\">$rbez</span> ";
 		}
 		$rechtecode .= "</p>";
-		$rechtecode = substr($rechtecode, 4);;
-		$anfrage->free();
+		$rechtecode = substr($rechtecode, 4);
 	}
+	$sql->close();
 
 	if ($rechtecode == "") {
 		$rechtecode = "<p class=\"cms_notiz\">Keine Rollen zugeordnet</p>";
@@ -109,23 +112,25 @@ if (!$fehler) {
 	echo "<h3>Zusätzliche verfügbare Rechte für $vorname $nachname</h3>";
 
 	$rechtecode = "";
-	$sql = "SELECT id AS recht, kategorie, bezeichnung, person FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id NOT IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = $id))) AS rechte LEFT JOIN (SELECT person, recht FROM rechtzuordnung WHERE person = $id) AS rechtzuordnung ON rechte.id = rechtzuordnung.recht ORDER BY kategorie ASC, bezeichnung ASC";
+	$sql = $dbs->prepare("SELECT id AS recht, kategorie, bezeichnung, person FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id NOT IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = ?))) AS rechte LEFT JOIN (SELECT person, recht FROM rechtzuordnung WHERE person = ?) AS rechtzuordnung ON rechte.id = rechtzuordnung.recht ORDER BY kategorie ASC, bezeichnung ASC");
+	$sql->bind_param("ii", $id, $id);
 
 	$altekategorie = "";
 
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-		while ($daten = $anfrage->fetch_assoc()) {
-			if ($altekategorie != $daten['kategorie']) {
-				$rechtecode .= "</p><h4>".$daten['kategorie']."</h4><p>";
-				$altekategorie = $daten['kategorie'];
+	if ($sql->execute()) {
+		$sql->bind_result($rid, $rkat, $rbez, $rpers);
+		while ($sql->fetch()) {
+			if ($altekategorie != $rkat) {
+				$rechtecode .= "</p><h4>$rkat</h4><p>";
+				$altekategorie = $rkat;
 			}
-			if ($daten['person'] == $id) {$rechtecode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_recht_vergeben(0, ".$daten['recht'].")\">".$daten['bezeichnung']."</span> ";}
-			else {$rechtecode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_recht_vergeben(1, ".$daten['recht'].")\">".$daten['bezeichnung']."</span> ";}
+			if ($rpers == $id) {$rechtecode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_recht_vergeben(0, $rid)\">$rbez</span> ";}
+			else {$rechtecode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_recht_vergeben(1, $rid)\">$rbez</span> ";}
 		}
 		$rechtecode .= "</p>";
-		$rechtecode = substr($rechtecode, 4);;
-		$anfrage->free();
+		$rechtecode = substr($rechtecode, 4);
 	}
+	$sql->close();
 
 	if ($rechtecode == "") {
 		$rechtecode = "<p class=\"cms_notiz\">Keine zusätzlichen Rechte verfügbar</p>";

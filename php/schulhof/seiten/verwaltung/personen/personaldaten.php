@@ -16,30 +16,11 @@ function cms_personaldaten_ausgeben($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL') AS benutzername, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, sessiontimeout, schuljahr, letzteanmeldung, vorletzteanmeldung, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id;";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_art = $daten['art'];
-				$profildaten_benutzername = $daten['benutzername'];
-				$profildaten_titel = $daten['titel'];
-				$profildaten_vorname = $daten['vorname'];
-				$profildaten_nachname = $daten['nachname'];
-				$profildaten_geschlecht = $daten['geschlecht'];
-				$profildaten_nutzerkonto = $daten['nutzerkonto'];
-				$profildaten_email = $daten['email'];
-				$profildaten_sessiontimeout = $daten['sessiontimeout'];
-				$profildaten_schuljahr = $daten['schuljahr'];
-				$profildaten_letzteanmeldung = $daten['letzteanmeldung'];
-				$profildaten_vorletzteanmeldung = $daten['vorletzteanmeldung'];
-
-				/*
-				$sql = "SELECT von, anonym FROM umarmungen WHERE an=$id";
-				$umarmungen_s = $dbs->query($sql);
-				$umarmungen = array();
-				while($daten = $umarmungen_s->fetch_assoc()) {
-					array_push($umarmungen, array("von" => $daten["von"], "anonym" => $daten["anonym"]));
-				}
-				*/
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL'), AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL'), sessiontimeout, schuljahr, letzteanmeldung, vorletzteanmeldung, nutzerkonten.id AS nutzerkonto, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerkuerzel FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id LEFT JOIN lehrer ON personen.id = lehrer.id WHERE personen.id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_art, $profildaten_benutzername, $profildaten_titel, $profildaten_vorname, $profildaten_nachname, $profildaten_geschlecht, $profildaten_email, $profildaten_sessiontimeout, $profildaten_schuljahr, $profildaten_letzteanmeldung, $profildaten_vorletzteanmeldung, $profildaten_nutzerkonto, $profildaten_lehrerkuerzel);
+			if ($sql->fetch()) {
 				$anzeigename = cms_generiere_anzeigename($profildaten_vorname, $profildaten_nachname, $profildaten_titel);
 
 				if ($profildaten_letzteanmeldung > 0) {
@@ -50,22 +31,9 @@ function cms_personaldaten_ausgeben($id) {
 					$vorletzteanzeige = (date("d.m.Y", $profildaten_vorletzteanmeldung))." um ".(date("H:i", $profildaten_vorletzteanmeldung))." Uhr";
 				}
 				else {$vorletzteanzeige = "Hat noch nicht stattgefunden";}
-
-
-				if ($profildaten_art == "l") {
-					$sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerkuerzel FROM lehrer WHERE id = $id;";
-					$anfrage2 = $dbs->query($sql);
-					if ($anfrage2) {
-						if ($daten2 = $anfrage2->fetch_assoc()) {
-							$profildaten_lehrerkuerzel = $daten2['lehrerkuerzel'];
-						}
-						else {$fehler = true;}
-					}
-
-				}
-				$anfrage->free();
 			}
 		}
+		$sql->close();
 
 		if ($fehler) {
 			echo cms_meldung_unbekannt();
@@ -256,15 +224,11 @@ function cms_personaldaten_ausgeben($id) {
 				$sjbezakt = "";
 				$sjakt = false;
 
-				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC";
-				$anfrage = $dbs->query($sql);	// Safe weil keine Eingabe
-
+				$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC");
 				$jetzt = time();
-
-				if ($anfrage) {
-					while ($daten = $anfrage->fetch_assoc()) {
-						$sjid = $daten['id'];
-						$sjbez = $daten['bezeichnung'];
+				if ($sql->execute()) {
+					$sql->bind_result($sjid, $sjbez, $sjbeginn, $sjende);
+					while ($sql->fetch()) {
 
 						$gewaehlt = "";
 						if ($sjid == $profildaten_schuljahr) {
@@ -273,7 +237,7 @@ function cms_personaldaten_ausgeben($id) {
 						}
 
 						// aktuelles Schuljahr ?
-						if (($daten['beginn'] <= $jetzt) && ($daten['ende'] >= $jetzt)) {
+						if (($sjbeginn <= $jetzt) && ($sjende >= $jetzt)) {
 							$sjbezakt = $sjbez;
 							if ($sjid == $profildaten_schuljahr) {
 								$sjakt = true;
@@ -289,8 +253,8 @@ function cms_personaldaten_ausgeben($id) {
 
 						$code .= "<span class=\"cms_toggle".$gewaehlt."\" onclick=\"".$einstellen."\">".$sjbez."</span> ";
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 
 
 				if (strlen($code) == 0) {
@@ -335,21 +299,18 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 		$fehler = false;
 
 		// BENUTZER LADEN
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, schuljahr FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id;";
-		$anfrage = $dbs->query($sql);	// TODO: Eingaben der Funktion prüfen
-
-		if ($anfrage) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$art = $daten['art'];
-				$schuljahr = $daten['schuljahr'];
-
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, schuljahr FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($art, $schuljahr);
+			if ($sql->fetch()) {
 				if (is_null($schuljahr)) {
 					$schuljahr = $CMS_BENUTZERSCHULJAHR;
 				}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
+		$sql->close();
 		cms_trennen($dbs);
 
 		if ($fehler) {
@@ -363,19 +324,21 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 			function cms_personaldaten_ansprechpartner_position ($dbs, $position, $schuljahr) {
 				global $CMS_SCHLUESSEL;
 				$code = "";
-				$sql = "SELECT * FROM (SELECT DISTINCT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, nutzerkonten.id AS nutzerkonto FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('$position', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
-				if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-					while ($daten = $anfrage->fetch_assoc()) {
-						$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-						if (!is_null($daten['nutzerkonto'])) {
-							$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\">$anzeigename</span></li> ";
+				$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, nutzerkonten.id AS nutzerkonto FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE schluesselposition.schuljahr = ? AND position = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname");
+				$sql->bind_param("is", $schuljahr, $position);
+				if ($sql->execute()) {
+					$sql->bind_result($pid, $pvor, $pnach, $ptit, $pnutzerkonto);
+					while ($sql->fetch()) {
+						$anzeigename = cms_generiere_anzeigename($pvor, $pnach, $ptit);
+						if (!is_null($pnutzerkonto)) {
+							$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $pid, 'p')\">$anzeigename</span></li> ";
 						}
 						else {
 							$code  .= "<span class=\"cms_button_passiv\" onclick=\"cms_schulhof_kein_nutzerkonto('$anzeigename')\">$anzeigename</span> ";
 						}
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 				return $code;
 			}
 
@@ -412,17 +375,16 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 				if ($art == 's') {
 					// ELTERN
 					$eltern = "";
-					$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = $id) AS personen ORDER BY nachname, vorname";
-					if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-						while ($daten = $anfrage->fetch_assoc()) {
-							$anzeigename = $daten['vorname']." ".$daten['nachname'];
-							if (strlen($daten['titel']) > 0) {
-								$anzeigename = $daten['titel']." ".$anzeigename;
-							}
-							$eltern .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\">$anzeigename</span></li> ";
+					$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ?) AS personen ORDER BY nachname, vorname");
+					$sql->bind_param("i", $id);
+					if ($sql->execute()) {
+						$sql->bind_result($eid, $evor, $enach, $etit);
+						while ($sql->fetch()) {
+							$anzeigename = cms_generiere_anzeigename($evor, $enach, $etit);
+							$eltern .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $eid, 'p')\">$anzeigename</span></li> ";
 						}
-						$anfrage->free();
 					}
+					$sql->execute();
 					if (strlen($eltern) > 0) {$eltern = "<h3>Eltern</h3><ul class=\"cms_aktionen_liste\">".$eltern."</ul>";}
 					$code .= $eltern;
 					$code .= $standard;
@@ -430,17 +392,16 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 				else if ($art == 'e') {
 					// Kinder
 					$kinder = "";
-					$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = $id) AS personen ORDER BY nachname, vorname";
-					if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-						while ($daten = $anfrage->fetch_assoc()) {
-							$anzeigename = $daten['vorname']." ".$daten['nachname'];
-							if (strlen($daten['titel']) > 0) {
-								$anzeigename = $daten['titel']." ".$anzeigename;
-							}
-							$kinder .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\">$anzeigename</span></li> ";
+					$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = ?) AS personen ORDER BY nachname, vorname");
+					$sql->bind_param("i", $id);
+					if ($sql->execute()) {
+						$sql->bind_result($kid, $kvor, $knach, $ktit);
+						while ($sql->fetch()) {
+							$anzeigename = cms_generiere_anzeigename($kvor, $knach, $ktit);
+							$kinder .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $kid, 'p')\">$anzeigename</span></li> ";
 						}
-						$anfrage->free();
 					}
+					$sql->close();
 					if (strlen($kinder) > 0) {$kinder = "<h3>Kinder</h3><ul class=\"cms_aktionen_liste\">".$kinder."</ul>";}
 					$code .= $kinder;
 					$code .= $standard;

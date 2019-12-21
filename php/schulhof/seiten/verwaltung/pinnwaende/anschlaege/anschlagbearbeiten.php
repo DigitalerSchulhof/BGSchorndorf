@@ -56,7 +56,7 @@ if ($angemeldet) {
 		}
 	}
 	else {
-		cms_fehler('Schulhof', '404');
+		$code .= cms_meldung_fehler();
 	}
 }
 else {
