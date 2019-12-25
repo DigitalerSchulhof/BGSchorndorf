@@ -1,62 +1,29 @@
 <div class="cms_spalte_i">
 	<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 	<?php
-		if (r("schulhof.verwaltung.rechte.rollen.zuordnen || schulhof.verwaltung.rechte.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
+		if (r("schulhof.verwaltung.rechte.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
 	?>
 
 <h1>Rollen</h1>
 
 	<table class="cms_liste">
 		<thead>
-			<tr><th></th><th>Bezeichnung</th><th>Rechte</th><th>Personen</th><th>Aktionen</th></tr>
+			<tr><th></th><th>Bezeichnung</th><th>Personen</th><th>Aktionen</th></tr>
 		</thead>
 		<tbody>
 		<?php
 		// Alle Rollen ausgeben
 		$dbs = cms_verbinden('s');
-		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(personenart, '$CMS_SCHLUESSEL') AS personenart FROM rollen) AS rollen ORDER BY bezeichnung ASC";
+		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rollen) AS rollen ORDER BY id ASC";
 		$ausgabe = "";
 		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine ID
 			while ($daten = $anfrage->fetch_assoc()) {
 				$ausgabe .= "<tr>";
-					//icon
 					$icon = "";
-					if ($daten['personenart'] == 'l') {$icon = '<span class="cms_icon_klein_o"><span class="cms_hinweis">Lehrer</span><img src="res/icons/klein/lehrer.png"></span>';}
-					else if ($daten['personenart'] == 's') {$icon = '<span class="cms_icon_klein_o"><span class="cms_hinweis">Schüler</span><img src="res/icons/klein/schueler.png"></span>';}
-					else if ($daten['personenart'] == 'e') {$icon = '<span class="cms_icon_klein_o"><span class="cms_hinweis">Eltern</span><img src="res/icons/klein/elter.png"></span>';}
-					else if ($daten['personenart'] == 'v') {$icon = '<span class="cms_icon_klein_o"><span class="cms_hinweis">Verwaltung</span><img src="res/icons/klein/verwaltung.png"></span>';}
-					$ausgabe .= "<td><span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/rollen.png\"></span> ".$icon."</td>";
+					if($daten["id"] == 0)
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/code_xml.png\"></span>";
+					$ausgabe .= "<td><span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/rollen.png\"></span>$icon</td>";
 					$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
-					$kategorien = "";
-					$rechtezahl = 0;
-					$kategorienzahl = 0;
-					if ($daten['id'] != 0) {
-						$sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie FROM rechte, rollenrechte WHERE rechte.id = rollenrechte.recht AND rolle = ".$daten['id'].") AS rechte ORDER BY kategorie ASC";
-						if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
-							while ($daten2 = $anfrage2->fetch_assoc()) {
-								$kategorien .= $daten2['kategorie'].", ";
-								$kategorienzahl ++;
-							}
-							$anfrage2->free();
-						}
-						$kategorien = substr($kategorien, 0, -2);
-						$sql = "SELECT COUNT(*) as anzahl FROM rechte, rollenrechte WHERE rechte.id = rollenrechte.recht AND rolle = ".$daten['id']."";
-						if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
-							if ($daten2 = $anfrage2->fetch_assoc()) {
-								$rechtezahl = $daten2['anzahl'];
-							}
-							$anfrage2->free();
-						}
-
-						if ($rechtezahl > 1) {$rechtezahl .= " Rechte aus ";}
-						else {$rechtezahl .= " Recht aus ";}
-
-						if ($kategorienzahl > 1) {$kategorien = $rechtezahl."den Kategorien ".$kategorien;}
-						else {$kategorien = $rechtezahl."der Kategorie ".$kategorien;}
-					}
-					else {$kategorien = "alle";}
-
-					$ausgabe .= "<td>".$kategorien."</td>";
 
 					// Personen mit dieser Rolle suchen
 					$sql = "SELECT vorname, nachname, titel FROM (SELECT DISTINCT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen JOIN rollenzuordnung ON personen.id = rollenzuordnung.person WHERE rolle = ".$daten['id'].") AS personen ORDER BY nachname, vorname";
@@ -74,7 +41,7 @@
 					if ($personen != "") {
 						$ausgabe .= "<td>".(substr($personen, 2))."</td>";
 					}
-					else {$ausgabe .= "<td>nicht zugeordnet</td>";}
+					else {$ausgabe .= "<td>Nicht zugeordnet</td>";}
 
 					// Aktionen
 					$ausgabe .= "<td>";
@@ -95,7 +62,7 @@
 		}
 
 		if ($ausgabe == "") {
-			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";
+			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"4\">- keine Datensätze gefunden -</td></tr>";
 		}
 
 		echo $ausgabe;

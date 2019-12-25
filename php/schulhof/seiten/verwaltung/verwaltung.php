@@ -1,11 +1,8 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
-
 <h1>Der Verwaltungsbereich</h1>
-
-</div>
-
 <?php
+$ausgabe = "";
 // PERSONEN UND GRUPPEN
 $code = "";
 if (r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen || schulhof.verwaltung.personen.daten")) {
@@ -122,11 +119,11 @@ if (r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
 }
 
 if ($code) {
-	echo "<div class=\"cms_spalte_4\">";
-		echo "<div class=\"cms_spalte_i\">";
-			echo "<h2>Personen und Gruppen</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-		echo "</div>";
-	echo "</div>";
+	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+		$ausgabe .=  "<div class=\"cms_spalte_i\">";
+			$ausgabe .=  "<h2>Personen und Gruppen</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+		$ausgabe .=  "</div>";
+	$ausgabe .=  "</div>";
 }
 
 // PLANUNG
@@ -139,11 +136,11 @@ if (r("schulhof.planung.schuljahre.fabrik")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.*")) {	// TODO: Recht + Beschreibung
+if (r("schulhof.planung.schuljahre.planungszeiträume.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_zeitraeume\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
 			$code .=  "<h3>Stundenplanzeiträume</h3>";
-			$code .=  "<p>Für einzelne Schuljahre Planungszeiträume anlegen, bearbeiten und löschen.</p>";
+			$code .=  "<p>Für einzelne Schuljahre Planungszeiträume ".aufzaehlen(array("anlegen" => r("schulhof.planung.schuljahre.planungszeiträume.anlegen"), "bearbeiten" => r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten"), "löschen" => r("schulhof.planung.schuljahre.planungszeiträume.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -155,7 +152,7 @@ if (r("schulhof.planung.schuljahre.fächer.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.planung.schuljahre.profile.*")) {	// TODO: Beschreibung
+if (r("schulhof.planung.schuljahre.profile.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_profile\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
 			$code .=  "<h3>Profile</h3>";
@@ -163,7 +160,7 @@ if (r("schulhof.planung.schuljahre.profile.*")) {	// TODO: Beschreibung
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {	// TODO: Recht + Beschreibung
+if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_schienen\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR)\">";
 			$code .=  "<h3>Schienen</h3>";
@@ -171,7 +168,7 @@ if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schien
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
+if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenplanung\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
 			$code .=  "<h3>Stundenplanung</h3>";
@@ -179,11 +176,11 @@ if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.planung.schuljahre.stundentagebücher.*")) {	// TODO: Recht + Beschreibung
+if (r("schulhof.planung.schuljahre.stundentagebücher.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_stundenerzeugen\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">";
 			$code .=  "<h3>Stunden und Tagebücher erzeugen</h3>";
-			$code .=  "<p>Erzeugt aus den Regelstunden Unterrichtsstunden für die einzelnen Unterrichtstage unter Berücksichtigung der angelegten Rythmen und Ferien.</p>";
+			$code .=  "<p>Aus den Regelstunden Unterrichtsstunden für die einzelnen Unterrichtstage unter Berücksichtigung der angelegten Rythmen und Ferien erzeugen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -205,11 +202,11 @@ if (r("schulhof.planung.vertretungsplan.ausplanungen")) {
 }
 
 if ($code) {
-	echo "<div class=\"cms_spalte_4\">";
-		echo "<div class=\"cms_spalte_i\">";
-			echo "<h2>Planung</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-		echo "</div>";
-	echo "</div>";
+	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+		$ausgabe .=  "<div class=\"cms_spalte_i\">";
+			$ausgabe .=  "<h2>Planung</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+		$ausgabe .=  "</div>";
+	$ausgabe .=  "</div>";
 }
 
 // ORGANISATION
@@ -222,7 +219,6 @@ if (r("schulhof.planung.schuljahre.anlegen || schulhof.planung.schuljahre.bearbe
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-
 if (r("schulhof.planung.räume.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_raeume\" href=\"Schulhof/Verwaltung/Räume\">";
@@ -297,11 +293,11 @@ if (r("schulhof.information.pinnwände.*")) {
 }
 
 if ($code) {
-	echo "<div class=\"cms_spalte_4\">";
-		echo "<div class=\"cms_spalte_i\">";
-			echo "<h2>Organisation</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-		echo "</div>";
-	echo "</div>";
+	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+		$ausgabe .=  "<div class=\"cms_spalte_i\">";
+			$ausgabe .=  "<h2>Organisation</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+		$ausgabe .=  "</div>";
+	$ausgabe .=  "</div>";
 }
 
 // WEBSITE
@@ -342,7 +338,7 @@ if (r("artikel.öffentlich.blogeinträge.* || website.freigeben")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_blog\" href=\"Schulhof/Website/Blogeinträge\">";
 			$code .=  "<h3>Blogeinträge</h3>";
-			$code .=  "<p>Blogeinträge ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.blogeinträge.anlegen"), "bearbeiten" => r("artikel.öffentlich.blogeinträge.bearbeiten"), "löschen" => r("artikel.öffentlich.blogeinträge.löschen"), "löschen" => r("website.freigeben"))).".</p>";
+			$code .=  "<p>Blogeinträge ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.blogeinträge.anlegen"), "bearbeiten" => r("artikel.öffentlich.blogeinträge.bearbeiten"), "löschen" => r("artikel.öffentlich.blogeinträge.löschen"), "freigeben" => r("website.freigeben"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -350,7 +346,7 @@ if (r("artikel.öffentlich.galerien.* || website.freigeben")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_galerien\" href=\"Schulhof/Website/Galerien\">";
 			$code .=  "<h3>Galerien</h3>";
-			$code .=  "<p>Galerien ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.galerien.anlegen"), "bearbeiten" => r("artikel.öffentlich.galerien.bearbeiten"), "löschen" => r("artikel.öffentlich.galerien.löschen"), "löschen" => r("website.freigeben"))).".</p>";
+			$code .=  "<p>Galerien ".aufzaehlen(array("anlegen" => r("artikel.öffentlich.galerien.anlegen"), "bearbeiten" => r("artikel.öffentlich.galerien.bearbeiten"), "löschen" => r("artikel.öffentlich.galerien.löschen"), "freigeben" => r("website.freigeben"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -358,24 +354,30 @@ if (r("website.titelbilder.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_titelbilder\" href=\"Schulhof/Website/Titelbilder\">";
 			$code .=  "<h3>Titelbilder</h3>";
-			$code .=  "<p>Titelbilder ".aufzaehlen(array("hochladen" => r("website.titelbilder.hochladen"), "umbenennen" => r("website.titelbilder.umbenennen"), "löschen" => r("website.titelbilder.löschen")))."</p>";
+			$code .=  "<p>Titelbilder ".aufzaehlen(array("hochladen" => r("website.titelbilder.hochladen"), "umbenennen" => r("website.titelbilder.umbenennen"), "löschen" => r("website.titelbilder.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Auszeichnungen anlegen'] || $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] || $CMS_RECHTE['Website']['Auszeichnungen löschen']) {	// TODO: Recht + Beschreibung
+if (r("website.auszeichnungen.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auszeichnungen\" href=\"Schulhof/Website/Auszeichnungen\">";
 			$code .=  "<h3>Auszeichnungen</h3>";
-			$code .=  "<p>Auszeichnungen anlegen, bearbeiten, löschen.</p>";
+			$code .=  "<p>Auszeichnungen ".aufzaehlen(array("anlegen" => r("website.auszeichnungen.anlegen"), "bearbeiten" => r("website.auszeichnungen.bearbeiten"), "löschen" => r("website.auszeichnungen.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
-	$tabzahl++;
 }
 if (r("statistik.besucher.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_besucherstatistik\" href=\"Schulhof/Website/Besucherstatistiken\">";
 			$code .=  "<h3>Besucherstatistiken</h3>";
-			$code .=  "<p>".aufzaehlen('Besucherstatistiken $ sehen. ', array("der Website" => r("statistik.besucher.website.*"), "des Schulhof" => r("statistik.besucher.schulhof.sehen"))).(r("statistik.besucher.schulhof.anteile.*")?"Besucheranteile sehen.":"")."</p>";
+			$code .=  "<p>".aufzaehlen(
+				'Besucherstatistiken $ sehen. ',
+				array(
+					"der Website" => r("statistik.besucher.website.*"),
+					"des Schulhof" => r("statistik.besucher.schulhof.sehen")
+				)).(
+					r("statistik.besucher.schulhof.anteile.*")?"Besucheranteile sehen.":""
+				)."</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -411,22 +413,21 @@ if (r("*") && false) {	// TODO: Recht
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE["Newsletter bearbeiten"]) {
+if (r("schulhof.information.newsletter.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">";
 			$code .=  "<h3>Newsletter</h3>";
 			$code .=  "<p>Newsletter und Mailinglisten verwalten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
-	$tabzahl++;
 }
 
 if ($code) {
-	echo "<div class=\"cms_spalte_4\">";
-		echo "<div class=\"cms_spalte_i\">";
-			echo "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-		echo "</div>";
-	echo "</div>";
+	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+		$ausgabe .=  "<div class=\"cms_spalte_i\">";
+			$ausgabe .=  "<h2>Website</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+		$ausgabe .=  "</div>";
+	$ausgabe .=  "</div>";
 }
 
 // TECHNIK
@@ -457,11 +458,11 @@ if (r("technik.haustechnik")) {
 }
 
 if ($code) {
-	echo "<div class=\"cms_spalte_4\">";
-		echo "<div class=\"cms_spalte_i\">";
-			echo "<h2>Technik</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-		echo "</div>";
-	echo "</div>";
+	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+		$ausgabe .=  "<div class=\"cms_spalte_i\">";
+			$ausgabe .=  "<h2>Technik</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+		$ausgabe .=  "</div>";
+	$ausgabe .=  "</div>";
 }
 
 // ADMINISTRATION
@@ -508,12 +509,20 @@ if (r("schulhof.verwaltung.schule.adressen || schulhof.verwaltung.schule.mail"))
 }
 
 if ($code) {
-	echo "<div class=\"cms_spalte_4\">";
-		echo "<div class=\"cms_spalte_i\">";
-			echo "<h2>Administration</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
-		echo "</div>";
-	echo "</div>";
+	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+		$ausgabe .=  "<div class=\"cms_spalte_i\">";
+			$ausgabe .=  "<h2>Administration</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
+		$ausgabe .=  "</div>";
+	$ausgabe .=  "</div>";
 }
+
+if($ausgabe) {
+	echo "</div>";
+	echo $ausgabe;
+} else {
+	echo cms_meldung_berechtigung()."</div>";
+}
+
 ?>
 
 <!-- <p class="cms_notiz">In Planung</p>

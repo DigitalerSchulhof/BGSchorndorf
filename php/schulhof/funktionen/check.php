@@ -183,122 +183,22 @@ function cms_angemeldet () {
   return $angemeldet;
 }
 
-include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");	// TODO: Rem
+include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");
 
 function cms_rechte_laden($aktiverbenutzer = '-') {
-	global $CMS_SCHLUESSEL;
+	global $CMS_SCHLUESSEL, $CMS_RECHTE;
 	cms_allerechte_laden();
 
 	cms_rechte_laden_nutzer($aktiverbenutzer);
 	cms_rechte_laden_rollen($aktiverbenutzer);
-	// Verbindung zur Datenbank herstellen
-	$BENUTZERIDTEST = "-";
-	$BENUTZERARTTEST = "-";
-	if (isset($_SESSION['BENUTZERID'])) {$BENUTZERIDTEST = $_SESSION['BENUTZERID'];}
-	if ($aktiverbenutzer == '-') {$aktiverbenutzer = $BENUTZERIDTEST;}
-
-	$dbs = cms_verbinden('s');
-
+	$dbs = cms_verbinden("s");
 	$sql = $dbs->prepare("SELECT 2 AS wert, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte");
-  if ($sql->execute()) {
-    $sql->bind_result($wert, $kategorie, $bezeichnung);
-    while($sql->fetch()) {
-			if ($wert == $aktiverbenutzer) {$CMS_RECHTE[$kategorie][$bezeichnung] = true;}
-			else {$CMS_RECHTE[$kategorie][$bezeichnung] = false;}
-    }
-  }
-  $sql->close();
-
-	$CMS_BENUTZERART = "";
-
-	if (isset($_SESSION['BENUTZERART'])) {$BENUTZERARTTEST = $_SESSION['BENUTZERART'];}
-
-	// Benutzerart des gewählten Benutzers laden - falls eigene
-	if ($aktiverbenutzer == $BENUTZERIDTEST) {
-		$CMS_BENUTZERART = $BENUTZERARTTEST;
-	}
-	// Benutzerart des gewählten Benutzers laden - falls fremde
-	else {
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?;");
-	  $sql->bind_param("i", $aktiverbenutzer);
-	  if ($sql->execute()) {
-	    $sql->bind_result($CMS_BENUTZERART);
-	    $sql->fetch();
-	  }
-	  $sql->close();
-	}
-
-	// Rechte nach Benutzerart ändern
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-	if ($CMS_BENUTZERART != "") {
-		if ($CMS_BENUTZERART == 's') {
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-		}
-		else if ($CMS_BENUTZERART == 'e') {
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-		}
-		else if ($CMS_BENUTZERART == 'l') {
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen sehen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
-			$CMS_RECHTE['Personen']['Personen sehen'] = true;
-			$CMS_RECHTE['Zugriffe']['Lehrernetz'] = true;
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Räume sehen'] = true;
-			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
-			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
-		}
-		else if ($CMS_BENUTZERART == 'v') {
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen sehen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
-			$CMS_RECHTE['Personen']['Personen sehen'] = true;
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Räume sehen'] = true;
-			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'] = true;
-			$CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] = true;
-		}
-		else if ($CMS_BENUTZERART == 'x') {
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
+	if ($sql->execute()) {
+		$sql->bind_result($wert, $kategorie, $bezeichnung);
+		while($sql->fetch()) {
+			$CMS_RECHTE[$kategorie][$bezeichnung] = true;
 		}
 	}
-
-	// Rechte nach Einstellungen überschreiben
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-
-	cms_trennen($dbs);
 
 	return $CMS_RECHTE;
 }
@@ -735,12 +635,23 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
   return false;
 }
 
-function postLesen($feld, $nullfehler = true) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
+function postLesen(...$felder) {
+	$n = $felder[count($felder)-1];
+	if($n === true || $n === false)
+		$nullfehler = array_pop($felder);
+	else
+		$nullfehler = true;
+
+	if(is_array($felder[0]))
+		$felder = $felder[0];
+
+	if(count($felder) > 1) {
+		foreach($felder as $i => $f)
 			postLesen($f, $nullfehler);
 		return;
 	}
+
+	$feld = $felder[0];
 	global $$feld;
 
 	if(isset($_POST[$feld]))
@@ -750,12 +661,23 @@ function postLesen($feld, $nullfehler = true) {
 			die("FEHLER");
 }
 
-function getLesen($feld, $nullfehler = true) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
+function getLesen(...$felder) {
+	$n = $felder[count($felder)-1];
+	if($n === true || $n === false)
+		$nullfehler = array_pop($felder);
+	else
+		$nullfehler = true;
+
+	if(is_array($felder[0]))
+		$felder = $felder[0];
+
+	if(count($felder) > 1) {
+		foreach($felder as $i => $f)
 			getLesen($f, $nullfehler);
 		return;
 	}
+
+	$feld = $felder[0];
 	global $$feld;
 
 	if(isset($_GET[$feld]))

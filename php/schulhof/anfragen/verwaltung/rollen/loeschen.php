@@ -11,9 +11,8 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 
 $CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Rollen löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.verwaltung.rechte.rollen.löschen")) {
 	$fehler = false;
 
 	// Die Rolle Administrator darf nicht gelöscht werden.

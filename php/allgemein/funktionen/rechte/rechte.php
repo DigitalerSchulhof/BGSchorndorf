@@ -30,7 +30,7 @@
         } else {
           if(@$aktuellerPfad[$pfadWert] === true) // Schon gesetzt, »@« um nicht isset Check
             break;
-          $aktuellerPfad[$pfadWert] = array();
+          $aktuellerPfad[$pfadWert] = $aktuellerPfad[$pfadWert] ?? array();
         }
         $aktuellerPfad = &$aktuellerPfad[$pfadWert];
       }
@@ -94,7 +94,7 @@
       return true;
 
     if($rechteCode === "*")
-      if(count($cms_nutzerrechte))
+      if($cms_nutzerrechte === true || count($cms_nutzerrechte))
         return true;
       else
         return false;

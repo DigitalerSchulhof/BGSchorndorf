@@ -400,6 +400,10 @@ website:
       anlegen: Newsletter anlegen
       bearbeiten: Newsletter bearbeiten
       löschen: Newsletter löschen
+  auszeichnungen:
+    anlegen: Auszeichnungen anlegen
+    bearbeiten: Auszeichnungen bearbeiten
+    löschen: Auszeichnungen löschen
 artikel:
   genehmigen:
     blogeinträge: Blogeinträge genehmigen

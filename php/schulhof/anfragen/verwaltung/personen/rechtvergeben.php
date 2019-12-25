@@ -14,6 +14,7 @@ cms_rechte_laden();
 if (cms_angemeldet() && r("schulhof.verwaltung.rechte.zuordnen")) {
 	$fehler = false;
 	$rechte = explode(",", $rechte);
+
 	if (!isset($_SESSION['PERSONENDETAILS'])) {
 		die("FEHLER");
 	}
@@ -26,6 +27,9 @@ if (cms_angemeldet() && r("schulhof.verwaltung.rechte.zuordnen")) {
 	$sql = $dbs->prepare("DELETE FROM rechtezuordnung WHERE person = ?");
   $sql->bind_param("i", $person);
 	$sql->execute();
+
+	if(!count($rechte) || $rechte[0] == "")
+		die("ERFOLG");
 
 	$sql = "INSERT INTO rechtezuordnung (`person`, `recht`) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'))";
 	$sql = $dbs->prepare($sql);

@@ -4,50 +4,86 @@ $(document).ready(function() {
     $(this).siblings(".cms_rechtekinder").slideToggle("slow");
   });
   $("#cms_rechtepapa>.cms_recht>.icon").removeClass("icon");
-  $(".cms_recht_beschreibung").click(function() {
-    var r = $(this).parent(".cms_recht:not(.cms_recht_rolle)");
-    if(!r.length)
-      return;
-    if(r.hasClass("cms_recht_aktiv")) {
-      // Recht wegnehmen
-
-      // Allen Eltern nehmen
-      r.parents(".cms_recht_aktiv").find(">.cms_recht_aktiv").removeClass("cms_recht_aktiv");
-      r.parents(".cms_recht_aktiv").removeClass("cms_recht_aktiv");
-      // Allen Kindern und selbst nehmen
-      r.find(".cms_recht_aktiv").removeClass("cms_recht_aktiv");
-      r.removeClass("cms_recht_aktiv");
-    } else {
-      // Recht geben
-
-      // Allen Kindern geben
-      r.find(".cms_recht:not(.cms_recht_rolle)").addClass("cms_recht_aktiv");
-      r.addClass("cms_recht_aktiv");
-
-      // Prüfen ob alle Geschwister
-      var rekgeben = function(r) {
-        // Prüfen ob alle Geschwister aktiv sind
-        var p = r.parent().closest(".cms_recht");
-        if(!p.length)
-          return;
-        if(p.find(".cms_recht").length == p.find(".cms_recht_aktiv").length) {
-          p.addClass("cms_recht_aktiv");
-          rekgeben(p);
-        }
-      };
-      rekgeben(r);
-    }
-  });
 });
 
-function cms_rechte_speichern() {
+function cms_recht_vergeben_rolle(dis) {
+  var r = $(dis).parent().parent(".cms_recht");
+  if(!r.length)
+    return;
+  if(r.hasClass("cms_recht_rolle")) {
+    // Recht wegnehmen
+
+    // Allen Eltern nehmen
+    r.parents(".cms_recht_rolle").find(">.cms_recht_rolle").removeClass("cms_recht_rolle");
+    r.parents(".cms_recht_rolle").removeClass("cms_recht_rolle");
+    // Allen Kindern und selbst nehmen
+    r.find(".cms_recht_rolle").removeClass("cms_recht_rolle");
+    r.removeClass("cms_recht_rolle");
+  } else {
+    // Recht geben
+
+    // Allen Kindern geben
+    r.find(".cms_recht:not(.cms_recht_rolle)").addClass("cms_recht_rolle");
+    r.addClass("cms_recht_rolle");
+
+    // Prüfen ob alle Geschwister
+    var rekgeben = function(r) {
+      // Prüfen ob alle Geschwister vergeben sind sind
+      var p = r.parent().closest(".cms_recht");
+      if(!p.length)
+        return;
+      if(p.find(".cms_recht").length == p.find(".cms_recht_rolle").length + p.find("cms_recht_rolle").length) {
+        p.addClass("cms_recht_rolle");
+        rekgeben(p);
+      }
+    };
+    rekgeben(r);
+  }
+}
+
+function cms_recht_vergeben_nutzer(dis) {
+  var r = $(dis).parent().parent(".cms_recht:not(.cms_recht_rolle)");
+  if(!r.length)
+    return;
+  if(r.hasClass("cms_recht_nutzer")) {
+    // Recht wegnehmen
+
+    // Allen Eltern nehmen
+    r.parents(".cms_recht_nutzer").find(">.cms_recht_nutzer").removeClass("cms_recht_nutzer");
+    r.parents(".cms_recht_nutzer").removeClass("cms_recht_nutzer");
+    // Allen Kindern und selbst nehmen
+    r.find(".cms_recht_nutzer").removeClass("cms_recht_nutzer");
+    r.removeClass("cms_recht_nutzer");
+  } else {
+    // Recht geben
+
+    // Allen Kindern geben
+    r.find(".cms_recht:not(.cms_recht_rolle)").addClass("cms_recht_nutzer");
+    r.addClass("cms_recht_nutzer");
+
+    // Prüfen ob alle Geschwister
+    var rekgeben = function(r) {
+      // Prüfen ob alle Geschwister vergeben sind sind
+      var p = r.parent().closest(".cms_recht");
+      if(!p.length)
+        return;
+      if(p.find(".cms_recht").length == p.find(".cms_recht_nutzer").length + p.find("cms_recht_rolle").length) {
+        p.addClass("cms_recht_nutzer");
+        rekgeben(p);
+      }
+    };
+    rekgeben(r);
+  }
+}
+
+function cms_rechte_speichern_nutzer() {
   var rechte = [];
   var rekpruefen = function(e, pfad) {
     if(!e.length)
       return;
     e.each(function() {
       e = $(this);
-      if(e.is(".cms_recht_aktiv"))
+      if(e.is(".cms_recht_nutzer"))
         rechte.push((pfad+"."+e.data("knoten")+(e.is(".cms_hat_kinder")?".*":"")).substr(2));
       else
         if(e.is(".cms_hat_kinder"))

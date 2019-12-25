@@ -3,8 +3,7 @@
 
 <h1>Neue Rolle anlegen</h1>
 <?php
-$zugriff = $CMS_RECHTE['Personen']['Rollen anlegen'];
-if ($zugriff) {
+if (r("schulhof.verwaltung.rechte.rollen.erstellen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/rollen/rollendetails.php');
 
