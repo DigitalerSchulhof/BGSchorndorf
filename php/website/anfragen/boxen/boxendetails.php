@@ -23,8 +23,7 @@ $zugriff = false;
 if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
 else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
 
-if(!cms_check_ganzzahl($id))
-  die("FEHLER");
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 if (($zugriff) && ($angemeldet)) {
   $fehler = false;

@@ -16,6 +16,8 @@ $dbs = cms_verbinden("s");
 $CMS_RECHTE = cms_rechte_laden();
 $angemeldet = cms_angemeldet();
 
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
+
 $zugriff = false;
 
 if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
