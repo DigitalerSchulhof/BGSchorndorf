@@ -23,7 +23,7 @@ function cms_bedingt_bedingung_syntax_pruefen($bedingung) {
     $bedingung[] = $v;
 
   // Gültigkeit prüfen
-  $matches   = preg_grep('/^(?:\(|\)|zeit|(?:nutzer\.(?:id|vorname|nachname|titel|art|imln|hatRolle|hatRecht))|!=|==|&&|\|\||\d+|(?:"[\-0-9a-zäöüßáàâéèêíìîïóòôúùûçøæœå.* ]+")|<|>)$/mi', $bedingung);
+  $matches   = preg_grep('/^(?:\(|\)|zeit|(?:nutzer\.(?:id|vorname|nachname|titel|art|imln|hatRolle))|!=|==|&&|\|\||\d+|(?:"[\-0-9a-zäöüßáàâéèêíìîïóòôúùûçøæœå.* ]+")|<|>)$/mi', $bedingung);
   if(count($matches) != count($bedingung))
     return false;
 
@@ -95,7 +95,7 @@ function cms_bedingt_bedingung_syntax_pruefen($bedingung) {
       continue;
     }
 
-    if(preg_match('/^(?:nutzer\.(?:hatRolle|hatRecht))$/mi', $b)) {
+    if(preg_match('/^(?:nutzer\.(?:hatRolle))$/mi', $b)) {
       $p1 = $bedingung[$i+1] ?? null;
       $p2 = $bedingung[$i+2] ?? null;
       $p3 = $bedingung[$i+3] ?? null;
@@ -105,14 +105,6 @@ function cms_bedingt_bedingung_syntax_pruefen($bedingung) {
 
       if($p1 != "(" || $p3 != ")") {
         return false;
-      }
-
-      if($b == "nutzer.hatRecht") {
-        if(!preg_match('/(?:[a-zäöüß*.]+)$/mi', $p2)) {
-          return false;  // Zu Vergleichend ungültig
-        }
-
-        $i += 3;
       }
 
       if($b == "nutzer.hatRolle") {

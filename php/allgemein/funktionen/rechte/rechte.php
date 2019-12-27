@@ -273,24 +273,9 @@
           $bedingung[$i+2] = "";
           $bedingung[$i+3] = "";
         }
-
-        if($v == "nutzer.hatRecht") {
-          $recht = $bedingung[$i+2];
-
-          if(cms_hat_recht($recht)) {
-            $v = "1";
-          } else {
-            $v = "0";
-          }
-
-          $bedingung[$i+1] = "";  // Klammern und Argument beseitigen
-          $bedingung[$i+2] = "";
-          $bedingung[$i+3] = "";
-        }
-
         $bedingung[$i] = $v;
       }
-
+      
       $b         = array_diff($bedingung, array(""));
       $bedingung = array();
 

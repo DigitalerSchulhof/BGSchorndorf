@@ -20,7 +20,9 @@ function cms_bedingt_recht(dis) {
 
   var add = $("<tr><td><input class=\"cms_bedingt_recht_recht\" type=\"hidden\" value=\""+recht+"\">"+recht+"</td><td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this)\" class=\"cms_bedingt_recht_bedingung\" type=\"text\"></td><td><span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_bedingt_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> <span style=\"display: none\" class=\"cms_syntax_ok cms_aktion_klein cms_button_ja\"><span class=\"cms_hinweis\">Syntax ist in Ordnung</span><img src=\"res/icons/klein/richtig.png\"></span><span class=\"cms_syntax_fehler cms_aktion_klein cms_button_nein\"><span class=\"cms_hinweis\">Syntaxfehler!</span><img src=\"res/icons/klein/falsch.png\"></span></td></tr>");
 
-  cms_bedingt_gui_optionen(add.find(".cms_bedingt_recht_bedingung").parent("td"));
+  var gui = add.find(".cms_bedingt_recht_bedingung").parent("td").append("<div class=\"cms_bedingt_bedingung_gui\"></div>").find(".cms_bedingt_bedingung_gui");
+
+  cms_bedingt_gui_optionen(gui);
 
   $("#cms_bedingte_rechte tbody").append(add);
 }
@@ -151,6 +153,8 @@ function cms_bedingt_gui_logisch_oder(dis) {
   box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld_2\"></div>")));
 
   dis.replaceWith(box);
+
+  cms_bedingt_gui_zu_string(box);
 }
 
 function cms_bedingt_gui_logisch_und(dis) {
@@ -166,6 +170,8 @@ function cms_bedingt_gui_logisch_und(dis) {
   box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld_2\"></div>")));
 
   dis.replaceWith(box);
+
+  cms_bedingt_gui_zu_string(box);
 }
 
 function cms_bedingt_gui_bedingung(dis) {
@@ -173,7 +179,7 @@ function cms_bedingt_gui_bedingung(dis) {
 
   var box = $("<div class=\"cms_bedingt_gui_bedingung\"></div>");
 
-  var kriterium = $("<select class=\"cms_bedingt_gui_bedingung_kriterium cms_klein\"><option selected style=\"display: none\" disabled>Kriterium</option></select>");
+  var kriterium = $("<select class=\"cms_bedingt_gui_bedingung_kriterium\"><option selected style=\"display: none\" disabled>Kriterium</option></select>");
   var kriterien = {
     "zeit": "Zeit",
     "nutzer.id": "NutzerID",
@@ -183,7 +189,6 @@ function cms_bedingt_gui_bedingung(dis) {
     "nutzer.art": "Nutzerart",
     "nutzer.imln": "Im Lehrernetz",
     "nutzer.hatRolle": "Hat Rolle",
-    "nutzer.hatRecht": "Hat Recht"
   }
   $.each(kriterien, function(k, v) {
     kriterium.append($("<option value=\""+k+"\">"+v+"</option>"));
@@ -197,7 +202,7 @@ function cms_bedingt_gui_bedingung(dis) {
 
     if(["zeit", "nutzer.id"].includes(val)) {
 
-      var operator = $("<select class=\"cms_bedingt_gui_bedingung_operator cms_klein\"><option selected style=\"display: none\" disabled>Operation</option></select>");
+      var operator = $("<select class=\"cms_bedingt_gui_bedingung_operator\"><option selected style=\"display: none\" disabled>Operation</option></select>");
       var operationen = {
         "==": "Gleich",
         "!=": "Ungleich",
@@ -208,13 +213,13 @@ function cms_bedingt_gui_bedingung(dis) {
         operator.append($("<option value=\""+k+"\">"+v+"</option>"));
       });
 
-      box.append(operator);
-      box.append($("<input type=\"number\" class=\"cms_bedingt_gui_bedingung_wert\" placeholder=\"Wert\">"));
+      box.append(operator.change(function() {cms_bedingt_gui_zu_string(box)}));
+      box.append($("<input type=\"number\" class=\"cms_bedingt_gui_bedingung_wert\" placeholder=\"Wert\">").change(function() {cms_bedingt_gui_zu_string(box)}).keyup(function() {cms_bedingt_gui_zu_string(box)}));
     }
 
     if(["nutzer.vorname", "nutzer.nachname", "nutzer.titel"].includes(val)) {
 
-      var operator = $("<select class=\"cms_bedingt_gui_bedingung_operator cms_klein\"><option selected style=\"display: none\" disabled>Operation</option></select>");
+      var operator = $("<select class=\"cms_bedingt_gui_bedingung_operator\"><option selected style=\"display: none\" disabled>Operation</option></select>");
       var operationen = {
         "==": "Gleich",
         "!=": "Ungleich",
@@ -223,13 +228,13 @@ function cms_bedingt_gui_bedingung(dis) {
         operator.append($("<option value=\""+k+"\">"+v+"</option>"));
       });
 
-      box.append(operator);
-      box.append($("<input type=\"text\" class=\"cms_bedingt_gui_bedingung_wert\" placeholder=\"Wert\">"));
+      box.append(operator.change(function() {cms_bedingt_gui_zu_string(box)}));
+      box.append($("<input type=\"text\" class=\"cms_bedingt_gui_bedingung_wert\" placeholder=\"Wert\">").keyup(function() {cms_bedingt_gui_zu_string(box)}));
     }
 
     if(["nutzer.art"].includes(val)) {
 
-      var operator = $("<select class=\"cms_bedingt_gui_bedingung_operator cms_klein\"><option selected style=\"display: none\" disabled>Operation</option></select>");
+      var operator = $("<select class=\"cms_bedingt_gui_bedingung_operator\"><option selected style=\"display: none\" disabled>Operation</option></select>");
       var operationen = {
         "==": "Gleich",
         "!=": "Ungleich",
@@ -238,9 +243,9 @@ function cms_bedingt_gui_bedingung(dis) {
         operator.append($("<option value=\""+k+"\">"+v+"</option>"));
       });
 
-      box.append(operator);
+      box.append(operator.change(function() {cms_bedingt_gui_zu_string(box)}));
 
-      var art = $("<select class=\"cms_bedingt_gui_bedingung_operator cms_klein\"><option selected style=\"display: none\" disabled>Nutzerart</option></select>");
+      var art = $("<select class=\"cms_bedingt_gui_bedingung_wert\"><option selected style=\"display: none\" disabled>Nutzerart</option></select>");
       var arten = {
         "s": "Schüler",
         "l": "Lehrer",
@@ -252,30 +257,89 @@ function cms_bedingt_gui_bedingung(dis) {
         art.append($("<option value=\""+k+"\">"+v+"</option>"));
       });
 
-      box.append(art);
-    }
-
-    if(["nutzer.hatRecht"].includes(val)) {
-      box.append($("<input type=\"text\" class=\"cms_bedingt_gui_bedingung_wert\" placeholder=\"Recht\">"));
+      box.append(art.change(function() {cms_bedingt_gui_zu_string(box)}));
     }
 
     if(["nutzer.hatRolle"].includes(val)) {
-      box.append($("<input type=\"text\" class=\"cms_bedingt_gui_bedingung_wert\" placeholder=\"Rolle\">"));
+      box.append($("<input type=\"text\" class=\"cms_bedingt_gui_bedingung_wert cms_bedingt_funktion\" placeholder=\"Rolle\">").keyup(function() {cms_bedingt_gui_zu_string(box)}));
     }
 
     box.find("select,input").css("width", (100/box.find("select,input").length)+"%");
-  });
 
+    cms_bedingt_gui_zu_string(box);
+  });
 
   box.append(kriterium);
 
   dis.replaceWith(box);
+
+  cms_bedingt_gui_zu_string(box);
 }
 
 function cms_bedingt_gui_feld_loeschen(dis) {
   dis = $(dis);
-
+  gui = dis.parents(".cms_bedingt_bedingung_gui");
   cms_bedingt_gui_optionen(dis.parent().parent());
-  
+
   dis.parent().remove();
+
+  cms_bedingt_gui_zu_string(gui);
+}
+
+function cms_bedingt_gui_zu_string(dis) {
+  dis = $(dis);
+  td = dis.parents("td");
+
+  var op = td.find(".cms_bedingt_recht_bedingung") || td.find(".cms_bedingt_rolle_bedingung");
+
+  var gui = td.find(".cms_bedingt_bedingung_gui");
+
+  var rekpruefen = function(element) {
+    if(element.is(".cms_bedingt_bedingung_gui")) {
+      return rekpruefen(element.children());
+    }
+    if(element.is(".cms_bedingt_gui_logisch_oder")) {
+      return "("+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_1"))+" || "+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_2"))+")";
+    }
+    if(element.is(".cms_bedingt_gui_logisch_und")) {
+      return "("+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_1"))+" && "+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_2"))+")";
+    }
+    if(element.is(".cms_bedingt_gui_logisch_feld_1,.cms_bedingt_gui_logisch_feld_2")) {
+      return rekpruefen(element.children());
+    }
+    if(element.is(".cms_bedingt_gui_optionen")) {
+      return "_";
+    }
+    if(element.is(".cms_bedingt_gui_bedingung")) {
+      var r = element.find(".cms_bedingt_gui_bedingung_kriterium").val() || "_";
+      var operator = element.find(".cms_bedingt_gui_bedingung_operator");
+      var wert     = element.find(".cms_bedingt_gui_bedingung_wert");
+      if(operator.length) {
+        if(operator.val() != null) {
+          r += operator.val();
+        }
+      }
+      if(wert.length) {
+        if(wert.is(".cms_bedingt_funktion")) {
+          r += "(";
+        }
+        if(wert.val() != null && wert.val() != "") {
+          if(wert.is("[type=number]")) {
+            r += wert.val();
+          }
+          if(wert.is("[type=text],select")) {
+            r += "\""+wert.val()+"\"";
+          }
+        }
+        if(wert.is(".cms_bedingt_funktion")) {
+          r += ")";
+        }
+      }
+      return r;
+    }
+  }
+
+  op.val(rekpruefen(gui));
+
+  cms_bedingte_bedingung_syntax_pruefen(op);
 }
