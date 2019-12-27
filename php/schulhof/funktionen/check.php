@@ -191,10 +191,17 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 
 	cms_rechte_laden_nutzer($aktiverbenutzer);
 	cms_rechte_laden_rollen($aktiverbenutzer);
+	cms_rechte_laden_bedingte_rechte();
+	cms_rechte_laden_bedingte_rollen();
+
+	//
+	// TEMPORÄR BIS ALLE NEUEN RECHTE ÜBERNOMMEN
+	//
+
 	$dbs = cms_verbinden("s");
-	$sql = $dbs->prepare("SELECT 2 AS wert, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte");
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM rechte");
 	if ($sql->execute()) {
-		$sql->bind_result($wert, $kategorie, $bezeichnung);
+		$sql->bind_result($kategorie, $bezeichnung);
 		while($sql->fetch()) {
 			$CMS_RECHTE[$kategorie][$bezeichnung] = true;
 		}

@@ -174,5 +174,5 @@ function cms_stopschreiben(element, callback) {
     clearTimeout(cms_stopschreiben_timeouts[feld]);
   }
   if(feld.val())
-    cms_stopschreiben_timeouts[feld] = setTimeout(callback, 500);
+    cms_stopschreiben_timeouts[feld] = setTimeout(callback, 1000);
 }

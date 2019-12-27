@@ -1,3 +1,4 @@
+# Pfad eines Rechts:   /^(?:[a-zäöüß*.]+)$/i
 schulhof:
   verwaltung:
     nutzerkonten:
@@ -27,7 +28,9 @@ schulhof:
       schülereltern: Schüler und Eltern verknüpfen
     rechte:
       zuordnen: Personen Rechte zuordnen
+      bedingt: Rechte bedingt zuordnen
       rollen:
+        bedingt: Rechte bedingt zuordnen
         zuordnen: Personen Rollen zuordnen
         sehen: Rollen sehen
         erstellen: Rollen erstellen

@@ -9,15 +9,23 @@ if (r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.anlege
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_personen\" href=\"Schulhof/Verwaltung/Personen\">";
 			$code .= "<h3>Personen</h3>";
-			$code .= "<p>Benutzerdaten und -konten von Schülern, Lehrern, Verwaltungsangestellten und Eltern ".aufzaehlen(array("sehen" => r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.daten"), "verwalten" => r("schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen")))."</p>";
+			$code .= "<p>Benutzerdaten und -konten von Schülern, Lehrern, Verwaltungsangestellten und Eltern ".aufzaehlen(array("sehen" => r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.daten"), "verwalten" => r("schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen"))).".</p>";
 		$code .= "</a>";
 	$code .= "</li>";
 }
-if (r("schulhof.verwaltung.rechte.rollen.*")) {
+if (r("schulhof.verwaltung.rechte.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_rollen\" href=\"Schulhof/Verwaltung/Rollen\">";
 			$code .=  "<h3>Rollen</h3>";
 			$code .=  "<p>Rollen mit besonderen Rechten definieren.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
+	$code .= "<li>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_bedingte_rechte cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Bedingte_Rechte\">";
+			$code .=  "<h3>Bedingt zuordnen</h3>";
+			$code .=  "<p>".aufzaehlen(array("Rollen" => r("schulhof.verwaltung.rechte.rollen.bedingt"), "Rechte" => r("schulhof.verwaltung.rechte.bedingt")))." bedingt zuordnen</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -391,7 +399,7 @@ if (r("technik.feedback")) {
 }
 if (r("technik.fehlermeldungen")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen\" href=\"Schulhof/Website/Fehlermeldungen\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Website/Fehlermeldungen\">";
 			$code .=  "<h3>Fehlermeldungen</h3>";
 			$code .=  "<p>Fehlermeldungen sehen und verwalten.</p>";
 		$code .=  "</a>";
@@ -477,7 +485,7 @@ if (r("schulhof.verwaltung.einstellungen")) {
 }
 if (r("technik.server.netze")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_schulnetze\" href=\"Schulhof/Verwaltung/Schulnetze\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_schulnetze cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schulnetze\">";
 			$code .=  "<h3>Schulnetze</h3>";
 			$code .=  "<p>Hinterlegte Zugangsdaten für die verschiedenen Netzte (Schulhof, Lehrerzimmer und Verwaltung und Notennetz) verwalten.</p>";
 		$code .=  "</a>";
@@ -485,7 +493,7 @@ if (r("technik.server.netze")) {
 }
 if (r("technik.server.vpn")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_vpn\" href=\"Schulhof/Verwaltung/VPN\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_vpn cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/VPN\">";
 			$code .=  "<h3>VPN</h3>";
 			$code .=  "<p>Hinterlegte Software und Anleitung zur VPN-Konfiguration verwalten.</p>";
 		$code .=  "</a>";
@@ -493,7 +501,7 @@ if (r("technik.server.vpn")) {
 }
 if (r("technik.server.dateienerlaubnis")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_zulaessig\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_zulaessig cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">";
 			$code .=  "<h3>Zulässige Dateien</h3>";
 			$code .=  "<p>Zulässige Datentypen und Dateigrößen einstellen.</p>";
 		$code .=  "</a>";
@@ -501,7 +509,7 @@ if (r("technik.server.dateienerlaubnis")) {
 }
 if (r("schulhof.verwaltung.schule.adressen || schulhof.verwaltung.schule.mail")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails\" href=\"Schulhof/Verwaltung/Schuldetails\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schuldetails\">";
 			$code .=  "<h3>Schuldetails</h3>";
 			$code .=  "<p>Einstellen ".aufzaehlen(array("der Adresse der Schule" => r("schulhof.verwaltung.schule.adressen"), "der eMailadresse des Schulhofs" => r("schulhof.verwaltung.schule.mail")))."</p>";
 		$code .=  "</a>";
@@ -523,9 +531,8 @@ if($ausgabe) {
 	echo cms_meldung_berechtigung()."</div>";
 }
 
-?>
-
-<!-- <p class="cms_notiz">In Planung</p>
+/*
+<p class="cms_notiz">In Planung</p>
 <ul class="cms_uebersicht">
 	<li>
 		<a class="cms_uebersicht_verwaltung_dateien" href="Schulhof/Verwaltung/Dateien_auf_dem_Server/">
@@ -563,7 +570,8 @@ if($ausgabe) {
 			<p>Persönliche Daten werden verschlüsselt in der Datenbank hinterlegt. Der notwendige Schlüssel liegt in einer Konfigurations-Datei auf dem Webserver. Hier kann der Schlüssel geändert werden. Da dann die gesamte Datenbank ent- und neu verschlüsselt werden muss, kann dieser Prozess etwas dauern.</p>
 		</a>
 	</li>
-</ul> -->
+</ul> */?>
+
 <div class="cms_clear"></div>
 <?php
 	/*

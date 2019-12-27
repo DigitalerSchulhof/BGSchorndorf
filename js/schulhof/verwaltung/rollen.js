@@ -48,6 +48,10 @@ function cms_schulhof_rolle_neu_speichern() {
 				meldung += '<li>es gibt bereits eine Rolle mit dieser Bezeichnung.</li>';
 				cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
+			else if (rueckgabe == "BEZEICHNUNG") {
+				meldung += '<li>die Bezeichnung enthält ungültige Zeichen.</li>';
+				cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
 			else if (rueckgabe == "ERFOLG") {
 				cms_meldung_an('erfolg', 'Neue Rolle anlegen', '<p>Die Rolle <i>'+bezeichnung+'</i> wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Rollen\');">Zurück zur Übersicht</span></p>');
 			}else {cms_fehlerbehandlung(rueckgabe);}
@@ -162,6 +166,10 @@ function cms_schulhof_rolle_bearbeiten_speichern() {
 			if (rueckgabe == "DOPPELTFEHLER") {
 				meldung += '<li>es gibt bereits eine Rolle mit dieser Bezeichnung.</li>';
 				cms_meldung_an('fehler', 'Rolle bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
+			else if (rueckgabe == "BEZEICHNUNG") {
+				meldung += '<li>die Bezeichnung enthält ungültige Zeichen.</li>';
+				cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "BERECHTIGUNG") {
 				cms_meldung_berechtigung();

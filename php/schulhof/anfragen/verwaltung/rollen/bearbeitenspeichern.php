@@ -29,7 +29,8 @@ if (cms_angemeldet() && r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 
 	$dbs = cms_verbinden('s');
 
-	$bezeichnung = cms_texttrafo_e_db($bezeichnung);
+	if(!cms_check_nametitel($bezeichnung))
+		die("BEZEICHNUNG");
 	// Prüfen, ob es bereits eine Rolle mit dieser Bezeichnung gibt
 	$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM rollen WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND id != ?");
   $sql->bind_param("si", $bezeichnung, $id);

@@ -427,3 +427,8 @@ CREATE TABLE `cms_schulhof`.`rollenrechte` ( `rolle` BIGINT(255) UNSIGNED NOT NU
 ALTER TABLE `rechtezuordnung` ADD CONSTRAINT `rollerechterolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `rollen` DROP `personenart`;
+
+CREATE TABLE `cms_schulhof`.`bedingterechte` ( `recht` VARBINARY(5000) NOT NULL , `bedingung` VARBINARY(5000) NOT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `cms_schulhof`.`bedingterollen` ( `rolle` BIGINT(255) UNSIGNED NOT NULL, `bedingung` VARBINARY(5000) NOT NULL ) ENGINE = InnoDB;
+ALTER TABLE `bedingterollen` ADD CONSTRAINT `bedingterollenrolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

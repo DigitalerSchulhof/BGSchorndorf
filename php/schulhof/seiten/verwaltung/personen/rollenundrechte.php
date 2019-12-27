@@ -28,7 +28,7 @@ else {
 				echo "<h3>Rollen</h3>";
 
 				$rollencode = "";
-				$sql = "SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') as bezeichnung, rollen.id FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = ?) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle) AS rollen ORDER BY bezeichnung ASC";
+				$sql = "SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') as bezeichnung, rollen.id FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = ?) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle) AS rollen ORDER BY id ASC";
 				$sql = $dbs->prepare($sql);
 				$sql->bind_param("i", $id);
 				$sql->bind_result($person, $bez, $rid);
