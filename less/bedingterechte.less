@@ -9,8 +9,7 @@
   background-color: @bedingt_bedingung;
 }
 
-.cms_bedingt_gui_logisch_oder,
-.cms_bedingt_gui_logisch_und {
+.cms_bedingt_gui_logisch {
   background-color: @bedingt_logisch;
   background-repeat: no-repeat;
   background-position: 5px 5px;
@@ -24,8 +23,8 @@
     margin-left: 5px;
   }
 
-  .cms_bedingt_gui_logisch_feld_1,
-  .cms_bedingt_gui_logisch_feld_2 {
+  .cms_bedingt_gui_logisch_feld,
+  .cms_bedingt_gui_logisch_hinzufuegen {
     display: block;
     border-radius: @mittlererradius;
     margin-left: 20px;
@@ -36,6 +35,9 @@
 
     .cms_aktion_klein {
       margin-bottom: 0px;
+    }
+    &.cms_bedingt_gui_logisch_hinzufuegen {
+      cursor: pointer;
     }
   }
 }

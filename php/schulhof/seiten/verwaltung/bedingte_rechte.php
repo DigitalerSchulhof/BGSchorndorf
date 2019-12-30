@@ -15,9 +15,10 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
   "<b>nutzer.titel</b> (Zeichenkette)<br>".
   "<b>nutzer.art</b> (Zeichenkette: \"s\" (Schüler), \"l\" (Lehrer), \"e\" (Eltern), \"v\" (Verwaltung), \"x\" (Externe))<br>".
   "<b>nutzer.imln:</b> Ist Benutzer im Lehrernetz (Boolean)<br>".
-  "<b>nutzer.hatRolle(rolle | rollenID)</b> (Boolean)<br>".
-  "<b>nutzer.hatRecht(recht)</b> (Boolean)</p><p>".
+  "<b>nutzer.hatRolle[rolle]</b> (Boolean)<br>".
+  "<b>nutzer.hatRecht[recht]</b> (Boolean)</p><p>".
   "<u>Zur Verfügung stehende logische Operatoren:</u><br>".
+  "<b>!</b> Nicht<br>".
   "<b>==</b> Ist gleich<br>".
   "<b>!=</b> Ist ungleich<br>".
   "<b>&lt;</b> Ist kleiner als<br>".
@@ -26,7 +27,7 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
   "Alle Lehrer oder Benutzer 97: <b>(nutzer.art == \"l\" || nutzer.id == 97)</b><br>".
   "Schüler namens »Max«: <b>(nutzer.art == \"s\" && nutzer.vorname == \"Max\")</b><br>".
   "Benutzer 97 bis zum Zeitpunkt x und alle Eltern: <b>((nutzer.id == 97 && zeit < 1577369965) || nutzer.art == \"e\")</b><br>".
-  "Rolle »Stundenplanung« und im Lehrernetz: <b>(nutzer.imln && nutzer.hatRolle(\"Stundenplanung\"))</b><br>"
+  "Rolle »Stundenplanung« und im Lehrernetz: <b>(nutzer.imln && nutzer.hatRolle[\"Stundenplanung\"])</b><br>"
   )."</div>";
 
 

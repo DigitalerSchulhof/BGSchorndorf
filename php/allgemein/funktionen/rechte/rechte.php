@@ -1,5 +1,6 @@
 <?php
   include_once(dirname(__FILE__)."/../yaml.php");
+  include_once(dirname(__FILE__)."/../../../schulhof/anfragen/verwaltung/bedingte_rechte/syntax.php");
   use Async\YAML;
 
   define("RECHTEPRUEFEN", true);  // Prüfen, on angegebene Rechte existieren und ggf warnen
@@ -183,6 +184,16 @@
     $nutzer_art       = $_SESSION["BENUTZERART"];
     $nutzer_imln      = $_SESSION["IMLN"] ?? "0";
 
+    $werte = array(
+      "zeit"      => $zeit,
+      "nutzer.id" => $nutzer_id,
+      "nutzer.vorname" => $nutzer_vorname,
+      "nutzer.nachname" => $nutzer_nachname,
+      "nutzer.titel" => $nutzer_titel,
+      "nutzer.art" => $nutzer_art,
+      "nutzer.imln" => $nutzer_imln
+    );
+
     $bedingungen = array();
 
     $dbs = cms_verbinden("s");
@@ -201,93 +212,94 @@
       $bedingungen[$r] = substr($b, 4);
     }
 
-    foreach($bedingungen as $recht => $bedingung) {
-      $bedingung = "($bedingung)";
+    $evaluieren = function($bedingung) use(&$evaluieren, $werte, $nutzer_id, $CMS_SCHLUESSEL) {
+      $bedingung = $bedingung[0] ?? $bedingung;
 
-      $bedingung = str_replace("==", " == ", $bedingung);
-      $bedingung = str_replace("!=", " != ", $bedingung);
-      $bedingung = str_replace("||", " || ", $bedingung);
-      $bedingung = str_replace("&&", " && ", $bedingung);
-      $bedingung = str_replace(")",  " ) ",  $bedingung);
-      $bedingung = str_replace("(",  " ( ",  $bedingung);
-      $bedingung = str_replace(">",  " > ",  $bedingung);
-      $bedingung = str_replace("<",  " < ",  $bedingung);
+      $typ  = $bedingung["typ"];
+      $wert = $bedingung["wert"];
+      if($typ === "Logisch") {
+        $w0 = $bedingung["werte"][0] ?? null;
+        $w1 = $bedingung["werte"][1] ?? null;
 
-      $bedingung = explode(" ", $bedingung);
-      $b         = array_diff($bedingung, array(""));
-      $bedingung = array();
-
-      foreach($b as $v) {
-        $bedingung[] = $v;
+        if($wert == "&&") {
+          return $evaluieren($w0) && $evaluieren($w1);
+        }
+        if($wert == "||") {
+          return $evaluieren($w0) || $evaluieren($w1);
+        }
+        if($wert == "!") {
+          return !($evaluieren($w0));
+        }
       }
 
-      for($i = 0; $i < count($bedingung); $i++) {
-        $v = $bedingung[$i];
+      if($typ === "Vergleich") {
+        $w0 = $bedingung["werte"][0] ?? null;
+        $w1 = $bedingung["werte"][1] ?? null;
 
-        if($v == "")
-          continue;
+        if($wert == "==") {
+          return $evaluieren($w0) == $evaluieren($w1);
+        }
+        if($wert == "!=") {
+          return $evaluieren($w0) != $evaluieren($w1);
+        }
+        if($wert == "<") {
+          return $evaluieren($w0) < $evaluieren($w1);
+        }
+        if($wert == ">") {
+          return $evaluieren($w0) > $evaluieren($w1);
+        }
+      }
 
-        if($v == "zeit") {
-          $v = "$zeit";
-        }
-        if($v == "nutzer.id") {
-          $v = "$nutzer_id";
-        }
-        if($v == "nutzer.vorname") {
-          $v = "\"$nutzer_vorname\"";
-        }
-        if($v == "nutzer.nachname") {
-          $v = "\"$nutzer_nachname\"";
-        }
-        if($v == "nutzer.titel") {
-          $v = "\"$nutzer_titel\"";
-        }
-        if($v == "nutzer.art") {
-          $v = "\"$nutzer_art\"";
-        }
-        if($v == "nutzer.imln") {
-          $v = "$nutzer_imln";
-        }
+      if($typ === "EndZahl" || $typ === "Zahl") {
+        return (int) $wert;
+      }
 
-        if($v == "nutzer.hatRolle") {
-          $rolle = $bedingung[$i+2];
-          $sql;
-          $p;
-          if("".(int) $rolle == $rolle) { // Rolle ist numerisch
-            $sql = "SELECT person FROM rollenzuordnung WHERE rolle = ? AND person = ?";
-            $p = "i";
-          } else {
-            $sql = "SELECT person FROM rollenzuordnung JOIN rollen ON rollenzuordnung.rolle = rollen.id WHERE AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') = ? AND person = ?;";
-            $p = "s";
-            $rolle = substr($rolle, 1, -1);
-          }
+      if($typ === "EndString" || $typ === "String") {
+        return "$wert";
+      }
+
+      if($typ === "EndFeld" || $typ === "Feld") {
+        return $werte[$wert] ?? null;
+      }
+
+      if($typ == "Funktionsaufruf") {
+        if($wert == "nutzer.hatRolle") {
+          $rolle = $evaluieren($bedingung["werte"][0]);
+
+          $dbs = cms_verbinden("s");
+
+          $sql = "SELECT person FROM rollenzuordnung JOIN rollen ON rollenzuordnung.rolle = rollen.id WHERE AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') = ? AND person = ?;";
           $sql = $dbs->prepare($sql);
-          $sql->bind_param("$p"."i", $rolle, $nutzer_id);
+          $sql->bind_param("si", $rolle, $nutzer_id);
           $sql->bind_result($pers);
+
           if($sql->execute() && $sql->fetch() && $pers == $nutzer_id) {
-            $v = "1";
+            return true;
           } else {
-            $v = "0";
+            return false;
           }
-          $bedingung[$i+1] = "";  // Klammern und Argument beseitigen
-          $bedingung[$i+2] = "";
-          $bedingung[$i+3] = "";
         }
-        $bedingung[$i] = $v;
-      }
-      
-      $b         = array_diff($bedingung, array(""));
-      $bedingung = array();
+        if($wert == "nutzer.hatRecht") {
+          $recht = $evaluieren($bedingung["werte"][0]);
 
-      foreach($b as $v) {
-        $bedingung[] = $v;
+          return cms_hat_recht($recht);
+        }
       }
 
-      $bedingung = join("", $bedingung);
+      return null;
+    };
 
-      $eval = eval("return $bedingung;");
+    foreach($bedingungen as $recht => $bedingung) {
+      $bedingung_baum = cms_bedingt_bedingung_syntax_baum($bedingung);
 
-      if($eval) {
+      if($bedingung_baum === false) {
+        throw new Exception("Bei den Bedingungen »{$bedingung}« für das Recht »{$recht}« ist ein Fehler aufgetreten!");
+        return;
+      }
+
+      var_dump($evaluieren($bedingung_baum));
+
+      if($evaluieren($bedingung_baum)) {
         // Nicht von oben geklaut 😈
 
         $pfad = explode(".", $recht);

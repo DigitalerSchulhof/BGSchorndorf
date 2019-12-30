@@ -129,6 +129,12 @@ function cms_bedingt_gui_optionen(dis) {
     })
   ).append(" ");
 
+  box.append($("<span class=\"cms_aktion_klein cms_button_bedingt_logisch\"><span class=\"cms_hinweis\">Logisches Nicht</span><img src=\"res/icons/klein/bedingte_rechte/logisch_nicht.png\"></span>")
+    .click(function() {
+      cms_bedingt_gui_logisch_nicht(box);
+    })
+  ).append(" ");
+
   box.append($("<span class=\"cms_aktion_klein cms_button_bedingt_bedingung\"><span class=\"cms_hinweis\">Bedingung</span><img src=\"res/icons/klein/bedingte_rechte/bedingung.png\"></span>")
     .click(function() {
       cms_bedingt_gui_bedingung(box);
@@ -143,14 +149,14 @@ function cms_bedingt_gui_optionen(dis) {
 function cms_bedingt_gui_logisch_oder(dis) {
   dis = $(dis);
 
-  var box = $("<div class=\"cms_bedingt_gui_logisch_oder\"></div>");
+  var box = $("<div class=\"cms_bedingt_gui_logisch cms_bedingt_gui_logisch_oder\"></div>");
 
   box.append("<span class=\"cms_aktion_klein\" style=\"background-color: transparent; cursor: default;\"><span class=\"cms_hinweis\">Logisches Oder</span><img src=\"res/icons/klein/bedingte_rechte/logisch_oder.png\"></span><br>");
   box.append("<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_bedingt_gui_feld_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>");
 
-  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld_1\"></div>")));
-
-  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld_2\"></div>")));
+  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld\"></div>")));
+  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld\"></div>")));
+  box.append($("<div class=\"cms_bedingt_gui_logisch_hinzufuegen\" onclick=\"cms_bedingt_gui_logisch_hinzufuegen(this)\"></div>"));
 
   dis.replaceWith(box);
 
@@ -160,14 +166,29 @@ function cms_bedingt_gui_logisch_oder(dis) {
 function cms_bedingt_gui_logisch_und(dis) {
   dis = $(dis);
 
-  var box = $("<div class=\"cms_bedingt_gui_logisch_und\"></div>");
+  var box = $("<div class=\"cms_bedingt_gui_logisch cms_bedingt_gui_logisch_und\"></div>");
 
   box.append("<span class=\"cms_aktion_klein\" style=\"background-color: transparent; cursor: default;\"><span class=\"cms_hinweis\">Logisches Und</span><img src=\"res/icons/klein/bedingte_rechte/logisch_und.png\"></span><br>");
   box.append("<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_bedingt_gui_feld_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>");
 
-  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld_1\"></div>")));
+  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld\"></div>")));
+  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld\"></div>")));
+  box.append($("<div class=\"cms_bedingt_gui_logisch_hinzufuegen\" onclick=\"cms_bedingt_gui_logisch_hinzufuegen(this)\"></div>"));
 
-  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld_2\"></div>")));
+  dis.replaceWith(box);
+
+  cms_bedingt_gui_zu_string(box);
+}
+
+function cms_bedingt_gui_logisch_nicht(dis) {
+  dis = $(dis);
+
+  var box = $("<div class=\"cms_bedingt_gui_logisch cms_bedingt_gui_logisch_nicht\"></div>");
+
+  box.append("<span class=\"cms_aktion_klein\" style=\"background-color: transparent; cursor: default;\"><span class=\"cms_hinweis\">Logisches Nicht</span><img src=\"res/icons/klein/bedingte_rechte/logisch_nicht.png\"></span><br>");
+  box.append("<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_bedingt_gui_feld_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>");
+
+  box.append(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld\"></div>")));
 
   dis.replaceWith(box);
 
@@ -286,6 +307,14 @@ function cms_bedingt_gui_feld_loeschen(dis) {
   cms_bedingt_gui_zu_string(gui);
 }
 
+function cms_bedingt_gui_logisch_hinzufuegen(dis) {
+  dis = $(dis);
+
+  dis.before(cms_bedingt_gui_optionen($("<div class=\"cms_bedingt_gui_logisch_feld\"></div>")));
+
+  cms_bedingt_gui_zu_string(dis);
+}
+
 function cms_bedingt_gui_zu_string(dis) {
   dis = $(dis);
   td = dis.parents("td");
@@ -298,20 +327,48 @@ function cms_bedingt_gui_zu_string(dis) {
     if(element.is(".cms_bedingt_bedingung_gui")) {
       return rekpruefen(element.children());
     }
-    if(element.is(".cms_bedingt_gui_logisch_oder")) {
-      return "("+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_1"))+" || "+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_2"))+")";
+    if(element.is(".cms_bedingt_gui_logisch")) {
+      var basteln;
+      if(element.is(".cms_bedingt_gui_logisch_oder")) {
+        basteln = function(werte) {
+          var w = "";
+          $.each(werte, function(i, wert) {
+            w += "||"+wert;
+          });
+          w = w.substring("2");
+          return "("+w+")";
+        }
+      }
+      if(element.is(".cms_bedingt_gui_logisch_und")) {
+        basteln = function(werte) {
+          var w = "";
+          $.each(werte, function(i, wert) {
+            w += "&&"+wert;
+          });
+          w = w.substring("2");
+          return "("+w+")";
+        }
+      }
+      if(element.is(".cms_bedingt_gui_logisch_nicht")) {
+        basteln = function(werte) {
+          return "(!"+werte[0]+")";
+        }
+      }
+      r = [];
+      element.children(".cms_bedingt_gui_logisch_feld").each(function() {
+        r.push(rekpruefen($(this)));
+      });
+
+      return basteln(r);
     }
-    if(element.is(".cms_bedingt_gui_logisch_und")) {
-      return "("+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_1"))+" && "+rekpruefen(element.children(".cms_bedingt_gui_logisch_feld_2"))+")";
-    }
-    if(element.is(".cms_bedingt_gui_logisch_feld_1,.cms_bedingt_gui_logisch_feld_2")) {
+    if(element.is(".cms_bedingt_gui_logisch_feld")) {
       return rekpruefen(element.children());
     }
     if(element.is(".cms_bedingt_gui_optionen")) {
-      return "_";
+      return "";
     }
     if(element.is(".cms_bedingt_gui_bedingung")) {
-      var r = element.find(".cms_bedingt_gui_bedingung_kriterium").val() || "_";
+      var r = element.find(".cms_bedingt_gui_bedingung_kriterium").val() || "";
       var operator = element.find(".cms_bedingt_gui_bedingung_operator");
       var wert     = element.find(".cms_bedingt_gui_bedingung_wert");
       if(operator.length) {
@@ -321,7 +378,7 @@ function cms_bedingt_gui_zu_string(dis) {
       }
       if(wert.length) {
         if(wert.is(".cms_bedingt_funktion")) {
-          r += "(";
+          r += "[";
         }
         if(wert.val() != null && wert.val() != "") {
           if(wert.is("[type=number]")) {
@@ -332,7 +389,7 @@ function cms_bedingt_gui_zu_string(dis) {
           }
         }
         if(wert.is(".cms_bedingt_funktion")) {
-          r += ")";
+          r += "]";
         }
       }
       return r;
