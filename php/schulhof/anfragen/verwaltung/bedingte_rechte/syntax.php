@@ -23,6 +23,10 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
     $p5 = $bed[$i+5] ?? null;
     $p6 = $bed[$i+6] ?? null;
 
+    if(preg_match("/^\\s+$/mi", $b)) {
+      continue;
+    }
+
     if(!$machtObjekt) {
       if(strlen($objekt)) {
         $letzte = $tokens[count($tokens)-1];
@@ -40,10 +44,6 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
     }
 
     $machtObjekt = false;
-
-    if($b == " ") {
-      continue;
-    }
 
     if($b == "(") {
       $tokens[] = array(
@@ -169,7 +169,10 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
 
       while($b != "\"") {
         $string .= $b;
-        $b = $bed[++$i];
+        $b = $bed[++$i] ?? null;
+        if($b === null) {
+          return false; // Unvollständiger String
+        }
       }
 
       $tokens[] = array(
@@ -183,18 +186,12 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
     $machtObjekt = true;
   }
 
-  $c = 0;
-
-  $maxDurchgaenge = 100;
-
-  while(count($tokens) > 1 && ++$c < $maxDurchgaenge+1) {
-    $tokens = array_values($tokens);
+  $tokens_durchgehen = function($tokens) {
     for($i = 0; $i < count($tokens); $i++) {
       $t  = $tokens[$i]["typ"];
       $w  = $tokens[$i]["wert"];
       $t1 = $tokens[$i+1]["typ"] ?? null;
       $t2 = $tokens[$i+2]["typ"] ?? null;
-
 
       if(in_array($t, array("Feld", "Zahl", "String"))) {
         if($t1 === "Vergleichsoperator") {
@@ -296,7 +293,20 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
         }
       }
     }
-  }
+    return $tokens;
+  };
+
+
+  $c = 0;
+  $maxDurchgaenge = 1000;
+
+  while(count($tokens) > 1 && ++$c < $maxDurchgaenge+1) {
+    $tokens = array_values($tokens);
+    $tokens = $tokens_durchgehen($tokens);
+  };
+
+  $tokens = $tokens_durchgehen($tokens);
+
   if(count($tokens) == 1 &&
      in_array($tokens[0]["typ"]??null, array("Vergleich", "Logisch", "EndFeld", "EndZahl", "EndString", "Funktionsaufruf"))) {
     return $tokens;

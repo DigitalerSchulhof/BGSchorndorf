@@ -297,8 +297,6 @@
         return;
       }
 
-      var_dump($evaluieren($bedingung_baum));
-
       if($evaluieren($bedingung_baum)) {
         // Nicht von oben geklaut 😈
 
@@ -334,6 +332,16 @@
     $nutzer_art       = $_SESSION["BENUTZERART"];
     $nutzer_imln      = $_SESSION["IMLN"] ?? "0";
 
+    $werte = array(
+      "zeit"      => $zeit,
+      "nutzer.id" => $nutzer_id,
+      "nutzer.vorname" => $nutzer_vorname,
+      "nutzer.nachname" => $nutzer_nachname,
+      "nutzer.titel" => $nutzer_titel,
+      "nutzer.art" => $nutzer_art,
+      "nutzer.imln" => $nutzer_imln
+    );
+
     $bedingungen = array();
 
     $dbs = cms_verbinden("s");
@@ -352,110 +360,94 @@
       $bedingungen[$r] = substr($b, 4);
     }
 
+    $evaluieren = function($bedingung) use(&$evaluieren, $werte, $nutzer_id, $CMS_SCHLUESSEL) {
+      $bedingung = $bedingung[0] ?? $bedingung;
+
+      $typ  = $bedingung["typ"];
+      $wert = $bedingung["wert"];
+      if($typ === "Logisch") {
+        $w0 = $bedingung["werte"][0] ?? null;
+        $w1 = $bedingung["werte"][1] ?? null;
+
+        if($wert == "&&") {
+          return $evaluieren($w0) && $evaluieren($w1);
+        }
+        if($wert == "||") {
+          return $evaluieren($w0) || $evaluieren($w1);
+        }
+        if($wert == "!") {
+          return !($evaluieren($w0));
+        }
+      }
+
+      if($typ === "Vergleich") {
+        $w0 = $bedingung["werte"][0] ?? null;
+        $w1 = $bedingung["werte"][1] ?? null;
+
+        if($wert == "==") {
+          return $evaluieren($w0) == $evaluieren($w1);
+        }
+        if($wert == "!=") {
+          return $evaluieren($w0) != $evaluieren($w1);
+        }
+        if($wert == "<") {
+          return $evaluieren($w0) < $evaluieren($w1);
+        }
+        if($wert == ">") {
+          return $evaluieren($w0) > $evaluieren($w1);
+        }
+      }
+
+      if($typ === "EndZahl" || $typ === "Zahl") {
+        return (int) $wert;
+      }
+
+      if($typ === "EndString" || $typ === "String") {
+        return "$wert";
+      }
+
+      if($typ === "EndFeld" || $typ === "Feld") {
+        return $werte[$wert] ?? null;
+      }
+
+      if($typ == "Funktionsaufruf") {
+        if($wert == "nutzer.hatRolle") {
+          $rolle = $evaluieren($bedingung["werte"][0]);
+
+          $dbs = cms_verbinden("s");
+
+          $sql = "SELECT person FROM rollenzuordnung JOIN rollen ON rollenzuordnung.rolle = rollen.id WHERE AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') = ? AND person = ?;";
+          $sql = $dbs->prepare($sql);
+          $sql->bind_param("si", $rolle, $nutzer_id);
+          $sql->bind_result($pers);
+
+          if($sql->execute() && $sql->fetch() && $pers == $nutzer_id) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        if($wert == "nutzer.hatRecht") {
+          $recht = $evaluieren($bedingung["werte"][0]);
+
+          return cms_hat_recht($recht);
+        }
+      }
+
+      return null;
+    };
+
     $extrarollen = array();
 
     foreach($bedingungen as $rolle => $bedingung) {
-      $bedingung = "($bedingung)";
+      $bedingung_baum = cms_bedingt_bedingung_syntax_baum($bedingung);
 
-      $bedingung = str_replace("==", " == ", $bedingung);
-      $bedingung = str_replace("!=", " != ", $bedingung);
-      $bedingung = str_replace("||", " || ", $bedingung);
-      $bedingung = str_replace("&&", " && ", $bedingung);
-      $bedingung = str_replace(")",  " ) ",  $bedingung);
-      $bedingung = str_replace("(",  " ( ",  $bedingung);
-      $bedingung = str_replace(">",  " > ",  $bedingung);
-      $bedingung = str_replace("<",  " < ",  $bedingung);
-
-      $bedingung = explode(" ", $bedingung);
-      $b         = array_diff($bedingung, array(""));
-      $bedingung = array();
-
-      foreach($b as $v) {
-        $bedingung[] = $v;
+      if($bedingung_baum === false) {
+        throw new Exception("Bei den Bedingungen »{$bedingung}« für die Rolle »{$rolle}« ist ein Fehler aufgetreten!");
+        return;
       }
 
-      for($i = 0; $i < count($bedingung); $i++) {
-        $v = $bedingung[$i];
-
-        if($v == "")
-          continue;
-
-        if($v == "zeit") {
-          $v = "$zeit";
-        }
-        if($v == "nutzer.id") {
-          $v = "$nutzer_id";
-        }
-        if($v == "nutzer.vorname") {
-          $v = "\"$nutzer_vorname\"";
-        }
-        if($v == "nutzer.nachname") {
-          $v = "\"$nutzer_nachname\"";
-        }
-        if($v == "nutzer.titel") {
-          $v = "\"$nutzer_titel\"";
-        }
-        if($v == "nutzer.art") {
-          $v = "\"$nutzer_art\"";
-        }
-        if($v == "nutzer.imln") {
-          $v = "$nutzer_imln";
-        }
-
-        if($v == "nutzer.hatRolle") {
-          $rolle_c = $bedingung[$i+2];  // Um nicht zu Vergebende überschreiben
-          $sql;
-          $p;
-          if("".(int) $rolle_c == $rolle_c) { // Rolle ist numerisch
-            $sql = "SELECT person FROM rollenzuordnung WHERE rolle = ? AND person = ?";
-            $p = "i";
-          } else {
-            $sql = "SELECT person FROM rollenzuordnung JOIN rollen ON rollenzuordnung.rolle = rollen.id WHERE AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') = ? AND person = ?;";
-            $p = "s";
-            $rolle_c = substr($rolle_c, 1, -1);
-          }
-          $sql = $dbs->prepare($sql);
-          $sql->bind_param("$p"."i", $rolle_c, $nutzer_id);
-          $sql->bind_result($pers);
-          if($sql->execute() && $sql->fetch() && $pers == $nutzer_id) {
-            $v = "1";
-          } else {
-            $v = "0";
-          }
-          $bedingung[$i+1] = "";  // Klammern und Argument beseitigen
-          $bedingung[$i+2] = "";
-          $bedingung[$i+3] = "";
-        }
-
-        if($v == "nutzer.hatRecht") {
-          $recht = $bedingung[$i+2];
-
-          if(cms_hat_recht($recht)) {
-            $v = "1";
-          } else {
-            $v = "0";
-          }
-
-          $bedingung[$i+1] = "";  // Klammern und Argument beseitigen
-          $bedingung[$i+2] = "";
-          $bedingung[$i+3] = "";
-        }
-
-        $bedingung[$i] = $v;
-      }
-
-      $b         = array_diff($bedingung, array(""));
-      $bedingung = array();
-
-      foreach($b as $v) {
-        $bedingung[] = $v;
-      }
-
-      $bedingung = join("", $bedingung);
-
-      $eval = eval("return $bedingung;");
-
-      if($eval) {
+      if($evaluieren($bedingung_baum)) {
         if(!in_array($rolle, $extrarollen)) {
           $extrarollen[] = $rolle;
         }

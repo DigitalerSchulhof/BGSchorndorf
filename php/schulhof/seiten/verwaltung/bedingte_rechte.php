@@ -16,7 +16,6 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
   "<b>nutzer.art</b> (Zeichenkette: \"s\" (Schüler), \"l\" (Lehrer), \"e\" (Eltern), \"v\" (Verwaltung), \"x\" (Externe))<br>".
   "<b>nutzer.imln:</b> Ist Benutzer im Lehrernetz (Boolean)<br>".
   "<b>nutzer.hatRolle[rolle]</b> (Boolean)<br>".
-  "<b>nutzer.hatRecht[recht]</b> (Boolean)</p><p>".
   "<u>Zur Verfügung stehende logische Operatoren:</u><br>".
   "<b>!</b> Nicht<br>".
   "<b>==</b> Ist gleich<br>".
@@ -78,11 +77,11 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
             $sql->execute();
             $sql->bind_result($recht, $bedingung);
             while($sql->fetch()) {
-              $recht     = htmlentities($recht);
-              $bedingung = htmlentities($bedingung);
+              $recht          = htmlentities($recht);
+              $bedingung      = htmlentities($bedingung);
               echo "<tr>".
                 "<td><input class=\"cms_bedingt_recht_recht\" type=\"hidden\" value=\"$recht\">$recht</td>".
-                "<td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this)\" class=\"cms_bedingt_recht_bedingung\" type=\"text\" value=\"$bedingung\"></td>".
+                "<td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this);cms_bedingt_gui_von_string(this)\" class=\"cms_bedingt_bedingung\" type=\"text\" value=\"$bedingung\"></td>".
                 "<td>".
                   "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_bedingt_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ".
                   "<span class=\"cms_syntax_ok cms_aktion_klein cms_button_ja\"><span class=\"cms_hinweis\">Syntax ist in Ordnung</span><img src=\"res/icons/klein/richtig.png\"></span>".
@@ -131,7 +130,7 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
               $bedingung = htmlentities($bedingung);
               echo "<tr>".
                 "<td><input class=\"cms_bedingt_rolle_rolle\" type=\"hidden\" value=\"$rid\">$rolle</td>".
-                "<td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this)\" class=\"cms_bedingt_rolle_bedingung\" type=\"text\" value=\"$bedingung\"></td>".
+                "<td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this)\" class=\"cms_bedingt_bedingung\" type=\"text\" value=\"$bedingung\"></td>".
                 "<td>".
                   "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_bedingt_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ".
                   "<span class=\"cms_syntax_ok cms_aktion_klein cms_button_ja\"><span class=\"cms_hinweis\">Syntax ist in Ordnung</span><img src=\"res/icons/klein/richtig.png\"></span>".
@@ -147,10 +146,11 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
     echo "<div class=\"cms_clear\"></div>";
   }
 
+  echo '<script>$(window).ready(function() {$(".cms_bedingt_bedingung").trigger("keyup"))</script>';
+
 } else {
 	echo cms_meldung_berechtigung();
   echo "</div>";
 }
-
 ?>
 <div class="cms_clear"></div>
