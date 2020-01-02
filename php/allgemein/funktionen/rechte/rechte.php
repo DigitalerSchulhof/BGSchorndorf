@@ -52,7 +52,7 @@
     if(is_null($arr)) // Fallback
       $arr = &$cms_nutzerrechte;
 
-  	if ($person == '-')
+  	if ($person === '-')
       $person = $_SESSION['BENUTZERID'] ?? "-";
 
     $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rechtezuordnung WHERE person = ?";
@@ -66,7 +66,7 @@
     if(is_null($arr))
       $arr = &$cms_nutzerrechte;
 
-    if ($person == '-')
+    if ($person === '-')
       $person = $_SESSION['BENUTZERID'] ?? "-";
 
     $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte JOIN rollenzuordnung ON rollenrechte.rolle = rollenzuordnung.rolle WHERE rollenzuordnung.person = ?";
@@ -97,77 +97,335 @@
   function cms_hat_recht($rechteCode) {
     global $CMS_SCHLUESSEL, $cms_nutzerrechte, $cms_bedingte_nutzerrechte, $cms_bedingte_rollenrechte, $cms_allerechte;
 
-    if($cms_nutzerrechte === true || $cms_bedingte_nutzerrechte === true || $cms_bedingte_rollenrechte === true) {
-      $cms_rechte = true;
-    } else {
-      $cms_rechte = array_merge($cms_nutzerrechte, $cms_bedingte_nutzerrechte, $cms_bedingte_rollenrechte);
-    }
+    $rc = str_split($rechteCode);
 
-    if(!RECHTEPRUEFEN && $cms_rechte === true)  // Alle Rechte sind vergeben
-      return true;
+    $aktuellesFeld = "";
+    $machtFeld     = true;
+    $tokens = array();
+    for($i = 0; $i < count($rc)+1; $i++) {
+      $r  = $rc[$i]   ?? null;
+      $p1 = $rc[$i+1] ?? null;
 
-    if($rechteCode === "*")
-      if($cms_rechte === true || count($cms_rechte))
-        return true;
-      else
-        return false;
+      if(preg_match("/^\\s+$/mi", $r)) {
+        continue;
+      }
 
-    $dbs = cms_verbinden("s");
+      if(!$machtFeld || $i == count($rc)) {
+        if(strlen($aktuellesFeld)) {
+          $feld = array(
+            "typ" => "Feld",
+            "wert" => $aktuellesFeld
+          );
 
-    $person = $_SESSION['BENUTZERID'];
-    if(!isset($person))
-      return false;
+          $aktuellesFeld = str_replace("%GRUPPEN%", "[|arbeitsgemeinschaften,arbeitskreise,ereignisse,fachschaften,fahrten,gremien,klassen,kurse,sonstigegruppen,stufen,wettbewerbe]", $aktuellesFeld);
+          $aktuellesFeld = str_replace("%ELEMENTE%", "[|faq,editor,download,kontaktformular,boxen,eventübersicht,newsletter]", $aktuellesFeld);
 
-    $rechteCode = str_replace("(",   " ( ",  $rechteCode);
-    $rechteCode = str_replace(")",   " ) ",  $rechteCode);
-    $rechteCode = str_replace("&&",  " && ", $rechteCode);
-    $rechteCode = str_replace("||",  " || ", $rechteCode);
-
-    $rechte = explode(" ", $rechteCode);
-    $rechte = preg_grep("/^(?:[a-zäöüß*.]+)$/i", $rechte);
-    $ergebnisse = array();
-
-    foreach($rechte as $position => $recht) {
-      $rechteArray = $cms_rechte;
-
-      if(RECHTEPRUEFEN && !(function($cms_allerechte, $recht) {
-        foreach($cms_allerechte as $a)
-          if(substr($a, 0, strlen(rtrim($recht, ".*"))) === rtrim($recht, ".*"))
-            return true;
-        return false;
-      })($cms_allerechte, $recht))
-        throw new Exception("Unbekanntes Recht: $recht");
-
-      foreach(explode(".", $recht) as $recht) {
-        if($recht == "*") {
-          if(count($rechteArray) > 0 || $rechteArray === true) {
-            $hat = true;
-            break;
+          if(!$machtFeld) {
+            $letzte = $tokens[count($tokens)-1];
+            $tokens[count($tokens)-1] = $feld;
+            $tokens[] = $letzte;
+          } else {
+            $tokens[] = $feld;
           }
         }
-        if(isset($rechteArray[$recht])) {
-          if($rechteArray[$recht] === true) {
-            $hat = true;
-            break;
-          }
-          $rechteArray = $rechteArray[$recht];
-        } else {
-          $hat = false;
+        $aktuellesFeld = "";
+      }
+
+      $machtFeld = false;
+
+      if($r === "|") {
+        if($p1 === "|") {
+          $tokens[] = array(
+            "typ"   => "LogischerOperator",
+            "wert"  => "||"
+          );
+          $i++;
+          continue;
+        }
+        $tokens[] = array(
+          "typ"   => "ListenOperator",
+          "wert"  => "|"
+        );
+        continue;
+      }
+
+      if($r === "&") {
+        if($p1 === "&") {
+          $tokens[] = array(
+            "typ"   => "LogischerOperator",
+            "wert"  => "&&"
+          );
+          $i++;
+          continue;
+        }
+        // $tokens[] = array(
+        //   "typ"   => "ListenOperator",
+        //   "wert"  => "&"
+        // );
+        continue;
+      }
+
+      if($r === ".") {
+        $tokens[] = array(
+          "typ"   => "Punkt",
+          "wert"  => "."
+        );
+        continue;
+      }
+
+      if($r === ",") {
+        $tokens[] = array(
+          "typ"   => "Punkt",
+          "wert"  => ","
+        );
+        continue;
+      }
+
+      if(in_array($r, array("(", ")", "[", "]"))) {
+        $tokens[] = array(
+          "typ"   => "Klammer",
+          "wert"  => $r
+        );
+        continue;
+      }
+
+      $aktuellesFeld .= $r;
+      $machtFeld      = true;
+    }
+
+    $tokens_durchgehen = function($tokens) {
+      for($i = 0; $i < count($tokens)+1; $i++) {
+        $t  = $tokens[$i]["typ"]    ?? null;
+        $w  = $tokens[$i]["wert"]   ?? null;
+        if($t === null) {
           break;
         }
+        $t1 = $tokens[$i+1]["typ"]  ?? null;
+        $w1 = $tokens[$i+1]["wert"] ?? null;
+        $t2 = $tokens[$i+2]["typ"]  ?? null;
+        $w2 = $tokens[$i+2]["wert"] ?? null;
+        $mt1 = $tokens[$i-1]["typ"] ?? null;
+        $mw1 = $tokens[$i-1]["wert"]?? null;
+
+        if($t === "Klammer") {
+          if($w === "[") {
+            if($t1 === "ListenOperator") {
+              $op = $w1;
+              $werte = array();
+              $li = 2;
+              $ende   = false;
+              $fehler = false;
+              do {
+                $p1  = $tokens[$i+$li]              ?? null;
+                $pt1 = $tokens[$i+$li]["typ"]       ?? null;
+                $pw1 = $tokens[$i+($li++)]["wert"]  ?? null;
+                $p2  = $tokens[$i+$li]              ?? null;
+                $pt2 = $tokens[$i+$li]["typ"]       ?? null;
+                $pw2 = $tokens[$i+($li++)]["wert"]  ?? null;
+                $ende = true;
+
+                if(in_array($pt1, array("Feld", "FelderListe"))) {
+                  if($pt2 === "Punkt" && $pw2 === ",") {
+                    $werte[] = $p1;
+                    $ende = false;
+                  } else if($pt2 === "Klammer" && $pw2 === "]") {
+                    $werte[] = $p1;
+                    $ende = true;
+                  } else {
+                    $fehler = true;
+                  }
+                } else {
+                  $fehler = true;
+                }
+              } while(!$ende);
+
+              if(!$fehler) {
+                $tokens[$i] = array(
+                  "typ"   => "FelderListe",
+                  "wert"  => $op,
+                  "werte" => $werte
+                );
+                for($u = 1; $u <= count($werte)*2+1; $u++) {
+                  unset($tokens[$i+$u]);
+                }
+                $tokens = array_values($tokens);
+                continue;
+              }
+            }
+          }
+        }
+
+        if(in_array($t, array("Feld", "FelderListe"))) {
+          if($t1 === "Punkt" && $w1 === ".") {
+            if(in_array($t2, array("Feld", "FelderListe"))) {
+              $tokens[$i] = array(
+                "typ"   => "Felder",
+                "werte" => array(
+                  $tokens[$i],
+                  $tokens[$i+2]
+                )
+              );
+
+              for($u = 1; $u <= 2; $u++) {
+                unset($tokens[$i+$u]);
+              }
+              $tokens = array_values($tokens);
+              continue;
+            }
+          }
+        }
+
+        if($t === "Felder") {
+          if($t1 === "Punkt" && $w1 === ".") {
+            if(in_array($t2, array("Feld", "FelderListe"))) {
+              $tokens[$i]["werte"][] = $tokens[$i+2];
+              for($u = 1; $u <= 2; $u++) {
+                unset($tokens[$i+$u]);
+              }
+              $tokens = array_values($tokens);
+              continue;
+            }
+            if($t2 === "Felder") {
+
+              $tokens[$i]["werte"] = array_merge($tokens[$i]["werte"], $tokens[$i+2]["werte"]);
+              for($u = 1; $u <= 2; $u++) {
+                unset($tokens[$i+$u]);
+              }
+              $tokens = array_values($tokens);
+              $t  = $tokens[$i]["typ"]    ?? null;
+              $w  = $tokens[$i]["wert"]   ?? null;
+              if($t === null) {
+                break;
+              }
+              $t1 = $tokens[$i+1]["typ"]  ?? null;
+              $w1 = $tokens[$i+1]["wert"] ?? null;
+              $t2 = $tokens[$i+2]["typ"]  ?? null;
+              $w2 = $tokens[$i+2]["wert"] ?? null;
+            }
+          }
+        }
+
+        if(in_array($t, array("Felder", "Logisch"))) {
+          if($t1 === "LogischerOperator") {
+            if(in_array($t2, array("Felder", "Logisch"))) {
+              $tokens[$i] = array(
+                "typ"   => "Logisch",
+                "wert"  => $w1,
+                "werte" => array(
+                  $tokens[$i],
+                  $tokens[$i+2]
+                )
+              );
+
+              for($u = 1; $u <= 2; $u++) {
+                unset($tokens[$i+$u]);
+              }
+              $tokens = array_values($tokens);
+              continue;
+            }
+          }
+        }
+
+        if(in_array($t, array("Feld", "FelderListe"))) {
+          if(in_array($mt1, array("LogischerOperator", null)) && in_array($t1, array("LogischerOperator", null))) {
+            $tokens[$i] = array(
+              "typ"   => "Felder",
+              "werte" => array(
+                $tokens[$i]
+              )
+            );
+          }
+        }
       }
-      $ergebnisse[$position] = $hat ? "1" : "0";
+
+      $tokens = array_values($tokens);
+      return $tokens;
+    };
+
+    $c = 0;
+    while(count($tokens) > 1 && ++$c<100) {
+      $tokens = $tokens_durchgehen($tokens);
     }
 
-    if(RECHTEPRUEFEN && $cms_nutzerrechte === true)  // Alle Rechte
-      return true;
+    $eval = function($tokens, ...$argumente) use (&$eval, $cms_nutzerrechte){
+      $tokens = $tokens[0]      ?? $tokens;
+      $typ = $tokens["typ"]     ?? null;
+      $wert = $tokens["wert"]   ?? null;
+      $werte = $tokens["werte"] ?? null;
+      if($typ === "Logisch") {
+        $w0 = $werte[0];
+        $w1 = $werte[1];
+        if($wert === "||") {
+          return $eval($w0) || $eval($w1);
+        }
+        if($wert === "&&") {
+          return $eval($w0) && $eval($w1);
+        }
+        return null;
+      }
 
-    $rechteEval = explode(" ", $rechteCode);
-    foreach($ergebnisse as $i => $e)
-      $rechteEval[$i] = $e;
-    $rechteEval = implode(" ", $rechteEval);
+      if($typ === "Felder") {
+        $pfad = array($cms_nutzerrechte);
+        foreach($werte as $wert) {
+          $e = $eval($wert, ...$pfad);
+          if($e === false || $e === true) {
+            return $e;
+          } else {
+            $pfad = $e;
+          }
+        }
+      }
 
-    return eval("return ($rechteEval);");
+      if($typ === "Feld") {
+        if(!count($argumente)) {
+          return false;
+        }
+        $r = array();
+        foreach($argumente as $arg) {
+          if($arg === true) {
+            return true;
+          }
+          if($wert === "*") {
+            if(count($arg)) {
+              return true;
+            }
+          }
+          if(isset($arg[$wert])) {
+            if($arg[$wert] === true) {
+              return true;
+            }
+            $r[] = $arg[$wert];
+          }
+        }
+        return $r;
+      }
+
+      if($typ === "FelderListe") {
+        $r = array();
+        foreach($werte as $w) {
+          $e = $eval($w, ...$argumente);
+          // if($wert === "&") {
+          //   if($e === false) {
+          //     return false;
+          //   }
+          // }
+          if($wert === "|") {
+            if($e === true) {
+              return true;
+            }
+          }
+          if(is_array($e)) {
+            $r[] = $e[0]??array();
+          }
+        }
+        if(!count($r)) {
+          return $wert !== "&";
+        }
+        return $r;
+      }
+    };
+
+    return $eval($tokens);
   }
 
   function r() {  // Alias :)

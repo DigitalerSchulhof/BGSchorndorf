@@ -185,29 +185,16 @@ function cms_angemeldet () {
 
 include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");
 
-function cms_rechte_laden($aktiverbenutzer = '-') {
+function cms_rechte_laden($aktiverbenutzer = '-', $dynamisch = true) {
 	global $CMS_SCHLUESSEL, $CMS_RECHTE;
 	cms_allerechte_laden();
 
 	cms_rechte_laden_nutzer($aktiverbenutzer);
 	cms_rechte_laden_rollen($aktiverbenutzer);
-	cms_rechte_laden_bedingte_rechte();
-	cms_rechte_laden_bedingte_rollen();
-
-	//
-	// TEMPORÄR BIS ALLE NEUEN RECHTE ÜBERNOMMEN
-	//
-
-	$dbs = cms_verbinden("s");
-	$sql = $dbs->prepare("SELECT AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM rechte");
-	if ($sql->execute()) {
-		$sql->bind_result($kategorie, $bezeichnung);
-		while($sql->fetch()) {
-			$CMS_RECHTE[$kategorie][$bezeichnung] = true;
-		}
+	if($dynamisch) {
+		cms_rechte_laden_bedingte_rechte();
+		cms_rechte_laden_bedingte_rollen();
 	}
-
-	return $CMS_RECHTE;
 }
 
 
@@ -533,9 +520,9 @@ function cms_ist_heute($heute, $pruefdatum) {
 
 function cms_websitedateirechte_laden() {
 	global $CMS_RECHTE;
-	$gruppenrechte['dateiupload'] = $CMS_RECHTE['Website']['Dateien hochladen'];
-	$gruppenrechte['dateiumbenennen'] = $CMS_RECHTE['Website']['Dateien umbenennen'];
-	$gruppenrechte['dateiloeschen'] = $CMS_RECHTE['Website']['Dateien löschen'];
+	$gruppenrechte['dateiupload'] 		= r("website.dateien.hochladen");
+	$gruppenrechte['dateiumbenennen'] = r("website.dateien.umbenennen");
+	$gruppenrechte['dateiloeschen'] 	= r("website.dateien.löschen");
 	$gruppenrechte['dateidownload'] = true;
 	$gruppenrechte['mitglied'] = true;
 	$gruppenrechte['sichtbar'] = true;

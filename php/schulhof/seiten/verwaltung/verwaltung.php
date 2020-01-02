@@ -5,15 +5,15 @@
 $ausgabe = "";
 // PERSONEN UND GRUPPEN
 $code = "";
-if (r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen || schulhof.verwaltung.personen.daten")) {
+if (r("schulhof.verwaltung.personen.[|sehen,anlegen,bearbeiten,löschen,daten]")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_personen\" href=\"Schulhof/Verwaltung/Personen\">";
 			$code .= "<h3>Personen</h3>";
-			$code .= "<p>Benutzerdaten und -konten von Schülern, Lehrern, Verwaltungsangestellten und Eltern ".aufzaehlen(array("sehen" => r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.daten"), "verwalten" => r("schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen"))).".</p>";
+			$code .= "<p>Benutzerdaten und -konten von Schülern, Lehrern, Verwaltungsangestellten und Eltern ".aufzaehlen(array("sehen" => r("schulhof.verwaltung.personen.[|sehen,daten]"), "verwalten" => r("schulhof.verwaltung.personen.[|anlegen,bearbeiten,löschen]"))).".</p>";
 		$code .= "</a>";
 	$code .= "</li>";
 }
-if (r("schulhof.verwaltung.rechte.rollen.sehen || schulhof.verwaltung.rechte.rollen.erstellen || schulhof.verwaltung.rechte.rollen.bearbeiten || schulhof.verwaltung.rechte.rollen.löschen")) {
+if (r("schulhof.verwaltung.rechte.rollen.[|sehen,erstellen,bearbeiten,löschen]")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_rollen\" href=\"Schulhof/Verwaltung/Rollen\">";
 			$code .=  "<h3>Rollen</h3>";
@@ -29,7 +29,7 @@ if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.b
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.gremien.anlegen || schulhof.gruppen.gremien.bearbeiten || schulhof.gruppen.gremien.löschen")) {
+if (r("schulhof.gruppen.gremien.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_gremien\" href=\"Schulhof/Verwaltung/Gruppen/Gremien\">";
 			$code .=  "<h3>Gremien</h3>";
@@ -37,7 +37,7 @@ if (r("schulhof.gruppen.gremien.anlegen || schulhof.gruppen.gremien.bearbeiten |
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.fachschaften.anlegen || schulhof.gruppen.fachschaften.bearbeiten || schulhof.gruppen.fachschaften.löschen")) {
+if (r("schulhof.gruppen.fachschaften.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_fachschaften\" href=\"Schulhof/Verwaltung/Gruppen/Fachschaften\">";
 			$code .=  "<h3>Fachschaften</h3>";
@@ -45,7 +45,7 @@ if (r("schulhof.gruppen.fachschaften.anlegen || schulhof.gruppen.fachschaften.be
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.klassen.anlegen || schulhof.gruppen.klassen.bearbeiten || schulhof.gruppen.klassen.löschen")) {
+if (r("schulhof.gruppen.klassen.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_klassen\" href=\"Schulhof/Verwaltung/Gruppen/Klassen\">";
 			$code .=  "<h3>Klassen und Tutorenklassen</h3>";
@@ -53,7 +53,7 @@ if (r("schulhof.gruppen.klassen.anlegen || schulhof.gruppen.klassen.bearbeiten |
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.kurse.anlegen || schulhof.gruppen.kurse.bearbeiten || schulhof.gruppen.kurse.löschen")) {
+if (r("schulhof.gruppen.kurse.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_kurse\" href=\"Schulhof/Verwaltung/Gruppen/Kurse\">";
 			$code .=  "<h3>Kurse</h3>";
@@ -61,7 +61,7 @@ if (r("schulhof.gruppen.kurse.anlegen || schulhof.gruppen.kurse.bearbeiten || sc
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.stufen.anlegen || schulhof.gruppen.stufen.bearbeiten || schulhof.gruppen.stufen.löschen")) {
+if (r("schulhof.gruppen.stufen.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_klassenstufen\" href=\"Schulhof/Verwaltung/Gruppen/Stufen\">";
 			$code .=  "<h3>Klassenstufen</h3>";
@@ -69,7 +69,7 @@ if (r("schulhof.gruppen.stufen.anlegen || schulhof.gruppen.stufen.bearbeiten || 
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.arbeitsgemeinschaften.anlegen || schulhof.gruppen.arbeitsgemeinschaften.bearbeiten || schulhof.gruppen.arbeitsgemeinschaften.löschen")) {
+if (r("schulhof.gruppen.arbeitsgemeinschaften.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_ags\" href=\"Schulhof/Verwaltung/Gruppen/Arbeitsgemeinschaften\">";
 			$code .=  "<h3>Arbeitsgemeinschaften</h3>";
@@ -77,7 +77,7 @@ if (r("schulhof.gruppen.arbeitsgemeinschaften.anlegen || schulhof.gruppen.arbeit
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.arbeitskreise.anlegen || schulhof.gruppen.arbeitskreise.bearbeiten || schulhof.gruppen.arbeitskreise.löschen")) {
+if (r("schulhof.gruppen.arbeitskreise.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_aks\" href=\"Schulhof/Verwaltung/Gruppen/Arbeitskreise\">";
 			$code .=  "<h3>Arbeitskreise</h3>";
@@ -85,7 +85,7 @@ if (r("schulhof.gruppen.arbeitskreise.anlegen || schulhof.gruppen.arbeitskreise.
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.fahrten.anlegen || schulhof.gruppen.fahrten.bearbeiten || schulhof.gruppen.fahrten.löschen")) {
+if (r("schulhof.gruppen.fahrten.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_fahrten\" href=\"Schulhof/Verwaltung/Gruppen/Fahrten\">";
 			$code .=  "<h3>Fahrten</h3>";
@@ -93,7 +93,7 @@ if (r("schulhof.gruppen.fahrten.anlegen || schulhof.gruppen.fahrten.bearbeiten |
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.wettbewerbe.anlegen || schulhof.gruppen.wettbewerbe.bearbeiten || schulhof.gruppen.wettbewerbe.löschen")) {
+if (r("schulhof.gruppen.wettbewerbe.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_wettbewerbe\" href=\"Schulhof/Verwaltung/Gruppen/Wettbewerbe\">";
 			$code .=  "<h3>Wettbewerbe</h3>";
@@ -101,7 +101,7 @@ if (r("schulhof.gruppen.wettbewerbe.anlegen || schulhof.gruppen.wettbewerbe.bear
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.ereignisse.anlegen || schulhof.gruppen.ereignisse.bearbeiten || schulhof.gruppen.ereignisse.löschen")) {
+if (r("schulhof.gruppen.ereignisse.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_ereignisse\" href=\"Schulhof/Verwaltung/Gruppen/Ereignisse\">";
 			$code .=  "<h3>Ereignisse</h3>";
@@ -109,7 +109,7 @@ if (r("schulhof.gruppen.ereignisse.anlegen || schulhof.gruppen.ereignisse.bearbe
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.gruppen.sonstigegruppen.anlegen || schulhof.gruppen.sonstigegruppen.bearbeiten || schulhof.gruppen.sonstigegruppen.löschen")) {
+if (r("schulhof.gruppen.sonstigegruppen.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_gruppen_sonstige\" href=\"Schulhof/Verwaltung/Gruppen/Sonstige_Gruppen\">";
 			$code .=  "<h3>Sonstige Gruppen</h3>";
@@ -219,7 +219,7 @@ if ($code) {
 
 // ORGANISATION
 $code = "";
-if (r("schulhof.planung.schuljahre.anlegen || schulhof.planung.schuljahre.bearbeiten || schulhof.planung.schuljahre.löschen")) {
+if (r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuljahre\" href=\"Schulhof/Verwaltung/Schuljahre\">";
 			$code .=  "<h3>Schuljahre</h3>";
@@ -255,7 +255,7 @@ if (r("schulhof.organisation.schulanmeldung.*")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_schulanmeldung\" href=\"Schulhof/Verwaltung/Schulanmeldung\">";
 			$code .=  "<h3>Schulanmeldung</h3>";
-			$code .=  "<p>Veröffentlichungszeitraum festlegen, Anschreiben einstellen, Profile anlegen, Fristen setzen. ".(r("schulhof.organisation.schulanmeldung.erfassen || schulhof.organisation.schulanmeldung.bearbeiten || schulhof.organisation.schulanmeldung.löschen || schulhof.organisation.schulanmeldung.exportieren")?"Anmeldungen ".aufzaehlen(array("erfassen" => r("schulhof.organisation.schulanmeldung.erfassen"), "bearbeiten" => r("schulhof.organisation.schulanmeldung.bearbeiten"), "löschen" => r("schulhof.organisation.schulanmeldung.löschen"), "exportieren" => r("schulhof.organisation.schulanmeldung.exportieren"))).".":"")."</p>";	// TODO: Beschreibung
+			$code .=  "<p>Veröffentlichungszeitraum festlegen, Anschreiben einstellen, Profile anlegen, Fristen setzen. ".(r("schulhof.organisation.schulanmeldung.[|erfassen,bearbeiten,löschen,exportieren]")?"Anmeldungen ".aufzaehlen(array("erfassen" => r("schulhof.organisation.schulanmeldung.erfassen"), "bearbeiten" => r("schulhof.organisation.schulanmeldung.bearbeiten"), "löschen" => r("schulhof.organisation.schulanmeldung.löschen"), "exportieren" => r("schulhof.organisation.schulanmeldung.exportieren"))).".":"")."</p>";	// TODO: Beschreibung
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -448,7 +448,7 @@ if (r("schulhof.technik.geräte.verwalten")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.technik.hausmeisteraufträge.sehen || schulhof.technik.hausmeisteraufträge.markieren || schulhof.technik.hausmeisteraufträge.löschen")) {
+if (r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren,löschen]")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_technik_hausmeister\" href=\"Schulhof/Hausmeister/Aufträge\">";
 			$code .=  "<h3>Hausmeisteraufräge</h3>";
