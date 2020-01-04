@@ -14,8 +14,7 @@ if (isset($_POST['bestand'])) {$bestand = $_POST['bestand'];} else {echo "FEHLER
 if (isset($_POST['feldid'])) {$feldid = $_POST['feldid'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+cms_rechte_laden();
 
 $fehler = false;
 
@@ -25,7 +24,7 @@ if (!cms_check_idfeld($bestand)) {$fehler = true; echo 2;}
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.planung.schuljahre.fabrik")) {
 
 	if (!$fehler) {
 		// Alte Mitglieder laden

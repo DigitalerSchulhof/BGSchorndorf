@@ -10,8 +10,6 @@ session_start();
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 $fehler = false;

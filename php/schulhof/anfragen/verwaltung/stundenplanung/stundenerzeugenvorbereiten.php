@@ -11,10 +11,9 @@ if (isset($_POST['sjid'])) {$sjid = $_POST['sjid'];} else {echo "FEHLER";exit;}
 
 if (!cms_check_ganzzahl($sjid, 0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.planung.schuljahre.erzeugen")) {
 	$_SESSION["STUNDENERZEUGENSCHULJAHR"] = $sjid;
 	echo "ERFOLG";
 }

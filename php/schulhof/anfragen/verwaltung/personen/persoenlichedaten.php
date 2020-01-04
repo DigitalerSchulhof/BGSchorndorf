@@ -15,10 +15,10 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER"; exi
 if (!cms_check_toggle($modus)) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 if ($modus == "1") {
-	$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
+	$zugriff = r("schulhof.verwaltung.personen.bearbeiten");
 	if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 }
 else {

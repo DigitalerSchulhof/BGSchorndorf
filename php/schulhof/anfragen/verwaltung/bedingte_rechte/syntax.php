@@ -17,11 +17,6 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
   for($i = 0; $i < count($bed)+1; $i++) {
     $b  = $bed[$i]   ?? null;
     $p1 = $bed[$i+1] ?? null;
-    $p2 = $bed[$i+2] ?? null;
-    $p3 = $bed[$i+3] ?? null;
-    $p4 = $bed[$i+4] ?? null;
-    $p5 = $bed[$i+5] ?? null;
-    $p6 = $bed[$i+6] ?? null;
 
     if(preg_match("/^\\s+$/mi", $b)) {
       continue;
@@ -301,11 +296,12 @@ function cms_bedingt_bedingung_syntax_baum($bedingung) {
   $maxDurchgaenge = 1000;
 
   while(count($tokens) > 1 && ++$c < $maxDurchgaenge+1) {
-    $tokens = array_values($tokens);
     $tokens = $tokens_durchgehen($tokens);
+    $tokens = array_values($tokens);
   };
 
   $tokens = $tokens_durchgehen($tokens);
+  $tokens = array_values($tokens);
 
   if(count($tokens) == 1 &&
      in_array($tokens[0]["typ"]??null, array("Vergleich", "Logisch", "EndFeld", "EndZahl", "EndString", "Funktionsaufruf"))) {

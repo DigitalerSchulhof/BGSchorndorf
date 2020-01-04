@@ -11,7 +11,7 @@
       $code .= cms_besucherstatistik_website("t", "gesamtaufrufe_linie");
       $code .= cms_besucherstatistik_website("t", "bereiche_balken");
 
-      if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] && strlen($code)) {
+      if(strlen($code) && r("statistik.besucher.website.termine")) {
         echo "<br>Balkendiagramm:";
         echo " <span id='cms_besucherstatistik_website_geloescht_toggle' class='cms_toggle' onclick='cms_besucherstatistik_website_geloescht_toggle(\"t\")'>Gelöschte Termine ausblenden</span>";
       }
@@ -20,8 +20,7 @@
 <div id="besucherstatistik">
 </div>
 <?php
-  $zugriff = $CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'];
-  if (!$zugriff) {
+  if (!r("statistik.besucher.website.termine")) {
     echo cms_meldung_berechtigung();
   } else {
     echo $code;

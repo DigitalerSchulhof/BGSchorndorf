@@ -4,8 +4,7 @@
 <h1>Neuen Dauerbrenner anlegen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Dauerbrenner anlegen'];
-if ($zugriff) {
+if (r("schulhof.information.dauerbrenner.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrennerdetails.php');
 	include_once('php/schulhof/seiten/website/editor/editor.php');

@@ -26,9 +26,6 @@ if (isset($_POST['nummer'])) {$nummer = $_POST['nummer'];} else {echo "FEHLER";e
 if (isset($_POST['limit'])) {$limit = $_POST['limit'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = true;
-
 if (cms_angemeldet()) {
 	$fehler = false;
 	if (!cms_check_ganzzahl($CMS_BENUTZERID)) {$fehler = true;}

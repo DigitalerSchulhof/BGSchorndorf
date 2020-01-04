@@ -1,8 +1,8 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-  $zugriff = $CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten'];
-  if (!$zugriff) {
+
+  if (!cms_angemeldet() || !r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
     echo cms_meldung_berechtigung();
   } else {
     $code = "";

@@ -62,21 +62,21 @@
         $code .= "<a class=\"cms_iconbutton$neuedaten\" id=\"cms_button_website_neuedaten\" href=\"Website/".$CMS_URL[1]."/Neu/$CMS_URLANHANG\">Neue Daten</a></td>";
 
         $code .= "<td>";
-          if (($CMS_RECHTE['Website']['Dateien hochladen']) || ($CMS_RECHTE['Website']['Dateien umbenennen']) || ($CMS_RECHTE['Website']['Dateien löschen'])) {
+          if (r("website.dateien.*")) {
             $code .= "<a class=\"cms_iconbutton cms_button_website_dateien\" href=\"Schulhof/Website/Dateien\">Dateien</a> ";
           }
-          if (($CMS_RECHTE['Website']['Inhalte freigeben']) && ($CMS_URL[2] == 'Neu')) {
+          if (($CMS_URL[2] == 'Neu') && r("website.freigeben")) {
             $CMS_ZUSATZ = implode('/', array_slice($CMS_URL, 3));
             $code .= "<span class=\"cms_iconbutton cms_button_website_freigeben\" onclick=\"cms_element_allefreigeben('".$CMS_SEITENDETAILS['id']."', '".$CMS_URL[2]."', '$CMS_ZUSATZ')\">Freigeben</span> ";
           }
-          if ($CMS_RECHTE['Website']['Inhalte freigeben']) {
+          if (r("website.freigeben")) {
             $CMS_ZUSATZ = implode('/', array_slice($CMS_URL, 3));
             $code .= "<span class=\"cms_iconbutton cms_button_website_aktivieren\" onclick=\"cms_element_alleaktivieren('".$CMS_SEITENDETAILS['id']."', '".$CMS_URL[2]."', '$CMS_ZUSATZ')\">Aktivieren</span> ";
           }
-          if ($CMS_RECHTE['Website']['Seiten bearbeiten']) {
+          if (r("website.seiten.bearbeiten")) {
             $code .= "<span class=\"cms_iconbutton cms_button_website_bearbeiten\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$CMS_SEITENDETAILS['id']."');\">Seite bearbeiten</span> ";
           }
-          if ($CMS_RECHTE['Website']['Seiten löschen']) {
+          if (r("website.seiten.löschen")) {
             $code .= "<span class=\"cms_iconbutton cms_button_nein cms_button_website_loeschen\" onclick=\"cms_schulhof_website_seite_loeschen_anzeigen('".$CMS_SEITENDETAILS['bezeichnung']."', '".$CMS_SEITENDETAILS['id']."');\">Seite löschen</span> ";
           }
         $code .= "</td>";

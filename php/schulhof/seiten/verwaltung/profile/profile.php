@@ -2,10 +2,9 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen'];
 
 $code = "";
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.profile.*")) {
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
   if (isset($_SESSION['PROFILSCHULJAHR'])) {
@@ -71,10 +70,10 @@ if ($zugriff) {
             if (strlen($faecher) > 0) {$faecher = substr($faecher, 2);}
             $zeilen .= "<td>".$faecher."</td>";
             $zeilen .= "<td>";
-            if ($CMS_RECHTE['Planung']['Profile bearbeiten']) {
+            if (r("schulhof.planung.schuljahre.profile.bearbeiten")) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_bearbeiten_vorbereiten($pid);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
             }
-            if ($CMS_RECHTE['Planung']['Profile löschen']) {
+            if (r("schulhof.planung.schuljahre.profile.löschen")) {
               $zeilen .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_profile_loeschen_anzeigen('$pbez', $pid);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
             }
             $zeilen .= "</td>";
@@ -90,7 +89,7 @@ if ($zugriff) {
 
     $code .= "</table>";
 
-    if ($CMS_RECHTE['Planung']['Profile anlegen']) {
+    if (r("schulhof.planung.schuljahre.profile.anlegen")) {
       $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Profile/Neues_Profil_anlegen\">+ Neues Profil anlegen</a></p>";
     }
 

@@ -4,9 +4,7 @@
 <h1>Seiten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Website']['Seiten anlegen'] || $CMS_RECHTE['Organisation']['Website bearbeiten'] || $CMS_RECHTE['Website']['Seiten löschen'] || $CMS_RECHTE['Website']['Startseite festlegen'];
-
-if ($zugriff) {
+if (r("website.seiten.*")) {
 
 	include_once('php/schulhof/seiten/website/seiten/seitenbaum.php');
 
@@ -17,7 +15,7 @@ if ($zugriff) {
 		cms_trennen($dbs);
 	$code .= "</table>";
 
-	if ($CMS_RECHTE['Website']['Seiten anlegen']) {
+	if (r("website.seiten.anlegen")) {
 		$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('-')\">+ Neue Seite anlegen</span></p>";
 	}
 

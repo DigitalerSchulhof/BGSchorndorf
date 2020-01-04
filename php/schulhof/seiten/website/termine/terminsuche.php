@@ -1,8 +1,8 @@
 <?php
 function cms_terminverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_GRUPPEN;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = $CMS_RECHTE['Organisation']['Termine genehmigen'];
+  $genehmigen = r("artikel.genehmigen.termine");
 
   if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
 

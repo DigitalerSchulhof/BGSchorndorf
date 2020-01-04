@@ -4,9 +4,7 @@
 <h1>Dauerbrenner</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Dauerbrenner anlegen'] || $CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten'] || $CMS_RECHTE['Organisation']['Dauerbrenner löschen'];
-
-if ($zugriff) {
+if (r("schulhof.information.dauerbrenner.*")) {
 ?>
 	<table class="cms_liste">
 		<thead>
@@ -35,10 +33,10 @@ if ($zugriff) {
 					// Aktionen
 					$ausgabe .= "<td>";
 					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-					if ($CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten']) {
+					if (r("schulhof.information.dauerbrenner.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_dauerbrenner_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
-					if ($CMS_RECHTE['Organisation']['Dauerbrenner löschen']) {
+					if (r("schulhof.information.dauerbrenner.löschen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_dauerbrenner_loeschen_anzeigen(".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 					}
 
@@ -58,7 +56,7 @@ if ($zugriff) {
 		</tbody>
 	</table>
 <?php
-	if ($CMS_RECHTE['Organisation']['Dauerbrenner anlegen']) {
+	if (r("schulhof.information.dauerbrenner.anlegen")) {
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Dauerbrenner/Neuen_Dauerbrenner_anlegen\">+ Neuen Dauerbrenner anlegen</a></p>";
 	}
 }

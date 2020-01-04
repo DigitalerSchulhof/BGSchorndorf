@@ -3,8 +3,7 @@
 
 <h1>Schuljahr bearbeiten</h1>
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Schuljahre bearbeiten'];
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.bearbeiten")) {
 	// PERSÖNLICHE DATEN LADEN
 	if (isset($_SESSION["SCHULJAHREBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/schuljahre/schuljahrdetails.php');

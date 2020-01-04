@@ -19,12 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-$zugriff = $CMS_RECHTE['Planung']['Räume sehen'];
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && r("schulhof.organisation.räume.sehen")) {
 
 	$geraete = array();
 	$anzahl = 0;
@@ -53,7 +48,7 @@ if ($angemeldet && $zugriff) {
 		$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 
-		if ($CMS_RECHTE['Planung']['Raumpläne sehen']) {
+		if (r("schulhof.information.pläne.stundenpläne.räume")) {
 			if ($CMS_EINSTELLUNGEN['Stundenplan Raum extern'] == '1') {
 				$code .= "<h3>Regulärer Raumplan</h3>";
 				if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
@@ -93,9 +88,9 @@ if ($angemeldet && $zugriff) {
 		$jetzt = time();
 
 		if ($buchbar == 1) {
-			if ($CMS_RECHTE['Planung']['Buchungen anonymisiert sehen'] || $CMS_RECHTE['Planung']['Buchungen sehen']) {
+			if (r("schulhof.organisation.buchungen.räume.[|anonymisiert,sehen]")) {
 				include_once('php/schulhof/seiten/plaene/buchungen/ausgabe.php');
-				if ($CMS_RECHTE['Planung']['Buchungen sehen']) {$anonymisiert = false;}
+				if (r("schulhof.organisation.buchungen.räume.sehen")) {$anonymisiert = false;}
 				else {$anonymisiert = true;}
 				$code .= cms_buchungen_ausgeben('r', $raumid, date("d"), date("m"), date("Y"), $anonymisiert);
 			}
@@ -116,7 +111,7 @@ if ($angemeldet && $zugriff) {
 			}
 			$code .= "</table>";
 
-			if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
+			if (r("schulhof.technik.geräte.probleme")) {
 				$code .= "<p><span id=\"cms_gerateproblemknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_geraeteproblem', 'cms_gerateproblemknopf', 'Problem melden', 'Problemmeldung abbrechen')\">Problem melden</span></p>";
 
 				$code .= "<div id=\"cms_geraeteproblem\" class=\"cms_versteckt\" style=\"display: none;\">";

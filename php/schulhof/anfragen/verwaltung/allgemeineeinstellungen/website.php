@@ -30,10 +30,9 @@ if (isset($_POST['fehlermeldungangemeldet'])) {$fehlermeldungangemeldet = $_POST
 if (isset($_POST['feedbackaktiv'])) {$feedbackaktiv = $_POST['feedbackaktiv'];} else {echo "FEHLER";exit;}
 if (isset($_POST['feedbackangemeldet'])) {$feedbackangemeldet = $_POST['feedbackangemeldet'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
 	if (!cms_check_toggle($menueseitenweiterleiten)) {$fehler = true;}

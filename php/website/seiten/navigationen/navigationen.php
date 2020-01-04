@@ -1,7 +1,7 @@
 <?php
 // Unterseiten einer bestimmten Seite ausgeben (ebene = s)
 function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = '', $untermenuebegonnen = false) {
-	global $CMS_URL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_ANGEMELDET;
+	global $CMS_URL, $CMS_EINSTELLUNGEN, $CMS_ANGEMELDET;
 	$code = "";
 	$finale = "";
 
@@ -76,7 +76,7 @@ function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = 
 	}
 
 	if (isset($CMS_URL[1])) {
-		if (($CMS_RECHTE['Website']['Seiten anlegen']) && ($CMS_URL[1] == 'Bearbeiten')) {
+		if (($CMS_URL[1] == 'Bearbeiten') && r("website.seiten.anlegen")) {
 			$code .= "<li><span class=\"cms_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('$start');\">+ Neue Seite</span></li>";
 		}
 	}
@@ -197,7 +197,7 @@ function cms_navigation_oberseiteid($dbs, $pfad, $ebene) {
 
 // Funktion Navigationsebene ausgeben
 function cms_navigationsebene_ausgeben($dbs, $pfad, $gesamtpfad, $oberseite, $tiefe, $art = '', $durchgang = 1, $untermenuebegonnen = false) {
-	global $CMS_URL, $CMS_RECHTE;
+	global $CMS_URL;
 	$CMS_ZUSATZ = implode('/', array_slice($CMS_URL,3));
 
 	$bereich = $CMS_URL[1];
@@ -307,7 +307,7 @@ function cms_navigationsebene_ausgeben($dbs, $pfad, $gesamtpfad, $oberseite, $ti
 		}
 	}
 
-	if (($CMS_RECHTE['Website']['Seiten anlegen']) && ($CMS_URL[1] == 'Bearbeiten')) {
+	if (($CMS_URL[1] == 'Bearbeiten') && r("website.seiten.anlegen")) {
 		$code .= "<li><span class=\"cms_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('$oberseite');\">+ Neue Seite</span></li>";
 	}
 

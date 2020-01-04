@@ -4,9 +4,7 @@
 <h1>Schulnetze verwalten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Administration']['Schulnetze verwalten'];
-
-if ($zugriff) {
+if (r("technik.server.netze")) {
 	$warnung = cms_meldung('warnung', '<h4>Hier endet die Spielwiese – Fehler können das System lahmlegen</h4><p>Wenn hier ein Fehler passiert, kann der Zugang zum Schulhof und zur Schulwebsite nachhaltig beschädigt werden, sodass es nur noch durch Änderungen im Programmcode selbst wieder gestartet werden kann. Änderungen sollten daher nicht von Laien durchgeführt werden!</p><p>Es kann sinnvoll sein, vor dieser Aktion ein Backup durchzuführen.</p><p>Hier werden lediglich die Datenbankzugänge geändert. Datenübertragungen und/oder -löschungen müssen manuell durchgeführt werden.</p><p>Wenn Zweifel an der Richtigkeit der Eingaben bestehen, sollte ein Fachmann hinzugezogen werden!</p>');
 
 	$code = $warnung;

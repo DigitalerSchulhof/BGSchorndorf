@@ -10,10 +10,9 @@ session_start();
 if (isset($_POST['gruppe'])) {$gruppe = $_POST['gruppe'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen exportieren'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.exportieren")) {
 	$fehler = false;
 
 	if (($gruppe != 'alle') && ($gruppe != 'auf') && ($gruppe != 'aufohne') && ($gruppe != 'aufbili') && ($gruppe != 'abgelehnt')) {$fehler = true;}

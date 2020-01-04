@@ -9,12 +9,10 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) 	{$id = $_POST['id'];} 		else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['Technik']['Hausmeisteraufträge löschen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.technik.hausmeisteraufträge.löschen")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

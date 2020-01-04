@@ -16,9 +16,7 @@ echo cms_stundenplanung_navigation();
 <?php
 include_once('php/schulhof/seiten/verwaltung/stundenplanung/zeitraeume/ausgeben.php');
 
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen'] || $CMS_RECHTE['Planung']['Stundenpläne anlegen'] || $CMS_RECHTE['Planung']['Stundenpläne bearbeiten'] || $CMS_RECHTE['Planung']['Stundenpläne löschen'];
-
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen]")) {
   $code = "";
 
   $schuljahrcode = "";
@@ -30,7 +28,7 @@ if ($zugriff) {
   $schuljahre = array();
   $spalten = 3;
   $aktionen = false;
-  if ($CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen'] ||
+  if(r("schulhof.planung.schuljahre.planungszeiträume.[|bearbeiten,löschen] || schulhof.planung.schuljahre") || // Konflikt oben?
       $CMS_RECHTE['Planung']['Stundenpläne anlegen'] || $CMS_RECHTE['Planung']['Stundenpläne bearbeiten'] || $CMS_RECHTE['Planung']['Stundenpläne löschen']) {
     $aktionen = true;
     $spalten++;
@@ -66,7 +64,7 @@ if ($zugriff) {
     $code .= "</tbody></table>";
   }
 
-  if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen']) {
+  if (r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
     $code .= "<p><a href=\"Schulhof/Verwaltung/Stundenplanung/Neuer_Zeitraum\" class=\"cms_button_ja\">+ Neuen Zeitraum anlegen</a></p>";
   }
 

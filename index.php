@@ -121,7 +121,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		$CMS_RECHTE = cms_rechte_laden();
+		cms_rechte_laden();
 	}
 
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
@@ -480,7 +480,7 @@
 		}
 
 		if (($CMS_ANGEMELDET) && ($CMS_URL[0] == 'Website')) {
-			if ($CMS_RECHTE['Website']['Inhalte anlegen'] || $CMS_RECHTE['Website']['Inhalte bearbeiten'] || $CMS_RECHTE['Website']['Inhalte löschen']) {
+			if (r("website.elemente.%ELEMENTE%.*")) {
 				include_once("php/website/seiten/bearbeiten.php");
 			}
 		}

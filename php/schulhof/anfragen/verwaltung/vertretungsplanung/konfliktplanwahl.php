@@ -17,10 +17,9 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (($planart != 'l') && ($planart != 'r') && ($planart != 'k') && ($planart != 's')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
   $dbs = cms_verbinden('s');
   $AUSGABE = array();
   $fehler = false;

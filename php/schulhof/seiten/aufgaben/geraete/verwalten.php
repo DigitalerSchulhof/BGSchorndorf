@@ -6,13 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Geräte verwalten</h1>";
 
-$zugriff = $CMS_RECHTE['Technik']['Geräte verwalten'];
-$fehler = false;
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && r("schulhof.technik.geräte.verwalten")) {
 	$dbs = cms_verbinden('s');
 	$code .= "<h2>Räume</h2>";
 	$code .= "<table class=\"cms_liste\">";

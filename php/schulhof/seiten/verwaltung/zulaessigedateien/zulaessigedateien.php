@@ -4,8 +4,7 @@
 <h1>Zulässige Dateien</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Administration']['Zulässige Dateien verwalten'];
-if ($zugriff) {
+if (r("technik.server.dateienerlaubnis")) {
 	$code = "<h3>Limit</h3>";
 	$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr><th>Maximale Dateigröße:</th><td><input type=\"text\" name=\"cms_schulhof_zulaessig_groesse\" id=\"cms_schulhof_zulaessig_groesse\" value=\"$CMS_MAX_DATEI\"> ";

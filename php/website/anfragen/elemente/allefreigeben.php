@@ -9,10 +9,9 @@ session_start();
 
 if (isset($_POST['seite'])) {$seite = $_POST['seite'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte freigeben'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("website.freigeben")) {
 	$fehler = false;
 
 	if (!$fehler) {

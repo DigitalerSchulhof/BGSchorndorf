@@ -4,16 +4,14 @@
 <h1>Bisher nicht genehmigte Termine</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen'];
-
-if ($zugriff) {
+if (r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
 	include_once("php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php");
 	$POSTEMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
 	$ausgabe = "";
 
 	$dbs = cms_verbinden('s');
 
-	if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {
+	if (r("artikel.genehmigen.termine")) {
 		$ausgabe .= "<h2>Öffentliche Termine</h2>";
 		$ausgabe .= "<table class=\"cms_liste\">";
 			$ausgabe .= "<thead>";
@@ -78,7 +76,7 @@ if ($zugriff) {
 	}
 
 
-	if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+	if (r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
 		$ausgabe .= "<h2>Interne Termine</h2>";
 		$ausgabe .= "<table class=\"cms_liste\">";
 			$ausgabe .= "<thead>";

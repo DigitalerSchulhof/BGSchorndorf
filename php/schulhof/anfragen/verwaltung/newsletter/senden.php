@@ -14,10 +14,9 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen(array("text", "id"));
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Newsletter schreiben'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.information.newsletter.schreiben")) {
 	$dbs = cms_verbinden('s');
 
 	$text = cms_texttrafo_e_db_ohnetag($text);

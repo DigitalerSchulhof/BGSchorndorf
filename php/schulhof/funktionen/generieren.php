@@ -297,12 +297,12 @@ function cms_geraeteverwalten_knopf($dbs) {
 }
 
 function cms_terminegenehmigen_knopf($dbs) {
-  global $CMS_RECHTE, $CMS_GRUPPEN;
+  global $CMS_GRUPPEN;
   $zusatz = "";
   $sql = "";
   $code = "";
-  if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
-  if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+  if (r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+  if (r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
@@ -327,12 +327,12 @@ function cms_terminegenehmigen_knopf($dbs) {
 }
 
 function cms_blogeintraegegenehmigen_knopf($dbs) {
-  global $CMS_RECHTE, $CMS_GRUPPEN;
+  global $CMS_GRUPPEN;
   $code = "";
   $zusatz = "";
   $sql = "";
-  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
-  if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+  if (r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+  if (r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
@@ -474,35 +474,35 @@ function cms_chatmeldungen_knopf($dbs) {
 }
 
 function cms_sonderrollen_generieren() {
-	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERART;
+	global $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERART;
 	$code = "";
 	$dbs = cms_verbinden('s');
   if ($CMS_BENUTZERART == 'l') {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
 
   }
-	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
+	if (r("schulhof.technik.geräte.verwalten")) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
   }
-	if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+	if (r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     $code .= "<li>".cms_terminegenehmigen_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+  if (r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     $code .= "<li>".cms_blogeintraegegenehmigen_knopf($dbs)."</li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+  if (r("artikel.genehmigen.galerien")) {
     $code .= "<li>".cms_galeriengenehmigen_knopf($dbs)."</li> ";
 	}
-	if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
+  if (r("schulhof.nutzerkonten.verstöße.identitätsdiebstahl")) {
 		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+  if (r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren]")) {
 		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
+  if (r("schulhof.nutzerkonten.verstöße.auffälliges")) {
 		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']) {
+  if (r("schulhof.nutzerkonten.verstöße.chatmeldungen")) {
 		$code .= "<li>".cms_chatmeldungen_knopf($dbs)."</li> ";
 	}
 	cms_trennen($dbs);

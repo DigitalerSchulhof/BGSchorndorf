@@ -118,7 +118,7 @@ function cms_startseitendetails_erzeugen($dbs) {
 }
 
 function cms_seite_ausgeben($dbs) {
-  global $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_GERAET, $CMS_SEITENDETAILS, $CMS_URL;
+  global $CMS_ANGEMELDET, $CMS_GERAET, $CMS_SEITENDETAILS, $CMS_URL;
   $seite = $CMS_SEITENDETAILS;
 
 	if (isset($seite['id'])) {
@@ -164,7 +164,7 @@ function cms_seite_ausgeben($dbs) {
                 }
                 $anfrage->free();
               }
-              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (($CMS_RECHTE['Website']['Inhalte anlegen']) || ($CMS_RECHTE['Website']['Inhalte bearbeiten']))) {
+              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]")) {
                 $_SESSION['ELEMENTSEITE'] = $seite['id'];
               }
             }
@@ -186,7 +186,7 @@ function cms_seite_ausgeben($dbs) {
                 }
                 $anfrage->free();
               }
-              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (($CMS_RECHTE['Website']['Seiten anlegen']))) {
+              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.seiten.anlegen")) {
                 $mcode .= "<li><span class=\"cms_website_menuepunkte_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('".$seite['id']."');\">";
                 $mcode .= "+ Neue Seite";
                 $mcode .= "</span></li>";
@@ -215,7 +215,7 @@ function cms_seite_ausgeben($dbs) {
 }
 
 function cms_spalte_ausgeben($dbs, $spalte) {
-  global $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_URL, $CMS_ELEMENTE;
+  global $CMS_ANGEMELDET, $CMS_URL, $CMS_ELEMENTE;
   $code = "";
   $elementcode = array();
 
@@ -236,19 +236,19 @@ function cms_spalte_ausgeben($dbs, $spalte) {
   }
 
   $position = 1;
-  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && ($CMS_RECHTE['Website']['Inhalte anlegen'])) {
+  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.anlegen")) {
     $code .= cms_neues_element($spalte, $position, $CMS_URL[2]);
   }
 
   for ($i = 1; $i <= count($elementcode); $i++) {
     $code .= $elementcode[$i];
     $position++;
-    if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && ($CMS_RECHTE['Website']['Inhalte anlegen'])) {
+    if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.anlegen")) {
       $code .= cms_neues_element($spalte, $position, $CMS_URL[2]);
     }
   }
 
-  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (($CMS_RECHTE['Website']['Inhalte anlegen']) || ($CMS_RECHTE['Website']['Inhalte bearbeiten']))) {
+  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]")) {
     $_SESSION['ELEMENTMAXPOS'] = $position-1;
     $code .= "<p><input type=\"hidden\" id=\"cms_website_neu_maxpos\" name=\"cms_website_neu_maxpos\" value=\"".$position."\"></p>";
   }

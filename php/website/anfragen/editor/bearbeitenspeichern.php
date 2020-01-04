@@ -15,11 +15,9 @@ if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSIT
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];
+cms_rechte_laden();
 
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("website.elemente.editor.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -38,7 +36,7 @@ if (cms_angemeldet() && $zugriff) {
 		$inhalt = str_replace('<br></p>', '</p>', $inhalt);
 		$inhalt = str_replace('<p></p>', '', $inhalt);
 		$inhalt = cms_texttrafo_e_db($inhalt);
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$sql = "UPDATE editoren SET position = $position, neu = '$inhalt' WHERE id = $id";}
+		if (!r("website.freigeben")) {$sql = "UPDATE editoren SET position = $position, neu = '$inhalt' WHERE id = $id";}
 		else {$sql = "UPDATE editoren SET position = $position, alt = aktuell, aktuell = '$inhalt', neu = '$inhalt', aktiv = '$aktiv' WHERE id = $id";}
 		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
 		echo "ERFOLG";

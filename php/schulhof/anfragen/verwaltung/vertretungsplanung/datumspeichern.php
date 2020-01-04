@@ -17,13 +17,13 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (($art != 'a') && ($art != 'k1') && ($art != 'k2') && ($art != 'l') && ($art != 'r') && ($art != 'ks')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = false;
 if ($art == 'a') {
-	$zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'];
+	$zugriff = r("schulhof.planung.vertretungsplan.ausplanungen");
 }
 else if (($art == 'k1') || ($art == 'k2') || ($art == 'l') || ($art == 'r') || ($art == 'ks')) {
-	$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+	$zugriff = r("schulhof.planung.vertretungsplan.vertretungsplanung");
 }
 
 if (cms_angemeldet() && $zugriff) {

@@ -9,13 +9,13 @@ $code .= "<h1>Website</h1>";
 
 $website = "";
 
-if($CMS_RECHTE['Website']['Seiten anlegen'] || $CMS_RECHTE['Organisation']['Website bearbeiten'] || $CMS_RECHTE['Website']['Seiten löschen'] || $CMS_RECHTE['Website']['Startseite festlegen'])
+if(r("website.seiten.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_seiten\" href=\"Schulhof/Website/Seiten\">Seiten</a> ";
-if($CMS_RECHTE['Website']['Hauptnavigationen festlegen'])
+if(r("website.navigation"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_hauptnavigationen\" href=\"Schulhof/Website/Hauptnavigationen\">Hauptnavigationen</a> ";
-if($CMS_RECHTE['Website']['Dateien hochladen'] || $CMS_RECHTE['Website']['Dateien umbenennen'] || $CMS_RECHTE['Website']['Dateien löschen'] ||  $CMS_RECHTE['Website']['Ordner anlegen'] ||  $CMS_RECHTE['Website']['Ordner umbenennen'] ||  $CMS_RECHTE['Website']['Ordner löschen'])
+if(r("website.dateien.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_dateien\" href=\"Schulhof/Website/Dateien\">Dateien</a> ";
-if($CMS_RECHTE['Website']['Titelbilder hochladen'] || $CMS_RECHTE['Website']['Titelbilder umbenennen'] || $CMS_RECHTE['Website']['Titelbilder löschen'])
+if(r("website.titelbilder.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_titelbilder\" href=\"Schulhof/Website/Titelbilder\">Titelbilder</a> ";
 if($CMS_RECHTE['Website']['Termine bearbeiten'] || $CMS_RECHTE['Website']['Termine löschen'] || $CMS_RECHTE['Website']['Termine anlegen'])
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_termine\" href=\"Schulhof/Website/Termine\">Termine</a> ";
@@ -23,15 +23,15 @@ if($CMS_RECHTE['Website']['Blogeinträge bearbeiten'] || $CMS_RECHTE['Website'][
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_blog\" href=\"Schulhof/Website/Blogeinträge\">Blogeinträge</a> ";
 if($CMS_RECHTE['Website']['Galerien bearbeiten'] || $CMS_RECHTE['Website']['Galerien löschen'] || $CMS_RECHTE['Website']['Galerien anlegen'])
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_galerien\" href=\"Schulhof/Website/Galerien\">Galerien</a> ";
-if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'])
+if(r("statistik.besucher.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_besucherstatistik\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a> ";
-if($CMS_RECHTE['Website']['Feedback sehen'])
+if(r("technik.feedback"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">Feedback</a> ";
-if($CMS_RECHTE['Website']['Fehlermeldungen sehen'])
+if(r("technik.fehlermeldungen"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_fehlermeldungen\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a> ";
 if($CMS_RECHTE['Website']['Emoticons verwalten'])
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_emoticons\" href=\"Schulhof/Website/Emoticons\">Emoticons</a> ";
-if($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE["Newsletter bearbeiten"])
+if(r("schulhof.information.newsletter.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">Newsletter</a> ";
 
 if (strlen($website) > 0)

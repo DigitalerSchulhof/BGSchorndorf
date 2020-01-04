@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
-
 $code = "";
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.fabrik")) {
 
   $code .= "<h1>Schuljahre aus bestehenden Schuljahren erzeugen</h1>";
 

@@ -4,9 +4,7 @@
 <h1>Leihgeräte</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Leihgeräte anlegen'] || $CMS_RECHTE['Organisation']['Leihgeräte bearbeiten'] || $CMS_RECHTE['Organisation']['Leihgeräte löschen'];
-
-if ($zugriff) {
+if (r("schulhof.organisation.leihgeräte.*")) {
 ?>
 	<table class="cms_liste">
 		<thead>
@@ -50,10 +48,10 @@ if ($zugriff) {
 					// Aktionen
 					$ausgabe .= "<td>";
 					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-					if ($CMS_RECHTE['Organisation']['Räume bearbeiten']) {
+					if (r("schulhof.organisation.räume.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_leihgeraet_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
-					if ($CMS_RECHTE['Organisation']['Räume löschen']) {
+					if (r("schulhof.organisation.räume.löschen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_leihgeraet_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 					}
 
@@ -75,7 +73,7 @@ if ($zugriff) {
 		</tbody>
 	</table>
 <?php
-	if ($CMS_RECHTE['Organisation']['Leihgeräte anlegen']) {
+if (r("schulhof.organisation.leihgeräte.anlegen")) {
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Leihgeräte/Neue_Leihgeräte_anlegen\">+ Neue Leihgeräte anlegen</a></p>";
 	}
 }

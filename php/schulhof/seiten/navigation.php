@@ -41,7 +41,7 @@ function cms_schulhofnavigation () {
 }
 
 function cms_schulhofnavigation_nutzerkonto($dbs) {
-	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
+	global $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 	$sql = "SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;";
 	$anzahl['-'] = 0;
 	$anzahl[1] = 0;
@@ -173,7 +173,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 }
 
 function cms_schulhofnavigation_informationen($dbs) {
-	global $CMS_RECHTE, $CMS_BENUTZERART;
+	global $CMS_BENUTZERART;
 
 	include_once('php/schulhof/seiten/verwaltung/dauerbrenner/linksausgeben.php');
 	$dauerbrenner = cms_dauerbrenner_links_anzeigen();
@@ -249,7 +249,7 @@ function cms_schulhofnavigation_informationen($dbs) {
 
 
 function cms_schulhofnavigation_gruppen($dbs) {
-	global $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR;
+	global $CMS_GRUPPEN, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR;
 	include_once('php/schulhof/seiten/gruppen/linksausgeben.php');
 
 	$anzeigen = false;
@@ -455,160 +455,159 @@ function cms_schulhofnavigation_plaene($dbs) {
 }
 
 function cms_schulhofnavigation_verwaltung($dbs) {
-	global $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
+	global $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 
 	// Ermitteln, welche Verwaltungsrechte der Benutzer hat
 	$VERWALTUNG = false;
 	// PERSONEN
 	$VERpersonenundgruppen = "";
-	if ($CMS_RECHTE['Personen']['Personen sehen']) {
+	if (r("schulhof.verwaltung.personen.sehen")) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen\">Personen</a></li> ";
 	}
-	if ($CMS_RECHTE['Personen']['Rollen anlegen'] || $CMS_RECHTE['Personen']['Rollen bearbeiten'] || $CMS_RECHTE['Personen']['Rollen löschen']) {
+	if (r("schulhof.verwaltung.rechte.rollen.[|anlegen,bearbeiten,löschen]")) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Rollen\">Rollen</a></li> ";
 	}
+	if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
+		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Bedingte_Rechte\">Rollen und Rechte bedingt zuordnen</a></li> ";
+	}
 	foreach ($CMS_GRUPPEN as $g) {
-		if ($CMS_RECHTE['Gruppen'][$g.' anlegen'] || $CMS_RECHTE['Gruppen'][$g.' bearbeiten'] || $CMS_RECHTE['Gruppen'][$g.' löschen']) {
+		if (r("schulhof.gruppen.$g.[|anlegen,bearbeiten,löschen]")) {
 			$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($g)."\">$g</a></li> ";
 		}
 	}
-	$zugriff = ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']);
-	if ($zugriff) {
+	if (r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen</a></li> ";
 	}
 	// PLANUNG
 	$VERplanung = "";
-	if ($CMS_RECHTE['Planung']['Schuljahrfabrik']) {
+	if (r("schulhof.planung.schuljahre.fabrik")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schuljahrfabrik_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Schuljahrfabrik</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen']) {
+	if (r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen,duplizieren,rythmisieren]")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanzeiträume</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Fächer anlegen'] || $CMS_RECHTE['Planung']['Fächer bearbeiten'] || $CMS_RECHTE['Planung']['Fächer löschen']) {
+	if (r("schulhof.planung.schuljahre.fächer.*")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_faecher_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Fächer</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Profile anlegen'] || $CMS_RECHTE['Planung']['Profile bearbeiten'] || $CMS_RECHTE['Planung']['Profile löschen']) {
+	if (r("schulhof.planung.schuljahre.profile.*")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Profile</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Schienen anlegen'] || $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen löschen']) {
+	if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Schienen</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {
+	if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stundenplanung</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen']) {
+	if (r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Vertretungsplanung durchführen']) {
+	if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">Vertretungsplan</a></li> ";
 	}
-	if ($CMS_RECHTE['Planung']['Ausplanungen durchführen']) {
+	if (r("schulhof.planung.vertretungsplan.ausplanungen")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";
 	}
 	// ORGANISATION
 	$VERorganisation = "";
-	if ($CMS_RECHTE['Organisation']['Schuljahre anlegen'] || $CMS_RECHTE['Organisation']['Schuljahre bearbeiten'] || $CMS_RECHTE['Organisation']['Schuljahre löschen']) {
+	if (r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuljahre\">Schuljahre</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Räume anlegen'] || $CMS_RECHTE['Organisation']['Räume bearbeiten'] || $CMS_RECHTE['Organisation']['Räume löschen']) {
+	if (r("schulhof.planung.räume.*")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Räume\">Räume</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Leihgeräte anlegen'] || $CMS_RECHTE['Organisation']['Leihgeräte bearbeiten'] || $CMS_RECHTE['Organisation']['Leihgeräte löschen']) {
+	if (r("schulhof.organisation.leihgeräte.*")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Leihgeräte\">Leihgeräte</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Ferien anlegen'] || $CMS_RECHTE['Organisation']['Ferien bearbeiten'] || $CMS_RECHTE['Organisation']['Ferien löschen']) {
+	if (r("schulhof.organisation.ferien.*")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Ferien\">Ferien</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Schulanmeldung vorbereiten'] || $CMS_RECHTE['Organisation']['Schulanmeldungen erfassen'] || $CMS_RECHTE['Organisation']['Schulanmeldungen bearbeiten'] || $CMS_RECHTE['Organisation']['Schulanmeldungen exportieren'] || $CMS_RECHTE['Organisation']['Schulanmeldungen löschen'] || $CMS_RECHTE['Organisation']['Schulanmeldungen akzeptieren']) {
+	if (r("schulhof.organisation.schulanmeldung.*")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schulanmeldung\">Schulanmeldung</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+	if (r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+	if (r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+	if (r("artikel.genehmigen.galerien")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Gelerien_genehmigen\">Galerien genehmigen</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Dauerbrenner anlegen'] || $CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten'] || $CMS_RECHTE['Organisation']['Dauerbrenner löschen']) {
+	if (r("schulhof.information.dauerbrenner.*")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Dauerbrenner\">Dauerbrenner</a></li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Pinnwände anlegen'] || $CMS_RECHTE['Organisation']['Pinnwände bearbeiten'] || $CMS_RECHTE['Organisation']['Pinnwände löschen']) {
+	if (r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]")) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Pinnwände\">Pinnwände</a></li> ";
 	}
 	// WEBSITE
 	$VERwebsite = "";
-	if ($CMS_RECHTE['Website']['Seiten anlegen'] || $CMS_RECHTE['Website']['Seiten bearbeiten'] || $CMS_RECHTE['Website']['Seiten löschen'] || $CMS_RECHTE['Website']['Startseite festlegen']) {
+	if (r("website.seiten.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Seiten\">Seiten</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Hauptnavigationen festlegen']) {
+	if (r("website.seiten.navigation")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Hauptnavigationen\">Hauptnavigationen</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Dateien hochladen'] || $CMS_RECHTE['Website']['Dateien umbenennen'] || $CMS_RECHTE['Website']['Dateien löschen']) {
+	if (r("website.dateien.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Dateien\">Dateien</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Termine anlegen'] || $CMS_RECHTE['Website']['Termine bearbeiten'] || $CMS_RECHTE['Website']['Termine löschen']) {
+	if (@$CMS_RECHTE['Website']['Termine anlegen'] || @$CMS_RECHTE['Website']['Termine bearbeiten'] || @$CMS_RECHTE['Website']['Termine löschen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Termine\">Termine</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Blogeinträge anlegen'] || $CMS_RECHTE['Website']['Blogeinträge bearbeiten'] || $CMS_RECHTE['Website']['Blogeinträge löschen']) {
+	if (@$CMS_RECHTE['Website']['Blogeinträge anlegen'] || @$CMS_RECHTE['Website']['Blogeinträge bearbeiten'] || @$CMS_RECHTE['Website']['Blogeinträge löschen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Blogeinträge\">Blogeinträge</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Galerien anlegen'] || $CMS_RECHTE['Website']['Galerien bearbeiten'] || $CMS_RECHTE['Website']['Galerien löschen']) {
+	if (@$CMS_RECHTE['Website']['Galerien anlegen'] || @$CMS_RECHTE['Website']['Galerien bearbeiten'] || @$CMS_RECHTE['Website']['Galerien löschen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Galerien\">Galerien</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Titelbilder hochladen'] || $CMS_RECHTE['Website']['Titelbilder umbenennen'] || $CMS_RECHTE['Website']['Titelbilder löschen']) {
+	if (r("website.titelbilder.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Titelbilder\">Titelbilder</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Auszeichnungen anlegen'] || $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] || $CMS_RECHTE['Website']['Auszeichnungen löschen']) {
+	if (r("website.auszeichnungen.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Auszeichnungen\">Auszeichnungen</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] || $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen']) {
+	if (r("statistik.besucher.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Feedback sehen'] || $CMS_RECHTE['Website']['Feedback verwalten']) {
+	if (r("technik.feedback")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Feedback\">Feedback</a></li> ";
 	}
-	if ($CMS_RECHTE['Website']['Fehlermeldungen sehen'] || $CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
+	if (r("technik.fehlermeldungen")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a></li> ";
 	}
-	$zugriff = ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten']);
-	if ($zugriff) {
+	if (r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
 	}
-	$zugriff = ($CMS_RECHTE['Website']['Emoticons verwalten']);
-	if ($zugriff) {
+	if (@$CMS_RECHTE['Website']['Emoticons verwalten']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Emoticons\">Emoticons</a></li> ";
 	}
-	$zugriff = ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE['Website']['Newsletter bearbeiten']);
-	if ($zugriff) {
+	if (r("schulhof.information.newsletter.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Newsletter\">Newsletter</a></li> ";
 	}
 
 	// WEBSITE
 	$VERtechnik = "";
-	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
+	if (r("schulhof.technik.geräte.verwalten")) {
 		$VERtechnik .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten</a></li> ";
 	}
-	if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
+	if (r("schulhof.technik.hausmeisteraufträge.*")) {
 		$VERtechnik .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisteraufträge</a></li> ";
 	}
 
 	// ADMINISTRATION
 	$VERadministration = "";
-	if ($CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen']) {
+	if (r("schulhof.verwaltung.einstellungen")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Allgemeine_Einstellungen\">Allgemeine Einstellungen</a></li> ";
 	}
-	if ($CMS_RECHTE['Administration']['Schulnetze verwalten']) {
+	if (r("technik.server.netze")) {
 		$VERadministration .= "<li><a class=\"cms_button_wichtig\" href=\"Schulhof/Verwaltung/Schulnetze\">Schulnetze</a></li> ";
 	}
-	if ($CMS_RECHTE['Administration']['VPN verwalten']) {
+	if (r("technik.server.vpn")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/VPN\">VPN</a></li> ";
 	}
-	if ($CMS_RECHTE['Administration']['Zulässige Dateien verwalten']) {
+	if (r("technik.server.dateienerlaubnis")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">Zulässige Dateien</a></li> ";
 	}
-	if ($CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten'] || $CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten']) {
+	if (r("schulhof.verwaltung.schule.[|adressen,mail]")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuldetails\">Schuldetails</a></li> ";
 	}
 

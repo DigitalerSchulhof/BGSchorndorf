@@ -1,6 +1,5 @@
 <?php
 function cms_website_seiten_ausgeben ($id, $zuordnung) {
-	global $CMS_RECHTE;
 	$code = "";
 	$dbs = cms_verbinden('s');
 
@@ -14,7 +13,7 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 	$styles = "";
 	$klassen = "";
 
-	if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$status = "a";}
+	if (r("website.freigeben")) {$status = "a";}
 
 	if ($id != "-") {
 		$sql = $dbs->prepare("SELECT bezeichnung, beschreibung, sidebar, status, position, art, styles, klassen FROM seiten WHERE id = ?");
@@ -77,8 +76,8 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 
 		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Sidebarnavigation:<span class=\"cms_hinweis\">Soll an der linken Seite eine Seitennavigation angezeigt werden?</span></span></th><td>".cms_schieber_generieren('website_seiten_sidebar', $sidebar)."</td></tr>";
 		$disabled = "disabled=\"disabled\"";
-		$startseiteeditieren = $CMS_RECHTE['Website']['Startseite festlegen'] || ($status != 's');
-		if ($CMS_RECHTE['Website']['Inhalte freigeben'] && $startseiteeditieren) {$disabled = "";}
+		$startseiteeditieren = ($status != 's') || r("website.seiten.startseite");
+		if ($startseiteeditieren && r("website.freigeben")) {$disabled = "";}
 		$code .= "<tr><th>Status:</th><td><select name=\"cms_website_seiten_status\" id=\"cms_website_seiten_status\"$disabled>";
 		$selected = "";
 		if ($status == 'a') {$selected = " selected=\"selected\"";}
@@ -86,13 +85,13 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 		$selected = "";
 		if ($status == 'i') {$selected = " selected=\"selected\"";}
 		$code .= "<option value=\"i\"$selected>Inaktiv</option>";
-		if ($CMS_RECHTE['Website']['Startseite festlegen'] || (!$startseiteeditieren)) {
+		if ((!$startseiteeditieren) || r("website.seiten.startseite")) {
 			$selected = "";
 			if ($status == 's') {$selected = " selected=\"selected\"";}
 			$code .= "<option value=\"s\"$selected>Startseite</option>";
 		}
 		$code .= "</select>";
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
+		if (!r("website.freigeben")) {
 			$code .= "<p>";
 				$code .= cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Gemachte Änderungen werden nicht sofort angezeigt. Die Änderungen werden gesichtet und anschließend freigegeben oder verworfen.</p>');
 			$code .= "</p>";

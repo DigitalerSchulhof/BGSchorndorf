@@ -14,8 +14,6 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($farbe,0,63)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	$fehler = false;
 	$person = $CMS_BENUTZERID;

@@ -15,18 +15,17 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER"; exi
 if (isset($_POST['zusatz'])) {$zusatz = $_POST['zusatz'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$angemeldet = cms_angemeldet();
+cms_rechte_laden();
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
-else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
+if ($id == '-') {$zugriff = r("website.elemente.boxen.anlegen");}
+else {$zugriff = r("website.elemente.boxen.bearbeiten");}
 
 if(!cms_check_ganzzahl($id))
   die("FEHLER");
 
-if (($zugriff) && ($angemeldet)) {
+if (cms_angemeldet() && $zugriff) {
   $fehler = false;
 
   $neu = true;
@@ -34,7 +33,7 @@ if (($zugriff) && ($angemeldet)) {
   $breite = 200;
   $aktiv = 0;
   $boxen = array();
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
+  if (r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
@@ -82,7 +81,7 @@ if (($zugriff) && ($angemeldet)) {
     if ($id == '-') {$code = "<h3>Neue Boxen</h3>";}
     else {$code = "<h3>Boxen bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
-    if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_boxen_aktiv', $aktiv)."</td></tr>";}
+    if (r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_boxen_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"cms_website_element_boxen_aktiv\" name=\"cms_website_element_boxen_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_boxen_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "<tr><th>Ausrichtung:</th><td><select id=\"cms_website_element_boxen_ausrichtung\" onchange=\"cms_boxen_ausrichtung_aendern();\">";
@@ -99,7 +98,7 @@ if (($zugriff) && ($angemeldet)) {
       $boxen[0]['inhalt'] = '';
       $boxen[0]['aktiv'] = 0;
       $boxen[0]['style'] = 1;
-      if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$boxen[0]['aktiv'] = 1;}
+      if (r("website.freigeben")) {$boxen[0]['aktiv'] = 1;}
       $boxen[0]['id'] = 'temp1';
     }
 
@@ -117,7 +116,7 @@ if (($zugriff) && ($angemeldet)) {
         $code .= "<div class=\"cms_box_titel\" id=\"cms_box_titel_$bid\" $style>";
         $code .= "<table class=\"cms_formular\">";
           $code .= "<tr><th>Aktiv:</th><td>";
-          if ($CMS_RECHTE['Website']['Inhalte freigeben']) {
+          if (r("website.freigeben")) {
             $code .= cms_schieber_generieren('cms_boxen_box_aktiv_'.$bid, $boxen[$i]['aktiv']);
           }
           else {
@@ -151,7 +150,7 @@ if (($zugriff) && ($angemeldet)) {
     $code .= "<div class=\"cms_clear\"></div>";
     $code .= "</div>";
     $freigabe = 0;
-    if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$freigabe = 1;}
+    if (r("website.freigeben")) {$freigabe = 1;}
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_boxen_neue_box('$freigabe');\">+ Neue Box</span>";
       $code .= "<input type=\"hidden\" id=\"cms_boxen_boxen_bearbeitung\" name=\"cms_boxen_boxen_bearbeitung\" value=\"\">";
       $code .= "<input type=\"hidden\" id=\"cms_boxen_boxen_anzahl\" name=\"cms_boxen_boxen_anzahl\" value=\"$anzahl\">";

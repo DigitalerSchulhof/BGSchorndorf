@@ -10,7 +10,7 @@ $ausgabe = false;
 foreach ($CMS_GRUPPEN as $g) {
   $gk = cms_textzudb($g);
   $sql = "";
-  if ($CMS_RECHTE['Gruppen'][$g." Listen sehen"]) {
+  if (r("schulhof.information.listen.gruppen.$g")) {
     $sql = "SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE (schuljahr IS NULL OR schuljahr = $CMS_BENUTZERSCHULJAHR)) AS x ORDER BY sbez ASC, gbez ASC";
   }
   else if ($CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {

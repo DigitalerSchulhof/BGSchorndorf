@@ -15,10 +15,9 @@ if (isset($_POST['base'])) 		{$base = $_POST['base'];} 							else {echo "FEHLER
 if (isset($_POST['lnzbvpn'])) 	{$lnzbvpn = $_POST['lnzbvpn'];} 			else {echo "FEHLER";exit;}
 if (isset($_POST['lnda'])) 		{$lnda = $_POST['lnda'];} 							else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Schulnetze verwalten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("technik.server.netze")) {
 	$fehler = false;
 
 	if (strlen($shost) == 0) {$fehler = true;}

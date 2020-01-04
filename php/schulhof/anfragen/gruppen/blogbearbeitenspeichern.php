@@ -38,15 +38,15 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER";exit;}
 
 $gk = cms_textzudb($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge bearbeiten'];
+$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen");
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'])) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

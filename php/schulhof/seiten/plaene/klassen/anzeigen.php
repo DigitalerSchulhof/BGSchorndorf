@@ -7,13 +7,7 @@ $code .= "</p>";
 $klassenbezeichnung = $CMS_URL[3];
 $code .= "<h1>Stundenplan der Klasse ".(str_replace('_', ' ', $klassenbezeichnung))."</h1>";
 
-$zugriff = $CMS_RECHTE['Planung']['Klassenstundenpläne sehen'];
-$fehler = false;
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.klassen")) {
 	$dbs = cms_verbinden('s');
 
 	// Klassenplan

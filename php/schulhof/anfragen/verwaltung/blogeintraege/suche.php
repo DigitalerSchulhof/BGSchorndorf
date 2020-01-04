@@ -12,7 +12,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {$jahr = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 $bearbeiten = $CMS_RECHTE['Website']['Blogeinträge bearbeiten'];
 $loeschen = $CMS_RECHTE['Website']['Blogeinträge bearbeiten'];

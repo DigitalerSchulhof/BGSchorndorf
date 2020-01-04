@@ -4,9 +4,7 @@
 <h1>Anmeldungen exportieren</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen exportieren'];
-
-if ($zugriff) {
+if (r("schulhof.organisation.schulanmeldung.exportieren")) {
 
 	$code = "";
 	$CMS_VORANMELDUNG = cms_schulanmeldung_einstellungen_laden();

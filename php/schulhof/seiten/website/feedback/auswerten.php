@@ -1,6 +1,6 @@
 <?php
   function cms_feedback_liste() {
-    global $CMS_SCHLUESSEL, $CMS_RECHTE;
+    global $CMS_SCHLUESSEL;
     $ausgabe = "<h2>Feedback</h2><table class=\"cms_liste\">";
       $ausgabe .= "<thead>";
         $ausgabe .= "<tr><th></th><th>Name</th><th>Feedback</th><th>Datum</th><th>Aktionen</th></tr>";
@@ -20,7 +20,7 @@
           $liste .= "<td>".date("d.m.Y", $daten["zeitstempel"])."</td>";
 
           $liste .= '<td>';
-            if ($CMS_RECHTE['Website']['Feedback verwalten']) {
+            if (r("technik.feedback")) {
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_loeschen('".$daten['id']."');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/feedback_loeschen.png\"></span> ";
             }
             $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_details('".$daten['id']."');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/feedback_information.png\"></span> ";
@@ -41,7 +41,7 @@
   }
 
   function cms_feedback_details($id) {
-    global $CMS_SCHLUESSEL, $CMS_RECHTE;
+    global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden("s");
     $sql = $dbs->prepare("SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback WHERE id = ?");
     $sql->bind_param("i", $id);

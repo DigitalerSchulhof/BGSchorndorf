@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen'];
-
 $code = "";
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;

@@ -4,8 +4,8 @@
 <h1>Auszeichnungen</h1>
 
 <?php
-$bearbeiten = $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Auszeichnungen löschen'];
+$bearbeiten = r("website.auszeichnungen.bearbeiten");
+$loeschen   = r("website.auszeichnungen.löschen");
 $anzeigen = $bearbeiten || $loeschen;
 
 if ($anzeigen) {
@@ -26,8 +26,8 @@ if ($anzeigen) {
       if ($aaktiv == '1') {$aaktivicon = "gruen.png";} else {$aaktivicon = "rot.png";}
       if ($aziel == '_blank') {$azieltext = "Neuer Tab";} else {$azieltext = "Dieser Tab";}
       $auszeichnungen .= "<td>$azieltext</td><td><img src=\"res/icons/klein/$aaktivicon\"></td><td>";
-      if ($CMS_RECHTE['Website']['Auszeichnungen bearbeiten']) {$auszeichnungen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auszeichnung_bearbeiten_vorbereiten('$aid')\"><span class=\"cms_hinweis\">Auszeichnung bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";}
-      if ($CMS_RECHTE['Website']['Auszeichnungen löschen']) {$auszeichnungen .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_auszeichnung_loeschen_anzeigen('$aid')\"><span class=\"cms_hinweis\">Auszeichnung löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>";}
+      if (r("website.auszeichnungen.bearbeiten")) {$auszeichnungen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auszeichnung_bearbeiten_vorbereiten('$aid')\"><span class=\"cms_hinweis\">Auszeichnung bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";}
+      if (r("website.auszeichnungen.löschen")) {$auszeichnungen .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_auszeichnung_loeschen_anzeigen('$aid')\"><span class=\"cms_hinweis\">Auszeichnung löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>";}
       $auszeichnungen .= "</td></tr>";
     }
   }
@@ -38,7 +38,7 @@ if ($anzeigen) {
 
   $code .= $canzeigen;
 }
-if ($CMS_RECHTE['Website']['Auszeichnungen anlegen']) {
+if (r("website.auszeichnungen.anlegen")) {
   $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Website/Auszeichnungen/Auszeichnung_anlegen\">+ Neue Auszeichnung</a></p>";
 }
 

@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 if (cms_angemeldet() && r("schulhof.verwaltung.rechte.rollen.löschen")) {
 	$fehler = false;

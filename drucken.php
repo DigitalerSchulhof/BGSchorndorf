@@ -35,7 +35,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		$CMS_RECHTE = cms_rechte_laden();
+		cms_rechte_laden();
 	}
 
 	if (isset($_SESSION['IMLN'])) {
@@ -58,7 +58,7 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">";
+	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">"; ?>
 	<title>Druckansicht – <?php echo $CMS_SCHULE." ".$CMS_ORT;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
@@ -127,7 +127,7 @@
 		$code .= "</div>";
 
 		if (isset($_SESSION['DRUCKANSICHT'])) {
-			if (($_SESSION['DRUCKANSICHT'] == 'Schulanmeldung') && ($CMS_ANGEMELDET) && ($CMS_RECHTE['Organisation']['Schulanmeldungen akzeptieren'])) {
+			if (($_SESSION['DRUCKANSICHT'] == 'Schulanmeldung') && ($CMS_ANGEMELDET) && r("schulhof.organisation.schulanmeldung.akzeptieren")) {
 				if (isset($_SESSION['ANMELDUNG BEARBEITEN'])) {
 					include_once('php/website/seiten/schulanmeldung/navigation.php');
 					$id = $_SESSION['ANMELDUNG BEARBEITEN'];

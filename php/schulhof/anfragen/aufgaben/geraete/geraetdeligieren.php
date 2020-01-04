@@ -19,10 +19,9 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($standort, 0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($status, 1,4)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Technik']['Geräte verwalten'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.technik.geräte || schulhof.technik.hausmeisteraufträge.erteilen")) {
 
 	$dbs = cms_verbinden('s');
 	if ($art == 'l') {$geraetetabelle = 'leihengeraete';}

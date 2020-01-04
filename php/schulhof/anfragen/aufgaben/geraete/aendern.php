@@ -17,10 +17,9 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($standort, 0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($status, 1,4)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Technik']['Geräte verwalten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.technik.geräte.verwalten")) {
 	if ($art == 'l') {$tabelle = 'leihengeraete';}
 	else if ($art == 'r') {$tabelle = 'raeumegeraete';}
 

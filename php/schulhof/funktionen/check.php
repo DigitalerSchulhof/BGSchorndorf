@@ -186,7 +186,7 @@ function cms_angemeldet () {
 include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");
 
 function cms_rechte_laden($aktiverbenutzer = '-', $dynamisch = true) {
-	global $CMS_SCHLUESSEL, $CMS_RECHTE;
+	global $CMS_SCHLUESSEL;
 	cms_allerechte_laden();
 
 	cms_rechte_laden_nutzer($aktiverbenutzer);
@@ -220,19 +220,19 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		$benutzerart = $CMS_BENUTZERART;
 	}
 
-	$CMS_RECHTE['dateiupload'] = false;
-	$CMS_RECHTE['dateidownload'] = false;
-	$CMS_RECHTE['dateiloeschen'] = false;
-	$CMS_RECHTE['dateiumbenennen'] = false;
-	$CMS_RECHTE['termine'] = false;
-	$CMS_RECHTE['blogeintraege'] = false;
-	$CMS_RECHTE['chatten'] = false;
-	$CMS_RECHTE['nachrichtloeschen'] = false;
-	$CMS_RECHTE['nutzerstummschalten'] = false;
-	$CMS_RECHTE['mitglied'] = false;
-	$CMS_RECHTE['sichtbar'] = false;
-	$CMS_RECHTE['bearbeiten'] = false;
-	$CMS_RECHTE['abonniert'] = 0;
+	$cms_gruppenrechte['dateiupload'] = false;
+	$cms_gruppenrechte['dateidownload'] = false;
+	$cms_gruppenrechte['dateiloeschen'] = false;
+	$cms_gruppenrechte['dateiumbenennen'] = false;
+	$cms_gruppenrechte['termine'] = false;
+	$cms_gruppenrechte['blogeintraege'] = false;
+	$cms_gruppenrechte['chatten'] = false;
+	$cms_gruppenrechte['nachrichtloeschen'] = false;
+	$cms_gruppenrechte['nutzerstummschalten'] = false;
+	$cms_gruppenrechte['mitglied'] = false;
+	$cms_gruppenrechte['sichtbar'] = false;
+	$cms_gruppenrechte['bearbeiten'] = false;
+	$cms_gruppenrechte['abonniert'] = 0;
 
 	if (!cms_valide_gruppe($gruppe) && !cms_valide_kgruppe($gruppe)) {$fehler = true;}
 
@@ -245,42 +245,42 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	    $sql->bind_result($anzahl);
 	    if ($sql->fetch()) {
 				if ($anzahl > 0) {
-					$CMS_RECHTE['dateiupload'] = true;
-					$CMS_RECHTE['dateidownload'] = true;
-					$CMS_RECHTE['dateiloeschen'] = true;
-					$CMS_RECHTE['dateiumbenennen'] = true;
-					$CMS_RECHTE['termine'] = true;
-					$CMS_RECHTE['blogeintraege'] = true;
-					$CMS_RECHTE['chatten'] = true;
-					$CMS_RECHTE['nachrichtloeschen'] = true;
-					$CMS_RECHTE['nutzerstummschalten'] = true;
-					$CMS_RECHTE['mitglied'] = true;
-					$CMS_RECHTE['sichtbar'] = true;
-					$CMS_RECHTE['bearbeiten'] = true;
+					$cms_gruppenrechte['dateiupload'] = true;
+					$cms_gruppenrechte['dateidownload'] = true;
+					$cms_gruppenrechte['dateiloeschen'] = true;
+					$cms_gruppenrechte['dateiumbenennen'] = true;
+					$cms_gruppenrechte['termine'] = true;
+					$cms_gruppenrechte['blogeintraege'] = true;
+					$cms_gruppenrechte['chatten'] = true;
+					$cms_gruppenrechte['nachrichtloeschen'] = true;
+					$cms_gruppenrechte['nutzerstummschalten'] = true;
+					$cms_gruppenrechte['mitglied'] = true;
+					$cms_gruppenrechte['sichtbar'] = true;
+					$cms_gruppenrechte['bearbeiten'] = true;
 				}
 			}
 	  }
 	  $sql->close();
 
 		// Falls kein Vorsitz oder keine Aufsicht vorliegt, prüfe weiter
-		if (!$CMS_RECHTE['bearbeiten']) {
+		if (!$cms_gruppenrechte['bearbeiten']) {
 			// Mitgliedschaft prüfen
 			$sql = $dbs->prepare("SELECT dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten FROM $gk"."mitglieder WHERE gruppe = ? AND person = ?");
 			$sql->bind_param("ii", $gruppenid, $benutzer);
 			if ($sql->execute()) {
 		    $sql->bind_result($dateiupload, $dateidownload, $dateiloeschen, $dateiumbenennen, $termine, $blogeintraege, $chatten, $nachrichtloeschen, $nutzerstummschalten);
 		    if ($sql->fetch()) {
-					if ($dateiupload == '1') {$CMS_RECHTE['dateiupload'] = true;}
-					if ($dateidownload == '1') {$CMS_RECHTE['dateidownload'] = true;}
-					if ($dateiloeschen == '1') {$CMS_RECHTE['dateiloeschen'] = true;}
-					if ($dateiumbenennen == '1') {$CMS_RECHTE['dateiumbenennen'] = true;}
-					if ($termine == '1') {$CMS_RECHTE['termine'] = true;}
-					if ($blogeintraege == '1') {$CMS_RECHTE['blogeintraege'] = true;}
-					if ($chatten == '1') {$CMS_RECHTE['chatten'] = true;}
-					if ($nachrichtloeschen == '1') {$CMS_RECHTE['nachrichtloeschen'] = true;}
-					if ($nutzerstummschalten == '1') {$CMS_RECHTE['nutzerstummschalten'] = true;}
-					$CMS_RECHTE['mitglied'] = true;
-					$CMS_RECHTE['sichtbar'] = true;
+					if ($dateiupload == '1') {$cms_gruppenrechte['dateiupload'] = true;}
+					if ($dateidownload == '1') {$cms_gruppenrechte['dateidownload'] = true;}
+					if ($dateiloeschen == '1') {$cms_gruppenrechte['dateiloeschen'] = true;}
+					if ($dateiumbenennen == '1') {$cms_gruppenrechte['dateiumbenennen'] = true;}
+					if ($termine == '1') {$cms_gruppenrechte['termine'] = true;}
+					if ($blogeintraege == '1') {$cms_gruppenrechte['blogeintraege'] = true;}
+					if ($chatten == '1') {$cms_gruppenrechte['chatten'] = true;}
+					if ($nachrichtloeschen == '1') {$cms_gruppenrechte['nachrichtloeschen'] = true;}
+					if ($nutzerstummschalten == '1') {$cms_gruppenrechte['nutzerstummschalten'] = true;}
+					$cms_gruppenrechte['mitglied'] = true;
+					$cms_gruppenrechte['sichtbar'] = true;
 				}
 		  }
 		  $sql->close();
@@ -292,35 +292,35 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	  if ($sql->execute()) {
 	    $sql->bind_result($sichtbar, $chataktiv);
 	    if ($sql->fetch()) {
-				if (($sichtbar == 1) && ($benutzerart == 'l')) {$CMS_RECHTE['sichtbar'] = true;}
-				else if (($sichtbar == 2) && (($benutzerart == 'l') || ($benutzerart == 'v'))) {$CMS_RECHTE['sichtbar'] = true;}
-				else if ($sichtbar == 3) {$CMS_RECHTE['sichtbar'] = true;}
+				if (($sichtbar == 1) && ($benutzerart == 'l')) {$cms_gruppenrechte['sichtbar'] = true;}
+				else if (($sichtbar == 2) && (($benutzerart == 'l') || ($benutzerart == 'v'))) {$cms_gruppenrechte['sichtbar'] = true;}
+				else if ($sichtbar == 3) {$cms_gruppenrechte['sichtbar'] = true;}
 				if ($chataktiv == 0) {
-					$CMS_RECHTE['chatten'] = false;
-					$CMS_RECHTE['nachrichtloeschen'] = false;
-					$CMS_RECHTE['nutzerstummschalten'] = false;
+					$cms_gruppenrechte['chatten'] = false;
+					$cms_gruppenrechte['nachrichtloeschen'] = false;
+					$cms_gruppenrechte['nutzerstummschalten'] = false;
 				}
 			}
 	  }
 	  $sql->close();
 
 		// Mögliche Einstellungen berücksichtigen
-		if ($CMS_RECHTE['sichtbar']) {// && (!$CMS_RECHTE['mitglied'])) {
-			if ($CMS_EINSTELLUNGEN['Download aus sichtbaren Gruppen']) {$CMS_RECHTE['dateidownload'] = true;}
+		if ($cms_gruppenrechte['sichtbar']) {// && (!$cms_gruppenrechte['mitglied'])) {
+			if ($CMS_EINSTELLUNGEN['Download aus sichtbaren Gruppen']) {$cms_gruppenrechte['dateidownload'] = true;}
 		}
 
-		if ($CMS_RECHTE['mitglied']) {
+		if ($cms_gruppenrechte['mitglied']) {
 			// Abo prüfen
 			$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk"."notifikationsabo WHERE gruppe = ? AND person = ?");
 		  $sql->bind_param("ii", $gruppenid, $benutzer);
 		  if ($sql->execute()) {
 		    $sql->bind_result($anzahl);
-		    if ($sql->fetch()) {if ($anzahl == 1) {$CMS_RECHTE['abonniert'] = 1;}}
+		    if ($sql->fetch()) {if ($anzahl == 1) {$cms_gruppenrechte['abonniert'] = 1;}}
 		  }
 		  $sql->close();
 		}
 	}
-	return $CMS_RECHTE;
+	return $cms_gruppenrechte;
 }
 
 
@@ -519,7 +519,6 @@ function cms_ist_heute($heute, $pruefdatum) {
 }
 
 function cms_websitedateirechte_laden() {
-	global $CMS_RECHTE;
 	$gruppenrechte['dateiupload'] 		= r("website.dateien.hochladen");
 	$gruppenrechte['dateiumbenennen'] = r("website.dateien.umbenennen");
 	$gruppenrechte['dateiloeschen'] 	= r("website.dateien.löschen");
@@ -530,10 +529,9 @@ function cms_websitedateirechte_laden() {
 }
 
 function cms_titelbilderdateirechte_laden() {
-	global $CMS_RECHTE;
-	$gruppenrechte['dateiupload'] = $CMS_RECHTE['Website']['Titelbilder hochladen'];
-	$gruppenrechte['dateiumbenennen'] = $CMS_RECHTE['Website']['Titelbilder umbenennen'];
-	$gruppenrechte['dateiloeschen'] = $CMS_RECHTE['Website']['Titelbilder löschen'];
+	$gruppenrechte['dateiupload'] 		= r("website.titelbilder.hochladen");
+	$gruppenrechte['dateiumbenennen'] = r("website.titelbilder.umbenennen");
+	$gruppenrechte['dateiloeschen'] 	= r("website.titelbilder.löschen");
 	$gruppenrechte['dateidownload'] = true;
 	$gruppenrechte['mitglied'] = true;
 	$gruppenrechte['sichtbar'] = true;

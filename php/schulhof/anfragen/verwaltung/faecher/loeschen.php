@@ -12,10 +12,9 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Fächer löschen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.planung.schuljahre.fächer.löschen")) {
 
 	$fehler = false;
 

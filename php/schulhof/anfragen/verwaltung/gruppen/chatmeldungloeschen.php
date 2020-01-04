@@ -12,11 +12,9 @@ postLesen(array("gruppe", "id"));
 if(!cms_valide_gruppe($gruppe))
   die("FEHLER");
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
   $gk = cms_textzudb($gruppe);
   $sql = "DELETE FROM $gk"."chatmeldungen WHERE nachricht = ?";
   $sql = $dbs->prepare($sql);

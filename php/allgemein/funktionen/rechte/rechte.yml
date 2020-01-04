@@ -1,8 +1,8 @@
 schulhof:
   verwaltung:
     nutzerkonten:
+      notizen: Notizen anlegen
       anmeldedetails: Anmeldedetails sehen
-      onlinestatus: Onlinestatus sehen
       ansprechpartner: Ansprechpartner Anderer sehen
       sehen: Nutzerkonten sehen
       anlegen: Nutzerkonten anlegen
@@ -29,7 +29,7 @@ schulhof:
       zuordnen: Personen Rechte zuordnen
       bedingt: Rechte bedingt zuordnen
       rollen:
-        bedingt: Rechte bedingt zuordnen
+        bedingt: Rollen bedingt zuordnen
         zuordnen: Personen Rollen zuordnen
         sehen: Rollen sehen
         erstellen: Rollen erstellen
@@ -239,8 +239,8 @@ schulhof:
       eltern: Elternliste sehen
       schüler: Schülerliste sehen
       externe: Externenliste sehen
+      verwaltungsangestellte: Verwaltungsangestellte sehen
       gruppen:
-        verwaltungsangestellte: Verwaltungsangestellte sehen
         arbeitsgemeinschaften: Arbeitesgemeinschaften sehen
         arbeitskreise: Arbeitskreise sehen
         ereignisse: Ereignisse sehen
@@ -265,6 +265,9 @@ schulhof:
         bearbeiten: Pinnwandanschläge bearbeiten
         löschen: Pinnwandanschläge löschen
     newsletter:
+      anlegen: Newsletter anlegen
+      bearbeiten: Newsletter bearbeiten
+      löschen: Newsletter löschen
       empfänger:
         sehen: Newsletterempfängerliste sehen
         anlegen: Newsletterempfänger anlegen
@@ -284,10 +287,12 @@ schulhof:
         vornehmen: Leihgerätebuchungen vornehmen
         löschen: Leihgerätebuchungen löschen
     räume:
+      sehen: Räume sehen
       anlegen: Räume anlegen
       bearbeiten: Räume bearbeiten
       löschen: Räume löschen
     leihgeräte:
+      sehen: Leihgeräte sehen
       anlegen: Leihgeräte anlegen
       bearbeiten: Leihgeräte bearbeiten
       löschen: Leihgeräte löschen
@@ -399,9 +404,9 @@ website:
       bearbeiten: Eventübersichten bearbeiten
       löschen: Eventübersichten löschen
     newsletter:
-      anlegen: Newsletter anlegen
-      bearbeiten: Newsletter bearbeiten
-      löschen: Newsletter löschen
+      anlegen: Newsletteranmeldeformulare anlegen
+      bearbeiten: Newsletteranmeldeformulare bearbeiten
+      löschen: Newsletteranmeldeformulare löschen
   auszeichnungen:
     anlegen: Auszeichnungen anlegen
     bearbeiten: Auszeichnungen bearbeiten

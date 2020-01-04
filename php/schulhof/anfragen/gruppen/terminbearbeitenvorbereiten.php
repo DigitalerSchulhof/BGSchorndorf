@@ -11,7 +11,6 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 if (isset($_POST['gruppe'])) {$gruppe = $_POST['gruppe'];} else {echo "FEHLER";exit;}
 if (isset($_POST['gruppenid'])) {$gruppenid = $_POST['gruppenid'];} else {echo "FEHLER";exit;}
-$CMS_RECHTE = cms_rechte_laden();
 
 
 if (cms_angemeldet()) {

@@ -22,8 +22,6 @@ $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
 
 $zugriff = false;
 $fehler = false;
@@ -51,7 +49,7 @@ else {$fehler = true;}
 
 $zugriff = $gruppenrechte['sichtbar'] || $gruppenrechte['mitglied'];
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		echo cms_dateisystem_ordner_ausgeben($pfad, 's', $bereich, $id, $gruppenrechte, $feldid, true);
 	}

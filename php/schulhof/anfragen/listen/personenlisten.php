@@ -23,16 +23,16 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 $zugriff = false;
-if ($art == 'Schüler') {$zugriff = $CMS_RECHTE['Personen']['Schülerliste sehen']; $art = 's';}
-if ($art == 'Lehrer') {$zugriff = $CMS_RECHTE['Personen']['Lehrerliste sehen']; $art = 'l';}
-if ($art == 'Eltern') {$zugriff = $CMS_RECHTE['Personen']['Elternliste sehen']; $art = 'e';}
-if ($art == 'Verwaltung') {$zugriff = $CMS_RECHTE['Personen']['Verwaltungsliste sehen']; $art = 'v';}
-if ($art == 'Externe') {$zugriff = $CMS_RECHTE['Personen']['Externenliste sehen']; $art = 'x';}
-if ($art == 'Elternvertreter') {$zugriff = $CMS_RECHTE['Personen']['Elternvertreter sehen']; $art = 'ev';}
-if ($art == 'Schülervertreter') {$zugriff = $CMS_RECHTE['Personen']['Schülervertreter sehen']; $art = 'sv';}
+if ($art == 'Schüler') {		$zugriff = r("schulhof.information.listen.schüler"); $art = 's';}
+if ($art == 'Lehrer') {			$zugriff = r("schulhof.information.listen.lehrer"); $art = 'l';}
+if ($art == 'Eltern') {			$zugriff = r("schulhof.information.listen.eltern"); $art = 'e';}
+if ($art == 'Verwaltung') {	$zugriff = r("schulhof.information.listen.verwaltungsangestellte"); $art = 'v';}
+if ($art == 'Externe') {					$zugriff = r("schulhof.information.listen.externe"); $art = 'x';}
+if ($art == 'Elternvertreter') {	$zugriff = r("schulhof.information.listen.elternvertreter"); $art = 'ev';}
+if ($art == 'Schülervertreter') {	$zugriff = r("schulhof.information.listen.schülervertreter"); $art = 'sv';}
 
 if (!cms_check_toggle($postfach)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($leer)) {echo "FEHLER"; exit;}

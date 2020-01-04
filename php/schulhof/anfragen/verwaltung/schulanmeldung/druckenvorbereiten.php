@@ -10,10 +10,9 @@ session_start();
 if (isset($_POST['id'])) {$id = cms_texttrafo_e_db($_POST['id']);} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen akzeptieren'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.akzeptieren")) {
 	$_SESSION['ANMELDUNG BEARBEITEN'] = $id;
 	$_SESSION['DRUCKANSICHT'] = 'Schulanmeldung';
 	echo "ERFOLG";

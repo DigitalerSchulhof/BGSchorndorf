@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <h1>Vertretungsplanung</h1>
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
-
 $code = "";
-if ($zugriff) {
+if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
   if (!$CMS_IMLN) {
     $code .= cms_meldung_firewall();
   }

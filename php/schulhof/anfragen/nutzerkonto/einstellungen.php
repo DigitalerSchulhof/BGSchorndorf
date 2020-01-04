@@ -23,10 +23,10 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (($modus != '0') && ($modus != '1')) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 if ($modus == "1") {
-	$zugriff = $CMS_RECHTE['Personen']['Persönliche Einstellungen ändern'];
+	$zugriff = r("schulhof.verwaltung.nutzerkonten.einstellungen.ändern");
 	if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 	if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 }

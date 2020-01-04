@@ -8,22 +8,22 @@ $code .= "<h1>Pläne</h1>";
 
 
 $liste = "";
-if ($CMS_RECHTE['Planung']['Schülervertretungsplan sehen'] || $CMS_RECHTE['Planung']['Lehrervertretungsplan sehen']) {
+if (r("schulhof.information.pläne.stundenpläne.vertretungen.*")) {
 	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Vertretungen\">Vertretungspläne</a></li>";
 }
-if ($CMS_RECHTE['Planung']['Lehrerstundenpläne sehen']) {
+if (r("schulhof.information.pläne.stundenpläne.lehrer")) {
 	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Lehrer\">Lehrerstundenpläne</a></li>";
 }
-if ($CMS_RECHTE['Planung']['Klassenstundenpläne sehen']) {
+if (r("schulhof.information.pläne.stundenpläne.klassen")) {
 	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Klassen\">Klassenstundenpläne</a></li>";
 }
-if ($CMS_RECHTE['Planung']['Stufenstundenpläne sehen']) {
+if (r("schulhof.information.pläne.stundenpläne.stufen")) {
 	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Stufen\">Stufenstundenpläne</a></li>";
 }
-if ($CMS_RECHTE['Planung']['Räume sehen']) {
-	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Räume\">Raumpläne</a></li>";
+if (r("schulhof.information.pläne.stundenpläne.räume")) {
+	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Räume\">Raumstundenpläne</a></li>";
 }
-if ($CMS_RECHTE['Planung']['Leihgeräte sehen']) {
+if (r("schulhof.organisation.leihgeräte.sehen")) {
 	$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Leihgeräte\">Leihgeräte</a></li>";
 }
 

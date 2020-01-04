@@ -1,8 +1,8 @@
 <?php
 function cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_GRUPPEN;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = $CMS_RECHTE['Organisation']['Galerien genehmigen'];
+  $genehmigen = r("artikel.generieren.galerien");
 
   if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
 

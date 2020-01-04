@@ -12,8 +12,7 @@ if (!isset($_SESSION['PERSONENDETAILS'])) {
 else {
 	include_once("php/schulhof/seiten/personensuche/personensuche.php");
 	$id = $_SESSION['PERSONENDETAILS'];
-	$zugriff = $CMS_RECHTE['Personen']['Schüler und Eltern verknüpfen'];
-	if ($zugriff) {
+	if (r("schulhof.verwaltung.personen.schülereltern")) {
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
 		$sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?";

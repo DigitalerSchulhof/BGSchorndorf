@@ -285,10 +285,10 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			if ($termin['art'] == 'oe') {
 				$link = $CMS_URLGANZ;
 				$linkl = $CMS_URL[0]."/".$CMS_URL[1];
-				if ($CMS_RECHTE['Website']['Termine bearbeiten']) {
+				if (@$CMS_RECHTE['Website']['Termine bearbeiten']) {
 					$aktionen .= "<span class=\"cms_button\" onclick=\"cms_termine_bearbeiten_vorbereiten('".$termin['id']."', '$linkl')\">Termin bearbeiten</span> ";
 				}
-				if ($CMS_RECHTE['Organisation']['Termine genehmigen'] && ($termin['genehmigt'] == 0)) {
+				if (r("artikel.genehmigen.termine") && ($termin['genehmigt'] == 0)) {
 					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_termin_genehmigen('Termine', '".$termin['id']."', '$link')\">Termin genehmigen</span> ";
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termin_ablehnen('Termine', '".$termin['id']."', '$linkl')\">Termin ablehnen</span> ";
 				}
@@ -303,7 +303,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				if ($gruppenrechte['termine'] == '1') {
 					$aktionen .= "<span class=\"cms_button\" onclick=\"cms_termineintern_bearbeiten_vorbereiten('".$termin['id']."', '$linkl')\">Termin bearbeiten</span> ";
 				}
-				if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen'] && ($termin['genehmigt'] == 0)) {
+				if (r("schulhof.gruppen.$gruppe.artikel.termine.genehmigen") && ($termin['genehmigt'] == 0)) {
 					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_termin_genehmigen('$gruppe', '".$termin['id']."', '$link')\">Termin genehmigen</span> ";
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termin_ablehnen('$gruppe', '".$termin['id']."', '$linkl')\">Termin ablehnen</span> ";
 				}

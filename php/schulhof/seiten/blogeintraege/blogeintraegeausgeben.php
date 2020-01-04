@@ -272,7 +272,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
 						$aktionen .= "<span class=\"cms_button\" onclick=\"cms_blogeintraege_bearbeiten_vorbereiten('".$blogeintrag['id']."', '$linkl')\">Blogeintrag bearbeiten</span> ";
 					}
-					if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] && ($blogeintrag['genehmigt'] == 0)) {
+					if (r("artikel.genehmigen.blogeinträge") && ($blogeintrag['genehmigt'] == 0)) {
 						$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_blog_genehmigen('Blogeinträge', '".$blogeintrag['id']."', '$link')\">Blogeintrag genehmigen</span> ";
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blog_ablehnen('Blogeinträge', '".$blogeintrag['id']."', '$linkl')\">Blogeintrag ablehnen</span> ";
 					}

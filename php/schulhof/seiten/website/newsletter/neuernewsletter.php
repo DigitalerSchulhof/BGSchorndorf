@@ -4,7 +4,7 @@
 <h1>Neuer Newsletter</h1>
 
 <?php
-  if(!$CMS_RECHTE["Website"]["Newsletter anlegen"])
+  if(!r("schulhof.information.newsletter.anlegen"))
     echo cms_meldung_berechtigung();
   else if(!isset($_SESSION["NEWSLETTERID"]) || !isset($_SESSION["NEWSLETTERZIEL"]))
       echo cms_meldung_bastler();

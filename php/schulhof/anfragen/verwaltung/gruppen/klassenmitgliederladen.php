@@ -10,11 +10,9 @@ session_start();
 if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Kurse anlegen'] || $CMS_RECHTE['Organisation']['Kurse bearbeiten'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.gruppen.kurse.[|anlegen,bearbeiten]")) {
 
 	$code = "";
 	$klassen = "(".str_replace('|', ',', substr($klassen, 1)).")";

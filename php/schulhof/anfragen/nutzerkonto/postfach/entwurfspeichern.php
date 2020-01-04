@@ -15,8 +15,6 @@ if (isset($_POST['betreff'])) {$betreff = $_POST['betreff'];} else {echo "FEHLER
 if (isset($_POST['nachricht'])) {$nachricht = $_POST['nachricht'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	$fehler = false;
 

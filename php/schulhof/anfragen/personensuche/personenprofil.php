@@ -11,9 +11,9 @@ session_start();
 if (isset($_POST['person'])) {$person = $_POST['person'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($person)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-if (cms_angemeldet() && $CMS_RECHTE['Personen']['Personen sehen']) {
+if (cms_angemeldet() &&	r("schulhof.verwaltung.personen.sehen")) {
 	$fehler = false;
 
   $dbs = cms_verbinden('s');

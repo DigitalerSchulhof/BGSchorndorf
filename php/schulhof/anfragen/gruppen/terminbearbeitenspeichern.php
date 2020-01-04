@@ -46,15 +46,15 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER";exit;}
 
 $gk = cms_textzudb($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['termine'] || $CMS_RECHTE['Organisation']['Gruppentermine bearbeiten'];
+$zugriff = $CMS_GRUPPENRECHTE['termine'] || r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen");
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppentermine genehmigen'])) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

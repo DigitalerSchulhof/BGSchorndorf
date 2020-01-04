@@ -1,11 +1,11 @@
 <?php
 function cms_newsletter_details_laden($id, $ziel) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL, $newsletteransehen;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL, $newsletteransehen;
   $code = "";
 
-  $anlegen = $CMS_RECHTE['Website']['Newsletter anlegen'];
-  $bearbeiten = $CMS_RECHTE['Website']['Newsletter bearbeiten'];
-  $sehen = $CMS_RECHTE["Website"]["Newsletter Empfängerliste sehen"];
+  $anlegen    = r("schulhof.information.newsletter.anlegen");
+  $bearbeiten = r("schulhof.information.newsletter.bearbeiten");
+  $sehen      = r("schulhof.information.newsletter.empfänger.sehen");
 
   $neu = $id == "-";
 
@@ -83,11 +83,11 @@ function cms_newsletter_details_laden($id, $ziel) {
           $sql->bind_result($eid, $name, $mail);
           $sql->execute();
           while($sql->fetch())
-            $code .= "<tr id=\"cms_newsletter_empfaenger_$eid\"><td><img src=\"res/icons/klein/newsletterempfaenger.png\"></td><td class=\"cms_newsletter_empfaenger_name\">$name</td><td class=\"cms_newsletter_empfaenger_mail\">$mail</td><td class=\"cms_newsletter_empfaenger_aktionen\">".(function() use ($CMS_RECHTE, $eid) {
+            $code .= "<tr id=\"cms_newsletter_empfaenger_$eid\"><td><img src=\"res/icons/klein/newsletterempfaenger.png\"></td><td class=\"cms_newsletter_empfaenger_name\">$name</td><td class=\"cms_newsletter_empfaenger_mail\">$mail</td><td class=\"cms_newsletter_empfaenger_aktionen\">".(function() use ($eid) {
               $aktionen = "";
-              if($CMS_RECHTE["Website"]["Newsletter Empfänger bearbeiten"])
+              if(r("schulhof.information.newsletter.empfänger.bearbeiten"))
                 $aktionen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_newsletter_empfaenger_bearbeiten('".($eid)."')\"><span class=\"cms_hinweis\">Empfänger bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
-              if($CMS_RECHTE["Website"]["Newsletter Empfänger löschen"])
+              if(r("schulhof.information.newsletter.empfänger.löschen"))
                 $aktionen .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_newsletter_empfaenger_loeschen_vorbereiten('".($eid)."')\"><span class=\"cms_hinweis\">Empfänger entfernen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
               return $aktionen;
             })()."</td></tr>";
@@ -97,9 +97,9 @@ function cms_newsletter_details_laden($id, $ziel) {
         $code .= "</tbody>";
       $code .= "</table>";
       $codea = "";
-      if($CMS_RECHTE["Website"]["Newsletter Empfänger anlegen"])
+      if(r("schulhof.information.newsletter.empfänger.anlegen"))
         $codea .= "<span class=\"cms_button_ja\" onclick=\"cms_newsletter_empfaenger_anlegen($id)\">+ Empfänger hinzufügen</span> ";
-      if($CMS_RECHTE["Website"]["Newsletter Empfänger löschen"])
+        if(r("schulhof.information.newsletter.empfänger.löschen"))
         $codea .= "<span class=\"cms_button_nein\" onclick=\"cms_newsletter_empfaenger_loeschen_alle_vorbereiten($id)\">Alle Empfänger entfernen</span> ";
 
       if(strlen($codea)) {

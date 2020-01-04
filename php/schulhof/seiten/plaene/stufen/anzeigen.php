@@ -7,13 +7,8 @@ $code .= "</p>";
 $stufenbezeichnung = $CMS_URL[3];
 $code .= "<h1>Stundenplan der Stufe ".(str_replace('_', ' ', $stufenbezeichnung))."</h1>";
 
-$zugriff = $CMS_RECHTE['Planung']['Stufenstundenpläne sehen'];
-$fehler = false;
 
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.stufen")) {
 	$dbs = cms_verbinden('s');
 
 	// Stufenplan

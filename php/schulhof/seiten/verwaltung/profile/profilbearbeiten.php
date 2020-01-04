@@ -4,8 +4,7 @@
 <h1>Profil bearbeiten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Fächer bearbeiten'];
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.fächer.bearbeiten")) {
 
 	if (isset($_SESSION["PROFILBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/profile/profiledetails.php');

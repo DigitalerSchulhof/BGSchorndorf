@@ -4,8 +4,7 @@
 <h1>Neue Leihgeräte anlegen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Leihgeräte anlegen'];
-if ($zugriff) {
+if (r("schulhof.organisation.leihgeräte.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/leihgeraete/leihgeraetdetails.php');
 

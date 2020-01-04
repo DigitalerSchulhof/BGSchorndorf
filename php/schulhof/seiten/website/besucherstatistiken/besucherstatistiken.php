@@ -9,9 +9,9 @@ $code .= "<h1>Besucherstatistiken</h1>";
 
 $bs = "";
 
-if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'])
+if(r("statistik.besucher.website.*"))
   $bs .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_gruppe_website.png');\" href=\"Schulhof/Website/Besucherstatistiken/Website\">Besucherstatistiken - Website</a> ";
-if($CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'])
+if(r("statistik.besucher.schulhof.sehen"))
   $bs .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/besucherstatistiken_schulhof.png');\" href=\"Schulhof/Website/Besucherstatistiken/Schulhof\">Besucherstatistiken - Schulhof</a> ";
 
 if (strlen($bs) > 0)

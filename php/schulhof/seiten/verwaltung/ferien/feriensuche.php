@@ -1,6 +1,6 @@
 <?php
 function cms_ferienverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID;
 
   if ($bearbeiten || $loeschen) {$aktionen = true;}
 

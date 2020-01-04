@@ -13,11 +13,9 @@ if (isset($_POST['stufe'])) {$stufe = $_POST['stufe'];} else {echo "FEHLER"; exi
 if (!cms_check_ganzzahl($stufe,0) && ($stufe != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Kurse anlegen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.gruppen.kurse.anlegen")) {
 
 	// Finde Anzahl an Gruppen
 	$klassen = array();

@@ -3,8 +3,7 @@
 
 <h1>Neue Schuljahr anlegen</h1>
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Schuljahre anlegen'];
-if ($zugriff) {
+if (r("schulhof.planung.schuljahre.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/schuljahre/schuljahrdetails.php');
 

@@ -4,8 +4,7 @@
 <h1>Neuen Raum anlegen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Räume anlegen'];
-if ($zugriff) {
+if (r("schulhof.planung.räume.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/raeume/raumdetails.php');
 

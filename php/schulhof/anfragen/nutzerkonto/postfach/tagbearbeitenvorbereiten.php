@@ -10,8 +10,6 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	$_SESSION["TAGBEARBEITEN"] = $id;
 

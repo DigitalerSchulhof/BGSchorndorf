@@ -17,10 +17,9 @@ if (isset($_POST['galerie'])) {$galerie = $_POST['galerie'];} else {echo "FEHLER
 if (isset($_POST['galerieanzahl'])) {$galerieanzahl = $_POST['galerieanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("website.elemente.eventübersicht.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -37,7 +36,7 @@ if (cms_angemeldet() && $zugriff) {
 	if ($blog == '0') {$bloganzahl = '5';}
 	if ($galerie == '0') {$galerieanzahl = '5';}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

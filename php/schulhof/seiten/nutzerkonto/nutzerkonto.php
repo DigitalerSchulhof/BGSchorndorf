@@ -179,16 +179,16 @@ if (strlen($fav) > 0) {echo "<h2>Favoriten</h2><ul class=\"cms_aktionen_liste\">
 </ul>
 <?php
 $aktionen = "";
-if ($CMS_RECHTE['Website']['Termine anlegen']) {
+if (@$CMS_RECHTE['Website']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
 }
-if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+if (@$CMS_RECHTE['Website']['Blogeinträge anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_blogeintrag('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Blogeintrag</span></li> ";
 }
-if ($CMS_RECHTE['Website']['Galerien anlegen']) {
+if (@$CMS_RECHTE['Website']['Galerien anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neue_galerie('".implode('/', $CMS_URL)."')\">+ Neue öffentliche Galerie</span></li> ";
 }
-/*if ($CMS_RECHTE['Persönlich']['Termine anlegen']) {
+/*if (@$CMS_RECHTE['Persönlich']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_persoenlicher_termin('".implode('/', $CMS_URL)."')\">+ Neuer persönlicher Termin</span></li> ";
 }*/
 if (strlen($aktionen) > 0) {
@@ -202,7 +202,7 @@ if (strlen($sonderrollencodeverwaltung) != 0) {
 	echo $sonderrollencode;
 }
 
-if ($CMS_RECHTE['Persönlich']['Notizen anlegen']) {
+if (r("schulhof.verwaltung.nutzerkonten.notizen")) {
 	$code = "<h2>Notizen</h2>";
 	$notizen = "";
 	$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");

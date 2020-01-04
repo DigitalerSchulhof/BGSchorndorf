@@ -390,7 +390,6 @@ function cms_dateisystem_ordner_kopieren($ursprung, $ziel) {
 
 
 function cms_dateicheck($pfad) {
-	$CMS_RECHTE = cms_rechte_laden();
 	$dateiteile = explode('/', $pfad);
 
 	if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}

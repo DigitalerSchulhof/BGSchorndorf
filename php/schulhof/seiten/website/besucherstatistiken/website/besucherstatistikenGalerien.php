@@ -11,7 +11,7 @@
       $code .= cms_besucherstatistik_website("g", "gesamtaufrufe_linie");
       $code .= cms_besucherstatistik_website("g", "bereiche_balken");
 
-      if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'] && strlen($code)) {
+      if(strlen($code) && r("statistik.besucher.website.galerien")) {
         echo "<br>Balkendiagramm:";
         echo " <span id='cms_besucherstatistik_website_geloescht_toggle' class='cms_toggle' onclick='cms_besucherstatistik_website_geloescht_toggle(\"g\")'>Gelöschte Galerien ausblenden</span>";
       }
@@ -20,8 +20,7 @@
 <div id="besucherstatistik">
 </div>
 <?php
-  $zugriff = $CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'];
-  if (!$zugriff) {
+  if (!r("statistik.besucher.website.galerien")) {
     echo cms_meldung_berechtigung();
   } else {
     echo $code;

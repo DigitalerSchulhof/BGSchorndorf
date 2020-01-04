@@ -69,10 +69,9 @@ if (isset($_POST['telefon22'])) {$telefon22 = cms_texttrafo_e_db($_POST['telefon
 if (isset($_POST['handy12'])) {$handy12 = cms_texttrafo_e_db($_POST['handy12']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['mail2'])) {$mail2 = cms_texttrafo_e_db($_POST['mail2']);} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldung vorbereiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.vorbereiten")) {
 	$fehler = false;
 	$jetzt = time();
 

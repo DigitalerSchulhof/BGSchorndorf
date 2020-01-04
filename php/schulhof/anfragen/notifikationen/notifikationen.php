@@ -14,7 +14,7 @@
    $eintrag['link']      -- Link der zur Volldarstellung führt
 */
 function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
-  global $CMS_SCHLUESSEL, $CMS_SCHULE, $CMS_ORT, $CMS_MAILZ, $CMS_MAILSIGNATUR, $CMS_RECHTE, $CMS_GRUPPEN;
+  global $CMS_SCHLUESSEL, $CMS_SCHULE, $CMS_ORT, $CMS_MAILZ, $CMS_MAILSIGNATUR, $CMS_GRUPPEN;
   $gruppek = cms_textzudb($eintrag['gruppe']);
 
   // ALTE NOTIFIKATION ZU DIESEM THEMA LÖSCHEN

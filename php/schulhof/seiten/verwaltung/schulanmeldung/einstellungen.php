@@ -4,9 +4,7 @@
 <h1>Einstellungen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldung vorbereiten'];
-
-if ($zugriff) {
+if (r("schulhof.organisation.schulanmeldung.vorbereiten")) {
 	include_once("php/schulhof/seiten/website/editor/editor.php");
 	$code = "";
 

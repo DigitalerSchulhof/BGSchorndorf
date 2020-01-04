@@ -19,10 +19,9 @@ if (isset($_POST['styles'])) {$styles = $_POST['styles'];} else {echo "FEHLER"; 
 if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['zuordnung'])) {$zuordnung = $_POST['zuordnung'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Seiten anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("website.seiten.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -35,8 +34,8 @@ if (cms_angemeldet() && $zugriff) {
 	if (($sidebar != 0) && ($sidebar != 1)) {$fehler = true;}
 
 	if (($status != 'i') && ($status != 'a') && ($status != 's')) {$fehler = true;}
-	if (($status == 's') && (!$CMS_RECHTE['Website']['Startseite festlegen'])) {$fehler = true;}
-	if (($status != 'i') && (!$CMS_RECHTE['Website']['Inhalte freigeben'])) {$fehler = true;}
+	if (($status == 's') && (!r("website.seiten.startseite"))) {$fehler = true;}
+	if (($status != 'i') && (!r("website.freigeben"))) {$fehler = true;}
 
 	if ($zuordnung != '-') {if (!cms_check_ganzzahl($zuordnung,0)) {$fehler = true;}}
 

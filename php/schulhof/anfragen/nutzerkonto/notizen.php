@@ -11,11 +11,9 @@ if (isset($_POST['notizen'])) {$notizen = $_POST['notizen'];} else {echo "FEHLER
 if (isset($_SESSION['BENUTZERID'])) {$id = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Persönlich']['Notizen anlegen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("schulhof.verwaltung.nutzerkonten.notizen")) {
 	// PROFILDATEN UPDATEN
 	$dbs = cms_verbinden('s');
 	$notizen = cms_texttrafo_e_db($notizen);

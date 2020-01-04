@@ -40,15 +40,15 @@
 		</tbody>
 	</table>
 <?php
-	if ($CMS_RECHTE['Personen']['Personen anlegen']) {echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Personen/Neue_Person_anlegen\">+ Neue Person anlegen</a></p>";}
+	if (r("schulhof.verwaltung.personen.anlegen")) {echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Personen/Neue_Person_anlegen\">+ Neue Person anlegen</a></p>";}
 	echo "<p>";
 	if ($CMS_RECHTE['Personen']['Personenids importieren']) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/IDs_importieren\">Personenids importieren</a> ";}
 	if ($CMS_RECHTE['Personen']['Personen den Kursen zuordnen']) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Kurszuordnung_importieren\">Kurszuordnung aus Datei importieren</a> ";}
 	if ($CMS_RECHTE['Personen']['Personen den Kursen zuordnen']) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Kurszuordnung_Lehrer_und_Schüler\">Kurszuordnung der Lehrer und Schüler gemäß Regelunterricht und Klassenzugehörigkeit</a> ";}
 	echo "</p><p>";
 	if ($CMS_RECHTE['Personen']['Personen den Kursen zuordnen']) {echo "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Personen/Kurszuordnung_zurücksetzen\">Kurszuordnung zurücksetzen</a> ";}
-	if ($CMS_RECHTE['Personen']['Personen löschen']) {echo "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Personen/Nicht_zugeordnet_löschen\">Nicht zugeordnete Personen löschen</a> ";}
-	//if ($CMS_RECHTE['Personen']['Personen löschen'] && !$CMS_IMLN) {echo cms_meldung('firewall', '<h4>Firewall</h4><p>Personen können nur aus dem Lehrernetz gelöscht werden. Andernfalls ist eine vollständige Löschung nicht möglich.</p>');}
+	if (r("schulhof.verwaltung.personen.löschen")) {echo "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Personen/Nicht_zugeordnet_löschen\">Nicht zugeordnete Personen löschen</a> ";}
+	//if (r("schulhof.verwaltung.personen.löschen") && !$CMS_IMLN) {echo cms_meldung('firewall', '<h4>Firewall</h4><p>Personen können nur aus dem Lehrernetz gelöscht werden. Andernfalls ist eine vollständige Löschung nicht möglich.</p>');}
 	echo "</p>";
 }
 else {
