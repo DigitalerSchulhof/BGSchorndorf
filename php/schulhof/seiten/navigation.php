@@ -544,7 +544,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (r("website.seiten.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Seiten\">Seiten</a></li> ";
 	}
-	if (r("website.seiten.navigation")) {
+	if (r("website.navigation")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Hauptnavigationen\">Hauptnavigationen</a></li> ";
 	}
 	if (r("website.dateien.*")) {

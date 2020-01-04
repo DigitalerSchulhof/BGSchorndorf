@@ -19,9 +19,8 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 $zugriff = false;
-$zugriff = $CMS_RECHTE['Organisation']['Galerien genehmigen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && r("artikel.genehmigen.galerien")) {
 	$dbs = cms_verbinden('s');
 	$fehler = false;
 

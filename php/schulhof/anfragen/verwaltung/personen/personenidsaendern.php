@@ -18,7 +18,7 @@ if (!cms_check_ganzzahl($dritt,0) && ($dritt != '')) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($viert,0) && ($viert != '')) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
 
 

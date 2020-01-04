@@ -39,7 +39,7 @@ if ($art == 'Kurse') {
 }
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $CMS_BENUTZERID);
 

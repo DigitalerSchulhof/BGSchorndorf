@@ -11,7 +11,7 @@ foreach($CMS_EMOTICONS as $e)
 	postLesen($e["id"]."_aktiv");
 
 // Variablen einlesen, falls übergeben
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Emoticons verwalten'];
 
 if (cms_angemeldet() && $zugriff) {

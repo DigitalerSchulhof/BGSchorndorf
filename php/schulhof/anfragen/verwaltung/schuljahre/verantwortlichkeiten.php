@@ -11,7 +11,7 @@ if (isset($_POST['klasseninfo'])) {$klasseninfo = $_POST['klasseninfo'];} else {
 if (isset($_POST['stufeninfo'])) {$stufeninfo = $_POST['stufeninfo'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION["VERANTWORTLICHKEITENSCHULJAHR"])) {$SCHULJAHR = $_SESSION["VERANTWORTLICHKEITENSCHULJAHR"];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Verantwortlichkeiten festlegen'];
 
 $dbs = cms_verbinden('s');

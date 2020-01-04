@@ -191,7 +191,7 @@ function cms_termin_zeiten($daten) {
 }
 
 function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
-	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_RECHTE, $CMS_TERMINID;
+	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_TERMINID;
 	$code = "";
 	$gefunden = false;
 

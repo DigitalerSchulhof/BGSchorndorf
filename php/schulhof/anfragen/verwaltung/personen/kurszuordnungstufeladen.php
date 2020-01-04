@@ -11,7 +11,7 @@ session_start();
 if (isset($_POST['sj'])) {$sj = $_POST['sj'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($sj, 0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Personen']['Personen den Kursen zuordnen'];
 
 if (cms_angemeldet() && $zugriff) {

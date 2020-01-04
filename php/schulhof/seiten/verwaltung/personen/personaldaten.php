@@ -214,7 +214,7 @@ function cms_personaldaten_ausgeben($id) {
 				echo "</ul>";
 
 				$personenaktionen = "";
-				if (r("schulhof.verwaltung.persnen.bearbeiten")) {
+				if (r("schulhof.verwaltung.personen.bearbeiten")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Bearbeiten')\">Persönliche Daten ändern</span></li> ";
 				}
 				if (($profildaten_art == "l") && r("schulhof.verwaltung.lehrer.kürzel")) {
@@ -777,7 +777,6 @@ function cms_personenids_aendern($id) {
 	$verwaltung = false;
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
 		$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
 		$verwaltung = true;
 	}

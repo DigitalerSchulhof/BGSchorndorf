@@ -4,7 +4,7 @@
 <h1>Titelbilder</h1>
 
 <?php
-if (!r("website.titelbilder")) {
+if (!r("website.titelbilder.*")) {
   echo cms_meldung_berechtigung();
 }
 else {

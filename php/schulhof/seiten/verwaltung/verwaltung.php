@@ -389,7 +389,7 @@ if (r("statistik.besucher.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.technik.feedback")) {
+if (r("technik.feedback")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">";
 			$code .=  "<h3>Feedback</h3>";
@@ -397,7 +397,7 @@ if (r("schulhof.technik.feedback")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.technik.fehlermeldungen")) {
+if (r("technik.fehlermeldungen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Website/Fehlermeldungen\">";
 			$code .=  "<h3>Fehlermeldungen</h3>";
@@ -483,7 +483,7 @@ if (r("schulhof.verwaltung.einstellungen")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.technik.server.netze")) {
+if (r("technik.server.netze")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schulnetze cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schulnetze\">";
 			$code .=  "<h3>Schulnetze</h3>";
@@ -491,7 +491,7 @@ if (r("schulhof.technik.server.netze")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.technik.server.vpn")) {
+if (r("technik.server.vpn")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_vpn cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/VPN\">";
 			$code .=  "<h3>VPN</h3>";
@@ -499,7 +499,7 @@ if (r("schulhof.technik.server.vpn")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (r("schulhof.technik.server.dateienerlaubnis")) {
+if (r("technik.server.dateienerlaubnis")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_zulaessig cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">";
 			$code .=  "<h3>Zulässige Dateien</h3>";

@@ -13,7 +13,7 @@ if (isset($_POST['name'])) {$art = $_POST['name'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id,0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 if (isset($CMS_RECHTE['Gruppen'][$art.' löschen'])) {$zugriff = isset($CMS_RECHTE['Gruppen'][$art.' löschen']);}
 else {$zugriff = false;}

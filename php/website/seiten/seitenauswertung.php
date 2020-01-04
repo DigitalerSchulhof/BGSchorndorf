@@ -164,7 +164,7 @@ function cms_seite_ausgeben($dbs) {
                 }
                 $anfrage->free();
               }
-              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]")) {
+              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]")) {
                 $_SESSION['ELEMENTSEITE'] = $seite['id'];
               }
             }

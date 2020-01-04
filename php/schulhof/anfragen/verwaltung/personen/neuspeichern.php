@@ -20,7 +20,7 @@ if (isset($_POST['stundenplan'])) {$stundenplan = $_POST['stundenplan'];} else {
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwalten.personen.anlegen")) {
+if (cms_angemeldet() && r("schulhof.verwaltung.personen.anlegen")) {
 
 	// Zusammenbauen der Bedingung
 	$sqlwhere = '';

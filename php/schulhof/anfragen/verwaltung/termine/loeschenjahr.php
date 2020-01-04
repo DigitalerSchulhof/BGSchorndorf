@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Termine löschen'];
 
 if (cms_angemeldet() && $zugriff) {

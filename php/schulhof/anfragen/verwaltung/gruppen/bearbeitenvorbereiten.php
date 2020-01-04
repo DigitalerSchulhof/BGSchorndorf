@@ -13,7 +13,7 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $CMS_BENUTZERID);
 
 if (isset($CMS_RECHTE['Gruppen'][$art.' bearbeiten'])) {$zugriff = $CMS_RECHTE['Gruppen'][$art.' bearbeiten'] || $CMS_GRUPPENRECHTE['bearbeiten'];}

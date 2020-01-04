@@ -493,16 +493,16 @@ function cms_sonderrollen_generieren() {
   if (r("artikel.genehmigen.galerien")) {
     $code .= "<li>".cms_galeriengenehmigen_knopf($dbs)."</li> ";
 	}
-  if (r("schulhof.nutzerkonten.verstöße.identitätsdiebstahl")) {
+  if (r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
 	}
   if (r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren]")) {
 		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
 	}
-  if (r("schulhof.nutzerkonten.verstöße.auffälliges")) {
+  if (r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
 	}
-  if (r("schulhof.nutzerkonten.verstöße.chatmeldungen")) {
+  if (r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
 		$code .= "<li>".cms_chatmeldungen_knopf($dbs)."</li> ";
 	}
 	cms_trennen($dbs);

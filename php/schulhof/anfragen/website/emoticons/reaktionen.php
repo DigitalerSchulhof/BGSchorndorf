@@ -11,7 +11,7 @@ postLesen("b");
 postLesen("t");
 postLesen("g");
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Website']['Emoticons verwalten'];
 
 if (cms_angemeldet() && $zugriff) {

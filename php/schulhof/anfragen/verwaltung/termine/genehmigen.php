@@ -20,10 +20,10 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 $gk = cms_textzudb($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = false;
-if ($gruppe == 'Termine') {$zugriff = $CMS_RECHTE['Organisation']['Termine genehmigen'];}
-else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = $CMS_RECHTE['Organisation']['Gruppentermine genehmigen'];}
+if ($gruppe == 'Termine') {$zugriff = r("artikel.genehmigen.termine");}
+else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = r("schulhof.gruppen.$gruppe.artikel.termine.genehmigen");}
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');

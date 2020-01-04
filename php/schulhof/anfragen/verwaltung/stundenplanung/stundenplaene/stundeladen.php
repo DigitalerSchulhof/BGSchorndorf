@@ -18,7 +18,7 @@ if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['stunde'])) {$stunde = $_POST['stunde'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {$zeitraum = $_SESSION["STUNDENPLANZEITRAUM"];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
 
 if (cms_angemeldet() && $zugriff) {
@@ -131,7 +131,7 @@ else {
 
 
 function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus, $anzahl) {
-	global $CMS_SCHLUESSEL, $CMS_RECHTE;
+	global $CMS_SCHLUESSEL;
 	$fehler = false;
 
 	// Lehrerdetails laden

@@ -15,7 +15,7 @@ if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {$jahr = '';}
 cms_rechte_laden();
 
 $bearbeiten = $CMS_RECHTE['Website']['Blogeinträge bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Blogeinträge bearbeiten'];
+$loeschen = $CMS_RECHTE['Website']['Blogeinträge löschen'];
 $anzeigen = $bearbeiten || $loeschen;
 
 $zugriff = $anzeigen;
