@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 	<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-	if (r("schulhof.verwaltung.personen.sehen || schulhof.verwaltung.personen.anlegen || schulhof.verwaltung.personen.bearbeiten || schulhof.verwaltung.personen.löschen || schulhof.verwaltung.personen.daten")) {
+	if (r("schulhof.verwaltung.personen.[|sehen,anlegen,bearbeiten,löschen,daten]")) {
 ?>
 	<h1>Personen auf dem Schulhof</h1>
 

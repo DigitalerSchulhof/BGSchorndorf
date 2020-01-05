@@ -4,7 +4,7 @@
 <h1>Bisher nicht genehmigte Blogeinträge</h1>
 
 <?php
-if (r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.ge")) {
+if (r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
 	include_once("php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php");
 	$POSTEMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
 	$ausgabe = "";
