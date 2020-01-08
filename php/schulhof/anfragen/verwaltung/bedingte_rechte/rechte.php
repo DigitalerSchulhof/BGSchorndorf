@@ -14,7 +14,7 @@ postLesen("bedingungen");
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.rechte.bedingt")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.bedingt"))) {
   if(($bedingungen = json_decode($bedingungen, true)) === null)
     die("FEHLER");
 

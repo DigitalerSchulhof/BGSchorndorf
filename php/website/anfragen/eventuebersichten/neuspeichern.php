@@ -19,7 +19,7 @@ if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} e
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.eventübersicht.anlegen")) {
+if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.anlegen"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -36,7 +36,7 @@ if (cms_angemeldet() && r("website.elemente.eventübersicht.anlegen")) {
 	if ($blog == '0') {$bloganzahl = '5';}
 	if ($galerie == '0') {$galerieanzahl = '5';}
 
-	if (!r("website.freigeben")) {$aktiv = 0;}
+	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

@@ -3,7 +3,7 @@ function cms_schulhof_stufen_links_anzeigen () {
   global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR;
   $ausgabe = "";
 
-  if (r("schulhof.information.pläne.stundenpläne.stufen")) {
+  if (cms_r("schulhof.information.pläne.stundenpläne.stufen"))) {
 
     $dbs = cms_verbinden('s');
     $sql = $dbs->prepare("SELECT id, stufe, reihenfolge FROM (SELECT id, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM stufen WHERE schuljahr = ?) AS x ORDER BY reihenfolge ASC");

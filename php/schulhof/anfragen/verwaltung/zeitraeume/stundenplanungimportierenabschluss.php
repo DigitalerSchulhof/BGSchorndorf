@@ -11,7 +11,7 @@ if (isset($_POST['zuordnen'])) {$zuordnen = $_POST['zuordnen'];} else {echo "FEH
 if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITRAUMSTUNDENPLANIMPORT'];} else {echo "FEHLER"; exit;}
 if (!cms_check_toggle($zuordnen)) {echo "FEHLER"; exit;}
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
 	$fehler = false;
 	$dbs = cms_verbinden("s");
 	// Doppelte Schienen bereinigen

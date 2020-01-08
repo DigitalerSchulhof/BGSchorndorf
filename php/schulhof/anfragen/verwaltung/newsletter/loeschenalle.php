@@ -10,7 +10,7 @@ session_start();
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.newsletter.löschen")) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.löschen"))) {
 	$dbs = cms_verbinden("s");
 
 	$sql = $dbs->prepare("DELETE FROM newslettertypen");

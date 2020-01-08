@@ -11,7 +11,7 @@ session_start();
 cms_rechte_laden();
 
 if (cms_angemeldet()) {
-	if(!r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+	if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
 		echo "BERECHTIGUNG";
 		die();
 	}

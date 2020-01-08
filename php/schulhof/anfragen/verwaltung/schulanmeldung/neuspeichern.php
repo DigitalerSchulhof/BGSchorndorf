@@ -71,7 +71,7 @@ if (isset($_POST['mail2'])) {$mail2 = cms_texttrafo_e_db($_POST['mail2']);} else
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.vorbereiten")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.vorbereiten"))) {
 	$fehler = false;
 	$jetzt = time();
 

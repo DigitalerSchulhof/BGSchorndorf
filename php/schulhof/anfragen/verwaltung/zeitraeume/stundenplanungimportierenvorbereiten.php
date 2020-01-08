@@ -11,7 +11,7 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
 	$_SESSION["ZEITRAUMSTUNDENPLANIMPORT"] = $id;
 	echo "ERFOLG";
 }

@@ -4,7 +4,7 @@
 <h1>Neue Person anlegen</h1>
 
 <?php
-if (r("schulhof.verwaltung.personen.anlegen")) {
+if (cms_r("schulhof.verwaltung.personen.anlegen"))) {
 ?>
 
 

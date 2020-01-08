@@ -9,13 +9,13 @@ if ($listenart != 'Eltern') {$genitiv = 'n';}
 $code .= "<h1>Liste der $listenart</h1>";
 
 $zugriff = false;
-if ($listenart == 'Lehrer') {           $zugriff = r("schulhof.information.listen.lehrer"); $art = 'l';}
-if ($listenart == 'Schüler') {          $zugriff = r("schulhof.information.listen.schüler"); $art = 's';}
-if ($listenart == 'Eltern') {           $zugriff = r("schulhof.information.listen.eltern"); $art = 'e';}
-if ($listenart == 'Verwaltung') {       $zugriff = r("schulhof.information.listen.verwaltungsangestellte"); $art = 'v';}
-if ($listenart == 'Externe') {          $zugriff = r("schulhof.information.listen.externe"); $art = 'x';}
-if ($listenart == 'Elternvertreter') {  $zugriff = r("schulhof.information.listen.elternvertreter"); $art = 'ev';}
-if ($listenart == 'Schülervertreter') { $zugriff = r("schulhof.information.listen.schülervertreter"); $art = 'sv';}
+if ($listenart == 'Lehrer') {           $zugriff = cms_r("schulhof.information.listen.lehrer")); $art = 'l';}
+if ($listenart == 'Schüler') {          $zugriff = cms_r("schulhof.information.listen.schüler")); $art = 's';}
+if ($listenart == 'Eltern') {           $zugriff = cms_r("schulhof.information.listen.eltern")); $art = 'e';}
+if ($listenart == 'Verwaltung') {       $zugriff = cms_r("schulhof.information.listen.verwaltungsangestellte")); $art = 'v';}
+if ($listenart == 'Externe') {          $zugriff = cms_r("schulhof.information.listen.externe")); $art = 'x';}
+if ($listenart == 'Elternvertreter') {  $zugriff = cms_r("schulhof.information.listen.elternvertreter")); $art = 'ev';}
+if ($listenart == 'Schülervertreter') { $zugriff = cms_r("schulhof.information.listen.schülervertreter")); $art = 'sv';}
 
 if ($zugriff) {
   include_once('php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');

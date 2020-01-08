@@ -22,8 +22,8 @@ $gruppek = strtolower($gruppe);
 
 cms_rechte_laden();
 $zugriff = false;
-if ($gruppe == 'Blogeinträge') {$zugriff = r("artikel.genehmigen.blogeinträge");}
-else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen");}
+if ($gruppe == 'Blogeinträge') {$zugriff = cms_r("artikel.genehmigen.blogeinträge"));}
+else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = cms_r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen"));}
 
 if (cms_angemeldet() && $zugriff) {
 	if ($gruppe == 'Blogeinträge') {

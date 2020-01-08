@@ -15,7 +15,7 @@ if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER"; exit;}
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 
-if (cms_angemeldet() && r("website.elemente.newsletter.anlegen")) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen"))) {
   $_SESSION["NEWSLETTERID"] = "-";
   $_SESSION["NEWSLETTERZIEL"] = $ziel;
 	echo "ERFOLG";

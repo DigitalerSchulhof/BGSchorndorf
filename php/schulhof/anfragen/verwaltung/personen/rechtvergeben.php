@@ -11,7 +11,7 @@ session_start();
 postLesen("rechte");
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.rechte.zuordnen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.zuordnen"))) {
 	$fehler = false;
 	$rechte = explode(",", $rechte);
 

@@ -20,7 +20,7 @@ cms_rechte_laden();
 
 if (cms_angemeldet()) {
 
-  if(!r("statistik.besucher.website.seiten")) {
+  if(!cms_r("statistik.besucher.website.seiten"))) {
     echo "BERECHTIGUNG";
   } else {
 		$gesamt = $modus == "gesamt";

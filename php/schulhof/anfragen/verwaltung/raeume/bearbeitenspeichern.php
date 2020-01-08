@@ -25,7 +25,7 @@ $stundenplan = cms_texttrafo_e_db($stundenplan);
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.räume.bearbeiten")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.räume.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

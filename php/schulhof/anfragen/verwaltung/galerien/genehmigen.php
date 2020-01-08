@@ -19,7 +19,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("artikel.genehmigen.galerien")) {
+if (cms_angemeldet() && cms_r("artikel.genehmigen.galerien"))) {
 	$dbs = cms_verbinden('s');
 	$fehler = false;
 

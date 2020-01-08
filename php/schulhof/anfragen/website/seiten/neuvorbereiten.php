@@ -11,7 +11,7 @@ if (isset($_POST['zuordnung'])) {$zuordnung = $_POST['zuordnung'];} else {echo "
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.seiten.anlegen")) {
+if (cms_angemeldet() && cms_r("website.seiten.anlegen"))) {
 	$_SESSION["SEITENNEUZUORDNUNG"] = $zuordnung;
 	echo "ERFOLG";
 }

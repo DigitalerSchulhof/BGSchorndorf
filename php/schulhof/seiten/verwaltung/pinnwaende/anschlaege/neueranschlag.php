@@ -37,7 +37,7 @@ if ($angemeldet) {
 			if ($schreibenx == '1') {$zugriff = true;}
 		}
 
-		if ($zugriff || r("schulhof.information.pinnwände.anschläge.bearbeiten")) {
+		if ($zugriff || cms_r("schulhof.information.pinnwände.anschläge.bearbeiten"))) {
 			$code .= "";
 			$code .= "<h1>Neuer Anschlag für die Pinnwand »$bezeichnung"."«</h1>";
 			include_once('php/schulhof/seiten/verwaltung/pinnwaende/anschlaege/anschlaegedetails.php');

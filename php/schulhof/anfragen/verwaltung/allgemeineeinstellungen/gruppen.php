@@ -56,7 +56,7 @@ postLesen("nachrichtloeschen");
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.einstellungen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen"))) {
 	$fehler = false;
 
 	foreach ($optionen as $o) {

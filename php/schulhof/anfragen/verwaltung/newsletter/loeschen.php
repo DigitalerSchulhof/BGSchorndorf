@@ -16,7 +16,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.newsletter.löschen")) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.löschen"))) {
 	$dbs = cms_verbinden('s');
 
 	$sql = $dbs->prepare("DELETE FROM newslettertypen WHERE id = ?");

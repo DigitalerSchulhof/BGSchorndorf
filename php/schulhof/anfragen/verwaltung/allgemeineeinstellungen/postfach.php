@@ -39,7 +39,7 @@ foreach ($personengruppen as $p) {
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.einstellungen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen"))) {
 	$fehler = false;
 
 	foreach ($personengruppen as $p) {

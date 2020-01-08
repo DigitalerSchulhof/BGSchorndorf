@@ -19,7 +19,7 @@ if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "F
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.boxen.bearbeiten")) {
+if (cms_angemeldet() && cms_r("website.elemente.boxen.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -28,7 +28,7 @@ if (cms_angemeldet() && r("website.elemente.boxen.bearbeiten")) {
 	if (($ausrichtung != 'u') && ($ausrichtung != 'n')) {$fehler = true;}
 	if (!cms_check_ganzzahl($breite,0)) {$fehler = true;}
 
-	if (!r("website.freigeben")) {$aktiv = 0;}
+	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -43,7 +43,7 @@ if (cms_angemeldet() && r("website.elemente.boxen.bearbeiten")) {
 			$boxen[$i]['id'] = $bids[$i];
 			if (isset($_POST["baktiv_".$bids[$i]])) {$boxen[$i]['aktiv'] = $_POST["baktiv_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['aktiv'] != '0') && ($boxen[$i]['aktiv'] != '1')) {$fehler = true; }
-			if (!r("website.freigeben")) {$boxen[$i]['aktiv'] = 0;}
+			if (!cms_r("website.freigeben"))) {$boxen[$i]['aktiv'] = 0;}
 
 			if (isset($_POST["bstyle_".$bids[$i]])) {$boxen[$i]['style'] = $_POST["bstyle_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['style'] != '1') && ($boxen[$i]['style'] != '2') && ($boxen[$i]['style'] != '3') && ($boxen[$i]['style'] != '4') &&
@@ -60,7 +60,7 @@ if (cms_angemeldet() && r("website.elemente.boxen.bearbeiten")) {
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
-		if (!r("website.freigeben")) {
+		if (!cms_r("website.freigeben"))) {
 			$sql = "UPDATE boxenaussen SET position = ?, ausrichtungneu = ?, breiteneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("isii", $position, $ausrichtung, $breite, $id);
@@ -89,7 +89,7 @@ if (cms_angemeldet() && r("website.elemente.boxen.bearbeiten")) {
 				array_push($eingetragen, $bid);
 			}
 			else {
-				if (r("website.freigeben")) {
+				if (cms_r("website.freigeben"))) {
 					$sql = "UPDATE boxen SET position = $position, aktiv = '".$boxen[$i]['aktiv']."', ";
 					$sql .= "titelalt = titelaktuell, titelaktuell = '".$boxen[$i]['titel']."', titelneu = '".$boxen[$i]['titel']."', ";
 					$sql .= "inhaltalt = inhaltaktuell, inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";

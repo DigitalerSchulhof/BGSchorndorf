@@ -6,7 +6,7 @@ function cms_auszeichnung_details_laden($id) {
 	$zugriff = false;
 	$fehler = false;
 
-  if ((($id == '-') && r("website.auszeichnungen.anlegen")) || (($id != '-') && r("website.auszeichnungen.bearbeiten"))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("website.auszeichnungen.anlegen"))) || (($id != '-') && cms_r("website.auszeichnungen.bearbeiten")))) {$zugriff = true;}
 
   $bild = '';
   $bez = '';

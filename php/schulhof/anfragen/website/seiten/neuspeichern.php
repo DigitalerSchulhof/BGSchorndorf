@@ -21,7 +21,7 @@ if (isset($_POST['zuordnung'])) {$zuordnung = $_POST['zuordnung'];} else {echo "
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.seiten.anlegen")) {
+if (cms_angemeldet() && cms_r("website.seiten.anlegen"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -34,8 +34,8 @@ if (cms_angemeldet() && r("website.seiten.anlegen")) {
 	if (($sidebar != 0) && ($sidebar != 1)) {$fehler = true;}
 
 	if (($status != 'i') && ($status != 'a') && ($status != 's')) {$fehler = true;}
-	if (($status == 's') && (!r("website.seiten.startseite"))) {$fehler = true;}
-	if (($status != 'i') && (!r("website.freigeben"))) {$fehler = true;}
+	if (($status == 's') && (!cms_r("website.seiten.startseite")))) {$fehler = true;}
+	if (($status != 'i') && (!cms_r("website.freigeben")))) {$fehler = true;}
 
 	if ($zuordnung != '-') {if (!cms_check_ganzzahl($zuordnung,0)) {$fehler = true;}}
 

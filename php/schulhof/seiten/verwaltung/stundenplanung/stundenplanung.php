@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
 
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;

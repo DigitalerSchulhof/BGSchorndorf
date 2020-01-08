@@ -3,7 +3,7 @@
 
 <h1>Rolle bearbeiten</h1>
 <?php
-if (r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
+if (cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten"))) {
 	// PERSÖNLICHE DATEN LADEN
 	if (isset($_SESSION["ROLLEBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/rollen/rollendetails.php');

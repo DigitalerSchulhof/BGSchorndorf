@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if (r("schulhof.planung.schuljahre.fabrik")) {
+if (cms_r("schulhof.planung.schuljahre.fabrik"))) {
   $code .= "<h1>Schuljahrfabrik</h1>";
   $code .= "<h2>Teilschritte</h2>";
   $code .= "<p>";

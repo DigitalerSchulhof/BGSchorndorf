@@ -10,7 +10,7 @@ session_start();
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.löschen")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.löschen"))) {
 	$dbs = cms_verbinden('s');
 	$sql = $dbs->prepare("DELETE FROM voranmeldung_schueler");
 	$sql->execute();

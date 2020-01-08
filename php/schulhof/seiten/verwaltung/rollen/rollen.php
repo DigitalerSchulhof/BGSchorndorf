@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 	<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 	<?php
-		if (r("schulhof.verwaltung.rechte.rollen.[|sehen,erstellen,bearbeiten,löschen]")) {
+		if (cms_r("schulhof.verwaltung.rechte.rollen.[|sehen,erstellen,bearbeiten,löschen]"))) {
 	?>
 
 <h1>Rollen</h1>
@@ -47,10 +47,10 @@
 					$ausgabe .= "<td>";
 					if ($daten['id'] != 0) {
 						$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-						if (r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
+						if (cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten"))) {
 							$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_rolle_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 						}
-						if (r("schulhof.verwaltung.rechte.rollen.löschen")) {
+						if (cms_r("schulhof.verwaltung.rechte.rollen.löschen"))) {
 							$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_rolle_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 						}
 					}
@@ -71,7 +71,7 @@
 		</tbody>
 	</table>
 <?php
-	if (r("schulhof.verwaltung.rechte.rollen.erstellen"))
+	if (cms_r("schulhof.verwaltung.rechte.rollen.erstellen")))
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen\">+ Neue Rolle anlegen</a></p>";
 
 	} else

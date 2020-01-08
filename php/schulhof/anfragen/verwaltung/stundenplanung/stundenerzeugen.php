@@ -26,7 +26,7 @@ if (($erster != 'j') && ($erster != 'n')) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen"))) {
 	$dbs = cms_verbinden('s');
 	$fehler = false;
 

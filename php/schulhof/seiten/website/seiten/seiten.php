@@ -4,7 +4,7 @@
 <h1>Seiten</h1>
 
 <?php
-if (r("website.seiten.*")) {
+if (cms_r("website.seiten.*"))) {
 
 	include_once('php/schulhof/seiten/website/seiten/seitenbaum.php');
 
@@ -15,7 +15,7 @@ if (r("website.seiten.*")) {
 		cms_trennen($dbs);
 	$code .= "</table>";
 
-	if (r("website.seiten.anlegen")) {
+	if (cms_r("website.seiten.anlegen"))) {
 		$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('-')\">+ Neue Seite anlegen</span></p>";
 	}
 

@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.seiten.löschen")) {
+if (cms_angemeldet() && cms_r("website.seiten.löschen"))) {
 
 	$fehler = false;
 

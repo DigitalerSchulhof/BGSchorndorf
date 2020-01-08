@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if (r("schulhof.planung.schuljahre.fächer.anlegen")) {
+if (cms_r("schulhof.planung.schuljahre.fächer.anlegen"))) {
 	// Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
   if (isset($_SESSION['PROFILSCHULJAHR'])) {

@@ -29,7 +29,7 @@ if ($art == 'm') {
 else {
 	cms_rechte_laden();
 	if ($art == 'p') {
-		if (cms_angemeldet() && r("schulhof.verwaltung.personen.daten")) {
+		if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.daten"))) {
 			$_SESSION['PERSONSTUNDENPLANID'] = $id;
 			$_SESSION['PERSONSTUNDENPLANZEITRAUM'] = $zeitraum;
 			echo "ERFOLG";
@@ -39,7 +39,7 @@ else {
 		}
 	}
 	else if ($art == 'l') {
-		if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.lehrer")) {
+		if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.lehrer"))) {
 			$_SESSION['LEHRERSTUNDENPLANID'] = $id;
 			$_SESSION['LEHRERSTUNDENPLANZEITRAUM'] = $zeitraum;
 			echo "ERFOLG";
@@ -49,7 +49,7 @@ else {
 		}
 	}
 	else if ($art == 'r') {
-		if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.räume")) {
+		if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.räume"))) {
 			$_SESSION['RAUMSTUNDENPLANID'] = $id;
 			$_SESSION['RAUMSTUNDENPLANZEITRAUM'] = $zeitraum;
 			echo "ERFOLG";
@@ -59,7 +59,7 @@ else {
 		}
 	}
 	else if ($art == 'k') {
-		if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.klassen")) {
+		if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.klassen"))) {
 			$_SESSION['KLASSENSTUNDENPLANID'] = $id;
 			$_SESSION['KLASSENSTUNDENPLANZEITRAUM'] = $zeitraum;
 			echo "ERFOLG";
@@ -69,7 +69,7 @@ else {
 		}
 	}
 	else if ($art == 't') {
-		if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.stufen")) {
+		if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.stufen"))) {
 			$_SESSION['STUFENSTUNDENPLANID'] = $id;
 			$_SESSION['STUFENSTUNDENPLANZEITRAUM'] = $zeitraum;
 			echo "ERFOLG";

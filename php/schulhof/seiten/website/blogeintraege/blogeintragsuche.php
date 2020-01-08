@@ -2,7 +2,7 @@
 function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
   global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = r("artikel.genehmigen.blogeinträge");
+  $genehmigen = cms_r("artikel.genehmigen.blogeinträge"));
 
   if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
 

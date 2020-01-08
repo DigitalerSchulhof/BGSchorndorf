@@ -4,7 +4,7 @@
 <h1>Bisher nicht genehmigte Galerien</h1>
 
 <?php
-if (r("artikel.genehmigen.galerien")) {
+if (cms_r("artikel.genehmigen.galerien"))) {
 	$ausgabe = "<table class=\"cms_liste\">";
 		$ausgabe .= "<thead>";
 			$ausgabe .= "<tr><th></th><th>Bezeichnung</th><th></th><th>Datum</th><th>Autor</th><th></th><th>Aktionen</th></tr>";

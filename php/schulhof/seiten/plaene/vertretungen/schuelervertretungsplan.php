@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Schülervertretungsplan</h1>";
 
-if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.vertretungen.schüler")) {
+if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.vertretungen.schüler"))) {
 
 	if ($CMS_EINSTELLUNGEN['Vertretungsplan extern'] == '1') {
 		include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplanexternausgeben.php');

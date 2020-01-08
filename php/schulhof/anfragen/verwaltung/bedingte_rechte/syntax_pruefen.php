@@ -14,7 +14,7 @@ postLesen("bedingung");
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt"))) {
   // Eingabe überprüfen
 
   if(cms_bedingt_bedingung_syntax_pruefen($bedingung)) {

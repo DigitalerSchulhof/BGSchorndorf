@@ -12,7 +12,7 @@ if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; 
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.exportieren")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.exportieren"))) {
 	$fehler = false;
 
 	if (($gruppe != 'alle') && ($gruppe != 'auf') && ($gruppe != 'aufohne') && ($gruppe != 'aufbili') && ($gruppe != 'abgelehnt')) {$fehler = true;}

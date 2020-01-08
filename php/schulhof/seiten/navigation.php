@@ -461,93 +461,93 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	$VERWALTUNG = false;
 	// PERSONEN
 	$VERpersonenundgruppen = "";
-	if (r("schulhof.verwaltung.personen.sehen")) {
+	if (cms_r("schulhof.verwaltung.personen.sehen"))) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen\">Personen</a></li> ";
 	}
-	if (r("schulhof.verwaltung.rechte.rollen.[|anlegen,bearbeiten,löschen]")) {
+	if (cms_r("schulhof.verwaltung.rechte.rollen.[|anlegen,bearbeiten,löschen]"))) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Rollen\">Rollen</a></li> ";
 	}
-	if (r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
+	if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt"))) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Bedingte_Rechte\">Rollen und Rechte bedingt zuordnen</a></li> ";
 	}
 	foreach ($CMS_GRUPPEN as $g) {
-		if (r("schulhof.gruppen.$g.[|anlegen,bearbeiten,löschen]")) {
+		if (cms_r("schulhof.gruppen.$g.[|anlegen,bearbeiten,löschen]"))) {
 			$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($g)."\">$g</a></li> ";
 		}
 	}
-	if (r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
+	if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen"))) {
 		$VERpersonenundgruppen .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Chatmeldungen\">Chatmeldungen</a></li> ";
 	}
 	// PLANUNG
 	$VERplanung = "";
-	if (r("schulhof.planung.schuljahre.fabrik")) {
+	if (cms_r("schulhof.planung.schuljahre.fabrik"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schuljahrfabrik_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Schuljahrfabrik</a></li> ";
 	}
-	if (r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen,duplizieren,rythmisieren]")) {
+	if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen,duplizieren,rythmisieren]"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanzeitraeume_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Stundenplanzeiträume</a></li> ";
 	}
-	if (r("schulhof.planung.schuljahre.fächer.*")) {
+	if (cms_r("schulhof.planung.schuljahre.fächer.*"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_faecher_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Fächer</a></li> ";
 	}
-	if (r("schulhof.planung.schuljahre.profile.*")) {
+	if (cms_r("schulhof.planung.schuljahre.profile.*"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_profile_vorbereiten($CMS_BENUTZERSCHULJAHR)\">Profile</a></li> ";
 	}
-	if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*")) {
+	if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_schienen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Schienen</a></li> ";
 	}
-	if (r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
+	if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplanung_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stundenplanung</a></li> ";
 	}
-	if (r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
+	if (cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
 	}
-	if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+	if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">Vertretungsplan</a></li> ";
 	}
-	if (r("schulhof.planung.vertretungsplan.ausplanungen")) {
+	if (cms_r("schulhof.planung.vertretungsplan.ausplanungen"))) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";
 	}
 	// ORGANISATION
 	$VERorganisation = "";
-	if (r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
+	if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuljahre\">Schuljahre</a></li> ";
 	}
-	if (r("schulhof.planung.räume.*")) {
+	if (cms_r("schulhof.planung.räume.*"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Räume\">Räume</a></li> ";
 	}
-	if (r("schulhof.organisation.leihgeräte.*")) {
+	if (cms_r("schulhof.organisation.leihgeräte.*"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Leihgeräte\">Leihgeräte</a></li> ";
 	}
-	if (r("schulhof.organisation.ferien.*")) {
+	if (cms_r("schulhof.organisation.ferien.*"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Ferien\">Ferien</a></li> ";
 	}
-	if (r("schulhof.organisation.schulanmeldung.*")) {
+	if (cms_r("schulhof.organisation.schulanmeldung.*"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schulanmeldung\">Schulanmeldung</a></li> ";
 	}
-	if (r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
+	if (cms_r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen</a></li> ";
 	}
-	if (r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
+	if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen</a></li> ";
 	}
-	if (r("artikel.genehmigen.galerien")) {
+	if (cms_r("artikel.genehmigen.galerien"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Gelerien_genehmigen\">Galerien genehmigen</a></li> ";
 	}
-	if (r("schulhof.information.dauerbrenner.*")) {
+	if (cms_r("schulhof.information.dauerbrenner.*"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Dauerbrenner\">Dauerbrenner</a></li> ";
 	}
-	if (r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]")) {
+	if (cms_r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]"))) {
 		$VERorganisation .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Pinnwände\">Pinnwände</a></li> ";
 	}
 	// WEBSITE
 	$VERwebsite = "";
-	if (r("website.seiten.*")) {
+	if (cms_r("website.seiten.*"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Seiten\">Seiten</a></li> ";
 	}
-	if (r("website.navigation")) {
+	if (cms_r("website.navigation"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Hauptnavigationen\">Hauptnavigationen</a></li> ";
 	}
-	if (r("website.dateien.*")) {
+	if (cms_r("website.dateien.*"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Dateien\">Dateien</a></li> ";
 	}
 	if (@$CMS_RECHTE['Website']['Termine anlegen'] || @$CMS_RECHTE['Website']['Termine bearbeiten'] || @$CMS_RECHTE['Website']['Termine löschen']) {
@@ -559,55 +559,55 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (@$CMS_RECHTE['Website']['Galerien anlegen'] || @$CMS_RECHTE['Website']['Galerien bearbeiten'] || @$CMS_RECHTE['Website']['Galerien löschen']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Galerien\">Galerien</a></li> ";
 	}
-	if (r("website.titelbilder.*")) {
+	if (cms_r("website.titelbilder.*"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Titelbilder\">Titelbilder</a></li> ";
 	}
-	if (r("website.auszeichnungen.*")) {
+	if (cms_r("website.auszeichnungen.*"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Auszeichnungen\">Auszeichnungen</a></li> ";
 	}
-	if (r("statistik.besucher.*")) {
+	if (cms_r("statistik.besucher.*"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a></li> ";
 	}
-	if (r("technik.feedback")) {
+	if (cms_r("technik.feedback"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Feedback\">Feedback</a></li> ";
 	}
-	if (r("technik.fehlermeldungen")) {
+	if (cms_r("technik.fehlermeldungen"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a></li> ";
 	}
-	if (r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+	if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
 	}
 	if (@$CMS_RECHTE['Website']['Emoticons verwalten']) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Emoticons\">Emoticons</a></li> ";
 	}
-	if (r("schulhof.information.newsletter.*")) {
+	if (cms_r("schulhof.information.newsletter.*"))) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Newsletter\">Newsletter</a></li> ";
 	}
 
 	// WEBSITE
 	$VERtechnik = "";
-	if (r("schulhof.technik.geräte.verwalten")) {
+	if (cms_r("schulhof.technik.geräte.verwalten"))) {
 		$VERtechnik .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten</a></li> ";
 	}
-	if (r("schulhof.technik.hausmeisteraufträge.*")) {
+	if (cms_r("schulhof.technik.hausmeisteraufträge.*"))) {
 		$VERtechnik .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisteraufträge</a></li> ";
 	}
 
 	// ADMINISTRATION
 	$VERadministration = "";
-	if (r("schulhof.verwaltung.einstellungen")) {
+	if (cms_r("schulhof.verwaltung.einstellungen"))) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Allgemeine_Einstellungen\">Allgemeine Einstellungen</a></li> ";
 	}
-	if (r("technik.server.netze")) {
+	if (cms_r("technik.server.netze"))) {
 		$VERadministration .= "<li><a class=\"cms_button_wichtig\" href=\"Schulhof/Verwaltung/Schulnetze\">Schulnetze</a></li> ";
 	}
-	if (r("technik.server.vpn")) {
+	if (cms_r("technik.server.vpn"))) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/VPN\">VPN</a></li> ";
 	}
-	if (r("technik.server.dateienerlaubnis")) {
+	if (cms_r("technik.server.dateienerlaubnis"))) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">Zulässige Dateien</a></li> ";
 	}
-	if (r("schulhof.verwaltung.schule.[|adressen,mail]")) {
+	if (cms_r("schulhof.verwaltung.schule.[|adressen,mail]"))) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuldetails\">Schuldetails</a></li> ";
 	}
 

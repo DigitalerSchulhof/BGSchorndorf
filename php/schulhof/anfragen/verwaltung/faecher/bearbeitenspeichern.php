@@ -17,7 +17,7 @@ if (isset($_SESSION["FAECHERBEARBEITEN"])) {$id = $_SESSION["FAECHERBEARBEITEN"]
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.fächer.bearbeiten")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fächer.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

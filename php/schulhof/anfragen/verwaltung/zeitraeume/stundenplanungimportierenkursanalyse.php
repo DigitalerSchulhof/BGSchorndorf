@@ -14,7 +14,7 @@ if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITR
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
 	$fehler = false;
 
 	if (strlen($trennung) == 0) {$fehler = true;}

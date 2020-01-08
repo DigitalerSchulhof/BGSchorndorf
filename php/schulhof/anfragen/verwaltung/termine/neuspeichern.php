@@ -52,7 +52,7 @@ if ($CMS_RECHTE['Website']['Termine anlegen']) {
 	$zugriff = true;
 }
 
-if (!r("artikel.genehmigen.termine")) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.termine"))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

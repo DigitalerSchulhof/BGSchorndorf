@@ -24,7 +24,7 @@ if (isset($_POST['vplanlkennung'])) {$vplanlkennung = $_POST['vplanlkennung'];} 
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.einstellungen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen"))) {
 	$fehler = false;
 
 	if (!cms_check_toggle($vplanextern)) {$fehler = true;}

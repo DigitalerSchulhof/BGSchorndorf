@@ -13,7 +13,7 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.profile.löschen")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.profile.löschen"))) {
 
 	$fehler = false;
 

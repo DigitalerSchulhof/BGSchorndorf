@@ -20,7 +20,7 @@ cms_rechte_laden();
 if (!cms_check_ganzzahl($stufe,0) || !cms_check_idfeld($altestufen) || !cms_check_idfeld($faecher) || (($erster != 'n') && ($erster != 'j'))) {echo "FEHLER";exit;}
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.fabrik")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik"))) {
 	$fehler = false;
 
 	$FAECHERINFO = array();

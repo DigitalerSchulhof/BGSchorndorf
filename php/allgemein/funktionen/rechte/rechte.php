@@ -86,7 +86,7 @@
         if(is_array($v)) {
           $rek($v, "$pfad.$k");
         } else {
-          $cms_allerechte[] = substr("$pfad.$k", 1);
+          $cms_allerechte[] = substcms_r("$pfad.$k"), 1);
         }
       }
     };

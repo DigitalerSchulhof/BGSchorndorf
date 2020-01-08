@@ -4,7 +4,7 @@
 <h1>Pinnwände</h1>
 
 <?php
-if (r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]")) {
+if (cms_r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]"))) {
 ?>
 	<table class="cms_liste">
 		<thead>
@@ -40,10 +40,10 @@ if (r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]")) {
 					// Aktionen
 					$ausgabe .= "<td>";
 					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-					if (r("schulhof.information.pinnwände.bearbeiten")) {
+					if (cms_r("schulhof.information.pinnwände.bearbeiten"))) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_pinnwaende_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
-					if (r("schulhof.information.pinnwände.löschen")) {
+					if (cms_r("schulhof.information.pinnwände.löschen"))) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_pinnwaende_loeschen_anzeigen(".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 					}
 
@@ -63,7 +63,7 @@ if (r("schulhof.information.pinnwände.[|anlegen,bearbeiten,löschen]")) {
 		</tbody>
 	</table>
 <?php
-	if (r("schulhof.information.pinnwände.anlegen")) {
+	if (cms_r("schulhof.information.pinnwände.anlegen"))) {
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Pinnwände/Neue_Pinnwand_anlegen\">+ Neue Pinnwand anlegen</a></p>";
 	}
 }

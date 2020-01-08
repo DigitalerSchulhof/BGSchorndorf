@@ -29,8 +29,8 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 if($art === "r") { $rart = "räume"; }
 else if($art === "r") { $rart = "leihgeräte"; }
 
-if (cms_angemeldet() && r("schulhof.organisation.buchungen.$rart.[|sehen,anonymisiert]")) {
-	if (r("schulhof.organisation.buchungen.$rart.sehen")) {$anonymisiert = false;}
+if (cms_angemeldet() && cms_r("schulhof.organisation.buchungen.$rart.[|sehen,anonymisiert]"))) {
+	if (cms_r("schulhof.organisation.buchungen.$rart.sehen"))) {$anonymisiert = false;}
 	else {$anonymisiert = true;}
 	echo cms_buchungsplan_laden($art, $standort, $tag, $monat, $jahr, $ziel, $anonymisiert);
 }

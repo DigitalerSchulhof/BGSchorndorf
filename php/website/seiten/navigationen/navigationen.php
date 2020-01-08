@@ -76,7 +76,7 @@ function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = 
 	}
 
 	if (isset($CMS_URL[1])) {
-		if (($CMS_URL[1] == 'Bearbeiten') && r("website.seiten.anlegen")) {
+		if (($CMS_URL[1] == 'Bearbeiten') && cms_r("website.seiten.anlegen"))) {
 			$code .= "<li><span class=\"cms_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('$start');\">+ Neue Seite</span></li>";
 		}
 	}
@@ -307,7 +307,7 @@ function cms_navigationsebene_ausgeben($dbs, $pfad, $gesamtpfad, $oberseite, $ti
 		}
 	}
 
-	if (($CMS_URL[1] == 'Bearbeiten') && r("website.seiten.anlegen")) {
+	if (($CMS_URL[1] == 'Bearbeiten') && cms_r("website.seiten.anlegen"))) {
 		$code .= "<li><span class=\"cms_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('$oberseite');\">+ Neue Seite</span></li>";
 	}
 

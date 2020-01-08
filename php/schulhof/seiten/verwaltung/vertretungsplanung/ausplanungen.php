@@ -3,7 +3,7 @@
 <h1>Ausplanungen</h1>
 <?php
 $code = "";
-if (r("schulhof.planung.vertretungsplan.ausplanungen")) {
+if (cms_r("schulhof.planung.vertretungsplan.ausplanungen"))) {
   if (!$CMS_IMLN) {
     $code .= cms_meldung_firewall();
   }
@@ -156,7 +156,7 @@ if (r("schulhof.planung.vertretungsplan.ausplanungen")) {
     $code .= "<input type=\"hidden\" name=\"cms_ausplanungen_ort\" id=\"cms_ausplanungen_ort\" value=\"a\">";
     $code .= "</div></div>";
     $code .= "<div class=\"cms_clear\"></div><div>";
-    if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+    if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung"))) {
       $code .= "<div class=\"cms_spalte_i\"><p><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">Vertretungsplanung</a></p></div>";
     }
   }

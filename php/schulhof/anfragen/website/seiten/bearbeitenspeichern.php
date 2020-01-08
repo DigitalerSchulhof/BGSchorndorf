@@ -23,7 +23,7 @@ if (isset($_SESSION['SEITENBEARBEITENID'])) {$id = $_SESSION['SEITENBEARBEITENID
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.seiten.bearbeiten")) {
+if (cms_angemeldet() && cms_r("website.seiten.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -36,8 +36,8 @@ if (cms_angemeldet() && r("website.seiten.bearbeiten")) {
 	if (($sidebar != 0) && ($sidebar != 1)) {$fehler = true;}
 
 	if (($status != 'i') && ($status != 'a') && ($status != 's')) {$fehler = true;}
-	if (($status == 's') && (!r("website.seiten.startseite"))) {$fehler = true;}
-	if (($status != 'i') && (!r("website.freigeben"))) {$fehler = true;}
+	if (($status == 's') && (!cms_r("website.seiten.startseite")))) {$fehler = true;}
+	if (($status != 'i') && (!cms_r("website.freigeben")))) {$fehler = true;}
 
 	if (($art == 'm') && ($status == 's')) {$fehler = true;}
 

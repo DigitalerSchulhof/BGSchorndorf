@@ -6,10 +6,10 @@
 $spalten = 1;
 $aktionen = "";
 $auftraege = "";
-if (r("schulhof.technik.hausmeisteraufträge.erteilen")) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {
   $spalten = 2;
   $auftraege .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
-    if (r("schulhof.technik.hausmeisteraufträge.erteilen")) {
+    if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {
       $beschreibung = "";
       $titel = "";
       $auftraegezugehoerigkeit = "<input type=\"hidden\" name=\"cms_hausmeisterauftrag_zugehoerig\" id=\"cms_hausmeisterauftrag_zugehoerig\" value=\"\">";
@@ -93,7 +93,7 @@ if ($CMS_BENUTZERSCHULJAHR != '-') {
   else {$code .= "<p class=\"cms_notiz\">Keine Hausmeister hinterlegt.</p>";}
 }
 
-if (r("schulhof.technik.hausmeisteraufträge.sehen")) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.sehen"))) {
   $aktionen .= cms_hausmeisterauftraege_knopf($dbs);
 }
 

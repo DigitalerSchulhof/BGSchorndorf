@@ -15,7 +15,7 @@ if ((!cms_check_ganzzahl($gewaehlt,0)) && ($gewaehlt != '-')) {echo "FEHLER"; ex
 $dbs = cms_verbinden('s');
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.gruppen.[|klassen,kurse].anlegen")) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.[|klassen,kurse].anlegen"))) {
 
 	// Finde Anzahl an Gruppen
 	$stufen = array();

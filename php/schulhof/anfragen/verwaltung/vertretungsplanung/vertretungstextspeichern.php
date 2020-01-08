@@ -28,7 +28,7 @@ if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.vertretungsplan.vertretungsplanung"))) {
   $fehler = false;
   $dbs = cms_verbinden('s');
   $hb = mktime(0,0,0,$monat, $tag, $jahr);

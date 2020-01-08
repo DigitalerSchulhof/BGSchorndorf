@@ -36,7 +36,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 if($art === "r") {$rart = "räume";}
 else if($art === "l") {$rart = "leihgeräte";}
 
-if (cms_angemeldet() && r("schulhof.organisation.buchungen.$rart.vornehmen")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.buchungen.$rart.vornehmen"))) {
 	$fehler = false;
 
 	$beginn = mktime($beginnS, $beginnM, 0, $datumM, $datumT, $datumJ);

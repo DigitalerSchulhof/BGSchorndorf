@@ -3,7 +3,7 @@
 <h1>Vertretungsplanung</h1>
 <?php
 $code = "";
-if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung"))) {
   if (!$CMS_IMLN) {
     $code .= cms_meldung_firewall();
   }
@@ -402,27 +402,27 @@ if (r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
         var cms_groesseaendern_wochekonf = document.getElementById("cms_groesseaendern_wochekonf");
         var cms_groesseaendern_klasselehrer = document.getElementById("cms_groesseaendern_klasselehrer");
         var cms_groesseaendern_lehrerraum = document.getElementById("cms_groesseaendern_lehrerraum");
-      	cms_groesseaendern_wochekonf.addEventListener("mousedown", function(e){
+      	cms_groesseaendern_wochekonf.addEventListener("mousedown"), function(e){
       		gedrueckte_xpos = e.x;
-      		document.addEventListener("mousemove", cms_groesse_wochenkonf_aendern, false);
+      		document.addEventListener("mousemove"), cms_groesse_wochenkonf_aendern, false);
       	}, false);
-      	cms_groesseaendern_klasselehrer.addEventListener("mousedown", function(e){
+      	cms_groesseaendern_klasselehrer.addEventListener("mousedown"), function(e){
       		gedrueckte_xpos = e.x;
-      		document.addEventListener("mousemove", cms_groesse_klasselehrer_aendern, false);
+      		document.addEventListener("mousemove"), cms_groesse_klasselehrer_aendern, false);
       	}, false);
-      	cms_groesseaendern_lehrerraum.addEventListener("mousedown", function(e){
+      	cms_groesseaendern_lehrerraum.addEventListener("mousedown"), function(e){
       		gedrueckte_xpos = e.x;
-      		document.addEventListener("mousemove", cms_groesse_lehrerraum_aendern, false);
+      		document.addEventListener("mousemove"), cms_groesse_lehrerraum_aendern, false);
       	}, false);
 
-      	document.addEventListener("mouseup", function(){
-      	    document.removeEventListener("mousemove", cms_groesse_wochenkonf_aendern, false);
+      	document.addEventListener("mouseup"), function(){
+      	    document.removeEventListener("mousemove"), cms_groesse_wochenkonf_aendern, false);
       	}, false);
-      	document.addEventListener("mouseup", function(){
-      	    document.removeEventListener("mousemove", cms_groesse_klasselehrer_aendern, false);
+      	document.addEventListener("mouseup"), function(){
+      	    document.removeEventListener("mousemove"), cms_groesse_klasselehrer_aendern, false);
       	}, false);
-      	document.addEventListener("mouseup", function(){
-      	    document.removeEventListener("mousemove", cms_groesse_lehrerraum_aendern, false);
+      	document.addEventListener("mouseup"), function(){
+      	    document.removeEventListener("mousemove"), cms_groesse_lehrerraum_aendern, false);
       	}, false);
       </script>
       <?php

@@ -42,7 +42,7 @@ if ($CMS_RECHTE['Website']['Galerien anlegen']) {
 	$zugriff = true;
 }
 
-if (!r("artikel.genehmigen.galerien")) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.galerien"))) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

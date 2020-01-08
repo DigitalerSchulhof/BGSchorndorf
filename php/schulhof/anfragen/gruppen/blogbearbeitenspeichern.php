@@ -44,9 +44,9 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen");
+$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"));
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

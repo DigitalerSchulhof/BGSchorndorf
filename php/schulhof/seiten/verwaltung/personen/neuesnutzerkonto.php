@@ -6,7 +6,7 @@
 <?php
 $fehler = false;
 
-if (r("schulhof.verwaltung.nutzerkonten.anlegen")) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen"))) {
 
 	if (isset($_SESSION['PERSONENDETAILS'])) {
 		$fehler = false;

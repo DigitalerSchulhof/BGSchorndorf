@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($person)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() &&	r("schulhof.verwaltung.personen.sehen")) {
+if (cms_angemeldet() &&	cms_r("schulhof.verwaltung.personen.sehen"))) {
 	$fehler = false;
 
   $dbs = cms_verbinden('s');

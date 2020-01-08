@@ -3,7 +3,7 @@
 
 <h1>Neue Rolle anlegen</h1>
 <?php
-if (r("schulhof.verwaltung.rechte.rollen.erstellen")) {
+if (cms_r("schulhof.verwaltung.rechte.rollen.erstellen"))) {
 
 	include_once('php/schulhof/seiten/verwaltung/rollen/rollendetails.php');
 

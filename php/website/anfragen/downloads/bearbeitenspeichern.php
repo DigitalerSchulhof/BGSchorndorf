@@ -20,7 +20,7 @@ if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "F
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.download.bearbeiten")) {
+if (cms_angemeldet() && cms_r("website.elemente.download.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -46,7 +46,7 @@ if (cms_angemeldet() && r("website.elemente.download.bearbeiten")) {
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
 		$titel = cms_texttrafo_e_db($titel);
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
-		if (!r("website.freigeben")) {
+		if (!cms_r("website.freigeben"))) {
 			$sql = "UPDATE downloads SET position = $position, pfadneu = '$pfad', titelneu = '$titel', beschreibungneu = '$beschreibung', dateinameneu = '$dateiname', dateigroesseneu = '$dateigroesse' WHERE id = $id";
 		}
 		else {$sql = "UPDATE downloads SET position = $position, aktiv = '$aktiv', pfadalt = pfadaktuell, pfadaktuell = '$pfad', pfadneu = '$pfad', titelalt = titelaktuell, titelaktuell = '$titel', titelneu = '$titel', beschreibungalt = beschreibungaktuell, beschreibungaktuell = '$beschreibung', beschreibungneu = '$beschreibung', dateinamealt = dateinameaktuell, dateinameaktuell = '$dateiname', dateinameneu = '$dateiname', dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = '$dateigroesse', dateigroesseneu = '$dateigroesse' WHERE id = $id";}

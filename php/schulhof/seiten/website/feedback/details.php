@@ -4,7 +4,7 @@
 <h1>Feedback (Detailansicht)</h1>
 <?php
 $code = "";
-if (r("technik.feedback")) {
+if (cms_r("technik.feedback"))) {
   include_once("php/schulhof/seiten/website/feedback/auswerten.php");
   if (!isset($_SESSION["FEEDBACKID"])) {
         $code .= cms_meldung_bastler();

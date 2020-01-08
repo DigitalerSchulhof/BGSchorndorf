@@ -32,7 +32,7 @@ if (isset($_POST['einleitung'])) {$einleitung = cms_texttrafo_e_db($_POST['einle
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.vorbereiten")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.vorbereiten"))) {
 	$fehler = false;
 
 	$vorbeginn = mktime($vorbeginns, $vorbeginnm, 0, $vorbeginnM, $vorbeginnT, $vorbeginnJ);

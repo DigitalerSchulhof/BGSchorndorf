@@ -46,7 +46,7 @@ cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.fabrik")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

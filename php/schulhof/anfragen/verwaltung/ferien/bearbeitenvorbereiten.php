@@ -15,7 +15,7 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-if (cms_angemeldet() && r("schulhof.organisation.ferien.bearbeiten")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.bearbeiten"))) {
 	$_SESSION["FERIENID"] = $id;
 	echo "ERFOLG";
 }

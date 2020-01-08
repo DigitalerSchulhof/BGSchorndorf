@@ -64,7 +64,7 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($gruppenid, 0)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$zugriff = r("schulhof.information.listen.gruppen.$gruppe");
+$zugriff = cms_r("schulhof.information.listen.gruppen.$gruppe"));
 
 $gk = cms_textzudb($gruppe);
 

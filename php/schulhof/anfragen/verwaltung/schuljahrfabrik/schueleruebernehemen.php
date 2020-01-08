@@ -24,7 +24,7 @@ if (!cms_check_idfeld($bestand)) {$fehler = true; echo 2;}
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.fabrik")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik"))) {
 
 	if (!$fehler) {
 		// Alte Mitglieder laden

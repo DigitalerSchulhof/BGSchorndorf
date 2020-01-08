@@ -62,7 +62,7 @@ function cms_termin_details_laden($id, $ziel) {
 
 	if ($angemeldet && $zugriff) {
     $genehmigung = false;
-    if (r("artikel.genehmigen.termine")) {$genehmigung = true; $genehmigt = 1;}
+    if (cms_r("artikel.genehmigen.termine"))) {$genehmigung = true; $genehmigt = 1;}
 
     if (!$genehmigung) {
       $code .= cms_meldung ('info', "<h4>Genehmigung erforderlich</h4><p>Bis die Genehmigung erteilt wird, handelt es sich um einen vorläufigen Termin.</p>");
@@ -161,7 +161,7 @@ function cms_termin_details_laden($id, $ziel) {
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'termine', $id);
 
-    if (r("website.dateien.hochladen")) {
+    if (cms_r("website.dateien.hochladen"))) {
       $inhalt = "<h3>Websitedateien</h3>";
       $rechte = cms_websitedateirechte_laden();
       $inhalt .= cms_dateisystem_generieren ('website', 'website', 'cms_website_dateien', 's', 'website', '-', $rechte);

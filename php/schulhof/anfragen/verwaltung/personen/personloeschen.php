@@ -17,7 +17,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.personen.löschen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.löschen"))) {
 	$dbs = cms_verbinden('s');
 	$dbp = cms_verbinden('p');
 	echo cms_verwaltung_personloeschen ($dbs, $dbp, $id);

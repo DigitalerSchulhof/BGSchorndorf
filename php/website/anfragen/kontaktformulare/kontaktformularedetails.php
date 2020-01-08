@@ -20,8 +20,8 @@ if(!cms_check_ganzzahl($id) && $id != "-")
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = r("website.elemente.kontaktformular.anlegen");}
-else {$zugriff = r("website.elemente.kontaktformular.bearbeiten");}
+if ($id == '-') {$zugriff = cms_r("website.elemente.kontaktformular.anlegen"));}
+else {$zugriff = cms_r("website.elemente.kontaktformular.bearbeiten"));}
 
 if (cms_angemeldet() && $zugriff) {
   $fehler = false;
@@ -35,7 +35,7 @@ if (cms_angemeldet() && $zugriff) {
   $mails = array();
   $beschreibungen = array();
 
-  if (r("website.freigeben")) {$aktiv = 1;}
+  if (cms_r("website.freigeben"))) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
@@ -78,7 +78,7 @@ if (cms_angemeldet() && $zugriff) {
 
     $code .= "<table class=\"cms_formular\">";
 
-      if (r("website.freigeben"))
+      if (cms_r("website.freigeben")))
         $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_kontaktformular_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_kontaktformular_aktiv\" name=\"website_element_kontaktformular_aktiv\" value=\"0\"></td></tr>";

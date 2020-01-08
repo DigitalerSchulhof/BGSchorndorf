@@ -43,7 +43,7 @@ $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
 $zugriff = cms_internblogvorschlag($CMS_GRUPPENRECHTE);
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

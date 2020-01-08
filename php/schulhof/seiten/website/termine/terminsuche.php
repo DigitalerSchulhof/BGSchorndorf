@@ -2,7 +2,7 @@
 function cms_terminverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
   global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = r("artikel.genehmigen.termine");
+  $genehmigen = cms_r("artikel.genehmigen.termine"));
 
   if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
 

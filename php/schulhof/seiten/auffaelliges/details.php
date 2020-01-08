@@ -4,7 +4,7 @@
 <h1>Auffälliges Verhalten (Detailansicht)</h1>
 <?php
 $code = "";
-if (r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
   include_once("php/schulhof/seiten/auffaelliges/auswerten.php");
   if (!isset($_SESSION["AUFFÄLLIGESID"])) {
         $code .= cms_meldung_bastler();

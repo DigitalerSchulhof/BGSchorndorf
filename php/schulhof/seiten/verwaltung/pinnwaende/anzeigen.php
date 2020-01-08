@@ -70,10 +70,10 @@ if ($angemeldet) {
 						$code .= "<div class=\"cms_pinnwand_inhalt\">";
 						$code .= cms_ausgabe_editor($daten['inhalt']);
 						$aktionen = "";
-						if (($daten['ersteller'] == $CMS_BENUTZERID) || r("schulhof.information.pinnwände.anschläge.bearbeiten")) {
+						if (($daten['ersteller'] == $CMS_BENUTZERID) || cms_r("schulhof.information.pinnwände.anschläge.bearbeiten"))) {
 							$aktionen .= "<span class=\"cms_button\" onclick=\"cms_pinnwandanschlag_bearbeiten_vorbereiten(".$daten['id'].", '".cms_textzulink($bezeichnung)."')\">Bearbeiten</span> ";
 						}
-						if (($daten['ersteller'] == $CMS_BENUTZERID) || r("schulhof.information.pinnwände.anschläge.löschen")) {
+						if (($daten['ersteller'] == $CMS_BENUTZERID) || cms_r("schulhof.information.pinnwände.anschläge.löschen"))) {
 							$aktionen .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_pinnwandanschlag_loeschen_anzeigen(".$daten['id'].", '".cms_textzulink($bezeichnung)."')\">Löschen</span> ";
 						}
 						if (strlen($aktionen) > 0) {
@@ -108,10 +108,10 @@ if ($angemeldet) {
 						$anschlaege .= "<div class=\"cms_pinnwand_inhalt\">";
 						$anschlaege .= $daten['inhalt'];
 						$aktionen = "";
-						if (($daten['ersteller'] == $CMS_BENUTZERID) || r("schulhof.information.pinnwände.anschläge.bearbeiten")) {
+						if (($daten['ersteller'] == $CMS_BENUTZERID) || cms_r("schulhof.information.pinnwände.anschläge.bearbeiten"))) {
 							$aktionen .= "<span class=\"cms_button\" onclick=\"cms_pinnwandanschlag_bearbeiten_vorbereiten(".$daten['id'].", '".cms_textzulink($bezeichnung)."')\">Bearbeiten</span> ";
 						}
-						if (($daten['ersteller'] == $CMS_BENUTZERID) || r("schulhof.information.pinnwände.anschläge.löschen")) {
+						if (($daten['ersteller'] == $CMS_BENUTZERID) || cms_r("schulhof.information.pinnwände.anschläge.löschen"))) {
 							$aktionen .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_pinnwandanschlag_loeschen_anzeigen(".$daten['id'].", '".cms_textzulink($bezeichnung)."')\">Löschen</span> ";
 						}
 						if (strlen($aktionen) > 0) {

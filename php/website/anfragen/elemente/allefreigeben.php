@@ -11,7 +11,7 @@ if (isset($_POST['seite'])) {$seite = $_POST['seite'];} else {echo "FEHLER"; exi
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.freigeben")) {
+if (cms_angemeldet() && cms_r("website.freigeben"))) {
 	$fehler = false;
 
 	if (!$fehler) {

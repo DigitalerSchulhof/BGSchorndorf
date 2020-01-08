@@ -15,7 +15,7 @@ if (!(cms_check_ganzzahl($zrid, 0) || $zrid == '-')) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
 	$_SESSION["STUNDENPLANUNGSCHULJAHR"] = $sjid;
   $_SESSION["STUNDENPLANUNGZEITRAUM"] = $zrid;
 	$_SESSION['STUNDENPLANUNGSTUFEN'] = 'x';

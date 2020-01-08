@@ -73,7 +73,7 @@ if (!cms_check_ganzzahl($schuelerid,0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.organisation.schulanmeldung.bearbeiten")) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.bearbeiten"))) {
 	$fehler = false;
 	$jetzt = time();
 

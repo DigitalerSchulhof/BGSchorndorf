@@ -12,7 +12,7 @@ if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.freigeben")) {
+if (cms_angemeldet() && cms_r("website.freigeben"))) {
 	$fehler = false;
 
   $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten');

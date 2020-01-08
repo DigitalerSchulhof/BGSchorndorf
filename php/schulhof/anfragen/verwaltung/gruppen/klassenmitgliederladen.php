@@ -12,7 +12,7 @@ if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER
 $dbs = cms_verbinden('s');
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.gruppen.kurse.[|anlegen,bearbeiten]")) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.[|anlegen,bearbeiten]"))) {
 
 	$code = "";
 	$klassen = "(".str_replace('|', ',', substr($klassen, 1)).")";

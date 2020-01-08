@@ -25,7 +25,7 @@ $beschreibung = cms_texttrafo_e_db($beschreibung);
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.information.pinnwände.anlegen")) {
+if (cms_angemeldet() && cms_r("schulhof.information.pinnwände.anlegen"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

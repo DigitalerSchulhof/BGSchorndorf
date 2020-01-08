@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*"))) {
 	$_SESSION["SCHIENESCHULJAHR"] = $id;
 	echo "ERFOLG";
 }

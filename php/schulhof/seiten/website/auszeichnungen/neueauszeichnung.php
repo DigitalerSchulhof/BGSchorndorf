@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Neue Auszeichnung</h1>";
 
-if (r("website.auszeichnungen.anlegen")) {
+if (cms_r("website.auszeichnungen.anlegen"))) {
   include_once("php/schulhof/seiten/website/auszeichnungen/details.php");
   $code .= cms_auszeichnung_details_laden('-');
 }

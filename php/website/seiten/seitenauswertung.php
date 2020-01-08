@@ -164,7 +164,7 @@ function cms_seite_ausgeben($dbs) {
                 }
                 $anfrage->free();
               }
-              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]")) {
+              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && cms_r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]"))) {
                 $_SESSION['ELEMENTSEITE'] = $seite['id'];
               }
             }
@@ -186,7 +186,7 @@ function cms_seite_ausgeben($dbs) {
                 }
                 $anfrage->free();
               }
-              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.seiten.anlegen")) {
+              if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && cms_r("website.seiten.anlegen"))) {
                 $mcode .= "<li><span class=\"cms_website_menuepunkte_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('".$seite['id']."');\">";
                 $mcode .= "+ Neue Seite";
                 $mcode .= "</span></li>";
@@ -236,19 +236,19 @@ function cms_spalte_ausgeben($dbs, $spalte) {
   }
 
   $position = 1;
-  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.anlegen")) {
+  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && cms_r("website.elemente.%ELEMENTE%.anlegen"))) {
     $code .= cms_neues_element($spalte, $position, $CMS_URL[2]);
   }
 
   for ($i = 1; $i <= count($elementcode); $i++) {
     $code .= $elementcode[$i];
     $position++;
-    if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.anlegen")) {
+    if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && cms_r("website.elemente.%ELEMENTE%.anlegen"))) {
       $code .= cms_neues_element($spalte, $position, $CMS_URL[2]);
     }
   }
 
-  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]")) {
+  if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && cms_r("website.elemente.%ELEMENTE%.[|anlegen,bearbeiten]"))) {
     $_SESSION['ELEMENTMAXPOS'] = $position-1;
     $code .= "<p><input type=\"hidden\" id=\"cms_website_neu_maxpos\" name=\"cms_website_neu_maxpos\" value=\"".$position."\"></p>";
   }

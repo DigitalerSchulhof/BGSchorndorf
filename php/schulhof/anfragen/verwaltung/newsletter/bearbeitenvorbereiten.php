@@ -16,7 +16,7 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-if (cms_angemeldet() && r("website.elemente.newsletter.bearbeiten")) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten"))) {
 	$_SESSION["NEWSLETTERID"] = $id;
   $_SESSION["NEWSLETTERZIEL"] = $ziel;
 	echo "ERFOLG";

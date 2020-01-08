@@ -17,7 +17,7 @@ if (isset($_POST['lnda'])) 		{$lnda = $_POST['lnda'];} 							else {echo "FEHLER
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("technik.server.netze")) {
+if (cms_angemeldet() && cms_r("technik.server.netze"))) {
 	$fehler = false;
 
 	if (strlen($shost) == 0) {$fehler = true;}

@@ -36,16 +36,16 @@ function cms_seitenbaum_ausgeben($dbs, $oberseite, $tiefe, $bearbeiten = false) 
 
 				// Aktionen
 				$code .= "<td>";
-				if (r("website.seiten.bearbeiten")) {
+				if (cms_r("website.seiten.bearbeiten"))) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('".$daten['id']."');\"><span class=\"cms_hinweis\">Seite bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 				}
-				if (($daten['status'] != 's') && ($daten['art'] == 's') && r("website.seiten.startseite")) {
+				if (($daten['status'] != 's') && ($daten['art'] == 's') && cms_r("website.seiten.startseite"))) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_startseite_anzeigen('".$daten['bezeichnung']."', '".$daten['id']."');\"><span class=\"cms_hinweis\">Seite zur Startseite machen</span><img src=\"res/icons/klein/startseite.png\"></span> ";
 				}
-				if (r("website.seiten.anlegen")) {
+				if (cms_r("website.seiten.anlegen"))) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('".$daten['id']."');\"><span class=\"cms_hinweis\">Neue Unterseite anlegen</span><img src=\"res/icons/klein/hinzufuegen.png\"></span> ";
 				}
-				if (r("website.seiten.löschen")) {
+				if (cms_r("website.seiten.löschen"))) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_website_seite_loeschen_anzeigen('".$daten['bezeichnung']."', '".$daten['id']."');\"><span class=\"cms_hinweis\">Seite löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 				}
 				$code .= "</td>";

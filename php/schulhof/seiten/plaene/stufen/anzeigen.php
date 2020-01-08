@@ -8,7 +8,7 @@ $stufenbezeichnung = $CMS_URL[3];
 $code .= "<h1>Stundenplan der Stufe ".(str_replace('_', ' ', $stufenbezeichnung))."</h1>";
 
 
-if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.stufen")) {
+if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.stufen"))) {
 	$dbs = cms_verbinden('s');
 
 	// Stufenplan

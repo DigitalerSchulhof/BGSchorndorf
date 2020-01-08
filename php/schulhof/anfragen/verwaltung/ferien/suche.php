@@ -13,8 +13,8 @@ if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {$jahr = '';}
 
 cms_rechte_laden();
 
-$bearbeiten = r("schulhof.organisation.ferien.bearbeiten");
-$loeschen   = r("schulhof.organisation.ferien.löschen");
+$bearbeiten = cms_r("schulhof.organisation.ferien.bearbeiten"));
+$loeschen   = cms_r("schulhof.organisation.ferien.löschen"));
 $anzeigen = $bearbeiten || $loeschen;
 
 $zugriff = $anzeigen;

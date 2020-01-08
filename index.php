@@ -480,7 +480,7 @@
 		}
 
 		if (($CMS_ANGEMELDET) && ($CMS_URL[0] == 'Website')) {
-			if (r("website.elemente.%ELEMENTE%.*")) {
+			if (cms_r("website.elemente.%ELEMENTE%.*"))) {
 				include_once("php/website/seiten/bearbeiten.php");
 			}
 		}

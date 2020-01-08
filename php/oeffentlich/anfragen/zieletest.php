@@ -9,7 +9,7 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 cms_rechte_laden(3, false);
-$zugriff = r("schulhof.gruppen.[|klassen,kurse].[|anlegen,bearbeiten] || schulhof.organisation.räume.[|anlegen,bearbeiten] || schulhof.verwaltung.lehrer.kürzel");
+$zugriff = cms_r("schulhof.gruppen.[|klassen,kurse].[|anlegen,bearbeiten] || schulhof.organisation.räume.[|anlegen,bearbeiten] || schulhof.verwaltung.lehrer.kürzel"));
 var_dump($zugriff);
 
 // namespace Zieletest {

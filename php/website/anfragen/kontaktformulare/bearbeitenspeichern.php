@@ -25,7 +25,7 @@ $beschreibungen = $bes;
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.kontaktformular.bearbeiten")) {
+if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -44,7 +44,7 @@ if (cms_angemeldet() && r("website.elemente.kontaktformular.bearbeiten")) {
 
 	if (!cms_check_nametitel($namen))	$fehler = true;
 	if (!cms_check_mail($mails))	$fehler = true;
-	if (!r("website.freigeben")) {$aktiv = 0;}
+	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -56,7 +56,7 @@ if (cms_angemeldet() && r("website.elemente.kontaktformular.bearbeiten")) {
 
 		$betreff = cms_texttrafo_e_db($betreff);
 
-		if (!r("website.freigeben")) {
+		if (!cms_r("website.freigeben"))) {
 		 	$sql = "UPDATE kontaktformulare SET position = $position, betreffneu = ?, kopieneu = ?, anhangneu = ? ";
 			$sql .= "WHERE id = $id";
 			$sql = $dbs->prepare($sql);

@@ -44,7 +44,7 @@ if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
 	$zugriff = true;
 }
 
-if (!r("artikel.genehmigen.blogeinträge")) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.blogeinträge"))) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

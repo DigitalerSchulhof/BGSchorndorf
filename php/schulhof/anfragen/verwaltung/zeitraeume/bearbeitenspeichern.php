@@ -31,7 +31,7 @@ $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

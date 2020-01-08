@@ -3,7 +3,7 @@ function cms_schulhof_leihgeraete_links_anzeigen () {
   global $CMS_SCHLUESSEL, $CMS_BENUTZERID;
   $ausgabe = "";
 
-  if (r("schulhof.organisation.leihgeräte.sehen")) {
+  if (cms_r("schulhof.organisation.leihgeräte.sehen"))) {
 
     $dbs = cms_verbinden('s');
     $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihen WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;");
@@ -17,7 +17,7 @@ function cms_schulhof_leihgeraete_links_anzeigen () {
     }
     $sql->close();
     cms_trennen($dbs);
-    if (r("schulhof.organisation.leihgeräte.anlegen")) {
+    if (cms_r("schulhof.organisation.leihgeräte.anlegen"))) {
       $ausgabe .= "<li><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Leihgeräte/Neue_Leihgeräte_anlegen\">+ Neue Leihgeräte anlegen</a></li>";
     }
 

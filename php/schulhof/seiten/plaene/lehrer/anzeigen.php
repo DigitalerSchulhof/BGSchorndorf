@@ -7,7 +7,7 @@ $code .= "</p>";
 $lehrerbezeichnung = $CMS_URL[3];
 $code .= "<h1>Stundenplan von ".(str_replace('_', ' ', $lehrerbezeichnung))."</h1>";
 
-if (cms_angemeldet() && r("schulhof.information.pläne.stundenpläne.lehrer")) {
+if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.lehrer"))) {
 	$dbs = cms_verbinden('s');
 
 	// Klassenplan

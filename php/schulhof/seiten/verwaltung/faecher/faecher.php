@@ -4,7 +4,7 @@
 <?php
 
 $code = "";
-if (r("schulhof.planung.schuljahre.fächer.[|anlegen,bearbeiten,löschen]")) {
+if (cms_r("schulhof.planung.schuljahre.fächer.[|anlegen,bearbeiten,löschen]"))) {
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
   if (isset($_SESSION['FÄCHERSCHULJAHR'])) {
@@ -65,10 +65,10 @@ if (r("schulhof.planung.schuljahre.fächer.[|anlegen,bearbeiten,löschen]")) {
 						$ausgabe .= "<td>$kollegen</td>";
 						$ausgabe .= "<td>";
 						$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-						if (r("schulhof.planung.schuljahre.fächer.bearbeiten")) {
+						if (cms_r("schulhof.planung.schuljahre.fächer.bearbeiten"))) {
 							$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_faecher_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 						}
-						if (r("schulhof.planung.schuljahre.fächer.löschen")) {
+						if (cms_r("schulhof.planung.schuljahre.fächer.löschen"))) {
 							$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_faecher_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 						}
 						$ausgabe .= "</td>";
@@ -87,7 +87,7 @@ if (r("schulhof.planung.schuljahre.fächer.[|anlegen,bearbeiten,löschen]")) {
 
     $code .= "</table>";
 
-    if (r("schulhof.planung.schuljahre.fächer.anlegen")) {
+    if (cms_r("schulhof.planung.schuljahre.fächer.anlegen"))) {
       $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Neues_Fach_anlegen\">+ Neues Fach anlegen</a> <a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Fächer/Fächer_importieren\">+ Neue Fächer importieren</a></p>";
     }
 

@@ -4,7 +4,7 @@
 
 <?php
 
-if (r("schulhof.technik.hausmeisteraufträge.sehen")) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.sehen"))) {
   $code = "<table class=\"cms_liste\">";
     $code .= "<tr><th></th><th></th><th>Titel</th><th>Erstellt</th><th>Ziel</th><th>Ersteller</th><th>Aktionen</th></tr>";
     $eintraege = "";
@@ -36,7 +36,7 @@ if (r("schulhof.technik.hausmeisteraufträge.sehen")) {
           }
           else {$eintraege .= "<td><i>existiert nicht mehr</i></td>";}
           $eintraege .= "<td>";
-          if (r("schulhof.technik.hausmeisteraufträge.markieren")) {
+          if (cms_r("schulhof.technik.hausmeisteraufträge.markieren"))) {
             $eintraege .= "<span class=\"cms_aktion_klein\" onclick=\"cms_hausmeisterauftrag_lesen($hid)\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/auftrag.png\"></span> ";
             if ($hstat == 'e') {
               $eintraege .= "<span class=\"cms_aktion_klein cms_button_wichtig\" onclick=\"cms_hausmeisterauftrag_markieren('n', $hid)\"><span class=\"cms_hinweis\">als ausstehend markieren</span><img src=\"res/icons/klein/ausstehend.png\"></span> ";
@@ -45,7 +45,7 @@ if (r("schulhof.technik.hausmeisteraufträge.sehen")) {
               $eintraege .= "<span class=\"cms_aktion_klein cms_button_ja\" onclick=\"cms_hausmeisterauftrag_markieren('e', $hid)\"><span class=\"cms_hinweis\">als erledigt markieren</span><img src=\"res/icons/klein/erledigt.png\"></span> ";
             }
           }
-          if (r("schulhof.technik.hausmeisteraufträge.löschen")) {
+          if (cms_r("schulhof.technik.hausmeisteraufträge.löschen"))) {
             $eintraege .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_hausmeisterauftrag_loeschen_anzeigen($hid)\"><span class=\"cms_hinweis\">löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
           }
           $eintraege .= "</td>";

@@ -14,7 +14,7 @@ if (isset($_POST['max'])) 		{$max = $_POST['max'];} 			else {$max = '';}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("technik.server.dateienerlaubnis")) {
+if (cms_angemeldet() && cms_r("technik.server.dateienerlaubnis"))) {
 	$fehler = false;
 
 	if ((!cms_check_ganzzahl($groesse,0)) || ($groesse < 1)) {$fehler = true;}

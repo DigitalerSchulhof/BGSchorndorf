@@ -16,7 +16,7 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-if (cms_angemeldet() && r("artikel.öffentlich.blogeinträge.bearbeiten")) {
+if (cms_angemeldet() && cms_r("artikel.öffentlich.blogeinträge.bearbeiten"))) {
 	$_SESSION["BLOGEINTRAGID"] = $id;
   $_SESSION["BLOGEINTRAGZIEL"] = $ziel;
 	echo "ERFOLG";

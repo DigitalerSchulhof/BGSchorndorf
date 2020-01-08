@@ -4,7 +4,7 @@
 <h1>VPN-Anleitung gestalten</h1>
 
 <?php
-if (r("technik.server.vpn")) {
+if (cms_r("technik.server.vpn"))) {
 
 
 

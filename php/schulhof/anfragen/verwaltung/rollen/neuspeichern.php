@@ -11,7 +11,7 @@ session_start();
 postLesen("bezeichnung", "rechte");
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.rechte.rollen.erstellen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.erstellen"))) {
 
 	$rechte = explode(",", $rechte);
 

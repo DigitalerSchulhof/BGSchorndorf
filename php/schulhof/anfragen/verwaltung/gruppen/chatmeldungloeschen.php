@@ -14,7 +14,7 @@ if(!cms_valide_gruppe($gruppe))
 $dbs = cms_verbinden('s');
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen"))) {
   $gk = cms_textzudb($gruppe);
   $sql = "DELETE FROM $gk"."chatmeldungen WHERE nachricht = ?";
   $sql = $dbs->prepare($sql);

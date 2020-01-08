@@ -17,7 +17,7 @@ cms_rechte_laden();
 if ($uebertragungsid != $SCHULJAHRFABRIKUEBERTRAGUNGSID) {echo "FEHLER";exit;}
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && r("schulhof.planung.schuljahre.fabrik")) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik"))) {
 	// Mitglieder hinzufügen
 	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT kurs, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon FROM klassenmitglieder JOIN kurseklassen ON klassenmitglieder.gruppe = kurseklassen.klasse JOIN klassen ON kurseklassen.klasse = klassen.id JOIN personen ON personen.id = person WHERE schuljahr = ? AND art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL')");
 	$sql->bind_param("i", $neuschuljahr);

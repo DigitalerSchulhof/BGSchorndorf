@@ -20,7 +20,7 @@ foreach ($beschreibungen as $i => $b) {
 $beschreibungen = $bes;
 cms_rechte_laden();
 
-if (cms_angemeldet() && r("website.elemente.kontaktformular.anlegen")) {
+if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.anlegen"))) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -40,7 +40,7 @@ if (cms_angemeldet() && r("website.elemente.kontaktformular.anlegen")) {
 		if(!cms_check_mail($m))
 			$fehler = true;
 
-	if (!r("website.freigeben")) {$aktiv = 0;}
+	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

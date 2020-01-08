@@ -3,26 +3,26 @@ function cms_listen_links_anzeigen($einschraenkung = false) {
 	global $CMS_GRUPPEN;
 	$liste = "";
 
-	if (r("schulhof.information.listen.lehrer")) {
+	if (cms_r("schulhof.information.listen.lehrer"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Lehrer\">Lehrer</a></li> ";
 	}
-	if (r("schulhof.information.listen.schüler")) {
+	if (cms_r("schulhof.information.listen.schüler"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Schüler\">Schüler</a></li> ";
 	}
-	if (r("schulhof.information.listen.eltern")) {
+	if (cms_r("schulhof.information.listen.eltern"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Eltern\">Eltern</a></li> ";
 	}
-	if (r("schulhof.information.listen.verwaltungsangestellte")) {
+	if (cms_r("schulhof.information.listen.verwaltungsangestellte"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Verwaltung\">Verwaltungsangestellte</a></li> ";
 	}
-	if (r("schulhof.information.listen.externe")) {
+	if (cms_r("schulhof.information.listen.externe"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Externe\">Externe</a></li> ";
 	}
 
-	if (r("schulhof.information.listen.elternvertreter")) {
+	if (cms_r("schulhof.information.listen.elternvertreter"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Elternvertreter\">Elternvertreter</a></li> ";
 	}
-	if (r("schulhof.information.listen.schülervertreter")) {
+	if (cms_r("schulhof.information.listen.schülervertreter"))) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Schülervertreter\">Schülervertreter</a></li> ";
 	}
 
