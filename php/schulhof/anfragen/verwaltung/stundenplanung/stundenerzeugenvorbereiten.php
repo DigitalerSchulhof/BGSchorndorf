@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($sjid, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 	$_SESSION["STUNDENERZEUGENSCHULJAHR"] = $sjid;
 	echo "ERFOLG";
 }

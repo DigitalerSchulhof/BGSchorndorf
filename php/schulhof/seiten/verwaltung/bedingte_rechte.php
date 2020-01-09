@@ -5,7 +5,7 @@
 include_once(dirname(__FILE__)."/../../../allgemein/funktionen/yaml.php");
 use Async\YAML;
 
-if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt"))) {
+if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
   echo "<div class=\"cms_spalte_i\">".cms_meldung("warnung", "<h4>Technische Eingaben</h4><p>Gynmasialnivea vorrausgesetzt 😈</p>").cms_meldung("info", "<h4>Bedingte Rollen-/Rechtezuordnung</h4><p>Für Rollen und Rechte können Bedingungen gesetzt werden, die es ermöglichen, Benutzern anhand von gewissen Kriterien Rollen und Rechte zu vergeben.</p>".
   "<p><u>Zur Verfügung stehende Daten:</u><br>".
   "<b>zeit:</b> Aktuelle UNIX-Zeit (Zahl)<br>".
@@ -30,7 +30,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
   )."</div>";
 
 
-  if(cms_r("schulhof.verwaltung.rechte.bedingt"))) {
+  if(cms_r("schulhof.verwaltung.rechte.bedingt")) {
     $rechte = YAML::loader(dirname(__FILE__)."/../../../allgemein/funktionen/rechte/rechte.yml");
     $recht_machen = function($pfad, $recht, $kinder = null, $unterstes = false) use (&$recht_machen) {
       $code = "";
@@ -96,7 +96,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
     echo "</div>";
     echo "<div class=\"cms_clear\"></div>";
   }
-  if(cms_r("schulhof.verwaltung.rechte.rollen.bedingt"))) {
+  if(cms_r("schulhof.verwaltung.rechte.rollen.bedingt")) {
     echo "<div class=\"cms_spalte_i\"><h1>Bedingte Rollenzuordnung</h1></div>";
     echo "<div class=\"cms_spalte_2\">";
       echo "<div class=\"cms_spalte_i\">";
@@ -146,7 +146,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
     echo "<div class=\"cms_clear\"></div>";
   }
 
-  echo '<script>$(window).ready(function() {$(".cms_bedingt_bedingung").triggecms_r("keyup")))</script>';
+  echo '<script>$(window).ready(function() {$(".cms_bedingt_bedingung").triggecms_r("keyup"))</script>';
 
 } else {
 	echo cms_meldung_berechtigung();

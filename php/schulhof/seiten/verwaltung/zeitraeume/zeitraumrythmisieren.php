@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if (cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren"))) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren")) {
 	// Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
   if (isset($_SESSION['ZEITRAUMRYTHMISIEREN'])) {

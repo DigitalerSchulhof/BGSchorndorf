@@ -22,7 +22,7 @@ if (isset($_POST['f_tiefe'])) {$f_tiefe = $_POST['f_tiefe'];} else {echo "FEHLER
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.navigation"))) {
+if (cms_angemeldet() && cms_r("website.navigation")) {
 	$fehler = false;
 
 	if (($h_ebene != 'd') && ($h_ebene != 'u') && ($h_ebene != 's') && ($h_ebene != 'e')) {$fehler = true;}

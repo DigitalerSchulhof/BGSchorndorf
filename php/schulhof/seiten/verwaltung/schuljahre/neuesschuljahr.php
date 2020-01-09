@@ -3,7 +3,7 @@
 
 <h1>Neue Schuljahr anlegen</h1>
 <?php
-if (cms_r("schulhof.planung.schuljahre.anlegen"))) {
+if (cms_r("schulhof.planung.schuljahre.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/schuljahre/schuljahrdetails.php');
 

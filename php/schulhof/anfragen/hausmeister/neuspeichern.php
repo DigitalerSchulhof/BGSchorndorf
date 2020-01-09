@@ -44,7 +44,7 @@ cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 
-if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
 	$fehler = false;
 
   $jetzt = time();

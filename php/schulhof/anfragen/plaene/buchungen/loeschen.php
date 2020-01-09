@@ -29,7 +29,7 @@ if (cms_angemeldet()) {
 	$dbs = cms_verbinden('s');
 
 	if (!$fehler) {
-		if (cms_r("schulhof.organisation.buchungen.$rart.löschen"))) {
+		if (cms_r("schulhof.organisation.buchungen.$rart.löschen")) {
 			$sql = $dbs->prepare("DELETE FROM $buchungstabelle WHERE id = ? AND standort = ?");
 			$sql->bind_param("ii", $id, $standort);
 		  $sql->execute();

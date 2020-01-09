@@ -12,7 +12,7 @@ if (isset($_POST['status'])) {$status = $_POST['status'];} else {$status = 0;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("technik.feedback"))) {
+if (cms_angemeldet() && cms_r("technik.feedback")) {
 	$fehler = false;
   if($id === '')
     $fehler = true;
@@ -26,7 +26,7 @@ if (cms_angemeldet() && cms_r("technik.feedback"))) {
 			echo "ERFOLG";
 			return;
 		} else {
-			if(!cms_r("technik.feedback"))) {
+			if(!cms_r("technik.feedback")) {
 				echo "BERECHTIGUNG";
 				die();
 			}

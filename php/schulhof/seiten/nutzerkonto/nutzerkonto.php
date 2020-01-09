@@ -202,7 +202,7 @@ if (strlen($sonderrollencodeverwaltung) != 0) {
 	echo $sonderrollencode;
 }
 
-if (cms_r("schulhof.verwaltung.nutzerkonten.notizen"))) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
 	$code = "<h2>Notizen</h2>";
 	$notizen = "";
 	$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");

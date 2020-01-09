@@ -12,7 +12,7 @@ if (!cms_check_ganzzahl($id,0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.akzeptieren"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.akzeptieren")) {
 	$dbs = cms_verbinden('s');
 	$sql = $dbs->prepare("UPDATE voranmeldung_schueler SET akzeptiert = AES_ENCRYPT('nein', '$CMS_SCHLUESSEL') WHERE id = ?");
   $sql->bind_param("i", $id);

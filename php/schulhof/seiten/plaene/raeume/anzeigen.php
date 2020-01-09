@@ -19,7 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.räume.sehen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.räume.sehen")) {
 
 	$geraete = array();
 	$anzahl = 0;
@@ -48,7 +48,7 @@ if (cms_angemeldet() && cms_r("schulhof.organisation.räume.sehen"))) {
 		$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 
-		if (cms_r("schulhof.information.pläne.stundenpläne.räume"))) {
+		if (cms_r("schulhof.information.pläne.stundenpläne.räume")) {
 			if ($CMS_EINSTELLUNGEN['Stundenplan Raum extern'] == '1') {
 				$code .= "<h3>Regulärer Raumplan</h3>";
 				if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
@@ -88,9 +88,9 @@ if (cms_angemeldet() && cms_r("schulhof.organisation.räume.sehen"))) {
 		$jetzt = time();
 
 		if ($buchbar == 1) {
-			if (cms_r("schulhof.organisation.buchungen.räume.[|anonymisiert,sehen]"))) {
+			if (cms_r("schulhof.organisation.buchungen.räume.[|anonymisiert,sehen]")) {
 				include_once('php/schulhof/seiten/plaene/buchungen/ausgabe.php');
-				if (cms_r("schulhof.organisation.buchungen.räume.sehen"))) {$anonymisiert = false;}
+				if (cms_r("schulhof.organisation.buchungen.räume.sehen")) {$anonymisiert = false;}
 				else {$anonymisiert = true;}
 				$code .= cms_buchungen_ausgeben('r', $raumid, date("d"), date("m"), date("Y"), $anonymisiert);
 			}
@@ -111,7 +111,7 @@ if (cms_angemeldet() && cms_r("schulhof.organisation.räume.sehen"))) {
 			}
 			$code .= "</table>";
 
-			if (cms_r("schulhof.technik.geräte.probleme"))) {
+			if (cms_r("schulhof.technik.geräte.probleme")) {
 				$code .= "<p><span id=\"cms_gerateproblemknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_geraeteproblem', 'cms_gerateproblemknopf', 'Problem melden', 'Problemmeldung abbrechen')\">Problem melden</span></p>";
 
 				$code .= "<div id=\"cms_geraeteproblem\" class=\"cms_versteckt\" style=\"display: none;\">";

@@ -21,7 +21,7 @@ if (!cms_check_ganzzahl($status, 1,4)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten || schulhof.technik.hausmeisteraufträge.erteilen"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten || schulhof.technik.hausmeisteraufträge.erteilen")) {
 
 	$dbs = cms_verbinden('s');
 	if ($art == 'l') {$geraetetabelle = 'leihengeraete';}

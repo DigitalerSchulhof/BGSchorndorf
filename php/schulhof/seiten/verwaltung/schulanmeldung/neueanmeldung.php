@@ -4,7 +4,7 @@
 <h1>Neue Anmeldung</h1>
 
 <?php
-if (cms_r("schulhof.organisation.schulanmeldung.erfassen"))) {
+if (cms_r("schulhof.organisation.schulanmeldung.erfassen")) {
 	include_once('php/schulhof/seiten/verwaltung/schulanmeldung/details.php');
 	include_once('php/website/seiten/schulanmeldung/navigation.php');
 	$code = cms_schulanmeldung_ausgeben('-');

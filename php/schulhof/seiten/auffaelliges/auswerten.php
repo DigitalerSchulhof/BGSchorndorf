@@ -33,7 +33,7 @@
           $liste .= "<td>".date("d.m.Y H:i", $aufzeit)."</td>";
 
           $liste .= '<td>';
-            if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
+            if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_loeschen('$aufid');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/auffaelliges_loeschen.png\"></span> ";
             }
             $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_details('$aufid');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/auffaelliges_information.png\"></span> ";

@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($id,0) && ($id !== '-')) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$_SESSION['STUNDENPLANUNGSTUFEN'] = $id;
 	$_SESSION['STUNDENPLANUNGKLASSEN'] = 'x';
 	$_SESSION['STUNDENPLANUNGKURSE'] = 'x';

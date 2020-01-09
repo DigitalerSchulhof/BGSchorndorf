@@ -22,8 +22,8 @@ $gruppek = strtolower($gruppe);
 
 cms_rechte_laden();
 $zugriff = false;
-if ($gruppe == 'Termine') {$zugriff = cms_r("artikel.genehmigen.termine"));}
-else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = cms_r("schulhof.gruppen.$gruppe.artikel.termine.genehmigen"));}
+if ($gruppe == 'Termine') {$zugriff = cms_r("artikel.genehmigen.termine");}
+else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = cms_r("schulhof.gruppen.$gruppe.artikel.termine.genehmigen");}
 
 if (cms_angemeldet() && $zugriff) {
 	if ($gruppe == 'Termine') {

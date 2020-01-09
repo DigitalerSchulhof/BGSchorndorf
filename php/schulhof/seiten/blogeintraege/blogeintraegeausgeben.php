@@ -272,7 +272,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
 						$aktionen .= "<span class=\"cms_button\" onclick=\"cms_blogeintraege_bearbeiten_vorbereiten('".$blogeintrag['id']."', '$linkl')\">Blogeintrag bearbeiten</span> ";
 					}
-					if (cms_r("artikel.genehmigen.blogeinträge")) && ($blogeintrag['genehmigt'] == 0)) {
+					if (cms_r("artikel.genehmigen.blogeinträge") && ($blogeintrag['genehmigt'] == 0)) {
 						$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_blog_genehmigen('Blogeinträge', '".$blogeintrag['id']."', '$link')\">Blogeintrag genehmigen</span> ";
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blog_ablehnen('Blogeinträge', '".$blogeintrag['id']."', '$linkl')\">Blogeintrag ablehnen</span> ";
 					}
@@ -287,7 +287,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					if ($gruppenrechte['blogeintraege'] == '1') {
 						$aktionen .= "<span class=\"cms_button\" onclick=\"cms_blogeintraegeintern_bearbeiten_vorbereiten('".$blogeintrag['id']."', '$linkl')\">Blogeintrag bearbeiten</span> ";
 					}
-					if (($blogeintrag['genehmigt'] == 0) && cms_r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen"))) {
+					if (($blogeintrag['genehmigt'] == 0) && cms_r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen")) {
 						$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_blog_genehmigen('$gruppe', '".$blogeintrag['id']."', '$link')\">Blogeintrag genehmigen</span> ";
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blog_ablehnen('$gruppe', '".$blogeintrag['id']."', '$linkl')\">Blogeintrag ablehnen</span> ";
 					}

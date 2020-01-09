@@ -21,7 +21,7 @@ else {
 
 if (cms_valide_gruppe($g)) {
   // Prüfen, ob Mitglied in dieser Gruppe
-  if (!cms_r("schulhof.information.listen.gruppen.$g"))) {
+  if (!cms_r("schulhof.information.listen.gruppen.$g")) {
     if ($schuljahr == 'Schuljahrübergreifend') {
       $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk JOIN $gk"."mitglieder ON $gk.id = $gk"."mitglieder.gruppe WHERE $gk"."mitglieder.person = $CMS_BENUTZERID AND $gk.bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
       $sql->bind_param("s", $gn);

@@ -17,7 +17,7 @@ if (isset($_SESSION['FÄCHERSCHULJAHR'])) {$SCHULJAHR = $_SESSION['FÄCHERSCHULJ
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fächer.anlegen"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fächer.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

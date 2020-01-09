@@ -32,10 +32,10 @@ if ($bereich == "website" || $bereich == "galerien") {
 	$zugriff = true;
 }
 else if ($bereich == "Stundenplan") {
-	$zugriff = cms_r("schulhof.gruppen.[|klassen,kurse].[|anlegen,bearbeiten] || schulhof.organisation.räume.[|anlegen,bearbeiten] || schulhof.verwaltung.lehrer.kürzel"));
+	$zugriff = cms_r("schulhof.gruppen.[|klassen,kurse].[|anlegen,bearbeiten] || schulhof.organisation.räume.[|anlegen,bearbeiten] || schulhof.verwaltung.lehrer.kürzel");
 }
 else if ($bereich == "Vertretungsplan") {
-	$zugriff = cms_r("schulhof.verwaltung.einstellungen"));
+	$zugriff = cms_r("schulhof.verwaltung.einstellungen");
 }
 else if ($bereich == "gruppe") {
 	$dbs = cms_verbinden('s');

@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen]"))) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen]")) {
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
   if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {
@@ -63,19 +63,19 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,l
             else {$zeilen .= "<td>".cms_generiere_hinweisicon('rot', 'Inaktiv')."</td>";}
 
             $zeilen .= "<td>";
-            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen"))) {
+            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_klonen_vorbereiten($zid);\"><span class=\"cms_hinweis\">Zeitraum klonen</span><img src=\"res/icons/klein/stundenplanzeitraeumeklonen.png\"></span> ";
             }
-            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten"))) {
+            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten")) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_bearbeiten_vorbereiten($zid);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
             }
-            if ($rythmen > 1 && cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren"))) {
+            if ($rythmen > 1 && cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren")) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_zeitraeume_rythmisieren_vorbereiten($zid);\"><span class=\"cms_hinweis\">Zeitraum rythmisieren</span><img src=\"res/icons/klein/zeitraumrythmen.png\"></span> ";
             }
-            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
+            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
               $zeilen .= "<span class=\"cms_aktion_klein\" onclick=\"cms_stundenplanung_importieren_vorbereiten($zid);\"><span class=\"cms_hinweis\">Stundenplanung importieren</span><img src=\"res/icons/klein/importieren.png\"></span> ";
             }
-            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.löschen"))) {
+            if (cms_r("schulhof.planung.schuljahre.planungszeiträume.löschen")) {
               $zeilen .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_zeitraeume_loeschen_anzeigen('$zbez', $zid);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
             }
             $zeilen .= "</td>";
@@ -91,7 +91,7 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,l
 
     $code .= "</table>";
 
-    if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen"))) {
+    if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
       $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Zeiträume/Neuen_Zeitraum_anlegen\">+ Neuen Zeitraum anlegen</a></p>";
     }
 

@@ -30,7 +30,7 @@ if (!cms_check_ganzzahl($rythmus,0,26)) {echo "FEHLER";exit;}
 cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 
 	// Prüfen: Zeitraum im richtigen Schuljahr

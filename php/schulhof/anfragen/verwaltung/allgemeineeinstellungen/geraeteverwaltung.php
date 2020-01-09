@@ -24,7 +24,7 @@ if (isset($_POST['kennung'])) 							{$kennung = $_POST['kennung'];} 											
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
 	if (!cms_check_toggle($extexistiert1)) {$fehler = true;}

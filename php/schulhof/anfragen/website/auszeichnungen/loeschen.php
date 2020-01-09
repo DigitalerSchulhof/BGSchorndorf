@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.auszeichnungen.löschen"))) {
+if (cms_angemeldet() && cms_r("website.auszeichnungen.löschen")) {
 	$fehler = false;
 	$dbs = cms_verbinden('s');
 	$reihenfolge = null;

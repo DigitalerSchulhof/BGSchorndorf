@@ -347,12 +347,12 @@ if (!$ausnahme) {
   if (isset($CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ])) {include_once($CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]);}
   else {
     if (isset($CMS_URL[0])) {
-      if ($CMS_URL[0] == "Website") {cms_fehler("Website"), "404");}
-      else if ($CMS_URL[0] == "Problembehebung") {cms_fehler(("Schulhof"), "404");}
-      else if ($CMS_URL[0] == "Schulhof") {cms_fehler(("Schulhof"), "404");}
-      else if ($CMS_URL[0] == "Intern") {cms_fehler(("Schulhof"), "404");}
+      if ($CMS_URL[0] == "Website") {cms_fehler("Website", "404");}
+      else if ($CMS_URL[0] == "Problembehebung") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == "Schulhof") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == "Intern") {cms_fehler("Schulhof", "404");}
     }
-    else {cms_fehler("Website"), "404");}
+    else {cms_fehler("Website", "404");}
   }
 }
 ?>

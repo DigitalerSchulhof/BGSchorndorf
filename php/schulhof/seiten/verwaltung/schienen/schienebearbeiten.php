@@ -4,7 +4,7 @@
 <h1>Schiene bearbeiten</h1>
 
 <?php
-if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.bearbeiten"))) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.bearbeiten")) {
 
 	if (isset($_SESSION["SCHIENEBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/schienen/schienendetails.php');

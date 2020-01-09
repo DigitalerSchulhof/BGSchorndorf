@@ -12,7 +12,7 @@ if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.bearbeiten")) {
 	$_SESSION["SCHULJAHREBEARBEITEN"] = $id;
 	echo "ERFOLG";
 }

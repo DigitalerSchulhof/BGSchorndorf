@@ -19,7 +19,7 @@ if (($planart != 'l') && ($planart != 'r') && ($planart != 'k') && ($planart != 
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.vertretungsplan.vertretungsplanung"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
   $dbs = cms_verbinden('s');
   $AUSGABE = array();
   $fehler = false;

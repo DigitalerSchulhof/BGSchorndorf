@@ -4,7 +4,7 @@
 <h1>Leihgeräte bearbeiten</h1>
 
 <?php
-if (cms_r("schulhof.organisation.leihgeräte.bearbeiten"))) {
+if (cms_r("schulhof.organisation.leihgeräte.bearbeiten")) {
 
 	if (isset($_SESSION["LEIHGERAETBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/leihgeraete/leihgeraetdetails.php');

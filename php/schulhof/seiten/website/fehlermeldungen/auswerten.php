@@ -43,7 +43,7 @@
           $liste .= "<td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$statusT</span><img src=\"res/icons/klein/".$statusI.".png\"></span> ";
 
           $liste .= '<td>';
-            if (cms_r("technik.fehlermeldungen"))) {
+            if (cms_r("technik.fehlermeldungen")) {
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '2');\"><span class=\"cms_hinweis\">Als behoben markieren</span><img src=\"res/icons/klein/fehlermeldung_beheben.png\"></span> ";
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '1');\"><span class=\"cms_hinweis\">Als in Bearbeitung markieren</span><img src=\"res/icons/klein/fehlermeldung_bearbeitung.png\"></span> ";
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '0');\"><span class=\"cms_hinweis\">Als offen markieren</span><img src=\"res/icons/klein/fehlermeldung_oeffnen.png\"></span> ";
@@ -165,7 +165,7 @@
       $code .= "</div>";
     $code .= "</div>";
     $code .= "<div class=\"cms_spalte_i\">";
-    if(cms_r("technik.fehlermeldungen")))
+    if(cms_r("technik.fehlermeldungen"))
       $code .= "<a class=\"cms_button_ja\" onclick=\"cms_fehlermeldung_status_setzen($id, 2)\">Als behoben markieren</a> ";
     return $code;
   }

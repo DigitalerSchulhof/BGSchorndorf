@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Identitätsdiebstähle behandeln</h1>";
 
-if (cms_angemeldet() cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl"))) {
+if (cms_angemeldet() cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 	$dbs = cms_verbinden('s');
 	$code .= "<table class=\"cms_liste\">";
 		$code .= "<thead>";

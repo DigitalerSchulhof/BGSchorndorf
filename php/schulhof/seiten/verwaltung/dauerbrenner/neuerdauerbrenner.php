@@ -4,7 +4,7 @@
 <h1>Neuen Dauerbrenner anlegen</h1>
 
 <?php
-if (cms_r("schulhof.information.dauerbrenner.anlegen"))) {
+if (cms_r("schulhof.information.dauerbrenner.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrennerdetails.php');
 	include_once('php/schulhof/seiten/website/editor/editor.php');

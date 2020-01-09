@@ -22,7 +22,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 
 	if (cms_check_suchtext($vname) && cms_check_suchtext($nname) && cms_check_suchtext($klasse)) {
 		$dbs = cms_verbinden('s');
@@ -123,7 +123,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen"))) {
 					$online = "offline.png";
 					if ($psessiontimeout > $jetzt) {$online = "online.png";}
 					$ausgabe .= "<td>";
-					if (cms_r("schulhof.verwaltung.nutzerkonten.anmeldedetails"))) {
+					if (cms_r("schulhof.verwaltung.nutzerkonten.anmeldedetails")) {
 						if (!is_null($pnutzer)) {
 							$ausgabe .= "<img src=\"res/icons/klein/$online\">";
 						}
@@ -136,24 +136,24 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen"))) {
 					$ausgabe .= "<td>";
 					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\"><span class=\"cms_hinweis\">Nachricht schreiben</span><img src=\"res/icons/klein/nachricht.png\"></span> ";
 
-					if (cms_r("schulhof.verwaltung.personen.daten"))) {
+					if (cms_r("schulhof.verwaltung.personen.daten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Details')\"><span class=\"cms_hinweis\">Details</span><img src=\"res/icons/klein/details.png\"></span> ";
 					}
 
-					if (cms_r("schulhof.verwaltung.personen.bearbeiten"))) {
+					if (cms_r("schulhof.verwaltung.personen.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Bearbeiten')\"><span class=\"cms_hinweis\">Person bearbeiten</span><img src=\"res/icons/klein/person_bearbeiten.png\"></span> ";
 					}
 
-					$zugriff = (($part == 's') || ($part == 'e')) && cms_r("schulhof.verwaltung.personen.schülereltern"));
+					$zugriff = (($part == 's') || ($part == 'e')) && cms_r("schulhof.verwaltung.personen.schülereltern");
 					if ($zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Schüler_und_Eltern_verknüpfen')\"><span class=\"cms_hinweis\">Schüler und Eltern verknüpfen</span><img src=\"res/icons/klein/zuordnung.png\"></span> ";
 					}
 
-					if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen"))) {
+					if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Rollen_und_Rechte')\"><span class=\"cms_hinweis\">Rollen und Rechte vergeben</span><img src=\"res/icons/klein/rollen.png\"></span> ";
 					}
 
-					$zugriff = ($part == 'l') && cms_r("schulhof.verwaltung.lehrer.kürzel"));
+					$zugriff = ($part == 'l') && cms_r("schulhof.verwaltung.lehrer.kürzel");
 					if ($zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Lehrerkürzel_ändern')\"><span class=\"cms_hinweis\">Lehrerkürzel ändern</span><img src=\"res/icons/klein/kuerzel.png\"></span> ";
 					}
@@ -163,22 +163,22 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen"))) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'IDs_bearbeiten')\"><span class=\"cms_hinweis\">Personenids ändern</span><img src=\"res/icons/klein/ids.png\"></span> ";
 					}
 
-					$zugriff = is_null($pnutzer) && cms_r("schulhof.verwaltung.nutzerkonten.anlegen"));
+					$zugriff = is_null($pnutzer) && cms_r("schulhof.verwaltung.nutzerkonten.anlegen");
 					if ($zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Neues_Nutzerkonto_anlegen')\"><span class=\"cms_hinweis\">Nutzerkonto anlegen</span><img src=\"res/icons/klein/nutzerkonto_neu.png\"></span> ";
 					}
 
-					$zugriff = !is_null($pnutzer) && cms_r("schulhof.verwaltung.nutzerkonten.bearbeiten"));
+					$zugriff = !is_null($pnutzer) && cms_r("schulhof.verwaltung.nutzerkonten.bearbeiten");
 					if ($zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Nutzerkonto_bearbeiten')\"><span class=\"cms_hinweis\">Nutzerkonto bearbeiten</span><img src=\"res/icons/klein/nutzerkonto_bearbeiten.png\"></span> ";
 					}
 
-					$zugriff = !is_null($pnutzer) && cms_r("schulhof.verwaltung.nutzerkonten.löschen"));
+					$zugriff = !is_null($pnutzer) && cms_r("schulhof.verwaltung.nutzerkonten.löschen");
 					if ($zugriff) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_verwaltung_nutzerkonto_loeschen_anzeige('$vorzeigename', $pid)\"><span class=\"cms_hinweis\">Nutzerkonto löschen</span><img src=\"res/icons/klein/nutzerkonto_loeschen.png\"></span> ";
 					}
 
-					if (cms_r("schulhof.verwaltung.personen.löschen"))) {
+					if (cms_r("schulhof.verwaltung.personen.löschen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_verwaltung_person_loeschen_anzeige('$vorzeigename', $pid)\"><span class=\"cms_hinweis\">Person löschen</span><img src=\"res/icons/klein/person_loeschen.png\"></span>";
 					}
 					$ausgabe .= "</td></tr>";

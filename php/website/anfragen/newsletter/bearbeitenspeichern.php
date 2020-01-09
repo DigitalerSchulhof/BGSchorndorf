@@ -13,7 +13,7 @@ if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} e
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen"))) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -21,7 +21,7 @@ if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen"))) {
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
-	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -33,7 +33,7 @@ if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen"))) {
 
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
 
-		if (!cms_r("website.freigeben"))) {
+		if (!cms_r("website.freigeben")) {
 		 	$sql = "UPDATE wnewsletter SET position = $position, bezeichnungneu = ?, beschreibungneu = ?, typneu = ? ";
 			$sql .= "WHERE id = $id";
 			$sql = $dbs->prepare($sql);

@@ -26,7 +26,7 @@ if (isset($_SESSION['NEWSLETTERID'])) {$id = $_SESSION['NEWSLETTERID'];} else {e
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten")) {
 	$fehler = false;
 
 	// Prüfen, ob die zugeordneten Gruppen existieren
@@ -94,7 +94,7 @@ if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten"))) {
     }
     echo "ERFOLG";
 
-    if(cms_r("website.elemente.newsletter.bearbeiten || schulhof.information.newsletter.empfänger.sehen"))) {
+    if(cms_r("website.elemente.newsletter.bearbeiten || schulhof.information.newsletter.empfänger.sehen")) {
       echo "cms_newsletter_details_vorbereiten($id, '$ziel')";
     } else {
       echo "cms_link('$ziel')";

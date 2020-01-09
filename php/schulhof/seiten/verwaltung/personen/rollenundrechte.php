@@ -11,7 +11,7 @@ if (!isset($_SESSION['PERSONENDETAILS'])) {
 }
 else {
 	$id = $_SESSION['PERSONENDETAILS'];
-	if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen"))) {
+	if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 		echo "<h1>Rollen und Rechte vergeben</h1>";
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
@@ -23,7 +23,7 @@ else {
 			echo cms_meldung_unbekannt();
 		echo "<p class=\"cms_notiz\">Für $vorname $nachname</p>";
 
-		if(cms_r("schulhof.verwaltung.rechte.rollen.zuordnen"))) {
+		if(cms_r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
 			echo "<div class=\"cms_spalte_2\">";
 				echo "<h3>Rollen</h3>";
 
@@ -45,7 +45,7 @@ else {
 				echo $rollencode;
 			echo "</div>";
 		}
-		if(cms_r("schulhof.verwaltung.rechte.zuordnen"))) {
+		if(cms_r("schulhof.verwaltung.rechte.zuordnen")) {
 			echo "<div class=\"cms_spalte_2\">";
 				echo "<h3>Rechte</h3>";
 				$rechte = YAML::loader(dirname(__FILE__)."/../../../../allgemein/funktionen/rechte/rechte.yml");
@@ -90,9 +90,9 @@ else {
 					$personhatrecht = false;
 					$rollehatrecht = false;
 
-					if(substcms_r("$pfad.$knoten"), 2) !== false && ($pf = explode(".", substcms_r("$pfad.$knoten"), 2))) !== null) {
-						$personhatrecht = $rechtecheck($cms_desnutzersrechte, substcms_r("$pfad.$knoten"), 2));
-						$rollehatrecht = $rechtecheck($cms_derrollerechte, substcms_r("$pfad.$knoten"), 2));
+					if(substr("$pfad.$knoten", 2) !== false && ($pf = explode(".", substr("$pfad.$knoten", 2))) !== null) {
+						$personhatrecht = $rechtecheck($cms_desnutzersrechte, substr("$pfad.$knoten", 2));
+						$rollehatrecht = $rechtecheck($cms_derrollerechte, substr("$pfad.$knoten", 2));
 					}
 					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($personhatrecht&&!$rollehatrecht?" cms_recht_nutzer":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_nutzer(this)\">".mb_ucfirst($recht)."</span></span>";
 

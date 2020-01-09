@@ -19,7 +19,7 @@ if (!cms_check_idfeld($gewaehlt)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.[|anlegen,bearbeiten]"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.[|anlegen,bearbeiten]")) {
 	$code = "";
 
 	// gewählt zu array:

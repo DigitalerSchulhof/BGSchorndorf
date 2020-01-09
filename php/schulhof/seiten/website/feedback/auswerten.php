@@ -20,7 +20,7 @@
           $liste .= "<td>".date("d.m.Y", $daten["zeitstempel"])."</td>";
 
           $liste .= '<td>';
-            if (cms_r("technik.feedback"))) {
+            if (cms_r("technik.feedback")) {
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_loeschen('".$daten['id']."');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/feedback_loeschen.png\"></span> ";
             }
             $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_details('".$daten['id']."');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/feedback_information.png\"></span> ";

@@ -14,7 +14,7 @@ if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 
 	$sql = $dbs->prepare("DELETE FROM regelunterricht  WHERE id = ?");
 	$sql->bind_param("i", $id);

@@ -11,7 +11,7 @@ postLesen(array("aktiv", "position", "typ", "bezeichnung", "beschreibung"));
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen"))) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -19,7 +19,7 @@ if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen"))) {
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
-	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

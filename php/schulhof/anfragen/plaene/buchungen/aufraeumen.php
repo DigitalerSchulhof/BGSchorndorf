@@ -11,7 +11,7 @@ session_start();
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.[|räume,lehrgeräte].löschen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.[|räume,lehrgeräte].löschen")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

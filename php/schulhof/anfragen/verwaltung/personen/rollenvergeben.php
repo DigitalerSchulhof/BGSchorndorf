@@ -14,7 +14,7 @@ if (!cms_check_toggle($anschalten)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.zuordnen"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
 	$fehler = false;
 
 	if (!isset($_SESSION['PERSONENDETAILS'])) {

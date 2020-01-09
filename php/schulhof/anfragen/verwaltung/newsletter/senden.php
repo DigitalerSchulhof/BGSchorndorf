@@ -16,7 +16,7 @@ postLesen(array("text", "id"));
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.information.newsletter.schreiben"))) {
+if (cms_angemeldet() && cms_r("schulhof.information.newsletter.schreiben")) {
 	$dbs = cms_verbinden('s');
 
 	$text = cms_texttrafo_e_db_ohnetag($text);

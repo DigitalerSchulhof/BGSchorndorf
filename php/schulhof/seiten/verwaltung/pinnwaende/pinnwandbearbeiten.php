@@ -4,7 +4,7 @@
 <h1>Pinnwand bearbeiten</h1>
 
 <?php
-if (cms_r("schulhof.information.pinnwände.bearbeiten"))) {
+if (cms_r("schulhof.information.pinnwände.bearbeiten")) {
 
 	if (isset($_SESSION["PINNWANDBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/pinnwaende/pinnwaendedetails.php');

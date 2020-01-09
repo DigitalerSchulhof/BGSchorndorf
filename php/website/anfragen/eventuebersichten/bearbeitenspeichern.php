@@ -21,7 +21,7 @@ if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "F
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -46,7 +46,7 @@ if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.bearbeiten"))) {
 		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
-		if (!cms_r("website.freigeben"))) {
+		if (!cms_r("website.freigeben")) {
 			$sql = "UPDATE eventuebersichten SET position = $position, termineneu = '$termine', termineanzahlneu = '$termineanzahl', blogneu = '$blog', bloganzahlneu = '$bloganzahl', galerieneu = '$galerie', galerieanzahlneu = '$galerieanzahl' WHERE id = $id";
 		}
 		else {

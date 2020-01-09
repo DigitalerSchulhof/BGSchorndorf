@@ -12,7 +12,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.seiten.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("website.seiten.bearbeiten")) {
 	$fehler = false;
 	$zuordnung = '';
 	$dbs = cms_verbinden('s');

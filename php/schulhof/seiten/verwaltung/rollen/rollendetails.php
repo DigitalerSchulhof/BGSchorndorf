@@ -64,8 +64,8 @@ function cms_rolle_ausgeben ($rolle) {
 			}
 		};
 		$rollehatrecht = false;
-		if(substcms_r("$pfad.$knoten"), 2) !== false && ($pf = explode(".", substcms_r("$pfad.$knoten"), 2))) !== null) {
-			$rollehatrecht = $rechtecheck($cms_derrollerechte, substcms_r("$pfad.$knoten"), 2));
+		if(substr("$pfad.$knoten", 2) !== false && ($pf = explode(".", substr("$pfad.$knoten", 2))) !== null) {
+			$rollehatrecht = $rechtecheck($cms_derrollerechte, substr("$pfad.$knoten", 2));
 		}
 		$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_rolle(this)\">".mb_ucfirst($recht)."</span></span>";
 		// Kinder ausgeben

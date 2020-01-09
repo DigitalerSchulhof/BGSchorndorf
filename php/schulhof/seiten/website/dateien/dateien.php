@@ -4,11 +4,11 @@
 <h1>Dateien</h1>
 
 <?php
-if (cms_r("website.dateien.*"))) {
+if (cms_r("website.dateien.*")) {
   include_once('php/schulhof/funktionen/dateisystem.php');
-  $rechte['dateiupload']      = cms_r("website.dateien.hochladen"));
-  $rechte['dateiumbenennen']  = cms_r("website.dateien.umbenennen"));
-  $rechte['dateiloeschen']    = cms_r("website.dateien.löschen"));
+  $rechte['dateiupload']      = cms_r("website.dateien.hochladen");
+  $rechte['dateiumbenennen']  = cms_r("website.dateien.umbenennen");
+  $rechte['dateiloeschen']    = cms_r("website.dateien.löschen");
   $rechte['dateidownload']    = true;
 	$code = cms_dateisystem_generieren ('website', 'website', 'cms_website_dateien', 's', 'website', '-', $rechte);
 	echo $code;

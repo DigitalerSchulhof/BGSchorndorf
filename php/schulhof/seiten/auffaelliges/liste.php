@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-  if (!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
+  if (!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
     echo cms_meldung_berechtigung();
   } else {
     $code = "";

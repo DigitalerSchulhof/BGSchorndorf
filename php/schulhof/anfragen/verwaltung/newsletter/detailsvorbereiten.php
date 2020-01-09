@@ -16,7 +16,7 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten || schulhof.information.newsletter.empfänger.sehen"))) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten || schulhof.information.newsletter.empfänger.sehen")) {
 	$_SESSION["NEWSLETTERID"] = $id;
   $_SESSION["NEWSLETTERZIEL"] = $ziel;
 	echo "ERFOLG";

@@ -17,8 +17,8 @@ cms_rechte_laden();
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = cms_r("website.elemente.newsletter.anlegen"));}
-else {$zugriff = cms_r("website.elemente.newsletter.bearbeiten"));}
+if ($id == '-') {$zugriff = cms_r("website.elemente.newsletter.anlegen");}
+else {$zugriff = cms_r("website.elemente.newsletter.bearbeiten");}
 
 if (cms_angemeldet() && $zugriff) {
   $fehler = false;
@@ -30,7 +30,7 @@ if (cms_angemeldet() && $zugriff) {
   $beschreibung = 'Beschreibung des Anmeldeformulars';
   $typ = null;
 
-  if (cms_r("website.freigeben"))) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
@@ -76,14 +76,14 @@ if (cms_angemeldet() && $zugriff) {
       $typen[$t_id] = cms_texttrafo_e_db($t_b);
     }
 
-      if (cms_r("website.freigeben")))
+      if (cms_r("website.freigeben"))
         $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_newsletter_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_newsletter_aktiv\" name=\"website_element_newsletter_aktiv\" value=\"0\"></td></tr>";
 
       $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_newsletter_position', $position, $maxpos, $neu)."</td></tr>";
       if(count($typen) < 1)
-        if(cms_r("schulhof.information.newsletter.anlegen"))) {
+        if(cms_r("schulhof.information.newsletter.anlegen")) {
           if($benutzertyp == "s")
             $code .= "<tr>".cms_meldung("fehler", "<p>Es sind keine Newsletter vorhanden!<br>Leg im <a href=\"Schulhof/Website/Newsletter\">Schulhof</a> einen Neuen an.</p>")."</tr>";
           else

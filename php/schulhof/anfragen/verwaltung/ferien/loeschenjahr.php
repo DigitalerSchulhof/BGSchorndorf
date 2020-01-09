@@ -11,7 +11,7 @@ if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.löschen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.löschen")) {
 	$fehler = false;
 	if (!cms_check_ganzzahl($jahr, 0)) {$fehler = true;}
 

@@ -25,7 +25,7 @@ if (!preg_match("/^(https?:\/\/)?[a-zA-ZÄÖÜäöü]+[\_\-a-zA-ZÄÖÜäöü\.\
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.auszeichnungen.anlegen"))) {
+if (cms_angemeldet() && cms_r("website.auszeichnungen.anlegen")) {
 	$fehler = false;
 	$maxreihenfolge = null;
 

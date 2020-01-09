@@ -4,7 +4,7 @@
 <h1>Dauerbrenner bearbeiten</h1>
 
 <?php
-if (cms_r("schulhof.information.dauerbrenner.bearbeiten"))) {
+if (cms_r("schulhof.information.dauerbrenner.bearbeiten")) {
 
 	if (isset($_SESSION["DAUERBRENNERBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/dauerbrenner/dauerbrennerdetails.php');

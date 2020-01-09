@@ -64,7 +64,7 @@ if ($CMS_BENUTZERART == 'x') {
 }
 
 cms_rechte_laden();
-$zugriff = cms_r("schulhof.information.pinnwände.anschläge.anlegen")) || $pinnwandrecht;
+$zugriff = cms_r("schulhof.information.pinnwände.anschläge.anlegen") || $pinnwandrecht;
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

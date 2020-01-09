@@ -16,7 +16,7 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-$zugriff = $CMS_RECHTE['Website']['Galerien bearbeiten'];
+$zugriff = cms_r("artikel.galerien.bearbeiten");
 
 if (cms_angemeldet() && $zugriff) {
 	$_SESSION["GALERIEID"] = $id;

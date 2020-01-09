@@ -4,7 +4,7 @@
 <h1>Allgemeine Einstellungen</h1>
 
 <?php
-if (cms_r("schulhof.verwaltung.einstellungen"))) {
+if (cms_r("schulhof.verwaltung.einstellungen")) {
 	$code = "";
 
 	$personen = array("Lehrer", "Schüler", "Verwaltungsangestellte", "Eltern", "Externe");

@@ -301,8 +301,8 @@ function cms_terminegenehmigen_knopf($dbs) {
   $zusatz = "";
   $sql = "";
   $code = "";
-  if (cms_r("artikel.genehmigen.termine"))) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
-  if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"))) {
+  if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+  if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
@@ -331,8 +331,8 @@ function cms_blogeintraegegenehmigen_knopf($dbs) {
   $code = "";
   $zusatz = "";
   $sql = "";
-  if (cms_r("artikel.genehmigen.blogeinträge"))) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
-  if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {
+  if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+  if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
@@ -481,28 +481,28 @@ function cms_sonderrollen_generieren() {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
 
   }
-	if (cms_r("schulhof.technik.geräte.verwalten"))) {
+	if (cms_r("schulhof.technik.geräte.verwalten")) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
   }
-	if (cms_r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"))) {
+	if (cms_r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     $code .= "<li>".cms_terminegenehmigen_knopf($dbs)."</li> ";
 	}
-  if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {
+  if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     $code .= "<li>".cms_blogeintraegegenehmigen_knopf($dbs)."</li> ";
 	}
-  if (cms_r("artikel.genehmigen.galerien"))) {
+  if (cms_r("artikel.genehmigen.galerien")) {
     $code .= "<li>".cms_galeriengenehmigen_knopf($dbs)."</li> ";
 	}
-  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl"))) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
 	}
-  if (cms_r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren]"))) {
+  if (cms_r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren]")) {
 		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
 	}
-  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
 	}
-  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen"))) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
 		$code .= "<li>".cms_chatmeldungen_knopf($dbs)."</li> ";
 	}
 	cms_trennen($dbs);

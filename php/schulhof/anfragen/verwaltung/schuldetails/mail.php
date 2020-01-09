@@ -15,7 +15,7 @@ if (isset($_POST['smtpauth'])) 		{$smtpauth = $_POST['smtpauth'];} 		else {echo 
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail")) {
 	$fehler = false;
 
 	if (!cms_check_mail($absender)) {

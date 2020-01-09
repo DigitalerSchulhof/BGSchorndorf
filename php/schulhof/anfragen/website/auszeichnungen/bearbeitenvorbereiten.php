@@ -12,7 +12,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("website.auszeichnungen.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("website.auszeichnungen.bearbeiten")) {
 	$fehler = false;
 	if (!$fehler) {
 		$_SESSION["AUSZEICHNUNGBEAREITENID"] = $id;

@@ -4,7 +4,7 @@
 <h1>Einstellungen</h1>
 
 <?php
-if (cms_r("schulhof.organisation.schulanmeldung.vorbereiten"))) {
+if (cms_r("schulhof.organisation.schulanmeldung.vorbereiten")) {
 	include_once("php/schulhof/seiten/website/editor/editor.php");
 	$code = "";
 

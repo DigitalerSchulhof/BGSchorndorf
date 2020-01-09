@@ -21,7 +21,7 @@ if (!cms_check_ganzzahl($ansprechpartner, 1,2)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
 
 	$dbs = cms_verbinden('s');
 	if ($art == 'l') {$geraetetabelle = 'leihengeraete';}

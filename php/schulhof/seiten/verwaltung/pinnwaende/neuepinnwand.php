@@ -4,7 +4,7 @@
 <h1>Neue Pinnwand anlegen</h1>
 
 <?php
-if (cms_r("schulhof.information.pinnwände.anlegen"))) {
+if (cms_r("schulhof.information.pinnwände.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/pinnwaende/pinnwaendedetails.php');
 

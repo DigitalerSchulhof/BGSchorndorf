@@ -17,7 +17,7 @@ $zugriff = false;
 cms_rechte_laden();
 
 if ($modus == "1") {
-	$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten"));
+	$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");
 	if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 	if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 }

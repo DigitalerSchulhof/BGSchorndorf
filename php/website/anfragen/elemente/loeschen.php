@@ -29,7 +29,7 @@ $rarten = array(
 
 $rart = $rarten[$art];
 
-if (cms_angemeldet() && cms_r("website.elemente.$rart.löschen"))) {
+if (cms_angemeldet() && cms_r("website.elemente.$rart.löschen")) {
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');

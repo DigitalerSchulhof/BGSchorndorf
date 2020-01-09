@@ -2,7 +2,7 @@
 /* Eintrag ist ein Array bestehend aus:
    $eintrag['gruppe']    -- Termine, Blogeinträge, Galerien, Hausmeister oder Gruppentitel (Gremien, Fachschaften, etc.)
    $eintrag['gruppenid'] -- Welche der jeweiligen Gruppen
-                         -- bei Terminen, Blogeinträgen und Galerien wird der Öffentlichkeitsgrad übergeben
+                         -- bei Terminen, Blogeinträgen wird der Öffentlichkeitsgrad übergeben
                          -- bei Terminen, Blogeinträgen und Galerien anschließend 0 eingetragen
                          -- bei Hausmeister wird 0 übergeben
    $eintrag['zielid']    -- Ziel der Notifikation - ID des Termins, des Blogeintrags, der Galerie, des Hausmeister

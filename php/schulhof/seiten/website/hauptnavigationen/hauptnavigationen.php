@@ -4,7 +4,7 @@
 <h1>Hauptnavigationen</h1>
 
 <?php
-if (cms_r("website.navigation"))) {
+if (cms_r("website.navigation")) {
 	$code = "</div>";
 
 	include_once('php/schulhof/seiten/website/navigationen/navigationendetails.php');

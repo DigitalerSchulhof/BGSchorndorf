@@ -4,7 +4,7 @@
 <h1>Fehlermeldung (Detailansicht)</h1>
 <?php
 $code = "";
-if (cms_r("technik.fehlermeldungen"))) {
+if (cms_r("technik.fehlermeldungen")) {
   include_once("php/schulhof/seiten/website/fehlermeldungen/auswerten.php");
   if (!isset($_SESSION["BUGID"])) {
         $code .= cms_meldung_bastler();

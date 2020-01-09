@@ -15,7 +15,7 @@ cms_rechte_laden();
 if(!cms_check_ganzzahl($id))
 	die("FEHLER");
 
-if (cms_angemeldet() && cms_r("website.freigeben"))) {
+if (cms_angemeldet() && cms_r("website.freigeben")) {
 	$fehler = false;
 
   $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten');

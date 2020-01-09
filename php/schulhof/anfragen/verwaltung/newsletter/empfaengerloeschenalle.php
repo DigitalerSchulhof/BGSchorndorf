@@ -10,7 +10,7 @@ session_start();
 postLesen("id");
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.löschen"))) {
+if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.löschen")) {
   $dbs = cms_verbinden("s");
   $sql = "DELETE FROM newsletterempfaenger WHERE newsletter = ?";
   $sql = $dbs->prepare($sql);

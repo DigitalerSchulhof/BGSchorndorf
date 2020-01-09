@@ -4,7 +4,7 @@
 <h1>Neuen Raum anlegen</h1>
 
 <?php
-if (cms_r("schulhof.planung.räume.anlegen"))) {
+if (cms_r("schulhof.planung.räume.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/raeume/raumdetails.php');
 

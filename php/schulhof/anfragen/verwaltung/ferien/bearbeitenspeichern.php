@@ -21,7 +21,7 @@ if (isset($_SESSION['FERIENID'])) {$id = $_SESSION['FERIENID'];} else {echo "FEH
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (cms_r("schulhof.organisation.ferien.bearbeiten"))) {
+if (cms_r("schulhof.organisation.ferien.bearbeiten")) {
 	$zugriff = true;
 }
 if (cms_angemeldet() && $zugriff) {

@@ -19,7 +19,7 @@ if (!cms_check_toggle($zusatz)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
   $dbs = cms_verbinden('s');
   $heute = mktime(0,0,0,$monat, $tag, $jahr);
   $SCHULSTUNDEN = array();

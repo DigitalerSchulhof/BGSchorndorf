@@ -19,7 +19,7 @@ if (isset($_POST['art'])) 						{$art = $_POST['art'];} 												else {echo "
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.anlegen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.anlegen")) {
 	$fehler = false;
 
 	$mehrtaegigt = 0;

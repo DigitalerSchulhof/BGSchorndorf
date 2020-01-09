@@ -34,7 +34,7 @@ cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

@@ -22,7 +22,7 @@ else {
 
 if (cms_valide_gruppe($g)) {
   $sql = "";
-  if (cms_r("schulhof.information.listen.gruppen.$g"))) {
+  if (cms_r("schulhof.information.listen.gruppen.$g")) {
     $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $sjsuche) AS x ORDER BY gbez ASC");
   }
   else if ($CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {

@@ -86,7 +86,7 @@
         if(is_array($v)) {
           $rek($v, "$pfad.$k");
         } else {
-          $cms_allerechte[] = substcms_r("$pfad.$k"), 1);
+          $cms_allerechte[] = substr("$pfad.$k", 1);
         }
       }
     };
@@ -119,7 +119,7 @@
 
           $aktuellesFeld = str_replace("%GRUPPEN%", "[|arbeitsgemeinschaften,arbeitskreise,ereignisse,fachschaften,fahrten,gremien,klassen,kurse,sonstigegruppen,stufen,wettbewerbe]", $aktuellesFeld);
           $aktuellesFeld = str_replace("%ELEMENTE%", "[|faq,editor,download,kontaktformular,boxen,eventübersicht,newsletter]", $aktuellesFeld);
-          $aktuellesFeld = str_replace("%ARTIKELSTUFEN%", "[|öffentlich,schulhof,lehrer,lehrerundverwaltung]", $aktuellesFeld);
+          $aktuellesFeld = str_replace("%ARTIKELSTUFEN%", "[|0,1,2,3,4,5]", $aktuellesFeld);
 
           $aktuellesFeld = mb_strtolower($aktuellesFeld);
 
@@ -431,7 +431,7 @@
     return $eval($tokens);
   }
 
-  function r() {  // Alias :)
+  function cms_r() {  // Alias :)
     return call_user_func("cms_hat_recht", ...func_get_args()) ?? false;
   }
 

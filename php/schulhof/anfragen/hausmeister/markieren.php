@@ -20,7 +20,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if (($art != 'n') && ($art != 'e')) {echo "FEHLER";exit;}
 
-if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.markieren"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

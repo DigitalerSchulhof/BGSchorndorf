@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Galerien löschen'];
+$zugriff = cms_r("artikel.galerien.löschen");
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

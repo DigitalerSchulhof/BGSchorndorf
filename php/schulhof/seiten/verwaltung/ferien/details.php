@@ -6,7 +6,7 @@ function cms_ferien_details_laden($id) {
 	$zugriff = false;
 	$fehler = false;
 
-  if ((($id == '-') && cms_r("schulhof.organisation.ferien.anlegen"))) || (($id != '-') && cms_r("schulhof.organisation.ferien.bearbeiten")))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("schulhof.organisation.ferien.anlegen")) || (($id != '-') && cms_r("schulhof.organisation.ferien.bearbeiten"))) {$zugriff = true;}
 
   $bez = '';
   $art = '';

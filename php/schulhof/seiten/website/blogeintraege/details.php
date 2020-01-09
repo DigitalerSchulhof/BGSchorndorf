@@ -17,7 +17,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
   $notifikationen = 1;
   $text = '';
   $zgruppen = "";
-  $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
+  $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL);
   $zus = "";
   foreach ($CMS_GRUPPEN as $g) {
     // Speichert die Gruppeninformationen
@@ -58,7 +58,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 
 	if ($angemeldet && $zugriff) {
     $genehmigung = false;
-    if (cms_r("artikel.genehmigen.blogeinträge"))) {$genehmigung = true; $genehmigt = 1;}
+    if (cms_r("artikel.genehmigen.blogeinträge")) {$genehmigung = true; $genehmigt = 1;}
 
     if (!$genehmigung) {
       $code .= cms_meldung ('info', "<h4>Genehmigung erforderlich</h4><p>Bis die Genehmigung erteilt wird, handelt es sich um einen vorläufigen Blogeintrag.</p>");

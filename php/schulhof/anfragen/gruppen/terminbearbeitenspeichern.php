@@ -52,9 +52,9 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['termine'] || cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"));
+$zugriff = $CMS_GRUPPENRECHTE['termine'] || cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen");
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")))) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

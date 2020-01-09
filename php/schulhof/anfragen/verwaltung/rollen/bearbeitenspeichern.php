@@ -14,7 +14,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 
 	$rechte = explode(",", $rechte);
 	$fehler = false;

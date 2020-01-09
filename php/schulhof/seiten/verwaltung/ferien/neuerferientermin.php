@@ -6,7 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Neuer Ferientermin</h1>";
 
-if (cms_r("schulhof.organisation.ferien.anlegen"))) {
+if (cms_r("schulhof.organisation.ferien.anlegen")) {
   if (!isset($_SESSION["FERIENID"])) {
         $code .= cms_meldung_bastler();
   }

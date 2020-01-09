@@ -19,7 +19,7 @@ if (cms_angemeldet()) {
 	if(!cms_check_ganzzahl($id, 0))
 		$fehler = true;
 	if (!$fehler) {
-		if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges"))) {
+		if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 			echo "BERECHTIGUNG";
 			die();
 		}

@@ -19,7 +19,7 @@ function cms_pinnwandanschlaege_ausgeben ($anschlagid, $pinnwandid) {
 	  }
 	  $sql->close();
 
-		if (($ersteller != $CMS_BENUTZERID) && !cms_r("schulhof.information.pinnwände.anschläge.bearbeiten"))) {$fehler = true;}
+		if (($ersteller != $CMS_BENUTZERID) && !cms_r("schulhof.information.pinnwände.anschläge.bearbeiten")) {$fehler = true;}
 	}
 
 	if (!$fehler) {

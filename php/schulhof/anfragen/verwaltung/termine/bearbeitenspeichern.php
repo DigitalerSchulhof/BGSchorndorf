@@ -52,7 +52,7 @@ if ($CMS_RECHTE['Website']['Termine bearbeiten']) {
 	$zugriff = true;
 }
 
-if (!cms_r("artikel.genehmigen.termine"))) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.termine")) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

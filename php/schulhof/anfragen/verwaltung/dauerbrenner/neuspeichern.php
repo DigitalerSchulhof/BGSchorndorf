@@ -20,7 +20,7 @@ $inhalt = cms_texttrafo_e_db($inhalt);
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.information.dauerbrenner.anlegen"))) {
+if (cms_angemeldet() && cms_r("schulhof.information.dauerbrenner.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

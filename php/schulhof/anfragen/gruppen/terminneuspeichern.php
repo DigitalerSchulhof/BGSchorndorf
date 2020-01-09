@@ -52,7 +52,7 @@ $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
 $zugriff = cms_internterminvorschlag($CMS_GRUPPENRECHTE);
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")))) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Termine'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen"))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

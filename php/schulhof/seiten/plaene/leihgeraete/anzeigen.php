@@ -19,7 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.sehen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.sehen")) {
 
 
 	$geraete = array();
@@ -70,7 +70,7 @@ if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.sehen"))) {
 			}
 			$code .= "</table>";
 
-			if (cms_r("schulhof.technik.geräte.probleme"))) {
+			if (cms_r("schulhof.technik.geräte.probleme")) {
 				$code .= "<p><span id=\"cms_gerateproblemknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_geraeteproblem', 'cms_gerateproblemknopf', 'Problem melden', 'Problemmeldung abbrechen')\">Problem melden</span></p>";
 
 				$code .= "<div id=\"cms_geraeteproblem\" class=\"cms_versteckt\" style=\"display: none;\">";

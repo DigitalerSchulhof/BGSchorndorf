@@ -17,7 +17,7 @@ cms_rechte_laden();
 
 if (cms_angemeldet()) {
 
-  if(!cms_r("statistik.besucher.schulhof.sehen"))) {
+  if(!cms_r("statistik.besucher.schulhof.sehen")) {
     echo "BERECHTIGUNG";
   } else {
 		$gesamt = $modus == "gesamt";

@@ -39,11 +39,11 @@ if (isset($_SESSION['GALERIEID'])) {$galerieid = $_SESSION['GALERIEID'];} else {
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Galerien bearbeiten']) {
+if (cms_r("artikel.galerien.bearbeiten")) {
 	$zugriff = true;
 }
 
-if (!cms_r("artikel.genehmigen.galerien"))) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.galerien")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

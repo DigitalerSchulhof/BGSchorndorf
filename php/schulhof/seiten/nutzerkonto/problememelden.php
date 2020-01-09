@@ -7,21 +7,21 @@
 <?php
 $spalten = 0;
 $code = "";
-if (cms_r("schulhof.technik.geräte.probleme"))) {
-  if (cms_r("schulhof.organisation.räume.sehen"))) {$spalten++;}
-  if (cms_r("schulhof.organisation.leihgeräte.sehen"))) {$spalten++;}
+if (cms_r("schulhof.technik.geräte.probleme")) {
+  if (cms_r("schulhof.organisation.räume.sehen")) {$spalten++;}
+  if (cms_r("schulhof.organisation.leihgeräte.sehen")) {$spalten++;}
 }
-if ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] || cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {$spalten++;}
+if ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] || cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {$spalten++;}
 
 
-if (cms_r("schulhof.technik.geräte.probleme"))) {
-  if (cms_r("schulhof.organisation.räume.sehen"))) {
+if (cms_r("schulhof.technik.geräte.probleme")) {
+  if (cms_r("schulhof.organisation.räume.sehen")) {
     $code .= "<div class=\"cms_spalte_$spalten\"><div class=\"cms_spalte_i\">";
     $code .= "<h3>Probleme in Räumen</h3>";
     $code .= cms_listezuabsatz(cms_schulhof_raeume_links_anzeigen());
     $code .= "</div></div>";
   }
-  if (cms_r("schulhof.organisation.leihgeräte.sehen"))) {
+  if (cms_r("schulhof.organisation.leihgeräte.sehen")) {
     $code .= "<div class=\"cms_spalte_$spalten\"><div class=\"cms_spalte_i\">";
     $code .= "<h3>Probleme an Leihgeräten</h3>";
     $code .= cms_listezuabsatz(cms_schulhof_leihgeraete_links_anzeigen());
@@ -31,10 +31,10 @@ if (cms_r("schulhof.technik.geräte.probleme"))) {
 
 
 
-if ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] || cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {
+if ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] || cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
   $code .= "<div class=\"cms_spalte_$spalten\"><div class=\"cms_spalte_i\">";
 
-  if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {
+  if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
     $code .= "<h3>Hausmeisteraufträge</h3>";
     $code .= "<p><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge erteilen</a></p>";
   }

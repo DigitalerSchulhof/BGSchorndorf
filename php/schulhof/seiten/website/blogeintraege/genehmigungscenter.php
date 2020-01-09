@@ -4,13 +4,13 @@
 <h1>Bisher nicht genehmigte Blogeinträge</h1>
 
 <?php
-if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {
+if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
 	include_once("php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php");
 	$POSTEMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
 	$ausgabe = "";
 	$dbs = cms_verbinden('s');
 
-	if (cms_r("artikel.genehmigen.blogeinträge"))) {
+	if (cms_r("artikel.genehmigen.blogeinträge")) {
 		$ausgabe .= "<h2>Öffentliche Blogeinträge</h2>";
 		$ausgabe .= "<table class=\"cms_liste\">";
 			$ausgabe .= "<thead>";
@@ -77,7 +77,7 @@ if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artike
 	}
 
 
-	if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {
+	if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
 		$ausgabe .= "<h2>Interne Blogeinträge</h2>";
 		$ausgabe .= "<table class=\"cms_liste\">";
 			$ausgabe .= "<thead>";

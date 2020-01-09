@@ -14,7 +14,7 @@ if (($art != 'l') && ($art != 'r')) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
 	if ($art == 'l') {$tabelle = 'leihengeraete';}
 	else if ($art == 'r') {$tabelle = 'raeumegeraete';}
 

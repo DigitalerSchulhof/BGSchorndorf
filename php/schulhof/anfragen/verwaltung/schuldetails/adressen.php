@@ -17,7 +17,7 @@ if (isset($_POST['domain'])) 	{$domain = $_POST['domain'];} 	else {echo "FEHLER"
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.adressen"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.adressen")) {
 	$fehler = false;
 
 	if (!cms_check_mail($webmaster)) {

@@ -11,7 +11,7 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten")) {
 	$_SESSION["LEIHGERAETBEARBEITEN"] = $id;
 	echo "ERFOLG";
 }

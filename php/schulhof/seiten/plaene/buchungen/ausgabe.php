@@ -17,7 +17,7 @@ function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $
   $code .= "<h3>Buchung</h3>";
 
   // BUCHUNGSMASKE
-  if (cms_r("schulhof.organisation.buchungen.$rart.vornehmen"))) {
+  if (cms_r("schulhof.organisation.buchungen.$rart.vornehmen")) {
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_einblenden('cms_neue_buchung')\">+ Buchung hinzufügen</span></p>";
 
     $code .= "<div id=\"cms_neue_buchung\" style=\"display: none;\">";
@@ -36,7 +36,7 @@ function cms_buchungen_ausgeben($buchungsart, $buchungsstandort, $tag, $monat, $
 
   $code .= cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $jahr, $CMS_URLGANZ, $anonymisiert);
 
-  if (cms_r("schulhof.organisation.buchungen.$rart.löschen"))) {
+  if (cms_r("schulhof.organisation.buchungen.$rart.löschen")) {
     $code .= "<p><span class=\"cms_button_nein\" onclick=\"cms_buchung_alleloeschen_vorbereiten('$CMS_URLGANZ')\">Alle vergangenen Buchungen aller Räume und Leihgeräte löschen</span></p>";
   }
 
@@ -182,7 +182,7 @@ function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $
             $code .= "<span class=\"cms_buchung_grund\">".$b['grund']."</span>";
             $code .= "<span class=\"cms_buchung_von\">".cms_generiere_anzeigename($b['vorname'], $b['nachname'], $b['titel'])."</span>";
           }
-          if (($b['person'] == $CMS_BENUTZERID) || cms_r("schulhof.organisation.buchungen.$rart.löschen")) {
+          if (($b['person'] == $CMS_BENUTZERID) || cms_r("schulhof.organisation.buchungen.$rart.löschen") {
             $code .= "<span class=\"cms_buchung_aktion\"><span class=\"cms_button_nein\" onclick=\"cms_buchung_loeschen_vorbereiten(".$b['id'].", '$buchungsart', $buchungsstandort, '$url')\">Löschen</span></span>";
           }
         $code .= "</div>";

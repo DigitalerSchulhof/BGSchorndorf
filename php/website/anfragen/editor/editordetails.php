@@ -23,8 +23,8 @@ if(!cms_check_ganzzahl($id))
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = cms_r("website.elemente.editor.anlegen"));}
-else {$zugriff = cms_r("website.elemente.editor.bearbeiten"));}
+if ($id == '-') {$zugriff = cms_r("website.elemente.editor.anlegen");}
+else {$zugriff = cms_r("website.elemente.editor.bearbeiten");}
 
 if (($zugriff) && ($angemeldet)) {
   $fehler = false;
@@ -32,7 +32,7 @@ if (($zugriff) && ($angemeldet)) {
   $neu = true;
   $inhalt = "";
   $aktiv = 0;
-  if (cms_r("website.freigeben"))) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
@@ -62,7 +62,7 @@ if (($zugriff) && ($angemeldet)) {
     if ($id == '-') {$code = "<h3>Neuer Editor</h3>";}
     else {$code = "<h3>Editor bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
-    if (cms_r("website.freigeben"))) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_editoren_aktiv', $aktiv)."</td></tr>";}
+    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_editoren_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"cms_website_element_editoren_aktiv\" name=\"cms_website_element_editoren_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_editoren_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "</table>";

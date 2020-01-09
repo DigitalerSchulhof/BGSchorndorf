@@ -13,7 +13,7 @@ if(!cms_check_name($name) || !cms_check_mail($mail))
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.bearbeiten")) {
   $dbs = cms_verbinden("s");;
   $sql = "UPDATE newsletterempfaenger SET name = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), email = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
   $sql = $dbs->prepare($sql);

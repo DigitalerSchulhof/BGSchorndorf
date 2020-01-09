@@ -11,7 +11,7 @@
 <div id="besucherstatistik">
 </div>
 <?php
-  if(!cms_r("statistik.besucher.schulhof.sehen")))
+  if(!cms_r("statistik.besucher.schulhof.sehen"))
     echo cms_meldung_berechtigung();
   } else {
     $code = "";

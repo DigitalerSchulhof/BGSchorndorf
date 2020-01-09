@@ -21,7 +21,7 @@ if ($modus == "1") {
 	if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 }
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.lehrer.kürzel"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.lehrer.kürzel")) {
 	$fehler = false;
 
 	if (!$fehler) {

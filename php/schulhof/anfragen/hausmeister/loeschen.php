@@ -12,7 +12,7 @@ if (isset($_POST['id'])) 	{$id = $_POST['id'];} 		else {echo "FEHLER";exit;}
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.löschen"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.löschen")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

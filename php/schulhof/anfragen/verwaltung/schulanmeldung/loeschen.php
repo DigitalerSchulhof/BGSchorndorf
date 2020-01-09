@@ -12,7 +12,7 @@ if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.löschen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.löschen")) {
 	$dbs = cms_verbinden();
 	$sql = $dbs->prepare("DELETE FROM voranmeldung_schueler WHERE id = ?");
   $sql->bind_param("i", $id);

@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*"))) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.*")) {
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
   if (isset($_SESSION['SCHIENESCHULJAHR'])) {
@@ -73,10 +73,10 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schiene
           $code .= "<td>".$S['zbez']."</td>";
           $code .= "<td>".implode(", ", $S['kurse'])."</td>";
           $code .= "<td>";
-          if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.bearbeiten"))) {
+          if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.bearbeiten")) {
             $code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schienen_bearbeiten_vorbereiten(".$S['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
           }
-          if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.löschen"))) {
+          if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.löschen")) {
             $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schienen_loeschen_anzeigen('".$S['bez']."', ".$S['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
           }
           $code .= "</td>";
@@ -89,7 +89,7 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schiene
 
     $code .= "</table>";
 
-    if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.anlegen"))) {
+    if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.anlegen")) {
       $code .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Planung/Schienen/Neue_Schiene_anlegen\">+ Neue Schiene anlegen</a></p>";
     }
 

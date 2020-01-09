@@ -38,11 +38,11 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Galerien anlegen']) {
+if (cms_r("artikel.galerien.anlegen")) {
 	$zugriff = true;
 }
 
-if (!cms_r("artikel.genehmigen.galerien"))) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.galerien")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

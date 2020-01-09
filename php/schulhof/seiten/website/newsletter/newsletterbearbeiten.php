@@ -5,7 +5,7 @@
 </div>
 
 <?php
-  if(!cms_r("schulhof.information.newsletter.bearbeiten")))
+  if(!cms_r("schulhof.information.newsletter.bearbeiten"))
     echo cms_meldung_berechtigung();
   else if(!isset($_SESSION["NEWSLETTERID"]) || !isset($_SESSION["NEWSLETTERZIEL"]))
     echo cms_meldung_bastler();

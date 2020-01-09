@@ -13,7 +13,7 @@ if ((!cms_check_ganzzahl($schuljahr,0)) && ($schuljahr != '-')) {echo "FEHLER"; 
 $dbs = cms_verbinden('s');
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.gruppen.klassen.anlegen"))) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.klassen.anlegen")) {
 
 	// Finde Anzahl an Gruppen
 	$faecher = array();

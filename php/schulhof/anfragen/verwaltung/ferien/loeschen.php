@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.löschen"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.löschen")) {
 	$dbs = cms_verbinden('s');
 
 	$sql = $dbs->prepare("DELETE FROM ferien WHERE id = ?");

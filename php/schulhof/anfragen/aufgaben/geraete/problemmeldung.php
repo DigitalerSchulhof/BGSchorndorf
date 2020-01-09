@@ -17,7 +17,7 @@ $CMS_BENUTZERID = $_SESSION["BENUTZERID"];
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.technik.geräte.probleme"))) {
+if (cms_angemeldet() && cms_r("schulhof.technik.geräte.probleme")) {
 	$fehler = false;
 
 	$ids = explode('|', $geraeteids);

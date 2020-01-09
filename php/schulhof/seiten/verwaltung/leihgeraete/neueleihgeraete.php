@@ -4,7 +4,7 @@
 <h1>Neue Leihgeräte anlegen</h1>
 
 <?php
-if (cms_r("schulhof.organisation.leihgeräte.anlegen"))) {
+if (cms_r("schulhof.organisation.leihgeräte.anlegen")) {
 
 	include_once('php/schulhof/seiten/verwaltung/leihgeraete/leihgeraetdetails.php');
 

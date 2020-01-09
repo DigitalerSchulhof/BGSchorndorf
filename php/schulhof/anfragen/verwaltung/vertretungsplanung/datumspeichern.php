@@ -20,10 +20,10 @@ if (($art != 'a') && ($art != 'k1') && ($art != 'k2') && ($art != 'l') && ($art 
 cms_rechte_laden();
 $zugriff = false;
 if ($art == 'a') {
-	$zugriff = cms_r("schulhof.planung.vertretungsplan.ausplanungen"));
+	$zugriff = cms_r("schulhof.planung.vertretungsplan.ausplanungen");
 }
 else if (($art == 'k1') || ($art == 'k2') || ($art == 'l') || ($art == 'r') || ($art == 'ks')) {
-	$zugriff = cms_r("schulhof.planung.vertretungsplan.vertretungsplanung"));
+	$zugriff = cms_r("schulhof.planung.vertretungsplan.vertretungsplanung");
 }
 
 if (cms_angemeldet() && $zugriff) {

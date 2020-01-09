@@ -32,7 +32,7 @@ if (isset($_POST['feedbackangemeldet'])) {$feedbackangemeldet = $_POST['feedback
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen"))) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
 	if (!cms_check_toggle($menueseitenweiterleiten)) {$fehler = true;}

@@ -18,7 +18,7 @@ cms_rechte_laden();
 if(!cms_check_ganzzahl($spalte))
 	die("FEHLER");
 
-if (cms_angemeldet() && cms_r("website.elemente.editor.anlegen"))) {
+if (cms_angemeldet() && cms_r("website.elemente.editor.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -27,7 +27,7 @@ if (cms_angemeldet() && cms_r("website.elemente.editor.anlegen"))) {
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 
 
-	if (!cms_r("website.freigeben"))) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

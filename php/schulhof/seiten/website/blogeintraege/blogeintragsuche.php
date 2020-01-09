@@ -1,10 +1,8 @@
 <?php
-function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
+function cms_blogeintragverwaltung_suche($dbs, $jahr) {
   global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = cms_r("artikel.genehmigen.blogeinträge"));
-
-  if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
+  $genehmigen = cms_r("artikel.genehmigen.blogeinträge");
 
   $gruppen = cms_gruppeninfos_generieren($dbs);
 
@@ -46,10 +44,10 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
       if ($genehmigen && ($daten['genehmigt'] != '1')) {
         $schulhofblogeintraege .= "<a class=\"cms_aktion_klein\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\"><span class=\"cms_hinweis\">zum Genehmigungscenter</span><img src=\"res/icons/klein/akzeptieren.png\"></a> ";
       }
-      if ($bearbeiten) {
+      if (cms_r("artikel.{$daten['oeffentlichkeit']}.blogeinträge.bearbeiten")) {
         $schulhofblogeintraege .= "<span class=\"cms_aktion_klein\" onclick=\"cms_blogeintraege_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Website/Blogeinträge')\"><span class=\"cms_hinweis\">Blogeintrag bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
       }
-      if ($loeschen) {
+      if (cms_r("artikel.{$daten['oeffentlichkeit']}.blogeinträge.löschen")) {
         $schulhofblogeintraege .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_blogeintraege_loeschen_vorbereiten('".$daten['id']."', '".$daten['bezeichnung']."', 'Schulhof/Website/Blogeinträge')\"><span class=\"cms_hinweis\">Blogeintrag löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
       }
       $schulhofblogeintraege .= '</td>';
@@ -57,9 +55,7 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
     }
     $anfrage->free();
     if (strlen($schulhofblogeintraege) == 0) {
-      $spalten = 6;
-      if ($aktionen) {$spalten++;}
-      $code .= "<tr><td colspan=\"$spalten\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
+      $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
     }
     else {$code .= $schulhofblogeintraege;}
   }

@@ -519,9 +519,9 @@ function cms_ist_heute($heute, $pruefdatum) {
 }
 
 function cms_websitedateirechte_laden() {
-	$gruppenrechte['dateiupload'] 		= cms_r("website.dateien.hochladen"));
-	$gruppenrechte['dateiumbenennen'] = cms_r("website.dateien.umbenennen"));
-	$gruppenrechte['dateiloeschen'] 	= cms_r("website.dateien.löschen"));
+	$gruppenrechte['dateiupload'] 		= cms_r("website.dateien.hochladen");
+	$gruppenrechte['dateiumbenennen'] = cms_r("website.dateien.umbenennen");
+	$gruppenrechte['dateiloeschen'] 	= cms_r("website.dateien.löschen");
 	$gruppenrechte['dateidownload'] = true;
 	$gruppenrechte['mitglied'] = true;
 	$gruppenrechte['sichtbar'] = true;
@@ -529,9 +529,9 @@ function cms_websitedateirechte_laden() {
 }
 
 function cms_titelbilderdateirechte_laden() {
-	$gruppenrechte['dateiupload'] 		= cms_r("website.titelbilder.hochladen"));
-	$gruppenrechte['dateiumbenennen'] = cms_r("website.titelbilder.umbenennen"));
-	$gruppenrechte['dateiloeschen'] 	= cms_r("website.titelbilder.löschen"));
+	$gruppenrechte['dateiupload'] 		= cms_r("website.titelbilder.hochladen");
+	$gruppenrechte['dateiumbenennen'] = cms_r("website.titelbilder.umbenennen");
+	$gruppenrechte['dateiloeschen'] 	= cms_r("website.titelbilder.löschen");
 	$gruppenrechte['dateidownload'] = true;
 	$gruppenrechte['mitglied'] = true;
 	$gruppenrechte['sichtbar'] = true;

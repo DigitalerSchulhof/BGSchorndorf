@@ -13,7 +13,7 @@ if (isset($_POST['notizen'])) {$notizen = cms_texttrafo_e_db($_POST['notizen']);
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("technik.fehlermeldungen"))) {
+if (cms_angemeldet() && cms_r("technik.fehlermeldungen")) {
 	$fehler = false;
   if($id === '')
     $fehler = true;
@@ -27,7 +27,7 @@ if (cms_angemeldet() && cms_r("technik.fehlermeldungen"))) {
 			echo "ERFOLG";
 			return;
 		} elseif($notizen == "") {
-			if(!cms_r("technik.fehlermeldungen"))) {
+			if(!cms_r("technik.fehlermeldungen")) {
 				echo "BERECHTIGUNG";
 				die();
 			}
@@ -45,7 +45,7 @@ if (cms_angemeldet() && cms_r("technik.fehlermeldungen"))) {
 
 			echo "ERFOLG";
 		} else {
-			if(!cms_r("technik.fehlermeldungen"))) {
+			if(!cms_r("technik.fehlermeldungen")) {
 				echo "BERECHTIGUNG";
 				die();
 			}

@@ -14,7 +14,7 @@ if (!cms_check_ganzzahl($zeitraum,0)) {echo "FEHLER"; exit;}
 cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren"))) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren")) {
 	$fehler = false;
 	// Prüfen, wie viele Rythmen der Zeitraum zulässt
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, beginn, ende, rythmen FROM zeitraeume WHERE id = ?");

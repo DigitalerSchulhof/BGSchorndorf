@@ -4,7 +4,7 @@
 <h1>Schuljahre</h1>
 
 <?php
-if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]"))) {
+if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 ?>
 	<table class="cms_liste">
 		<thead>
@@ -29,25 +29,25 @@ if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]"))) {
 					// Aktionen
 					$ausgabe .= "<td>";
 					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-					if (cms_r("schulhof.planung.schuljahre.bearbeiten"))) {
+					if (cms_r("schulhof.planung.schuljahre.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_schuljahr_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
-					if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen"))) {
+					if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_stundenplanzeitraeume_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Zeiträume</span><img src=\"res/icons/klein/stundenplanzeitraeume.png\"></span> ";
 					}
-					if (cms_r("schulhof.planung.schuljahre.fächer.anlegen"))) {
+					if (cms_r("schulhof.planung.schuljahre.fächer.anlegen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_faecher_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Fächer</span><img src=\"res/icons/klein/faecher.png\"></span> ";
 					}
-					if (cms_r("schulhof.planung.schuljahre.profile.anlegen"))) {
+					if (cms_r("schulhof.planung.schuljahre.profile.anlegen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Profile</span><img src=\"res/icons/klein/profile.png\"></span> ";
 					}
 					if ($CMS_RECHTE['Planung']['Verantwortlichkeiten festlegen']) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_verantwortlichkeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Verantwortlichkeiten festlegen (Klassen, Stufen, Räume)</span><img src=\"res/icons/klein/verantwortlichkeiten.png\"></span> ";
 					}
-					if (cms_r("schulhof.planung.schuljahre.fabrik"))) {
+					if (cms_r("schulhof.planung.schuljahre.fabrik")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schuljahrfabrik_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Nächstes Schuljahr aus diesem erzeugen</span><img src=\"res/icons/klein/schuljahrfabrik.png\"></span> ";
 					}
-					if (cms_r("schulhof.planung.schuljahre.löschen"))) {
+					if (cms_r("schulhof.planung.schuljahre.löschen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_schuljahr_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 					}
 
@@ -68,7 +68,7 @@ if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]"))) {
 		</tbody>
 	</table>
 <?php
-	if (cms_r("schulhof.planung.schuljahre.anlegen"))) {
+	if (cms_r("schulhof.planung.schuljahre.anlegen")) {
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Schuljahre/Neues_Schuljahr_anlegen\">+ Neues Schuljahr anlegen</a></p>";
 	}
 }

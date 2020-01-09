@@ -23,7 +23,7 @@ $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
 cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten"))) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

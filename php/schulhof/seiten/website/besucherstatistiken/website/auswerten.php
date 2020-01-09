@@ -314,7 +314,7 @@ function cms_besucherstatistik_website_jahresplaettchen($typ) {
     default:
       return cms_meldung_fehler();
   }
-  if(!cms_r("statistik.besucher.website.$rart"))) {
+  if(!cms_r("statistik.besucher.website.$rart")) {
     return;
   }
 
