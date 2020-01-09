@@ -28,8 +28,7 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,l
   $schuljahre = array();
   $spalten = 3;
   $aktionen = false;
-  if(cms_r("schulhof.planung.schuljahre.planungszeiträume.[|bearbeiten,löschen] || schulhof.planung.schuljahre") || // FIXME: Recht hinzufügen
-      $CMS_RECHTE['Planung']['Stundenpläne anlegen'] || $CMS_RECHTE['Planung']['Stundenpläne bearbeiten'] || $CMS_RECHTE['Planung']['Stundenpläne löschen']) {
+  if(cms_r("schulhof.planung.schuljahre.planungszeiträume.[|bearbeiten,löschen] || schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
     $aktionen = true;
     $spalten++;
   }

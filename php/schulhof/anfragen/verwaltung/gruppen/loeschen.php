@@ -12,11 +12,11 @@ session_start();
 if (isset($_POST['name'])) {$art = $_POST['name'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id,0)) {echo "FEHLER"; exit;}
+if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 
-if (isset($CMS_RECHTE['Gruppen'][$art.' löschen'])) {$zugriff = isset($CMS_RECHTE['Gruppen'][$art.' löschen']);}
-else {$zugriff = false;}
+$zugriff = cms_r("schulhof.gruppen.$art.löschen");
 
 $artk = cms_textzudb($art);
 $artg = cms_vornegross($art);

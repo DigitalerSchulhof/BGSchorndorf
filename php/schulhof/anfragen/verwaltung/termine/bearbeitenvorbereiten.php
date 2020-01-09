@@ -16,7 +16,26 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-$zugriff = $CMS_RECHTE['Website']['Termine bearbeiten'];
+$sql = $dbs->prepare("SELECT beginn, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM termine WHERE id = ?");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($BEGINN, $bezeichnung, $oeffentlichkeit);
+	if (!$sql->fetch()) {$fehler = true;}
+}
+else {$fehler = true;}
+$sql->close();
+
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.termine.bearbeiten")) {
+	$zugriff = true;
+}
+
+if($fehler) {
+	die("FEHLER");
+}
 
 if (cms_angemeldet() && $zugriff) {
 	$_SESSION["TERMINID"] = $id;

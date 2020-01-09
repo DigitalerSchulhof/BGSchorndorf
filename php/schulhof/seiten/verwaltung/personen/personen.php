@@ -42,7 +42,7 @@
 <?php
 	if (cms_r("schulhof.verwaltung.personen.anlegen")) {echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Personen/Neue_Person_anlegen\">+ Neue Person anlegen</a></p>";}
 	echo "<p>";
-	if ($CMS_RECHTE['Personen']['Personenids importieren']) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/IDs_importieren\">Personenids importieren</a> ";}
+	if (cms_r("schulhof.verwaltung.personen.ids.importieren")) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/IDs_importieren\">Personenids importieren</a> ";}
 	if ($CMS_RECHTE['Personen']['Personen den Kursen zuordnen']) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Kurszuordnung_importieren\">Kurszuordnung aus Datei importieren</a> ";}
 	if ($CMS_RECHTE['Personen']['Personen den Kursen zuordnen']) {echo "<a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Kurszuordnung_Lehrer_und_Schüler\">Kurszuordnung der Lehrer und Schüler gemäß Regelunterricht und Klassenzugehörigkeit</a> ";}
 	echo "</p><p>";

@@ -17,11 +17,11 @@ if(cms_r("website.dateien.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_dateien\" href=\"Schulhof/Website/Dateien\">Dateien</a> ";
 if(cms_r("website.titelbilder.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_titelbilder\" href=\"Schulhof/Website/Titelbilder\">Titelbilder</a> ";
-if($CMS_RECHTE['Website']['Termine bearbeiten'] || $CMS_RECHTE['Website']['Termine löschen'] || $CMS_RECHTE['Website']['Termine anlegen'])
+if(cms_r("artikel.%ARTIKELSTUFEN%.termine.* || artikel.genehmigen.termine"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_termine\" href=\"Schulhof/Website/Termine\">Termine</a> ";
-if($CMS_RECHTE['Website']['Blogeinträge bearbeiten'] || $CMS_RECHTE['Website']['Blogeinträge löschen'] || $CMS_RECHTE['Website']['Blogeinträge anlegen'])
+  if(cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.* || artikel.genehmigen.blogeinträge"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_blog\" href=\"Schulhof/Website/Blogeinträge\">Blogeinträge</a> ";
-if($CMS_RECHTE['Website']['Galerien bearbeiten'] || $CMS_RECHTE['Website']['Galerien löschen'] || $CMS_RECHTE['Website']['Galerien anlegen'])
+  if(cms_r("artikel.galerien.* || artikel.genehmigen.galerien"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_galerien\" href=\"Schulhof/Website/Galerien\">Galerien</a> ";
 if(cms_r("statistik.besucher.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_besucherstatistik\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a> ";

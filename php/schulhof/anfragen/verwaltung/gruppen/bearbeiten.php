@@ -43,8 +43,7 @@ cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $CMS_BENUTZERID);
 
-if (isset($CMS_RECHTE['Gruppen'][$art.' bearbeiten'])) {$zugriff = $CMS_RECHTE['Gruppen'][$art.' bearbeiten'] || $CMS_GRUPPENRECHTE['bearbeiten'];}
-else {$zugriff = false;}
+$zugriff = $CMS_GRUPPENRECHTE['bearbeiten'] || cms_r("schulhof.gruppen.$art.bearbeiten");
 
 $artk = cms_textzudb($art);
 $artg = cms_vornegross($art);

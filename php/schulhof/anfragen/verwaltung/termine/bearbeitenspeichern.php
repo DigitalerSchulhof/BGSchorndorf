@@ -48,7 +48,11 @@ if (isset($_SESSION['TERMINID'])) {$terminid = $_SESSION['TERMINID'];} else {ech
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Termine bearbeiten']) {
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.termine.bearbeiten")) {
 	$zugriff = true;
 }
 

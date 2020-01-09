@@ -25,6 +25,10 @@ schulhof:
       löschen: Personen löschen
       daten: Persönliche Daten Anderer sehen
       schülereltern: Schüler und Eltern verknüpfen
+      ids:
+        sehen: Personenids sehe
+        bearbeiten: Personenids bearbeiten
+        importieren: Personenids importieren
     rechte:
       zuordnen: Personen Rechte zuordnen
       bedingt: Rechte bedingt zuordnen
@@ -60,8 +64,6 @@ schulhof:
       anlegen: Arbeitsgemeinschaften anlegen
       bearbeiten: Arbeitsgemeinschaften bearbeiten
       löschen: Arbeitsgemeinschaften löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -77,8 +79,6 @@ schulhof:
       anlegen: Arbeitskreise anlegen
       bearbeiten: Arbeitskreise bearbeiten
       löschen: Arbeitskreise löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -94,8 +94,6 @@ schulhof:
       anlegen: Ereignisse anlegen
       bearbeiten: Ereignisse bearbeiten
       löschen: Ereignisse löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -111,8 +109,6 @@ schulhof:
       anlegen: Fachschaften anlegen
       bearbeiten: Fachschaften bearbeiten
       löschen: Fachschaften löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -128,8 +124,6 @@ schulhof:
       anlegen: Fahren anlegen
       bearbeiten: Fahren bearbeiten
       löschen: Fahren löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -145,8 +139,6 @@ schulhof:
       anlegen: Gremien anlegen
       bearbeiten: Gremien bearbeiten
       löschen: Gremien löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -162,8 +154,6 @@ schulhof:
       anlegen: Klassen anlegen
       bearbeiten: Klassen bearbeiten
       löschen: Klassen löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -179,8 +169,6 @@ schulhof:
       anlegen: Kurse anlegen
       bearbeiten: Kurse bearbeiten
       löschen: Kurse löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -197,8 +185,6 @@ schulhof:
       anlegen: Sonstige Gruppen anlegen
       bearbeiten: Sonstige Gruppen bearbeiten
       löschen: Sonstige Gruppen löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -214,8 +200,6 @@ schulhof:
       anlegen: Stufen anlegen
       bearbeiten: Stufen bearbeiten
       löschen: Stufen löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -231,8 +215,6 @@ schulhof:
       anlegen: Wettbewerbe anlegen
       bearbeiten: Wettbewerbe bearbeiten
       löschen: Wettbewerbe löschen
-      sehen: Gruppenmitglieder sehen
-      sehenwenn: Gruppenmitglieder sehen wenn Mitglied
       artikel:
         blogeinträge:
           anlegen: Blogeinträge anlegen
@@ -263,17 +245,39 @@ schulhof:
       externe: Externenliste sehen
       verwaltungsangestellte: Verwaltungsangestellte sehen
       gruppen:
-        arbeitsgemeinschaften: Arbeitesgemeinschaften sehen
-        arbeitskreise: Arbeitskreise sehen
-        ereignisse: Ereignisse sehen
-        fachschaften: Fachschaften sehen
-        fahrten: Fahrten sehen
-        gremien: Gremien sehen
-        klassen: Klassen sehen
-        kurse: Kurse sehen
-        sonstigegruppen: Sonstige Gruppen sehen
-        stufen: Stufen sehen
-        wettbewerbe: Wettbewerbe sehen
+        arbeitsgemeinschaften:
+          sehen: Arbeitesgemeinschaften sehen
+          sehenwenn: Arbeitesgemeinschaften sehen wenn Mitglied
+        arbeitskreise:
+          sehen: Arbeitskreise sehen
+          sehenwenn: Arbeitskreise sehen wenn Mitglied
+        ereignisse:
+          sehen: Ereignisse sehen
+          sehenwenn: Ereignisse sehen wenn Mitglied
+        fachschaften:
+          sehen: Fachschaften sehen
+          sehenwenn: Fachschaften sehen wenn Mitglied
+        fahrten:
+          sehen: Fahrten sehen
+          sehenwenn: Fahrten sehen wenn Mitglied
+        gremien:
+          sehen: Gremien sehen
+          sehenwenn: Gremien sehen wenn Mitglied
+        klassen:
+          sehen: Klassen sehen
+          sehenwenn: Klassen sehen wenn Mitglied
+        kurse:
+          sehen: Kurse sehen
+          sehenwenn: Kurse sehen wenn Mitglied
+        sonstigegruppen:
+          sehen: Sonstige Gruppen sehen
+          sehenwenn: Sonstige Gruppen sehen wenn Mitglied
+        stufen:
+          sehen: Stufen sehen
+          sehenwenn: Stufen sehen wenn Mitglied
+        wettbewerbe:
+          sehen: Wettbewerbe sehen
+          sehenwenn: Wettbewerbe sehen wenn Mitglied
     dauerbrenner:
       anlegen: Dauerbrenner anlegen
       bearbeiten: Dauerbrenner bearbeiten

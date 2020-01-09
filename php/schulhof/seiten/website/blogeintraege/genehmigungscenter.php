@@ -57,7 +57,7 @@ if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artike
 		      $gfaelle .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$aktiv</span><img src=\"res/icons/klein/".$icon.".png\"></span></td>";
 		      $gfaelle .= '<td>';
 						$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_blog_genehmigen('Blogeinträge', '".$daten['id']."');\"><span class=\"cms_hinweis\">Genehmigen</span><img src=\"res/icons/klein/akzeptieren.png\"></span> ";
-						if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
+						if (cms_r("artikel.{$daten['oeffentlichkeit']}.blogeinträge.bearbeiten")) {
 							$gfaelle .= "<span class=\"cms_aktion_klein\" onclick=\"cms_blogeintraege_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Aufgaben/Blogeinträge_genehmigen');\"><span class=\"cms_hinweis\">Blogeintrag bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 						}
 						$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_blog_ablehnen('Blogeinträge', '".$daten['id']."');\"><span class=\"cms_hinweis\">Ablehnen und löschen</span><img src=\"res/icons/klein/ablehnen.png\"></span> ";
@@ -110,7 +110,7 @@ if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artike
 			      $gfaelle .= "<td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$aktiv</span><img src=\"res/icons/klein/".$icon.".png\"></span></td>";
 			      $gfaelle .= '<td>';
 							$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_blog_genehmigen('$g', '".$daten['id']."');\"><span class=\"cms_hinweis\">Genehmigen</span><img src=\"res/icons/klein/akzeptieren.png\"></span> ";
-							if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
+							if (cms_r("schulhof.gruppen.$g.artikel.blogeinträge.bearbeiten")) {
 								if (is_null($daten['schuljahr'])) {$daten['schuljahr'] = 'Schuljahrübergreifend';}
 								$gfaelle .= "<span class=\"cms_aktion_klein\" onclick=\"cms_blogeintraegeintern_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Aufgaben/Blogeinträge_genehmigen', '$g', '".$daten['gid']."', '".$daten['schuljahr']."', '".$daten['gbezeichnung']."');\"><span class=\"cms_hinweis\">Blogeintrag bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 							}

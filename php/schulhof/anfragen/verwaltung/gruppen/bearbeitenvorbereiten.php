@@ -11,13 +11,13 @@ session_start();
 if (isset($_POST['name'])) {$art = $_POST['name'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
+if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
 cms_rechte_laden();
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $CMS_BENUTZERID);
 
-if (isset($CMS_RECHTE['Gruppen'][$art.' bearbeiten'])) {$zugriff = $CMS_RECHTE['Gruppen'][$art.' bearbeiten'] || $CMS_GRUPPENRECHTE['bearbeiten'];}
-else {$zugriff = false;}
+$zugriff = $CMS_GRUPPENRECHTE['bearbeiten'] || cms_r("schulhof.gruppen.$art.bearbeiten");
 
 $artk = cms_textzudb($art);
 $artg = cms_vornegross($art);

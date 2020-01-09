@@ -20,7 +20,7 @@ if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 
-if ($CMS_RECHTE['Website']['Termine anlegen'] || $CMS_RECHTE['Website']['Blogeinträge anlegen'] || $CMS_RECHTE['Website']['Galerien anlegen']) {$zugriff = true;}
+if (cms_r("artikel.galerien.anlegen || artikel.%ARTIKELSTUFEN%.[|termine,blogeinträge].anlegen")) {$zugriff = true;}
 if (!$zugriff) {
   if (($CMS_BENUTZERART == 'l') && ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen'] ||
                                     $CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen'] ||

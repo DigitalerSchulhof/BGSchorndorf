@@ -158,8 +158,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Lehrerkürzel_ändern')\"><span class=\"cms_hinweis\">Lehrerkürzel ändern</span><img src=\"res/icons/klein/kuerzel.png\"></span> ";
 					}
 
-					$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
-					if ($zugriff) {
+					if (cms_r("schulhof.verwaltung.personen.ids.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'IDs_bearbeiten')\"><span class=\"cms_hinweis\">Personenids ändern</span><img src=\"res/icons/klein/ids.png\"></span> ";
 					}
 

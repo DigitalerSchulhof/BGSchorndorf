@@ -17,9 +17,8 @@ if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {$zeitraum = $_SESSION["STUNDENPLANZEITRAUM"];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 	$code = "";
 

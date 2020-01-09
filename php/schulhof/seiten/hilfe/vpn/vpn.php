@@ -3,9 +3,7 @@
 
 <?php
 
-$zugriff = $CMS_RECHTE['Zugriffe']['Lehrernetz'];
-
-if (!$zugriff) {
+if (!cms_r("lehrerzimmer.zugriff")) {
 	echo cms_meldung_berechtigung();
 }
 

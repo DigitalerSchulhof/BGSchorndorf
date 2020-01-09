@@ -10,9 +10,8 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Verantwortlichkeiten festlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.verantwortlichkeiten")) {
 	$_SESSION["VERANTWORTLICHKEITENSCHULJAHR"] = $id;
 	echo "ERFOLG";
 }

@@ -6,8 +6,6 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Website']['Blogeinträge anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Blogeinträge bearbeiten'] && ($id != '-'))) {$zugriff = true;}
-
   $bez = '';
   $vorschaubild = "";
   $datum = time();
@@ -51,6 +49,8 @@ function cms_blogeintrag_details_laden($id, $ziel) {
   		}
     }
   }
+
+  if ((($id == '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten"))) {$zugriff = true;}
 
 	if ($fehler) {$zugriff = false;}
 	$angemeldet = cms_angemeldet();
@@ -119,7 +119,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'blogeintraege', $id);
 
-    if ($CMS_RECHTE['Website']['Dateien hochladen']) {
+    if (cms_r("website.dateien.hochladen")) {
       $inhalt = "<h3>Websitedateien</h3>";
       $rechte = cms_websitedateirechte_laden();
       $inhalt .= cms_dateisystem_generieren ('website', 'website', 'cms_website_dateien', 's', 'website', '-', $rechte);

@@ -41,7 +41,7 @@ if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 					if (cms_r("schulhof.planung.schuljahre.profile.anlegen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_profile_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Profile</span><img src=\"res/icons/klein/profile.png\"></span> ";
 					}
-					if ($CMS_RECHTE['Planung']['Verantwortlichkeiten festlegen']) {
+					if (cms_r("schulhof.planung.schuljahre.verantwortlichkeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_verantwortlichkeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Verantwortlichkeiten festlegen (Klassen, Stufen, Räume)</span><img src=\"res/icons/klein/verantwortlichkeiten.png\"></span> ";
 					}
 					if (cms_r("schulhof.planung.schuljahre.fabrik")) {

@@ -28,7 +28,7 @@ function cms_listen_links_anzeigen($einschraenkung = false) {
 
 	if ($einschraenkung != 'personen') {
 		foreach ($CMS_GRUPPEN as $g) {
-			if (@$CMS_RECHTE['Gruppen'][$g.' Listen sehen'] || @$CMS_RECHTE['Gruppen'][$g.' Listen sehen wenn Mitglied']) {
+			if(cms_r("schulhof.information.listen.gruppen.$g.[|sehen,sehenwenn]")) {
 				$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Gruppen/".cms_textzulink($g)."\">$g</a></li> ";
 			}
 		}

@@ -334,27 +334,27 @@ if (cms_r("website.dateien.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("artikel.öffentlich.termine.*")) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.termine.* || artikel.genehmigen.termine")) {
 	$code .= "<li>";
 		$code .= "<a class=\"cms_uebersicht_verwaltung_termine\" href=\"Schulhof/Website/Termine\">";
 			$code .=  "<h3>Termine</h3>";
-			$code .=  "<p>Termine ".aufzaehlen(array("anlegen" => cms_r("artikel.öffentlich.termine.anlegen"), "bearbeiten" => cms_r("artikel.öffentlich.termine.bearbeiten"), "löschen" => cms_r("artikel.öffentlich.termine.löschen"))).".</p>";
+			$code .=  "<p>Termine ".aufzaehlen(array("anlegen" => cms_r("artikel.%ARTIKELSTUFEN%.termine.anlegen"), "bearbeiten" => cms_r("artikel.%ARTIKELSTUFEN%.termine.bearbeiten"), "löschen" => cms_r("artikel.%ARTIKELSTUFEN%.termine.löschen"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("artikel.öffentlich.blogeinträge.* || website.freigeben")) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.* || artikel.genehmigen.blogeinträge")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_blog\" href=\"Schulhof/Website/Blogeinträge\">";
 			$code .=  "<h3>Blogeinträge</h3>";
-			$code .=  "<p>Blogeinträge ".aufzaehlen(array("anlegen" => cms_r("artikel.öffentlich.blogeinträge.anlegen"), "bearbeiten" => cms_r("artikel.öffentlich.blogeinträge.bearbeiten"), "löschen" => cms_r("artikel.öffentlich.blogeinträge.löschen"), "freigeben" => cms_r("website.freigeben"))).".</p>";
+			$code .=  "<p>Blogeinträge ".aufzaehlen(array("anlegen" => cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen"), "bearbeiten" => cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.bearbeiten"), "löschen" => cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.löschen"), "freigeben" => cms_r("website.freigeben"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("artikel.öffentlich.galerien.* || website.freigeben")) {
+if (cms_r("artikel.galerien.* || artikel.genehmigen.galerien")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_galerien\" href=\"Schulhof/Website/Galerien\">";
 			$code .=  "<h3>Galerien</h3>";
-			$code .=  "<p>Galerien ".aufzaehlen(array("anlegen" => cms_r("artikel.öffentlich.galerien.anlegen"), "bearbeiten" => cms_r("artikel.öffentlich.galerien.bearbeiten"), "löschen" => cms_r("artikel.öffentlich.galerien.löschen"), "freigeben" => cms_r("website.freigeben"))).".</p>";
+			$code .=  "<p>Galerien ".aufzaehlen(array("anlegen" => cms_r("artikel.%ARTIKELSTUFEN%.galerien.anlegen"), "bearbeiten" => cms_r("artikel.%ARTIKELSTUFEN%.galerien.bearbeiten"), "löschen" => cms_r("artikel.%ARTIKELSTUFEN%.galerien.löschen"), "freigeben" => cms_r("website.freigeben"))).".</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }

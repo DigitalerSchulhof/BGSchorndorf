@@ -57,7 +57,7 @@ if (cms_r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.term
 		      $gfaelle .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$aktiv</span><img src=\"res/icons/klein/".$icon.".png\"></span></td>";
 		      $gfaelle .= '<td>';
 						$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_termin_genehmigen('Termine', '".$daten['id']."');\"><span class=\"cms_hinweis\">Genehmigen</span><img src=\"res/icons/klein/akzeptieren.png\"></span> ";
-						if ($CMS_RECHTE['Website']['Termine bearbeiten']) {
+						if (cms_r("artikel.{$daten['oeffentlichkeit']}.termine.anlegen")) {
 							$gfaelle .= "<span class=\"cms_aktion_klein\" onclick=\"cms_termine_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Aufgaben/Termine_genehmigen');\"><span class=\"cms_hinweis\">Termin bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 						}
 						$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_termin_ablehnen('Termine', '".$daten['id']."');\"><span class=\"cms_hinweis\">Ablehnen und löschen</span><img src=\"res/icons/klein/ablehnen.png\"></span> ";
@@ -111,7 +111,7 @@ if (cms_r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.term
 			      $gfaelle .= "<td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$aktiv</span><img src=\"res/icons/klein/".$icon.".png\"></span></td>";
 			      $gfaelle .= '<td>';
 							$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_termin_genehmigen('$g', '".$daten['id']."');\"><span class=\"cms_hinweis\">Genehmigen</span><img src=\"res/icons/klein/akzeptieren.png\"></span> ";
-							if ($CMS_RECHTE['Organisation']['Gruppentermine bearbeiten']) {
+							if (cms_r("schulhof.gruppen.$g.artikel.termine.bearbeiten")) {
 								if (is_null($daten['schuljahr'])) {$daten['schuljahr'] = 'Schuljahrübergreifend';}
 								$gfaelle .= "<span class=\"cms_aktion_klein\" onclick=\"cms_termineintern_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Aufgaben/Termine_genehmigen', '$g', '".$daten['gid']."', '".$daten['schuljahr']."', '".$daten['gbezeichnung']."');\"><span class=\"cms_hinweis\">Termin bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 							}

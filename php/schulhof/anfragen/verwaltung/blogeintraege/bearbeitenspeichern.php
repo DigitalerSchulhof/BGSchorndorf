@@ -41,11 +41,15 @@ if (isset($_SESSION['BLOGEINTRAGID'])) {$blogid = $_SESSION['BLOGEINTRAGID'];} e
 cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten")) {
 	$zugriff = true;
 }
 
-if (!cms_r("artikel.genehmigen.blogeinträge"))) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.blogeinträge")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

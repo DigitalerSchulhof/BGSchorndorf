@@ -6,8 +6,8 @@
 <?php
 include_once('php/schulhof/seiten/website/blogeintraege/blogeintragsuche.php');
 
-$bearbeiten = cms_r("artikel.%ARTIKELSTUFEN%.bearbeiten");
-$loeschen   = cms_r("artikel.%ARTIKELSTUFEN%.löschen");
+$bearbeiten = cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.bearbeiten");
+$loeschen   = cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.löschen");
 $anzeigen   = $bearbeiten || $loeschen;
 
 if ($anzeigen) {

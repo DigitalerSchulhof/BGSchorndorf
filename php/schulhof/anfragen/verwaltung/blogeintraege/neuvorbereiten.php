@@ -15,7 +15,7 @@ if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER"; exit;}
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 
-if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) {
 	$zugriff = true;
 }
 

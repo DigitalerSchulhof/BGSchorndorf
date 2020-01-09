@@ -11,9 +11,8 @@ if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; 
 if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {$zeitraum = $_SESSION["STUNDENPLANZEITRAUM"];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	// Prüfen, ob Klasse in zugeordnetem Zeitraum liegt
 	$fehler = false;
 	$dbs = cms_verbinden('s');

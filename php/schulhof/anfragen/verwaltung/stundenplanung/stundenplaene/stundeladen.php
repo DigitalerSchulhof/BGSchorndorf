@@ -19,9 +19,8 @@ if (isset($_POST['stunde'])) {$stunde = $_POST['stunde'];} else {echo "FEHLER"; 
 if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {$zeitraum = $_SESSION["STUNDENPLANZEITRAUM"];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 	$code = "";
 
@@ -107,7 +106,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Prüfen, ob genau diese Konstellation schon besteht - Falls nicht zur Anlage vorschlagen
 		$gefunden = false;
 		foreach ($bestehend AS $erg) {if (($erg['kurs'] == $kurs) && ($erg['lehrkraft'] == $lehrer) && ($erg['raum'] == $raum)) {$gefunden = true;}}
-		if ((!$gefunden) && $CMS_RECHTE['Planung']['Stunden anlegen']) {
+		if ((!$gefunden) && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 			// Neue Buchung anlegen
 			$code .= "<h4>Neue Stunde</h4>";
 			$code .= cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, 'a', count($bestehend));
@@ -195,7 +194,7 @@ function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus,
 
 	if (!$fehler) {
 		$code = "";
-		if ((($modus == 'a') && ($CMS_RECHTE['Planung']['Stunden anlegen'])) || $modus == 'l') {
+		if ((($modus == 'a') && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) || $modus == 'l') {
 			$code .= "<table class=\"cms_liste\">";
 			$code .= "<tr><th>Tag:</th><td>".cms_tagnamekomplett($tag)."</td></tr>";
 			$code .= "<tr><th>Stunde:</th><td>".$stunde['bezeichnung']." (".$stunde['bs'].":".$stunde['bm']." - ".$stunde['es'].":".$stunde['em'].")</td></tr>";
@@ -211,7 +210,7 @@ function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus,
 				$code .= "<input type=\"hidden\" name=\"cms_stundenplanung_stunde\" id=\"cms_stundenplanung_stunde\" value=\"".$stunde['id']."\">";
 				$code .= "<span class=\"cms_button_ja\" onclick=\"cms_stundenplanung_stunde_neu_speichern();\">Anlegen</span></td></tr>";
 			}
-			else if (($modus == 'l') && ($CMS_RECHTE['Planung']['Stunden löschen'])) {
+			else if (($modus == 'l') && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 				$code .= "<tr><td colspan=\"2\"><span class=\"cms_button_nein\" ";
 				$code .= "onclick=\"cms_stundenplanung_stunde_loeschen_vorbereiten('".$lehrer['id']."', '".$raum['id']."', '".$kurs['id']."', '".$tag."', '".$stunde['id']."');\">";
 				$code .=  "Löschen</span></td></tr>";}

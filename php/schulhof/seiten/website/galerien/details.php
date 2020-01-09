@@ -6,7 +6,7 @@ function cms_galerie_details_laden($id, $ziel) {
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Website']['Galerien anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Galerien bearbeiten'] && ($id != '-'))) {$zugriff = true;}
+  if (($id == '-') && cms_r("artikel.galerien.anlegen")) || (($id != '-') && cms_r("artikel.galerien.bearbeiten"))) {$zugriff = true;}
 
   $bezeichnung = '';
   $vorschaubild = "";

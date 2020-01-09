@@ -18,20 +18,27 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Termine löschen'];
+$fehler = false;
+
+$sql = $dbs->prepare("SELECT beginn, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM termine WHERE id = ?");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($BEGINN, $bezeichnung, $oeffentlichkeit);
+	if (!$sql->fetch()) {$fehler = true;}
+}
+else {$fehler = true;}
+$sql->close();
+
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.termine.löschen")) {
+	$zugriff = true;
+}
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
-	$fehler = false;
-
-	$sql = $dbs->prepare("SELECT beginn, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM termine WHERE id = ?");
-  $sql->bind_param("i", $id);
-  if ($sql->execute()) {
-    $sql->bind_result($BEGINN, $bezeichnung, $oeffentlichkeit);
-    if (!$sql->fetch()) {$fehler = true;}
-  }
-  else {$fehler = true;}
-  $sql->close();
 
 	if (!$fehler) {
 		$monatsname = cms_monatsnamekomplett(date('m', $BEGINN));

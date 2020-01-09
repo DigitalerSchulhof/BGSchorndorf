@@ -16,7 +16,28 @@ cms_rechte_laden();
 $zugriff = false;
 $fehler = false;
 
-if (cms_angemeldet() && cms_r("artikel.öffentlich.blogeinträge.bearbeiten")) {
+$sql = $dbs->prepare("SELECT datum, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM blogeintraege WHERE id = ?");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($datum, $oeffentlichkeit, $bezeichnung);
+	if (!$sql->fetch()) {$fehler = true;}
+}
+else {$fehler = true;}
+$sql->close();
+
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten")) {
+	$zugriff = true;
+}
+
+if($fehler) {
+	die("FEHLER");
+}
+
+if (cms_angemeldet() && $zugriff) {
 	$_SESSION["BLOGEINTRAGID"] = $id;
   $_SESSION["BLOGEINTRAGZIEL"] = $ziel;
 	echo "ERFOLG";

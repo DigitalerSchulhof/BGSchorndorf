@@ -550,13 +550,13 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("website.dateien.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Dateien\">Dateien</a></li> ";
 	}
-	if (@$CMS_RECHTE['Website']['Termine anlegen'] || @$CMS_RECHTE['Website']['Termine bearbeiten'] || @$CMS_RECHTE['Website']['Termine löschen']) {
+	if (cms_r("artikel.%ARTIKELSTUFEN%.termine.* || artikel.genehmigen.termine")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Termine\">Termine</a></li> ";
 	}
-	if (@$CMS_RECHTE['Website']['Blogeinträge anlegen'] || @$CMS_RECHTE['Website']['Blogeinträge bearbeiten'] || @$CMS_RECHTE['Website']['Blogeinträge löschen']) {
+	if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.* || artikel.genehmigen.blogeinträge")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Blogeinträge\">Blogeinträge</a></li> ";
 	}
-	if (@$CMS_RECHTE['Website']['Galerien anlegen'] || @$CMS_RECHTE['Website']['Galerien bearbeiten'] || @$CMS_RECHTE['Website']['Galerien löschen']) {
+	if (cms_r("artikel.galerien.* || artikel.genehmigen.galerien")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Galerien\">Galerien</a></li> ";
 	}
 	if (cms_r("website.titelbilder.*")) {

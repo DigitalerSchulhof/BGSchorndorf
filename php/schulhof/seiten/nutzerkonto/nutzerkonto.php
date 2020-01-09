@@ -179,18 +179,15 @@ if (strlen($fav) > 0) {echo "<h2>Favoriten</h2><ul class=\"cms_aktionen_liste\">
 </ul>
 <?php
 $aktionen = "";
-if (@$CMS_RECHTE['Website']['Termine anlegen']) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.termine.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
 }
-if (@$CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_blogeintrag('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Blogeintrag</span></li> ";
 }
-if (@$CMS_RECHTE['Website']['Galerien anlegen']) {
+if (cms_r("artikel.galerien.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neue_galerie('".implode('/', $CMS_URL)."')\">+ Neue öffentliche Galerie</span></li> ";
 }
-/*if (@$CMS_RECHTE['Persönlich']['Termine anlegen']) {
-	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_persoenlicher_termin('".implode('/', $CMS_URL)."')\">+ Neuer persönlicher Termin</span></li> ";
-}*/
 if (strlen($aktionen) > 0) {
 	echo "<h2>Aktionen</h2><ul class=\"cms_aktionen_liste\">$aktionen</ul>";
 }

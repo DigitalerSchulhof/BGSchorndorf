@@ -285,14 +285,14 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			if ($termin['art'] == 'oe') {
 				$link = $CMS_URLGANZ;
 				$linkl = $CMS_URL[0]."/".$CMS_URL[1];
-				if (@$CMS_RECHTE['Website']['Termine bearbeiten']) {
+				if (cms_r("artikel.{$termin['oeffentlichkeit']}.termine.bearbeiten")) {
 					$aktionen .= "<span class=\"cms_button\" onclick=\"cms_termine_bearbeiten_vorbereiten('".$termin['id']."', '$linkl')\">Termin bearbeiten</span> ";
 				}
 				if (cms_r("artikel.genehmigen.termine") && ($termin['genehmigt'] == 0)) {
 					$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_termin_genehmigen('Termine', '".$termin['id']."', '$link')\">Termin genehmigen</span> ";
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termin_ablehnen('Termine', '".$termin['id']."', '$linkl')\">Termin ablehnen</span> ";
 				}
-				if ($CMS_RECHTE['Website']['Termine löschen']) {
+				if (cms_r("artikel.{$termin['oeffentlichkeit']}.termine.löschen")) {
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termine_loeschen_vorbereiten('".$termin['id']."', '".$daten['bezeichnung']."', '$linkl')\">Termin löschen</span> ";
 				}
 			}

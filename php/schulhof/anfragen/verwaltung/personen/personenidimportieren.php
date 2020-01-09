@@ -19,9 +19,8 @@ if (isset($_POST['vor'])) {$vor = $_POST['vor'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['nach'])) {$nach = $_POST['nach'];} else {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Personenids importieren'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.ids.importieren")) {
 
 	$fehler = false;
 

@@ -777,7 +777,7 @@ function cms_personenids_aendern($id) {
 	$verwaltung = false;
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.ids.bearbeiten");
 		$verwaltung = true;
 	}
 

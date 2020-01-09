@@ -42,7 +42,7 @@ if (cms_r("artikel.genehmigen.galerien")) {
 	      $gfaelle .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$aktiv</span><img src=\"res/icons/klein/".$icon.".png\"></span></td>";
 	      $gfaelle .= '<td>';
 					$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_galerie_genehmigen('".$daten['id']."');\"><span class=\"cms_hinweis\">Genehmigen</span><img src=\"res/icons/klein/akzeptieren.png\"></span> ";
-					if ($CMS_RECHTE['Website']['Galerien bearbeiten']) {
+					if (cms_r("artikel.galerien.bearbeiten")) {
 						$gfaelle .= "<span class=\"cms_aktion_klein\" onclick=\"cms_galerie_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Aufgaben/Galerien_genehmigen');\"><span class=\"cms_hinweis\">Galerie bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
 					$gfaelle .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_galerie_ablehnen('".$daten['id']."');\"><span class=\"cms_hinweis\">Ablehnen und löschen</span><img src=\"res/icons/klein/ablehnen.png\"></span> ";

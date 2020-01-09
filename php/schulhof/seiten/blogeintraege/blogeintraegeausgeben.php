@@ -269,14 +269,14 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				if ($blogeintrag['art'] == 'oe') {
 					$link = $CMS_URLGANZ;
 					$linkl = implode('/', array_slice($CMS_URL,0,2));
-					if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
+					if (cms_r("artikel.{$blogeintrag['oeffentlichkeit']}.blogeinträge.bearbeiten")) {
 						$aktionen .= "<span class=\"cms_button\" onclick=\"cms_blogeintraege_bearbeiten_vorbereiten('".$blogeintrag['id']."', '$linkl')\">Blogeintrag bearbeiten</span> ";
 					}
 					if (cms_r("artikel.genehmigen.blogeinträge") && ($blogeintrag['genehmigt'] == 0)) {
 						$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_blog_genehmigen('Blogeinträge', '".$blogeintrag['id']."', '$link')\">Blogeintrag genehmigen</span> ";
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blog_ablehnen('Blogeinträge', '".$blogeintrag['id']."', '$linkl')\">Blogeintrag ablehnen</span> ";
 					}
-					if ($CMS_RECHTE['Website']['Blogeinträge löschen']) {
+					if (cms_r("artikel.{$blogeintrag['oeffentlichkeit']}.blogeinträge.löschen")) {
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blogeintraege_loeschen_vorbereiten('".$blogeintrag['id']."', '".$blogeintrag['bezeichnung']."', '$linkl')\">Blogeintrag löschen</span> ";
 					}
 				}
