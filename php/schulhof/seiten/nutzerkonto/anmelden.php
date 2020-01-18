@@ -10,7 +10,7 @@
 <?php
 if (isset($CMS_URL[2])) {
 	if ($CMS_URL[2] == "Automatische_Abmeldung") {
-		$meldung = '<h4>Automatische Abmeldung nach Inaktivität</h4><p>Aus Sicherheitsgründen wurde nach langer Inaktivität eine Abmeldung durchgeführt.</p>';
+		$meldung = '<h4>Automatische Abmeldung nach Inaktivität</h4><p>Aus Sicherheitsgründen wurde nach langer Inaktivität eine automatische Abmeldung durchgeführt.</p>';
 		echo cms_meldung("info", $meldung);
 	}
 	if ($CMS_URL[2] == "Bis_bald!") {
@@ -18,7 +18,7 @@ if (isset($CMS_URL[2])) {
 		echo cms_meldung("erfolg", $meldung);
 	}
 	if ($CMS_URL[2] == "Zugeschickt!") {
-		$meldung = '<h4>Neues Passwort</h4><p>Ein Passwort wurde an die hinterlegte eMailadresse geschickt. Dieses Passwort ist nur eine Stunde gültig. Das Passwort sollte direkt nach der Anmeldung geändert werden!</p>';
+		$meldung = '<h4>Neues Passwort</h4><p>Ein Passwort wurde an die hinterlegte eMailadresse geschickt. Dieses Passwort ist nur eine Stunde gültig. Es sollte direkt nach der Anmeldung geändert werden!</p>';
 		echo cms_meldung("info", $meldung);
 	}
 }
@@ -40,8 +40,8 @@ if ($anmeldung_moeglich) {
 		$code .= "<tr><th>Passwort:</th><td><input name=\"cms_schulhof_anmeldung_passwort\" id=\"cms_schulhof_anmeldung_passwort\" type=\"password\"></td></tr>";
 	$code .= "</table>";
 
-	$code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet, als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
-	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch Einwilligung A erteilt.</p>";
+	$code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden, ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
+	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch »Einwilligung A« erteilt.</p>";
 
 	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a></p>";
 }
