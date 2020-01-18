@@ -17,6 +17,7 @@ $zugriff = $CMS_RECHTE['Personen']['Personen den Kursen zuordnen'];
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
+
 	// Kurse laden
 	$KURSE = array();
 	$sql = $dbs->prepare("SELECT DISTINCT id FROM kurse WHERE schuljahr = ?");
@@ -30,7 +31,7 @@ if (cms_angemeldet() && $zugriff) {
 	$sql->close();
 
 	// Schüler aus Klassen eintragen
-	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT ? AS gruppe, person, 0 AS dateiupload, 1 AS dateidownload, 0 AS dateiloeschen, 0 AS dateiumbenennen, 0 AS termine, 0 AS blogeintraege, 0 AS chatten, 0 AS nachrichtloeschen, 0 AS nutzerstummschalten, null AS chatbannbis, null AS chatbannvon FROM klassenmitglieder WHERE gruppe IN (SELECT klasse FROM kurseklassen WHERE kurs = ?)");
+	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT ? AS gruppe, person, 0 AS dateiupload, 1 AS dateidownload, 0 AS dateiloeschen, 0 AS dateiumbenennen, 0 AS termine, 0 AS blogeintraege, 1 AS chatten, 0 AS nachrichtloeschen, 0 AS nutzerstummschalten, null AS chatbannbis, null AS chatbannvon FROM klassenmitglieder WHERE gruppe IN (SELECT klasse FROM kurseklassen WHERE kurs = ?)");
 	foreach ($KURSE AS $K) {
 		$sql->bind_param("ii", $K, $K);
 		$sql->execute();
@@ -52,6 +53,65 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->execute();
 	}
 	$sql->close();
+	
+
+	// Stufen neu zuordnen
+	$STUFEN = array();
+	$sql = $dbs->prepare("SELECT DISTINCT id FROM stufen WHERE schuljahr = ?");
+	$sql->bind_param("i", $sj);
+	if ($sql->execute()) {
+		$sql->bind_result($sid);
+		while ($sql->fetch()) {
+			array_push($STUFEN, $sid);
+		}
+	}
+	$sql->close();
+
+	// Stufen leeren
+	if (count($STUFEN) > 0) {
+		$suchmuster = "(".implode(",", $STUFEN).")";
+		$sql = $dbs->prepare("DELETE FROM stufenmitglieder WHERE gruppe IN $suchmuster");
+		$sql->execute();
+		$sql->close();
+	}
+
+	// Stufen neu erstellen
+	$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) SELECT DISTINCT ? AS gruppe, person, '0' AS dateiupload, '1' AS dateidownload, '0' AS dateiloeschen, '0' AS dateiumbenennen, '0' AS termine, '0' AS blogeintraege, '1' AS chatten, '0' AS nachrichtloeschen, '0' AS nutzerstummschalten FROM kursemitglieder WHERE gruppe IN (SELECT id FROM kurse WHERE stufe = ?)");
+	foreach ($STUFEN AS $S) {
+		$sql->bind_param("ii", $S, $S);
+		$sql->execute();
+	}
+	$sql->close();
+
+
+	// Klassen neu zuordnen
+	$KLASSEN = array();
+	$sql = $dbs->prepare("SELECT DISTINCT id FROM klassen WHERE schuljahr = ?");
+	$sql->bind_param("i", $sj);
+	if ($sql->execute()) {
+		$sql->bind_result($sid);
+		while ($sql->fetch()) {
+			array_push($KLASSEN, $sid);
+		}
+	}
+	$sql->close();
+
+	// Klassen leeren
+	if (count($KLASSEN) > 0) {
+		$suchmuster = "(".implode(",", $KLASSEN).")";
+		$sql = $dbs->prepare("DELETE FROM klassenmitglieder WHERE gruppe IN $suchmuster");
+		$sql->execute();
+		$sql->close();
+	}
+
+	// Klassen neu erstellen
+	$sql = $dbs->prepare("INSERT INTO klassenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten) SELECT DISTINCT ? AS gruppe, person, '0' AS dateiupload, '1' AS dateidownload, '0' AS dateiloeschen, '0' AS dateiumbenennen, '0' AS termine, '0' AS blogeintraege, '1' AS chatten, '0' AS nachrichtloeschen, '0' AS nutzerstummschalten FROM kursemitglieder WHERE gruppe IN (SELECT kurs FROM kurseklassen WHERE klasse = ?) AND gruppe NOT IN (SELECT kurs FROM kurseklassen WHERE klasse != ?)");
+	foreach ($KLASSEN AS $K) {
+		$sql->bind_param("iii", $K, $K, $K);
+		$sql->execute();
+	}
+	$sql->close();
+
 
 	cms_trennen($dbs);
 

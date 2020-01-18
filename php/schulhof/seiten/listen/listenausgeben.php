@@ -162,22 +162,30 @@ function cms_listen_gruppenliste_ausgeben($dbs, $gruppenart, $gruppenid, $person
 	else {$aufsichtsliste = cms_listen_gruppenliste_leererueckgabe();}
 
   $code = "";
-  $allenschreiben = "";
 	$knoepfe = "";
+	$allenschreiben = false;
   if (strlen($mitgliederliste['tabelle']) > 0) {
     $code .= "<h2>Mitglieder</h2>".$mitgliederliste['tabelle'];
-    $allenschreiben .= "|".$mitgliederliste['schreiben'];
+		$allenschreiben = true;
   }
   if (strlen($vorsitzliste['tabelle']) > 0) {
     $code .= "<h2>Vorsitz</h2>".$vorsitzliste['tabelle'];
-    $allenschreiben .= "|".$vorsitzliste['schreiben'];
+		$allenschreiben = true;
   }
   if (strlen($aufsichtsliste['tabelle']) > 0) {
     $code .= "<h2>Aufsicht</h2>".$aufsichtsliste['tabelle'];
-    $allenschreiben .= "|".$aufsichtsliste['schreiben'];
+		$allenschreiben = true;
   }
 
-  if (strlen($allenschreiben) > 0) {$knoepfe = "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', '".substr($allenschreiben,1)."')\">Allen schreiben</span> ";}
+  if ($allenschreiben) {
+		if ($gruppenart == "sonstigegruppen") {
+			$ggruppenart = "Sonstige Gruppen";
+		}
+		else {
+			$ggruppenart = strtoupper(substr($gruppenart, 0,1)).substr($gruppenart,1);
+		}
+		$knoepfe = "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('gruppe', '', '', '', '$ggruppenart', '$gruppenid')\">Allen schreiben</span> ";
+	}
 
   $rueckgabe['tabelle'] = $code;
   $rueckgabe['knoepfe'] = $knoepfe;

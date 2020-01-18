@@ -98,7 +98,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
         $G['tagebuch'] = $gtagebucht;
         $G['gfs'] = $ggfs;
         $G['id'] = $gid;
-        $G['bezeichnung'] = $gebz;
+        $G['bezeichnung'] = $gbez;
         $G['icon'] = $gicon;
         $G['sichtbar'] = $gsichtbar;
         $G['mitglieder'] = $gmitglieder;
@@ -111,7 +111,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
         $G = array();
         $G['reihenfolge'] = $greihe;
         $G['id'] = $gid;
-        $G['bezeichnung'] = $gebz;
+        $G['bezeichnung'] = $gbez;
         $G['icon'] = $gicon;
         $G['sichtbar'] = $gsichtbar;
         $G['mitglieder'] = $gmitglieder;

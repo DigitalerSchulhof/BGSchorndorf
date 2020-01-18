@@ -30,7 +30,6 @@ if (in_array($g, $CMS_GRUPPEN)) {
 else {$fehler = true;}
 
 
-
 if (!$fehler) {
 	include_once('php/schulhof/seiten/gruppen/blogeintragdetails.php');
 	include_once('php/schulhof/seiten/website/editor/editor.php');

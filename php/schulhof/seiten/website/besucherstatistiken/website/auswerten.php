@@ -29,16 +29,21 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
     $start = array("jahr" => $ende["jahr"]-($ende["monat"]-11<1?1:0), "monat" => $ende["monat"]-11<1?$ende["monat"]+1:$ende["monat"]-11);
   $dbs = cms_verbinden('s');
   if($gesamt) {
-    $sql = "SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_$tabelle)";
-    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
-    if($r = $anfrage->fetch_assoc()) {
-      $start = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
+    $sql = $dbs->prepare("SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_$tabelle)");
+    $sql->execute();
+    $sql->bind_result($rjahr, $rmonat);
+    if($sql->fetch()) {
+      $start = array("jahr" => $rjahr, "monat" => $rmonat);
     }
-    $sql = "SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_$tabelle)";
-    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
-    if($r = $anfrage->fetch_assoc()) {
-      $ende = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
+    $sql->close();
+
+    $sql = $dbs->prepare("SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_$tabelle)");
+    $sql->execute();
+    $sql->bind_result($rjahr, $rmonat);
+    if($sql->fetch()) {
+      $ende = array("jahr" => $rjahr, "monat" => $rmonat);
     }
+    $sql->close();
   }
 
   // Start - Ende auswerten und ggf. meckern
@@ -197,9 +202,11 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
 
     // Startseite holen
     if($startseite === "false") {
-      $sql = "SELECT bezeichnung FROM seiten WHERE status = 's'";
-      $sql = $dbs->query($sql); // Safe weil keine Eingabe
-      $startseite = $sql->fetch_assoc()["bezeichnung"];
+      $sql = $dbs->execute("SELECT bezeichnung FROM seiten WHERE status = 's'");
+      $sql->execute();
+      $sql->bind_result($startseite);
+      $sql->fetch();
+      $sql->close();
       unset($datenHBar[$startseite]);
     }
     arsort($datenHBar);
@@ -320,14 +327,16 @@ function cms_besucherstatistik_website_jahresplaettchen($typ) {
   $minJahr;
   $jahr = date("Y");
   $dbs = cms_verbinden('s');
-  $sql = "SELECT MIN(jahr) AS jahr FROM besucherstatistik_$tabelle";
-  $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
-  if(!$anfrage) {
+  $sql = $dbs->prepare("SELECT MIN(jahr) AS jahr FROM besucherstatistik_$tabelle");
+  $sql->execute();
+  $sql->bind_result($minJahr);
+  if (!$sql->fetch()) {
     echo cms_meldung_fehler();
+    $sql->close();
     return;
   }
-  $sqld = $anfrage->fetch_assoc();
-  $minJahr = intval($sqld["jahr"]);
+  $sql->close();
+
   if($minJahr == 0) {
     echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;

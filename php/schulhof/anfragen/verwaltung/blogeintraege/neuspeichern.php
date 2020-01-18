@@ -59,7 +59,7 @@ if (cms_angemeldet() && $zugriff) {
       $ids = "(".substr($ids, 1).")";
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
-  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN ($ids)");
+  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids");
   			if ($sql->execute()) {
           $sql->bind_result($checkanzahl);
   				if ($sql->fetch()) {
