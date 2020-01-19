@@ -1,18 +1,38 @@
 <?php
-function cms_anzahl_navigationsebenen($dbs, $ausgang, $max = 0) {
+function cms_anzahl_navigationsebenen($dbs) {
 	$gefunden = false;
-	if ($ausgang == '-') {$sql = "SELECT id FROM seiten WHERE zuordnung IS NULL";}
-	else {$sql = "SELECT id FROM seiten WHERE zuordnung = '$ausgang'";}
-	$neuesmax = $max;
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		while ($daten = $anfrage->fetch_assoc()) {
-			$maxgebot = cms_anzahl_navigationsebenen($dbs, $daten['id'], $max+1);
-			if ($maxgebot > $neuesmax) {$neuesmax = $maxgebot;}
-		}
-		$anfrage->free();
-	}
+	$max = 0;
+	$DIESEEBENE = array();
+	$NAECHSTEEBENE = array();
 
-	return $neuesmax;
+	$sql = $dbs->prepare("SELECT id FROM seiten WHERE zuordnung IS NULL");
+	if ($sql->execute()) {
+		$sql->bind_result($zid);
+		while ($sql->fetch()) {
+			array_push($NAECHSTEEBENE, $zid);
+		}
+	}
+	$sql->close();
+
+	$sql = $dbs->prepare("SELECT id FROM seiten WHERE zuordnung = ?");
+	while ((count($DIESEEBENE) != 0) || (count($NAECHSTEEBENE) != 0))  {
+		while ((count($DIESEEBENE) != 0)) {
+			$eid = array_pop($DIESEEBENE);
+			$sql->bind_param("i", $eid);
+			if ($sql->execute()) {
+				$sql->bind_result($zid);
+				while ($sql->fetch()) {
+					array_push($NAECHSTEEBENE, $zid);
+				}
+			}
+		}
+		$DIESEEBENE = $NAECHSTEEBENE;
+		$NAECHSTEEBENE = array();
+		$max++;
+	}
+	$sql->close();
+
+	return $max-1;
 }
 
 function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
@@ -68,7 +88,7 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 				$code .= "</select>";
 			$code .= "</td></tr>";
 
-			$anzahlebenen = cms_anzahl_navigationsebenen($dbs, '-');
+			$anzahlebenen = cms_anzahl_navigationsebenen($dbs);
 			$code .= "<tr id=\"$id"."_ebenenzusatz_eF\"$estyle>";
 				$code .= "<th><span class=\"cms_hinweis_aussen\">Ebenennummer:<span class=\"cms_hinweis\">Ab welcher Ebene in diesem Pfad soll die Navigation angezeigt werden?</span></th><td>";
 				$code .= "<select id=\"$id"."_ebenenzusatz_e\" name=\"$id"."_ebenenzusatz_e\">";

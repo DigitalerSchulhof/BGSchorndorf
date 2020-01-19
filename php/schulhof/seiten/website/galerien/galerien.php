@@ -24,17 +24,18 @@ $jahranfang = $jahrgewaehlt;
 $jahrende = $jahrgewaehlt;
 $jahre = false;
 
-$sql = "SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM galerien";
-if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-  if ($daten = $anfrage->fetch_assoc()) {
-    if (!is_null($daten['anfang'])) {
-      $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);
-      $jahrende = max(date('Y', $daten['ende']), $jahrende);
+$sql = $dbs->prepare("SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM galerien");
+if ($sql->execute()) {
+  $sql->bind_result($anfang, $ende);
+  if ($sql->fetch()) {
+    if (!is_null($anfang)) {
+      $jahranfang = min(date('Y', $anfang), $jahranfang);
+      $jahrende = max(date('Y', $ende), $jahrende);
       $jahre = true;
     }
   }
-  $anfrage->free();
 }
+$sql->close();
 
 $spalten = 7;
 $aktionen = false;
