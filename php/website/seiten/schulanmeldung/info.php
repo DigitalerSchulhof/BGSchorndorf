@@ -20,21 +20,7 @@ if ($rueckgabe['zulaessig']) {
   $code .= "<h3>Datenschutzhinweise</h3>";
   $code .= "<ul>";
     $code .= "<li>Verantwortlich für die Erhebung der Daten ist die Schulleitung des $CMS_SCHULE_GENITIV.</li>";
-    $jetzt = time();
-    $datenschutz = "";
-    $sql = "SELECT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht FROM schuljahre JOIN schluesselposition ON schuljahre.id = schluesselposition.schuljahr JOIN personen ON personen.id = schluesselposition.person WHERE (beginn <= $jetzt AND ende >= $jetzt) AND position = AES_ENCRYPT('Datenschutzbeauftragter', '$CMS_SCHLUESSEL') ORDER BY nachname";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      while ($daten = $anfrage->fetch_assoc()) {
-        $id = $daten['id'];
-        $name = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-        if ($daten['geschlecht'] == 'w') {$person = "die Datenschutzbeauftragte";}
-        else {$person = "der Datenschutzbeauftragte";}
-        $datenschutz .= "<p>Für Nachfragen steht $CMS_NAMEDATENSCHUTZ der Schule gerne für Sie zur Verfügung:</p><p><a class=\"cms_button\" href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_NAMEDATENSCHUTZ</a></p>";
-      }
-      $anfrage->free();
-    }
-    if (strlen($datenschutz) > 0) {$code .= "<li>$datenschutz</li>";}
-    else {$code .= "<li><b>!! ES WURDE KEIN DATENSCHUTZBEAUFTRAGTER BENANNT !!</b></li>";}
+    $code .= "<li>Für Nachfragen können Sie gerne den Datenschutzbeuaftragten der Schule kontaktieren:</p><p><a class=\"cms_button\" href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_NAMEDATENSCHUTZ</a></li>";
     $code .= "<li>Der Zweck für die Datenerhebung ist die schnellere Abwicklung der Aufnahme an der Schule. Nach der Aufnahme werden die Daten zu unterrichtsorganisatorischen Zwecken gemäß des Schulgesetztes verwendet. Die online erhobenen Daten werden nach Abschluss des Anmeldeprozesses online gelöscht und nur noch lokal in der Schulverwaltungssoftware der Schule auf Grundlage des Schulgesetzes verarbeitet. Vorname und Nachname sowie Geschlecht und Kurszuordnung werden des Weiteren nach der Aufnahme an der Schule online im digitalen Schulhof zu unterrichtlichen Zwecken verarbeitet.</li>";
     $code .= "<li>Die personenbezogenen Daten können von der Schulverwaltung eingesehen werden. Des Weiteren verbleiben Vorname, Nachname, Geschlecht und Kurszuordnung nach einer vollständigen Anmeldung für Lehrer im digitalen Schulhof sichtbar. Mitschüler, die dieselben Kurse besuchen haben ebenfalls Zugriff auf Vorname und Nachname.</li>";
     $code .= "<li>Keine der personenbezogenen Daten werden an Drittländer oder dritte Personen weitergegeben.</li>";

@@ -469,15 +469,6 @@ if ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auff
 	$code .=  "</li>";
 	$tabzahl++;
 }
-if ($CMS_RECHTE['Website']['Emoticons verwalten']) {
-	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_emoticons\" href=\"Schulhof/Website/Emoticons\">";
-			$code .=  "<h3>Emoticons</h3>";
-			$code .=  "<p>Emoticons verwalten.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-	$tabzahl++;
-}
 if ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE["Newsletter bearbeiten"]) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">";

@@ -762,18 +762,6 @@ function getLesen($feld, $nullfehler = true) {
 			die("FEHLER");
 }
 
-function sqlLesen($row, $feld) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
-			sqlLesen($row, $f);
-		return;
-	}
-	global $$feld;
-
-	if(isset($row[$feld]))
-		$$feld = $row[$feld];
-}
-
 function cms_check_sessionvars() {
 
 	if (!isset($_SESSION['BENUTZERID'])) {return false;}

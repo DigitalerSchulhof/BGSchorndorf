@@ -79,33 +79,25 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->close();
 		}
 		else {
-			$sql = "UPDATE kontaktformulare SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
-			$sql .= cms_sql_an(array("betreff", "kopie", "anhang"));
-			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = $id";
+			$sql = "UPDATE kontaktformulare SET spalte = ?, position = ?, aktiv = ?, betreffaktuell = ?, betreffneu = ?, kopieaktuell = ?, kopieneu = ?, anhangaktuell = ?, anhangneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
-
-			$sql->bind_param("ssiiii", $betreff, $betreff, $kopie, $kopie, $anhang, $anhang);
+			$sql->bind_param("iisssiiiii", $spalte, $position, $aktiv, $betreff, $betreff, $kopie, $kopie, $anhang, $anhang, $id);
 			$sql->execute();
 			$sql->close();
 
-			$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = $id, ";
-			$sql .= cms_sql_an(array("name", "beschreibung", "mail"));
-			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = ?";
-			$sql = $dbs->prepare($sql);
-			$sql->bind_param("ssssssi", $name, $name, $beschreibung, $beschreibung, $mail, $mail, $id);
-			foreach ($ids as $i => $id) {
-				$id = $ids[$i];
+			foreach ($ids as $i => $ide) {
+				$ide = $ids[$i];
 				$name = $namen[$i];
 				$mail = $mails[$i];
 				$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
-				if($id === "") {
-					$id = cms_generiere_kleinste_id('kontaktformulareempfaenger');
+				if($ide === "") {
+					$ide = cms_generiere_kleinste_id('kontaktformulareempfaenger');
 				}
+				$sql = $dbs->prepare("UPDATE kontaktformulareempfaenger SET kontaktformular = ?, nameaktuell = ?, nameneu = ?, beschreibungaktuell = ?, beschreibungneu = ?, mailaktuell = ?, mailneu = ? WHERE id = ?");
 				$sql->execute();
+				$sql->bind_param("issssssi", $id, $name, $name, $beschreibung, $beschreibung, $mail, $mail, $ide);
+				$sql->close();
 			}
-			$sql->close();
 		}
 		echo "ERFOLG";
 	}

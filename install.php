@@ -576,8 +576,6 @@ if ($rechteplaetten) {
 		$sql->execute(); $id++;
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auffälliges verwalten', '$CMS_SCHLUESSEL'))");
 		$sql->execute(); $id++;
-		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Emoticons verwalten', '$CMS_SCHLUESSEL'))");
-		$sql->execute(); $id++;
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auszeichnungen anlegen', '$CMS_SCHLUESSEL'))");
 		$sql->execute(); $id++;
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auszeichnungen bearbeiten', '$CMS_SCHLUESSEL'))");

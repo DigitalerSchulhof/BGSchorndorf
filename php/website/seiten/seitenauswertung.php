@@ -94,26 +94,25 @@ function cms_seitendetails_erzeugen($dbs, $pfad) {
   $seite = array();
   $seitenid = cms_pfad_aufloesen($dbs, $pfad);
   if ($seitenid !== '-') {
-    $sql = "SELECT * FROM seiten WHERE id = $seitenid";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
-      if ($daten = $anfrage->fetch_assoc()) {
-        $seite = $daten;
-      }
-      $anfrage->free();
+    $sql = $dbs->prepare("SELECT * FROM seiten WHERE id = ?");
+    $sql->bind_param("i", $seitenid);
+    if ($sql->execute()) {
+      $sql->bind_result($seite['id'], $seite['art'], $seite['position'], $seite['zuordnung'], $seite['bezeichnung'], $seite['beschreibung'], $seite['sidebar'], $seite['status'], $seite['styles'], $seite['klassen'], $seite['idvon'], $seite['idzeit']);
+      $sql->fetch();
     }
+    $sql->close();
   }
   return $seite;
 }
 
 function cms_startseitendetails_erzeugen($dbs) {
   $seite = array();
-  $sql = "SELECT * FROM seiten WHERE art = 's'";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $seite = $daten;
-    }
-    $anfrage->free();
+  $sql = $dbs->prepare("SELECT * FROM seiten WHERE art = 's'");
+  if ($sql->execute()) {
+    $sql->bind_result($seite['id'], $seite['art'], $seite['position'], $seite['zuordnung'], $seite['bezeichnung'], $seite['beschreibung'], $seite['sidebar'], $seite['status'], $seite['styles'], $seite['klassen'], $seite['idvon'], $seite['idzeit']);
+    $sql->fetch();
   }
+  $sql->close();
   return $seite;
 }
 
@@ -156,14 +155,21 @@ function cms_seite_ausgeben($dbs) {
                 }
               }
 
-
-              $sql = "SELECT id FROM spalten WHERE seite = ".$seite['id']." ORDER BY zeile ASC, position ASC";
-              if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
-                while ($spalte = $anfrage->fetch_assoc()) {
-                  $code .= cms_spalte_ausgeben($dbs, $spalte['id']);
+              $SPALTEN = array();
+              $sql = $dbs->prepare("SELECT id FROM spalten WHERE seite = ? ORDER BY zeile ASC, position ASC");
+              $sql->bind_param("i", $seite['id']);
+              if ($sql->execute()) {
+                $sql->bind_result($spid);
+                while ($sql->fetch()) {
+                  array_push($SPALTEN, $spid);
                 }
-                $anfrage->free();
               }
+              $sql->close();
+
+              foreach ($SPALTEN AS $spid) {
+                $code .= cms_spalte_ausgeben($dbs, $spid);
+              }
+
               if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (($CMS_RECHTE['Website']['Inhalte anlegen']) || ($CMS_RECHTE['Website']['Inhalte bearbeiten']))) {
                 $_SESSION['ELEMENTSEITE'] = $seite['id'];
               }
@@ -171,21 +177,23 @@ function cms_seite_ausgeben($dbs) {
             else if ($seite['art'] == 'm') {
               $code .= "<h1>".$seite['bezeichnung']."</h1>";
               $mcode = "";
-              $sql = "SELECT id, bezeichnung, beschreibung, art FROM seiten WHERE zuordnung = ".$seite['id']." ORDER BY position";
               $pfad = cms_seitenpfadlink_erzeugen(cms_seitenpfad_id_erzeugen($dbs, $seite['id']));
-              if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
-                while ($s = $anfrage->fetch_assoc()) {
-                  if ($s['art'] == 'g') {$jahr = date('Y'); $link = "Website/Galerien/$jahr/".cms_monatsnamekomplett(date('n'));}
-                  else if ($s['art'] == 't') {$jahr = date('Y'); $link = "Website/Termine/$jahr/".cms_monatsnamekomplett(date('n'));}
-                  else if ($s['art'] == 'b') {$jahr = date('Y'); $link = "Website/Blog/$jahr/".cms_monatsnamekomplett(date('n'));}
-                  else {$link = "Website/$CMS_URL[1]/$CMS_URL[2]/".$pfad."/".str_replace('_', ' ', $s['bezeichnung']);}
+              $sql = $dbs->prepare("SELECT id, bezeichnung, beschreibung, art FROM seiten WHERE zuordnung = ? ORDER BY position");
+              $sql->bind_param("i", $seite['id']);
+              if ($sql->execute()) {
+                $sql->bind_result($zsid, $zsbez, $zsbesch, $zsart);
+                while ($sql->fetch()) {
+                  if ($zsart == 'g') {$jahr = date('Y'); $link = "Website/Galerien/$jahr/".cms_monatsnamekomplett(date('n'));}
+                  else if ($zsart == 't') {$jahr = date('Y'); $link = "Website/Termine/$jahr/".cms_monatsnamekomplett(date('n'));}
+                  else if ($zsart == 'b') {$jahr = date('Y'); $link = "Website/Blog/$jahr/".cms_monatsnamekomplett(date('n'));}
+                  else {$link = "Website/".$CMS_URL[1]."/".$CMS_URL[2]."/".$pfad."/".str_replace('_', ' ', $zsbez);}
                   $mcode .= "<li><a class=\"cms_website_menuepunkte\" href=\"$link\">";
-                  $mcode .= "<h3>".$s['bezeichnung']."</h3>";
-                  if (strlen($s['beschreibung'])>0) {$mcode .= "<p>".$s['beschreibung']."</p>";}
+                  $mcode .= "<h3>$zsbez</h3>";
+                  if (strlen($zsbesch)>0) {$mcode .= "<p>$zsbesch</p>";}
                   $mcode .= "</a></li>";
                 }
-                $anfrage->free();
               }
+              $sql->close();
               if (($CMS_URL[1] == 'Bearbeiten') && ($CMS_ANGEMELDET) && (($CMS_RECHTE['Website']['Seiten anlegen']))) {
                 $mcode .= "<li><span class=\"cms_website_menuepunkte_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('".$seite['id']."');\">";
                 $mcode .= "+ Neue Seite";
@@ -411,13 +419,31 @@ function cms_boxenaussen_ausgeben($dbs, $e) {
   global $CMS_URL;
   // Inaktiv für den Benutzer
   $boxxen = array();
-  $sql = "SELECT * FROM boxen WHERE boxaussen = ".$e['id']." ORDER BY position ASC";
-  if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-    while ($daten = $anfrage->fetch_assoc()) {
-      array_push($boxxen, $daten);
+  $sql = $dbs->prepare("SELECT * FROM boxen WHERE boxaussen = ? ORDER BY position ASC");
+  $sql->bind_param("i", $e['id']);
+  if ($sql->execute()) {
+    $sql->bind_result($eid, $eboxaus, $epos, $eakt, $etitalt, $etitakt, $etitneu, $einhalt, $einhakt, $einhneu, $estyalt, $estyakt, $estyneu, $eidvon, $eidzeit);
+    while ($sql->fetch()) {
+      $eneu = array();
+      $eneu['id'] = $eid;
+      $eneu['boxaussen'] = $eboxaus;
+      $eneu['position'] = $epos;
+      $eneu['aktiv'] = $eakt;
+      $eneu['titelalt'] = $etitalt;
+      $eneu['titelaktuell'] = $etitakt;
+      $eneu['titelneu'] = $etitneu;
+      $eneu['inhaltalt'] = $einhalt;
+      $eneu['inhaltaktuell'] = $einhakt;
+      $eneu['inhaltneu'] = $einhneu;
+      $eneu['stylealt'] = $estyalt;
+      $eneu['styleaktuell'] = $estyakt;
+      $eneu['styleneu'] = $estyneu;
+      $eneu['idvon'] = $eidvon;
+      $eneu['idzeit'] = $eidzeit;
+      array_push($boxxen, $eneu);
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   if (($CMS_URL[1] == 'Seiten') && ($e['aktiv'] == '0')) {
     return "";
@@ -506,40 +532,93 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
 
       $blogcode = "";
       if ($blog == 1) {
-        $sql = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND datum < $jetzt ORDER BY datum DESC LIMIT ".$bloganzahl;
-        if ($anfrage = $dbs->query($sql)) { // Safe weil Einstellung ist numerisch
-          include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
-          while ($daten = $anfrage->fetch_assoc()) {
-            $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
+        $BLOGS = array();
+        $sql = $dbs->prepare("SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND datum < ? ORDER BY datum DESC LIMIT ?");
+        $sql->bind_param("ii", $jetzt, $bloganzahl);
+        if ($sql->execute()) {
+          $sql->bind_result($bid, $bart, $bgen, $bbez, $bdatum, $btext, $bvorsch, $bvorschb, $bautor);
+          while ($sql->fetch()) {
+            $b = array();
+            $b['id'] = $bid;
+            $b['art'] = $bart;
+            $b['genehmigt'] = $bgen;
+            $b['bezeichnung'] = $bbez;
+            $b['datum'] = $bdatum;
+            $b['text'] = $btext;
+            $b['vorschau'] = $bvorsch;
+            $b['vorschaubild'] = $bvorschb;
+            $b['autor'] = $bautor;
+            array_push($BLOGS, $b);
           }
-          $anfrage->free();
+        }
+        $sql->close();
+
+        include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
+        foreach ($BLOGS AS $daten) {
+          $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
         }
       }
 
       $termincode = "";
       if ($termine == 1) {
-        $sqltermine = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND ende > $jetzt ORDER BY beginn ASC, ende ASC LIMIT 0,".$termineanzahl;
-        $sqlferien = "SELECT id, art, 1 AS genehmigt, bezeichnung, '' AS ort, beginn, ende, mehrtaegigt, 0 AS uhrzeitbt, 0 AS uhrzeitet, 0 AS ortt, 4 AS oeffentlichkeit, '' AS text FROM ferien WHERE ende > $jetzt LIMIT ".$termineanzahl;
-        $sql = "SELECT * FROM (($sqltermine) UNION ($sqlferien)) AS x ORDER BY beginn ASC, ende ASC LIMIT ".$termineanzahl;
-
-        if ($anfrage = $dbs->query($sql)) { // Safe weil Einstellung ist numerisch
-          include_once('php/schulhof/seiten/termine/termineausgeben.php');
-          while ($daten = $anfrage->fetch_assoc()) {
-            $termincode .= cms_termin_link_ausgeben($dbs, $daten);
+        $TERMINE = array();
+        $sqltermine = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND ende > ? ORDER BY beginn ASC, ende ASC LIMIT 0,?";
+        $sqlferien = "SELECT id, art, 1 AS genehmigt, bezeichnung, '' AS ort, beginn, ende, mehrtaegigt, 0 AS uhrzeitbt, 0 AS uhrzeitet, 0 AS ortt, 4 AS oeffentlichkeit, '' AS text FROM ferien WHERE ende > ? LIMIT ?";
+        $sql = $dbs->prepare("SELECT * FROM (($sqltermine) UNION ($sqlferien)) AS x ORDER BY beginn ASC, ende ASC LIMIT ?");
+        $sql->bind_param("iiiii", $jetzt, $termineanzahl, $jetzt, $termineanzahl, $termineanzahl);
+        if ($sql->execute()) {
+          $sql->bind_result($tid, $tart, $tgen, $tbez, $tort, $tbeg, $tend, $tmehr, $tube, $tuen, $tortt, $toeff, $ttext);
+          while ($sql->fetch()) {
+            $t = array();
+            $t['id'] = $tid;
+            $t['art'] = $tart;
+            $t['genehmigt'] = $tgen;
+            $t['bezeichnung'] = $tbez;
+            $t['ort'] = $tort;
+            $t['beginn'] = $tbeg;
+            $t['ende'] = $tend;
+            $t['mehrtaegigt'] = $tmehr;
+            $t['uhrzeitbt'] = $tube;
+            $t['uhrzeitet'] = $tuen;
+            $t['ortt'] = $tortt;
+            $t['oeffentlichkeit'] = $toeff;
+            $t['text'] = $ttext;
+            array_push($TERMINE, $t);
           }
-          $anfrage->free();
+        }
+        $sql->close();
+
+        include_once('php/schulhof/seiten/termine/termineausgeben.php');
+        foreach ($TERMINE AS $daten) {
+          $termincode .= cms_termin_link_ausgeben($dbs, $daten);
         }
       }
 
       $galeriecode = "";
       if ($galerie == 1) {
-        $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE aktiv = 1 AND genehmigt = 1 ORDER BY datum ASC LIMIT 0,".$galerieanzahl;
-        if ($anfrage = $dbs->query($sql)) { // Safe weil Einstellung ist numerisch
-          include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
-          while ($daten = $anfrage->fetch_assoc()) {
-            $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, "artikel");
+        $GALERIEN = array();
+        $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE aktiv = 1 AND genehmigt = 1 AND datum < ? ORDER BY datum ASC LIMIT 0,?");
+        $sql->bind_param("ii", $jetzt, $galerieanzahl);
+        if ($sql->execute()) {
+          $sql->bind_result($gid, $gbez, $gaut, $gdat, $ggen, $goeff, $gbes, $gvor);
+          while ($sql->fetch()) {
+            $g = array();
+            $g['id'] = $gid;
+            $g['bezeichnung'] = $gbez;
+            $g['autor'] = $gaut;
+            $g['datum'] = $gdat;
+            $g['genehmigt'] = $ggen;
+            $g['oeffentlichkeit'] = $goeff;
+            $g['beschreibung'] = $gbes;
+            $g['vorschaubild'] = $gvor;
+            array_push($GALERIEN, $g);
           }
-          $anfrage->free();
+        }
+        $sql->close();
+
+        include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
+        foreach ($TERMINE AS $daten) {
+          $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, "artikel");
         }
       }
 
@@ -573,6 +652,11 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
   else {
     $code = "";
     $zusatz = strtolower($CMS_URL[2]);
+
+    if (($zusatz != 'aktuell') && ($zusatz != 'alt') && ($zusatz != 'neu')) {
+      return "";
+    }
+
     $zusatzklasse = "";
     $betreff = $k['betreff'.$zusatz];
     $kopie = $k['kopie'.$zusatz] == "2";
@@ -582,18 +666,27 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     if ($CMS_URL[1] == 'Bearbeiten') {
       $code .= cms_element_bearbeiten($k, 'kontaktformulare', $CMS_URL[2]);
     }
-    $sql = "SELECT COUNT(*) FROM kontaktformulareempfaenger WHERE kontaktformular = ".$k["id"];
-    $sql = $dbs->prepare($sql);
-    $sql->bind_result($empfaengeranz);
-    $sql->execute();
-    $sql->fetch();
+
+    $EMPFAENGER = array();
+    $sql = $dbs->prepare("SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?");
+    $sql->bind_param("i", $k['id']);
+    if ($sql->execute()) {
+      $sql->bind_result($eid, $ename, $ebesch, $email);
+      while ($sql->fetch()) {
+        $e = array();
+        $e['id'] = $eid;
+        $e['name'] = $ename;
+        $e['beschreibung'] = $ebesch;
+        $e['mail'] = $email;
+        array_push($EMPFAENGER, $e);
+      }
+    }
     $sql->close();
 
-    $sql = "SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ".$k['id'];
-    $sql = $dbs->query($sql); // TODO: Irgendwie safe machen
-
-    if(!$sql)
+    if (count($EMPFAENGER) == 0) {
       return "<p class=\"cms_notiz\">Für das Formular sind keine Empfänger hinterlegt.</p>";
+    }
+
 
     $aussenklasse = " cms_kontaktformular_aussen_";
 
@@ -611,19 +704,24 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
         $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
           $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
           $code .= "<tr><th>Empfänger: </th><td>";
-          if(!$empfaengeranz) {
-            $code .= "<p class=\"cms_notiz\">Es sind keine Empfänger hinterlegt.<br>Bitte den Administrator kontaktieren.</p>";
-          } else {
-            if($empfaengeranz == 1) {
-              $sqld = $sql->fetch_assoc();
-              $code .= "<input type=\"hidden\" class=\"cms_kontaktformular_empfaenger\" value=\"{$sqld['id']}\">";
-              $code .= "<input class=\"cms_mittel\" disabled value=\"".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."\">";
-            } else {
-              $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
-              while($sqld = $sql->fetch_assoc())
-                $code .= "<option value=\"".$sqld["id"]."\">".$sqld["name"].($sqld["beschreibung"]?" - ".$sqld["beschreibung"]:"")."</option>";
-              $code .= "</select>";
+          if(count($EMPFAENGER) == 1) {
+            $code .= "<input type=\"hidden\" class=\"cms_kontaktformular_empfaenger\" value=\"".$EMPFAENGER[0]['id']."\">";
+            $code .= "<input class=\"cms_mittel\" disabled value=\"".$EMPFAENGER[0]['name'];
+            if (strlen($EMPFAENGER[0]['beschreibung'])) {
+              $code .= " (".$EMPFAENGER[0]['beschreibung'].")";
             }
+            $code .= "\">";
+          }
+          else {
+            $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
+            foreach($EMPFAENGER AS $e) {
+              $code .= "<option value=\"".$e['id']."\">".$e['name'];
+              if (strlen($e['beschreibung'])) {
+                $code .= " (".$e['beschreibung'].")";
+              }
+              $code .= "</option>";
+            }
+            $code .= "</select>";
           }
           $code .= "</td></tr>";
 
@@ -696,13 +794,15 @@ function cms_newsletter_ausgeben($dbs, $k) {
           $zuordnungen = "";
           foreach ($CMS_GRUPPEN as $g) {
             $gk = cms_textzudb($g);
-            $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = $typ) AS x ORDER BY bezeichnung ASC";
-            if ($anfrage2 = $dbs->query($sql)) {
-              while ($z = $anfrage2->fetch_assoc()) {
-                $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> ";
+            $sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = ?) AS x ORDER BY bezeichnung ASC");
+            $sql->bind_param("i", $typ);
+            if ($sql->execute()) {
+              $sql->bind_result($zbez, $zicon);
+              while ($sql->fetch()) {
+                $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$g » $zbez</span><img src=\"res/gruppen/klein/$zicon\"></span> ";
               }
-              $anfrage2->free();
             }
+            $sql->close();
           }
 
           $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
@@ -747,16 +847,18 @@ function cms_zeitabhaengig_aus_schulhof() {
   if (!$fehler) {
     $dbs = cms_verbinden('s');
     // Seite laden
-    $sql = "SELECT * FROM seiten WHERE art = '$seitenart'";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      if ($daten = $anfrage->fetch_assoc()) {
-        $seite = $daten;
+    $seite = array();
+    $sql = $dbs->prepare("SELECT * FROM seiten WHERE art = ?");
+    $sql->bind_param("s", $seitenart);
+    if ($sql->execute()) {
+      $sql->bind_result($seite['id'], $seite['art'], $seite['position'], $seite['zuordnung'], $seite['bezeichnung'], $seite['beschreibung'], $seite['sidebar'], $seite['status'], $seite['styles'], $seite['klassen'], $seite['idvon'], $seite['idzeit']);
+      if ($sql->fetch()) {
         $CMS_SEITENDETAILS = $seite;
       }
       else {$fehler = true;}
-      $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
 
     if (isset($seite)) {
 
@@ -789,15 +891,22 @@ function cms_zeitabhaengig_aus_schulhof() {
             $hoehe = 0;
             $monatbeginn = mktime(0, 0, 0, $i, 1, $jahr);
             $monatende = mktime(0, 0, 0, $i+1, 1, $jahr)-1;
-            if ($CMS_URL[1] == 'Termine') {$sql = $sqlrumpf."((beginn >= $monatbeginn AND beginn <= $monatende) OR (ende >= $monatbeginn AND ende <= $monatende) OR (beginn <= $monatbeginn AND ende >= $monatende))";}
-            else {$sql = $sqlrumpf."(datum BETWEEN $monatbeginn AND $monatende)";}
-            if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-              if ($daten = $anfrage->fetch_assoc()) {
-                $hoehe = 10*$daten['anzahl'];
+            if ($CMS_URL[1] == 'Termine') {
+              $sql = $dbs->prepare($sqlrumpf."((beginn >= ? AND beginn <= ?) OR (ende >= ? AND ende <= ?) OR (beginn <= ? AND ende >= ?))");
+              $sql->bind_param("iiiiii", $monatbeginn, $monatende, $monatbeginn, $monatende, $monatbeginn, $monatende);
+            }
+            else {
+              $sql = $dbs->prepare($sqlrumpf."(datum BETWEEN ? AND ?)");
+              $sql->bind_param("ii", $monatbeginn, $monatende);
+            }
+            if ($sql->execute()) {
+              $sql->bind_result($elementanzahl);
+              if ($sql->fetch()) {
+                $hoehe = 10*$elementanzahl;
                 if ($hoehe > 100) {$hoehe = 100;}
               }
-              $anfrage->free();
             }
+            $sql->close();
             $zusatzklasse = "";
             if ($i == 12) {$zusatzklasse = " cms_letzte";}
             $aktiv = "";
@@ -822,13 +931,33 @@ function cms_zeitabhaengig_aus_schulhof() {
         }
         else {
           $termincode = "";
-          $sql = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND ((beginn >= $mb AND beginn <= $me) OR (ende >= $mb AND ende <= $me) OR (beginn <= $mb AND ende >= $me)) ORDER BY beginn ASC, ende ASC";
-          if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-            include_once('php/schulhof/seiten/termine/termineausgeben.php');
-            while ($daten = $anfrage->fetch_assoc()) {
-              $termincode .= cms_termin_link_ausgeben($dbs, $daten);
+          $TERMINE = array();
+          $sql = $dbs->prepare("SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, oeffentlichkeit, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND ((beginn >= ? AND beginn <= ?) OR (ende >= ? AND ende <= ?) OR (beginn <= ? AND ende >= ?)) ORDER BY beginn ASC, ende ASC");
+          $sql->bind_param("iiiiii", $mb, $me, $mb, $me, $mb, $me);
+          if ($sql->execute()) {
+            $sql->bind_result($tid, $tart, $tgen, $tbez, $tort, $tbeginn, $tende, $tmehr, $tube, $tuen, $tortt, $toeff, $ttext);
+            while ($sql->fetch()) {
+              $t = array();
+              $t['id'] = $tid;
+              $t['art'] = $tart;
+              $t['genehmigt'] = $tgen;
+              $t['bezeichnung'] = $tbez;
+              $t['ort'] = $tort;
+              $t['beginn'] = $tbeginn;
+              $t['ende'] = $tende;
+              $t['mehrtaegigt'] = $tmehr;
+              $t['uhrzeitbt'] = $tube;
+              $t['uhrzeitet'] = $tuen;
+              $t['ortt'] = $tortt;
+              $t['oeffentlichkeit'] = $toeff;
+              $t['text'] = $ttext;
+              array_push($TERMINE, $t);
             }
-            $anfrage->free();
+          }
+          $sql->close();
+
+          foreach ($TERMINE AS $daten) {
+            $termincode .= cms_termin_link_ausgeben($dbs, $daten);
           }
 
           $code .= "<h2>".$CMS_URL[3]." $jahr</h2>";
@@ -848,13 +977,28 @@ function cms_zeitabhaengig_aus_schulhof() {
           $blogcode = "";
           $monat = date('n', $mb);
           $jahr = date('Y', $mb);
-          $sql = "SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND (datum BETWEEN $mb AND $me) ORDER BY datum DESC";
-          if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-            include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
-            while ($daten = $anfrage->fetch_assoc()) {
-              $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
+          $BLOGS = array();
+          $sql = $dbs->prepare("SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND (datum BETWEEN $mb AND $me) ORDER BY datum DESC");
+          if ($sql->execute()) {
+            $sql->bind_result($bid, $bart, $bgen, $bbez, $bdat, $btext, $bvor, $bvorb, $baut);
+            while ($sql->fetch()) {
+              $b = array();
+              $b['id'] = $bid;
+              $b['art'] = $bart;
+              $b['genehmigt'] = $bgen;
+              $b['bezeichnung'] = $bbez;
+              $b['datum'] = $bdat;
+              $b['text'] = $btext;
+              $b['vorschau'] = $bvor;
+              $b['vorschaubild'] = $bvorb;
+              $b['autor'] = $baut;
+              array_push($BLOGS, $b);
             }
-            $anfrage->free();
+          }
+          $sql->close();
+
+          foreach ($BLOGS as $daten) {
+            $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
           }
 
           $code .= "<h2>".$CMS_URL[3]." $jahr</h2>";
@@ -873,13 +1017,27 @@ function cms_zeitabhaengig_aus_schulhof() {
           $galeriecode = "";
           $monat = date('n', $mb);
           $jahr = date('Y', $mb);
-          $sql = "SELECT id, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND (datum BETWEEN $mb AND $me) ORDER BY datum DESC";
-          if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-            include_once('php/schulhof/seiten/galerien/galerienausgeben.php');
-            while ($daten = $anfrage->fetch_assoc()) {
-              $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, 'artikel');
+          $GALERIEN = array();
+          $sql = $dbs->prepare("SELECT id, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND (datum BETWEEN ? AND ?) ORDER BY datum DESC");
+          $sql->bind_param("ii", $mb, $me);
+          if ($sql->execute()) {
+            $sql->bind_result($gid, $ggen, $gbez, $gdat, $gbes, $gvor, $gaut);
+            while ($sql->fetch()) {
+              $g = array();
+              $g['id'] = $gid;
+              $g['genehmigt'] = $ggen;
+              $g['bezeichnung'] = $gbez;
+              $g['datum'] = $gdat;
+              $g['beschreibung'] = $gbes;
+              $g['vorschaubild'] = $gvor;
+              $g['autor'] = $gaut;
+              array_push($GALERIEN, $g);
             }
-            $anfrage->free();
+          }
+          $sql->close();
+
+          foreach ($GALERIEN AS $daten) {
+            $galeriecode .= cms_galerie_link_ausgeben($dbs, $daten, 'artikel');
           }
 
           $code .= "<h2>".$CMS_URL[3]." $jahr</h2>";

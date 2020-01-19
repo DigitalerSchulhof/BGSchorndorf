@@ -219,7 +219,6 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			// $code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\"></div>";
 
 			// Bilder Ende
-			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
 			$CMS_GALERIEID = $galerie["id"];
 
 			$code .= "</div></div>";

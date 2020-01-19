@@ -177,11 +177,6 @@ function cms_personaldaten_ausgeben($id) {
 				}
 			}
 			else {
-
-				/*$umarmungen_c = count($umarmungen);
-
-				echo "<br><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Umarmungen\">$umarmungen_c Umarmung".($umarmungen_c != 1?"en":"").($umarmungen_c > 0?" ( ＾◡＾)っ ♡":"")."</a>";*/
-
 				echo "<h3>Daten ändern</h3>";
 				echo "<ul class=\"cms_aktionen_liste\">";
 					echo "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil/Nutzerkonto_bearbeiten\">Benutzerkonto bearbeiten</a></li> ";

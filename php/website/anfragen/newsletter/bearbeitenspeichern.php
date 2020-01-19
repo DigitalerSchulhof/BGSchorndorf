@@ -35,22 +35,15 @@ if (cms_angemeldet() && $zugriff) {
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
 
 		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
-		 	$sql = "UPDATE wnewsletter SET position = $position, bezeichnungneu = ?, beschreibungneu = ?, typneu = ? ";
-			$sql .= "WHERE id = $id";
-			$sql = $dbs->prepare($sql);
+			$sql = $dbs->prepare("UPDATE wnewsletter SET position = $position, bezeichnungneu = ?, beschreibungneu = ?, typneu = ? WHERE id = ?");
 
-			$sql->bind_param("sii", $bezeichnung, $beschreibung, $typ);
+			$sql->bind_param("siii", $bezeichnung, $beschreibung, $typ, $id);
 			$sql->execute();
 			$sql->close();
 		}
 		else {
-			$sql = "UPDATE wnewsletter SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
-			$sql .= cms_sql_aan(array("bezeichnung", "beschreibung", "typ"));
-			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = $id";
-			$sql = $dbs->prepare($sql);
-
-			$sql->bind_param("ssssssiii", $bezeichnung, $bezeichnung, $bezeichnung, $beschreibung, $beschreibung, $beschreibung, $typ, $typ, $typ);
+			$sql = $dbs->prepare("UPDATE wnewsletter SET spalte = ?, position = , aktiv = '', bezeichnungalt = ?, bezeichnungaktuell = ?, bezeichnungneu = ?, beschreibungalt = ?, beschreibungaktuell = ?, beschreibungneu = ?, typalt = ?, typaktuell = ?, typneu = ? WHERE id = ?");
+			$sql->bind_param("iisssssssiiii", $spalte, $position, $aktiv, $bezeichnung, $bezeichnung, $bezeichnung, $beschreibung, $beschreibung, $beschreibung, $typ, $typ, $typ, $id);
 			$sql->execute();
 			$sql->close();
 		}
