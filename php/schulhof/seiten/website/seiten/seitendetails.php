@@ -14,6 +14,8 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 	$styles = "";
 	$klassen = "";
 
+	$fehler = false;
+
 	if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$status = "a";}
 
 	if ($id != "-") {
@@ -26,17 +28,19 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 		$sql->close();
 	}
 
-	if (cms_check_ganzzahl($zuordnung)) {$sqlzuordnung = "zuordnung = $zuordnung";}
-	else if (is_null($zuordnung) || ($zuordnung == '-')) {$sqlzuordnung = "zuordnung IS NULL";}
-	else {$zuordnung = "";}
-
-	$sql = "SELECT MAX(position) AS max FROM seiten WHERE $sqlzuordnung";
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		if ($daten = $anfrage->fetch_assoc()) {
-			$maxpos = $daten['max'];
-		}
-		$anfrage->free();
+	if (cms_check_ganzzahl($zuordnung)) {
+		$sql = $dbs->prepare("SELECT MAX(position) AS max FROM seiten WHERE zuordnung = ?");
+		$sql->bind_param("i", $zuordnung);
 	}
+	else {
+		$sql = $dbs->prepare("SELECT MAX(position) AS max FROM seiten WHERE zuordnung IS NULL");
+	}
+
+	if ($sql->execute()) {
+		$sql->bind_result($maxpos);
+		$sql->fetch();
+	}
+	$sql->close();
 
 	if ($id == '-') {
 		$maxpos = $maxpos + 1;

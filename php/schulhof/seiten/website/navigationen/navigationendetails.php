@@ -41,18 +41,22 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 	$fehler = false;
 	// Informationen über die Navigatio laden
 	if (($ident == 'h') || ($ident == 's') || ($ident == 'f')) {
-		$sql = "SELECT * FROM navigationen WHERE art = '$ident'";
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE art = ?");
+		$sql->bind_param("s", $ident);
 		$hauptnavigation = true;
 	}
 	else {
-		$sql = "SELECT * FROM navigationen WHERE id = $ident";
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE id = ?");
+		$sql->bind_param("i", $ident);
 	}
 
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		if (!($navigation = $anfrage->fetch_assoc())) {$fehler = true;}
-		$anfrage->free();
+	$navigation = array();
+	if ($sql->execute()) {
+		$sql->bind_result($navigation['id'], $navigation['art'], $navigation['ebene'], $navigation['ebenenzusatz'], $navigation['tiefe'], $navigation['spalte'], $navigation['position'], $navigation['anzeige'], $navigation['styles'], $navigation['klassen'], $navigation['idvon'], $navigation['idzeit']);
+		if (!$sql->fetch()) {$fehler = true;}
 	}
 	else {$fehler = true;}
+	$sql->close();
 
 	// Information über die Navigation ausgeben
 	if (!$fehler) {
@@ -102,13 +106,13 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 
 			$swahl = "<i>Keine gewählt</i>";
 			if ($ebenenzusatzs != '-') {
-				$sql = "SELECT * FROM seiten WHERE id = $ebenenzusatzs";
-				if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
-					if ($daten = $anfrage->fetch_assoc()) {
-						$swahl = $daten['bezeichnung'];
-					}
-					$anfrage->free();
+				$sql = $dbs->prepare("SELECT bezeichnung FROM seiten WHERE id = ?");
+				$sql->bind_param("i", $ebenenzusatzs);
+				if ($sql->execute()) {
+					$sql->bind_result($swahl);
+					$sql->fetch();
 				}
+				$sql->close();
 			}
 
 			$code .= "<tr id=\"$id"."_ebenenzusatz_sF\"$sstyle>";
