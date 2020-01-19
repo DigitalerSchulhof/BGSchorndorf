@@ -420,7 +420,7 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   else if ($anzahlauftraege > 0) {
     $anzahl = " <span class=\"cms_meldezahl\">$anzahlauftraege</span>";
   }
-  return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a>";
+  return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a> ";
 }
 
 function cms_auffaelliges_knopf($dbs) {
@@ -481,7 +481,7 @@ function cms_sonderrollen_generieren() {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
   }
   if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
-    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li>";
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li> ";
   }
 	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";

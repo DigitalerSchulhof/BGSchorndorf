@@ -134,24 +134,19 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 						$code['pc'] .= "<li><span class=\"cms_button_ja\" onclick=\"cms_timeout_verlaengern()\">Verlängern</span></li> ";
 						$code['pc'] .= "<li><span class=\"cms_button_nein\" onclick=\"cms_abmelden_frage();\">Abmelden</span></li>";
 					$code['pc'] .= "</ul>";
-				$code['pc'] .= "</div>";
-			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_4\">";
-				$code['pc'] .= "<div class=\"cms_spalte_i\">";
-					$code['pc'] .= "<h3>Übersicht</h3>";
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
-						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></li> ";
-						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
+						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
-						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";
 					$code['pc'] .= "</ul>";
 				$code['pc'] .= "</div>";
 			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_4\">";
+			$code['pc'] .= "<div class=\"cms_spalte_2\">";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= "<h3>Gruppen</h3>";
 					$code['pc'] .= "<ul>";

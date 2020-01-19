@@ -117,45 +117,145 @@ else {
 </div>
 
 
-<div class="cms_spalte_4">
+<div class="cms_spalte_2">
 <div class="cms_spalte_i">
-<h2>Anstehende Termine</h2>
-<?php
-$termine = "";
-include_once('php/schulhof/seiten/termine/termineausgeben.php');
-$termine = cms_nachste_termine_ausgeben($_SESSION['BENUTZERUEBERSICHTANZAHL']);
-if (strlen($termine) == 0) {
-	echo "<p class=\"cms_notiz\">Aktuell keine Termine</p>";
-}
-else {
-	echo "<ul class=\"cms_terminuebersicht\">".$termine."</ul>";
-}
-?>
+<h2>Aktuelles</h2>
+
+<ul class="cms_reitermenue">
+	<li><span id="cms_reiter_aktuelles_0" class="cms_reiter_aktiv" onclick="cms_reiter('aktuelles', 0,4)">Termine</span></li>
+	<li><span id="cms_reiter_aktuelles_1" class="cms_reiter" onclick="cms_reiter('aktuelles', 1,4)">Blogs</span></li>
+	<li><span id="cms_reiter_aktuelles_2" class="cms_reiter" onclick="cms_reiter('aktuelles', 2,4)">Gruppen</span></li>
+	<li><span id="cms_reiter_aktuelles_3" class="cms_reiter" onclick="cms_reiter('aktuelles', 3,4)">Aufgaben</span></li>
+	<li><span id="cms_reiter_aktuelles_4" class="cms_reiter" onclick="cms_reiter('aktuelles', 4,4)">Notizen</span></li>
+</ul>
+
+<div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_0" style="display: block;">
+	<div class="cms_reitermenue_i">
+		<?php
+		$termine = "";
+		include_once('php/schulhof/seiten/termine/termineausgeben.php');
+		$termine = cms_nachste_termine_ausgeben($_SESSION['BENUTZERUEBERSICHTANZAHL']);
+		if (strlen($termine) == 0) {
+			echo "<p class=\"cms_notiz\">Aktuell keine Termine</p>";
+		}
+		else {
+			echo "<ul class=\"cms_terminuebersicht\">".$termine."</ul>";
+		}
+		echo "<p><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></p>";
+		?>
+	</div>
+</div>
+
+
+<div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_1">
+	<div class="cms_reitermenue_i">
+		<?php
+		$blogeintraege = "";
+		include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
+		$blogeintraege = cms_letzte_blogeintraege_ausgeben($_SESSION['BENUTZERUEBERSICHTANZAHL'], $dbs, 'liste', $CMS_URLGANZ);
+		if (strlen($blogeintraege) == 0) {
+			echo "<p class=\"cms_notiz\">Aktuell keine Blogeinträge</p>";
+		}
+		else {
+			echo "<ul class=\"cms_bloguebersicht_liste\">".$blogeintraege."</ul>";
+		}
+		echo "<p><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></p>";
+		?>
+	</div>
+</div>
+
+<div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_2">
+	<div class="cms_reitermenue_i">
+		<?php
+		$code = "";
+		include_once('php/schulhof/seiten/gruppen/mitgliedschaftenausgeben.php');
+		foreach ($CMS_GRUPPEN as $g) {
+			$gruppencode = cms_gruppen_mitgliedschaften_anzeigen($dbs, $g, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR);
+			if (strlen($gruppencode) > 0) {$code .= "<h3>$g</h3>".str_replace('<ul>', '<ul class="cms_aktionen_liste">', $gruppencode);}
+		}
+		echo $code;
+		?>
+	</div>
+</div>
+
+<div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_3">
+	<div class="cms_reitermenue_i">
+		<?php
+		$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
+		if (strlen($sonderrollencodeverwaltung) != 0) {
+			$sonderrollencode = "";
+			$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";
+			echo $sonderrollencode;
+		}
+		?>
+	</div>
+</div>
+
+<div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_4">
+	<div class="cms_reitermenue_i">
+		<?php
+		if ($CMS_RECHTE['Persönlich']['Notizen anlegen']) {
+			$code = "";
+			$notizen = "";
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");
+			if ($sql->execute()) {
+				$sql->bind_result($notizen);
+				$sql->fetch();
+			}
+			$sql->close();
+
+			if (strlen($notizen) == 0) {$zusatzklasse = " cms_notizzettelleer";} else {$zusatzklasse = "";}
+			$code .= "<p><textarea id=\"cms_persoenlichenotizen\" class=\"cms_notizzettel$zusatzklasse\">$notizen</textarea></p>";
+			$code .= "<p><span class=\"cms_button\" onclick=\"cms_persoenliche_notizen_speichern()\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto\">Abbrechen</a></p>";
+			echo $code;
+		}
+		?>
+	</div>
+</div>
 
 </div>
 </div>
 
 
-
 <div class="cms_spalte_4">
 <div class="cms_spalte_i">
 
+
+<h2>Mein Konto</h2>
 <?php
-$code = "<h2>Mitgliedschaften</h2>";
-include_once('php/schulhof/seiten/gruppen/mitgliedschaftenausgeben.php');
-foreach ($CMS_GRUPPEN as $g) {
-	$gruppencode = cms_gruppen_mitgliedschaften_anzeigen($dbs, $g, $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR);
-	if (strlen($gruppencode) > 0) {$code .= "<h3>$g</h3>".str_replace('<ul>', '<ul class="cms_aktionen_liste">', $gruppencode);}
+$sql = "SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;";
+$anzahl['-'] = 0;
+$anzahl[1] = 0;
+$dbp = cms_verbinden('p');
+$sql = $dbp->prepare($sql);
+if ($sql->execute()) {
+	$sql->bind_result($gelesen, $anzgelesen);
+	while ($sql->fetch()) {$anzahl[$gelesen] = $anzgelesen;}
 }
+$sql->close();
+cms_trennen($dbp);
+$gesamt = $anzahl['-'] + $anzahl[1];
+$meldezahl = "";
+if ($anzahl['-'] > 0) {
+	$meldezahl = "<span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>".$anzahl['-']."</b> / $gesamt</span>";
+}
+else if ($gesamt > 0) {
+	$meldezahl = "<span class=\"cms_meldezahl\">$gesamt</span>";
+}
+$code = "<ul class=\"cms_aktionen_liste\">";
+	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
+	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
+	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
+	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";
+$code .= "</ul>";
 echo $code;
 ?>
-
-</div>
-</div>
-
-
-<div class="cms_spalte_4">
-<div class="cms_spalte_i">
+<div id="cms_aktivitaet_out_profil"><div id="cms_aktivitaet_in_profil"></div></div>
+<p class="cms_notiz" id="cms_aktivitaet_text_profil">Berechnung läuft ...</p>
+<ul class="cms_aktionen_liste">
+	<li><span class="cms_button_ja" onclick="cms_timeout_verlaengern()">Verlängern</span></li>
+	<li><span class="cms_button_nein" onclick="cms_abmelden_frage();">Abmelden</span></li>
+</ul>
 
 <?php
 $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY id";
@@ -169,15 +269,6 @@ while($sql->fetch()) {
 }
 if (strlen($fav) > 0) {echo "<h2>Favoriten</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
 
-?>
-
-<div id="cms_aktivitaet_out_profil"><div id="cms_aktivitaet_in_profil"></div></div>
-<p class="cms_notiz" id="cms_aktivitaet_text_profil">Berechnung läuft ...</p>
-<ul class="cms_aktionen_liste">
-	<li><span class="cms_button_ja" onclick="cms_timeout_verlaengern()">Verlängern</span></li>
-	<li><span class="cms_button_nein" onclick="cms_abmelden_frage();">Abmelden</span></li>
-</ul>
-<?php
 $aktionen = "";
 if ($CMS_RECHTE['Website']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
@@ -193,29 +284,6 @@ if ($CMS_RECHTE['Website']['Galerien anlegen']) {
 }*/
 if (strlen($aktionen) > 0) {
 	echo "<h2>Aktionen</h2><ul class=\"cms_aktionen_liste\">$aktionen</ul>";
-}
-
-$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
-if (strlen($sonderrollencodeverwaltung) != 0) {
-	$sonderrollencode = "<h2>Aufgaben</h2>";
-	$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";
-	echo $sonderrollencode;
-}
-
-if ($CMS_RECHTE['Persönlich']['Notizen anlegen']) {
-	$code = "<h2>Notizen</h2>";
-	$notizen = "";
-	$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");
-	if ($sql->execute()) {
-		$sql->bind_result($notizen);
-		$sql->fetch();
-	}
-	$sql->close();
-
-	if (strlen($notizen) == 0) {$zusatzklasse = " cms_notizzettelleer";} else {$zusatzklasse = "";}
-	$code .= "<p><textarea id=\"cms_persoenlichenotizen\" class=\"cms_notizzettel$zusatzklasse\">$notizen</textarea></p>";
-	$code .= "<p><span class=\"cms_button\" onclick=\"cms_persoenliche_notizen_speichern()\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto\">Abbrechen</a></p>";
-	echo $code;
 }
 ?>
 

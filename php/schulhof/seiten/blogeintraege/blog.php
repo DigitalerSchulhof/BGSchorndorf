@@ -54,7 +54,8 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 
 		if ($CMS_BENUTZERART == 'l') {$oelimit = 1;}
 		else if ($CMS_BENUTZERART == 'v') {$oelimit = 2;}
-		else {$oelimit = 3;}
+		else if (($CMS_BENUTZERART == 's') || ($CMS_BENUTZERART == 'e')) {$oelimit = 3;}
+		else {$oelimit = 4;}
 
 		$sqloe = "(SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art, '' AS schuljahr, '' AS sjbez, '' AS gbez, '' AS gart FROM blogeintraege WHERE (id IN ($sqlm) OR oeffentlichkeit >= $oelimit) AND (datum BETWEEN $beginn AND $ende) AND aktiv = 1)";
 
@@ -65,7 +66,7 @@ function cms_blogeintraege_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jah
 		}
 
 		$BLOGS = array();
-		$sql = $dbs->prepare("SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC");
+		$sql = $dbs->prepare("SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum ASC, bezeichnung ASC");
 		// Blogausgabe erzeugen
 		if ($sql->execute()) {
 			$sql->bind_result($bid, $bbez, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart, $bschuljahr, $bsjbez, $bgbez, $bgart);

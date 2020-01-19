@@ -396,7 +396,26 @@ ALTER TABLE `auffaelliges` CHANGE `id` `id` BIGINT(11) UNSIGNED NOT NULL, CHANGE
 ALTER TABLE `auffaelliges` CHANGE `ursacher` `ursacher` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 
 DROP TABLE emoticons;
-DROP TABLE umarmungen
+DROP TABLE umarmungen;
+
+CREATE TABLE `gfs` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `kurs` bigint(255) UNSIGNED DEFAULT NULL,
+  `status` tinyint(1) UNSIGNED DEFAULT NULL,
+  `gehalten` bigint(255) UNSIGNED NOT NULL,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `gfs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `gfspersonpersonen` (`person`),
+  ADD KEY `gfskurskurse` (`kurs`);
+
+ALTER TABLE `gfs`
+  ADD CONSTRAINT `gfskurskurse` FOREIGN KEY (`kurs`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gfspersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 -- LEHRERDATENBANK
@@ -418,3 +437,50 @@ ALTER TABLE `ausplanungklassen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL A
 ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
+
+CREATE TABLE `fehlzeiten` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `eintrag` bigint(255) UNSIGNED DEFAULT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `von` bigint(255) UNSIGNED DEFAULT NULL,
+  `bis` bigint(255) UNSIGNED DEFAULT NULL,
+  `bemerkung` blob DEFAULT NULL,
+  `entschuldigt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `lobtadel` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `eintrag` bigint(255) UNSIGNED DEFAULT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `art` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `charakter` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bemerkung` blob DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `tagebuch` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `inhalt` longblob DEFAULT NULL,
+  `hausaufgabe` longblob DEFAULT NULL,
+  `freigabe` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `fehlzeiten`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fehlzeiteneintragtagebuch` (`eintrag`);
+
+ALTER TABLE `lobtadel`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lobtadeleintragtagebuch` (`eintrag`);
+
+ALTER TABLE `tagebuch`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `fehlzeiten`
+  ADD CONSTRAINT `fehlzeiteneintragtagebuch` FOREIGN KEY (`eintrag`) REFERENCES `tagebuch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `lobtadel`
+  ADD CONSTRAINT `lobtadeleintragtagebuch` FOREIGN KEY (`eintrag`) REFERENCES `tagebuch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
