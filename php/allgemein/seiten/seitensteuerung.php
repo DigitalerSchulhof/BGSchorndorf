@@ -86,7 +86,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Neuen_Tag_anlegen']         = 'php/schulhof/seiten/nutzerkonto/postfach/neuertag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                              = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                               = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Neuigkeiten']                             = 'php/schulhof/seiten/nutzerkonto/neuigkeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Tagebuch']                                = 'php/schulhof/seiten/nutzerkonto/tagebuch.php';
 
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';

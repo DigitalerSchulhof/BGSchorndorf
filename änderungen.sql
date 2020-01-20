@@ -417,6 +417,7 @@ ALTER TABLE `gfs`
   ADD CONSTRAINT `gfskurskurse` FOREIGN KEY (`kurs`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `gfspersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `notifikationen` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 
 -- LEHRERDATENBANK
 
@@ -446,8 +447,8 @@ CREATE TABLE `fehlzeiten` (
   `bis` bigint(255) UNSIGNED DEFAULT NULL,
   `bemerkung` blob DEFAULT NULL,
   `entschuldigt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `idvon` bigint(255) UNSIGNED NOT NULL,
-  `idzeit` bigint(255) UNSIGNED NOT NULL
+  `idvon` bigint(255) UNSIGNED NULL,
+  `idzeit` bigint(255) UNSIGNED NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `lobtadel` (
@@ -457,8 +458,8 @@ CREATE TABLE `lobtadel` (
   `art` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `charakter` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `bemerkung` blob DEFAULT NULL,
-  `idvon` bigint(255) UNSIGNED NOT NULL,
-  `idzeit` bigint(255) UNSIGNED NOT NULL
+  `idvon` bigint(255) UNSIGNED NULL,
+  `idzeit` bigint(255) UNSIGNED NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `tagebuch` (

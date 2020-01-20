@@ -13,13 +13,23 @@
   padding: 10px;
   list-style-type: none;
   margin: 0px;
-  background: @info_background;
+  background: @schattierthell_background;
   display: inline-block;
   transition: 250ms ease-in-out;
   position: relative;
 }
 
-.cms_postneuigkeit:hover {
+.cms_neuigkeit_ln {
+  background: @standardhell_background !important;
+  padding: 8px !important;
+  border: 2px dashed @schattierthell_background;
+}
+
+.cms_neuigkeit_ln h4, .cms_neuigkeit_ln p {
+  color: @schattiertdunkel_background;
+}
+
+.cms_neuigkeit_ganz:hover {
   cursor: pointer;
 }
 
@@ -28,7 +38,7 @@
 }
 
 .cms_neuigkeit:hover {
-  background: @schattierthell_background;
+  background: @info_background;
 }
 
 .cms_neuigkeit_icon {

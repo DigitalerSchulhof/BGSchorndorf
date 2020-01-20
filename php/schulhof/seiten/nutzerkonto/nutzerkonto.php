@@ -6,7 +6,6 @@
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
-include_once('php/schulhof/seiten/notifikationen/notifikationen.php');
 
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
 $dbs = cms_verbinden('s');
@@ -48,44 +47,250 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 
 
 $neuigkeiten = "";
+// Prüfen, ob Tagebücher zu füllen sind
+$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM (SELECT DISTINCT kurse.id FROM kurse JOIN stufen ON kurse.stufe = stufen.id JOIN unterricht ON unterricht.tkurs = kurse.id WHERE kurse.schuljahr = ? AND stufen.tagebuch = 1 AND tlehrer = ?) AS x");
+$sql->bind_param("ii", $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID);
+$tbkurs = 0;
+if ($sql->execute()) {
+	$sql->bind_result($tbkurs);
+	$sql->fetch();
+}
+$sql->close();
+if ($tbkurs > 0) {
+	$zusatzklasse = "";
+	$zusatzlink = "";
+	if ($CMS_IMLN) {
+		$zusatzlink = " onclick=\"cms_link('Schulhof/Nutzerkonto/Tagebuch')\"";
+	}
+	else {
+		$zusatzklasse = " cms_neuigkeit_ln";
+	}
+	$neuigkeiten .= "<li class=\"cms_neuigkeit cms_neuigkeit_ganz$zusatzklasse\" id=\"cms_tagebuchneuigkeit\"$zusatzlink><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/tagebuch.png\"></span>";
+	$neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\" id=\"cms_tagebuchneuigkeit_inhalt\"><h4>Tagebucheinträge</h4>";
+	if ($CMS_IMLN) {
+		$neuigkeiten .= "<p>Offene Einträge suchen ...</p>";
+		$neuigkeiten .= cms_ladeicon();
+	}
+	else {$neuigkeiten .= "<p>Prüfung in diesem Netz nicht möglich.</p>";}
+	$neuigkeiten .= "</span></li>";
+	if ($CMS_IMLN) {
+		$neuigkeiten .= "<script></script>";
+	}
+}
 
-// Ungelesene Nachrichten auslesen
+// Prüfen, ob neue Nachrichten vorhanden sind
 $db = cms_verbinden('ü');
-$sql = "$CMS_DBP_DB.posteingang_$CMS_BENUTZERID.id AS id, AES_DECRYPT(betreff, '$CMS_SCHLUESSEL') AS betreff, AES_DECRYPT(nachricht, '$CMS_SCHLUESSEL') AS nachricht, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, zeit, erstellt";
-$sql = $dbs->prepare("SELECT $sql FROM $CMS_DBP_DB.posteingang_$CMS_BENUTZERID JOIN $CMS_DBS_DB.personen ON absender = $CMS_DBS_DB.personen.id LEFT JOIN $CMS_DBS_DB.nutzerkonten ON $CMS_DBS_DB.personen.id = $CMS_DBS_DB.nutzerkonten.id WHERE gelesen = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND empfaenger = ?");
+$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $CMS_DBP_DB.posteingang_$CMS_BENUTZERID WHERE gelesen = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL') AND empfaenger = ?");
 $sql->bind_param("i", $CMS_BENUTZERID);
 if ($sql->execute()) {
-	$sql->bind_result($nid, $nbetreff, $nnachricht, $nvor, $nnach, $ntitel, $nzeit, $nerstellt);
-	while ($sql->fetch()) {
-		if ($nzeit > $nerstellt) {$anzeigename = cms_generiere_anzeigename($nvor, $nnach, $ntitel);}
-		else {$anzeigename = "Nutzerkonto existiert nicht mehr";}
-		$nachricht = explode(' ', $nnachricht);
-		if (count($nachricht) > 20) {$nachricht = array_splice($nachricht,0,20);}
-		$nachricht = strip_tags(implode(' ', $nachricht));
-		$betreffevent = cms_texttrafo_e_event($nbetreff);
-		$tag = cms_tagname(date ("w", $nzeit));
-		$datum = date ("d.m.Y", $nzeit);
-		$uhrzeit = date ("H:i", $nzeit);
-		$lesen = "cms_postfach_nachricht_lesen('eingang', '".$anzeigename."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '$nid')";
-		$neuigkeiten .= "<li class=\"cms_neuigkeit cms_postneuigkeit\" onclick=\"$lesen\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/nachricht.png\"></span>";
-		$neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Postfach<br>Neue Nachricht</h4>";
-		$neuigkeiten .= "<p>$nbetreff</p><p class=\"cms_neuigkeit_vorschau\">$tag $datum um $uhrzeit von $anzeigename</p>";
-		$neuigkeiten .= "<p class=\"cms_neuigkeit_vorschau\">".$nachricht."</p>";
-		$neuigkeiten .= "</span></li>";
+	$sql->bind_result($ungelesen);
+	if ($sql->fetch()) {
+		if ($ungelesen > 0) {
+			$neuigkeiten .= "<li class=\"cms_neuigkeit cms_neuigkeit_ganz\" onclick=\"cms_link('Schulhof/Nutzerkonto/Postfach')\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/nachricht.png\"></span>";
+			$neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Neue Nachrichten</h4>";
+			if ($ungelesen == 1) {$neuigkeiten .= "<p><b>1</b> neue Nachricht</p>";}
+			else {$neuigkeiten .= "<p><b>$ungelesen</b> neue Nachrichten</p>";}
+			$neuigkeiten .= "</span></li>";
+		}
 	}
 }
 $sql->close();
-if (strlen($neuigkeiten) > 0) {$neuigkeiten = "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 cms_trennen($db);
 
 // Notifikationen ausgeben
-$notifikationen = cms_notifikationen_ausgeben($dbs, $CMS_BENUTZERID);
-if (strlen($notifikationen) > 0) {
-	$notifikationen = "<ul class=\"cms_neuigkeiten\">$notifikationen</ul>";
-	$notifikationen .= "<p><span class=\"cms_button_nein\" onclick=\"cms_notifikationen_loeschen()\">Alle Neuigkeiten schließen</span></p>";
+$notifikationen = "<li class=\"cms_neuigkeit cms_neuigkeit_ganz\" onclick=\"cms_link('Schulhof/Nutzerkonto/Neuigkeiten')\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/neuigkeit.png\"></span>";
+$notifikationen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Neue Inhalte</h4>";
+$notifikationenda = false;
+$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, art FROM notifikationen WHERE person = ? GROUP BY art");
+$sql->bind_param("i", $CMS_BENUTZERID);
+if ($sql->execute()) {
+	$sql->bind_result($not, $art);
+	while ($sql->fetch()) {
+		if ($not > 0) {
+			$notifikationenda = true;
+			if ($not == 1) {
+				if ($art == 'b') {$notifikationen .= "<p><b>$not</b> Blogeintrag</p>";}
+				if ($art == 't') {$notifikationen .= "<p><b>$not</b> Termin</p>";}
+				if ($art == 'g') {$notifikationen .= "<p><b>$not</b> Galerie</p>";}
+				if ($art == 'a') {$notifikationen .= "<p><b>$not</b> Hausmeisterauftrag</p>";}
+			}
+			else {
+				if ($art == 'b') {$notifikationen .= "<p><b>$not</b> Blogeinträge</p>";}
+				if ($art == 't') {$notifikationen .= "<p><b>$not</b> Termine</p>";}
+				if ($art == 'g') {$notifikationen .= "<p><b>$not</b> Galerien</p>";}
+				if ($art == 'a') {$notifikationen .= "<p><b>$not</b> Hausmeisteraufträge</p>";}
+			}
+		}
+	}
 }
-$neuigkeiten .= $notifikationen;
-if (strlen($neuigkeiten) > 0) {echo "<h2>Neuigkeiten</h2>$neuigkeiten";}
+$sql->close();
+$notifikationen .= "</span></li>";
+if ($notifikationenda) {$neuigkeiten .= $notifikationen;}
+
+// Aufgaben ausgeben
+$aufgaben = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/aufgaben.png\"></span>";
+$aufgaben .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Aufgaben</h4>";
+$aufgabenda = false;
+$sql = "";
+if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+	$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahldefekt);
+    $sql->fetch();
+  }
+	$sql->close();
+
+	$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x");
+	if ($sql->execute()) {
+		$sql->bind_result($auf);
+		if ($sql->fetch()) {
+			if ($auf > 0) {
+				$aufgabenda = true;
+				if ($anzahldefekt == 1) {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Geräte_verwalten\"><b>$auf</b>/$anzahldefekt Gerätemeldung</a></p>";}
+				else {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Geräte_verwalten\"><b>$auf</b>/$anzahldefekt Gerätemeldungen</a></p>";}
+			}
+		}
+	}
+	$sql->close();
+}
+if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl");
+  if ($sql->execute()) {
+		$sql->bind_result($auf);
+		if ($sql->fetch()) {
+			if ($auf > 0) {
+				$aufgabenda = true;
+				if ($auf == 1) {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\"><b>$auf</b> Identitätsdiebstahl</a></p>";}
+				else {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\"><b>$auf</b> Identitätsdiebstähle</a></p>";}
+			}
+		}
+  }
+  $sql->close();
+}
+if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'");
+  if ($sql->execute()) {
+		$sql->bind_result($auf);
+		if ($sql->fetch()) {
+			if ($auf > 0) {
+				$aufgabenda = true;
+				if ($auf == 1) {$aufgaben .= "<p><a href=\"Schulhof/Hausmeister/Aufträge\"><b>$auf</b> Hausmeisterauftrag</a></p>";}
+				else {$aufgaben .= "<p><a href=\"Schulhof/Hausmeister/Aufträge\"><b>$auf</b> Hausmeisteraufträge</a></p>";}
+			}
+		}
+  }
+  $sql->close();
+}
+if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status = 0");
+  if ($sql->execute()) {
+		$sql->bind_result($auf);
+		if ($sql->fetch()) {
+			if ($auf > 0) {
+				$aufgabenda = true;
+				if ($auf == 1) {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Auffälliges\"><b>$auf</b> Auffälligkeit</a></p>";}
+				else {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Auffälliges\"><b>$auf</b> Auffälligkeiten</a></p>";}
+			}
+		}
+  }
+  $sql->close();
+}
+if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] && $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']) {
+	$sql = "";
+  foreach($CMS_GRUPPEN as $i => $g) {
+    $gk = cms_textzudb($g);
+    $sql .= " SELECT COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
+  }
+  $sql = substr($sql, 0, -5);
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+  if ($sql->execute()) {
+		$sql->bind_result($auf);
+		if ($sql->fetch()) {
+			if ($auf > 0) {
+				$aufgabenda = true;
+				if ($auf == 1) {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Chatmeldungen\"><b>$auf</b> Chatmeldungen</a></p>";}
+				else {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Chatmeldungen\"><b>$auf</b> Chatmeldungen</a></p>";}
+			}
+		}
+  }
+  $sql->close();
+}
+$aufgaben .= "</span></li>";
+if ($aufgabenda) {$neuigkeiten .= $aufgaben;}
+
+
+
+// Genehmigungen ausgeben
+$genehmigungen = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/genehmigungen.png\"></span>";
+$genehmigungen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Genehmigungen</h4>";
+$genehmigungenda = false;
+$sql = "";
+if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+	foreach ($CMS_GRUPPEN as $g) {
+		$gk = cms_textzudb($g);
+		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
+	}
+}
+if (strlen($sql) > 0) {
+	$sql = substr($sql, 7);
+	$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+	if ($sql->execute()) {
+		$sql->bind_result($gen);
+		if ($sql->fetch()) {
+			if ($gen > 0) {
+				$genehmigungenda = true;
+				if ($gen == 1) {$genehmigungen .= "<p><a href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\"><b>$gen</b> Blogeintrag</a></p>";}
+				else {$genehmigungen .= "<p><a href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\"><b>$gen</b> Blogeinträge</a></p>";}
+			}
+		}
+	}
+	$sql->close();
+}
+
+$sql = "";
+if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+	foreach ($CMS_GRUPPEN as $g) {
+		$gk = cms_textzudb($g);
+		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
+	}
+}
+if (strlen($sql) > 0) {
+	$sql = substr($sql, 7);
+	$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+	if ($sql->execute()) {
+		$sql->bind_result($gen);
+		if ($sql->fetch()) {
+			if ($gen > 0) {
+				$genehmigungenda = true;
+				if ($gen == 1) {$genehmigungen .= "<p><a href=\"Schulhof/Aufgaben/Termine_genehmigen\"><b>$gen</b> Termin</a></p>";}
+				else {$genehmigungen .= "<p><a href=\"Schulhof/Aufgaben/Termine_genehmigen\"><b>$gen</b> Termine</a></p>";}
+			}
+		}
+	}
+	$sql->close();
+}
+
+$sql = "";
+if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0");
+  if ($sql->execute()) {
+    $sql->bind_result($gen);
+    if ($sql->fetch()) {
+			if ($gen > 0) {
+				$genehmigungenda = true;
+				if ($gen == 1) {$genehmigungen .= "<p><a href=\"Schulhof/Aufgaben/Galerien_genehmigen\"><b>$gen</b> Galerie</a></p>";}
+				else {$genehmigungen .= "<p><a href=\"Schulhof/Aufgaben/Galerien_genehmigen\"><b>$gen</b> Galerien</a></p>";}
+			}
+    }
+  }
+  $sql->close();
+}
+$genehmigungen .= "</span></li>";
+if ($genehmigungenda) {$neuigkeiten .= $genehmigungen;}
+
+if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 ?>
 </div>
 

@@ -450,16 +450,13 @@ function cms_chatmeldungen_knopf($dbs) {
   $sql = "";
   foreach($CMS_GRUPPEN as $i => $g) {
     $gk = cms_textzudb($g);
-    $sql .= " SELECT '$g' as gruppe, COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
+    $sql .= " SELECT COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
   }
   $sql = substr($sql, 0, -5);
-  $anzahl = 0;
-  $sql = $dbs->prepare($sql);
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
   if ($sql->execute()) {
-    $sql->bind_result($dgruppe, $danzahl);
-    while ($sql->fetch()) {
-      $anzahl += $danzahl;
-    }
+    $sql->bind_result($anzahl);
+    $sql->fetch();
   }
   $sql->close();
   $zusatz = "";
@@ -477,6 +474,9 @@ function cms_sonderrollen_generieren() {
 	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERART;
 	$code = "";
 	$dbs = cms_verbinden('s');
+  if ($CMS_BENUTZERART == 'l') {
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Tagebuch\">Tagebucheinträge vornehmen</a></li> ";
+  }
   if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
   }
@@ -498,7 +498,7 @@ function cms_sonderrollen_generieren() {
 	if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
 		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] || $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
 		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
 	}
   if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {

@@ -72,6 +72,9 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
     foreach ($empfaenger as $e) {
       // Notifikation eintragen
       $id = cms_generiere_kleinste_id('notifikationen');
+
+      //echo "UPDATE notifikationen SET person = ".$e['id'].", zeit = $jetzt, gruppe = AES_ENCRYPT('".$eintrag['gruppe']."', '$CMS_SCHLUESSEL'), gruppenid = ".$eintrag['gruppenid'].", zielid = ".$eintrag['zielid'].", status = '".$eintrag['status']."', art = '".$eintrag['art']."', titel = AES_ENCRYPT('".$eintrag['titel']."', '$CMS_SCHLUESSEL'), vorschau = AES_ENCRYPT('".$eintrag['vorschau']."', '$CMS_SCHLUESSEL'), link = AES_ENCRYPT('".$eintrag['link']."', '$CMS_SCHLUESSEL') WHERE id = $id;";
+
       $sqlnot->bind_param("iisiisssssi", $e['id'], $jetzt, $eintrag['gruppe'], $eintrag['gruppenid'], $eintrag['zielid'], $eintrag['status'], $eintrag['art'], $eintrag['titel'], $eintrag['vorschau'], $eintrag['link'], $id);
       $sqlnot->execute();
 

@@ -126,7 +126,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 			$code['pc'] .= "<span class=\"cms_unternavigation_schliessen cms_button_nein\" id=\"cms_hauptnavigation_nutzer_l\" onclick=\"cms_hauptnavigation_ausblenden('nutzer')\">&times;</span>";
 			$code['pc'] .= "<div class=\"cms_spalte_4\">";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
-					$code['pc'] .= "<h3>Aktivität</h3>";
+					$code['pc'] .= "<h3>Mein Konto</h3>";
 					$code['pc'] .= "<p>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</p>";
 					$code['pc'] .= "<div id=\"cms_aktivitaet_out\"><div id=\"cms_aktivitaet_in\"></div></div>";
 					$code['pc'] .= "<p class=\"cms_notiz\" id=\"cms_aktivitaet_text\">Berechnung läuft ...</p>";
@@ -146,16 +146,12 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 					$code['pc'] .= "</ul>";
 				$code['pc'] .= "</div>";
 			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_2\">";
+			$code['pc'] .= "<div class=\"cms_spalte_34\">";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= "<h3>Gruppen</h3>";
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= $meinegruppenpc;
 					$code['pc'] .= "</ul>";
-				$code['pc'] .= "</div>";
-			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_4\">";
-				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= $aufgabenpc;
 				$code['pc'] .= "</div>";
 			$code['pc'] .= "</div>";

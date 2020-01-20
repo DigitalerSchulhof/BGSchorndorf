@@ -27,9 +27,15 @@ if (cms_angemeldet()) {
 		}
 		$weilreference0 = 0;
 		$dbs = cms_verbinden('s');
-		$sql = $dbs->prepare("UPDATE auffaelliges SET status = ? WHERE id = ?;");
-		$sql->bind_param("ii", $status, $id);
-	  $sql->execute();
+		if ($status == -1) {
+			$sql = $dbs->prepare("DELETE FROM auffaelliges WHERE id = ?;");
+			$sql->bind_param("i", $id);
+		}
+		else {
+			$sql = $dbs->prepare("UPDATE auffaelliges SET status = ? WHERE id = ?;");
+			$sql->bind_param("ii", $status, $id);
+		}
+		$sql->execute();
 		$sql->close();
 
 		echo "ERFOLG";

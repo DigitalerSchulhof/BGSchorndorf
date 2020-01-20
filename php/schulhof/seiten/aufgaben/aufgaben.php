@@ -15,7 +15,7 @@ $angemeldet = cms_angemeldet();
 if ($angemeldet && $zugriff) {
 	$sonderrollen = cms_sonderrollen_generieren();
 	if (strlen($sonderrollen) != 0) {
-		$code .= "<ul>".$sonderrollen."</ul>";
+		$code .= "<ul class=\"cms_aktionen_liste\">".$sonderrollen."</ul>";
 	}
 	else {$code .= "<p class=\"cms_notiz\">Keine Aufgaben verfügbar!</p>";}
 	$code .= "</div>";
