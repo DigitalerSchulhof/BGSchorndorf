@@ -891,12 +891,13 @@ function cms_stundenplanung_import_speichern() {
             else if (stundennr < stundenanzahl) {
               var stundeninfo = stundeneinzeln[stundennr].split(trennung);
               formulardaten = new FormData();
-              formulardaten.append('schulstunde', stundeninfo[2]);
+              formulardaten.append('nr', stundennr);
+              formulardaten.append('schulstunde', stundeninfo[3]);
               formulardaten.append('tag', stundeninfo[1]);
-              formulardaten.append('rythmus', '0');
+              formulardaten.append('rythmus', stundeninfo[2]);
               formulardaten.append('kurs', stundeninfo[0]);
-              formulardaten.append('lehrer', stundeninfo[3]);
-              formulardaten.append('raum', stundeninfo[4]);
+              formulardaten.append('lehrer', stundeninfo[4]);
+              formulardaten.append('raum', stundeninfo[5]);
               formulardaten.append('anfragenziel', '352');
               cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
             }

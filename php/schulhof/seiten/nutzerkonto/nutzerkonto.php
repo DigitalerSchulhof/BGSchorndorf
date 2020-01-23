@@ -290,6 +290,24 @@ if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
 $genehmigungen .= "</span></li>";
 if ($genehmigungenda) {$neuigkeiten .= $genehmigungen;}
 
+
+// Favoriten ausgeben
+$favoriten = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/favoriten.png\"></span>";
+$favoriten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Favoriten</h4>";
+$favoritenda = false;
+$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY id");
+$sql->bind_param("i", $CMS_BENUTZERID);
+if ($sql->execute()) {
+	$sql->bind_result($fid, $furl, $fbez);
+	while ($sql->fetch()) {
+		$favoritenda = true;
+		$favoriten .= "<p><a href=\"$furl\">".$fbez."</a></p>";
+	}
+}
+$sql->close();
+$favoriten .= "</span></li>";
+if ($favoritenda) {$neuigkeiten .= $favoriten;}
+
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 ?>
 </div>
@@ -463,17 +481,6 @@ echo $code;
 </ul>
 
 <?php
-$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY id";
-$sql = $dbs->prepare($sql);
-$sql->bind_param("i", $CMS_BENUTZERID);
-$sql->execute();
-$sql->bind_result($fid, $furl, $fbez);
-$fav = "";
-while($sql->fetch()) {
-	$fav .= "<li><a class=\"cms_button\" href=\"$furl\">".$fbez."</a></li> ";
-}
-if (strlen($fav) > 0) {echo "<h2>Favoriten</h2><ul class=\"cms_aktionen_liste\">$fav</ul>";}
-
 $aktionen = "";
 if ($CMS_RECHTE['Website']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";

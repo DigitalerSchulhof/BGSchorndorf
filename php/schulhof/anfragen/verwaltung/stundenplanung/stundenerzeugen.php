@@ -138,9 +138,9 @@ if (cms_angemeldet() && $zugriff) {
 				$REGELUNTERRICHT[$r][$t] = array();
 			}
 		}
-		$sql = "SELECT schulstunde, tag, rythmus, kurs, lehrer, raum FROM regelunterricht WHERE kurs = ?";
+		$sql = "SELECT schulstunde, tag, rythmus, kurs, lehrer, raum FROM regelunterricht WHERE kurs = ? AND schulstunde IN (SELECT id FROM schulstunden WHERE zeitraum = ?)";
 		$sql = $dbs->prepare($sql);
-		$sql->bind_param("i", $kurs);
+		$sql->bind_param("ii", $kurs, $zeitraum);
 		if ($sql->execute()) {
 			$sql->bind_result($rustd, $rutag, $rury, $ruku, $rule, $rura);
 			while ($sql->fetch()) {
@@ -225,7 +225,9 @@ if (cms_angemeldet() && $zugriff) {
 
 			// Alle Stunden dieses Ryhtmus an diesem Wochentag anlegen
 			if ($aktry != 0) {
+				//print_r($SCHULSTUNDEN);echo "<br><br>";
 				foreach ($REGELUNTERRICHT[0][$wochentag] AS $ru) {
+					//print_r($ru); echo "<br><br>";
 					$uid = cms_generiere_kleinste_id('unterricht');
 					$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 					$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
