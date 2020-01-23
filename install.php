@@ -1,6 +1,6 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
+$rechteplaetten = false;
 $internediensteplaetten = false;
 $einstellungenplaetten = true;
 $zulaessigedateienplaetten = false;
@@ -714,6 +714,18 @@ if ($einstellungenplaetten) {
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('21', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Abewsenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Inhalt', '$CMS_SCHLUESSEL'), AES_ENCRYPT('2', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Lob und Tadel', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Hausaufgaben', '$CMS_SCHLUESSEL'), AES_ENCRYPT('2', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Entschuldigungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('7', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Mindestabwesenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('10', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	// Postfach
 	foreach ($personen as $p) {

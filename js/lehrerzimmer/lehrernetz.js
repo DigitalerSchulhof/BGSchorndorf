@@ -8,24 +8,6 @@ function cms_lehrerdatenbankzugangsdaten_schicken(formulardaten) {
 	return formulardaten;
 }
 
-function cms_lehrerzimmer_laden(id, datei, entitaet) {
-	var entitaet = entitaet || '-';
-	var feld = document.getElementById(id);
-
-	var formulardaten = new FormData();
-	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-	formulardaten.append("id", entitaet);
-
-	function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe != "BERECHTIGUNG") {
-			cms_gesichertedaten_inhalte(feld, rueckgabe);
-		}
-		else {cms_fehlerbehandlung(rueckgabe);}
-	}
-
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
-}
-
 function cms_netzcheck(zeigen) {
 	var zeigen = zeigen || 'j';
 	var anfrage = new XMLHttpRequest();

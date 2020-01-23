@@ -308,7 +308,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       if ($id == '-') {$ausgabe .= "<option value=\"$i\">$i</option>";}
       $ausgabe .= "</select></td></tr>";
       $ausgabe .= "<tr><th>Tagebuch:</th><td>".cms_schieber_generieren('gruppe_tagebuch', $tagebuch)."</td></tr>";
-      $ausgabe .= "<tr><th>GFS-Veraltung:</th><td>".cms_schieber_generieren('gruppe_gfs', $gfs)."</td></tr>";
+      $ausgabe .= "<tr><th>GFS-Verwaltung:</th><td>".cms_schieber_generieren('gruppe_gfs', $gfs)."</td></tr>";
     }
     if (($namek == 'klassen') || ($namek == 'kurse')) {
       if ($id == '-') {

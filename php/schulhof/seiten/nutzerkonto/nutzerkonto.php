@@ -74,7 +74,7 @@ if ($tbkurs > 0) {
 	else {$neuigkeiten .= "<p>Prüfung in diesem Netz nicht möglich.</p>";}
 	$neuigkeiten .= "</span></li>";
 	if ($CMS_IMLN) {
-		$neuigkeiten .= "<script></script>";
+		$neuigkeiten .= "<script>cms_tagebuchmeldung_laden();</script>";
 	}
 }
 

@@ -265,12 +265,13 @@
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/seiten.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/hauptnavigationen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/dateien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/gruppen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/beschluesse.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/listen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/lehrerzimmer/tagebuch.js?v=$CMS_VERSION\"></script>";
 
 			$code .= "<script src=\"js/website/bearbeiten.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/editor.js?v=$CMS_VERSION\"></script>";

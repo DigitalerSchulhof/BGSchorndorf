@@ -15,12 +15,13 @@ if ($zugriff) {
 	$einstellungen = cms_einstellungen_laden();
 
 	$code .= "<ul class=\"cms_reitermenue\">";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 0, 5, true)\">Rechte</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1, 5, true)\">Postfach</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2, 5, true)\">Gruppen</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3, 5, true)\">Stundenpläne</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4, 5, true)\">Website</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5, 5, true)\">Geräteverwaltung</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 0, 6, true)\">Rechte</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1, 6, true)\">Postfach</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2, 6, true)\">Gruppen</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3, 6, true)\">Stundenpläne</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4, 6, true)\">Tagebücher</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5, 6, true)\">Website</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_6\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 6, 6, true)\">Geräteverwaltung</span></li> ";
 	$code .= "</ul>";
 
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: none;\">";
@@ -334,6 +335,72 @@ if ($zugriff) {
 
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_4\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
+		$code .= "<div class=\"cms_spalte_i\"><h2>Tagebücher</h2></div>";
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr>";
+
+		$fristen = "<option value=\"s\">In der Stunde</option>";
+		$fristen .= "<option value=\"t\">Am selben Tag</option>";
+		$fristen .= "<option value=\"1\">Am nächsten Tag</option>";
+		$fristen .= "<option value=\"2\">2 Tage danach</option>";
+		$fristen .= "<option value=\"3\">3 Tage danach</option>";
+		$fristen .= "<option value=\"4\">4 Tage danach</option>";
+		$fristen .= "<option value=\"5\">5 Tage danach</option>";
+		$fristen .= "<option value=\"6\">6 Tage danach</option>";
+		$fristen .= "<option value=\"7\">eine Woche danach</option>";
+		$fristen .= "<option value=\"14\">zwei Wochen danach</option>";
+		$fristen .= "<option value=\"-\">keine</option>";
+
+		$code .= "<th>Frist für Abwesenheiten:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_abwesend_frist\" id=\"cms_schulhof_tagebuch_abwesend_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Abewsenheit"]."\"", "value=\"".$einstellungen["Tagebuch Frist Abewsenheit"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für inhaltliche Einträge:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_inhalt_frist\" id=\"cms_schulhof_tagebuch_inhalt_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Inhalt"]."\"", "value=\"".$einstellungen["Tagebuch Frist Inhalt"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für Lob und Tadel:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_lobtadel_frist\" id=\"cms_schulhof_tagebuch_lobtadel_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Lob und Tadel"]."\"", "value=\"".$einstellungen["Tagebuch Frist Lob und Tadel"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für Hausaufgaben:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_hausaufgaben_frist\" id=\"cms_schulhof_tagebuch_hausaufgaben_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Hausaufgaben"]."\"", "value=\"".$einstellungen["Tagebuch Frist Hausaufgaben"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für Entschuldigungen:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_entschuldigungen_frist\" id=\"cms_schulhof_tagebuch_entschuldigungen_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Entschuldigungen"]."\"", "value=\"".$einstellungen["Tagebuch Frist Entschuldigungen"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Mindestabwesenheit für Entschuldigungspflicht:</th>";
+		$code .= "<td><input class=\"cms_klein\" name=\"cms_schulhof_tagebuch_abwesenheitsminimum\" id=\"cms_schulhof_tagebuch_abwesenheitsminimum\" type=\"number\" value=\"".$einstellungen['Tagebuch Mindestabwesenheit']."\"> min</td>";
+		$code .= "</tr>";
+		$code .= "</table>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_i cms_clear\">";
+		$code .= "<p><span class=\"cms_button\" onclick=\"cms_einstellungen_tagebuch_aendern()\">Speichern</span> ";
+		$code .= "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Allgemeine_Einstellungen');\">Abbrechen</span></p>";
+		$code .= "</div>";
+		$code .= "</div>";
+	$code .= "</div>";
+
+
+	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_5\" style=\"display: none;\">";
+		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Website</h2></div>";
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 		$code .= "<h3>Öffentliche Termine</h3>";
@@ -408,7 +475,7 @@ if ($zugriff) {
 		$code .= "</div>";
 	$code .= "</div>";
 
-	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_5\" style=\"display: none;\">";
+	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_6\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Geräteverwaltung</h2></div>";
 
