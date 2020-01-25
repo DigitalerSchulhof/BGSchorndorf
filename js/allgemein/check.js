@@ -31,6 +31,10 @@ function cms_check_toggle(wert) {
 	else {return true;}
 }
 
+function cms_check_liste(text) {
+	return text.match(/^(\|[0-9]+)+$/);
+}
+
 function cms_check_ganzzahl(wert, min, max) {
 	if(!(min || min === 0))
 		min = false;
@@ -104,24 +108,6 @@ function cms_check_passwort_gleich(id) {
 	else {
 		iconF.innerHTML = '<img src="res/icons/klein/falsch.png">';
 	}
-}
-
-
-function cms_nur_ganzzahl (id, standard, min, max) {
-	standard = standard || 0;
-	min = min || false;
-	max = max || false;
-	var feld = document.getElementById(id);
-	var wert = feld.value;
-	if (!isNaN(wert)) {
-		wert = Math.floor(wert);
-		if (max) {if (wert > max) {wert = max;}}
-		if (min) {if (wert < min) {wert = min;}}
-	}
-	else {
-		wert = standard;
-	}
-	feld.value = wert;
 }
 
 function cms_check_ip (ip) {

@@ -19,6 +19,28 @@
   position: relative;
 }
 
+.cms_neuigkeit_notfall {
+  text-align: left !important;
+  width: 100%;
+  padding: 10px;
+  margin: 0px;
+  background: @warnung_background;
+  transition: 250ms ease-in-out;
+  display: block;
+  position: relative;
+  animation-name: notfallanimation;
+  animation-delay: 1s;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes notfallanimation {
+  0%   {background-color:@warnung_background;}
+  37.5%  {background-color:@fehler_background;}
+  75%  {background-color:@warnung_background;}
+  100%  {background-color:@warnung_background;}
+}
+
 .cms_neuigkeit_ln {
   background: @standardhell_background !important;
   padding: 8px !important;

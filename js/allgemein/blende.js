@@ -35,6 +35,25 @@ function cms_meldung_an (art, titel, text, nachher) {
 
 }
 
+function cms_meldung_notfall (art, titel, text, nachher) {
+	var blende = '<div class="cms_spalte_i">';
+		blende += '<div class="cms_neuigkeit_notfall">';
+			blende += '<span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/alarm.png\"></span>';
+			blende += '<span class=\"cms_neuigkeit_inhalt\"><h4>'+titel+'</h4>';
+			blende += text;
+		blende += '</span></div>';
+		blende += nachher;
+	blende += '</div>';
+
+	document.getElementById('cms_blende_i').innerHTML = blende;
+	cms_einblenden('cms_blende_o');
+
+	if ((art == 'erfolg') && (nachher.match(/onclick=\"cms_meldung_aus/))) {
+		var aus = setTimeout(function() {cms_meldung_aus ();}, 3000);
+	}
+
+}
+
 function cms_meldung_code (art, titel, text) {
 	var code = '<div class="cms_meldung cms_meldung_'+art+'">';
 			code += '<h4>'+titel+'</h4>';

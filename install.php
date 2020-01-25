@@ -1,6 +1,6 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = false;
+$rechteplaetten = true;
 $internediensteplaetten = false;
 $einstellungenplaetten = true;
 $zulaessigedateienplaetten = false;
@@ -495,6 +495,10 @@ if ($rechteplaetten) {
 		$sql->execute(); $id++;
 		*/
 
+		// TAGEBÜCHER
+		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Tagebücher', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Notfallzustand', '$CMS_SCHLUESSEL'))");
+		$sql->execute(); $id++;
+
 		// TECHNIK
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Geräte verwalten', '$CMS_SCHLUESSEL'))");
 		$sql->execute(); $id++;
@@ -726,6 +730,8 @@ if ($einstellungenplaetten) {
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Entschuldigungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('7', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Mindestabwesenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('10', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Notfallzustand', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	// Postfach
 	foreach ($personen as $p) {

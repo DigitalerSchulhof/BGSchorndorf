@@ -567,10 +567,6 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if ($zugriff) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
 	}
-	$zugriff = ($CMS_RECHTE['Website']['Emoticons verwalten']);
-	if ($zugriff) {
-		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Emoticons\">Emoticons</a></li> ";
-	}
 	$zugriff = ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE['Website']['Newsletter bearbeiten']);
 	if ($zugriff) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Newsletter\">Newsletter</a></li> ";

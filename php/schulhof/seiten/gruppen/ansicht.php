@@ -96,7 +96,7 @@ if (!$fehler) {
 				$code .= "<p>".cms_toggleiconbuttontext_generieren ('cms_gruppe_abonnieren', 'res/gruppen/gross/'.$icon, $gbez." abbestellen", $gbez." abonnieren", $GRUPPENRECHTE['abonniert'], "cms_gruppe_abonnieren('$g', '$gruppenid')")."</p>";
 			}
 			else {
-				$code .= "<p><span class=\"cms_iconbutton_eingeschraenkt\" style=\"background-image: url('res/gruppen/gross/$icon')\">$gbez abonnieren</span></p>";
+				$code .= "<p><span class=\"cms_iconbutton_gesichert\" style=\"background-image: url('res/gruppen/gross/$icon')\">$gbez abonnieren</span></p>";
 			}
 			$code .= "<ul class=\"cms_aktionen_liste\">";
 				//$code .= "<li><a class=\"cms_button\" href=\"$CMS_URLGANZ/Termine\">Kalender</a> </li> ";

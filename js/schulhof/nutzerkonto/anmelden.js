@@ -26,6 +26,11 @@ function cms_anmelden () {
 		formulardaten.append("passwort", 			passwort);
 		formulardaten.append("anfragenziel", 	'45');
 
+		function anmeldungdurchfuehren() {
+			if(location.pathname.includes("Schulhof/Anmeldung")) {cms_link('Schulhof/Nutzerkonto');}
+			else {location.href = location.pathname;}
+		}
+
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "FEHLER") {
 				meldung += '<li>entweder wurde der Benutzername nicht gefunden</li>';
@@ -33,11 +38,33 @@ function cms_anmelden () {
 				meldung += '<li>oder das Passwort ist nicht mehr gültig.</li>';
 				cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
-			else if (rueckgabe == "ERFOLG") {
-				if(location.pathname.includes("Schulhof/Anmeldung"))
-					cms_link('Schulhof/Nutzerkonto');
-				else
-					location.href = location.pathname;
+			else if (rueckgabe.match(/^ERFOLG/)) {
+				// Check, ob im Lehrernetz
+				if (rueckgabe.match(/^ERFOLG[LV]/)) {
+					var gesicherteadresse = rueckgabe.substr(7);
+					var anfrage = new XMLHttpRequest();
+					anfrage.timeout = 2000;
+					anfrage.onreadystatechange = function() {
+						if (anfrage.readyState==4 && anfrage.status==200) {
+							CMS_IMLN = true;
+							var formulardaten = new FormData();
+							formulardaten.append("anfragenziel", '169');
+							formulardaten.append("status", '1');
+							cms_ajaxanfrage (false, formulardaten, anmeldungdurchfuehren);
+						}
+						else if (anfrage.readyState==4) {
+							var formulardaten = new FormData();
+							formulardaten.append("anfragenziel", '169');
+							formulardaten.append("status", '0');
+							cms_ajaxanfrage (false, formulardaten, anmeldungdurchfuehren);
+						}
+					};
+					anfrage.open("POST",gesicherteadresse+"php/oeffentlich/anfragen/echo.php",true);
+					anfrage.send();
+				}
+				else {
+					anmeldungdurchfuehren();
+				}
 			}
 			else {
 				cms_fehlerbehandlung(rueckgabe);

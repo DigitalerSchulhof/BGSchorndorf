@@ -419,6 +419,19 @@ ALTER TABLE `gfs`
 
 ALTER TABLE `notifikationen` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 
+CREATE TABLE `notfallzustand` (
+  `lehrer` bigint(255) UNSIGNED NOT NULL,
+  `schueler` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `notfallzustand`
+  ADD PRIMARY KEY (`lehrer`,`schueler`),
+  ADD KEY `notfallzustandschueler` (`schueler`);
+
+ALTER TABLE `notfallzustand`
+  ADD CONSTRAINT `notfallzustandlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notfallzustandschueler` FOREIGN KEY (`schueler`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (

@@ -5,6 +5,33 @@
 
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
+
+// NOTFALLZUSTAND PRÜFEN
+if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand']) {
+	$code .= "<div class=\"cms_neuigkeit_notfall\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/alarm.png\"></span>";
+	$code .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Notfallzustand</h4><p>Bitte verlassen Sie <b>umgehend</b> das Gebäude!!</p>";
+	if ($CMS_BENUTZERART == 'l') {
+		$personen = "";
+		$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM notfallzustand JOIN personen ON notfallzustand.schueler = personen.id WHERE notfallzustand.lehrer = ?) AS x ORDER BY nachname, vorname, titel");
+		$sql->bind_param("i", $CMS_BENUTZERID);
+		if ($sql->execute()) {
+			$sql->bind_result($vor, $nach, $tit);
+			while ($sql->fetch()) {
+				$personen .= "<li>".cms_generiere_anzeigename($vor, $nach, $tit)."</li>";
+			}
+		}
+		$sql->close();
+
+		if (strlen($personen) > 0) {
+			$code .= "<p>Bitte stellen Sie die Anwesenheit der folgenden Schüler fest und <b>melden</b> sowohl <b>einzelne abwesende Schüler</b>, als auch <b>die Vollzähligkeit</b> ihrer Gruppe bei der Einsatzleitung:</p><ul>$personen</ul>";
+		}
+	}
+
+	$code .= "</span></div>";
+	echo $code;
+}
+
+
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
 
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
@@ -482,6 +509,24 @@ echo $code;
 
 <?php
 $aktionen = "";
+if ($CMS_RECHTE['Tagebücher']['Notfallzustand']) {
+	if ($CMS_IMLN) {
+		if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand'] == '0') {
+			$aktionen .= "<li><span class=\"cms_button_wichtig\" onclick=\"cms_notfallzustand_anzeigen('1')\">Notfallzustand ausrufen</span></li> ";
+		}
+		else {
+			$aktionen .= "<li><span class=\"cms_button_wichtig\" onclick=\"cms_notfallzustand_anzeigen('0')\">Notfallzustand beenden</span></li> ";
+		}
+	}
+	else {
+		if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand'] == '0') {
+			$aktionen .= "<li><span class=\"cms_button_gesichert\">Notfallzustand ausrufen</span></li> ";
+		}
+		else {
+			$aktionen .= "<li><span class=\"cms_button_gesichert\">Notfallzustand beenden</span></li> ";
+		}
+	}
+}
 if ($CMS_RECHTE['Website']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
 }
@@ -491,6 +536,8 @@ if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
 if ($CMS_RECHTE['Website']['Galerien anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neue_galerie('".implode('/', $CMS_URL)."')\">+ Neue öffentliche Galerie</span></li> ";
 }
+
+
 /*if ($CMS_RECHTE['Persönlich']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_persoenlicher_termin('".implode('/', $CMS_URL)."')\">+ Neuer persönlicher Termin</span></li> ";
 }*/
