@@ -354,7 +354,7 @@ if ($zugriff) {
 
 		$code .= "<th>Frist für Abwesenheiten:</th>";
 		$code .= "<td><select name=\"cms_schulhof_tagebuch_abwesend_frist\" id=\"cms_schulhof_tagebuch_abwesend_frist\">";
-			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Abewsenheit"]."\"", "value=\"".$einstellungen["Tagebuch Frist Abewsenheit"]."\" selected=\"selected\"", $fristen);
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Abwesenheit"]."\"", "value=\"".$einstellungen["Tagebuch Frist Abwesenheit"]."\" selected=\"selected\"", $fristen);
 		$code .= "</select></td>";
 		$code .= "</tr>";
 		$code .= "<tr>";

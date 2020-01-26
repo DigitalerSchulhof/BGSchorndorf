@@ -189,8 +189,8 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
         $sql->bind_result($fid, $fbez);
         while ($sql->fetch()) {
           $F = array();
-          $S['id'] = $fid;
-          $S['bez'] = $fbez;
+          $F['id'] = $fid;
+          $F['bez'] = $fbez;
           array_push($faecher, $F);
         }
       }

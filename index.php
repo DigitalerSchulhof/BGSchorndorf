@@ -196,6 +196,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tagebuch.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
@@ -483,6 +484,33 @@
 		<div id="cms_hauptteil_i">
 			<div id="cms_debug"></div>
 			<?php
+			if ($CMS_ANGEMELDET) {
+				// NOTFALLZUSTAND PRÜFEN
+				if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand']) {
+					$code = "<div class=\"cms_spalte_i\"><div class=\"cms_neuigkeit_notfall\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/alarm.png\"></span>";
+					$code .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Notfallzustand</h4><p>Bitte <b>bewahren Sie Ruhe</b> und verlassen Sie <b>umgehend</b> das Gebäude!!</p>";
+					if ($CMS_BENUTZERART == 'l') {
+						$personen = "";
+						$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM notfallzustand JOIN personen ON notfallzustand.schueler = personen.id WHERE notfallzustand.lehrer = ?) AS x ORDER BY nachname, vorname, titel");
+						$sql->bind_param("i", $CMS_BENUTZERID);
+						if ($sql->execute()) {
+							$sql->bind_result($vor, $nach, $tit);
+							while ($sql->fetch()) {
+								$personen .= "<li>".cms_generiere_anzeigename($vor, $nach, $tit)."</li>";
+							}
+						}
+						$sql->close();
+
+						if (strlen($personen) > 0) {
+							$code .= "<p>Bitte stellen Sie die Anwesenheit der folgenden Schülerinnen und Schüler fest!<br>Veranlassen Sie eine <b>Meldung</b> über die <b>Vollständigkeit</b> der Gruppe oder die <b>Abwesenheit</b> einzelner Schülerinnen und Schüler bei der <b>Einsatzleitung</b>:</p><ul>$personen</ul>";
+						}
+					}
+
+					$code .= "</span></div></div>";
+					echo $code;
+				}
+			}
+
 			include_once("php/allgemein/seiten/seitensteuerung.php");
 			?>
 		</div>

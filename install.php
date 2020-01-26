@@ -719,9 +719,9 @@ if ($einstellungenplaetten) {
 	$sql->execute(); $id++;
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('21', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
-	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Abewsenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Abwesenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
-	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Inhalt', '$CMS_SCHLUESSEL'), AES_ENCRYPT('2', '$CMS_SCHLUESSEL'))");
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Inhalt', '$CMS_SCHLUESSEL'), AES_ENCRYPT('-', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Lob und Tadel', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;

@@ -31,7 +31,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
 		$sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
-		$einstellungsname = "Tagebuch Frist Abewsenheit";
+		$einstellungsname = "Tagebuch Frist Abwesenheit";
 		$sql->bind_param("ss", $abwesenheit, $einstellungsname);
 		$sql->execute();
 

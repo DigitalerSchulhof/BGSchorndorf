@@ -22,7 +22,7 @@ function cms_notfallzustand_anzeigen(wert) {
     cms_meldung_notfall('warnung', 'Notfallzustand ausrufen', '<p><b>Achtung!</b> Sie sind dabei den Notfallzustand auszurufen. Alle Schüler, Lehrer, Verwaltungsangestellte und Externe im Schulhof werden angewiesen <b>das Schulgebäude umgehend zu verlassen</b>. Alle Lehrer werden zudem angewiesen, die Vollzähligkeit bzw. Abwesenheit einzelner ihre Schüler der Einsatzleitung zu melden!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\')">Notfallzustand ausrufen</span></p>');
   }
   if (wert == '0') {
-    cms_meldung_notfall('warnung', 'Notfallzustand beenden', '<p>Möchten Sie den Notfallzustand wirklich beenden? Alle Notfallmeldungen werden damit gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\')">Notfallzustand beenden</span></p>');
+    cms_meldung_notfall('warnung', 'Notfallzustand aufheben', '<p>Möchten Sie den Notfallzustand wirklich aufheben? Alle Notfallmeldungen werden damit gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\')">Notfallzustand aufheben</span></p>');
   }
 }
 
@@ -90,8 +90,6 @@ function cms_tagebuchdetails_laden() {
       }
     }
 
-    alert(gewaehlt+"\n"+ausgeschlossen);
-
     var formulardaten = new FormData();
   	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
     formulardaten.append("freigabe", freigabe);
@@ -104,5 +102,158 @@ function cms_tagebuchdetails_laden() {
   	}
 
   	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  }
+}
+
+function cms_tagebuch_eintraege_ausblenden() {
+  var felder = document.getElementById('cms_tagebuch_eintraege').value;
+  felder = felder.split(",");
+  for (var i=0; i<felder.length; i++) {
+    var f = document.getElementById("cms_tagebuch_eintrag_"+felder[i]);
+    if (f)  {
+      f.style.display = 'none';
+      f.innerHTML = '<td colspan="6"></td>';
+    }
+  }
+}
+
+function cms_tagebuch_eintragbearbeiten(id) {
+  if (cms_check_ganzzahl(id,0)) {
+    cms_tagebuch_eintraege_ausblenden();
+    var feld = document.getElementById("cms_tagebuch_eintrag_"+id);
+    feld.style.display = 'table-row';
+    feld.innerHTML = '<td colspan="6" class="cms_zentriert">'+cms_ladeicon()+'</td>';
+
+    var formulardaten = new FormData();
+  	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+    formulardaten.append("eintrag", id);
+    formulardaten.append("anfragenziel", '34');
+
+  	function anfragennachbehandlung(rueckgabe) {
+      feld.innerHTML = rueckgabe;
+  	}
+
+  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  }
+}
+
+function cms_eintrag_fzdazu(beginn, ende) {
+  var feld = document.getElementById('cms_eintrag_fz_p');
+  if (feld.options[feld.selectedIndex]) {
+    var pid = feld.value;
+    var name = feld.options[feld.selectedIndex].text;
+    var liste = document.getElementById('cms_tagebuch_fehlzeiten');
+    var anzahl = document.getElementById('cms_tagebuch_eintrag_fzan');
+    var ids = document.getElementById('cms_tagebuch_eintrag_fzids');
+    var neueid = 'temp'+anzahl.value;
+
+    var start = new Date(beginn*1000);
+    var ziel = new Date(ende*1000);
+    var code = "<input type=\"hidden\" name=\"cms_eintrag_fzp_"+neueid+"\" id=\"cms_eintrag_fzp_"+neueid+"\" value=\""+pid+"\">";
+    code += cms_uhrzeit_eingabe('cms_eintrag_fz_beginn_'+neueid, start.getHours(), start.getMinutes());
+    code += " – "+cms_uhrzeit_eingabe('cms_eintrag_fz_ende_'+neueid, ziel.getHours(), ziel.getMinutes());
+    code += ": "+name+"<br>";
+    code += "<input class=\"cms_gross\" type=\"text\" name=\"cms_eintrag_fz_bem_"+neueid+"\" id=\"cms_eintrag_fz_bem_"+neueid+"\" value=\"\"> ";
+    code += "<span class=\"cms_button_nein\" onclick=\"cms_eintrag_fzweg('"+neueid+"')\">–</span>";
+
+    var knoten = document.createElement("LI");
+    knoten.innerHTML = code;
+    liste.appendChild(knoten);
+    knoten.setAttribute('id', 'cms_eintrag_fz_'+neueid);
+    anzahl.value = parseInt(anzahl.value)+1;
+    if (ids.value.length > 0) {ids.value = ids.value+','+neueid;}
+    else {ids.value = neueid;}
+  }
+}
+
+function cms_eintrag_fzweg(id) {
+  var liste = document.getElementById('cms_tagebuch_fehlzeiten');
+	var fz = document.getElementById('cms_eintrag_fz_'+id);
+	var ids = document.getElementById('cms_tagebuch_eintrag_fzids');
+
+  if (fz) {
+    liste.removeChild(fz);
+  	var neueids = (','+ids.value+',').replace(','+id+',', ',');
+    ids.value = neueids.substr(1,neueids.length-2);
+  }
+}
+
+function cms_eintrag_ltdazu() {
+  var feld = document.getElementById('cms_eintrag_lt_p');
+  if (feld.options[feld.selectedIndex]) {
+    var pid = feld.value;
+    var name = feld.options[feld.selectedIndex].text;
+    var liste = document.getElementById('cms_tagebuch_bemerkungen');
+    var anzahl = document.getElementById('cms_tagebuch_eintrag_ltan');
+    var ids = document.getElementById('cms_tagebuch_eintrag_ltids');
+    var neueid = 'temp'+anzahl.value;
+
+    var code = "<input type=\"hidden\" name=\"cms_eintrag_ltp_"+neueid+"\" id=\"cms_eintrag_ltp_"+neueid+"\" value=\""+pid+"\">";
+    code += "<span class=\"cms_button\" id=\"cms_eintrag_ltart_knopf_"+neueid+"\" onclick=\"cms_ltart_aendern('"+neueid+"')\">Bemerkung</span> ";
+    code += "<span class=\"cms_button_nein\" id=\"cms_eintrag_ltchar_knopf_"+neueid+"\" onclick=\"cms_ltchar_aendern('"+neueid+"')\">negativ</span>: ";
+    code += name+"<br>";
+    code += "<input class=\"cms_gross\" type=\"text\" name=\"cms_eintrag_lt_bem_"+neueid+"\" id=\"cms_eintrag_lt_bem_"+neueid+"\" value=\"\"> ";
+    code += "<span class=\"cms_button_nein\" onclick=\"cms_eintrag_ltweg('"+neueid+"')\">–</span> ";
+    code += "<input type=\"hidden\" name=\"cms_eintrag_ltchar_"+neueid+"\" id=\"cms_eintrag_ltchar_"+neueid+"\" value=\"-\">";
+    code += "<input type=\"hidden\" name=\"cms_eintrag_ltart_"+neueid+"\" id=\"cms_eintrag_ltart_"+neueid+"\" value=\"B\">";
+
+    var knoten = document.createElement("LI");
+    knoten.innerHTML = code;
+    liste.appendChild(knoten);
+    knoten.setAttribute('id', 'cms_eintrag_lt_'+neueid);
+    anzahl.value = parseInt(anzahl.value)+1;
+    if (ids.value.length > 0) {ids.value = ids.value+','+neueid;}
+    else {ids.value = neueid;}
+  }
+}
+
+function cms_ltchar_aendern(id) {
+  var knopf = document.getElementById("cms_eintrag_ltchar_knopf_"+id);
+  var wert = document.getElementById("cms_eintrag_ltchar_"+id);
+
+  if (wert.value == '-') {
+    wert.value = '0';
+    knopf.innerHTML = 'neutral';
+    knopf.className = 'cms_button';
+  }
+  else if (wert.value == '0') {
+    wert.value = '+';
+    knopf.innerHTML = 'positiv';
+    knopf.className = 'cms_button_ja';
+  }
+  else if (wert.value == '+') {
+    wert.value = '-';
+    knopf.innerHTML = 'negativ';
+    knopf.className = 'cms_button_nein';
+  }
+}
+
+function cms_ltart_aendern(id) {
+  var knopf = document.getElementById("cms_eintrag_ltart_knopf_"+id);
+  var wert = document.getElementById("cms_eintrag_ltart_"+id);
+
+  if (wert.value == 'B') {
+    wert.value = 'M';
+    knopf.innerHTML = 'Mitarbeit';
+  }
+  else if (wert.value == 'M') {
+    wert.value = 'V';
+    knopf.innerHTML = 'Verhalten';
+  }
+  else if (wert.value == 'V') {
+    wert.value = 'B';
+    knopf.innerHTML = 'Bemerkung';
+  }
+}
+
+function cms_eintrag_ltweg(id) {
+  var liste = document.getElementById('cms_tagebuch_bemerkungen');
+	var lt = document.getElementById('cms_eintrag_lt_'+id);
+	var ids = document.getElementById('cms_tagebuch_eintrag_ltids');
+
+  if (lt) {
+    liste.removeChild(lt);
+  	var neueids = (','+ids.value+',').replace(','+id+',', ',');
+    ids.value = neueids.substr(1,neueids.length-2);
   }
 }

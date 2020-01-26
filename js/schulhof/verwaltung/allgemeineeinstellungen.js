@@ -263,7 +263,6 @@ function cms_einstellungen_tagebuch_aendern() {
 	var hausaufgaben = document.getElementById('cms_schulhof_tagebuch_hausaufgaben_frist').value;
 	var entschuldigungen = document.getElementById('cms_schulhof_tagebuch_entschuldigungen_frist').value;
 	var abwesenheitsmin = document.getElementById('cms_schulhof_tagebuch_abwesenheitsminimum').value;
-	var notfallzusatnd = document.getElementById('cms_schulhof_tagebuch_notfallzustand').value;
 
 	var meldung = '<p>Die Tagebuch-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
@@ -295,11 +294,6 @@ function cms_einstellungen_tagebuch_aendern() {
 
 	if (!cms_check_ganzzahl(abwesenheitsmin,0)) {
 		meldung += '<li>Die Mindestabwesenheit für die Entschuldigungspflicht ist ungültig.</li>';
-		fehler = true;
-	}
-
-	if (!cms_check_toggle(notfallzustand)) {
-		meldung += '<li>Die Auswahl für den Notfallzustand ist ungültig.</li>';
 		fehler = true;
 	}
 
