@@ -211,3 +211,24 @@ function cms_vollbild(id) {
 		}
 	}
 }
+
+function cms_aktionsschicht_ein(kid) {
+	cms_aktionsschicht_aus();
+	var feld = document.getElementById(kid);
+	if (feld) {
+		// Sichtbar machen
+		feld.style.display = 'block';
+		document.getElementById('cms_aktionsschicht_o').style.display = 'block';
+	}
+}
+
+function cms_aktionsschicht_aus() {
+	var aschichten = document.getElementById('cms_aktionsschicht_ids').value;
+	if (aschichten.length > 0) {
+		aschichten = aschichten.substr(1).split(',');
+		for (var i=0; i<aschichten.length; i++) {
+			document.getElementById(aschichten[i]).style.display = 'none';
+		}
+	}
+	document.getElementById('cms_aktionsschicht_o').style.display = 'none';
+}

@@ -644,7 +644,7 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
 }
 
 function cms_kontaktformulare_ausgeben($dbs, $k) {
-  global $CMS_SCHLUESSEL, $CMS_URL;
+  global $CMS_SCHLUESSEL, $CMS_URL, $CMS_AKTIONSSCHICHT, $CMS_AKTIONSSCHICHTINHALT;
   // Inaktiv für den Benutzer
   if (($CMS_URL[1] == 'Seiten') && ($k['aktiv'] == '0')) {
     return "";
@@ -661,23 +661,25 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     $betreff = $k['betreff'.$zusatz];
     $kopie = $k['kopie'.$zusatz] == "2";
     $anhang = $k['anhang'.$zusatz];
+    $ansicht = $k['ansicht'.$zusatz];
     $aktiv = $k['aktiv'];
+    $bmodus = false;
 
     if ($CMS_URL[1] == 'Bearbeiten') {
+      $bmodus = true;
       $code .= cms_element_bearbeiten($k, 'kontaktformulare', $CMS_URL[2]);
     }
 
     $EMPFAENGER = array();
-    $sql = $dbs->prepare("SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?");
+    $sql = $dbs->prepare("SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung FROM kontaktformulareempfaenger WHERE kontaktformular = ?");
     $sql->bind_param("i", $k['id']);
     if ($sql->execute()) {
-      $sql->bind_result($eid, $ename, $ebesch, $email);
+      $sql->bind_result($eid, $ename, $ebesch);
       while ($sql->fetch()) {
         $e = array();
         $e['id'] = $eid;
         $e['name'] = $ename;
         $e['beschreibung'] = $ebesch;
-        $e['mail'] = $email;
         array_push($EMPFAENGER, $e);
       }
     }
@@ -701,43 +703,80 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
         if (isset($_SESSION["DSGVO_EINWILLIGUNG_A"])) {$CMS_EINWILLIGUNG_A = $_SESSION["DSGVO_EINWILLIGUNG_A"];}
         if (!$CMS_EINWILLIGUNG_A) {$code .= cms_meldung_einwilligungA();}
         else {
-        $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
-          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
-          $code .= "<tr><th>Empfänger: </th><td>";
-          if(count($EMPFAENGER) == 1) {
-            $code .= "<input type=\"hidden\" class=\"cms_kontaktformular_empfaenger\" value=\"".$EMPFAENGER[0]['id']."\">";
-            $code .= "<input class=\"cms_mittel\" disabled value=\"".$EMPFAENGER[0]['name'];
-            if (strlen($EMPFAENGER[0]['beschreibung'])) {
-              $code .= " (".$EMPFAENGER[0]['beschreibung'].")";
+          if ($ansicht == 'v') {
+            $code .= "<div class=\"cms_kontakt_visitenkarten\">";
+            foreach ($EMPFAENGER AS $E) {
+              if (!$bmodus) {
+                $event = " onclick=\"cms_aktionsschicht_kontaktformular('cms_kontaktformular_".$k["id"]."', '".$E['id']."', '".$E['name']."')\"";
+              }
+              else {$event = "";}
+              $code .= "<div class=\"cms_kontakt_visitenkarte\"$event>";
+              $code .= "<h4>".$E['name']."</h4>";
+              $code .= "<p>".$E['beschreibung']."</p>";
+              $code .= "</div>";
             }
-            $code .= "\">";
+            $code .= "</div>";
+            $CMS_AKTIONSSCHICHT .= ",cms_kontaktformular_".$k["id"];
+            $CMS_AKTIONSSCHICHTINHALT .= "<div class=\"cms_aktionsschicht_i\" id=\"cms_kontaktformular_".$k["id"]."\"><div class=\"cms_spalte_i\">";
+            $acode = "<h3>Kontaktformular</h3><table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
+              $acode .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
+              $acode .= "<tr><th>Empfänger: </th><td id=\"cms_kontaktformular_".$k["id"]."_empf\"></td></tr>";
+
+              $acode .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
+              $acode .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
+              $acode .= "<tr><th>Betreff: </th><td><input type=\"text\" class=\"cms_kontaktformular_betreff\"></td></tr>";
+              $acode .= "<tr><th>Nachricht: </th><td><textarea rows=5 class=\"cms_kontaktformular_nachricht\"></textarea></td></tr>";
+              if($anhang)
+                $acode .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
+              if($kopie)
+                $acode .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
+              $acode .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
+              $acode .= "<tr></tr>";
+              $acode .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
+              $acode .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_kontaktformular_absenden(this)\">Absenden</span></td></tr>";
+            $acode .= "</table>";
+            $acode .= "<p><span class=\"cms_button_nein\" onclick=\"cms_aktionsschicht_aus()\">Abbrechen</span></p>";
+            $CMS_AKTIONSSCHICHTINHALT .= $acode."</div></div>";
           }
           else {
-            $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
-            foreach($EMPFAENGER AS $e) {
-              $code .= "<option value=\"".$e['id']."\">".$e['name'];
-              if (strlen($e['beschreibung'])) {
-                $code .= " (".$e['beschreibung'].")";
+            $code .= "<table class=\"cms_formular\" id=\"cms_kontaktformular_tabelle_".$k["id"]."\">";
+              $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_id\" value=\"".$k["id"]."\"></th></tr>";
+              $code .= "<tr><th>Empfänger: </th><td>";
+              if(count($EMPFAENGER) == 1) {
+                $code .= "<input type=\"hidden\" class=\"cms_kontaktformular_empfaenger\" value=\"".$EMPFAENGER[0]['id']."\">";
+                $code .= "<input class=\"cms_mittel\" disabled value=\"".$EMPFAENGER[0]['name'];
+                if (strlen($EMPFAENGER[0]['beschreibung'])) {
+                  $code .= " (".$EMPFAENGER[0]['beschreibung'].")";
+                }
+                $code .= "\">";
               }
-              $code .= "</option>";
-            }
-            $code .= "</select>";
-          }
-          $code .= "</td></tr>";
+              else {
+                $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
+                foreach($EMPFAENGER AS $e) {
+                  $code .= "<option value=\"".$e['id']."\">".$e['name'];
+                  if (strlen($e['beschreibung'])) {
+                    $code .= " (".$e['beschreibung'].")";
+                  }
+                  $code .= "</option>";
+                }
+                $code .= "</select>";
+              }
+              $code .= "</td></tr>";
 
-          $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
-          $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
-          $code .= "<tr><th>Betreff: </th><td><input type=\"text\" class=\"cms_kontaktformular_betreff\"></td></tr>";
-          $code .= "<tr><th>Nachricht: </th><td><textarea rows=5 class=\"cms_kontaktformular_nachricht\"></textarea></td></tr>";
-          if($anhang)
-            $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
-          if($kopie)
-            $code .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
-          $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
-          $code .= "<tr></tr>";
-          $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
-          $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_kontaktformular_absenden(this)\">Absenden</span></td></tr>";
-        $code .= "</table>";
+              $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_absender\" autocomplete=\"name\"></td></tr>";
+              $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_mail\" autocomplete=\"email\"></td></tr>";
+              $code .= "<tr><th>Betreff: </th><td><input type=\"text\" class=\"cms_kontaktformular_betreff\"></td></tr>";
+              $code .= "<tr><th>Nachricht: </th><td><textarea rows=5 class=\"cms_kontaktformular_nachricht\"></textarea></td></tr>";
+              if($anhang)
+                $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
+              if($kopie)
+                $code .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
+              $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
+              $code .= "<tr></tr>";
+              $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
+              $code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_kontaktformular_absenden(this)\">Absenden</span></td></tr>";
+            $code .= "</table>";
+          }
         }
 
       $code .= "</div></div>";

@@ -6,6 +6,10 @@ function cms_check_uhrzeit (uhrzeit) {
 	return uhrzeit.match(/^[0-9]{1,2}:[0-9]{1,2}$/);
 }
 
+function cms_check_bemerkung (text) {
+	return !text.match(/\|\$\|/);
+}
+
 function cms_check_name (name) {
 	return name.match(/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ ]+$/);
 }
@@ -33,6 +37,10 @@ function cms_check_toggle(wert) {
 
 function cms_check_liste(text) {
 	return text.match(/^(\|[0-9]+)+$/);
+}
+
+function cms_check_templiste(text) {
+	return text.match(/^(temp)?[0-9]+(,(temp)?[0-9]+)*$/);
 }
 
 function cms_check_ganzzahl(wert, min, max) {

@@ -48,6 +48,7 @@ if (($zugriff) && ($angemeldet)) {
           $betreff = $daten['betreff'.$modusk];
           $kopie = $daten['kopie'.$modusk];
           $anhang = $daten['anhang'.$modusk];
+          $ansicht = $daten['ansicht'.$modusk];
           $aktiv = $daten['aktiv'];
         }
         else {$fehler = true;}
@@ -87,6 +88,12 @@ if (($zugriff) && ($angemeldet)) {
       $code .= "<tr><th>Betreff:</th><td><input type=\"text\" id=\"cms_website_element_kontaktformular_betreff\" name=\"cms_website_element_kontaktformular_betreff\" value=\"$betreff\"></td></tr>";
       $code .= "<tr><th>Kopie an Absender senden:</th><td>".cms_select_generieren('cms_website_element_kontaktformular_kopie', '', array(1 => "Immer", 2 => "Selbst wählbar", 0 => "Nie"), $kopie, true)."</td></tr>";
       $code .= "<tr><th>Anhänge erlauben:</th><td>".cms_schieber_generieren('website_element_kontaktformular_anhang', $anhang)."</td></tr>";
+      $code .= "<tr><th>Ansicht:</th><td>";
+        $code .= "<select name=\"cms_website_element_kontaktformular_ansicht\" id=\"cms_website_element_kontaktformular_ansicht\">";
+          $ansichtoptionen = "<option value=\"m\">Menü</option><option value=\"v\">Visitenkarten</option>";
+          $code .= str_replace("value=\"$ansicht\"", "value=\"$ansicht\" selected=\"selected\"", $ansichtoptionen);
+        $code .= "</select>";
+      $code .= "</td></tr>";
     $code .= "</table>";
 
     $code .= "<h3>Zugehörige Emfänger</h3>";

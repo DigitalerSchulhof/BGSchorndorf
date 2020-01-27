@@ -395,6 +395,11 @@ ALTER TABLE `voranmeldung_eltern` CHANGE `idvon` `idvon` BIGINT(255) NULL, CHANG
 ALTER TABLE `auffaelliges` CHANGE `id` `id` BIGINT(11) UNSIGNED NOT NULL, CHANGE `typ` `typ` INT(1) UNSIGNED NULL DEFAULT NULL, CHANGE `aktion` `aktion` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `eingaben` `eingaben` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `details` `details` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `notizen` `notizen` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `zeitstempel` `zeitstempel` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `status` `status` INT(11) UNSIGNED NULL DEFAULT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 ALTER TABLE `auffaelliges` CHANGE `ursacher` `ursacher` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 
+
+
+
+
+
 DROP TABLE emoticons;
 DROP TABLE umarmungen;
 
@@ -432,6 +437,8 @@ ALTER TABLE `notfallzustand`
   ADD CONSTRAINT `notfallzustandlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `notfallzustandschueler` FOREIGN KEY (`schueler`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `kontaktformulare` ADD `ansichtalt` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `anhangneu`, ADD `ansichtaktuell` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtalt`, ADD `ansichtneu` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtaktuell`;
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (
@@ -451,6 +458,11 @@ ALTER TABLE `ausplanungklassen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL A
 ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
+
+
+
+
+
 
 CREATE TABLE `fehlzeiten` (
   `id` bigint(255) UNSIGNED NOT NULL,

@@ -31,6 +31,7 @@ function cms_kontaktformulare_neu_speichern(zusatz) {
   var betreff = document.getElementById('cms_website_element_kontaktformular_betreff').value;
   var kopie = document.getElementById('cms_website_element_kontaktformular_kopie').value;
   var anhang = document.getElementById('cms_website_element_kontaktformular_anhang').value;
+  var ansicht = document.getElementById('cms_website_element_kontaktformular_ansicht').value;
   var namen = [];
   var mails = [];
   var beschreibungen = [];
@@ -51,6 +52,11 @@ function cms_kontaktformulare_neu_speichern(zusatz) {
 
   if ((aktiv != 0) && (aktiv != 1)) {
     meldung += '<li>der Aktivitätsgrad ist ungültig.</li>';
+		fehler = true;
+  }
+
+  if ((ansicht != 'm') && (ansicht != 'v')) {
+    meldung += '<li>die gewählte Ansicht ist ungültig.</li>';
 		fehler = true;
   }
 
@@ -115,6 +121,7 @@ function cms_kontaktformulare_neu_speichern(zusatz) {
 		formulardaten.append("betreff",         betreff);
 		formulardaten.append("kopie",           kopie);
 		formulardaten.append("anhang",          anhang);
+    formulardaten.append("ansicht",         ansicht);
     formulardaten.append("namen",           namen);
     formulardaten.append("mails",           mails);
     formulardaten.append("beschreibungen",  bes);
@@ -139,6 +146,7 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
   var betreff = document.getElementById('cms_website_element_kontaktformular_betreff').value;
   var kopie = document.getElementById('cms_website_element_kontaktformular_kopie').value;
   var anhang = document.getElementById('cms_website_element_kontaktformular_anhang').value;
+  var ansicht = document.getElementById('cms_website_element_kontaktformular_ansicht').value;
   var ids = [];
   var namen = [];
   var mails = [];
@@ -188,6 +196,11 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
 		fehler = true;
   }
 
+  if ((ansicht != 'm') && (ansicht != 'v')) {
+    meldung += '<li>die gewählte Ansicht ist ungültig.</li>';
+		fehler = true;
+  }
+
   if(!namen.length || !mails.length || !beschreibungen.length){
     meldung += '<li>es sind nicht genug Empfänger angegeben.</li>';
 		fehler = true;
@@ -226,11 +239,12 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
 		formulardaten.append("betreff",         betreff);
 		formulardaten.append("kopie",           kopie);
 		formulardaten.append("anhang",          anhang);
+		formulardaten.append("ansicht",         ansicht);
     formulardaten.append("ids",             ids);
     formulardaten.append("namen",           namen);
     formulardaten.append("mails",           mails);
     formulardaten.append("beschreibungen",  bes);
-		formulardaten.append("anfragenziel", 	'266');
+		formulardaten.append("anfragenziel", 	  '266');
 
     function anfragennachbehandlung(rueckgabe) {
       if (rueckgabe == "ERFOLG") {
@@ -323,9 +337,11 @@ function cms_kontaktformular_absenden(element) {
   }
 
   if (fehler) {
+    cms_aktionsschicht_aus();
     cms_meldung_an('fehler', 'Kontaktformular absenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
   }
   else {
+    cms_aktionsschicht_aus();
     cms_laden_an('Kontaktformular absenden', 'Die Eingaben werden überprüft.');
 
     var formulardaten = new FormData();
@@ -365,4 +381,15 @@ function cms_kontaktformular_absenden(element) {
 
     cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
   }
+}
+
+
+
+function cms_aktionsschicht_kontaktformular(kid, eid, name) {
+	// Empfänger eintragen
+	var empf = document.getElementById(kid+'_empf');
+	if (empf) {
+		empf.innerHTML = name+'<input type="hidden" class="cms_kontaktformular_empfaenger" value="'+eid+'">';
+		cms_aktionsschicht_ein(kid);
+	}
 }

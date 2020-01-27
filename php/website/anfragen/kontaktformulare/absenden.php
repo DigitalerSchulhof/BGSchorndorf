@@ -30,7 +30,7 @@
 
   $anhaenge = $anhang; // Wird noch überschrieben werden
 
-  if(!cms_check_ganzzahl(array($id, $empfaenger), 0))
+  if(!cms_check_ganzzahl($empfaenger, 0))
     die("FEHLER");
   if(!cms_check_nametitel($absender))
     die("FEHLER");
@@ -39,7 +39,7 @@
   if(!$nachricht)
     die("FEHLER");
 
-  if (isset($_SESSION['SPAMSCHUTZ_'.$uid])) {$codevergleich = $_SESSION['SPAMSCHUTZ_'.$uid];} else {echo "FEHLER"; exit;}
+  if (isset($_SESSION['SPAMSCHUTZ_'.$uid])) {$codevergleich = $_SESSION['SPAMSCHUTZ_'.$uid];} else {echo "FEHLER7"; exit;}
   unset($_SESSION['SPAMSCHUTZ_'.$uid]);
 
   if ($code != $codevergleich) {echo "CODE"; exit;}
@@ -52,10 +52,10 @@
     $sql->bind_result($aktiv, $betreff, $kopie, $anhang);
     if (!$sql->fetch()) {
       $sql->close();
-      echo "FEHLER"; exit;
+      echo "FEHLER8"; exit;
     }
   }
-  else {echo "FEHLER"; exit;}
+  else {echo "FEHLER9"; exit;}
   $sql->close();
 
 
@@ -65,21 +65,21 @@
     $sql->bind_result($name, $email);
     if (!$sql->fetch()) {
       $sql->close();
-      echo "FEHLER"; exit;
+      echo "FEHLER10"; exit;
     }
   }
-  else {echo "FEHLER"; exit;}
+  else {echo "FEHLER11"; exit;}
   $sql->close();
 
   if(!$aktiv)
-    die("FEHLER");
-    
+    die("FEHLER12");
+
   // Magic lol
   if($kopie == 2)
     $kopie = $k;
 
   if(!cms_check_toggle($kopie))
-    die("FEHLER");
+    die("FEHLER13");
 
   $mailer = new PHPMailer();
   $mailer->CharSet = 'utf-8';
@@ -103,7 +103,7 @@
         foreach ($anhaenge as $i => $a)
             $mailer->AddAttachment($a["tmp_name"], $a["name"]);
     else
-      die("FEHLER");
+      die("FEHLER14");
 
   $HTML = "<html>";
 	$HTML .= "<body style=\"background: #ffffff;font-family: sans-serif;font-size: 13px;font-weight: normal;padding: 0;margin: 0;list-style-type: none;line-height: 1.2em;text-decoration: none;box-sizing: border-box;\">";

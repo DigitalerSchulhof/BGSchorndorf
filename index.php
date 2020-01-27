@@ -477,6 +477,9 @@
 				include_once("php/website/seiten/bearbeiten.php");
 			}
 		}
+
+	$CMS_AKTIONSSCHICHT = "";
+	$CMS_AKTIONSSCHICHTINHALT = "";
 	?>
 
 	<div id="cms_hauptteil_o">
@@ -520,6 +523,7 @@
 	<?php
 		include_once("php/allgemein/seiten/fusszeile.php");
 		include_once("php/allgemein/seiten/blende.php");
+		include_once("php/allgemein/seiten/aktionsschicht.php");
 		cms_trennen($dbs);
 	?>
 	<div id="contextmenue"></div>

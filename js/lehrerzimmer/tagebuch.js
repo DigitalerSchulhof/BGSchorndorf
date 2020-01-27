@@ -257,3 +257,122 @@ function cms_eintrag_ltweg(id) {
     ids.value = neueids.substr(1,neueids.length-2);
   }
 }
+
+function cms_tagebuch_eintrag_speichern(freigabe) {
+  cms_laden_an('Tagebucheintrag speichern', 'Die Eingaben werden überprüft.');
+  var meldung = '<p>Der Tagebucheintrag konnte nicht gespeichert werden, denn ...</p><ul>';
+	var fehler = false;
+	var inhalt = document.getElementById('cms_tagebuch_eintrag_inhalt').value;
+	var hausi = document.getElementById('cms_tagebuch_eintrag_hausi').value;
+	var leistung = document.getElementById('cms_cms_tagebuch_eintrag_lm').value;
+	var fzids = document.getElementById('cms_tagebuch_eintrag_fzids').value;
+	var ltids = document.getElementById('cms_tagebuch_eintrag_ltids').value;
+
+	var ierlaubt = document.getElementById('cms_tagebuch_eintrag_ierlaubt').value;
+	var ferlaubt = document.getElementById('cms_tagebuch_eintrag_ferlaubt').value;
+	var lterlaubt = document.getElementById('cms_tagebuch_eintrag_lterlaubt').value;
+
+  if (ierlaubt == '1') {
+    if (inhalt.length == 0) {
+  		meldung += '<li>es muss ein Unterrichtsgegenstand angegeben werden.</li>';
+  		fehler = true;
+  	}
+    if (!cms_check_toggle(leistung)) {
+  		meldung += '<li>die Eingabe für die Leistungsmessung ist ungültig.</li>';
+  		fehler = true;
+  	}
+  }
+
+  var fzfehler = false;
+  if ((ferlaubt == '1') && (fzids.length > 0)) {
+    if (cms_check_templiste(fzids)) {
+      fzids = fzids.split(',');
+      var fehlzeiten = "";
+      for (var i=0; i<fzids.length; i++) {
+        var fzifehler = false;
+        var pers = document.getElementById('cms_eintrag_fzp_'+fzids[i]).value;
+        var vstd = document.getElementById('cms_eintrag_fz_beginn_'+fzids[i]+'_h').value;
+        var vmin = document.getElementById('cms_eintrag_fz_beginn_'+fzids[i]+'_m').value;
+        var bstd = document.getElementById('cms_eintrag_fz_ende_'+fzids[i]+'_h').value;
+        var bmin = document.getElementById('cms_eintrag_fz_ende_'+fzids[i]+'_m').value;
+        var von = vstd+':'+vmin;
+        var bis = bstd+':'+bmin;
+        var bem = document.getElementById('cms_eintrag_fz_bem_'+fzids[i]).value;
+        if (!cms_check_ganzzahl(pers)) {fzifehler = true;}
+        if (!cms_check_uhrzeit(von)) {fzifehler = true;}
+        if (!cms_check_uhrzeit(bis)) {fzifehler = true;}
+        if (!cms_check_bemerkung(bem)) {fzifehler = true;}
+        if (!fzifehler) {
+          fehlzeiten += fzids[i]+"|$|"+pers+"|$|"+von+"|$|"+bis+"|$|"+bem+"\n";
+        }
+        else {
+          fzfehler = true;
+        }
+      }
+    }
+    else {
+      fzfehler = true;
+    }
+
+    if (fzfehler) {
+  		meldung += '<li>die Eingabe der Fehlzeiten ist ungültig. Stellen Sie sicher, dass die Fehlzeittexte die Zeichenkette »|$|« nicht enthalten.</li>';
+  		fehler = true;
+  	}
+  }
+
+  var ltfehler = false;
+  if ((lterlaubt == '1') && (ltids.length > 0)) {
+    if (cms_check_templiste(ltids)) {
+      ltids = ltids.split(',');
+      var lobtadel = "";
+      for (var i=0; i<ltids.length; i++) {
+        var ltifehler = false;
+        var pers = document.getElementById('cms_eintrag_ltp_'+ltids[i]).value;
+        var bem = document.getElementById('cms_eintrag_lt_bem_'+ltids[i]).value;
+        var charakter = document.getElementById('cms_eintrag_ltchar'+ltids[i]).value;
+        var art = document.getElementById('cms_eintrag_ltart_'+ltids[i]).value;
+        if ((!cms_check_ganzzahl(pers)) && (pers != '-')) {ltifehler = true;}
+        if (!cms_check_bemerkung(bem)) {ltifehler = true;}
+        if ((charakter != '+') && (charakter != '-') && (charakter != '0')) {ltifehler = true;}
+        if ((art != 'B') && (art != 'M') && (art != 'V')) {ltifehler = true;}
+        if (!ltifehler) {
+          lobtadel += ltids[i]+"|$|"+pers+"|$|"+char+"|$|"+art+"|$|"+bem+"\n";
+        }
+        else {
+          ltfehler = true;
+        }
+      }
+    }
+    else {
+      fzfehler = true;
+    }
+
+    if (ltfehler) {
+  		meldung += '<li>die Eingabe der Bemerkungen ist ungültig. Stellen Sie sicher, dass die Bemerkungstexte die Zeichenkette »|$|« nicht enthalten.</li>';
+  		fehler = true;
+  	}
+  }
+
+  var formulardaten = new FormData();
+	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+  formulardaten.append("anfragenziel", '35');
+  formulardaten.append("inhalt", inhalt);
+  formulardaten.append("hausi", hausi);
+  formulardaten.append("leistung", leistung);
+  formulardaten.append("fehlzeiten", fehlzeiten);
+  formulardaten.append("lobtadel", lobtadel);
+
+	function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_tagebuchdetails_laden();
+    }
+    else if (false) {
+      
+    }
+    else {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+  }
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+}

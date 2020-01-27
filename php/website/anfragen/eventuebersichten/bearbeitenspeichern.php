@@ -45,7 +45,6 @@ if (cms_angemeldet() && $zugriff) {
 	if ($position > $maxpos) {$fehler = true;}
 
 	if (!$fehler) {
-		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
 		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {

@@ -3,15 +3,19 @@
 function cms_maxpos_spalte($dbs, $spalte) {
   $max = 0;
   $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
-  foreach ($elemente as $e) {
-    $sql = $dbs->prepare("SELECT MAX(position) AS max FROM $e WHERE spalte = ?");
-    $sql->bind_param("i", $spalte);
-    if ($sql->execute()) {
-      $sql->bind_result($max);
-      $sql->fetch();
-    }
-    $sql->close();
+  $sql = "";
+  foreach ($elemente AS $e) {
+    $sql .= " UNION (SELECT position FROM $e WHERE spalte = ?)";
   }
+  $sqle = substr($sql, 7);
+
+  $sql = $dbs->prepare("SELECT MAX(position) AS max FROM ($sqle) AS x");
+  $sql->bind_param("iiiiii", $spalte, $spalte, $spalte, $spalte, $spalte, $spalte);
+  if ($sql->execute()) {
+    $sql->bind_result($max);
+    $sql->fetch();
+  }
+  $sql->close();
   return $max;
 }
 
