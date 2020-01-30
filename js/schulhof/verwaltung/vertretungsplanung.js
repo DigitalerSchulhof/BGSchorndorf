@@ -1235,7 +1235,6 @@ function cms_vplan_wochenplan_l(details) {
 				cms_vplan_stunde_markieren();
 			}
 			else {
-				alert(rueckgabe);
 				lehrerwochenplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Lehrerplans ist ein Fehler aufgetreten.</p>';
 			}
 		}

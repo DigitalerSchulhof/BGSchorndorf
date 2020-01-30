@@ -651,6 +651,16 @@ if ($einstellungenplaetten) {
 	$sql->execute();
 	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Anmeldung aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
 	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Anmeldung von', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Anmeldung bis', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (7, AES_ENCRYPT('Anmeldung persönlich von', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (8, AES_ENCRYPT('Anmeldung persönlich bis', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (9, AES_ENCRYPT('Anmeldung Überhang Tage', '$CMS_SCHLUESSEL'), AES_ENCRYPT('7', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
 
 	$id = 0;
 	$sql = $dbs->prepare("DELETE FROM allgemeineeinstellungen");

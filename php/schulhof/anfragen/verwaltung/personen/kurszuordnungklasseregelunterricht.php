@@ -20,7 +20,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Kurse laden
 	$KURSE = array();
-	$sql = $dbs->prepare("SELECT DISTINCT id FROM kurse WHERE schuljahr = ?");
+	$sql = $dbs->prepare("SELECT DISTINCT id FROM kurse WHERE schuljahr = ? AND id IN (SELECT kurs FROM kurseklassen)");
 	$sql->bind_param("i", $sj);
 	if ($sql->execute()) {
 		$sql->bind_result($kid);
@@ -30,8 +30,19 @@ if (cms_angemeldet() && $zugriff) {
 	}
 	$sql->close();
 
+	// Kurse leeren
+	if (count($KURSE) > 0) {
+		$kursesql = "(".implode(",", $KURSE).")";
+		$sql = $dbs->prepare("DELETE FROM kursemitglieder WHERE gruppe IN $kursesql");
+		$sql->execute();
+		$sql->close();
+		$sql = $dbs->prepare("DELETE FROM kursevorsitz WHERE gruppe IN $kursesql");
+		$sql->execute();
+		$sql->close();
+	}
+
 	// Schüler aus Klassen eintragen
-	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT ? AS gruppe, person, 0 AS dateiupload, 1 AS dateidownload, 0 AS dateiloeschen, 0 AS dateiumbenennen, 0 AS termine, 0 AS blogeintraege, 1 AS chatten, 0 AS nachrichtloeschen, 0 AS nutzerstummschalten, null AS chatbannbis, null AS chatbannvon FROM klassenmitglieder WHERE gruppe IN (SELECT klasse FROM kurseklassen WHERE kurs = ?)");
+	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT ? AS gruppe, person, 0 AS dateiupload, 1 AS dateidownload, 0 AS dateiloeschen, 0 AS dateiumbenennen, 0 AS termine, 0 AS blogeintraege, 1 AS chatten, 0 AS nachrichtloeschen, 0 AS nutzerstummschalten, null AS chatbannbis, null AS chatbannvon FROM klassenmitglieder JOIN personen ON person = personen.id WHERE gruppe IN (SELECT klasse FROM kurseklassen WHERE kurs = ?) AND art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL')");
 	foreach ($KURSE AS $K) {
 		$sql->bind_param("ii", $K, $K);
 		$sql->execute();
@@ -53,7 +64,7 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->execute();
 	}
 	$sql->close();
-	
+
 
 	// Stufen neu zuordnen
 	$STUFEN = array();

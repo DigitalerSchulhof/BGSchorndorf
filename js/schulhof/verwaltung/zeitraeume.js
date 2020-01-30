@@ -677,7 +677,7 @@ function cms_stundenplanung_import_speichern() {
         if (klassenfehler.length > 0) {meldungtext += '<li>Folgende Klassen wurden nicht gefunden: '+klassenfehler.replace(trennungex, ', ')+'</li>';}
         if (stufenfehler.length > 0) {meldungtext += '<li>Folgende Stufen wurden nicht gefunden: '+stufenfehler.replace(trennungex, ', ')+'</li>';}
         if (fachfehler.length > 0) {meldungtext += '<li>Folgende Fächer wurden nicht gefunden: '+fachfehler.replace(trennungex, ', ')+'</li>';}
-        cms_meldung_an('fehler', 'Stundenplanung importieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+        cms_meldung_an('fehler', 'Stundenplanung importieren', meldungtext+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
       }
       else if (meldung == "ERFOLG") {
         var kurse = analyseergebnis[1];
@@ -883,6 +883,8 @@ function cms_stundenplanung_import_speichern() {
               formulardaten.append('fach', kursinfo[3]);
               formulardaten.append('klassen', kursinfo[5]);
               formulardaten.append('kursbezextern', '');
+              formulardaten.append('schiene', kursinfo[6]);
+              formulardaten.append('import', 'j');
               formulardaten.append('art', 'Kurse');
               formulardaten.append('anfragenziel', '220');
               cms_ajaxanfrage (false, formulardaten, kurseanlegen);

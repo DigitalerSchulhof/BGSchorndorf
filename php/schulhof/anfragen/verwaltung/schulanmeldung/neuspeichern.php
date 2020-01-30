@@ -23,6 +23,7 @@ if (isset($_POST['religion'])) {$religion = cms_texttrafo_e_db($_POST['religion'
 if (isset($_POST['religionsunterricht'])) {$religionsunterricht = cms_texttrafo_e_db($_POST['religionsunterricht']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['land1'])) {$land1 = cms_texttrafo_e_db($_POST['land1']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['land2'])) {$land2 = cms_texttrafo_e_db($_POST['land2']);} else {echo "FEHLER"; exit;}
+if (isset($_POST['impfung'])) {$impfung = cms_texttrafo_e_db($_POST['impfung']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['strasse'])) {$strasse = cms_texttrafo_e_db($_POST['strasse']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['hausnummer'])) {$hausnummer = cms_texttrafo_e_db($_POST['hausnummer']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['plz'])) {$plz = cms_texttrafo_e_db($_POST['plz']);} else {echo "FEHLER"; exit;}
@@ -91,6 +92,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (strlen($religion) <= 0) {$fehler = true;}
 	if (strlen($religionsunterricht) <= 0) {$fehler = true;}
 	if (strlen($land1) <= 0) {$fehler = true;}
+	if (!cms_check_toggle($impfung)) {$fehler = true;}
 	if (strlen($strasse) <= 0) {$fehler = true;}
 	if (strlen($hausnummer) <= 0) {$fehler = true;}
 	if (strlen($plz) <= 0) {$fehler = true;}
@@ -133,8 +135,8 @@ if (cms_angemeldet() && $zugriff) {
 		$dbs = cms_verbinden('s');
 
 		$schuelerid = cms_generiere_kleinste_id('voranmeldung_schueler');
-		$sql = $dbs->prepare("UPDATE voranmeldung_schueler SET vorname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), rufname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), nachname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsdatum = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsland = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), muttersprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), verkehrssprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geschlecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religion = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religionsunterricht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), staatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zstaatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), strasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), hausnummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), plz = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), teilort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), mail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), einschulung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeschule = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeklasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kuenftigesprofil = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), akzeptiert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), eingegangen = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
-	  $sql->bind_param("sssssssssssssssssssssssssssssi", $vorname, $rufname, $nachname, $geburtsdatum, $geburtsort, $geburtsland, $muttersprache, $verkehrssprache, $geschlecht, $religion, $religionsunterricht, $land1, $land2, $strasse, $hausnummer, $plz, $ort, $teilort, $telefon1, $telefon2, $handy1, $handy2, $mail, $einschulung, $vorigeschule, $klasse, $profil, $akzeptiert, $jetzt, $schuelerid);
+		$sql = $dbs->prepare("UPDATE voranmeldung_schueler SET vorname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), rufname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), nachname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsdatum = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsland = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), muttersprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), verkehrssprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geschlecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religion = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religionsunterricht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), staatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zstaatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), strasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), hausnummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), plz = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), teilort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), mail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), einschulung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeschule = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeklasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kuenftigesprofil = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geimpft = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), akzeptiert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), eingegangen = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+	  $sql->bind_param("ssssssssssssssssssssssssssssssi", $vorname, $rufname, $nachname, $geburtsdatum, $geburtsort, $geburtsland, $muttersprache, $verkehrssprache, $geschlecht, $religion, $religionsunterricht, $land1, $land2, $strasse, $hausnummer, $plz, $ort, $teilort, $telefon1, $telefon2, $handy1, $handy2, $mail, $einschulung, $vorigeschule, $klasse, $profil, $impfung, $akzeptiert, $jetzt, $schuelerid);
 	  $sql->execute();
 	  $sql->close();
 

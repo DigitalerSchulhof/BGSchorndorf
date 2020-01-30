@@ -439,6 +439,9 @@ ALTER TABLE `notfallzustand`
 
 ALTER TABLE `kontaktformulare` ADD `ansichtalt` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `anhangneu`, ADD `ansichtaktuell` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtalt`, ADD `ansichtneu` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtaktuell`;
 
+ALTER TABLE `voranmeldung_schueler` ADD `geimpft` TINYINT(1) UNSIGNED NULL AFTER `kuenftigesprofil`;
+ALTER TABLE `voranmeldung_schueler` CHANGE `geimpft` `geimpft` VARBINARY(50) NULL DEFAULT NULL;
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (
