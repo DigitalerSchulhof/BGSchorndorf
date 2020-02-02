@@ -668,7 +668,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     }
 
     $EMPFAENGER = array();
-    $sql = $dbs->prepare("SELECT id, name$zusatz as name, beschreibung$zusatz as beschreibung, mail$zusatz as mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?");
+    $sql = $dbs->prepare("SELECT id, name, beschreibung, mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?");
     $sql->bind_param("i", $k['id']);
     if ($sql->execute()) {
       $sql->bind_result($eid, $ename, $ebesch, $email);
@@ -683,18 +683,10 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     }
     $sql->close();
 
-    if (count($EMPFAENGER) == 0) {
-      return "<p class=\"cms_notiz\">Für das Formular sind keine Empfänger hinterlegt.</p>";
-    }
-
-
     $aussenklasse = " cms_kontaktformular_aussen_";
 
     $code .= "<div class=\"cms_kontaktformular cms_kontaktfomular$aussenklasse\">";
       $jetzt = time();
-
-
-      $felder = 0;
 
       $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\">";
         $CMS_EINWILLIGUNG_A = false;
@@ -713,15 +705,19 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
             $code .= "\">";
           }
           else {
-            $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
-            foreach($EMPFAENGER AS $e) {
-              $code .= "<option value=\"".$e['id']."\">".$e['name'];
-              if (strlen($e['beschreibung'])) {
-                $code .= " (".$e['beschreibung'].")";
+            if(count($EMPFAENGER) == 0) {
+              $code .= "<p class=\"cms_notiz\">Für das Formular sind keine Empfänger hinterlegt.</p>";
+            } else {
+              $code .= "<select class=\"cms_kontaktformular_empfaenger\"><option selected display=\"none\" hidden value=\"-1\">Bitte wählen</option>";
+              foreach($EMPFAENGER AS $e) {
+                $code .= "<option value=\"".$e['id']."\">".$e['name'];
+                if (strlen($e['beschreibung'])) {
+                  $code .= " (".$e['beschreibung'].")";
+                }
+                $code .= "</option>";
               }
-              $code .= "</option>";
+              $code .= "</select>";
             }
-            $code .= "</select>";
           }
           $code .= "</td></tr>";
 
@@ -743,8 +739,6 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
       $code .= "</div></div>";
 
       $code .= "<div class=\"cms_clear\"></div>";
-
-      if (($felder == 0) && ($CMS_URL[1] == 'Bearbeiten')) {$code .= '<p class="cms_notiz">Aktuell gibt es keine Inhalte für dieses Element.</p>';}
 
     $code .= "</div>";
     if ($CMS_URL[1] == 'Bearbeiten') {

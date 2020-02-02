@@ -59,7 +59,7 @@
   $sql->close();
 
 
-  $sql = $dbs->prepare("SELECT nameaktuell as name, mailaktuell as email FROM kontaktformulareempfaenger WHERE id = ? AND kontaktformular = ?");
+  $sql = $dbs->prepare("SELECT name, mail as email FROM kontaktformulareempfaenger WHERE id = ? AND kontaktformular = ?");
   $sql->bind_param("ii", $empfaenger, $id);
   if ($sql->execute()) {
     $sql->bind_result($name, $email);
@@ -73,7 +73,7 @@
 
   if(!$aktiv)
     die("FEHLER");
-    
+
   // Magic lol
   if($kopie == 2)
     $kopie = $k;

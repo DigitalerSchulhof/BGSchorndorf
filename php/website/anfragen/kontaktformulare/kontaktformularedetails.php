@@ -52,15 +52,21 @@ if (($zugriff) && ($angemeldet)) {
         }
         else {$fehler = true;}
         $anfrage->free();
-      } else $fehler = true;
-      $sql = "SELECT id, name$modusk as name, beschreibung$modus as beschreibung, mail$modusk as mail FROM kontaktformulareempfaenger WHERE kontaktformular = $id";
-      if($sql = $dbs->query($sql))  // TODO: Irgendwie safe machen
-        while($sqld = $sql->fetch_assoc()) {
-          array_push($ids, $sqld["id"]);
-          array_push($namen, $sqld["name"]);
-          array_push($mails, $sqld["mail"]);
-          array_push($beschreibungen, $sqld["beschreibung"]);
+      } else {
+        $fehler = true;
+      }
+      $sql = "SELECT id, name, beschreibung, mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?";
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("i", $id);
+      $sql->bind_result($eid, $ename, $ebes, $email);
+      if($sql->execute()) {
+        while($sql->fetch()) {
+          array_push($ids, $eid);
+          array_push($namen, $ename);
+          array_push($mails, $email);
+          array_push($beschreibungen, $ebes);
         }
+      }
     }
     else {$fehler = true;}
     cms_trennen($dbs);
@@ -93,7 +99,6 @@ if (($zugriff) && ($angemeldet)) {
     $code .= "<div id=\"cms_kontaktformular_empfaenger\">";
       for ($i=0; $i < count($namen); $i++) {
         $code .= "<table class=\"cms_formular\">";
-          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_empfaenger_id\" value=\"".$ids[$i]."\"></th></tr>";
           $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_name\" value=\"".$namen[$i]."\"></td></tr>";
           $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_mail\" value=\"".$mails[$i]."\"></td></tr>";
           $code .= "<tr><th>Beschreibung: </th><td><textarea class=\"cms_kontaktformular_empfaenger_beschreibung\">".$beschreibungen[$i]."</textarea></td></tr>";

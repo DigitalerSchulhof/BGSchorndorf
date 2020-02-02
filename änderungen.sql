@@ -418,3 +418,13 @@ ALTER TABLE `ausplanungklassen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL A
 ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
+
+ALTER TABLE `kontaktformulareempfaenger` DROP `namealt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `nameneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailneu`;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `nameaktuell` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `beschreibungaktuell` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `mailaktuell` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;

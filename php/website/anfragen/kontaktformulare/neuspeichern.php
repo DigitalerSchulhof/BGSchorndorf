@@ -33,7 +33,6 @@ if (cms_angemeldet() && $zugriff) {
 	if(!((count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
 		$fehler = true;
 
-
 	foreach($namen as $i => $n)
 		if(!cms_check_nametitel($n))
 			$fehler = true;
@@ -69,9 +68,9 @@ if (cms_angemeldet() && $zugriff) {
 			$mail = $mails[$i];
 			$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
 			$empfid = cms_generiere_kleinste_id('kontaktformulareempfaenger');
-			$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = ?, namealt = ?, nameaktuell = ?, nameneu = ?, beschreibungalt = ?, beschreibungaktuell = ?, beschreibungneu = ?, mailalt = ?, mailaktuell = ?, mailneu = ? WHERE id = ?";
+			$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = ?, name = ?, beschreibung = ?, mail = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_param("isssssssssi", $id, $name, $name, $name, $beschreibung, $beschreibung, $beschreibung, $mail, $mail, $mail, $empfid);
+			$sql->bind_param("isssi", $id, $name, $beschreibung, $mail, $empfid);
 			$sql->execute();
 			$sql->close();
 		}
