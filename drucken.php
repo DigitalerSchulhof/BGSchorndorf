@@ -12,6 +12,8 @@
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	session_start();
+	$CMS_VERSION = rand(0,1000000);
+	//$CMS_VERSION = "0.5.72";
 	$CMS_ANGEMELDET = cms_angemeldet();
 	if ($CMS_ANGEMELDET) {
 
@@ -63,13 +65,12 @@
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 	// <!-- Einbindung der Stylesheets -->
-	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css\">";
-	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css\">";
-	echo "<script src=\"js/allgemein/check.js\"></script>";
-	echo "<script src=\"js/allgemein/anfragen.js\"></script>";
+	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
+	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?v=$CMS_VERSION\">";
+	echo "<script src=\"js/allgemein/check.js?v=$CMS_VERSION\"></script>";
+	echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";
 	if ($CMS_ANGEMELDET) {
-		echo "<script src=\"js/lehrerzimmer/lehrernetz.js\"></script>";
-		echo "<script src=\"js/lehrerzimmer/lehrernetz.js\"></script>";
+		echo "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 	}
 	?>
 	<script><?php

@@ -24,6 +24,7 @@ if (isset($_SESSION['VORANMELDUNG_S_RELIGION'])) {$sreligion = $_SESSION['VORANM
 if (isset($_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'])) {$sreligionsunterricht = $_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_LAND1'])) {$sland1 = $_SESSION['VORANMELDUNG_S_LAND1'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_LAND2'])) {$sland2 = $_SESSION['VORANMELDUNG_S_LAND2'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_S_IMPFUNG'])) {$simpfung = $_SESSION['VORANMELDUNG_S_IMPFUNG'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$sstrasse = $_SESSION['VORANMELDUNG_S_STRASSE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$shausnummer = $_SESSION['VORANMELDUNG_S_HAUSNUMMER'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$splz = $_SESSION['VORANMELDUNG_S_PLZ'];} else {$fehler = true;}
@@ -98,6 +99,10 @@ if (!$fehler) {
     if (strlen($shandy2) > 0) {$kontakt .= "<br>Handy: $shandy2";}
     if (strlen($smail) > 0) {$kontakt .= "<br>eMail: $smail";}
     $code .= substr($kontakt, 4)."</td></tr>";
+    $code .= "<tr><th>Vollständige Masernimpfung</th><td>";
+    if ($simpfung == 1) {$code .= "ja";}
+    else {$code .= "nein";}
+    $code .= "</td></tr>";
     $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Alte Schule</th></tr>";
     $code .= "<tr><th>Name</th><td>$svorigeschule</td></tr>";
     $code .= "<tr><th>Klasse</th><td>$sklasse</td></tr>";

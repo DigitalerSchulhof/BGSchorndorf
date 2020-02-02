@@ -1,0 +1,60 @@
+// "out": "../css/app.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
+@import "standard.less";
+
+* {
+	font-family: 'rob', sans-serif;
+	font-size: 10pt;
+	font-weight: normal;
+	padding: 0px;
+	margin: 0px;
+	list-style-type: none;
+	line-height: 1.2em;
+	text-decoration: none;
+	box-sizing: border-box;
+}
+
+body {
+  background: @standardhell_background;
+}
+
+.cms_appseite {
+	padding: 10px;
+	width: 100%;
+}
+
+#cms_appkopf {
+	display: block;
+	text-align: center;
+}
+
+#cms_appinhalt {
+	margin-top: 30px;
+}
+
+#cms_logo {
+	text-align: left;
+  display: inline-block;
+}
+
+#cms_logo_bild {
+	float: left;
+	width: 75px;
+  padding-right: 5px;
+}
+
+#cms_logo_schrift {
+  float: left;
+  display: block;
+}
+
+#cms_logo_o, #cms_logo_u {
+  position: relative;
+  color: @logo_schrift_farbe;
+  font-size: 220%;
+  padding: 2px 0px 0px 0px;
+  display: block;
+}
+
+#cms_logo_o {
+  font-weight: bold;
+}
