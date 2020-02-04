@@ -7,7 +7,7 @@
 		$code .= '<li><img src="res/icons/gross/javascript.png"><br>JavaScript aktiv?</li>';
 		$code .= '<li><img src="res/icons/gross/multinutzer.png"><br>Nur ein Nutzer pro Browser zur selben Zeit!</li>';
 		$code .= '<li></li>';
-		$code .= '<li id="cms_browsertest">'.cms_ladeicon().'<br>Browserunterstützung wird geprüft...</li>';
+		$code .= '<li id="cms_browsertest"><img src="res/icons/gross/warnung.png"><br>Der Browser untestützt womöglich nicht alle Funktionen.</li>';
 	$code .= '</ul>';
 
 	$code .= "<script>cms_check_browserunterstuetzung();</script>";
