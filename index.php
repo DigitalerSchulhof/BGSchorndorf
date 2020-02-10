@@ -50,7 +50,7 @@
 		$CMS_URL = explode('/', $_GET['URL']);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
 		// Fallback bei ungültigen URLs
-		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
+		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern") && ($CMS_URL[0] != "App")) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
 		}
@@ -69,6 +69,11 @@
 			$CMS_URL = array();
 		  $CMS_URL[0] = "Schulhof";
 		  $CMS_URL[1] = "Anmeldung";
+		}
+		// App-Zugriff verhindern
+		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "App"))   {
+			$CMS_URL = array();
+		  $CMS_URL[0] = "App";
 		}
 		// Ungültige Website URL Anfänge
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {
@@ -197,6 +202,7 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tagebuch.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/app.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
@@ -321,8 +327,14 @@
         echo "var CMS_BENUTZERNACHNAME = '".$_SESSION['BENUTZERNACHNAME']."';\n";
         echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
         echo "var CMS_MAX_DATEI = ".$CMS_MAX_DATEI.";\n";
-        echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
-				$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
+				if ($CMS_URL[0] != 'App') {
+					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(1)', 30000);\n";
+					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(1);";
+				}
+				else {
+					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(2)', 30000);\n";
+					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(2);";
+				}
         if ($CMS_IMLN) {
 					echo "CMS_IMLN = true;\n";
         }
@@ -341,7 +353,13 @@
 
 
 <?php
-	echo "<body class=\"cms_optimierung_".$CMS_GERAET."\">";
+	$seitenzusatzklasse = " cms_seite_normal";
+	if ($CMS_URL[0] == 'App') {
+		$CMS_GERAET = "H";
+		$seitenzusatzklasse = " cms_seite_app";
+	}
+
+	echo "<body class=\"cms_optimierung_".$CMS_GERAET.$seitenzusatzklasse."\">";
 ?>
 
 
@@ -431,7 +449,9 @@
 		$CMS_URLGANZ = implode('/', $CMS_URL);
 
 		include_once("php/allgemein/seiten/kopfzeile.php");
-		echo '<div id="cms_platzhalter_bild"></div>';
+
+		if ($CMS_URL[0] != 'App') {echo '<div id="cms_platzhalter_bild"></div>';}
+
 		if ($CMS_URL[0] == "Website") {
 			$bildercode = "";
 			$code = "";
@@ -489,7 +509,7 @@
 			<?php
 			if ($CMS_ANGEMELDET) {
 				// NOTFALLZUSTAND PRÜFEN
-				if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand']) {
+				if (($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand']) && (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's'))) {
 					$code = "<div class=\"cms_spalte_i\"><div class=\"cms_neuigkeit_notfall\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/alarm.png\"></span>";
 					$code .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Notfallzustand</h4><p>Bitte <b>bewahren Sie Ruhe</b> und verlassen Sie <b>umgehend</b> das Gebäude!!</p>";
 					if ($CMS_BENUTZERART == 'l') {
@@ -515,6 +535,11 @@
 			}
 
 			include_once("php/allgemein/seiten/seitensteuerung.php");
+
+			if ($CMS_URL[0] != 'App') {
+				if ($CMS_ANGEMELDET) {$code .= "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"ja\"></p>";}
+				else {$code .= "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"\"></p>";}
+			}
 			?>
 		</div>
 	</div>
@@ -523,7 +548,9 @@
 	<?php
 		include_once("php/allgemein/seiten/fusszeile.php");
 		include_once("php/allgemein/seiten/blende.php");
-		include_once("php/allgemein/seiten/aktionsschicht.php");
+		if ($CMS_URL[0] != 'App') {
+			include_once("php/allgemein/seiten/aktionsschicht.php");
+		}
 		cms_trennen($dbs);
 	?>
 	<div id="contextmenue"></div>

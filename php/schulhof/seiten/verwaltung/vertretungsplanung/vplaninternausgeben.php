@@ -615,7 +615,7 @@ function cms_vertretungsplan_persoenlich($dbs, $ohnelink = false) {
     $code .= "</div>";
   $code .= "</div>";
 
-  $code .= "<div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde\">Regelstunde</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_geaendert\">Geändert</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_ausfall\">Entfall</span></div><div class=\"clear\"></div></div>";
+  $code .= "<div class=\"cms_legende\"><span class=\"cms_stundenplan_stunde\">Regelstunde</span><span class=\"cms_stundenplan_stunde_geaendert\">Geändert</span><span class=\"cms_stundenplan_stunde_ausfall\">Entfall</span></div>";
 
   return $code;
 }

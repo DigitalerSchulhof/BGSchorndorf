@@ -17,16 +17,18 @@ function cms_tagebuchmeldung_laden() {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
-function cms_notfallzustand_anzeigen(wert) {
+function cms_notfallzustand_anzeigen(wert, app) {
+  var app = app || 'nein';
   if (wert == '1') {
-    cms_meldung_notfall('warnung', 'Notfallzustand ausrufen', '<p><b>Achtung!</b> Sie sind dabei den Notfallzustand auszurufen. Alle Schüler, Lehrer, Verwaltungsangestellte und Externe im Schulhof werden angewiesen <b>das Schulgebäude umgehend zu verlassen</b>. Alle Lehrer werden zudem angewiesen, die Vollzähligkeit bzw. Abwesenheit einzelner ihre Schüler der Einsatzleitung zu melden!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\')">Notfallzustand ausrufen</span></p>');
+    cms_meldung_notfall('warnung', 'Notfallzustand ausrufen', '<p><b>Achtung!</b> Sie sind dabei den Notfallzustand auszurufen. Alle Schüler, Lehrer, Verwaltungsangestellte und Externe im Schulhof werden angewiesen <b>das Schulgebäude umgehend zu verlassen</b>. Alle Lehrer werden zudem angewiesen, die Vollzähligkeit bzw. Abwesenheit einzelner ihre Schüler der Einsatzleitung zu melden!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\', \''+app+'\')">Notfallzustand ausrufen</span></p>');
   }
   if (wert == '0') {
-    cms_meldung_notfall('warnung', 'Notfallzustand aufheben', '<p>Möchten Sie den Notfallzustand wirklich aufheben? Alle Notfallmeldungen werden damit gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\')">Notfallzustand aufheben</span></p>');
+    cms_meldung_notfall('warnung', 'Notfallzustand aufheben', '<p>Möchten Sie den Notfallzustand wirklich aufheben? Alle Notfallmeldungen werden damit gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_wichtig" onclick="cms_notfallzustand(\''+wert+'\', \''+app+'\')">Notfallzustand aufheben</span></p>');
   }
 }
 
-function cms_notfallzustand(wert) {
+function cms_notfallzustand(wert, app) {
+  var app = app ||' nein';
   var meldung = '<p>Die Notfallzustand kann nichg geändert werden, denn ...</p><ul>';
   var fehler = false;
 
@@ -46,7 +48,8 @@ function cms_notfallzustand(wert) {
 
   	function anfragennachbehandlung(rueckgabe) {
       if (rueckgabe == 'ERFOLG') {
-        cms_link('Schulhof/Nutzerkonto');
+        if (app != 'app') {cms_link('Schulhof/Nutzerkonto');}
+        else {cms_link('App');}
       }
       else {
         cms_fehlerbehandlung(rueckgabe);
@@ -367,7 +370,7 @@ function cms_tagebuch_eintrag_speichern(freigabe) {
       cms_tagebuchdetails_laden();
     }
     else if (false) {
-      
+
     }
     else {
       cms_fehlerbehandlung(rueckgabe);

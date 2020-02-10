@@ -23,6 +23,7 @@ if (isset($_POST['bisM'])) {$bisM = $_POST['bisM'];} else {echo "FEHLER";exit;}
 if (isset($_POST['bisJ'])) {$bisJ = $_POST['bisJ'];} else {echo "FEHLER";exit;}
 if (isset($_POST['tags'])) {$tags = $_POST['tags'];} else {echo "FEHLER";exit;}
 if (isset($_POST['nummer'])) {$nummer = $_POST['nummer'];} else {echo "FEHLER";exit;}
+if (isset($_POST['app'])) {$app = $_POST['app'];} else {echo "FEHLER";exit;}
 if (isset($_POST['limit'])) {$limit = $_POST['limit'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 
@@ -41,7 +42,7 @@ if (cms_angemeldet()) {
 		$dbs = cms_verbinden('s');
 		$start = mktime(0, 0, 0, $vonM, $vonT, $vonJ);
 		$ende = mktime(23, 59, 59, $bisM, $bisT, $bisJ);
-		echo cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $nachname, $vorname, $betreff, $tags, $nummer, $limit, true);
+		echo cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $nachname, $vorname, $betreff, $tags, $nummer, $limit, true, $app);
 		cms_trennen($dbs);
 	}
 	else {

@@ -13,6 +13,7 @@ function cms_geraete_problembericht_aktiv() {
 
 
 function cms_geraete_problembericht(standort, art, ziel) {
+	var app = app || 'nein';
 	cms_laden_an('Probleme melden', 'Der Problembericht wird zusammengestellt.');
 	var geraeteids = document.getElementById('cms_geraete_meldung_ids').value;
 

@@ -1,5 +1,5 @@
 <?php
-function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid) {
+function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid, $app = "nein") {
 	global $CMS_BENUTZERID, $CMS_SCHLUESSEL;
 	if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {return "";}
 	if (($modus != "eingang") && ($modus != "entwurf") && ($modus != "ausgang")) {return "";}
@@ -26,7 +26,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 	if ($sql->execute()) {	// Safe weil ID Check
 		$sql->bind_result($tagid, $tagtitel);
 		while ($sql->fetch()) {
-			$tagcode .= "<span class=\"cms_toggle\" id=\"cms_toggle_postfach_filter_tag".$fid."_".$tagid."\" onclick=\"cms_toggle_klasse('cms_toggle_postfach_filter_tag".$fid."_".$tagid."', 'cms_toggle_aktiv', 'cms_postfach_filter_tag".$fid."_".$tagid."', 'true');cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."');\">".$tagtitel."</span> ";
+			$tagcode .= "<span class=\"cms_toggle\" id=\"cms_toggle_postfach_filter_tag".$fid."_".$tagid."\" onclick=\"cms_toggle_klasse('cms_toggle_postfach_filter_tag".$fid."_".$tagid."', 'cms_toggle_aktiv', 'cms_postfach_filter_tag".$fid."_".$tagid."', 'true');cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."', '$app');\">".$tagtitel."</span> ";
 			$taghiddencode .= "<input name=\"cms_postfach_filter_tag".$fid."_".$tagid."\" id=\"cms_postfach_filter_tag".$fid."_".$tagid."\" type=\"hidden\" value=\"0\">";
 			$tagids .= "|".$tagid;
 			$taganzahl++;
@@ -43,7 +43,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 	$nachrichtenanzahl = ceil($nachrichtenanzahl / 25);
 	cms_trennen($dbp);
 
-	$event = "cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."');";
+	$event = "cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."', '$app');";
 	$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 			$code .= "<th style=\"width:50%;\"><b>Nachname</b></th>";
@@ -74,7 +74,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 	$code .= "</table>";
 
 	$code .= "<input name=\"cms_postfach_filter_tags".$fid."\" id=\"cms_postfach_filter_tags".$fid."\" type=\"hidden\" value=\"$tagids\">";
-	$code .= "<p><span class=\"cms_button\" onclick=\"cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."');\">Suchen</span></p>";
+	$code .= "<p><span class=\"cms_button\" onclick=\"cms_postfach_nachrichten_laden('$modus', '$papierkorb', '".$fid."', '$app');\">Suchen</span></p>";
 
 	$code .= "</div>";
 
@@ -91,7 +91,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid)
 }
 
 
-function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $nachname, $vorname, $betreff, $tags, $nummer, $limit, $entfernt = false) {
+function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $nachname, $vorname, $betreff, $tags, $nummer, $limit, $entfernt = false, $app = "nein") {
 	global $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_DBS_DB, $CMS_DBP_DB;
 	if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {return "";}
 	if (($modus != "eingang") && ($modus != "entwurf") && ($modus != "ausgang")) {return "";}
@@ -321,7 +321,13 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 		if ($N['zeigen']) {
 			$datum = date ("d.m.Y", $N['zeit']);
 			$uhrzeit = date ("H:i", $N['zeit']);
-			$code .= "<tr onmouseover=\"cms_einblenden('cms_postfach_vorschau_".$modus."_".$N['id']."', 'table-row')\" onmouseout=\"cms_ausblenden('cms_postfach_vorschau_".$modus."_".$N['id']."')\">";
+			if ($app != 'app') {
+				$code .= "<tr onmouseover=\"cms_einblenden('cms_postfach_vorschau_".$modus."_".$N['id']."', 'table-row')\" onmouseout=\"cms_ausblenden('cms_postfach_vorschau_".$modus."_".$N['id']."')\">";
+			}
+			else {
+				$code .= "<tr>";
+			}
+
 
 			$markierungv = "";
 			$markierungh = "";
@@ -345,78 +351,82 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 
 			$code .= "<td>".$icon."</td>";
 			$betreffevent = cms_texttrafo_e_event($N['betreff']);
-			$lesen = "cms_postfach_nachricht_lesen('$modus', '".$N['anzeigename']."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$N['id']."')";
+			$lesen = "cms_postfach_nachricht_lesen('$modus', '".$N['anzeigename']."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$N['id']."', '$app')";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['anzeigename'].$markierungh."</td>";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['betreff'].$markierungh."</td>";
 			$code .= "<td>".$datum."</td>";
 			$code .= "<td>".$uhrzeit."</td>";
 
-			//Speicherfrist als Icon ausgeben
-			if ($papierkorb == 1) {$rest = $N['papierkorbseit'] + $speicherdauer - $jetzt;}
-			else {$rest = $N['zeit'] + $speicherdauer - $jetzt;}
-			$hoehe = $rest/$speicherdauer*100;
-			$style = 'height: '.$hoehe.'%;';
-			if ($rest > 0) {
-				$vertage = floor($rest / 86400);
-				$rest = $rest - ($vertage*86400);
-				$verstunden = floor($rest / 3600);
-				$rest = $rest - ($verstunden*3600);
-				$verminuten = floor($rest / 60);
-				if ($vertage > 0) {
-					$verbleibend = "noch ".$vertage." Tage, ".$verstunden." Stunden, ".$verminuten." Minuten";
-				}
-				else if ($verstunden > 0) {
-					$verbleibend = "noch ".$verstunden." Stunden, ".$verminuten." Minuten";
-				}
-				else if ($verminuten > 0) {
-					$verbleibend = "noch ".$verminuten." Minuten";
+			if ($app != 'app') {
+				//Speicherfrist als Icon ausgeben
+				if ($papierkorb == 1) {$rest = $N['papierkorbseit'] + $speicherdauer - $jetzt;}
+				else {$rest = $N['zeit'] + $speicherdauer - $jetzt;}
+				$hoehe = $rest/$speicherdauer*100;
+				$style = 'height: '.$hoehe.'%;';
+				if ($rest > 0) {
+					$vertage = floor($rest / 86400);
+					$rest = $rest - ($vertage*86400);
+					$verstunden = floor($rest / 3600);
+					$rest = $rest - ($verstunden*3600);
+					$verminuten = floor($rest / 60);
+					if ($vertage > 0) {
+						$verbleibend = "noch ".$vertage." Tage, ".$verstunden." Stunden, ".$verminuten." Minuten";
+					}
+					else if ($verstunden > 0) {
+						$verbleibend = "noch ".$verstunden." Stunden, ".$verminuten." Minuten";
+					}
+					else if ($verminuten > 0) {
+						$verbleibend = "noch ".$verminuten." Minuten";
+					}
+					else {
+						$verbleibend = "nur noch Sekunden";
+					}
 				}
 				else {
-					$verbleibend = "nur noch Sekunden";
+					$style = 'height: 100%; background: #000000;';
+					$verbleibend = "mit der Abmeldung";
 				}
-			}
-			else {
-				$style = 'height: 100%; background: #000000;';
-				$verbleibend = "mit der Abmeldung";
-			}
 
-			$speicherfrist = "<span class=\"cms_postfach_papierkorb_aussen\"><span class=\"cms_postfach_papierkorb_innen\" style=\"$style\"></span><span class=\"cms_hinweis\">$verbleibend</span></span>";
+				$speicherfrist = "<span class=\"cms_postfach_papierkorb_aussen\"><span class=\"cms_postfach_papierkorb_innen\" style=\"$style\"></span><span class=\"cms_hinweis\">$verbleibend</span></span>";
 
-			// Aktionen
-			$code .= "<td>";
-			if ($modus == "eingang") {
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('antworten', ".$N['id'].", 'eingang')\"><span class=\"cms_hinweis\">Antworten</span><img src=\"res/icons/klein/postfach_antworten.png\"></span> ";
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('allenantworten', ".$N['id'].", 'eingang')\"><span class=\"cms_hinweis\">Allen antworten</span><img src=\"res/icons/klein/postfach_allenantworten.png\"></span> ";
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('weiterleiten', ".$N['id'].", 'eingang')\"><span class=\"cms_hinweis\">Weiterleiten</span><img src=\"res/icons/klein/postfach_weiterleiten.png\"></span> ";
+				// Aktionen
+				$code .= "<td>";
+				if ($modus == "eingang") {
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('antworten', ".$N['id'].", 'eingang')\"><span class=\"cms_hinweis\">Antworten</span><img src=\"res/icons/klein/postfach_antworten.png\"></span> ";
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('allenantworten', ".$N['id'].", 'eingang')\"><span class=\"cms_hinweis\">Allen antworten</span><img src=\"res/icons/klein/postfach_allenantworten.png\"></span> ";
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('weiterleiten', ".$N['id'].", 'eingang')\"><span class=\"cms_hinweis\">Weiterleiten</span><img src=\"res/icons/klein/postfach_weiterleiten.png\"></span> ";
+				}
+				else if ($modus == "entwurf") {
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('bearbeiten', ".$N['id'].", 'entwurf')\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/postfach_bearbeiten.png\"></span> ";
+				}
+				else if ($modus == "ausgang") {
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('erneut', ".$N['id'].", 'ausgang')\"><span class=\"cms_hinweis\">Erneut versenden</span><img src=\"res/icons/klein/postfach_erneut.png\"></span> ";
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('bearbeiten', ".$N['id'].", 'ausgang')\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/postfach_bearbeiten.png\"></span> ";
+				}
+				$loeschendatum = date('d.m.Y H:i', $N['zeit']);
+				if ($papierkorb == "-") {
+					$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_papierkorb_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">In den Papierkorb</span><img src=\"res/icons/klein/papierkorb.png\"></span> ";
+				}
+				else {
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_zuruecklegen('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
+					$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_loeschen_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+				}
+				$code .= $speicherfrist;
+				$code .= "</td>";
 			}
-			else if ($modus == "entwurf") {
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('bearbeiten', ".$N['id'].", 'entwurf')\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/postfach_bearbeiten.png\"></span> ";
-			}
-			else if ($modus == "ausgang") {
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('erneut', ".$N['id'].", 'ausgang')\"><span class=\"cms_hinweis\">Erneut versenden</span><img src=\"res/icons/klein/postfach_erneut.png\"></span> ";
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('bearbeiten', ".$N['id'].", 'ausgang')\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/postfach_bearbeiten.png\"></span> ";
-			}
-			$loeschendatum = date('d.m.Y H:i', $N['zeit']);
-			if ($papierkorb == "-") {
-				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_papierkorb_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">In den Papierkorb</span><img src=\"res/icons/klein/papierkorb.png\"></span> ";
-			}
-			else {
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_postfach_nachricht_zuruecklegen('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
-				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_loeschen_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
-			}
-			$code .= $speicherfrist;
-			$code .= "</td>";
 			$code .= "</tr>";
 
 			// VORSCHAU
-			$code .= "<tr class=\"cms_postfach_vorschau\" id=\"cms_postfach_vorschau_".$modus."_".$N['id']."\">";
-			$code .= "<td colspan=\"6\">";
-			// Vorschau
-			$nachricht = strip_tags($N['nachricht']);
-			if (strlen($nachricht) > 150) {$nachricht = substr($nachricht,0,150)."...";}
-			$code .= "<p class=\"cms_notiz\">".$N['tags']." ".$nachricht."</p>";
-			$code .= "</td>";
-			$code .= "</tr>";
+			if ($app != 'app') {
+				$code .= "<tr class=\"cms_postfach_vorschau\" id=\"cms_postfach_vorschau_".$modus."_".$N['id']."\">";
+				$code .= "<td colspan=\"6\">";
+				// Vorschau
+				$nachricht = strip_tags($N['nachricht']);
+				if (strlen($nachricht) > 150) {$nachricht = substr($nachricht,0,150)."...";}
+				$code .= "<p class=\"cms_notiz\">".$N['tags']." ".$nachricht."</p>";
+				$code .= "</td>";
+				$code .= "</tr>";
+			}
 		}
 	}
 

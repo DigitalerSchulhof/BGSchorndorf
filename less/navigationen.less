@@ -447,6 +447,7 @@
 }
 
 .cms_uebersicht li a,
+.cms_uebersicht li span.cms_appmenue_element,
 .cms_uebersicht li span.cms_uebersicht_notifikation,
 .cms_uebersicht li span.cms_uebersicht_verwaltung_termin,
 .cms_uebersicht li span.cms_blogeintrag,
@@ -470,6 +471,7 @@
 }
 
 .cms_uebersicht li:last-child a,
+.cms_uebersicht li:last-child span.cms_appmenue_element,
 .cms_uebersicht li:last-child span.cms_uebersicht_notifikation,
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_termin,
 .cms_uebersicht li:last-child span.cms_blogeintrag,
@@ -482,6 +484,7 @@
 }
 
 .cms_uebersicht li a p,
+.cms_uebersicht li span.cms_appmenue_element p,
 .cms_uebersicht li span.cms_uebersicht_notifikation p,
 .cms_uebersicht li span.cms_uebersicht_verwaltung_termin p,
 .cms_uebersicht li span.cms_blogeintrag p,
@@ -495,6 +498,7 @@
 }
 
 .cms_uebersicht li a h3,
+.cms_uebersicht li span.cms_appmenue_element h3,
 .cms_uebersicht li span.cms_uebersicht_notifikation h3,
 .cms_uebersicht li span.cms_uebersicht_verwaltung_termin h3,
 .cms_uebersicht li span.cms_blogeintrag h3,
@@ -524,11 +528,11 @@
   margin-top: 0px;
 }
 
-.cms_uebersicht a {
+.cms_uebersicht a, .cms_uebersicht span.cms_appmenue_element {
   transition: 500ms ease-in-out;
 }
 
-.cms_uebersicht a:hover {
+.cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
   background-color: @schattierthell_background;
   transform: translateX(0) translateY(0);
   cursor: pointer;
