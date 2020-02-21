@@ -30,36 +30,71 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		$sql = $dbs->prepare("UPDATE editoren SET alt = aktuell, aktuell = neu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
 		foreach ($SPALTEN AS $sid) {
-			$sql->bind_param("i", $sid);
 			$sql->execute();
 		}
 		$sql->close();
 
 		$sql = $dbs->prepare("UPDATE downloads SET pfadalt = pfadaktuell, pfadaktuell = pfadneu, titelalt = titelaktuell, titelaktuell = titelneu, beschreibungalt = beschreibungaktuell, beschreibungaktuell = beschreibungneu, dateinamealt = dateinameaktuell, dateinameaktuell = dateinameneu, dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = dateigroesseneu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
 		foreach ($SPALTEN AS $sid) {
-			$sql->bind_param("i", $sid);
 			$sql->execute();
 		}
 		$sql->close();
 
 		$sql = $dbs->prepare("UPDATE boxenaussen SET ausrichtungalt = ausrichtungaktuell, ausrichtungaktuell = ausrichtungalt, breitealt = breiteaktuell, breiteaktuell = breiteneu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
 		foreach ($SPALTEN AS $sid) {
-			$sql->bind_param("i", $sid);
 			$sql->execute();
 		}
 		$sql->close();
 
 		$sql = $dbs->prepare("UPDATE boxen SET titelalt = titelaktuell, titelaktuell = titelneu, inhaltalt = inhaltaktuell, inhaltaktuell = inhaltneu, stylealt = styleaktuell, styleaktuell = styleneu WHERE boxaussen IN (SELECT id AS boxaussen FROM boxenaussen WHERE spalte = ?)");
+		$sql->bind_param("i", $sid);
 		foreach ($SPALTEN AS $sid) {
-			$sql->bind_param("i", $sid);
 			$sql->execute();
 		}
 		$sql->close();
 
 		$sql = $dbs->prepare("UPDATE eventuebersichten SET terminealt = termineaktuell, termineaktuell = termineneu, termineanzahlalt = termineanzahlaktuell, termineanzahlaktuell = termineanzahlneu, blogalt = blogaktuell, blogaktuell = blogneu, bloganzahlalt = bloganzahlaktuell, bloganzahlaktuell = bloganzahlneu, galeriealt = galerieaktuell, galerieaktuell = galerieneu, galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = galerieanzahlneu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
 		foreach ($SPALTEN AS $sid) {
-			$sql->bind_param("i", $sid);
+			$sql->execute();
+		}
+		$sql->close();
+
+		$sql = $dbs->prepare("UPDATE kontaktformulare SET betreffalt = betreffaktuell, betreffaktuell = betreffneu, kopiealt = kopieaktuell, kopieaktuell = kopieneu, anhangalt = anhangaktuell, anhangaktuell = anhangneu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
+		foreach ($SPALTEN AS $sid) {
+			$sql->execute();
+		}
+		$sql->close();
+
+		$sql = $dbs->prepare("UPDATE wnewsletter SET bezeichnungalt = bezeichnungaktuell, bezeichnungaktuell = bezeichnungneu, beschreibungalt = beschreibungaktuell, beschreibungaktuell = beschreibungneu, typalt = typaktuell, typaktuell = typneu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
+		foreach ($SPALTEN AS $sid) {
+			$sql->execute();
+		}
+		$sql->close();
+
+		$sql = $dbs->prepare("UPDATE diashows SET titelalt = titelaktuell, titelaktuell = titelneu WHERE spalte = ?");
+		$sql->bind_param("i", $sid);
+		foreach ($SPALTEN AS $sid) {
+			$sql->execute();
+		}
+		$sql->close();
+
+		$sql = $dbs->prepare("UPDATE diashowbilder INNER JOIN diashows ON diashowbilder.diashow = diashows.id SET pfadalt = pfadaktuell, pfadaktuell = pfadneu, beschreibungalt = beschreibungaktuell, beschreibungaktuell = beschreibungneu WHERE diashows.spalte = ?");
+		$sql->bind_param("i", $sid);
+		foreach ($SPALTEN AS $sid) {
+			$sql->execute();
+		}
+		$sql->close();
+
+		$sql = $dbs->prepare("DELETE diashowbilder FROM diashowbilder INNER JOIN diashows ON diashowbilder.diashow = diashows.id WHERE diashowbilder.pfadalt = '' AND diashowbilder.pfadaktuell = '' AND diashowbilder.pfadneu = '' AND diashows.spalte = ?");
+		$sql->bind_param("i", $sid);
+		foreach ($SPALTEN AS $sid) {
 			$sql->execute();
 		}
 		$sql->close();

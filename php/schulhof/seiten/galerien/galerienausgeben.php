@@ -48,10 +48,10 @@ function cms_galerie_zusatzinfo($dbs, $daten) {
 	$sql = "";
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
-		$sqlsolo =
 		$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ".$daten['id'].")";
 	}
 	$sql = substr($sql, 7);
+	$dbs = cms_verbinden("s");	
 	$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
 	if ($sql->execute()) {
 		$sql->bind_result($bez, $icon);
@@ -180,8 +180,10 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$wahlknoepfe = "";
 			$bildercode = "";
-			if (count($bilder) > 1) {
-				$bildercode = "<li style=\"opacity: 1;\" id=\"cms_galeriebilder_0\"><img src=\"".$bilder[0]["pfad"]."\"></li>";
+			if (count($bilder) > 0) {
+				$bildercode = "<li style=\"opacity: 1;\" id=\"cms_galeriebilder_0\"><img src=\"".$bilder[0]["pfad"]."\">";
+				if (strlen($bilder[0]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[0]["beschreibung"]."</p>";}
+				$code .= "</li>";
 				$wahlknoepfe = "<span id=\"cms_galeriebilder_knopf_0\" class=\"cms_galeriebild_knopf_aktiv\" onclick=\"cms_galeriebild_zeigen('0')\"></span> ";
 			}
 			for ($i=1; $i<count($bilder); $i++) {
@@ -203,20 +205,6 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 				$code .= '</div>';
 				$code .= "<script>cms_galeriebilder_starten();</script>";
 			}
-
-			// foreach($bilder as $bild) {
-			// 	$code .= "<div class=\"cms_galerie_bild\">";
-			// 		$code .= "<img src=\"".$bild["pfad"]."\">";
-			// 		$code .= "<div class=\"cms_galerie_beschreibung\">".$bild["beschreibung"]."</div>";
-			// 	$code .= "</div>";
-			// }
-			// $code .= "<div id=\"cms_galerie_laden\">".cms_ladeicon()."<h3>Die Galerie wird geladen...</h3></div>";
-			// $code .= "<div id=\"cms_galerie_dots\">";
-			// 	for($i = 0; $i < count($bilder); $i++)
-			// 		$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";
-			// $code .= "</div>";
-			// $code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\"></div>";
-			// $code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\"></div>";
 
 			// Bilder Ende
 			$CMS_GALERIEID = $galerie["id"];

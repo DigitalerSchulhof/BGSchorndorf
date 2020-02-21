@@ -238,6 +238,7 @@ function cms_spalte_ausgeben($dbs, $spalte) {
         if ($element == 'eventuebersichten') {$elementcode[$e['position']] = cms_eventuebersichten_ausgeben($dbs, $e);}
         if ($element == 'kontaktformulare') {$elementcode[$e['position']] = cms_kontaktformulare_ausgeben($dbs, $e);}
         if ($element == 'wnewsletter') {$elementcode[$e['position']] = cms_newsletter_ausgeben($dbs, $e);}
+        if ($element == 'diashows') {$elementcode[$e['position']] = cms_diashow_ausgeben($dbs, $e);}
       }
       $anfrage->free();
     }
@@ -276,6 +277,7 @@ function cms_neues_element($spalte, $position, $version) {
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_eventuebersicht\" onclick=\"cms_eventuebersichten_anzeigen($parameter)\">+ Neue Eventübersicht</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_kontaktformular\" onclick=\"cms_kontaktformulare_anzeigen($parameter)\">+ Neues Kontaktformular</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_newsletter\" onclick=\"cms_wnewsletter_anzeigen($parameter)\">+ Neues Newsletteranmeldeformular</span> ";
+    $code .= "<span class=\"cms_iconbutton cms_button_ja cms_button_website_diashow\" onclick=\"cms_diashows_anzeigen($parameter)\">+ Neue Diashow</span> ";
     $code .= "<span class=\"cms_iconbutton cms_button_website_schliessen\" onclick=\"cms_ausblenden('cms_website_neu_menue_$spalte"."_$position')\">Menü schließen</span> ";
     $code .= "</p>";
     $code .= "<div class=\"cms_website_neu_element\" id=\"cms_website_neu_element_$spalte"."_$position\"></div>";
@@ -683,9 +685,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
     }
     $sql->close();
 
-    $aussenklasse = " cms_kontaktformular_aussen_";
-
-    $code .= "<div class=\"cms_kontaktformular cms_kontaktfomular$aussenklasse\">";
+    $code .= "<div class=\"cms_kontaktformular\">";
       $jetzt = time();
 
       $code .= "<div class=\"cms_kontaktformular_box_a\"><div class=\"cms_kontaktformular_box_i\">";
@@ -767,9 +767,7 @@ function cms_newsletter_ausgeben($dbs, $k) {
       $code .= cms_element_bearbeiten($k, 'wnewsletter', $CMS_URL[2]);
     }
 
-    $aussenklasse = " cms_newsletter_aussen_";
-
-    $code .= "<div class=\"cms_newsletter cms_newsletter$aussenklasse\">";
+    $code .= "<div class=\"cms_newsletter\">";
       $jetzt = time();
 
       $code .= "<div class=\"cms_newsletter_box_a\"><div class=\"cms_newsletter_box_i\"><h2>$bezeichnung</h2>";
@@ -817,7 +815,82 @@ function cms_newsletter_ausgeben($dbs, $k) {
   }
 }
 
+function cms_diashow_ausgeben($dbs, $k) {
+  global $CMS_SCHLUESSEL, $CMS_URL, $CMS_GRUPPEN;
+  // Inaktiv für den Benutzer
+  if (($CMS_URL[1] == 'Seiten') && ($k['aktiv'] == '0')) {
+    return "";
+  }
+  else {
+    $code = "";
+    $zusatz = strtolower($CMS_URL[2]);
+    $zusatzklasse = "";
+    $titel = $k["titel".$zusatz];
+    $aktiv = $k['aktiv'];
 
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= cms_element_bearbeiten($k, 'diashows', $CMS_URL[2]);
+    }
+
+    $kid = $k["id"];
+
+    $sql = "SELECT pfad$zusatz, beschreibung$zusatz FROM diashowbilder WHERE diashow = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $kid);
+    $sql->bind_result($pfad, $beschreibung);
+    $sql->execute();
+
+    $bilder = array();
+
+    while($sql->fetch()) {
+      if($pfad != "") {
+        $bilder[] = array("pfad" => $pfad, "beschreibung" => $beschreibung);
+      }
+    }
+
+    $code .= "<div class=\"cms_diashow\">";
+      $jetzt = time();
+
+      $code .= "<div class=\"cms_diashow_box_a\"><div class=\"cms_diashow_box_i\"><h2>$titel</h2>";
+
+      $wahlknoepfe = "";
+      $bildercode = "";
+      if (count($bilder) > 0) {
+        $bildercode = "<li style=\"opacity: 1;\" id=\"cms_galeriebilder_0\"><img src=\"".$bilder[0]["pfad"]."\">";
+        if (strlen($bilder[0]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[0]["beschreibung"]."</p>";}
+        $code .= "</li>";
+        $wahlknoepfe = "<span id=\"cms_galeriebilder_knopf_0\" class=\"cms_galeriebild_knopf_aktiv\" onclick=\"cms_galeriebild_zeigen('0')\"></span> ";
+      }
+      for ($i=1; $i<count($bilder); $i++) {
+        $bildercode .= "<li style=\"opacity: 0;\" id=\"cms_galeriebilder_$i\"><img src=\"".$bilder[$i]["pfad"]."\">";
+        if (strlen($bilder[$i]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[$i]["beschreibung"]."</p>";}
+        $bildercode .= "</li>";
+        $wahlknoepfe .= "<span id=\"cms_galeriebilder_knopf_$i\" class=\"cms_galeriebild_knopf\" onclick=\"cms_galeriebild_zeigen('$i')\"></span> ";
+      }
+      if (strlen($bildercode) > 0) {
+        $code .= '<div id="cms_galeriebild_o">';
+          $code .= "<p class=\"cms_galeriebilder_wahl\">$wahlknoepfe</p>";
+          $code .= '<ul id="cms_galeriebild_m">';
+          $code .= $bildercode;
+          $code .= '</ul>';
+          $code .= "<div class=\"cms_clear\"></div>";
+          $code .= "<input type=\"hidden\" id=\"cms_galeriebilder_anzahl\" id=\"cms_galeriebilder_anzahl\" value=\"".(count($bilder))."\">";
+          $code .= "<input type=\"hidden\" id=\"cms_galeriebilder_angezeigt\" id=\"cms_galeriebilder_angezeigt\" value=\"0\">";
+          $code .= '<span class="cms_galeriebilder_voriges" onclick="cms_galeriebild_voriges()"></span><span class="cms_galeriebilder_naechstes" onclick="cms_galeriebild_naechstes()"></span>';
+        $code .= '</div>';
+        $code .= "<script>cms_galeriebilder_starten();</script>";
+      }
+
+      $code .= "</div></div>";
+      $code .= "<div class=\"cms_clear\"></div>";
+
+    $code .= "</div>";
+    if ($CMS_URL[1] == 'Bearbeiten') {
+      $code .= "</div>";
+    }
+    return $code;
+  }
+}
 
 function cms_zeitabhaengig_aus_schulhof() {
   global $CMS_URL, $CMS_SEITENDETAILS, $CMS_SCHLUESSEL, $CMS_GERAET;

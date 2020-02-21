@@ -2,7 +2,7 @@
 
 function cms_maxpos_spalte($dbs, $spalte) {
   $max = 0;
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
+  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   foreach ($elemente as $e) {
     $sql = $dbs->prepare("SELECT MAX(position) AS max FROM $e WHERE spalte = ?");
     $sql->bind_param("i", $spalte);
@@ -16,7 +16,7 @@ function cms_maxpos_spalte($dbs, $spalte) {
 }
 
 function cms_elemente_verschieben_einfuegen($dbs, $spalte, $position) {
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
+  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   foreach ($elemente as $e) {
     $sql = $dbs->prepare("UPDATE $e SET position = position + 1 WHERE spalte = ? AND position >= ?");
     $sql->bind_param("ii", $spalte, $position);
@@ -26,7 +26,7 @@ function cms_elemente_verschieben_einfuegen($dbs, $spalte, $position) {
 }
 
 function cms_elemente_verschieben_loeschen($dbs, $spalte, $position) {
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
+  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   foreach ($elemente as $e) {
     $sql = $dbs->prepare("UPDATE $e SET position = position - 1 WHERE spalte = ? AND position >= ?");
     $sql->bind_param("ii", $spalte, $position);
@@ -36,8 +36,7 @@ function cms_elemente_verschieben_loeschen($dbs, $spalte, $position) {
 }
 
 function cms_elemente_verschieben_aendern($dbs, $spalte, $altpos, $neupos) {
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
-
+  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   if ($altpos < $neupos) {
     // Vorgängerelemente nachrutschen lassen
     foreach ($elemente as $e) {

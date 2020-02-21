@@ -183,7 +183,6 @@ function cms_angemeldet () {
   return $angemeldet;
 }
 
-
 function cms_rechte_laden($aktiverbenutzer = '-') {
 	global $CMS_SCHLUESSEL;
 
@@ -299,7 +298,6 @@ function cms_rechte_laden($aktiverbenutzer = '-') {
 
 	return $CMS_RECHTE;
 }
-
 
 function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
@@ -426,7 +424,6 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	return $CMS_RECHTE;
 }
 
-
 function cms_internterminvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
 	return $gruppenrechte['termine'] || ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] &&
@@ -436,7 +433,6 @@ function cms_internterminvorschlag($gruppenrechte) {
 																	 || ($CMS_BENUTZERART == 'v' && $CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen intern Termine vorschlagen'])
 																	 || ($CMS_BENUTZERART == 'x' && $CMS_EINSTELLUNGEN['Externe dürfen intern Termine vorschlagen'])));
 }
-
 
 function cms_internblogvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
@@ -547,7 +543,6 @@ function cms_anzahl_monate($beginn, $ende) {
 	return $monate;
 }
 
-
 function cms_istmobil() {
 	$browser = $_SERVER['HTTP_USER_AGENT'];
 	if (preg_match('/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $browser)) {
@@ -643,7 +638,6 @@ function cms_titelbilderdateirechte_laden() {
 	return $gruppenrechte;
 }
 
-
 function cms_oeffentlich_sichtbar($dbs, $art, $daten) {
 	global $CMS_BENUTZERART, $CMS_GRUPPEN, $CMS_ANGEMELDET;
 
@@ -685,7 +679,6 @@ function cms_oeffentlich_sichtbar($dbs, $art, $daten) {
 		return true;
 	}
 }
-
 
 function cms_schreibeberechtigung($dbs, $zielperson) {
   global $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
@@ -772,5 +765,4 @@ function cms_check_sessionvars() {
 	if (($_SESSION['BENUTZERART'] != 's') && ($_SESSION['BENUTZERART'] != 'l') && ($_SESSION['BENUTZERART'] != 'v') && ($_SESSION['BENUTZERART'] != 'e') && ($_SESSION['BENUTZERART'] != 'x')) {return false;}
 	return true;
 }
-
 ?>

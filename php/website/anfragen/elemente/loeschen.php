@@ -17,7 +17,7 @@ $zugriff = $CMS_RECHTE['Website']['Inhalte löschen'];
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
+	$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   if (!in_array($art, $elemente)) {$fehler = true;}
 
 	if (!$fehler) {

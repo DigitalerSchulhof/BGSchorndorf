@@ -110,7 +110,7 @@ if (($zugriff) && ($angemeldet)) {
           $code .= "<span class=\"cms_button\" onclick=\"cms_wnewsletter_neu_speichern('$zusatz')\">Speichern</span> ";
       } else
         $code .= "<span class=\"cms_button\" onclick=\"cms_wnewsletter_bearbeiten_speichern('$zusatz')\">Änderungen speichern</span> ";
-      $code .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_wmenuebearbeiten_ausblenden('$spalte')\">Abbrechen</span> ";
+      $code .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_menuebearbeiten_ausblenden('$spalte')\">Abbrechen</span> ";
     $code .= "</p>";
     echo $code;
   }

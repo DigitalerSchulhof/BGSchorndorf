@@ -19,7 +19,7 @@ if(!cms_check_ganzzahl($id))
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten');
+	$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   if (!in_array($art, $elemente)) {$fehler = true;}
 
 	if (!$fehler) {
@@ -32,6 +32,16 @@ if (cms_angemeldet() && $zugriff) {
 			$sql = "ausrichtungneu = ausrichtungaktuell, breiteneu = breiteaktuell";
 		}
 		else if ($art == 'eventuebersichten') {$sql = "termineneu = termineaktuell, termineanzahlneu = termineanzahlaktuell, blogneu = blogaktuell, bloganzahlneu = bloganzahlaktuell, galerieneu = galerieaktuell, galerieanzahlneu = galerieanzahlaktuell";}
+		else if ($art == 'diashows') {
+			$sql = $dbs->prepare("UPDATE diashowbilder INNER JOIN diashows ON diashowbilder.diashow = diashows.id SET pfadneu = pfadaktuell, beschreibungneu = beschreibungaktuell WHERE diashows.id = ?");
+			$sql->bind_param("i", $id);
+			$sql->execute();
+			$sql = $dbs->prepare("DELETE diashowbilder FROM diashowbilder INNER JOIN diashows ON diashowbilder.diashow = diashows.id WHERE diashowbilder.pfadalt = '' AND diashowbilder.pfadaktuell = '' AND diashowbilder.pfadneu = '' AND diashows.id = ?");
+			$sql->bind_param("i", $id);
+			$sql->execute();
+
+			$sql = "titelneu = titelaktuell";
+		}
 		$sql = "UPDATE $art SET ".$sql."  WHERE id = $id";
 		$dbs->query($sql);	// TODO: Irgendwie safe machen
 		cms_trennen($dbs);

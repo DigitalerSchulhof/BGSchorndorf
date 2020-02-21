@@ -106,8 +106,7 @@ function cms_galerie_details_laden($id, $ziel) {
 
     $code .= "<h3>Bilder auswählen</h3>";
 
-    $rechte = cms_websitedateirechte_laden();
-    $code .= cms_dateiwaehler_generieren('website', 'website', 'cms_galerien_dateien', 's', 'website', '-');
+    $code .= cms_dateiwaehler_generieren('website', 'website', 'cms_galerien_dateien', 's', 'website', '-', 'bilder');
 
     $code .= "<div id=\"cms_bilder\">";
 
