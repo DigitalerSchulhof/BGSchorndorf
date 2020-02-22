@@ -87,8 +87,16 @@ if (cms_angemeldet() && $zugriff) {
 		$passwortsalted = $passwort.$salt;
 		$passwortsalted = cms_texttrafo_e_db($passwortsalted);
 
-		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
-	  $sql->bind_param("issisisii", $id, $benutzername, $passwortsalted, $passworttimeout, $salt, $schuljahr, $mail, $jetzt, $jetzt);
+		$auswahlzeichen = "1234567890abcdef";
+		$apischluessel = array();
+		while(count($apischluessel) < 32) {
+			$stelle = rand(1,strlen($auswahlzeichen));
+			array_push($apischluessel, substr($auswahlzeichen,$stelle-1,1));
+		}
+		$apischluessel = implode('', $apischluessel);
+
+		$sql = $dbs->prepare("INSERT INTO nutzerkonten (id, benutzername, passwort, passworttimeout, salt, sessionid, sessiontimeout, apischluessel, schuljahr, email, letzteanmeldung, vorletzteanmeldung, erstellt, notizen, letztenotifikation) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), SHA1(?), ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), '', null, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), null, null, ?, '', ?)");
+	  $sql->bind_param("ississisii", $id, $benutzername, $passwortsalted, $passworttimeout, $salt, $apischluessel, $schuljahr, $mail, $jetzt, $jetzt);
 	  $sql->execute();
 	  $sql->close();
 

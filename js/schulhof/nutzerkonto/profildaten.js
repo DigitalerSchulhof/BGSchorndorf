@@ -409,3 +409,62 @@ function cms_favorit_benennen(fid) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
+function cms_apischluessel_laden() {
+	$(".cms_apischluessel_laden").hide();
+	$(".cms_apischluessel").show();
+
+	cms_laden_an('Schlüssel laden', 'Der API-Schlüssel wird geladen.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("anfragenziel", 	'340');
+
+	function anfragennachbehandlung(rueckgabe) {
+		$("#cms_apischluessel").val(rueckgabe);
+		cms_laden_aus();
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_apischluessel_verstecken() {
+	$(".cms_apischluessel_laden").show();
+	$(".cms_apischluessel").hide();
+}
+
+function cms_apischluessel_neu_anzeigen() {
+	cms_meldung_an('warnung', 'API-Schlüssel neu generieren', '<p>Soll der API-Schlüssel wirklich neu generiert werden?<br>Der alte Schlüssel kann danach nicht mehr verwendet werden!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_apischluessel_neu()">Neu generieren</span></p>');
+}
+
+function cms_apischluessel_neu() {
+	cms_laden_an('Schlüssel neu generieren', 'Der API-Schlüssel wird neu generiert.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("anfragenziel", 	'341');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if(rueckgabe == 'FEHLER') {
+			cms_fehlerbehandlung(rueckgabe);
+		} else {
+			$("#cms_apischluessel").val(rueckgabe);
+			cms_laden_aus();
+		}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_apischluessel_kopieren() {
+	cms_laden_an('Kopieren');
+	const el = document.createElement('textarea');
+	el.value = $("#cms_apischluessel").val();
+	document.body.appendChild(el);
+	el.select();
+	document.execCommand('copy');
+	document.body.removeChild(el);
+
+	// Visuelles Feedback, dass etwas passiert ist
+	setTimeout(function() {
+		cms_laden_aus();
+	}, 100);
+}

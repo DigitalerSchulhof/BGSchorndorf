@@ -30,6 +30,12 @@ cms_personaldaten_ausgeben ($_SESSION["BENUTZERID"]);
 	<li><a class="cms_button" href="Schulhof/Nutzerkonto/Mein_Profil/Meine_Rechte">Meine Rechte</a></li>
 </ul>
 
+<h2>API-Schlüssel</h2>
+<a class="cms_button cms_apischluessel_laden" onclick='cms_apischluessel_laden()'>Schlüssel zeigen</a>
+<a class="cms_button cms_apischluessel" style="display: none;" onclick='cms_apischluessel_verstecken()'>Schlüssel verstecken</a>
+<input class="cms_gross cms_apischluessel" readonly type="text" id="cms_apischluessel" style="display: none;">
+<a class="cms_button cms_apischluessel" style="display: none" onclick="cms_apischluessel_kopieren()">&#128203;</a><br>
+<a class="cms_button" id="cms_apischluessel_laden" onclick='cms_apischluessel_neu_anzeigen()'>Schlüssel neu generieren</a>
 </div>
 </div>
 

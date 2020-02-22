@@ -14,6 +14,34 @@
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
 	include_once("php/allgemein/funktionen/captcha.php");
 
+	/*
+		API Schlüssel nach-generieren Anfang
+	*/
+	$dbs = cms_verbinden("s");
+	$sql = $dbs->prepare("SELECT id FROM nutzerkonten WHERE apischluessel = ''");
+	$fehlendeIDs = array();
+	$sql->bind_result($fid);
+	if($sql->execute()) {
+		while($sql->fetch()) {
+			$fehlendeIDs[] = $fid;
+		}
+	}
+	$sql = $dbs->prepare("UPDATE nutzerkonten SET apischluessel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+	$sql->bind_param("si", $schluessel, $fid);
+	foreach($fehlendeIDs as $fid) {
+		$auswahlzeichen = "1234567890abcdef";
+		$schluessel = array();
+		while(count($schluessel) < 32) {
+			$stelle = rand(1,strlen($auswahlzeichen));
+			array_push($schluessel, substr($auswahlzeichen,$stelle-1,1));
+		}
+		$schluessel = implode('', $schluessel);
+		$sql->execute();
+	}
+	/*
+		API Schlüssel nach-generieren Ende
+	*/
+
 	session_start();
 
 	$CMS_ANGEMELDET = cms_angemeldet();

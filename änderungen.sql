@@ -434,3 +434,5 @@ CREATE TABLE `cms_schulhof`.`diashowbilder` ( `id` BIGINT(255) UNSIGNED NOT NULL
 
 ALTER TABLE `diashows` ADD CONSTRAINT `diashowsspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `diashowbilder` ADD CONSTRAINT `diashowbilderdiashow` FOREIGN KEY (`diashow`) REFERENCES `diashows`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `nutzerkonten` ADD `apischluessel` VARBINARY(3000) NOT NULL AFTER `sessiontimeout`;
