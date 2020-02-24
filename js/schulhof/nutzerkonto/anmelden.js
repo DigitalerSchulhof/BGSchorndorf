@@ -8,9 +8,9 @@ function cms_anmelden (benutzername, passwort, art) {
 	var passwort = passwort || document.getElementById('cms_schulhof_anmeldung_passwort').value;
 	var art = art || "normal";
 	if (art == "app") {
-		document.getElementById("cms_appmeldung").innerHTML = "<div class=\"cms_zentriert\">"+cms_ladeicon()+"<p class=\"cms_notiz\">Anmeldung wird ausgeführt.</p></div>";
+		document.getElementById("cms_appmeldung").innerHTML = "<div class=\"cms_zentriert\">"+cms_ladeicon()+"<p class=\"cms_notiz\">Die Anmeldung wird durchgeführt...</p></div>";
 	}
-	else {cms_laden_an('Anmelden', 'Die eingegebenen Daten werden überprüft, die Anmeldung wird durchgeführt.');}
+	else {cms_laden_an('Anmelden', 'Die eingegebenen Daten werden überprüft, die Anmeldung wird durchgeführt...');}
 
 	var meldung = '<p>Die Anmeldung wurde abgebrochen, denn ...</p><ul>';
 	var fehler = false;

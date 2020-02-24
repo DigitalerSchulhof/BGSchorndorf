@@ -442,6 +442,64 @@ ALTER TABLE `kontaktformulare` ADD `ansichtalt` VARCHAR(1) CHARACTER SET utf8 CO
 ALTER TABLE `voranmeldung_schueler` ADD `geimpft` TINYINT(1) UNSIGNED NULL AFTER `kuenftigesprofil`;
 ALTER TABLE `voranmeldung_schueler` CHANGE `geimpft` `geimpft` VARBINARY(50) NULL DEFAULT NULL;
 
+ALTER TABLE `gremienblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kurseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreiseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbeblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignisseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `gremienchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `gremientermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `gremientermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `blogeintraege` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `termine` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ferien` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `galerien` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `leihenbuchen` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `raeumebuchen` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `notifikationen` CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `pinnwandanschlag` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `schuljahre` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `zeitraeume` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (

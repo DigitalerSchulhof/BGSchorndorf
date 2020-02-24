@@ -25,7 +25,7 @@ if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
       while ($sql->fetch()) {
         $anzeigename = $lbez;
         $anzeigenamelink = cms_textzulink($anzeigename);
-        $ausgabel .= "<li><a class=\"cms_button\" href=\"App/Probleme_melden/Leihgeräte/$anzeigenamelink\">".$anzeigename."</a></li> ";
+        $ausgabel .= "<a class=\"cms_button\" href=\"App/Probleme_melden/Leihgeräte/$anzeigenamelink\">".$anzeigename."</a> ";
       }
     }
     $sql->close();

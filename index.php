@@ -32,8 +32,8 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.72";
+	//$CMS_VERSION = rand(0,1000000);
+	$CMS_VERSION = "0.5.7.3";
 	$TITELBILDERJS = "";
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
@@ -291,6 +291,7 @@
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/newsletter.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
 		}
@@ -536,9 +537,9 @@
 
 			include_once("php/allgemein/seiten/seitensteuerung.php");
 
-			if ($CMS_URL[0] != 'App') {
-				if ($CMS_ANGEMELDET) {$code .= "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"ja\"></p>";}
-				else {$code .= "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"\"></p>";}
+			if ($CMS_URL[0] == 'App') {
+				if ($CMS_ANGEMELDET) {echo "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"ja\"></p>";}
+				else {echo "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"\"></p>";}
 			}
 			?>
 		</div>

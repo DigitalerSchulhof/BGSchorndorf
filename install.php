@@ -1,8 +1,8 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
+$rechteplaetten = false;
 $internediensteplaetten = false;
-$einstellungenplaetten = true;
+$einstellungenplaetten = false;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;

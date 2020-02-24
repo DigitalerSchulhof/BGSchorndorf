@@ -6,10 +6,10 @@
 @standardhell_background: #ffffff;
 @standarddunkel_background: #000000;
 @seitenbreite: 1000px;
-@seitenbackground: #181818;
-@themafarbe1: #0c4a95;
-@themafarbe2: #009966;
-@themafarbe3: #3399cc;
+@seitenbackground: #CCCCCC;
+@themafarbe1: #000000;
+@themafarbe2: #CCCCCC;
+@themafarbe3: #888888;
 @schattierthell_background: #dddddd;
 @schattiertdunkel_background: #aaaaaa;
 @erfolg_background: #c7ff77;
@@ -23,9 +23,9 @@
 
 /* RUNDE ECKEN */
 @keinradius: 0px;
-@kleinerradius: 3px;
-@mittlererradius: 5px;
-@grosserradius: 7px;
+@kleinerradius: 0px;
+@mittlererradius: 0px;
+@grosserradius: 0px;
 
 /* BUTTONS */
 @button_background: #dddddd;
@@ -50,26 +50,28 @@
 @formularfeldfocus_background: #ffffff;
 
 /* KOPFZEILE */
+@kopfzeile_background: @seitenbackground;
 @kopfzeile_o_margintop: 0px;
 @kopfzeile_o_position: fixed;
 @kopfzeile_o_top: 0px;
-@kopfzeile_o_borderbottom: 0px;
-@kopfzeile_i_height: 82px;
-@kopfzeile_platzhalter_margintop: 82px;
-@kopfzeile_button_background: #ffffff;
+@kopfzeile_o_borderbottom: 5px solid @themafarbe1;
+@kopfzeile_i_height: 80px;
+@kopfzeile_platzhalter_margintop: 80px;
+@kopfzeile_button_background: @kopfzeile_background;
 @kopfzeile_buttonhover_background: @themafarbe1;
 @kopfzeile_button_color: @themafarbe1;
 @kopfzeile_buttonhover_color: #ffffff;
+@kopfzeile_boxshadow: none;
 
 /* FUSSZEILE */
-@fusszeile_o_background: #181818;
-@fusszeile_o_bordertop: none;
+@fusszeile_o_background: @seitenbackground;
+@fusszeile_o_bordertop: 5px solid @themafarbe1;
 @fusszeile_button_background: transparent;
-@fusszeile_button_color: @themafarbe3;
+@fusszeile_button_color: @standardschrifthell_color;
 @fusszeile_buttonhover_background: @themafarbe1;
 @fusszeile_buttonhover_color: @standardschrifthell_color;
-@fusszeile_link_color: @themafarbe3;
-@fusszeile_linkhover_color: @standardschrifthell_color;
+@fusszeile_link_color: @standardschrifthell_color;
+@fusszeile_linkhover_color: @themafarbe3;
 
 /* SCHULHOFNAVIGATION */
 @navi_bereiche_display: inline-block;
@@ -95,8 +97,8 @@
 @navi_haupt_untermenue_right: 0px;
 
 /* LOGO */
-@logo_schrift_display: block;
-@logo_bild_width: auto;
+@logo_schrift_display: none;
+@logo_bild_width: 160px;
 @logo_schrift_farbe: @themafarbe1;
 
 /* TERMINE */

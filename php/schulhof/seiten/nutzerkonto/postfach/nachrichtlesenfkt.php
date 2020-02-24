@@ -110,7 +110,7 @@ function cms_nachricht_lesen($dbs, $app = "nein") {
 			if ($sql->execute()) {
 				$sql->bind_result($tid, $ttit);
 				while ($sql->fetch()) {
-					$code .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_postfach_nachricht_taggen(0, $tid)\">$ttit</span> ";
+					$code .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_postfach_nachricht_taggen(0, $tid, '$app')\">$ttit</span> ";
 					$tagzahl++;
 				}
 			}
@@ -121,7 +121,7 @@ function cms_nachricht_lesen($dbs, $app = "nein") {
 			if ($sql->execute()) {
 				$sql->bind_result($tid, $ttit);
 				while ($sql->fetch()) {
-					$code .= "<span class=\"cms_toggle\" onclick=\"cms_postfach_nachricht_taggen(1, $tid)\">$ttit</span> ";
+					$code .= "<span class=\"cms_toggle\" onclick=\"cms_postfach_nachricht_taggen(1, $tid, '$app')\">$ttit</span> ";
 					$tagzahl++;
 				}
 			}

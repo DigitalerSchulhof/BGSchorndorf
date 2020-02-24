@@ -20,7 +20,7 @@ $code .= "<div class=\"cms_reitermenue_i\">";
       $code .= "<th></th><th>Absender</th><th>Betreff</th><th>Datum</th><th>Uhrzeit</th>";
     $code .= "</tr>";
   $code .= "<tbody id=\"cms_postfach_eingang_liste\">";
-    $code .= cms_postfach_nachrichten_listen ('eingang', '1', 0, $heutet, '', '', '', '', 0, 25, 'app');
+    $code .= cms_postfach_nachrichten_listen ('eingang', '1', 0, $heutet, '', '', '', '', 0, 25, false, 'app');
   $code .= "</tbody>";
   $code .= "</table>";
 
@@ -30,7 +30,7 @@ $code .= "</div>";
 
 $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_postfach_papierkorb_1\">";
 $code .= "<div class=\"cms_reitermenue_i\">";
-  $code .= cms_postfach_filter_ausgeben ('entwurf', $letztenMonatt, $heutet, '1', '1', false, 'app');
+  $code .= cms_postfach_filter_ausgeben ('entwurf', $letztenMonatt, $heutet, '1', '1', 'app');
   $code .= "<table class=\"cms_liste cms_postfach_liste\">";
     $code .= "<tr>";
       $code .= "<th></th><th>Empfänger</th><th>Betreff</th><th>Datum</th><th>Uhrzeit</th>";

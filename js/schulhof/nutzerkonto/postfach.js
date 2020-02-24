@@ -386,7 +386,8 @@ function cms_postfach_tag_bearbeiten() {
 	}
 }
 
-function cms_postfach_nachricht_taggen(anschalten, tagid) {
+function cms_postfach_nachricht_taggen(anschalten, tagid, app) {
+	var app = app || 'nein';
 	if (anschalten == 1) {
 		cms_laden_an('Nachricht taggen', 'Der Tag wird der Nachricht zugewiesen.');
 	}
@@ -402,7 +403,12 @@ function cms_postfach_nachricht_taggen(anschalten, tagid) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_link('Schulhof/Nutzerkonto/Postfach/Nachricht_lesen');
+			if (app != 'app') {
+				cms_link('Schulhof/Nutzerkonto/Postfach/Nachricht_lesen');
+			}
+			else {
+				cms_link('App/Postfach/Nachricht_lesen');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -513,8 +519,9 @@ function cms_postfach_eigennachricht() {
 	cms_meldung_an('info', 'Nachricht an sich selbst', '<p>Es ist nicht möglich eine Nachricht an sich selbst zu verschicken.</p>', '<p><span class="cms_button" onclick="cms_laden_aus();">OK</span></p>');
 }
 
-function cms_postfach_nachrichten_seite(id, nr, modus, papierkorb) {
+function cms_postfach_nachrichten_seite(id, nr, modus, papierkorb, app) {
+	var app = app || 'nein';
 	var limit = document.getElementById('cms_postfach_filter_limit'+id).value;
 	document.getElementById('cms_postfach_filter_nummer'+id).value = (nr-1)*limit;
-	cms_postfach_nachrichten_laden(modus, papierkorb, id);
+	cms_postfach_nachrichten_laden(modus, papierkorb, id, app);
 }

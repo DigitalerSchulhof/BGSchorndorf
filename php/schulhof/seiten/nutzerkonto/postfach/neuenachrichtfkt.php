@@ -1,4 +1,4 @@
-<?
+<?php
 function cms_neue_nachricht($dbs, $app = "nein") {
 	global $CMS_SCHLUESSEL, $CMS_BENUTZERART, $CMS_DBP_DB, $CMS_BENUTZERID, $CMS_DBS_DB;
 	$code = "";

@@ -81,7 +81,7 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid,
 	// Seiten ausgeben
 	$code .= "<p id=\"cms_seiten\">";
 	for ($i = 1; $i<= $nachrichtenanzahl; $i++) {
-		$code .= "<span class=\"cms_button\" onclick=\"cms_postfach_nachrichten_seite('$fid', '$i', '$modus', '$papierkorb');\">$i</span> ";
+		$code .= "<span class=\"cms_button\" onclick=\"cms_postfach_nachrichten_seite('$fid', '$i', '$modus', '$papierkorb', '$app');\">$i</span> ";
 	}
 	$code .= "<input name=\"cms_postfach_filter_limit".$fid."\" id=\"cms_postfach_filter_limit".$fid."\" type=\"hidden\" value=\"25\">";
 	$code .= "<input name=\"cms_postfach_filter_nummer".$fid."\" id=\"cms_postfach_filter_nummer".$fid."\" type=\"hidden\" value=\"0\">";

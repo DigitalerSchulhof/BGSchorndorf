@@ -1,8 +1,14 @@
-/lehrerdateien/*
 /css/*
 /php/phpmailer/*
-/php/schulhof/funktionen/config.php
+/php/schulhof/funktionen/configBG.php
+/php/schulhof/funktionen/configDSH.php
 /php/schulhof/funktionen/configbackup.php
+/lehrerdateien/php/lehrerzimmer/funktionen/configBG.php
+/lehrerdateien/php/lehrerzimmer/funktionen/configDSH.php
+/lehrerdateien/php/lehrerzimmer/funktionen/configbackup.php
+/res/logos/bglogo.png
+/res/logos/bglogodruck.png
+/res/logos/gfiilogo.png
 /dateien/*
 /prepared.php
 /encrypt.php
