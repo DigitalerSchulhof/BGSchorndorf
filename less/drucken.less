@@ -19,28 +19,28 @@ body {
 
 .cms_druckseite {
 	width: 210mm;
-	padding: 2cm;
+	padding: 2cm 2cm 2cm 2cm;
 	background: #ffffff;
 	color: #000000;
 	margin: 20px auto;
 }
 
-#cms_logo {
+.cms_logo {
   display: inline-block;
 }
 
-#cms_logo_bild {
+.cms_logo_bild {
   float: left;
 	width: 2.5cm;
   padding-right: 5mm;
 }
 
-#cms_logo_schrift {
+.cms_logo_schrift {
   float: left;
   display: block;
 }
 
-#cms_logo_o, #cms_logo_u {
+.cms_logo_o, .cms_logo_u {
   position: relative;
   color: @logo_schrift_farbe;
   font-size: 25pt;
@@ -48,13 +48,18 @@ body {
   display: block;
 }
 
-#cms_logo_o {
+.cms_logo_o {
   font-weight: bold;
 }
 
-div#cms_druckkopf {
+div.cms_druckkopf {
   display: block;
 	margin-bottom: 1cm;
+	margin-top: 2cm;
+}
+
+div.cms_druckkopf:first-child {
+	margin-top: 0cm;
 }
 
 div#cms_druckfuss {
@@ -90,7 +95,7 @@ h1 {
 	page-break-before: always;
 }
 
-#cms_druckkopf+h1 {
+.cms_druckkopf+h1 {
 	margin-top: .5cm !important;
 	page-break-before: avoid !important;
 }
@@ -215,6 +220,11 @@ span.cms_unterschrift {
 	font-size: 12pt;
 }
 
+.cms_seitenumbruch {
+	border-top: .5cm solid @seitenbackground;
+	page-break-before: always;
+}
+
 p.cms_unterschrift {
 	font-size: 8pt;
 }
@@ -225,10 +235,11 @@ p.cms_unterschrift {
 	}
 
 	.cms_seitenumbruch {
-		 page-break-before: always;
+		border-top: none;
+		page-break-before: always;
 	}
 
-	@page {margin: 2cm;}
+	@page {margin: 0cm 2cm 2cm 2cm;}
 
 	.cms_druckseite {
 		padding: 0cm !important
