@@ -7,12 +7,12 @@ function cms_maxpos_spalte($dbs, $spalte) {
     $sql = $dbs->prepare("SELECT MAX(position) AS max FROM $e WHERE spalte = ?");
     $sql->bind_param("i", $spalte);
     if ($sql->execute()) {
-      $sql->bind_result($max);
+      $sql->bind_result($maxl);
       $sql->fetch();
+      if ($maxl > $max) {$max = $maxl;}
     }
     $sql->close();
   }
-  $sql->close();
   return $max;
 }
 

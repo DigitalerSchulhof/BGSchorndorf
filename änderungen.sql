@@ -516,6 +516,15 @@ CREATE TABLE `cms_schulhof`.`diashowbilder` ( `id` BIGINT(255) UNSIGNED NOT NULL
 ALTER TABLE `diashows` ADD CONSTRAINT `diashowsspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `diashowbilder` ADD CONSTRAINT `diashowbilderdiashow` FOREIGN KEY (`diashow`) REFERENCES `diashows`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `diashows` CHANGE `spalte` `spalte` BIGINT(255) UNSIGNED NULL, CHANGE `position` `position` BIGINT(255) UNSIGNED NULL, CHANGE `aktiv` `aktiv` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelalt` `titelalt` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelaktuell` `titelaktuell` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelneu` `titelneu` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
+
+ALTER TABLE `diashowbilder` CHANGE `diashow` `diashow` BIGINT(255) UNSIGNED NULL, CHANGE `pfadalt` `pfadalt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `pfadaktuell` `pfadaktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `pfadneu` `pfadneu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungalt` `beschreibungalt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungaktuell` `beschreibungaktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungneu` `beschreibungneu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
+
+
+
+
+
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (

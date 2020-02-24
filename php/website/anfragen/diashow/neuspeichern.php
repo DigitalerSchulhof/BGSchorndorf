@@ -26,8 +26,6 @@ if (cms_angemeldet() && $zugriff) {
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
 	if ($position > $maxpos+1) {$fehler = true;}
 
-	$dbs = cms_verbinden('s');
-
 	if (!$fehler) {
 		// NÄCHSTE FREIE ID SUCHEN
 		$id = cms_generiere_kleinste_id('diashows');
