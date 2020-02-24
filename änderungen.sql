@@ -395,9 +395,126 @@ ALTER TABLE `voranmeldung_eltern` CHANGE `idvon` `idvon` BIGINT(255) NULL, CHANG
 ALTER TABLE `auffaelliges` CHANGE `id` `id` BIGINT(11) UNSIGNED NOT NULL, CHANGE `typ` `typ` INT(1) UNSIGNED NULL DEFAULT NULL, CHANGE `aktion` `aktion` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `eingaben` `eingaben` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `details` `details` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `notizen` `notizen` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `zeitstempel` `zeitstempel` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `status` `status` INT(11) UNSIGNED NULL DEFAULT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 ALTER TABLE `auffaelliges` CHANGE `ursacher` `ursacher` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 
-DROP TABLE emoticons;
-DROP TABLE umarmungen
 
+
+
+
+
+DROP TABLE emoticons;
+DROP TABLE umarmungen;
+
+CREATE TABLE `gfs` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `kurs` bigint(255) UNSIGNED DEFAULT NULL,
+  `status` tinyint(1) UNSIGNED DEFAULT NULL,
+  `gehalten` bigint(255) UNSIGNED NOT NULL,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `gfs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `gfspersonpersonen` (`person`),
+  ADD KEY `gfskurskurse` (`kurs`);
+
+ALTER TABLE `gfs`
+  ADD CONSTRAINT `gfskurskurse` FOREIGN KEY (`kurs`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gfspersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `notifikationen` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+
+CREATE TABLE `notfallzustand` (
+  `lehrer` bigint(255) UNSIGNED NOT NULL,
+  `schueler` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `notfallzustand`
+  ADD PRIMARY KEY (`lehrer`,`schueler`),
+  ADD KEY `notfallzustandschueler` (`schueler`);
+
+ALTER TABLE `notfallzustand`
+  ADD CONSTRAINT `notfallzustandlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notfallzustandschueler` FOREIGN KEY (`schueler`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `kontaktformulare` ADD `ansichtalt` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `anhangneu`, ADD `ansichtaktuell` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtalt`, ADD `ansichtneu` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtaktuell`;
+
+ALTER TABLE `voranmeldung_schueler` ADD `geimpft` TINYINT(1) UNSIGNED NULL AFTER `kuenftigesprofil`;
+ALTER TABLE `voranmeldung_schueler` CHANGE `geimpft` `geimpft` VARBINARY(50) NULL DEFAULT NULL;
+
+ALTER TABLE `gremienblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kurseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreiseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbeblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignisseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `gremienchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `gremientermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `gremientermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `blogeintraege` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `termine` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ferien` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `galerien` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `leihenbuchen` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `raeumebuchen` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `notifikationen` CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `pinnwandanschlag` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `schuljahre` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `zeitraeume` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `kontaktformulareempfaenger` DROP `namealt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `nameneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailneu`;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `nameaktuell` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `beschreibungaktuell` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `mailaktuell` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
+CREATE TABLE `cms_schulhof`.`diashows` ( `id` BIGINT(255) UNSIGNED NOT NULL , `spalte` BIGINT(255) UNSIGNED NOT NULL , `position` BIGINT(255) UNSIGNED NOT NULL , `aktiv` VARCHAR(5000) NOT NULL , `titelalt` VARCHAR(5000) NOT NULL , `titelaktuell` VARCHAR(5000) NOT NULL , `titelneu` VARCHAR(5000) NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `cms_schulhof`.`diashowbilder` ( `id` BIGINT(255) UNSIGNED NOT NULL , `diashow` BIGINT(255) UNSIGNED NOT NULL , `pfadalt` TEXT NOT NULL , `pfadaktuell` TEXT NOT NULL , `pfadneu` TEXT NOT NULL , `beschreibungalt` TEXT NOT NULL , `beschreibungaktuell` TEXT NOT NULL , `beschreibungneu` TEXT NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `diashows` ADD CONSTRAINT `diashowsspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `diashowbilder` ADD CONSTRAINT `diashowbilderdiashow` FOREIGN KEY (`diashow`) REFERENCES `diashows`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- LEHRERDATENBANK
 
@@ -419,18 +536,49 @@ ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AF
 ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 
-ALTER TABLE `kontaktformulareempfaenger` DROP `namealt`;
-ALTER TABLE `kontaktformulareempfaenger` DROP `nameneu`;
-ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungalt`;
-ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungneu`;
-ALTER TABLE `kontaktformulareempfaenger` DROP `mailalt`;
-ALTER TABLE `kontaktformulareempfaenger` DROP `mailneu`;
-ALTER TABLE `kontaktformulareempfaenger` CHANGE `nameaktuell` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `kontaktformulareempfaenger` CHANGE `beschreibungaktuell` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `kontaktformulareempfaenger` CHANGE `mailaktuell` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+CREATE TABLE `fehlzeiten` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `eintrag` bigint(255) UNSIGNED DEFAULT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `von` bigint(255) UNSIGNED DEFAULT NULL,
+  `bis` bigint(255) UNSIGNED DEFAULT NULL,
+  `bemerkung` blob DEFAULT NULL,
+  `entschuldigt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `idvon` bigint(255) UNSIGNED NULL,
+  `idzeit` bigint(255) UNSIGNED NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `cms_schulhof`.`diashows` ( `id` BIGINT(255) UNSIGNED NOT NULL , `spalte` BIGINT(255) UNSIGNED NOT NULL , `position` BIGINT(255) UNSIGNED NOT NULL , `aktiv` VARCHAR(5000) NOT NULL , `titelalt` VARCHAR(5000) NOT NULL , `titelaktuell` VARCHAR(5000) NOT NULL , `titelneu` VARCHAR(5000) NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-CREATE TABLE `cms_schulhof`.`diashowbilder` ( `id` BIGINT(255) UNSIGNED NOT NULL , `diashow` BIGINT(255) UNSIGNED NOT NULL , `pfadalt` TEXT NOT NULL , `pfadaktuell` TEXT NOT NULL , `pfadneu` TEXT NOT NULL , `beschreibungalt` TEXT NOT NULL , `beschreibungaktuell` TEXT NOT NULL , `beschreibungneu` TEXT NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `lobtadel` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `eintrag` bigint(255) UNSIGNED DEFAULT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `art` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `charakter` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bemerkung` blob DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED NULL,
+  `idzeit` bigint(255) UNSIGNED NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `diashows` ADD CONSTRAINT `diashowsspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `diashowbilder` ADD CONSTRAINT `diashowbilderdiashow` FOREIGN KEY (`diashow`) REFERENCES `diashows`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `tagebuch` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `inhalt` longblob DEFAULT NULL,
+  `hausaufgabe` longblob DEFAULT NULL,
+  `freigabe` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `fehlzeiten`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fehlzeiteneintragtagebuch` (`eintrag`);
+
+ALTER TABLE `lobtadel`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lobtadeleintragtagebuch` (`eintrag`);
+
+ALTER TABLE `tagebuch`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `fehlzeiten`
+  ADD CONSTRAINT `fehlzeiteneintragtagebuch` FOREIGN KEY (`eintrag`) REFERENCES `tagebuch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `lobtadel`
+  ADD CONSTRAINT `lobtadeleintragtagebuch` FOREIGN KEY (`eintrag`) REFERENCES `tagebuch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

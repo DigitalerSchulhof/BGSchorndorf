@@ -1,12 +1,7 @@
 <?php
 $ordnergroesse = cms_dateisystem_ordner_info("dateien/schulhof/personen/$CMS_BENUTZERID/postfach");
 
-if ($CMS_BENUTZERART == 's') {$POSTLIMIT = 100*1024*1024;}
-else if ($CMS_BENUTZERART == 'l') {$POSTLIMIT = 1024*1024*1024;}
-else if ($CMS_BENUTZERART == 'v') {$POSTLIMIT = 1024*1024*1024;}
-else if ($CMS_BENUTZERART == 'e') {$POSTLIMIT = 10*1024*1024;}
-else if ($CMS_BENUTZERART == 'x') {$POSTLIMIT = 10*1024*1024;}
-else {$POSTLIMIT = 0;}
+include_once("php/schulhof/seiten/nutzerkonto/postfach/postlimit.php");
 
 $tabellen[0] = "posteingang_$CMS_BENUTZERID";
 $tabellen[1] = "postausgang_$CMS_BENUTZERID";
@@ -17,8 +12,6 @@ $tabellen[5] = "postgetaggedentwurf_$CMS_BENUTZERID";
 $tabellen[6] = "posttags_$CMS_BENUTZERID";
 
 $dbgroesse = cms_db_tabellengroesse($CMS_DBP_DB, $tabellen);
-
-
 $POSTBELEGT = $ordnergroesse['groesse'] + $dbgroesse;
 
 $POSTPROZENT = min($POSTBELEGT / $POSTLIMIT*100, 100);

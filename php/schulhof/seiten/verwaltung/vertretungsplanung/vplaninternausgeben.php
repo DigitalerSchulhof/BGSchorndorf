@@ -564,8 +564,8 @@ function cms_vertretungsplan_persoenlich_naechsterschultag($dbs) {
 }
 
 
-function cms_vertretungsplan_persoenlich($dbs) {
-  global $CMS_BENUTZERART;
+function cms_vertretungsplan_persoenlich($dbs, $ohnelink = false) {
+  global $CMS_BENUTZERART, $CMS_BENUTZERID;
   if (($CMS_BENUTZERART != 's') && ($CMS_BENUTZERART != 'l')) {return "";}
   // Diesen Schultag berechnen
   $jetzt = mktime(0,0,0,date('m'), date('d'), date('Y'));
@@ -601,15 +601,21 @@ function cms_vertretungsplan_persoenlich($dbs) {
   $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_meintag_0\" style=\"display: block;\">";
     $code .= "<div class=\"cms_reitermenue_i\">";
     $code .= cms_vertretungsplan_tagesansicht($dbs, $hbeginn, $hende);
+    if (!$ohnelink) {
+      $code .= "<p><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></p>";
+    }
     $code .= "</div>";
   $code .= "</div>";
   $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_meintag_1\">";
     $code .= "<div class=\"cms_reitermenue_i\">";
     $code .= cms_vertretungsplan_tagesansicht($dbs, $mbeginn, $mende);
+    if (!$ohnelink) {
+      $code .= "<p><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></p>";
+    }
     $code .= "</div>";
   $code .= "</div>";
-  
-  $code .= "<div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde\">Regelstunde</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_geaendert\">Geändert</span></div><div class=\"cms_spalte_3\"><span class=\"cms_stundenplan_stunde_ausfall\">Entfall</span></div><div class=\"clear\"></div></div>";
+
+  $code .= "<div class=\"cms_legende\"><span class=\"cms_stundenplan_stunde\">Regelstunde</span><span class=\"cms_stundenplan_stunde_geaendert\">Geändert</span><span class=\"cms_stundenplan_stunde_ausfall\">Entfall</span></div>";
 
   return $code;
 }

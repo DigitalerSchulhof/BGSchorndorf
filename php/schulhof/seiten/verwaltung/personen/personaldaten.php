@@ -136,7 +136,7 @@ function cms_personaldaten_ausgeben($id) {
 				else {
 					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'];
 					if ($zugriff) {
-						$nutzerkontoaktionen .=  "<li><span class=\"cms_button_ja\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Neues_Nutzerkonto')\">Nutzerkonto anlegen</span></li> ";
+						$nutzerkontoaktionen .=  "<li><span class=\"cms_button_ja\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Neues_Nutzerkonto_anlegen')\">Nutzerkonto anlegen</span></li> ";
 					}
 				}
 

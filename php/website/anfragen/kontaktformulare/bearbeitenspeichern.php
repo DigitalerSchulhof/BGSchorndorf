@@ -7,7 +7,7 @@ include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../website/funktionen/positionen.php");
 session_start();
 // Variablen einlesen, falls übergeben
-postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "namen", "mails", "beschreibungen"));
+postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "ansicht", "ids", "namen", "mails", "beschreibungen"));
 if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
@@ -32,6 +32,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true;}
 	if (($kopie != 0) && ($kopie != 1) && ($kopie != 2)) {$fehler = true;}
 	if (($anhang != 0) && ($anhang != 1)) {$fehler = true;}
+	if (($ansicht != 'v') && ($ansicht != 'm')) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 
 	if(!((count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
@@ -52,21 +53,18 @@ if (cms_angemeldet() && $zugriff) {
 		$betreff = cms_texttrafo_e_db($betreff);
 
 		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
-		 	$sql = "UPDATE kontaktformulare SET position = $position, betreffneu = ?, kopieneu = ?, anhangneu = ? WHERE id = ? ";
+		 	$sql = "UPDATE kontaktformulare SET position = $position, betreffneu = ?, kopieneu = ?, anhangneu = ?, ansichtneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
 
-			$sql->bind_param("siii", $betreff, $kopie, $anhang, $id);
+			$sql->bind_param("siisi", $betreff, $kopie, $anhang, $ansicht, $id);
 			$sql->execute();
 			$sql->close();
 
-			$sql = "DELETE FROM kontaktformulareempfaenger WHERE kontaktformular = ?";
+			$sql = "UPDATE kontaktformulareempfaenger SET nameneu = ?, beschreibungneu = ?, mailneu = ? WHERE id = ? AND kontaktformular = ?";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_param("i", $id);
-			$sql->execute();
-
-			$sql = $dbs->prepare("UPDATE kontaktformulareempfaenger SET kontaktformular = ?, name = ?, beschreibung = ?, mail = ? WHERE id = ?");
-			$sql->bind_param("isssi", $id, $name, $beschreibung, $mail, $ide);
-			for ($i=0; $i < count($namen); $i++) {
+			$sql->bind_param("sssii", $name, $beschreibung, $mail, $ide, $id);
+			for ($i=0; $i < count($ids); $i++) {
+				$ide = $ids[$i];
 				$name = $namen[$i];
 				$mail = $mails[$i];
 				$ide = cms_generiere_kleinste_id('kontaktformulareempfaenger');
@@ -77,9 +75,9 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->close();
 		}
 		else {
-			$sql = "UPDATE kontaktformulare SET spalte = ?, position = ?, aktiv = ?, betreffaktuell = ?, betreffneu = ?, kopieaktuell = ?, kopieneu = ?, anhangaktuell = ?, anhangneu = ? WHERE id = ?";
+			$sql = "UPDATE kontaktformulare SET spalte = ?, position = ?, aktiv = ?, betreffaktuell = ?, betreffneu = ?, kopieaktuell = ?, kopieneu = ?, anhangaktuell = ?, anhangneu = ?, ansichtaktuell = ?, ansichtneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_param("iisssiiiii", $spalte, $position, $aktiv, $betreff, $betreff, $kopie, $kopie, $anhang, $anhang, $id);
+			$sql->bind_param("iisssiiiissi", $spalte, $position, $aktiv, $betreff, $betreff, $kopie, $kopie, $anhang, $anhang, $ansicht, $ansicht, $id);
 			$sql->execute();
 			$sql->close();
 

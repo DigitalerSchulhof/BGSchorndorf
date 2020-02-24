@@ -22,7 +22,7 @@ if (cms_angemeldet()) {
 	$dbp = cms_verbinden('p');
 	$tabelle = "post$modus"."_".$CMS_BENUTZERID;
 
-	$sql = $dbp->prepare("UPDATE $tabelle SET papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL'), papierkorbseit = '' WHERE id = ?;");
+	$sql = $dbp->prepare("UPDATE $tabelle SET papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL'), papierkorbseit = NULL WHERE id = ?;");
 	$sql->bind_param("i", $id);
 	$sql->execute();
 	$sql->close();

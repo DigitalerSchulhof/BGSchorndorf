@@ -149,6 +149,7 @@ if (cms_angemeldet() && $zugriff) {
 			$text = preg_replace("/^IMP I$/", 'IMP', $text);
 			$text = preg_replace("/^IMP M$/", 'IMP', $text);
 			$text = preg_replace("/^VKB Vorbereitungskurs Bili$/", 'VKB', $text);
+			$text = preg_replace("/^EB$/", 'VKB', $text);
 			return $text;
 		}
 

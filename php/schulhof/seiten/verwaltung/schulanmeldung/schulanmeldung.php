@@ -39,6 +39,7 @@ if ($zugriff) {
 	if ($CMS_RECHTE['Organisation']['Schulanmeldungen erfassen']) {$aktionen .= "<a class=\"cms_iconbutton cms_button_ja\" style=\"background-image:url('res/icons/gross/dazu.png');\" href=\"Schulhof/Verwaltung/Schulanmeldung/Neue_Anmeldung\">Neue Anmeldung</a> ";}
 	if ($CMS_RECHTE['Organisation']['Schulanmeldung vorbereiten']) {$aktionen .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/einstellungen.png');\" href=\"Schulhof/Verwaltung/Schulanmeldung/Einstellungen\">Einstellungen</a> ";}
 	if ($CMS_RECHTE['Organisation']['Schulanmeldungen exportieren']) {$aktionen .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/exportieren.png');\" href=\"Schulhof/Verwaltung/Schulanmeldung/Exportieren\">Exportieren</a> ";}
+	if ($CMS_RECHTE['Organisation']['Schulanmeldungen akzeptieren']) {$aktionen .= "<span class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/drucken.png');\" onclick=\"cms_schulanmeldung_drucken('alle');\">Alle Drucken</span> ";}
 
 	if (strlen($aktionen) > 0) {
 		$code .= "<h2>Aktionen</h2>";

@@ -45,7 +45,7 @@ function cms_gruppen_verwaltung_listeausgeben($name, $anlegen, $bearbeiten, $loe
 				$ausgabe .= "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($name)."/Neue_Gruppe_anlegen\">+ Neue Gruppe anlegen</a></p>";
 			}
 			else {
-				$ausgabe .=  "<p><span class=\"cms_button_eingeschraenkt\">+ Neue Gruppe anlegen</span></p>";
+				$ausgabe .=  "<p><span class=\"cms_button_gesichert\">+ Neue Gruppe anlegen</span></p>";
 			}
 		}
 
@@ -193,7 +193,7 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
         $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_gruppen_loeschen_anzeigen('$name', '".$daten['bezeichnung']."', ".$daten['id'].")\"><span class=\"cms_hinweis\">Gruppe löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
       }
       else {
-        $code .= "<span class=\"cms_aktion_klein cms_button_eingeschraenkt\"><span class=\"cms_hinweis\">Gruppe löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+        $code .= "<span class=\"cms_aktion_klein cms_button_gesichert\"><span class=\"cms_hinweis\">Gruppe löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
       }
     }
     $code .= "</td></tr>";

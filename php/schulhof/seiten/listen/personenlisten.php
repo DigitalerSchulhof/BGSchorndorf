@@ -55,13 +55,13 @@ if ($zugriff) {
       }
     }
     else {
-      $code .= "<span class=\"cms_button_eingeschraenkt\">Adresse</span> ";
-      $code .= "<span class=\"cms_button_eingeschraenkt\">Kontaktdaten</span> ";
+      $code .= "<span class=\"cms_button_gesichert\">Adresse</span> ";
+      $code .= "<span class=\"cms_button_gesichert\">Kontaktdaten</span> ";
       if ($listenart == 'Schüler' || $listenart == 'Schülervertreter') {
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Geburtsdatum</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Religionsunterricht</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Profile</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Konfession</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Geburtsdatum</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Religionsunterricht</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Profile</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Konfession</span> ";
       }
     }
     $code .= "</p>";

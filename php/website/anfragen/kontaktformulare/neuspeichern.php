@@ -7,7 +7,7 @@ include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../website/funktionen/positionen.php");
 session_start();
 // Variablen einlesen, falls übergeben
-postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "namen", "mails", "beschreibungen"));
+postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "ansicht", "namen", "mails", "beschreibungen"));
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
 $namen = explode(",", $namen);
@@ -28,6 +28,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true;}
 	if (($kopie != 0) && ($kopie != 1) && ($kopie != 2)) {$fehler = true;}
 	if (($anhang != 0) && ($anhang != 1)) {$fehler = true;}
+	if (($ansicht != 'v') && ($ansicht != 'm')) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 
 	if(!((count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
@@ -58,8 +59,8 @@ if (cms_angemeldet() && $zugriff) {
 
 		// Formular eintragen
 		$betreff = cms_texttrafo_e_db($betreff);
-		$sql = $dbs->prepare("UPDATE kontaktformulare SET spalte = ?, position = ?, aktiv = ?, betreffalt = ?, betreffaktuell = ?, betreffneu = ?, kopiealt = ?, kopieaktuell = ?, kopieneu = ?, anhangalt = ?, anhangaktuell = ?, anhangneu = ? WHERE id = ?");
-		$sql->bind_param("iissssiiiiiii", $spalte, $position, $aktiv, $betreff, $betreff, $betreff, $kopie, $kopie, $kopie, $anhang, $anhang, $anhang, $id);
+		$sql = $dbs->prepare("UPDATE kontaktformulare SET spalte = ?, position = ?, aktiv = ?, betreffalt = ?, betreffaktuell = ?, betreffneu = ?, kopiealt = ?, kopieaktuell = ?, kopieneu = ?, anhangalt = ?, anhangaktuell = ?, anhangneu = ?, ansichtalt = ?, ansichtaktuell = ?, ansichtneu = ? WHERE id = ?");
+		$sql->bind_param("iissssiiiiiisssi", $spalte, $position, $aktiv, $betreff, $betreff, $betreff, $kopie, $kopie, $kopie, $anhang, $anhang, $anhang, $ansicht, $ansicht, $ansicht, $id);
 		$sql->execute();
 
 		// Empfänger eintragen

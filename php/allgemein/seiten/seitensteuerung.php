@@ -53,6 +53,26 @@ else if ($CMS_URL[0] == 'Intern') {
   if (preg_match("/^Intern\/Schülervertretungsplan(\/[-a-zA-Z0-9]+){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/schuelervertretungsplan.php';}
   if (preg_match("/^Intern\/Lehrervertretungsplan(\/[-a-zA-Z0-9]+){0,1}$/", $CMS_URLGANZ)) {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ] = 'php/lehrerzimmer/seiten/intern/lehrervertretungsplan.php';}
 }
+else if ($CMS_URL[0] == 'App') {
+  $CMS_VERFUEGBARE_SEITEN['App']                                                     = 'php/app/seiten/hauptmenue.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Mein_Tag']                                            = 'php/app/seiten/meintag.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach']                                            = 'php/app/seiten/postfach/posteingang.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach/Posteingang']                                = 'php/app/seiten/postfach/posteingang.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach/Entwürfe']                                   = 'php/app/seiten/postfach/entwuerfe.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach/Postausgang']                                = 'php/app/seiten/postfach/postausgang.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach/Papierkorb']                                 = 'php/app/seiten/postfach/papierkorb.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach/Neue_Nachricht']                             = 'php/app/seiten/postfach/neuenachricht.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Postfach/Nachricht_lesen']                            = 'php/app/seiten/postfach/nachrichtlesen.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Probleme_melden']                                     = 'php/app/seiten/problememelden/probleme.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Probleme_melden/Geräte']                              = 'php/app/seiten/problememelden/geraete.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Probleme_melden/Räume']                               = 'php/app/seiten/problememelden/geraete.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Probleme_melden/Leihgeräte']                          = 'php/app/seiten/problememelden/geraete.php';
+  $CMS_VERFUEGBARE_SEITEN['App/Probleme_melden/Hausmeisteraufträge']                 = 'php/app/seiten/problememelden/hausmeister.php';
+  if (preg_match("/^App\/Probleme_melden\/Räume\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                           = 'php/app/seiten/problememelden/raeume.php';}
+  if (preg_match("/^App\/Probleme_melden\/Leihgeräte\/$CMS_LINKMUSTER$/", $CMS_URLGANZ))
+    {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                           = 'php/app/seiten/problememelden/leihgeraete.php';}
+}
 else if ($CMS_URL[0] == 'Schulhof') {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
   // SCHULHOF
@@ -86,7 +106,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Tags/Neuen_Tag_anlegen']         = 'php/schulhof/seiten/nutzerkonto/postfach/neuertag.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                              = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                               = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Neuigkeiten']                             = 'php/schulhof/seiten/nutzerkonto/neuigkeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Tagebuch']                                = 'php/schulhof/seiten/nutzerkonto/tagebuch.php';
 
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';
@@ -348,6 +370,7 @@ if (!$ausnahme) {
       else if ($CMS_URL[0] == "Problembehebung") {cms_fehler("Schulhof", "404");}
       else if ($CMS_URL[0] == "Schulhof") {cms_fehler("Schulhof", "404");}
       else if ($CMS_URL[0] == "Intern") {cms_fehler("Schulhof", "404");}
+      else if ($CMS_URL[0] == "App") {include_once('php/app/seiten/404.php');}
     }
     else {cms_fehler("Website", "404");}
   }

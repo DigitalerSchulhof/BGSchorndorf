@@ -101,12 +101,12 @@ if (cms_valide_gruppe($g)) {
         $code .= cms_togglebutton_generieren ('cms_gruppenliste_konfession', 'Konfession', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')");
       }
       else {
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Adresse</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Kontaktdaten</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Geburtsdatum</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Religionsunterricht</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Profile</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Konfession</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Adresse</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Kontaktdaten</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Geburtsdatum</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Religionsunterricht</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Profile</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Konfession</span> ";
       }
       $code .= "</p>";
       if (!$CMS_IMLN) {

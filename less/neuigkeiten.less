@@ -13,13 +13,45 @@
   padding: 10px;
   list-style-type: none;
   margin: 0px;
-  background: @info_background;
+  background: @schattierthell_background;
   display: inline-block;
   transition: 250ms ease-in-out;
   position: relative;
 }
 
-.cms_postneuigkeit:hover {
+.cms_neuigkeit_notfall {
+  text-align: left !important;
+  width: 100%;
+  padding: 10px;
+  margin: 0px;
+  background: @warnung_background;
+  transition: 250ms ease-in-out;
+  display: block;
+  position: relative;
+  animation-name: notfallanimation;
+  animation-delay: 1s;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes notfallanimation {
+  0%   {background-color:@warnung_background;}
+  37.5%  {background-color:@fehler_background;}
+  75%  {background-color:@warnung_background;}
+  100%  {background-color:@warnung_background;}
+}
+
+.cms_neuigkeit_ln {
+  background: @standardhell_background !important;
+  padding: 8px !important;
+  border: 2px dashed @schattierthell_background;
+}
+
+.cms_neuigkeit_ln h4, .cms_neuigkeit_ln p {
+  color: @schattiertdunkel_background;
+}
+
+.cms_neuigkeit_ganz:hover {
   cursor: pointer;
 }
 
@@ -28,7 +60,7 @@
 }
 
 .cms_neuigkeit:hover {
-  background: @schattierthell_background;
+  background: @info_background;
 }
 
 .cms_neuigkeit_icon {

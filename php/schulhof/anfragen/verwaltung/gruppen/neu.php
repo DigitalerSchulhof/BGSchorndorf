@@ -41,13 +41,14 @@ if ($art == 'Kurse') {
 	if (isset($_POST['fach'])) {$fach = $_POST['fach'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['kursbezextern'])) {$kursbezextern = $_POST['kursbezextern'];} else {echo "FEHLER"; exit;}
-	if ($import != 'j') {
-		if (isset($_POST['schienen'])) {$kursschienen = $_POST['schienen'];} else {echo "FEHLER"; exit;}
+	if ($import == 'j') {
+		if (isset($_POST['schiene'])) {$kursschienen = $_POST['schiene'];} else {echo "FEHLER"; exit;}
 		if (!cms_check_idfeld($kursschienen)) {echo "FEHLER"; exit;}
 		else {
 			$SCHIENEN = array();
-			$kursschienen = substr(str_replace("|null|", "|", $kursschienen."|"), -1);
-			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", substr($kursschienen, 1));}
+			$kursschienen = str_replace("|null|", "|", $kursschienen."|");
+			$kursschienen = substr($kursschienen, 1, -1);
+			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", $kursschienen);}
 		}
 	}
 }
@@ -186,17 +187,20 @@ if (cms_angemeldet() && $zugriff) {
 	    }
 
 			if ($import == 'j') {
-				$schienenmuster = "(".implode(',', $SCHIENEN).")";
-				$sql = $dbs->prepare("SELECT COUNT(*) FROM schienen WHERE id IN $schienenmuster");
-				if ($sql->execute()) {
-					$sql->bind_result($checkanzahl);
-					if ($sql->fetch()) {
-						if ($checkanzahl != count($SCHIENEN)) {$fehler = true;}
+				print_r($SCHIENEN);
+				if (count($SCHIENEN) > 0) {
+					$schienenmuster = "(".implode(',', $SCHIENEN).")";
+					$sql = $dbs->prepare("SELECT COUNT(*) FROM schienen WHERE id IN $schienenmuster");
+					if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+						if ($sql->fetch()) {
+							if ($checkanzahl != count($SCHIENEN)) {$fehler = true;}
+						}
+						else {$fehler = true;}
 					}
 					else {$fehler = true;}
+					$sql->close();
 				}
-				else {$fehler = true;}
-				$sql->close();
 			}
 		}
 

@@ -1,8 +1,8 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = true;
+$rechteplaetten = false;
 $internediensteplaetten = false;
-$einstellungenplaetten = true;
+$einstellungenplaetten = false;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;
@@ -495,6 +495,10 @@ if ($rechteplaetten) {
 		$sql->execute(); $id++;
 		*/
 
+		// TAGEBÜCHER
+		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Tagebücher', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Notfallzustand', '$CMS_SCHLUESSEL'))");
+		$sql->execute(); $id++;
+
 		// TECHNIK
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Technik', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Geräte verwalten', '$CMS_SCHLUESSEL'))");
 		$sql->execute(); $id++;
@@ -647,6 +651,16 @@ if ($einstellungenplaetten) {
 	$sql->execute();
 	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Anmeldung aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
 	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Anmeldung von', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Anmeldung bis', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (7, AES_ENCRYPT('Anmeldung persönlich von', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (8, AES_ENCRYPT('Anmeldung persönlich bis', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (9, AES_ENCRYPT('Anmeldung Überhang Tage', '$CMS_SCHLUESSEL'), AES_ENCRYPT('7', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
 
 	$id = 0;
 	$sql = $dbs->prepare("DELETE FROM allgemeineeinstellungen");
@@ -714,6 +728,20 @@ if ($einstellungenplaetten) {
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Reaktionen auf Galerien', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Chat Nachrichten löschen nach', '$CMS_SCHLUESSEL'), AES_ENCRYPT('21', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Abwesenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Inhalt', '$CMS_SCHLUESSEL'), AES_ENCRYPT('-', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Lob und Tadel', '$CMS_SCHLUESSEL'), AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Hausaufgaben', '$CMS_SCHLUESSEL'), AES_ENCRYPT('2', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Frist Entschuldigungen', '$CMS_SCHLUESSEL'), AES_ENCRYPT('7', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Mindestabwesenheit', '$CMS_SCHLUESSEL'), AES_ENCRYPT('10', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Tagebuch Notfallzustand', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
 	$sql->execute(); $id++;
 	// Postfach
 	foreach ($personen as $p) {

@@ -17,16 +17,16 @@ body {
   background: @seitenbackground;
 }
 
-#cms_kopfzeile_o {
+.cms_seite_normal #cms_kopfzeile_o {
   margin-top: @kopfzeile_o_margintop;
-  background: @standardhell_background;
+  background: @kopfzeile_background;
   position: @kopfzeile_o_position;
   top: @kopfzeile_o_top;
 	border-bottom: @kopfzeile_o_borderbottom;
   left: 0px;
   width: 100%;
   z-index: 20;
-  box-shadow: 0px 0px 10px @themafarbe1;
+  box-shadow: @kopfzeile_boxshadow;
 }
 
 #cms_platzhalter_bild {
@@ -55,7 +55,7 @@ body {
   background: @fusszeile_o_background;
 }
 
-#cms_kopfzeile_i {
+.cms_seite_normal #cms_kopfzeile_i {
   padding: 10px 10px 0px 10px;
   height: @kopfzeile_i_height;
   position: relative;
@@ -170,7 +170,7 @@ span.cms_titelbild_knopf_aktiv {
   cursor: pointer;
 }
 
-#cms_logo {
+.cms_seite_normal #cms_logo {
   position: absolute;
   left: 10px;
   top: 10px;
@@ -330,30 +330,36 @@ span.cms_titelbild_knopf_aktiv {
 }
 
 /* COMPUTER */
-.cms_optimierung_P #cms_kopfzeile_m, .cms_optimierung_P #cms_hauptteil_m,
-.cms_optimierung_P #cms_website_bearbeiten_m, .cms_optimierung_P #cms_fusszeile_m {
+.cms_optimierung_P.cms_seite_normal #cms_kopfzeile_m,
+.cms_optimierung_P.cms_seite_normal #cms_hauptteil_m,
+.cms_optimierung_P.cms_seite_normal #cms_website_bearbeiten_m,
+.cms_optimierung_P.cms_seite_normal #cms_fusszeile_m {
   width: @seitenbreite;
   margin: 0px auto;
 }
 
 /* TABLET & HANDY */
-.cms_optimierung_H #cms_kopfzeile_m, .cms_optimierung_H #cms_hauptteil_m,
-.cms_optimierung_H #cms_website_bearbeiten_m, .cms_optimierung_H #cms_fusszeile_m,
-.cms_optimierung_T #cms_kopfzeile_m, .cms_optimierung_T #cms_hauptteil_m,
-.cms_optimierung_T #cms_website_bearbeiten_m, .cms_optimierung_T #cms_fusszeile_m {
+.cms_optimierung_H.cms_seite_normal #cms_kopfzeile_m,
+.cms_optimierung_H.cms_seite_normal #cms_hauptteil_m,
+.cms_optimierung_H.cms_seite_normal #cms_website_bearbeiten_m,
+.cms_optimierung_H.cms_seite_normal #cms_fusszeile_m,
+.cms_optimierung_T.cms_seite_normal #cms_kopfzeile_m,
+.cms_optimierung_T.cms_seite_normal #cms_hauptteil_m,
+.cms_optimierung_T.cms_seite_normal #cms_website_bearbeiten_m,
+.cms_optimierung_T.cms_seite_normal #cms_fusszeile_m {
   width: 100%;
   max-width: @seitenbreite !important;
   margin: 0px auto;
 }
 
 /* HANDY */
-.cms_optimierung_H .cms_spalte_2,
-.cms_optimierung_H .cms_spalte_3,
-.cms_optimierung_H .cms_spalte_60,
-.cms_optimierung_H .cms_spalte_40,
-.cms_optimierung_H .cms_spalte_4,
-.cms_optimierung_H .cms_spalte_34
-.cms_optimierung_H .cms_spalte_6 {
+.cms_optimierung_H.cms_seite_normal .cms_spalte_2,
+.cms_optimierung_H.cms_seite_normal .cms_spalte_3,
+.cms_optimierung_H.cms_seite_normal .cms_spalte_60,
+.cms_optimierung_H.cms_seite_normal .cms_spalte_40,
+.cms_optimierung_H.cms_seite_normal .cms_spalte_4,
+.cms_optimierung_H.cms_seite_normal .cms_spalte_34
+.cms_optimierung_H.cms_seite_normal .cms_spalte_6 {
   float: none;
   width: 100%;
 }

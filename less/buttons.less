@@ -4,8 +4,8 @@
 /* NORMALE BUTTONS */
 .cms_button, .cms_button_ja, .cms_button_nein, .cms_button_wichtig,
 .cms_toggle, .cms_toggle_aktiv, .cms_toggle_inaktiv, .cms_iconbutton, .cms_iconbutton_ja,
-.cms_iconbutton_nein, .cms_button_passiv, .cms_button_passivda, .cms_button_eingeschraenkt,
-.cms_iconbutton_eingeschraenkt, .cms_toggle_aktiv_fest, .cms_datentypwahl,
+.cms_iconbutton_nein, .cms_button_passiv, .cms_button_passivda, .cms_button_gesichert,
+.cms_iconbutton_gesichert, .cms_toggle_aktiv_fest, .cms_datentypwahl,
 .cms_fussnavigation a, .cms_fussnavigation span {
   border: 1px solid transparent;
   display: inline-block;
@@ -98,7 +98,7 @@
     color: @standardschrifthell_color;
 }
 
-.cms_button_eingeschraenkt, .cms_iconbutton_eingeschraenkt {
+.cms_button_gesichert, .cms_iconbutton_gesichert {
   color: @schattiertdunkel_background;
   border: 1px dashed @fehler_background;
   background-color: @standardhell_background;
@@ -124,7 +124,7 @@
   }
 }
 
-.cms_button_eingeschraenkt:hover, .cms_iconbutton_eingeschraenkt:hover,
+.cms_button_gesichert:hover, .cms_iconbutton_gesichert:hover,
 .cms_button_passiv:hover, .cms_button_passivda {
   cursor: default;
 }
@@ -188,7 +188,7 @@
 }
 
 /* ICONBUTTONS */
-.cms_iconbutton, .cms_iconbutton_nein, .cms_iconbutton_ja, .cms_iconbutton_eingeschraenkt {
+.cms_iconbutton, .cms_iconbutton_nein, .cms_iconbutton_ja, .cms_iconbutton_gesichert {
   padding-top: 38px;
   background-position: center 3px;
   background-repeat: no-repeat;

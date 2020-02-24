@@ -29,6 +29,7 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
   if (isset($_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'])) {$religionsunterricht = $_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'];} else {$religionsunterricht = "";}
   if (isset($_SESSION['VORANMELDUNG_S_LAND1'])) {$land1 = $_SESSION['VORANMELDUNG_S_LAND1'];} else {$land1 = "";}
   if (isset($_SESSION['VORANMELDUNG_S_LAND2'])) {$land2 = $_SESSION['VORANMELDUNG_S_LAND2'];} else {$land2 = "";}
+  if (isset($_SESSION['VORANMELDUNG_S_IMPFUNG'])) {$impfung = $_SESSION['VORANMELDUNG_S_IMPFUNG'];} else {$impfung = 0;}
   if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$strasse = $_SESSION['VORANMELDUNG_S_STRASSE'];} else {$strasse = "";}
   if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$hausnummer = $_SESSION['VORANMELDUNG_S_HAUSNUMMER'];} else {$hausnummer = "";}
   if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$plz = $_SESSION['VORANMELDUNG_S_PLZ'];} else {$plz = "";}
@@ -115,6 +116,7 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
       $code .= "<option value=\"".$l['wert']."\"$zusatz>".$l['bezeichnung']."</option>";
     }
     $code .= "</td></tr>";
+    $code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_schieber_generieren('voranmeldung_schueler_impfung', $impfung)."</td></tr>";
   $code .= "</table>";
   $code .= "</div>";
   $code .= "</div>";

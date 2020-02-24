@@ -12,6 +12,7 @@ function cms_maxpos_spalte($dbs, $spalte) {
     }
     $sql->close();
   }
+  $sql->close();
   return $max;
 }
 

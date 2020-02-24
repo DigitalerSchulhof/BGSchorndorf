@@ -57,7 +57,7 @@ if (cms_angemeldet() && $zugriff) {
 		$ek['fach'] = $einkurs[3];
 		$ek['icon'] = $einkurs[4];
 		$ek['klassen'] = $einkurs[5];
-		$ek['schienen'] = $einkurs[6];
+		$ek['schiene'] = $einkurs[6];
 		array_push($K, $ek);
 	}
 
@@ -74,8 +74,8 @@ if (cms_angemeldet() && $zugriff) {
 					array_push($NK, $ek);
 				}
 				else {
-					if (strlen($ek['schienen']) > 0) {
-						$eschienen = explode("|", substr($ek['schienen'], 1));
+					if (strlen($ek['schiene']) > 0) {
+						$eschienen = explode("|", substr($ek['schiene'], 1));
 						foreach ($eschienen AS $es) {
 							$schienenzuordnung = array();
 							$schienenzuordnung['schiene'] = $es;

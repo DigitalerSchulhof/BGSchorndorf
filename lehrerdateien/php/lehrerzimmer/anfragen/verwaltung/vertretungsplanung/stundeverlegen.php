@@ -1,0 +1,230 @@
+<?php
+include_once("../../lehrerzimmer/funktionen/config.php");
+include_once("../../lehrerzimmer/funktionen/texttrafo.php");
+include_once("../../lehrerzimmer/funktionen/check.php");
+session_start();
+
+// Variablen einlesen, falls übergeben
+if (isset($_POST['nutzerid'])) 		{$nutzerid = $_POST['nutzerid'];} 			        else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['sessionid'])) 	{$sessionid = $_POST['sessionid'];} 		        else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['ausgangsstundeu'])) {$ausgangsstundeu = $_POST['ausgangsstundeu'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['ausgangsstundek'])) {$ausgangsstundek = $_POST['ausgangsstundek'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['zielzeit'])) {$zielzeit = $_POST['zielzeit'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['zwang'])) {$zwang = $_POST['zwang'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['zusatzbem'])) {$zusatzbem = $_POST['zusatzbem'];} else {cms_anfrage_beenden(); exit;}
+
+if ((!cms_check_ganzzahl($ausgangsstundeu,0)) && ($ausgangsstundeu !== '')) {cms_anfrage_beenden(); exit;}
+if ((!cms_check_ganzzahl($ausgangsstundek,0)) && ($ausgangsstundek !== '')) {cms_anfrage_beenden(); exit;}
+$tag = substr($zielzeit,0,2);
+$monat = substr($zielzeit,3,2);
+$jahr = substr($zielzeit,6,4);
+$stunde = substr($zielzeit,11,2);
+$minute = substr($zielzeit,14,2);
+if (!cms_check_ganzzahl($tag,1,31)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($monat,1,12)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($jahr,0)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($stunde,0,23)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($minute,0,59)) {cms_anfrage_beenden(); exit;}
+if (($zwang != 'j') && ($zwang != 'n')) {cms_anfrage_beenden(); exit;}
+$beginnzeit = mktime($stunde, $minute, 0, $monat, $tag, $jahr);
+
+// REIHENFOLGE WICHTIG!! NICHT ÄNDERN -->
+include_once("../../lehrerzimmer/funktionen/entschluesseln.php");
+include_once("../../lehrerzimmer/funktionen/sql.php");
+include_once("../../lehrerzimmer/funktionen/meldungen.php");
+include_once("../../lehrerzimmer/funktionen/generieren.php");
+$angemeldet = cms_angemeldet();
+$CMS_RECHTE = cms_rechte_laden();
+// <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
+$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+
+if ($angemeldet && $zugriff) {
+  $dbs = cms_verbinden('s');
+  $fehler = false;
+
+  // Informationen der Ausgangsstunde laden
+  if ($ausgangsstundek == '') {
+    $sql = "SELECT COUNT(*), tkurs, tbeginn, tende, tlehrer, traum FROM unterricht WHERE id = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $ausgangsstundeu);
+  }
+  else {
+    $sql = "SELECT COUNT(*), tkurs, tbeginn, tende, tlehrer, traum FROM unterrichtkonflikt WHERE id = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $ausgangsstundek);
+  }
+  if ($sql->execute()) {
+    $sql->bind_result($ausanzahl, $auskurs, $ausbeginn, $ausende, $auslehrer, $ausraum);
+    $sql->fetch();
+    if ($ausanzahl != 1) {$fehler = true;}
+  } else {$fehler = true;}
+  $sql->close();
+
+  // Zeit suchen
+  if (!$fehler) {
+    $sql = "SELECT COUNT(*), beginns, beginnm, endes, endem FROM schulstunden JOIN zeitraeume ON schulstunden.zeitraum = zeitraeume.id WHERE zeitraeume.beginn <= ? AND zeitraeume.ende >= ? AND beginns = ? AND beginnm = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("iiii", $beginnzeit, $beginnzeit, $stunde, $minute);
+    if ($sql->execute()) {
+      $sql->bind_result($stdanzahl, $stdbeginns, $stdbeginnm, $stdendes, $stdendem);
+      $sql->fetch();
+      if ($stdanzahl != 1) {$fehler = true;}
+      else {
+        $neubeginn = mktime($stdbeginns, $stdbeginnm, 0, $monat, $tag, $jahr);
+        $neuende = mktime($stdendes, $stdendem, 0, $monat, $tag, $jahr);
+      }
+    } else {$fehler = true;}
+    $sql->close();
+  }
+
+  // Prüfen, ob mögliche Konflikte entstehen
+  $konflikt = false;
+  $KONFLIKTZUSATZ = "";
+  if (!$fehler && ($zwang == 'n')) {
+    // Prüfen, ob die Stunde Konflikte auslöst
+    // Prüfen, ob Ausplanungen betroffen sind
+    $dbl = cms_verbinden('l');
+    // Lehrer ausgeplant?
+    $sql = $dbl->prepare("SELECT COUNT(*) FROM ausplanunglehrer WHERE von <= ? AND bis >= ? AND lehrer = ?");
+    $sql->bind_param("iii", $neubeginn, $neubeginn, $auslehrer);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl);
+      if ($sql->fetch()) {
+        if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'L';}
+      }
+    }
+    $sql->close();
+    // Raum ausgeplant?
+    $sql = $dbl->prepare("SELECT COUNT(*) FROM ausplanungraeume WHERE von <= ? AND bis >= ? AND raum = ?");
+    $sql->bind_param("iii", $neubeginn, $neubeginn, $ausraum);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl);
+      if ($sql->fetch()) {
+        if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'R';}
+      }
+    }
+    $sql->close();
+    // Kurse der KLASSEN holen
+    $KLASSEN = array();
+    $sql = $dbs->prepare("SELECT DISTINCT klasse FROM kurseklassen WHERE kurs = ?");
+    $sql->bind_param("i", $auskurs);
+    if ($sql->execute()) {
+      $sql->bind_result($klassenid);
+      while ($sql->fetch()) {
+        array_push($KLASSEN, $klassenid);
+      }
+    }
+    $sql->close();
+    // Klasse ausgeplant?
+    if (count($KLASSEN) > 0) {
+      $klassenids = implode(',', $KLASSEN);
+      $sql = $dbl->prepare("SELECT COUNT(*) FROM ausplanungklassen WHERE von <= ? AND bis >= ? AND klasse IN ($klassenids)");
+      $sql->bind_param("ii", $neubeginn, $neubeginn);
+      if ($sql->execute()) {
+        $sql->bind_result($anzahl);
+        if ($sql->fetch()) {
+          if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'K';}
+        }
+      }
+      $sql->close();
+    }
+    // Stufen der Kurse holen
+    $STUFEN = array();
+    $sql = $dbs->prepare("SELECT DISTINCT stufe FROM kurse WHERE id = ?");
+    $sql->bind_param("i", $auskurs);
+    if ($sql->execute()) {
+      $sql->bind_result($stufenid);
+      while ($sql->fetch()) {
+        array_push($STUFEN, $stufenid);
+      }
+    }
+    $sql->close();
+    // Stufe ausgeplant?
+    if (count($STUFEN) > 0) {
+      $stufenids = implode(',', $STUFEN);
+      $sql = $dbl->prepare("SELECT COUNT(*) FROM ausplanungstufen WHERE von <= ? AND bis >= ? AND stufe IN ($stufenids)");
+      $sql->bind_param("ii", $neubeginn, $neubeginn);
+      if ($sql->execute()) {
+        $sql->bind_result($anzahl);
+        if ($sql->fetch()) {
+          if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'S';}
+        }
+      }
+      $sql->close();
+    }
+
+    // Finden parallel andere Stunden in diesem Raum statt?
+    $sql = $dbs->prepare("SELECT SUM(anzahl) FROM ((SELECT COUNT(*) AS anzahl FROM unterricht WHERE tbeginn = ? AND traum = ? AND vplanart != 'e' AND id NOT IN (SELECT altid FROM unterrichtkonflikt WHERE altid IS NOT NULL)) UNION (SELECT COUNT(*) AS anzahl FROM unterrichtkonflikt WHERE tbeginn = ? AND traum = ? AND vplanart != 'e')) AS x");
+    $sql->bind_param("iiii", $neubeginn, $ausraum, $neubeginn, $ausraum);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl);
+      if ($sql->fetch()) {
+        if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'R';}
+      }
+    }
+    $sql->close();
+    // Finden parallel andere Stunden mit dieser Klasse statt?
+    $sql = $dbs->prepare("SELECT SUM(anzahl) FROM ((SELECT COUNT(*) AS anzahl FROM unterricht WHERE tbeginn = ? AND tkurs IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT klasse FROM kurseklassen WHERE kurs = ?)) AND tkurs NOT IN (SELECT kurs FROM schienenkurse WHERE schiene IN (SELECT schiene FROM schienenkurse WHERE kurs = ?)) AND vplanart != 'e' AND id NOT IN (SELECT altid FROM unterrichtkonflikt WHERE altid IS NOT NULL)) UNION (SELECT COUNT(*) AS anzahl FROM unterrichtkonflikt WHERE tbeginn = ? AND tkurs IN (SELECT kurs FROM kurseklassen WHERE klasse IN (SELECT klasse FROM kurseklassen WHERE kurs = ?)) AND tkurs NOT IN (SELECT kurs FROM schienenkurse WHERE schiene IN (SELECT schiene FROM schienenkurse WHERE kurs = ?)) AND vplanart != 'e')) AS x");
+    $sql->bind_param("iiiiii", $neubeginn, $auskurs, $auskurs, $neubeginn, $auskurs, $auskurs);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl);
+      if ($sql->fetch()) {
+        if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'K';}
+      }
+    }
+    $sql->close();
+    // Finden parallel andere Stunden mit diesem Lehrer statt?
+    $sql = $dbs->prepare("SELECT SUM(anzahl) FROM ((SELECT COUNT(*) AS anzahl FROM unterricht WHERE tbeginn = ? AND tlehrer = ? AND vplanart != 'e' AND id NOT IN (SELECT altid FROM unterrichtkonflikt WHERE altid IS NOT NULL)) UNION (SELECT COUNT(*) AS anzahl FROM unterrichtkonflikt WHERE tbeginn = ? AND tlehrer = ? AND vplanart != 'e')) AS x");
+    $sql->bind_param("iiii", $neubeginn, $auslehrer, $neubeginn, $auslehrer);
+    if ($sql->execute()) {
+      $sql->bind_result($anzahl);
+      if ($sql->fetch()) {
+        if ($anzahl > 0) {$konflikt = true; $KONFLIKTZUSATZ .= 'L';}
+      }
+    }
+    $sql->close();
+    cms_trennen($dbl);
+  }
+
+  if (!$fehler && !$konflikt) {
+    if (date('d.m.Y', $ausbeginn) == date('d.m.Y', $neubeginn)) {$art = 'a';}
+    else {$art = 'v';}
+
+    if ($ausgangsstundek !== '') {
+      $sql = "UPDATE unterrichtkonflikt SET tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplanart = ?, vplananzeigen = '1', vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("iiiiissi", $auskurs, $neubeginn, $neuende, $auslehrer, $ausraum, $art, $zusatzbem, $ausgangsstundek);
+      $sql->execute();
+    }
+    else {
+      $neuid = cms_generiere_kleinste_id("unterrichtkonflikt", "s");
+      $sql = "UPDATE unterrichtkonflikt SET altid = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplanart = ?, vplananzeigen = '1', vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("iiiiiissi", $ausgangsstundeu, $auskurs, $neubeginn, $neuende, $auslehrer, $ausraum, $art, $zusatzbem, $neuid);
+      $sql->execute();
+    }
+
+    $neuid = cms_generiere_kleinste_id("unterrichtkonflikt", "s", "-", "1");
+    $sql = "UPDATE unterrichtkonflikt SET altid = null, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplanart = 'e', vplananzeigen = '1', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("iiiiii", $auskurs, $ausbeginn, $ausende, $auslehrer, $ausraum, $neuid);
+    $sql->execute();
+    cms_lehrerdb_header(true);
+    echo "ERFOLG";
+  }
+  else if (!$fehler && $konflikt) {
+    cms_lehrerdb_header(true);
+    echo "KONFLIKT".$KONFLIKTZUSATZ;
+  }
+  else {
+    cms_lehrerdb_header(true);
+    echo "FEHLER";
+  }
+
+}
+else {
+  cms_lehrerdb_header(false);
+	echo "BERECHTIGUNG";
+}
+cms_trennen($dbs);
+?>

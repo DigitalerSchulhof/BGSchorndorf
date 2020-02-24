@@ -1,8 +1,16 @@
 // Funktion, die einen Benutzer anmeldet
-function cms_anmelden () {
-	cms_laden_an('Anmelden', 'Die eingegebenen Daten werden überprüft, die Anmeldung wird durchgeführt.');
-	var benutzername = document.getElementById('cms_schulhof_anmeldung_bentuzer').value;
-	var passwort = document.getElementById('cms_schulhof_anmeldung_passwort').value;
+function cms_appanmeldung(benutzer, passwort) {
+  cms_anmelden (benutzer, passwort, 'app');
+}
+
+function cms_anmelden (benutzername, passwort, art) {
+	var benutzername = benutzername || document.getElementById('cms_schulhof_anmeldung_bentuzer').value;
+	var passwort = passwort || document.getElementById('cms_schulhof_anmeldung_passwort').value;
+	var art = art || "normal";
+	if (art == "app") {
+		document.getElementById("cms_appmeldung").innerHTML = "<div class=\"cms_zentriert\">"+cms_ladeicon()+"<p class=\"cms_notiz\">Die Anmeldung wird durchgeführt...</p></div>";
+	}
+	else {cms_laden_an('Anmelden', 'Die eingegebenen Daten werden überprüft, die Anmeldung wird durchgeführt...');}
 
 	var meldung = '<p>Die Anmeldung wurde abgebrochen, denn ...</p><ul>';
 	var fehler = false;
@@ -18,7 +26,10 @@ function cms_anmelden () {
 	}
 
 	if (fehler) {
-		cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		if (art == "app") {
+			document.getElementById("cms_appmeldung").innerHTML = cms_meldung_code ('fehler', 'Anmelden', meldung+'</ul>');
+		}
+		else {cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');}
 	}
 	else {
 		var formulardaten = new FormData();
@@ -26,18 +37,53 @@ function cms_anmelden () {
 		formulardaten.append("passwort", 			passwort);
 		formulardaten.append("anfragenziel", 	'45');
 
+		function anmeldungdurchfuehren() {
+			if (art == 'app') {
+				cms_link('App')
+			}
+			else {
+				if(location.pathname.includes("Schulhof/Anmeldung")) {cms_link('Schulhof/Nutzerkonto');}
+				else {location.href = location.pathname;}
+			}
+		}
+
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "FEHLER") {
 				meldung += '<li>entweder wurde der Benutzername nicht gefunden</li>';
 				meldung += '<li>oder das Passwort passt nicht zum Benutzernamen</li>';
 				meldung += '<li>oder das Passwort ist nicht mehr gültig.</li>';
+				if (art == 'app') {
+					document.getElementById("cms_appmeldung").innerHTML = cms_meldung_code ('fehler', 'Anmelden', meldung+'</ul>');
+				}
 				cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
-			else if (rueckgabe == "ERFOLG") {
-				if(location.pathname.includes("Schulhof/Anmeldung"))
-					cms_link('Schulhof/Nutzerkonto');
-				else
-					location.href = location.pathname;
+			else if (rueckgabe.match(/^ERFOLG/)) {
+				// Check, ob im Lehrernetz
+				if (rueckgabe.match(/^ERFOLG[LV]/)) {
+					var gesicherteadresse = rueckgabe.substr(7);
+					var anfrage = new XMLHttpRequest();
+					anfrage.timeout = 2000;
+					anfrage.onreadystatechange = function() {
+						if (anfrage.readyState==4 && anfrage.status==200) {
+							CMS_IMLN = true;
+							var formulardaten = new FormData();
+							formulardaten.append("anfragenziel", '169');
+							formulardaten.append("status", '1');
+							cms_ajaxanfrage (false, formulardaten, anmeldungdurchfuehren);
+						}
+						else if (anfrage.readyState==4) {
+							var formulardaten = new FormData();
+							formulardaten.append("anfragenziel", '169');
+							formulardaten.append("status", '0');
+							cms_ajaxanfrage (false, formulardaten, anmeldungdurchfuehren);
+						}
+					};
+					anfrage.open("POST",gesicherteadresse+"php/oeffentlich/anfragen/echo.php",true);
+					anfrage.send();
+				}
+				else {
+					anmeldungdurchfuehren();
+				}
 			}
 			else {
 				cms_fehlerbehandlung(rueckgabe);
@@ -68,8 +114,9 @@ function cms_abmelden(art) {
 	var meldung;
 	if (CMS_BENUTZERART == "s") {meldung = '<p>Du wirst abgemeldet...</p>';}
 	else {meldung = '<p>Sie werden abgemeldet...</p>';}
-	cms_laden_an('Abmelden', meldung);
-
+	if (art != 'app') {
+		cms_laden_an('Abmelden', meldung);
+	}
 	// Die Person wird abgemeldet
 		var formulardaten = new FormData();
 		formulardaten.append("anfragenziel", 	'47');
@@ -79,6 +126,10 @@ function cms_abmelden(art) {
 				if (art == 'auto') {
 					clearInterval(CMS_BEARBEITUNGSART);
 					cms_link('Schulhof/Anmeldung/Automatische_Abmeldung');
+				}
+				else if (art == 'app') {
+					clearInterval(CMS_BEARBEITUNGSART);
+					cms_link('App');
 				}
 				else {
 					clearInterval(CMS_BEARBEITUNGSART);
@@ -93,7 +144,7 @@ function cms_abmelden(art) {
 }
 
 // Aktivitätsanzeige anpassen
-function cms_timeout_aktualisieren () {
+function cms_timeout_aktualisieren (art) {
   // Breite für die Anzeige der Leiste berechnen
   var jetzt = new Date();
   jetzt = jetzt.getTime()/1000;
@@ -157,7 +208,7 @@ function cms_timeout_aktualisieren () {
 				CMS_SESSIONTIMEOUT = rueckgabe;
 				uebrig = (CMS_SESSIONTIMEOUT - jetzt)/60;
 
-				if (uebrig < 1) {
+				if ((uebrig < 1) && (art == 1)) {
 					if (CMS_BENUTZERART == "s") {meldung = '<p>Die letzte Minute läuft. Du wirst aus Sicherheitsgründen bald abgemeldet! Verlängere jetzt deine Aktivitätszeit!</p>';}
 					else {meldung = '<p>Die letzte Minute läuft. Sie werden aus Sicherheitsgründen bald abgemeldet! Verlängern Sie jetzt Ihre Aktivitätszeit!</p>';}
 					cms_meldung_an('warnung', 'Die Zeit läuft ab!', meldung, '<p><span class="cms_button_ja" onclick="cms_timeout_verlaengern();">Verlängern</span></p>');
@@ -192,7 +243,12 @@ function cms_timeout_aktualisieren () {
 				}
 			}
 			else if (rueckgabe == "BERECHTIGUNG") {
-				cms_abmelden('auto');
+				if (art == 1) {
+					cms_abmelden('auto');
+				}
+				else {
+					cms_abmelden('app');
+				}
 			}
 			else {
 				cms_fehlerbehandlung(rueckgabe);

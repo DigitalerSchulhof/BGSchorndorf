@@ -20,6 +20,7 @@ function cms_schulanmeldung_ausgeben ($id) {
 	$sreligionsunterricht = "";
 	$sland1 = "";
 	$sland2 = "";
+	$simpfung = 0;
 	$sstrasse = "";
 	$shausnummer = "";
 	$splz = "";
@@ -68,10 +69,10 @@ function cms_schulanmeldung_ausgeben ($id) {
 
 	if ($id != "-") {
 		$ansprechpartner2 = 0;
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(rufname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL'), AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(religion, '$CMS_SCHLUESSEL'), AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL'), AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy1, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy2, '$CMS_SCHLUESSEL'), AES_DECRYPT(mail, '$CMS_SCHLUESSEL'), AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert FROM voranmeldung_schueler WHERE id = ?");
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(rufname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL'), AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(religion, '$CMS_SCHLUESSEL'), AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL'), AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy1, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy2, '$CMS_SCHLUESSEL'), AES_DECRYPT(mail, '$CMS_SCHLUESSEL'), AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(geimpft, '$CMS_SCHLUESSEL'), AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert FROM voranmeldung_schueler WHERE id = ?");
 		$sql->bind_param("i", $id);
 		if ($sql->execute()) {
-			$sql->bind_result($svorname, $srufname, $snachname, $sgeburtsdatum, $sgeburtsort, $sgeburtsland, $smuttersprache, $sverkehrssprache, $sgeschlecht, $sreligion, $sreligionsunterricht, $sland1, $sland2, $sstrasse, $shausnummer, $splz, $sort, $steilort, $stelefon1, $stelefon2, $shandy1, $shandy2, $smail, $seinschulung, $svorigeschule, $svorigeklasse, $sprofil, $sakzeptiert);
+			$sql->bind_result($svorname, $srufname, $snachname, $sgeburtsdatum, $sgeburtsort, $sgeburtsland, $smuttersprache, $sverkehrssprache, $sgeschlecht, $sreligion, $sreligionsunterricht, $sland1, $sland2, $sstrasse, $shausnummer, $splz, $sort, $steilort, $stelefon1, $stelefon2, $shandy1, $shandy2, $smail, $seinschulung, $svorigeschule, $svorigeklasse, $sprofil, $simpfung, $sakzeptiert);
 			if ($sql->fetch()) {
 				if ($sakzeptiert == 'ja') {$sakzeptiert = 1;} else {$sakzeptiert = 0;}
 				$geburtsdatumgeladen = true;
@@ -176,6 +177,7 @@ function cms_schulanmeldung_ausgeben ($id) {
 			$code .= "<option value=\"".$l['wert']."\"$zusatz>".$l['bezeichnung']."</option>";
 		}
 		$code .= "</td></tr>";
+		$code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_schieber_generieren('voranmeldung_schueler_impfung', $simpfung)."</td></tr>";
 	$code .= "</table>";
 	$code .= "</div>";
 	$code .= "</div>";

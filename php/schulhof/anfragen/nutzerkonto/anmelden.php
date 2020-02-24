@@ -108,7 +108,7 @@ if (!$fehler) {
 
 	cms_trennen($dbs);
 
-	echo "ERFOLG";
+	echo "ERFOLG".strtoupper($art).$CMS_LN_DA;
 }
 else {
 	echo "FEHLER";

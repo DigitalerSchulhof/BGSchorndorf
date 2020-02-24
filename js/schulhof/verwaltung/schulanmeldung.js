@@ -321,6 +321,7 @@ function cms_schulanmeldung_eingabenpruefen() {
 	var religionsunterricht = document.getElementById('cms_voranmeldung_schueler_religionsunterricht').value;
 	var land1 = document.getElementById('cms_voranmeldung_schueler_land1').value;
 	var land2 = document.getElementById('cms_voranmeldung_schueler_land2').value;
+	var impfung = document.getElementById('cms_voranmeldung_schueler_impfung').value;
 	var strasse = document.getElementById('cms_voranmeldung_schueler_strasse').value;
 	var hausnummer = document.getElementById('cms_voranmeldung_schueler_hausnummer').value;
 	var plz = document.getElementById('cms_voranmeldung_schueler_postleitzahl').value;
@@ -435,6 +436,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 	if (land1.length <= 0) {
 		fehler = true;
 		meldung += '<li>Die Staatsangehörigkeit ist ungültig.</li>';
+	}
+
+  if (!cms_check_toggle(impfung)) {
+		fehler = true;
+		meldung += '<li>Die Eingabe zur Masernimpfung ist ungültig.</li>';
 	}
 
 	if (strasse.length <= 0) {
@@ -627,6 +633,7 @@ function cms_schulanmeldung_eingabenpruefen() {
 	formulardaten.append("religionsunterricht", religionsunterricht);
 	formulardaten.append("land1", land1);
 	formulardaten.append("land2", land2);
+	formulardaten.append("impfung", impfung);
 	formulardaten.append("strasse", strasse);
 	formulardaten.append("hausnummer", hausnummer);
 	formulardaten.append("plz", plz);

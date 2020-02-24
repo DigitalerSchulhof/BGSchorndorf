@@ -399,4 +399,78 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 
 	return $code;
 }
+
+
+
+function cms_letzte_blogeintraege_ausgeben($anzahl, $dbs, $art, $CMS_URLGANZ) {
+	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART;
+	if (!cms_check_ganzzahl($anzahl, 0)) {return "";}
+
+	$code = "";
+	$jetzt = time();
+
+	$mitgliedschaftenblogs = array();
+
+	$sqlm = "";
+	foreach ($CMS_GRUPPEN as $g) {
+		$gk = cms_textzudb($g);
+		$sqlm .= " UNION (SELECT DISTINCT blogeintrag AS id FROM $gk"."blogeintraege WHERE gruppe IN (SELECT DISTINCT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID))";
+	}
+	$sqlm = substr($sqlm, 7);
+	$sqlm = "SELECT DISTINCT id FROM ($sqlm) AS x";
+
+	// Öffentliche Termine
+	if ($CMS_BENUTZERART == 'l') {$oelimit = 1;}
+	else if ($CMS_BENUTZERART == 'v') {$oelimit = 2;}
+	else if (($CMS_BENUTZERART == 's') || ($CMS_BENUTZERART == 'e')) {$oelimit = 3;}
+	else {$oelimit = 4;}
+
+	$sqloe = "(SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art, '' AS schuljahr, '' AS sjbez, '' AS gbez, '' AS gart FROM blogeintraege WHERE (id IN ($sqlm) OR oeffentlichkeit >= $oelimit) AND (datum < $jetzt) AND aktiv = 1 ORDER BY datum DESC LIMIT $anzahl)";
+
+	$sqlin = "";
+	foreach ($CMS_GRUPPEN as $g) {
+		$gk = cms_textzudb($g);
+		$sqlin .= " UNION (SELECT $gk"."blogeintraegeintern.id, AES_DECRYPT($gk"."blogeintraegeintern.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, NULL AS vorschaubild, 'in' AS art, schuljahr, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, '$g' AS gart FROM $gk"."blogeintraegeintern JOIN $gk ON gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID) AND (datum < $jetzt) AND aktiv = 1 ORDER BY datum DESC LIMIT $anzahl)";
+	}
+
+
+	$BLOGS = array();
+	$sql = $dbs->prepare("SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC LIMIT $anzahl");
+	// Blogausgabe erzeugen
+	if ($sql->execute()) {
+		$sql->bind_result($bid, $bbez, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart, $bschuljahr, $bsjbez, $bgbez, $bgart);
+		while ($sql->fetch()) {
+			$B = array();
+			$B['id'] = $bid;
+			$B['bezeichnung'] = $bbez;
+			$B['autor'] = $bautor;
+			$B['datum'] = $bdatum;
+			$B['genehmigt'] = $bgenehmigt;
+			$B['aktiv'] = $baktiv;
+			$B['text'] = $btext;
+			$B['vorschau'] = $bvorschau;
+			$B['vorschaubild'] = $bvorschaubild;
+			$B['art'] = $bart;
+			$B['schuljahr'] = $bschuljahr;
+			$B['sjbez'] = $bsjbez;
+			$B['gbez'] = $bgbez;
+			$B['gart'] = $bgart;
+			array_push($BLOGS, $B);
+		}
+	}
+	$sql->close();
+
+	foreach ($BLOGS AS $B) {
+		if ($B['art'] == 'oe') {
+			$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $CMS_URLGANZ);
+		}
+		else if ($B['art'] == 'in') {
+			if (is_null($B['sjbez'])) {$B['sjbez'] = "Schuljahrübergreifend";}
+			$vorlink = "Schulhof/Gruppen/".cms_textzulink($B['sjbez'])."/".cms_textzulink($B['gart'])."/".cms_textzulink($B['gbez']);
+			$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $vorlink);
+		}
+	}
+
+	return $code;
+}
 ?>

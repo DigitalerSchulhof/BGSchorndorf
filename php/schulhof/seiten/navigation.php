@@ -126,7 +126,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 			$code['pc'] .= "<span class=\"cms_unternavigation_schliessen cms_button_nein\" id=\"cms_hauptnavigation_nutzer_l\" onclick=\"cms_hauptnavigation_ausblenden('nutzer')\">&times;</span>";
 			$code['pc'] .= "<div class=\"cms_spalte_4\">";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
-					$code['pc'] .= "<h3>Aktivität</h3>";
+					$code['pc'] .= "<h3>Mein Konto</h3>";
 					$code['pc'] .= "<p>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</p>";
 					$code['pc'] .= "<div id=\"cms_aktivitaet_out\"><div id=\"cms_aktivitaet_in\"></div></div>";
 					$code['pc'] .= "<p class=\"cms_notiz\" id=\"cms_aktivitaet_text\">Berechnung läuft ...</p>";
@@ -134,33 +134,24 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 						$code['pc'] .= "<li><span class=\"cms_button_ja\" onclick=\"cms_timeout_verlaengern()\">Verlängern</span></li> ";
 						$code['pc'] .= "<li><span class=\"cms_button_nein\" onclick=\"cms_abmelden_frage();\">Abmelden</span></li>";
 					$code['pc'] .= "</ul>";
-				$code['pc'] .= "</div>";
-			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_4\">";
-				$code['pc'] .= "<div class=\"cms_spalte_i\">";
-					$code['pc'] .= "<h3>Übersicht</h3>";
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil\">Profildaten</a></li> ";
-						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></li> ";
-						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
+						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
-						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";
 					$code['pc'] .= "</ul>";
 				$code['pc'] .= "</div>";
 			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_4\">";
+			$code['pc'] .= "<div class=\"cms_spalte_34\">";
 				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= "<h3>Gruppen</h3>";
 					$code['pc'] .= "<ul>";
 						$code['pc'] .= $meinegruppenpc;
 					$code['pc'] .= "</ul>";
-				$code['pc'] .= "</div>";
-			$code['pc'] .= "</div>";
-			$code['pc'] .= "<div class=\"cms_spalte_4\">";
-				$code['pc'] .= "<div class=\"cms_spalte_i\">";
 					$code['pc'] .= $aufgabenpc;
 				$code['pc'] .= "</div>";
 			$code['pc'] .= "</div>";
@@ -575,10 +566,6 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	$zugriff = ($CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten']);
 	if ($zugriff) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
-	}
-	$zugriff = ($CMS_RECHTE['Website']['Emoticons verwalten']);
-	if ($zugriff) {
-		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Emoticons\">Emoticons</a></li> ";
 	}
 	$zugriff = ($CMS_RECHTE['Website']['Newsletter Empfängerliste sehen'] || $CMS_RECHTE['Website']['Newsletter bearbeiten']);
 	if ($zugriff) {

@@ -6,6 +6,10 @@ function cms_check_uhrzeit (uhrzeit) {
 	return uhrzeit.match(/^[0-9]{1,2}:[0-9]{1,2}$/);
 }
 
+function cms_check_bemerkung (text) {
+	return !text.match(/\|\$\|/);
+}
+
 function cms_check_name (name) {
 	return name.match(/^[\-a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ ]+$/);
 }
@@ -29,6 +33,14 @@ function cms_check_buchstaben(text) {
 function cms_check_toggle(wert) {
 	if ((wert != '1') && (wert != "0")) {return false;}
 	else {return true;}
+}
+
+function cms_check_liste(text) {
+	return text.match(/^(\|[0-9]+)+$/);
+}
+
+function cms_check_templiste(text) {
+	return text.match(/^(temp)?[0-9]+(,(temp)?[0-9]+)*$/);
 }
 
 function cms_check_ganzzahl(wert, min, max) {
@@ -104,24 +116,6 @@ function cms_check_passwort_gleich(id) {
 	else {
 		iconF.innerHTML = '<img src="res/icons/klein/falsch.png">';
 	}
-}
-
-
-function cms_nur_ganzzahl (id, standard, min, max) {
-	standard = standard || 0;
-	min = min || false;
-	max = max || false;
-	var feld = document.getElementById(id);
-	var wert = feld.value;
-	if (!isNaN(wert)) {
-		wert = Math.floor(wert);
-		if (max) {if (wert > max) {wert = max;}}
-		if (min) {if (wert < min) {wert = min;}}
-	}
-	else {
-		wert = standard;
-	}
-	feld.value = wert;
 }
 
 function cms_check_ip (ip) {

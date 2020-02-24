@@ -254,6 +254,67 @@ function cms_einstellungen_stundenplaene_aendern() {
 	}
 }
 
+
+function cms_einstellungen_tagebuch_aendern() {
+	cms_laden_an('Tagebuch-Einstellungen ändern', 'Die Eingaben werden überprüft.');
+	var abwesend = document.getElementById('cms_schulhof_tagebuch_abwesend_frist').value;
+	var inhalt = document.getElementById('cms_schulhof_tagebuch_inhalt_frist').value;
+	var lobtadel = document.getElementById('cms_schulhof_tagebuch_lobtadel_frist').value;
+	var hausaufgaben = document.getElementById('cms_schulhof_tagebuch_hausaufgaben_frist').value;
+	var entschuldigungen = document.getElementById('cms_schulhof_tagebuch_entschuldigungen_frist').value;
+	var abwesenheitsmin = document.getElementById('cms_schulhof_tagebuch_abwesenheitsminimum').value;
+
+	var meldung = '<p>Die Tagebuch-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
+	var fehler = false;
+
+	if (!abwesend.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die Abwesenheiten ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!inhalt.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die inhaltlichen Einträge ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!lobtadel.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für Lob und Tadel ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!hausaufgaben.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die Eintragung von Hausaufgaben ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!entschuldigungen.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die Entschuldigungen ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(abwesenheitsmin,0)) {
+		meldung += '<li>Die Mindestabwesenheit für die Entschuldigungspflicht ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Tagebuch-Einstellungen ändern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Tagebuch-Einstellungen ändern', 'Die Änderungen werden übernommen.');
+		var formulardaten = new FormData();
+		formulardaten.append("anfragenziel", 	'153');
+		formulardaten.append("abwesenheit", 					abwesend);
+		formulardaten.append("inhalt", 								inhalt);
+		formulardaten.append("lobtadel", 							lobtadel);
+		formulardaten.append("hausaufgaben", 					hausaufgaben);
+		formulardaten.append("entschuldigungen", 			entschuldigungen);
+		formulardaten.append("mindestabwesenheit", 		abwesenheitsmin);
+		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+	}
+}
+
+
 function cms_einstellungen_website_aendern() {
 	cms_laden_an('Website-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 	var menueseitenweiterleiten = document.getElementById('cms_menueseitenweiterleiten').value;

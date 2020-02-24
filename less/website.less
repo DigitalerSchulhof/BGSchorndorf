@@ -505,3 +505,29 @@
 .cms_datenschutz_einwilligungverweigert:hover {
   cursor: pointer;
 }
+
+.cms_kontakt_visitenkarten {
+  padding: 0px;
+  margin-bottom: @standardabsatz_schulhof_margin;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cms_kontakt_visitenkarte {
+  width: 25%;
+  padding: 10px;
+  list-style-type: none;
+  margin: 0px;
+  background: @schattierthell_background;
+  display: inline-block;
+  transition: 250ms ease-in-out;
+  position: relative;
+}
+
+.cms_kontakt_visitenkarte:hover {
+  background: @themafarbe2;
+  color: @standardschrifthell_color;
+  display: inline-block;
+  transition: 250ms ease-in-out;
+  cursor: pointer;
+}

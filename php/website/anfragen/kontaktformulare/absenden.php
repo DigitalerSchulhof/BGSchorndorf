@@ -30,7 +30,7 @@
 
   $anhaenge = $anhang; // Wird noch überschrieben werden
 
-  if(!cms_check_ganzzahl(array($id, $empfaenger), 0))
+  if(!cms_check_ganzzahl($empfaenger, 0))
     die("FEHLER");
   if(!cms_check_nametitel($absender))
     die("FEHLER");

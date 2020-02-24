@@ -28,11 +28,6 @@ if (isset($CMS_URL[2])) {
 $code = "";
 $anmeldung_moeglich = true;
 if ($anmeldung_moeglich) {
-
-	// $meldung = "<h4>Vertretungsplan</h4>";
-	// $meldung .= "<p>Bis auf Weiteres sind im Schulhof keine Vertretungen hinterlegt. An der Lösung des Problems wird gearbeitet.</p>";
-	// $code .= cms_meldung('info', $meldung);
-
 	$code .= "<p>Um den Schulhof zu betreten, ist eine Anmeldung nötig ...</p>";
 
 	$code .= "<table class=\"cms_formular\">";

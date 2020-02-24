@@ -1233,7 +1233,6 @@ function cms_vplan_wochenplan_l(details) {
 			if (rueckgabe.match(/^<div class/) || rueckgabe.match(/^<p class/)) {
 				lehrerwochenplan.innerHTML = rueckgabe;
 				cms_vplan_stunde_markieren();
-
 			}
 			else {
 				lehrerwochenplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Lehrerplans ist ein Fehler aufgetreten.</p>';
@@ -2378,7 +2377,7 @@ function cms_vplan_schnellmenue (art, status, zeile) {
 				if (zeile) {
 					zeile = document.getElementById('cms_vplan_konflikteliste_zeile_'+zeile);
 					menue.style.top = zeile.offsetTop+'px';
-					menue.style.left = zeile.offsetLeft+'px';
+					menue.style.left = (zeile.offsetLeft+30)+'px';
 				}
 			}
 			else {menue.style.opacity = 0;}

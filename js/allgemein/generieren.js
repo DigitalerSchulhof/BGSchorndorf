@@ -1,4 +1,5 @@
 function cms_uhrzeit_eingabe (id, stunde, minute, zusatzaktion) {
+  var zusatzaktion = zusatzaktion || "";
   var jetzt = new Date();
   var stunde = stunde || jetzt.getHours();
   var minute = minute || jetzt.getMinutes();
@@ -12,6 +13,7 @@ function cms_uhrzeit_eingabe (id, stunde, minute, zusatzaktion) {
 }
 
 function cms_datum_eingabe (id, tag, monat, jahr, zusatzaktion) {
+  var zusatzaktion = zusatzaktion || "";
   var jetzt = new Date();
   var tag = tag || jetzt.getDate();
   var monat = monat || jetzt.getMonth()+1;
