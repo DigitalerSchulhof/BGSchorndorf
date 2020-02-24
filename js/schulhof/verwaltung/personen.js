@@ -276,7 +276,7 @@ function cms_schulhof_verwaltung_personen_rolle_vergeben(anschalten, rolle) {
 	formulardaten.append("anfragenziel", 	'126');
 
 	function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe == "ADMINFEHLER") {
+		if (rueckgabe.match(/ADMINFEHLER/)) {
 			cms_meldung_an('fehler', 'Rolle entfernen', '<p>Es muss immer einen Administrator geben. Diese Rolle darf nicht von allen Personen entfernt werden.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 		}
 		else if (rueckgabe == "ERFOLG") {
@@ -384,19 +384,19 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei öffentlichen Galerien ist ungültig.</li>';
 		fehler = true;
 	}
-	if (cms_check_ganzzahl(postalletage,1,1000)) {
+	if (!cms_check_ganzzahl(postalletage,1,1000)) {
 		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten ist keine Zahl.</li>';
 		fehler = true;
 	}
-	if (cms_check_ganzzahl(postpapierkorbtage,0,100)) {
+	if (!cms_check_ganzzahl(postpapierkorbtage,0,100)) {
 		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist keine Zahl.</li>';
 		fehler = true;
 	}
-	if (cms_check_ganzzahl(uebersichtsanzahl,1,25)) {
+	if (!cms_check_ganzzahl(uebersichtsanzahl,1,25)) {
 		meldung += '<li>die Eingabe der Anzahl von Elementen in Übersichten ist keine Zahl.</li>';
 		fehler = true;
 	}
-	if (cms_check_ganzzahl(inaktivitaetszeit,5,300)) {
+	if (!cms_check_ganzzahl(inaktivitaetszeit,5,300)) {
 		meldung += '<li>die Eingabe der zulässigen Inaktivitätszeit ist keine Zahl.</li>';
 		fehler = true;
 	}

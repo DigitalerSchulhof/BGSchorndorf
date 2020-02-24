@@ -15,23 +15,35 @@ if (cms_r("schulhof.organisation.leihgeräte.*")) {
 		// Alle Rollen ausgeben
 		$dbs = cms_verbinden('s');
 
-		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, verfuegbar, buchbar, externverwaltbar FROM leihen) AS leihen ORDER BY bezeichnung ASC";
-
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, verfuegbar, buchbar, externverwaltbar FROM leihen) AS leihen ORDER BY bezeichnung ASC");
+		$LEIHGERAETE = array();
 		$ausgabe = "";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
+		if ($sql->execute()) {
+			$sql->bind_result($lid, $lbez, $lverfuegbar, $lbuchbar, $lexternv);
+			while ($sql->fetch()) {
+				$LG = array();
+				$LG['id'] = $lid;
+				$LG['bezeichnung'] = $lbez;
+				$LG['verfuegbar'] = $lverfuegbar;
+				$LG['buchbar'] = $lbuchbar;
+				$LG['externverwaltbar'] = $lexternv;
+				array_push($LEIHGERAETE, $LG);
+			}
+		}
+		$sql->close();
 
-			$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihengeraete WHERE standort = ?) AS x ORDER BY bezeichnung ASC");
-			while ($daten = $anfrage->fetch_assoc()) {
-				$ausstattung = "";
-				$sql->bind_param("i", $daten['id']);
-			  if ($sql->execute()) {
-			    $sql->bind_result($gbezeichnung);
-			    while($sql->fetch()) {
-						$ausstattung .= ', '.$gbezeichnung;
-			    }
-			  }
+		$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihengeraete WHERE standort = ?) AS x ORDER BY bezeichnung ASC");
+		foreach ($LEIHGERAETE AS $daten) {
+			$ausstattung = "";
+			$sql->bind_param("i", $daten['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($gbezeichnung);
+				while($sql->fetch()) {
+					$ausstattung .= ', '.$gbezeichnung;
+				}
+			}
 
-				if (strlen($ausstattung) > 0) {$ausstattung = substr($ausstattung, 2);}
+			if (strlen($ausstattung) > 0) {$ausstattung = substr($ausstattung, 2);}
 
 				$ausgabe .= "<tr>";
 					$ausgabe .= "<td><img src=\"res/icons/klein/leihgeraete.png\"></td>";
@@ -55,13 +67,11 @@ if (cms_r("schulhof.organisation.leihgeräte.*")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_leihgeraet_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 					}
 
-					$ausgabe .= "</td>";
+				$ausgabe .= "</td>";
 
-				$ausgabe .= "</tr>";
-			}
-			$sql->close();
-			$anfrage->free();
+			$ausgabe .= "</tr>";
 		}
+		$sql->close();
 
 		if ($ausgabe == "") {
 			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";

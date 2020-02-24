@@ -114,7 +114,7 @@ function cms_textzudb(wert) {
 } 
 
 function cms_textzulink(wert) {
-  return wert.replace(' ', '_');
+  return wert.replace(/ /g, '_');
 } 
 
 function cms_datumzweistellig(zahl) {

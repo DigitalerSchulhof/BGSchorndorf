@@ -38,10 +38,6 @@ if (isset($_SESSION['PERSONENPROFIL'])) {
         if ($schreiben) {
           $aktionscode .= "<li><a class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('vorgabe', '', '', '$person')\">Nachricht schreiben</a></li><br>";
         }
-        $umarmen = true;
-        if ($umarmen) {
-          $aktionscode .= "<li><a class=\"cms_button\" id=\"cms_umarmen\" onclick=\"cms_umarmen('$person')\">Umarmen ( ＾◡＾)っ ♡</a></li> ";
-        }
       }
 
       if (strlen($aktionscode) > 0) {

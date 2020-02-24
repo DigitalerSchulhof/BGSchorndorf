@@ -15,7 +15,7 @@ cms_rechte_laden();
 if (cms_angemeldet() && cms_r("website.freigeben")) {
 	$fehler = false;
 
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten');
+	$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
   if (!in_array($art, $elemente)) {$fehler = true;}
 
 	if (!$fehler) {

@@ -29,8 +29,6 @@ if(cms_r("technik.feedback"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">Feedback</a> ";
 if(cms_r("technik.fehlermeldungen"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_fehlermeldungen\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a> ";
-if($CMS_RECHTE['Website']['Emoticons verwalten'])
-  $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_emoticons\" href=\"Schulhof/Website/Emoticons\">Emoticons</a> ";
 if(cms_r("schulhof.information.newsletter.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">Newsletter</a> ";
 

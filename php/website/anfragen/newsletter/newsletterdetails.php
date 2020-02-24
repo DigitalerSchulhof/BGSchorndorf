@@ -15,6 +15,8 @@ if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} e
 $dbs = cms_verbinden("s");
 cms_rechte_laden();
 
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
+
 $zugriff = false;
 
 if ($id == '-') {$zugriff = cms_r("website.elemente.newsletter.anlegen");}
@@ -107,7 +109,7 @@ if (cms_angemeldet() && $zugriff) {
           $code .= "<span class=\"cms_button\" onclick=\"cms_wnewsletter_neu_speichern('$zusatz')\">Speichern</span> ";
       } else
         $code .= "<span class=\"cms_button\" onclick=\"cms_wnewsletter_bearbeiten_speichern('$zusatz')\">Änderungen speichern</span> ";
-      $code .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_wmenuebearbeiten_ausblenden('$spalte')\">Abbrechen</span> ";
+      $code .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_menuebearbeiten_ausblenden('$spalte')\">Abbrechen</span> ";
     $code .= "</p>";
     echo $code;
   }

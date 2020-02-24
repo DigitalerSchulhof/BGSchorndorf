@@ -5,6 +5,8 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
   if ($id == '-') {$zugriff = $anlegen;}
   else {$zugriff = $bearbeiten;}
 
+  if (!cms_valide_gruppe($name)) {return "";}
+
   $namek = strtolower($name);
   $namek = str_replace(' ', '', $namek);
 
@@ -68,151 +70,203 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       else if ($namek == "kurse") {
         $sqlzusatz = ", stufe, fach, AES_DECRYPT(kursbezextern, '$CMS_SCHLUESSEL') AS kursbezextern, AES_DECRYPT(kurzbezeichnung, '$CMS_SCHLUESSEL') AS kurzbezeichnung";
       }
-      $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, schuljahr, chataktiv$sqlzusatz FROM $namek WHERE id = $id";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-        if ($daten = $anfrage->fetch_assoc()) {
-          $bezeichnung = $daten['bezeichnung'];
-          $sichtbar = $daten['sichtbar'];
-          $chat = $daten['chataktiv'];
-          $icon = $daten['icon'];
-          if ($daten['schuljahr'] != null) {$schuljahr = $daten['schuljahr'];}
-          else {$schuljahr = "-";}
-
-          if ($namek == "klassen") {
-            $stufe = $daten['stufe'];
-            $stundenplanextern = $daten['stundenplanextern'];
-            $klassenbezextern = $daten['klassenbezextern'];
-            $stufenbezextern = $daten['stufenbezextern'];
-          }
-          else if ($namek == "stufen") {
-            $reihenfolge = $daten['reihenfolge'];
-            $tagebuch = $daten['tagebuch'];
-            $gfs = $daten['gfs'];
-          }
-          else if ($namek == "kurse") {
-            $stufe = $daten['stufe'];
-            $fach = $daten['fach'];
-            $kursbezextern = $daten['kursbezextern'];
-            $kurzbezeichnung = $daten['kurzbezeichnung'];
-          }
+      $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, schuljahr, chataktiv$sqlzusatz FROM $namek WHERE id = ?");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        if ($namek == "klassen") {
+          $sql->bind_result($bezeichnung, $icon, $sichtbar, $schuljahr, $chat, $stundenplanextern, $stufenbezextern, $klassenbezextern, $stufe);
         }
-        $anfrage->free();
+        else if ($namek == "stufen") {
+          $sql->bind_result($bezeichnung, $icon, $sichtbar, $schuljahr, $chat, $reihenfolge, $tagebuch, $gfs);
+        }
+        else if ($namek == "kurse") {
+          $sql->bind_result($bezeichnung, $icon, $sichtbar, $schuljahr, $chat, $stufe, $fach, $kursbezextern, $kurzbezeichnung);
+        }
+        else {
+          $sql->bind_result($bezeichnung, $icon, $sichtbar, $schuljahr, $chat);
+        }
+        $sql->fetch();
+        if ($schuljahr == null) {$schuljahr = "-";}
       }
+      $sql->close();
 
       // Zugeordnete Klassen suchen
       if ($namek == 'kurse') {
-        $sql = "SELECT klasse AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM kurseklassen JOIN klassen ON kurseklassen.klasse = klassen.id WHERE kurs = $id";
-        if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-          while ($daten = $anfrage->fetch_assoc()) {
-            array_push($zugeordneteklassen, $daten);
+        $sql = $dbs->prepare("SELECT klasse AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM kurseklassen JOIN klassen ON kurseklassen.klasse = klassen.id WHERE kurs = ?");
+        $sql->bind_param("i", $id);
+        if ($sql->execute()) {
+          $sql->bind_result($kid, $kbez);
+          while ($sql->fetch()) {
+            $K = array();
+            $K['id'] = $kid;
+            $K['bezeichnung'] = $kbez;
+            array_push($zugeordneteklassen, $K);
           }
-          $anfrage->free();
         }
+        $sql->close();
       }
 
       // Mitglieder
-      $sql = "SELECT gruppe, person FROM $namek"."mitglieder WHERE gruppe = $id";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-        while ($daten = $anfrage->fetch_assoc()) {
-          $mitglieder .= "|".$daten['person'];
+      $sql = $dbs->prepare("SELECT person FROM $namek"."mitglieder WHERE gruppe = ?");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($mperson);
+        while ($sql->fetch()) {
+          $mitglieder .= "|".$mperson;
         }
-        $anfrage->free();
       }
+      $sql->close();
 
       // Vorsitz
-      $sql = "SELECT gruppe, person FROM $namek"."vorsitz WHERE gruppe = $id";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-        while ($daten = $anfrage->fetch_assoc()) {
-          $vorsitz .= "|".$daten['person'];
+      $sql = $dbs->prepare("SELECT person FROM $namek"."vorsitz WHERE gruppe = ?");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($vperson);
+        while ($sql->fetch()) {
+          $vorsitz .= "|".$vperson;
         }
-        $anfrage->free();
       }
+      $sql->close();
 
       // Aufsicht
-      $sql = "SELECT gruppe, person FROM $namek"."aufsicht WHERE gruppe = $id";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-        while ($daten = $anfrage->fetch_assoc()) {
-          $aufsicht .= "|".$daten['person'];
+      $sql = $dbs->prepare("SELECT person FROM $namek"."aufsicht WHERE gruppe = ?");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($aperson);
+        while ($sql->fetch()) {
+          $aufsicht .= "|".$aperson;
         }
-        $anfrage->free();
       }
+      $sql->close();
     }
 
     // Anzahl Stufen in diesem Schuljahr
     if ($namek == 'stufen') {
-      if ($schuljahr == '-') {$schuljahrwert = "IS NULL";} else {$schuljahrwert = " = ".$schuljahr;}
-      $sql = "SELECT count(id) AS anzahl FROM stufen WHERE schuljahr $schuljahrwert";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-        if ($daten = $anfrage->fetch_assoc()) {
-          $stufenanzahl = $daten['anzahl'];
-        }
-        $anfrage->free();
+      if ($schuljahr == '-') {
+        $sql = $dbs->prepare("SELECT count(id) AS anzahl FROM stufen WHERE schuljahr IS NULL");
       }
+      else {
+        $sql = $dbs->prepare("SELECT count(id) AS anzahl FROM stufen WHERE schuljahr = ?");
+        $sql->bind_param("i", $schuljahr);
+      }
+      if ($sql->execute()) {
+        $sql->bind_result($stufenanzahl);
+        $sql->fetch();
+      }
+      $sql->close();
     }
 
     // Stufen in diesem Schuljahr
     if (($namek == 'klassen') || ($namek == 'kurse')) {
       $stufen = array();
-      if ($schuljahr == '-') {$schuljahrwert = "IS NULL";} else {$schuljahrwert = " = ".$schuljahr;}
-      $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr $schuljahrwert ORDER BY reihenfolge ASC";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-        while ($daten = $anfrage->fetch_assoc()) {
-          array_push($stufen, $daten);
-        }
-        $anfrage->free();
+      if ($schuljahr == '-') {
+        $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr IS NULL ORDER BY reihenfolge ASC");
       }
+      else {
+        $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr = ? ORDER BY reihenfolge ASC");
+        $sql->bind_param("i", $schuljahr);
+      }
+      if ($sql->execute()) {
+        $sql->bind_result($sid, $sbez);
+        while ($sql->fetch()) {
+          $S = array();
+          $S['id'] = $sid;
+          $S['bez'] = $sbez;
+          array_push($stufen, $S);
+        }
+      }
+      $sql->close();
 
       $faecher = array();
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr $schuljahrwert) AS x ORDER BY bez ASC";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-        while ($daten = $anfrage->fetch_assoc()) {
-          array_push($faecher, $daten);
-        }
-        $anfrage->free();
+      if ($schuljahr == '-') {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr IS NULL) AS x ORDER BY bez ASC");
       }
+      else {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr = ?) AS x ORDER BY bez ASC");
+        $sql->bind_param("i", $schuljahr);
+      }
+      if ($sql->execute()) {
+        $sql->bind_result($fid, $fbez);
+        while ($sql->fetch()) {
+          $F = array();
+          $S['id'] = $fid;
+          $S['bez'] = $fbez;
+          array_push($faecher, $F);
+        }
+      }
+      $sql->close();
     }
 
     // Fächer und Klassen laden
     if ($namek == 'kurse') {
       $klassen = array();
-      if (($stufe != '-') && (!is_null($stufe))) {$stufetest = " AND stufe = $stufe";} else {$stufetest = "";}
-      $sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr $schuljahrwert"."$stufetest) AS x ORDER BY reihenfolge ASC, bez ASC";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-        while ($daten = $anfrage->fetch_assoc()) {
-          array_push($klassen, $daten);
+      if (($stufe != '-') && (!is_null($stufe))) {
+        if ($schuljahr == '-') {
+          $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr IS NULL AND stufe = ?) AS x ORDER BY reihenfolge ASC, bez ASC");
+          $sql->bind_param("i", $stufe);
         }
-        $anfrage->free();
+        else {
+          $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ? AND stufe = ?) AS x ORDER BY reihenfolge ASC, bez ASC");
+          $sql->bind_param("ii", $schuljahr, $stufe);
+        }
+      }
+      else {
+        if ($schuljahr == '-') {
+          $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr IS NULL) AS x ORDER BY reihenfolge ASC, bez ASC");
+        }
+        else {
+          $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ?) AS x ORDER BY reihenfolge ASC, bez ASC");
+          $sql->bind_param("i", $schuljahr);
+        }
       }
 
-      if ($id != '-') {
-        $sql = "SELECT klasse FROM kurseklassen WHERE kurs = $id";
-        if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-          while ($daten = $anfrage->fetch_assoc()) {
-            array_push($zugeordneteklassen, $daten['klasse']);
-            $allezugeordnetenklassenids .= "|".$daten['klasse'];
-          }
-          $anfrage->free();
+      if ($sql->execute()) {
+        $sql->bind_result($kid, $kbez, $kreihe);
+        while ($sql->fetch()) {
+          $K = array();
+          $K['id'] = $kid;
+          $K['bez'] = $kbez;
+          array_push($klassen, $K);
         }
+      }
+      $sql->close();
+
+      if ($id != '-') {
+        $sql = $dbs->prepare("SELECT klasse FROM kurseklassen WHERE kurs = ?");
+        $sql->bind_param("i", $id);
+        if ($sql->execute()) {
+          $sql->bind_result($kid);
+          while ($sql->fetch()) {
+            array_push($zugeordneteklassen, $kid);
+            $allezugeordnetenklassenids .= "|".$kid;
+          }
+        }
+        $sql->close();
       }
     }
 
     // Alle Schuljahre laden
-    $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre ORDER BY ende DESC";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push($schuljahre, $daten);
+    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre ORDER BY ende DESC");
+    if ($sql->execute()) {
+      $sql->bind_result($sjid, $sjbez);
+      while ($sql->fetch()) {
+        $SJ = array();
+        $SJ['id'] = $sjid;
+        $SJ['bezeichnung'] = $sjbez;
+        array_push($schuljahre, $SJ);
       }
-      $anfrage->free();
     }
+    $sql->close();
 
     // Verwendete Icons laden
-    $sql = "SELECT DISTINCT AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $namek";
-    if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push($verwendeteicons, $daten['icon']);
+    $sql = $dbs->prepare("SELECT DISTINCT AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $namek");
+    if ($sql->execute()) {
+      $sql->bind_result($uicon);
+      while ($sql->fetch()) {
+        array_push($verwendeteicons, $uicon);
       }
-      $anfrage->free();
     }
+    $sql->close();
 
     $ausgabe .= "<h3>Gruppendetails</h3>";
     $ausgabe .= "<table class=\"cms_formular\">";

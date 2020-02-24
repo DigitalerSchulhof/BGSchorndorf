@@ -394,7 +394,8 @@ ALTER TABLE `voranmeldung_eltern` CHANGE `idvon` `idvon` BIGINT(255) NULL, CHANG
 ALTER TABLE `auffaelliges` CHANGE `id` `id` BIGINT(11) UNSIGNED NOT NULL, CHANGE `typ` `typ` INT(1) UNSIGNED NULL DEFAULT NULL, CHANGE `aktion` `aktion` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `eingaben` `eingaben` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `details` `details` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `notizen` `notizen` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `zeitstempel` `zeitstempel` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `status` `status` INT(11) UNSIGNED NULL DEFAULT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
 ALTER TABLE `auffaelliges` CHANGE `ursacher` `ursacher` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
 
-
+DROP TABLE emoticons;
+DROP TABLE umarmungen
 
 
 -- LEHRERDATENBANK
@@ -417,6 +418,21 @@ ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AF
 ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
 
+ALTER TABLE `kontaktformulareempfaenger` DROP `namealt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `nameneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailneu`;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `nameaktuell` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `beschreibungaktuell` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `mailaktuell` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
+CREATE TABLE `cms_schulhof`.`diashows` ( `id` BIGINT(255) UNSIGNED NOT NULL , `spalte` BIGINT(255) UNSIGNED NOT NULL , `position` BIGINT(255) UNSIGNED NOT NULL , `aktiv` VARCHAR(5000) NOT NULL , `titelalt` VARCHAR(5000) NOT NULL , `titelaktuell` VARCHAR(5000) NOT NULL , `titelneu` VARCHAR(5000) NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `cms_schulhof`.`diashowbilder` ( `id` BIGINT(255) UNSIGNED NOT NULL , `diashow` BIGINT(255) UNSIGNED NOT NULL , `pfadalt` TEXT NOT NULL , `pfadaktuell` TEXT NOT NULL , `pfadneu` TEXT NOT NULL , `beschreibungalt` TEXT NOT NULL , `beschreibungaktuell` TEXT NOT NULL , `beschreibungneu` TEXT NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `diashows` ADD CONSTRAINT `diashowsspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `diashowbilder` ADD CONSTRAINT `diashowbilderdiashow` FOREIGN KEY (`diashow`) REFERENCES `diashows`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `gremienchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `fachschaftenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `klassenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `kursechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `stufenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `arbeitsgemeinschaftenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `arbeitskreisechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `fahrtenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `wettbewerbechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `ereignissechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `sonstigegruppenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;
 DROP TABLE `rechtzuordnung`;
 CREATE TABLE `cms_schulhof`.`rechtezuordnung` ( `person` BIGINT(255) UNSIGNED NOT NULL , `recht` VARBINARY(5000) NOT NULL) ENGINE = InnoDB;

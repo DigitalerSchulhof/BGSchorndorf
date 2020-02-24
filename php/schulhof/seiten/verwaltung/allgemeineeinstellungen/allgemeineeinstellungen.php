@@ -407,15 +407,6 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "</div>";
 	$code .= "</div>";
 
-	$kennung = "";
-	$sql = "SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')";
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-	  if ($daten = $anfrage->fetch_assoc()) {
-	    $kennung = $daten['wert'];
-	  }
-	  $anfrage->free();
-	}
-
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_5\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Geräteverwaltung</h2></div>";
@@ -457,15 +448,6 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung1_mailF\" style=\"$style\">";
 		$code .= "<th>eMailadresse:</th>";
 		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete1_mail\" id=\"cms_schulhof_externegeraete1_mail\" value=\"".$einstellungen['Externe Geräteverwaltung1 Mail']."\" onkeyup=\"cms_check_mail_wechsel('externegeraete1_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete1_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
-		$code .= "</tr>";
-		$code .= "</table>";
-
-		$code .= "<h3>Kennung für die internen Dienste</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr>";
-		$code .= "<th>Kennung:</th>";
-		$code .= "<td><input name=\"cms_schulhof_intern_geraetekennung\" id=\"cms_schulhof_intern_geraetekennung\" value=\"$kennung\"></td>";
-		$code .= "<td><span class=\"cms_button\" onclick=\"cms_kennung_generieren('cms_schulhof_intern_geraetekennung')\">Generieren</span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";

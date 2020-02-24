@@ -21,8 +21,9 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 
 	// Pflichteingaben prüfen
 	if (strlen($bezeichnung) == 0) {$fehler = true;}
-	if(!count($rechte) || $rechte[0] == "")
+	if(!count($rechte) || $rechte[0] == "") {
 		die("ERFOLG");
+	}
 	// Administrator darf nicht verändert werden
 	if ($id == 0) {$fehler = true;}
 

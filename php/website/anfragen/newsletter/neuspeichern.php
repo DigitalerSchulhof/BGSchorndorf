@@ -45,15 +45,10 @@ if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen")) {
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
 
 		// Formular eintragen
-		$sql = "UPDATE wnewsletter SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
-		$sql .= cms_sql_aan(array("bezeichnung", "beschreibung", "typ"));
-		$sql = substr($sql, 0, -1)." ";
-		$sql .= "WHERE id = $id";
-		$sql = $dbs->prepare($sql);
-
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
-
-		$sql->bind_param("ssssssiii", $bezeichnung, $bezeichnung, $bezeichnung, $beschreibung, $beschreibung, $beschreibung, $typ, $typ, $typ);
+		$sql = "UPDATE wnewsletter SET spalte = ?, position = ?, aktiv = ?, bezeichnungalt = ?, bezeichnungaktuell = ?, bezeichnungneu = ?, beschreibungalt = ?, beschreibungaktuell = ?, beschreibungneu = ?, typalt = ?, typaktuell = ?, typneu = ? WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("iisssssssiiii", $spalte, $position, $aktiv, $bezeichnung, $bezeichnung, $bezeichnung, $beschreibung, $beschreibung, $beschreibung, $typ, $typ, $typ, $id);
 		$sql->execute();
 
 		echo "ERFOLG";

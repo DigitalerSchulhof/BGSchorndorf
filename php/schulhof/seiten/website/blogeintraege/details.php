@@ -39,14 +39,19 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."blogeintraege JOIN $gk ON ".$gk."blogeintraege.gruppe = $gk.id WHERE blogeintrag = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-  			while ($daten = $anfrage->fetch_assoc()) {
-  				array_push($daten, $zugeordnet[$g]);
-          $zgruppenids[$g] .= "|".$daten['id'];
+      $sql = $dbs->prepare("SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."blogeintraege JOIN $gk ON ".$gk."blogeintraege.gruppe = $gk.id WHERE blogeintrag = ?) AS x ORDER BY bezeichnung");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($gid, $gbez);
+  			while ($sql->fetch()) {
+          $D = array();
+          $D['id'] = $gid;
+          $D['bezeichnung'] = $gbez;
+  				array_push($D, $zugeordnet[$g]);
+          $zgruppenids[$g] .= "|".$gid;
   			}
-  			$anfrage->free();
   		}
+      $sql->close();
     }
   }
 

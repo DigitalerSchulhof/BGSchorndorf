@@ -12,7 +12,6 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
-	include_once("php/schulhof/seiten/website/reaktionen.php");
 	include_once("php/allgemein/funktionen/captcha.php");
 	include_once("php/allgemein/funktionen/rechte/rechte.php");
 
@@ -34,8 +33,8 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	//$CMS_VERSION = rand(0,1000000);
-	$CMS_VERSION = "0.5.72";
+	$CMS_VERSION = rand(0,1000000);
+	//$CMS_VERSION = "0.5.72";
 	$TITELBILDERJS = "";
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
@@ -100,7 +99,6 @@
 
 	// Prüfen, ob ein Nutzer angemeldet ist
 	if ($CMS_ANGEMELDET) {
-
 		// Nutzerdaten laden
 		$CMS_BENUTZERNAME = $_SESSION['BENUTZERNAME'];
 		$CMS_SESSIONID = $_SESSION['SESSIONID'];
@@ -197,7 +195,6 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/rechtebaum.css?v=$CMS_VERSION\">";
@@ -265,13 +262,11 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/seiten.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/hauptnavigationen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/dateien.js?v=$CMS_VERSION\"></script>";
@@ -285,7 +280,7 @@
 			$code .= "<script src=\"js/website/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/boxen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/eventuebersicht.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/reaktionen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/website/diashow.js?v=$CMS_VERSION\"></script>";
 
 			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
@@ -455,10 +450,12 @@
 				}
 			}
 			$wahlknoepfe = "";
-			if (count($bilder) > 1) {
-				$TITELBILDERJS = "cms_titelbilder_starten();";
+			if (count($bilder) > 0) {
 				$bildercode .= "<li style=\"opacity: 1;\" id=\"cms_hauptbilder_0\"><img src=\"dateien/titelbilder/".$bilder[0]."\"></li>";
 				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_0\" class=\"cms_titelbild_knopf_aktiv\" onclick=\"cms_titelbild_zeigen('0')\"></span> ";
+			}
+			if (count($bilder) > 1) {
+				$TITELBILDERJS = "cms_titelbilder_starten();";
 			}
 			for ($i=1; $i<count($bilder); $i++) {
 				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_hauptbilder_$i\"><img src=\"dateien/titelbilder/".$bilder[$i]."\"></li>";

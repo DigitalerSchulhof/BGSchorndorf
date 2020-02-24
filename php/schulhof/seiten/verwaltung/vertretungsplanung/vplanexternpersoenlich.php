@@ -14,34 +14,40 @@ function cms_vertretungsplan_extern_persoenlich() {
   // Art des Benutzers ermitteln
   $dbs = cms_verbinden('s');
   if ($CMS_BENUTZERART == 'l') {
-    $sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM lehrer WHERE id = $CMS_BENUTZERID";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      if ($daten = $anfrage->fetch_assoc()) {
-        $kuerzel = $daten['kuerzel'];
-      }
-      $anfrage->free();
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM lehrer WHERE id = ?");
+    $sql->bind_param("i", $CMS_BENUTZERID);
+    if ($sql->execute()) {
+      $sql->bind_result($kuerzel);
+      $sql->fetch();
     }
+    $sql->close();
   }
   else if ($CMS_BENUTZERART == 's') {
     $jetzt = time();
     // HEUTIGE KLASSE SUCHEN
-    $sql = "SELECT id from schuljahre WHERE beginn <= $jetzt AND ende >= $jetzt";
+    $sql = $dbs->prepare("SELECT id from schuljahre WHERE beginn <= ? AND ende >= ?");
+    $sql->bind_param("ii", $jetzt, $jetzt);
     $schuljahr = "";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      if ($daten = $anfrage->fetch_assoc()) {
-        $schuljahr = $daten['id'];
-      }
-      $anfrage->free();
+    if ($sql->execute()) {
+      $sql->bind_result($schuljahr);
+      $sql->fetch();
     }
+    $sql->close();
 
     if ($schuljahr != "") {
-      $sql = "SELECT * FROM (SELECT klassen.id AS id, AES_DECRYPT(klassenbezextern, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(stufenbezextern, '$CMS_SCHLUESSEL') AS stufe FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE schuljahr = $schuljahr AND person = $CMS_BENUTZERID) AS x ORDER BY stufe ASC, klasse ASC";
-      if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
-        while ($daten = $anfrage->fetch_assoc()) {
-          array_push($klassen, $daten);
+      $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id AS id, AES_DECRYPT(klassenbezextern, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(stufenbezextern, '$CMS_SCHLUESSEL') AS stufe FROM klassen JOIN klassenmitglieder ON klassen.id = klassenmitglieder.gruppe WHERE schuljahr = ? AND person = ?) AS x ORDER BY stufe ASC, klasse ASC");
+      $sql->bind_param("ii", $schuljahr, $CMS_BENUTZERID);
+      if ($sql->execute()) {
+        $sql->bind_result($kid, $kbez, $sbez);
+        while ($sql->fetch()) {
+          $D = array();
+          $D['id'] = $kid;
+          $D['klasse'] = $kbez;
+          $D['stufe'] = $sbez;
+          array_push($klassen, $D);
         }
-        $anfrage->free();
       }
+      $sql->close();
     }
   }
   cms_trennen($dbs);

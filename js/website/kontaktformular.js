@@ -139,7 +139,6 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
   var betreff = document.getElementById('cms_website_element_kontaktformular_betreff').value;
   var kopie = document.getElementById('cms_website_element_kontaktformular_kopie').value;
   var anhang = document.getElementById('cms_website_element_kontaktformular_anhang').value;
-  var ids = [];
   var namen = [];
   var mails = [];
   var beschreibungen = [];
@@ -147,11 +146,9 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
   var empfbox = $("#cms_kontaktformular_empfaenger");
 
   empfbox.children("table").each(function() {
-    var id = $(this).find(".cms_kontaktformular_empfaenger_id").val();
     var name = $(this).find(".cms_kontaktformular_empfaenger_name").val();
     var mail = $(this).find(".cms_kontaktformular_empfaenger_mail").val();
     var beschreibung = $(this).find(".cms_kontaktformular_empfaenger_beschreibung").val();
-    ids.push(id);
     namen.push(name);
     mails.push(mail);
     beschreibungen.push(beschreibung);
@@ -226,7 +223,6 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
 		formulardaten.append("betreff",         betreff);
 		formulardaten.append("kopie",           kopie);
 		formulardaten.append("anhang",          anhang);
-    formulardaten.append("ids",             ids);
     formulardaten.append("namen",           namen);
     formulardaten.append("mails",           mails);
     formulardaten.append("beschreibungen",  bes);

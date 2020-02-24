@@ -7,13 +7,12 @@ include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../website/funktionen/positionen.php");
 session_start();
 // Variablen einlesen, falls übergeben
-postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "ids", "namen", "mails", "beschreibungen"));
+postLesen(array("aktiv", "position", "betreff", "kopie", "anhang", "namen", "mails", "beschreibungen"));
 if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
 
-$ids = 						explode(",", $ids);
 $namen =					explode(",", $namen);
 $mails = 					explode(",", $mails);
 $beschreibungen = explode(",", $beschreibungen);
@@ -34,13 +33,8 @@ if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.bearbeiten")) {
 	if (($anhang != 0) && ($anhang != 1)) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 
-	foreach($ids as $k => $v)
-		if($v !== "")
-			if (!cms_check_ganzzahl($v, 0))			 $fehler = true;
-
-	if(!((count($ids) == count($namen)) && (count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
+	if(!((count($namen) == count($mails)) && (count($mails) == count($beschreibungen))))
 		$fehler = true;
-
 
 	if (!cms_check_nametitel($namen))	$fehler = true;
 	if (!cms_check_mail($mails))	$fehler = true;
@@ -57,54 +51,52 @@ if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.bearbeiten")) {
 		$betreff = cms_texttrafo_e_db($betreff);
 
 		if (!cms_r("website.freigeben")) {
-		 	$sql = "UPDATE kontaktformulare SET position = $position, betreffneu = ?, kopieneu = ?, anhangneu = ? ";
-			$sql .= "WHERE id = $id";
+		 	$sql = "UPDATE kontaktformulare SET position = $position, betreffneu = ?, kopieneu = ?, anhangneu = ? WHERE id = ? ";
 			$sql = $dbs->prepare($sql);
 
-			$sql->bind_param("sii", $betreff, $kopie, $anhang);
+			$sql->bind_param("siii", $betreff, $kopie, $anhang, $id);
 			$sql->execute();
 			$sql->close();
 
-			$sql = "UPDATE kontaktformulareempfaenger SET nameneu = ?, beschreibungneu = ?, mailneu = ? WHERE id = ? AND kontaktformular = $id";
+			$sql = "DELETE FROM kontaktformulareempfaenger WHERE kontaktformular = ?";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_param("sssi", $name, $beschreibung, $mail, $id);
-			for ($i=0; $i < count($ids); $i++) {
-				$id = $ids[$i];
+			$sql->bind_param("i", $id);
+			$sql->execute();
+
+			$sql = $dbs->prepare("UPDATE kontaktformulareempfaenger SET kontaktformular = ?, name = ?, beschreibung = ?, mail = ? WHERE id = ?");
+			$sql->bind_param("isssi", $id, $name, $beschreibung, $mail, $ide);
+			for ($i=0; $i < count($namen); $i++) {
 				$name = $namen[$i];
 				$mail = $mails[$i];
+				$ide = cms_generiere_kleinste_id('kontaktformulareempfaenger');
+
 				$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
 				$sql->execute();
 			}
 			$sql->close();
 		}
 		else {
-			$sql = "UPDATE kontaktformulare SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
-			$sql .= cms_sql_an(array("betreff", "kopie", "anhang"));
-			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = $id";
+			$sql = "UPDATE kontaktformulare SET spalte = ?, position = ?, aktiv = ?, betreffaktuell = ?, betreffneu = ?, kopieaktuell = ?, kopieneu = ?, anhangaktuell = ?, anhangneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
-
-			$sql->bind_param("ssiiii", $betreff, $betreff, $kopie, $kopie, $anhang, $anhang);
+			$sql->bind_param("iisssiiiii", $spalte, $position, $aktiv, $betreff, $betreff, $kopie, $kopie, $anhang, $anhang, $id);
 			$sql->execute();
 			$sql->close();
 
-			$sql = "UPDATE kontaktformulareempfaenger SET kontaktformular = $id, ";
-			$sql .= cms_sql_an(array("name", "beschreibung", "mail"));
-			$sql = substr($sql, 0, -1)." ";
-			$sql .= "WHERE id = ?";
+			$sql = "DELETE FROM kontaktformulareempfaenger WHERE kontaktformular = ?";
 			$sql = $dbs->prepare($sql);
-			$sql->bind_param("ssssssi", $name, $name, $beschreibung, $beschreibung, $mail, $mail, $id);
-			foreach ($ids as $i => $id) {
-				$id = $ids[$i];
+			$sql->bind_param("i", $id);
+			$sql->execute();
+			foreach ($namen as $i => $name) {
 				$name = $namen[$i];
 				$mail = $mails[$i];
 				$beschreibung = cms_texttrafo_e_db($beschreibungen[$i]);
-				if($id === "") {
-					$id = cms_generiere_kleinste_id('kontaktformulareempfaenger');
-				}
+
+				$ide = cms_generiere_kleinste_id('kontaktformulareempfaenger');
+				$sql = $dbs->prepare("UPDATE kontaktformulareempfaenger SET kontaktformular = ?, name = ?, beschreibung = ?, mail = ? WHERE id = ?");
+				$sql->bind_param("isssi", $id, $name, $beschreibung, $mail, $ide);
 				$sql->execute();
+				$sql->close();
 			}
-			$sql->close();
 		}
 		echo "ERFOLG";
 	}

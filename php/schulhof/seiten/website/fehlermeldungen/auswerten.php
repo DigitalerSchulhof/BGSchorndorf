@@ -14,22 +14,25 @@
       $ausgabe .= "<tbody>";
 
       $dbs = cms_verbinden('s');
-      $sql = "SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen ORDER BY status ASC, zeitstempel DESC";
+      $sql = $sql->prepare("SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen ORDER BY status ASC, zeitstempel DESC");
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-        while ($daten = $anfrage->fetch_assoc()) {
-          $liste .= '<tr class=\"cms_fehlermeldung_'.$daten["status"].'\">';
-          if($daten["status"] == "2")
+      if ($sql->execute()) {
+        $sql->bind_result($fid, $ferst, $furl, $ftit, $fbes, $fzeit, $fstatus);
+        while ($sql->fetch()) {
+          $liste .= '<tr class=\"cms_fehlermeldung_'.$fstatus.'\">';
+          if($fstatus == "2") {
             $liste .= '<td><img src="res/icons/klein/fehlermeldung_behoben.png"></td>';
-          else
+          }
+          else {
             $liste .= '<td><img src="res/icons/klein/fehlermeldung.png"></td>';
-          $liste .= "<td title=\"".$daten["titel"]."\" style=\"word-break: break-word;\">".$daten["titel"]."</td>";
-          $liste .= "<td title=\"".$daten["beschreibung"]."\" style=\"word-break: break-word;\">".$daten["beschreibung"]."</td>";
+          }
+          $liste .= "<td style=\"word-break: break-word;\">$ftit</td>";
+          $liste .= "<td style=\"word-break: break-word;\">$fbes</td>";
           date_default_timezone_set("Europe/Berlin");
-          $liste .= "<td title=\"".date("d.m.Y H:i:s", $daten["zeitstempel"])."\">".date("d.m.Y", $daten["zeitstempel"])."</td>";
+          $liste .= "<td title=\"".date("d.m.Y H:i:s", $fzeit)."\">".date("d.m.Y", $fzeit)."</td>";
           $statusT = "Fehler";
           $statusI = "fehlermeldung";
-          switch ($daten["status"]) {
+          switch ($fstatus) {
             case 0:
               $statusT = "Offen"; $statusI = "rot";
               break;
@@ -44,23 +47,23 @@
 
           $liste .= '<td>';
             if (cms_r("technik.fehlermeldungen")) {
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '2');\"><span class=\"cms_hinweis\">Als behoben markieren</span><img src=\"res/icons/klein/fehlermeldung_beheben.png\"></span> ";
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '1');\"><span class=\"cms_hinweis\">Als in Bearbeitung markieren</span><img src=\"res/icons/klein/fehlermeldung_bearbeitung.png\"></span> ";
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '0');\"><span class=\"cms_hinweis\">Als offen markieren</span><img src=\"res/icons/klein/fehlermeldung_oeffnen.png\"></span> ";
+              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '2');\"><span class=\"cms_hinweis\">Als behoben markieren</span><img src=\"res/icons/klein/fehlermeldung_beheben.png\"></span> ";
+              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '1');\"><span class=\"cms_hinweis\">Als in Bearbeitung markieren</span><img src=\"res/icons/klein/fehlermeldung_bearbeitung.png\"></span> ";
+              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '0');\"><span class=\"cms_hinweis\">Als offen markieren</span><img src=\"res/icons/klein/fehlermeldung_oeffnen.png\"></span> ";
               // -1 => Löschen
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('".$daten['id']."', '-1');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/fehlermeldung_loeschen.png\"></span> ";
+              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '-1');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/fehlermeldung_loeschen.png\"></span> ";
             }
-            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_details('".$daten['id']."');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/fehlermeldung_information.png\"></span> ";
+            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_details('$fid');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/fehlermeldung_information.png\"></span> ";
           $liste .= '</td>';
           $liste .= '</tr>';
         }
 
-        $anfrage->free();
         if (strlen($liste) == 0) {
           $liste .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Fehler gemeldet --</td></tr>";
         }
         $ausgabe .= $liste;
       }
+      $sql->close();
 
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
@@ -109,17 +112,16 @@
               $code .= "<th>Ersteller der Meldung:</th>";
               $ersteller = $sqld["ersteller"];
               if($id != "") {
-                $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = $ersteller";
-                if ($anfrage = $dbs->query($sql)) { // Safe weil interne ID
-                  if ($daten = $anfrage->fetch_assoc()) {
-                    $vorname = $daten['vorname'];
-                    $nachname = $daten['nachname'];
-                    $titel = $daten['titel'];
-                    $ersteller = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+                $sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = ?");
+                $sql->bind_param("i", $ersteller);
+                if ($sql->execute()) {
+                  $sql->bind_result($vorname, $nachname, $titel);
+                  if ($sql->fetch()) {
+                    $ersteller = cms_generiere_anzeigename($vorname, $nachname, $titel);
                     $fehler = false;
                   }
-                  $anfrage->free();
                 }
+                $sql->close();
               }
               $code .= "<td><input disabled value=\"".$ersteller."\"></td>";
             $code .= "</tr>";

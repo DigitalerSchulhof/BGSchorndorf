@@ -24,8 +24,7 @@ $zugriff = false;
 if ($id == '-') {$zugriff = cms_r("website.elemente.download.anlegen");}
 else {$zugriff = cms_r("website.elemente.download.bearbeiten");}
 
-if(!cms_check_ganzzahl($id))
-  die("FEHLER");
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 if (cms_angemeldet() && $zugriff) {
   $fehler = false;

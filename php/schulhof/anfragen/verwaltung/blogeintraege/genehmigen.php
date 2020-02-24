@@ -39,8 +39,8 @@ if (cms_angemeldet() && $zugriff) {
 		$gruppenid = "gruppe";
 
 		// Gruppe laden
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') as grbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = ?");
-		$sql->bind_param("i", $gruppenid);
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') as grbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id IN (SELECT gruppe FROM $tabelle WHERE id = ?)");
+		$sql->bind_param("i", $id);
 		$gruppensj = "Schuljahrübergreifend";
 		$gruppenbez = "";
 		if ($sql->execute()) {

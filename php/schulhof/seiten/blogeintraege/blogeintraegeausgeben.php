@@ -310,7 +310,6 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				else {$code .= "<p><img src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
 			}
 			$code .= cms_ausgabe_editor($blogeintrag['text']);
-			$code .= cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
 
 			$code .= "</div></div>";
 

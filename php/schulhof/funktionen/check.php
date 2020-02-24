@@ -197,7 +197,6 @@ function cms_rechte_laden($aktiverbenutzer = '-', $dynamisch = true) {
 	}
 }
 
-
 function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
 	if ($benutzer == '-') {
@@ -323,7 +322,6 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	return $cms_gruppenrechte;
 }
 
-
 function cms_internterminvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
 	return $gruppenrechte['termine'] || ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] &&
@@ -333,7 +331,6 @@ function cms_internterminvorschlag($gruppenrechte) {
 																	 || ($CMS_BENUTZERART == 'v' && $CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen intern Termine vorschlagen'])
 																	 || ($CMS_BENUTZERART == 'x' && $CMS_EINSTELLUNGEN['Externe dürfen intern Termine vorschlagen'])));
 }
-
 
 function cms_internblogvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
@@ -444,7 +441,6 @@ function cms_anzahl_monate($beginn, $ende) {
 	return $monate;
 }
 
-
 function cms_istmobil() {
 	$browser = $_SERVER['HTTP_USER_AGENT'];
 	if (preg_match('/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $browser)) {
@@ -538,7 +534,6 @@ function cms_titelbilderdateirechte_laden() {
 	return $gruppenrechte;
 }
 
-
 function cms_oeffentlich_sichtbar($dbs, $art, $daten) {
 	global $CMS_BENUTZERART, $CMS_GRUPPEN, $CMS_ANGEMELDET;
 
@@ -580,7 +575,6 @@ function cms_oeffentlich_sichtbar($dbs, $art, $daten) {
 		return true;
 	}
 }
-
 
 function cms_schreibeberechtigung($dbs, $zielperson) {
   global $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
@@ -679,27 +673,14 @@ function getLesen(...$felder) {
 			die("FEHLER");
 }
 
-function sqlLesen($row, $feld) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
-			sqlLesen($row, $f);
-		return;
-	}
-	global $$feld;
-
-	if(isset($row[$feld]))
-		$$feld = $row[$feld];
-}
-
 function cms_check_sessionvars() {
+
 	if (!isset($_SESSION['BENUTZERID'])) {return false;}
-	if (!isset($_SESSION['BENUTZERSCHULJAHR'])) {return false;}
 	if (!isset($_SESSION['BENUTZERART'])) {return false;}
 
 	if (!cms_check_ganzzahl($_SESSION['BENUTZERID'])) {return false;}
-	if ((!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR'])) && ($_SESSION['BENUTZERSCHULJAHR'] != '-')) {return false;}
+	if (($_SESSION['BENUTZERSCHULJAHR'] !== null) && (!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR']))) {return false;}
 	if (($_SESSION['BENUTZERART'] != 's') && ($_SESSION['BENUTZERART'] != 'l') && ($_SESSION['BENUTZERART'] != 'v') && ($_SESSION['BENUTZERART'] != 'e') && ($_SESSION['BENUTZERART'] != 'x')) {return false;}
 	return true;
 }
-
 ?>

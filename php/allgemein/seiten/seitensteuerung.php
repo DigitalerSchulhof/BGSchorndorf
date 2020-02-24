@@ -87,7 +87,6 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Postfach/Signatur']                       = 'php/schulhof/seiten/nutzerkonto/postfach/signatur.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Probleme_melden']                         = 'php/schulhof/seiten/nutzerkonto/problememelden.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                              = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Umarmungen']                              = 'php/schulhof/seiten/nutzerkonto/umarmungen.php';
 
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';
@@ -335,7 +334,6 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Fehlermeldungen']                             = 'php/schulhof/seiten/website/fehlermeldungen/liste.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Fehlermeldungen/Details']                     = 'php/schulhof/seiten/website/fehlermeldungen/details.php';
 
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Emoticons']                                   = 'php/schulhof/seiten/website/emoticons/emoticons.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Fehler']                                              = 'php/schulhof/seiten/fehler/404.php';

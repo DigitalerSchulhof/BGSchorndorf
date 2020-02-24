@@ -15,11 +15,11 @@ if (cms_angemeldet() && cms_r("website.freigeben")) {
 	$fehler = false;
 
 	if (!$fehler) {
-	  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten');
+		$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
 
 		$dbs = cms_verbinden('s');
 		// Alle Spalten der Seite
-		$sql = "SELECT id FROM spalten WHERE seite = '$seite'";
+		$sql = "SELECT id FROM spalten WHERE seite = ?";
 		$sql = $dbs->prepare($sql);
 		$sql->bind_param("i", $seite);
 		if ($sql->execute()) {
@@ -27,15 +27,15 @@ if (cms_angemeldet() && cms_r("website.freigeben")) {
 			while ($sql->fetch()) {
 				// Alle Elemente dieser Spalte aktivieren
 				foreach ($elemente as $e) {
-					$sql = "UPDATE $e SET aktiv = '1' WHERE spalte = '$sid'";
-					$dbs->query($sql);	// Safe weil interne ID
+					$sql2 = "UPDATE $e SET aktiv = '1' WHERE spalte = '$sid'";
+					$dbs->query($sql2);	// Safe weil interne ID
 					if ($e == 'boxenaussen') {
-						$sql = "UPDATE boxen SET aktiv = '1' WHERE boxaussen IN (SELECT id AS boxaussen FROM boxenaussen WHERE spalte = '$sid')";
-						$dbs->query($sql);	// Safe weil interne ID
+						$sql3 = "UPDATE boxen SET aktiv = '1' WHERE boxaussen IN (SELECT id AS boxaussen FROM boxenaussen WHERE spalte = '$sid')";
+						$dbs->query($sql3);	// Safe weil interne ID
 					}
 				}
 			}
-			$anfrage->free();
+			$sql->close();
 		}
 		cms_trennen($dbs);
 		echo "ERFOLG";

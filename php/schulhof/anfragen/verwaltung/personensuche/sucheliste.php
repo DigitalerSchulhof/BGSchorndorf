@@ -16,9 +16,9 @@ if (isset($_POST['extern'])) {$extern = $_POST['extern'];} else {echo "FEHLER"; 
 if (isset($_POST['nname'])) {$nname = $_POST['nname'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['vname'])) {$vname = $_POST['vname'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER"; exit;}
+if (array_key_exists('BENUTZERSCHULJAHR', $_SESSION)) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER"; exit;}
 
-if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0) && ($CMS_BENUTZERSCHULJAHR !== null)) {echo "FEHLER"; exit;}
 
 cms_rechte_laden();
 

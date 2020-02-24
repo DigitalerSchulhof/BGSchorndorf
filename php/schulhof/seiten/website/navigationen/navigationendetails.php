@@ -1,18 +1,38 @@
 <?php
-function cms_anzahl_navigationsebenen($dbs, $ausgang, $max = 0) {
+function cms_anzahl_navigationsebenen($dbs) {
 	$gefunden = false;
-	if ($ausgang == '-') {$sql = "SELECT id FROM seiten WHERE zuordnung IS NULL";}
-	else {$sql = "SELECT id FROM seiten WHERE zuordnung = '$ausgang'";}
-	$neuesmax = $max;
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		while ($daten = $anfrage->fetch_assoc()) {
-			$maxgebot = cms_anzahl_navigationsebenen($dbs, $daten['id'], $max+1);
-			if ($maxgebot > $neuesmax) {$neuesmax = $maxgebot;}
-		}
-		$anfrage->free();
-	}
+	$max = 0;
+	$DIESEEBENE = array();
+	$NAECHSTEEBENE = array();
 
-	return $neuesmax;
+	$sql = $dbs->prepare("SELECT id FROM seiten WHERE zuordnung IS NULL");
+	if ($sql->execute()) {
+		$sql->bind_result($zid);
+		while ($sql->fetch()) {
+			array_push($NAECHSTEEBENE, $zid);
+		}
+	}
+	$sql->close();
+
+	$sql = $dbs->prepare("SELECT id FROM seiten WHERE zuordnung = ?");
+	while ((count($DIESEEBENE) != 0) || (count($NAECHSTEEBENE) != 0))  {
+		while ((count($DIESEEBENE) != 0)) {
+			$eid = array_pop($DIESEEBENE);
+			$sql->bind_param("i", $eid);
+			if ($sql->execute()) {
+				$sql->bind_result($zid);
+				while ($sql->fetch()) {
+					array_push($NAECHSTEEBENE, $zid);
+				}
+			}
+		}
+		$DIESEEBENE = $NAECHSTEEBENE;
+		$NAECHSTEEBENE = array();
+		$max++;
+	}
+	$sql->close();
+
+	return $max-1;
 }
 
 function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
@@ -21,18 +41,22 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 	$fehler = false;
 	// Informationen über die Navigatio laden
 	if (($ident == 'h') || ($ident == 's') || ($ident == 'f')) {
-		$sql = "SELECT * FROM navigationen WHERE art = '$ident'";
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE art = ?");
+		$sql->bind_param("s", $ident);
 		$hauptnavigation = true;
 	}
 	else {
-		$sql = "SELECT * FROM navigationen WHERE id = $ident";
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE id = ?");
+		$sql->bind_param("i", $ident);
 	}
 
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		if (!($navigation = $anfrage->fetch_assoc())) {$fehler = true;}
-		$anfrage->free();
+	$navigation = array();
+	if ($sql->execute()) {
+		$sql->bind_result($navigation['id'], $navigation['art'], $navigation['ebene'], $navigation['ebenenzusatz'], $navigation['tiefe'], $navigation['spalte'], $navigation['position'], $navigation['anzeige'], $navigation['styles'], $navigation['klassen'], $navigation['idvon'], $navigation['idzeit']);
+		if (!$sql->fetch()) {$fehler = true;}
 	}
 	else {$fehler = true;}
+	$sql->close();
 
 	// Information über die Navigation ausgeben
 	if (!$fehler) {
@@ -68,7 +92,7 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 				$code .= "</select>";
 			$code .= "</td></tr>";
 
-			$anzahlebenen = cms_anzahl_navigationsebenen($dbs, '-');
+			$anzahlebenen = cms_anzahl_navigationsebenen($dbs);
 			$code .= "<tr id=\"$id"."_ebenenzusatz_eF\"$estyle>";
 				$code .= "<th><span class=\"cms_hinweis_aussen\">Ebenennummer:<span class=\"cms_hinweis\">Ab welcher Ebene in diesem Pfad soll die Navigation angezeigt werden?</span></th><td>";
 				$code .= "<select id=\"$id"."_ebenenzusatz_e\" name=\"$id"."_ebenenzusatz_e\">";
@@ -82,13 +106,13 @@ function cms_navigation_ausgeben_bearbeiten ($dbs, $id, $ident) {
 
 			$swahl = "<i>Keine gewählt</i>";
 			if ($ebenenzusatzs != '-') {
-				$sql = "SELECT * FROM seiten WHERE id = $ebenenzusatzs";
-				if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
-					if ($daten = $anfrage->fetch_assoc()) {
-						$swahl = $daten['bezeichnung'];
-					}
-					$anfrage->free();
+				$sql = $dbs->prepare("SELECT bezeichnung FROM seiten WHERE id = ?");
+				$sql->bind_param("i", $ebenenzusatzs);
+				if ($sql->execute()) {
+					$sql->bind_result($swahl);
+					$sql->fetch();
 				}
+				$sql->close();
 			}
 
 			$code .= "<tr id=\"$id"."_ebenenzusatz_sF\"$sstyle>";

@@ -19,24 +19,25 @@ function cms_newsletter_details_laden($id, $ziel) {
 
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM newslettertypen WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$bezeichnung = $daten['bezeichnung'];
-			}
-			$anfrage->free();
+	  $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM newslettertypen WHERE id = ?");
+    $sql->bind_param("i", $id);
+		if ($sql->execute()) {
+      $sql->bind_result($bezeichnung);
+			$sql->fetch();
 		}
+    $sql->close();
   }
   foreach ($CMS_GRUPPEN as $g) {
     $gk = cms_textzudb($g);
-    $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."newsletter JOIN $gk ON ".$gk."newsletter.gruppe = $gk.id WHERE newsletter = $id) AS x ORDER BY bezeichnung";
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push($daten, $zugeordnet[$g]);
-        $zgruppenids[$g] .= "|".$daten['id'];
+    $sql = $dbs->prepare("SELECT * FROM (SELECT gruppe AS id FROM ".$gk."newsletter JOIN $gk ON ".$gk."newsletter.gruppe = $gk.id WHERE newsletter = ?) AS x");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $sql->bind_result($zid);
+      while ($sql->fetch()) {
+        $zgruppenids[$g] .= "|".$zid;
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
   if(($neu && $anlegen) || (!$neu && $bearbeiten)) {

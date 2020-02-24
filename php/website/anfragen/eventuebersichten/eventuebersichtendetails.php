@@ -19,6 +19,8 @@ if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} e
 cms_rechte_laden();
 $angemeldet = cms_angemeldet();
 
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
+
 $zugriff = false;
 
 if ($id == '-') {$zugriff = cms_r("website.elemente.eventübersicht.anlegen");}

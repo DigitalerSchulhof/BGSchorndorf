@@ -18,8 +18,7 @@ if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} e
 cms_rechte_laden();
 $angemeldet = cms_angemeldet();
 
-if(!cms_check_ganzzahl($id))
-  die("FEHLER");
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 $zugriff = false;
 

@@ -336,18 +336,12 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 	var extvorname2 = document.getElementById('cms_externegeraete2_vorname').value;
 	var extnachname2 = document.getElementById('cms_externegeraete2_nachname').value;
 	var extmail2 = document.getElementById('cms_schulhof_externegeraete2_mail').value;
-	var kennung = document.getElementById('cms_schulhof_intern_geraetekennung').value;
 
 	var meldung = '<p>Die Geräteverwaltung-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
 
 	if (!cms_check_toggle(extexistiert1)) {
 		meldung += '<li>der erste Ansprechpartner kann entweder existieren, oder nicht.</li>';
-		fehler = true;
-	}
-
-	if (!cms_check_titel(kennung)) {
-		meldung += '<li>die Kennung enthält ungültige Zeichen.</li>';
 		fehler = true;
 	}
 
@@ -429,7 +423,6 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 		formulardaten.append("extvorname2", 			extvorname2);
 		formulardaten.append("extnachname2", 			extnachname2);
 		formulardaten.append("extmail2", 					extmail2);
-		formulardaten.append("kennung", 					kennung);
 		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }

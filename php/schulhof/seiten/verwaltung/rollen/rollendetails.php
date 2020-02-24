@@ -19,6 +19,7 @@ function cms_rolle_ausgeben ($rolle) {
 			$sql->fetch();
 			$sql->close();
 		}
+		$sql->close();
 	}
 
 	$code .= "<div class=\"cms_spalte_2\">";
@@ -34,7 +35,7 @@ function cms_rolle_ausgeben ($rolle) {
 	$cms_derrollerechte = array();
 	if($rolle != "")
 		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = ?", $cms_derrollerechte, "i", $rolle);
-	
+
 	// u: Unterstes
 	// k: Hat Kinder	(Pfad nach rechts)
 	// 	c: Eingeklappt (Grünes +)
@@ -55,12 +56,14 @@ function cms_rolle_ausgeben ($rolle) {
 			foreach(explode(".", $pf) as $p) {
 				if($r === true)
 					return true;
-				else
+				else {
 					if(isset($r[$p])) {
 						if(($r = $r[$p]) === true)
 							return true;
-					} else
+					} else {
 						return false;
+					}
+				}
 			}
 		};
 		$rollehatrecht = false;

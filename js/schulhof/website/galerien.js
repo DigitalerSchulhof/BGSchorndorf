@@ -339,7 +339,7 @@ function cms_galerie_bild_box_machen(pfad) {
 	code += "<tr><th>Datei:</th>";
 	code += "<td colspan=\"4\"><input id=\"cms_bild_datei_"+neueid+"\" name=\"cms_bild_datei_"+neueid+"\" type=\"hidden\" value=\""+pfad+"\">";
 	code += "<p class=\"cms_notiz cms_vorschau\" id=\"cms_bild_datei_"+neueid+"_vorschau\"><img src=\""+pfad+"\"></p>";
-		code += "<p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'galerien', '-', 'galerien', 'cms_bild_datei_"+neueid+"', 'vorschaubild', '-', '-')\">Bild auswählen</span></p>";
+		code += "<p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'website', '-', 'website', 'cms_bild_datei_"+neueid+"', 'vorschaubild', '-', '-')\">Bild auswählen</span></p>";
 		code += "<p id=\"cms_bild_datei_"+neueid+"_verzeichnis\"></p>";
 	code += "</td></tr>";
 	code += "<tr><th>Beschreibung:</th><td colspan=\"4\"><textarea name=\"cms_bild_beschreibung_"+neueid+"\" id=\"cms_bild_beschreibung_"+neueid+"\"></textarea></td></tr>";

@@ -56,7 +56,7 @@ cms_trennen($dbs);
 if (!$fehler) {
 	// SESSIONID GENERIEREN
 	$sessionid = cms_generiere_sessionid();
-	// 30 Minuten in Sekunden später wird der Nutzer automatisch abgemeldet
+	// Inaktivitätszeit von Minuten in Sekunden später wird der Nutzer automatisch abgemeldet
 	$jetzt = time();
 	$sessiontimeout = $jetzt + $inaktivitaetszeit*60;
 

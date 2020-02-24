@@ -50,7 +50,7 @@ if($titel != "") {
     $sql->close();
 
 
-    $sql = $dbs->prepare("UPDATE fehlermeldungen SET ".cms_sql_set_fragezeichen(array("id", "ersteller"), false).cms_sql_set_fragezeichen(array("url", "titel", "beschreibung", "header", "session"), true)."zeitstempel = ?, status = 0");
+    $sql = $dbs->prepare("UPDATE fehlermeldungen SET id = ?, ersteller = ?, url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), header = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), session = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ?, status = 0");
     $weilreferencetime = time();
     $sql->bind_param("issssssi", $idM, $ersteller, $url, $titel, $beschreibung, $header, $session, $weilreferencetime);
     $sql->execute();

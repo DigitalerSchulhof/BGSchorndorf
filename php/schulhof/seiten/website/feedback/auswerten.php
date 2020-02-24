@@ -8,32 +8,48 @@
       $ausgabe .= "<tbody>";
 
       $dbs = cms_verbinden('s');
-      $sql = "SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback ORDER BY zeitstempel DESC";
+      $sql = $dbs->prepare("SELECT id, AES_DECRYPT(name, '$CMS_SCHLUESSEL') AS name, AES_DECRYPT(feedback, '$CMS_SCHLUESSEL') AS feedback, zeitstempel FROM feedback ORDER BY zeitstempel DESC");
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-        while ($daten = $anfrage->fetch_assoc()) {
+      if ($sql->execute()) {
+        $sql->bind_result($fid, $fname, $ffback, $fzeit);
+        while ($sql->fetch()) {
           $liste .= '<tr>';
           $liste .= '<td><img src="res/icons/klein/feedback.png"></td>';
-          $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"".$daten["name"]."\">".(substr($daten["name"], 0, strpos(wordwrap($daten["name"], 80), "\n")==0?80:strpos(wordwrap($daten["name"], 80), "\n"))."...")."</td>";
-          $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"".$daten["feedback"]."\">".(substr($daten["feedback"], 0, strpos(wordwrap($daten["feedback"], 80), "\n")==0?80:strpos(wordwrap($daten["feedback"], 80), "\n"))."...")."</td>";
+          $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"$fname\">";
+          if (strpos(wordwrap($fname, 80), "\n")==0) {
+            $liste .= substr($fname, 0, 80);
+          }
+          else {
+            $liste .= substr($fname, 0, strpos(wordwrap($fname, 80), "\n"));
+          }
+          $liste .= "...</td>";
+          $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"$ffback\">";
+
+          if (strpos(wordwrap($ffback, 80), "\n")==0) {
+            $liste .= substr($ffback, 0, 80)
+          }
+          else {
+            $liste .= substr($ffback, 0, strpos(wordwrap($ffback, 80), "\n"));
+          }
+          $liste .= "...</td>";
           date_default_timezone_set("Europe/Berlin");
-          $liste .= "<td>".date("d.m.Y", $daten["zeitstempel"])."</td>";
+          $liste .= "<td>".date("d.m.Y", $fzeit)."</td>";
 
           $liste .= '<td>';
             if (cms_r("technik.feedback")) {
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_loeschen('".$daten['id']."');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/feedback_loeschen.png\"></span> ";
+              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_loeschen('$fzeit');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/feedback_loeschen.png\"></span> ";
             }
-            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_details('".$daten['id']."');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/feedback_information.png\"></span> ";
+            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_details('$fzeit');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/feedback_information.png\"></span> ";
           $liste .= '</td>';
           $liste .= '</tr>';
         }
 
-        $anfrage->free();
         if (strlen($liste) == 0) {
           $liste .= "<tr><td colspan=\"5\" class=\"cms_notiz\">-- kein Feedback vorhanden --</td></tr>";
         }
         $ausgabe .= $liste;
       }
+      $sql->close();
 
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";

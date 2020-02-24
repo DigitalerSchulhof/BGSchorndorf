@@ -97,7 +97,6 @@ if (cms_angemeldet() && $zugriff) {
   $bilder = array();
   if ($bildanzahl > 0) {
 		$bids = explode('|', $bildids);
-		$sqlwhere = substr(implode(' OR ',$bids), 4);
 
 		for ($i=1; $i<count($bids); $i++) {
       $dd = array();
@@ -105,6 +104,7 @@ if (cms_angemeldet() && $zugriff) {
 
 			if (isset($_POST["bpfad_".$bids[$i]])) {$dd['pfad'] = $_POST["bpfad_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (!is_file('../../../'.$dd['pfad'])) {$fehler = true; }
+      if(!cms_check_titel($dd["beschreibung"])) {$fehler = true; }
 
       array_push($bilder, $dd);
 		}

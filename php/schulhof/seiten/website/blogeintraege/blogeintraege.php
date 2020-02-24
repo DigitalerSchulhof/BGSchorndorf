@@ -23,17 +23,18 @@ if ($anzeigen) {
   $jahrende = $jahrgewaehlt;
   $jahre = false;
 
-  $sql = "SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM blogeintraege";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      if (!is_null($daten['anfang'])) {
-        $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);
-        $jahrende = max(date('Y', $daten['ende']), $jahrende);
+  $sql = $dbs->prepare("SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM blogeintraege");
+  if ($sql->execute()) {
+    $sql->bind_result($eanfang, $eende);
+    if ($sql->fetch()) {
+      if (!is_null($eanfang)) {
+        $jahranfang = min(date('Y', $eanfang), $jahranfang);
+        $jahrende = max(date('Y', $eende), $jahrende);
         $jahre = true;
       }
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   $spalten = 7;
   $aktionen = false;

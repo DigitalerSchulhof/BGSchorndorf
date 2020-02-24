@@ -59,12 +59,12 @@ function cms_gruppenblogeintraege_ausgeben($dbs, $gruppe, $gruppenid, $limit, $a
 		$sql->bind_param("iii", $gruppenid, $gruppenid, $limit);
 		// Blogausgabe erzeugen
 		if ($sql->execute()) {	// Safe weil keine Eingabe
-			$sql->bind_result($bid, $bbezeichnung, $bvorschaubild, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart);
+			$sql->bind_result($bid, $bbezeichnung, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart);
 			while ($sql->fetch()) {
 				$B = array();
 				$B['id'] = $bid;
 				$B['bezeichnung'] = $bbezeichnung;
-				$B['autor'] = $bvorschaubild;
+				$B['autor'] = $bautor;
 				$B['datum'] = $bdatum;
 				$B['genehmigt'] = $bgenehmigt;
 				$B['aktiv'] = $baktiv;
@@ -141,12 +141,12 @@ function cms_gruppenblogeintraege_monat_ausgeben($dbs, $gruppe, $gruppenid, $art
 		$sql->bind_param("iiiiii", $gruppenid, $beginn, $ende, $gruppenid, $beginn, $ende);
 		// Blogausgabe erzeugen
 		if ($sql->execute()) {
-			$sql->bind_result($bid, $bbezeichnung, $bvorschaubild, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart);
+			$sql->bind_result($bid, $bbezeichnung, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart);
 			while ($sql->fetch()) {
 				$B = array();
 				$B['id'] = $bid;
 				$B['bezeichnung'] = $bbezeichnung;
-				$B['autor'] = $bvorschaubild;
+				$B['autor'] = $bautor;
 				$B['datum'] = $bdatum;
 				$B['genehmigt'] = $bgenehmigt;
 				$B['aktiv'] = $baktiv;

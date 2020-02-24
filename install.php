@@ -1,8 +1,8 @@
 <?php
 $dateienplaetten = false;
-$rechteplaetten = false;
+$rechteplaetten = true;
 $internediensteplaetten = false;
-$einstellungenplaetten = false;
+$einstellungenplaetten = true;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;
@@ -576,8 +576,6 @@ if ($rechteplaetten) {
 		$sql->execute(); $id++;
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auffälliges verwalten', '$CMS_SCHLUESSEL'))");
 		$sql->execute(); $id++;
-		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Emoticons verwalten', '$CMS_SCHLUESSEL'))");
-		$sql->execute(); $id++;
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auszeichnungen anlegen', '$CMS_SCHLUESSEL'))");
 		$sql->execute(); $id++;
 		$sql = $dbs->prepare("INSERT INTO rechte (id, kategorie, bezeichnung) VALUES ($id, AES_ENCRYPT('Website', '$CMS_SCHLUESSEL'), AES_ENCRYPT('Auszeichnungen bearbeiten', '$CMS_SCHLUESSEL'))");
@@ -636,6 +634,20 @@ if ($einstellungenplaetten) {
 	include_once("php/schulhof/funktionen/config.php");
 
 	$dbs = cms_verbinden('s');
+
+	$sql = $dbs->prepare("DELETE FROM schulanmeldung");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (0, AES_ENCRYPT('Anmeldung Eintrittsalter', '$CMS_SCHLUESSEL'), AES_ENCRYPT('10', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (1, AES_ENCRYPT('Anmeldung Einschulungsalter', '$CMS_SCHLUESSEL'), AES_ENCRYPT('6', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (2, AES_ENCRYPT('Anmeldung Klassenstufe', '$CMS_SCHLUESSEL'), AES_ENCRYPT('4', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Anmeldung Einleitung', '$CMS_SCHLUESSEL'), AES_ENCRYPT('', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+	$sql = $dbs->prepare("INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Anmeldung aktiv', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute();
+
 	$id = 0;
 	$sql = $dbs->prepare("DELETE FROM allgemeineeinstellungen");
 	$sql->execute();

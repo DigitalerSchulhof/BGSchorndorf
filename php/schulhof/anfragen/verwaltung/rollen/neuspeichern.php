@@ -19,8 +19,9 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.erstellen")) {
 
 	// Pflichteingaben prüfen
 	if (strlen($bezeichnung) == 0) {$fehler = true;}
-	if(!count($rechte) || $rechte[0] == "")
+	if(!count($rechte) || $rechte[0] == "") {
 		die("ERFOLG");
+	}
 
 	$dbs = cms_verbinden('s');
 

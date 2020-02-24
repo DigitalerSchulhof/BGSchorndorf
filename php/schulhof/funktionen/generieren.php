@@ -477,9 +477,11 @@ function cms_sonderrollen_generieren() {
 	global $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERART;
 	$code = "";
 	$dbs = cms_verbinden('s');
-  if ($CMS_BENUTZERART == 'l') {
+  if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
-
+  }
+  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li>";
   }
 	if (cms_r("schulhof.technik.geräte.verwalten")) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
@@ -718,75 +720,6 @@ function cms_generiere_idlisteanzahl($idliste) {
 
 function cms_ladeicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
 
-/**
-* Gültige SQL-Query braucht $tabelle, sonst kommt nur der select Teil
-**/
-function cms_sql_mit_aes($felder, $tabelle = "", $bedingung = "") {
-  global $CMS_SCHLUESSEL;
-  $sql = "";
-  if(strlen($tabelle))
-    $sql .= "SELECT ";
-
-  foreach($felder as $f)
-    $sql .= "AES_DECRYPT($f, '$CMS_SCHLUESSEL') as $f, ";
-
-  $sql = substr($sql, 0, -2);
-  if(strlen($tabelle)) {
-    $sql .= " FROM $tabelle";
-    if(strlen($bedingung))
-      $sql .= " WHERE $bedingung";
-  }
-  return $sql;
-}
-
-// Alt - Aktuell - Neu
-function cms_sql_aan($wert, $aes = false) {
-  global $CMS_SCHLUESSEL;
-  $r = "";
-  if(is_array($wert))
-    foreach($wert as $i => $w)
-      $r .= cms_sql_aan($w, $aes);
-  else {
-    if($aes)
-      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    else
-      $f = "?";
-    $r = $wert."alt = $f, ".$wert."aktuell = $f, ".$wert."neu = $f,";
-  }
-  return $r;
-}
-//  Aktuell - Neu
-function cms_sql_an($wert, $aes = false) {
-  global $CMS_SCHLUESSEL;
-  $r = "";
-  if(is_array($wert))
-    foreach($wert as $i => $w)
-      $r .= cms_sql_an($w, $aes);
-  else {
-    if($aes)
-      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    else
-      $f = "?";
-    $r = $wert."aktuell = $f, ".$wert."neu = $f,";
-  }
-  return $r;
-}
-
-function cms_sql_set_fragezeichen($wert, $aes = false) {
-  global $CMS_SCHLUESSEL;
-  $r = "";
-  if(is_array($wert))
-    foreach($wert as $i => $w)
-      $r .= cms_sql_set_fragezeichen($w, $aes);
-  else {
-    if($aes)
-      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    else
-      $f = "?";
-    $r = $wert." = $f, ";
-  }
-  return $r;
-}
 
 function cms_generiere_nachladen($id, $script) {
   return "<div id=\"$id\" class=\"cms_gesichert\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Inhalte werden geladen...<script>$script</script></p></div></div>";
