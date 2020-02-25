@@ -18,7 +18,7 @@ if (isset($_POST['endeJ'])) {$endeJ = $_POST['endeJ'];} else {echo "FEHLER7"; ex
 if (isset($_SESSION['ZEITRAUMKLONEN'])) {$STAMMZEITRAUM = $_SESSION['ZEITRAUMKLONEN'];} else {echo "FEHLER8";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
 	$fehler = false;

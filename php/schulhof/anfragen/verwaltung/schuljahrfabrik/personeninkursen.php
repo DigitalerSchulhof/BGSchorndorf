@@ -12,7 +12,7 @@ if (isset($_POST['kurse'])) {$kurse = $_POST['kurse'];} else {echo "FEHLER";exit
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 $dbs = cms_verbinden('s');
 

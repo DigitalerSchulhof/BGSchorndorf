@@ -20,7 +20,7 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 $zugriff = false;
 $fehler = false;

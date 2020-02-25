@@ -20,7 +20,7 @@ if (isset($_POST['blockierungids'])) {$blockierungids = $_POST['blockierungids']
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 $stundenplan = cms_texttrafo_e_db($stundenplan);
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.räume.anlegen")) {
 	$fehler = false;

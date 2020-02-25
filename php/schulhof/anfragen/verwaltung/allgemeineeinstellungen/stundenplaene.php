@@ -22,7 +22,7 @@ if (isset($_POST['buchungsendeM'])) {$buchungsendeM = $_POST['buchungsendeM'];} 
 if (isset($_POST['vplanskennung'])) {$vplanskennung = $_POST['vplanskennung'];} else {echo "FEHLER";exit;}
 if (isset($_POST['vplanlkennung'])) {$vplanlkennung = $_POST['vplanlkennung'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;

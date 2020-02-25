@@ -9,7 +9,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.löschen")) {
 	$fehler = false;

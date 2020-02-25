@@ -8,7 +8,7 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 postLesen("id");
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.löschen")) {
   $dbs = cms_verbinden("s");

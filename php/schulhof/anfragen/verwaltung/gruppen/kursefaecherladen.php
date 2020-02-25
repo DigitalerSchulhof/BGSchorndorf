@@ -11,7 +11,7 @@ if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "
 if ((!cms_check_ganzzahl($schuljahr,0)) && ($schuljahr != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.anlegen")) {
 

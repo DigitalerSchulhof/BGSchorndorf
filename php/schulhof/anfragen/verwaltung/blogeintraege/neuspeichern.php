@@ -37,7 +37,7 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {

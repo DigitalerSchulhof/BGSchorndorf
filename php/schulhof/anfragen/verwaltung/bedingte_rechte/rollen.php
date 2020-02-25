@@ -12,7 +12,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen("bedingungen");
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bedingt")) {
   if(($bedingungen = json_decode($bedingungen, true)) === null)

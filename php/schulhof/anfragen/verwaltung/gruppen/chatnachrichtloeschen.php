@@ -12,7 +12,7 @@ postLesen(array("gruppe", "id"));
 if(!cms_valide_gruppe($gruppe))
   die("FEHLER");
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
   $gk = cms_textzudb($gruppe);

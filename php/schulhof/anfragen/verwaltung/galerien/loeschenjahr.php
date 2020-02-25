@@ -9,7 +9,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 $zugriff = cms_r("artikel.galerien.löschen");
 
 if (cms_angemeldet() && $zugriff) {

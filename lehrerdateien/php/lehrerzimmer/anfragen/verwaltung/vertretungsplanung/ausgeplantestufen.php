@@ -16,10 +16,10 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/meldungen.php");
 include_once("../../lehrerzimmer/funktionen/generieren.php");
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-$zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'] || $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+$zugriff = cms_r("lehrerzimmer.vertretungsplan.*");
 
 if ($angemeldet && $zugriff) {
   $code = "";
@@ -93,7 +93,7 @@ if ($angemeldet && $zugriff) {
 
     $auscode = "";
     $rueckabwicklung = "'n'";
-    if ($CMS_RECHTE['Planung']['Stundenplanung durchführen']) {$rueckabwicklung = "'j'";}
+    if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {$rueckabwicklung = "'j'";}
     foreach ($AUSPLANUNGEN AS $a) {
       if ((date('d', $a['von']) == date('d', $a['bis'])) && (date('m', $a['von']) == date('m', $a['bis'])) &&
           (date('Y', $a['von']) == date('Y', $a['bis']))) {

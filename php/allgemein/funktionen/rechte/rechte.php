@@ -97,6 +97,8 @@
   function cms_hat_recht($rechteCode) {
     global $CMS_SCHLUESSEL, $cms_nutzerrechte, $cms_bedingte_nutzerrechte, $cms_bedingte_rollenrechte, $cms_allerechte;
 
+    cms_rechte_laden();
+
     $rc = str_split($rechteCode);
 
     $aktuellesFeld = "";

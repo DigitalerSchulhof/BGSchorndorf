@@ -15,7 +15,7 @@ if (isset($_POST['id'])) 	{$id = $_POST['id'];} 		else {echo "FEHLER";exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} 	else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} 	                    else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if (($art != 'n') && ($art != 'e')) {echo "FEHLER";exit;}

@@ -12,7 +12,7 @@ postLesen("bezeichnung", "rechte");
 if (isset($_SESSION["ROLLEBEARBEITEN"])) {$id = $_SESSION["ROLLEBEARBEITEN"];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 

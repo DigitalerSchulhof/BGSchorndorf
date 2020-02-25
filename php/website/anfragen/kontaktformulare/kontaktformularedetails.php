@@ -13,7 +13,7 @@ postLesen(array("id", "spalte", "position", "modus", "zusatz"));
 
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 

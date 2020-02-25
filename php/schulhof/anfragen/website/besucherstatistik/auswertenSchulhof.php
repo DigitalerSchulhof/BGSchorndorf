@@ -13,7 +13,7 @@ session_start();
 if (isset($_POST['start'])) {$start = $_POST['start'];} else {echo "FEHLER";exit;}
 if (isset($_POST['ende'])) {$ende = $_POST['ende'];} else {echo "FEHLER";exit;}
 if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {$modus = '';}
-cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 

@@ -14,7 +14,7 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-cms_rechte_laden();
+
 
 if ($modus == "1") {
 	$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");

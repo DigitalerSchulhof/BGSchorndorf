@@ -18,9 +18,8 @@ include_once("../../lehrerzimmer/funktionen/meldungen.php");
 
 $art = "";
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['lehrer'] || $CMS_RECHTE['verwaltung'];
+$zugriff = cms_r("technik.server.netze");
 
 if ($angemeldet && $zugriff) {
 	$code = "";

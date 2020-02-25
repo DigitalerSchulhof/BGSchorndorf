@@ -19,7 +19,7 @@ if (isset($_POST['styles'])) {$styles = $_POST['styles'];} else {echo "FEHLER"; 
 if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['zuordnung'])) {$zuordnung = $_POST['zuordnung'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.seiten.anlegen")) {
 	$fehler = false;

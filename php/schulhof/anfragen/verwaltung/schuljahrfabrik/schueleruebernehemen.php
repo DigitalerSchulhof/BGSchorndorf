@@ -14,7 +14,7 @@ if (isset($_POST['bestand'])) {$bestand = $_POST['bestand'];} else {echo "FEHLER
 if (isset($_POST['feldid'])) {$feldid = $_POST['feldid'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 $fehler = false;
 

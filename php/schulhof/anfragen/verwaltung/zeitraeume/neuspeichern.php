@@ -29,7 +29,7 @@ if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenid
 if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {$SCHULJAHR = $_SESSION['ZEITRAUMSCHULJAHR'];} else {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
 	$fehler = false;

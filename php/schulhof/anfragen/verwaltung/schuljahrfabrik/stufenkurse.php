@@ -15,7 +15,7 @@ if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";e
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (!cms_check_ganzzahl($stufe,0) || !cms_check_idfeld($altestufen) || !cms_check_idfeld($faecher) || (($erster != 'n') && ($erster != 'j'))) {echo "FEHLER";exit;}
 

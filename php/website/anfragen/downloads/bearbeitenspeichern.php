@@ -18,7 +18,7 @@ if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSIT
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.download.bearbeiten")) {
 	$fehler = false;

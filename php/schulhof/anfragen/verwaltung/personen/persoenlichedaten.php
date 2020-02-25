@@ -15,7 +15,7 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER"; exi
 if (!cms_check_toggle($modus)) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-cms_rechte_laden();
+
 
 if ($modus == "1") {
 	$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");

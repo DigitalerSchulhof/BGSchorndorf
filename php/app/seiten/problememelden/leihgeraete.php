@@ -3,7 +3,7 @@ $leihgeraetebezeichnung = cms_linkzutext($CMS_URL[3]);
 
 $code = "<h2>Probleme mit Leihgeräten »".$leihgeraetebezeichnung."« melden</h2>";
 
-if ($CMS_RECHTE['Technik']['Geräte-Probleme melden'] && $CMS_RECHTE['Planung']['Leihgeräte sehen']) {
+if (cms_r("schulhof.technik.geräte.probleme && schulhof.organisation.leihgeräte.sehen")) {
   $fehler = false;
 
   // RAUM LADEN

@@ -21,7 +21,7 @@ if (isset($_SESSION['SEITENBEARBEITENZUORDNUNG'])) {$zuordnung = $_SESSION['SEIT
 else {if (is_null($_SESSION['SEITENBEARBEITENZUORDNUNG'])) {$zuordnung = '-';} else {echo "FEHLER"; exit;}}
 if (isset($_SESSION['SEITENBEARBEITENID'])) {$id = $_SESSION['SEITENBEARBEITENID'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.seiten.bearbeiten")) {
 	$fehler = false;

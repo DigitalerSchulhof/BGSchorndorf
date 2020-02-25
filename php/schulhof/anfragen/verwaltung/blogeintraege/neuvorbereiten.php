@@ -7,7 +7,7 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-cms_rechte_laden();
+
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 
 if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER"; exit;}

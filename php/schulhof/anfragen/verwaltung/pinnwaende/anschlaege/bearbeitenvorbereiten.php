@@ -15,7 +15,7 @@ if (!cms_check_titel($pinnwand))          {echo "FEHLER"; exit;}
 
 // Pinnwand laden
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 
 // Prüfen, ob der Anschlag zur ausführenden Person gehört
 $zugehoerig = false;

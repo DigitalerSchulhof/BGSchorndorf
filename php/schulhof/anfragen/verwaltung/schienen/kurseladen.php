@@ -17,7 +17,7 @@ if (!cms_check_ganzzahl($fach, 0) && ($fach != '-')) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($stufe, 0) && ($stufe != '-')) {echo "FEHLER";exit;}
 if (!cms_check_idfeld($gewaehlt)) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.[|anlegen,bearbeiten]")) {
 	$code = "";

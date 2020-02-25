@@ -6,7 +6,7 @@ include_once("../../schulhof/funktionen/check.php");
 
 session_start();
 
-cms_rechte_laden();
+
 if (isset($_POST['zuordnen'])) {$zuordnen = $_POST['zuordnen'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITRAUMSTUNDENPLANIMPORT'];} else {echo "FEHLER"; exit;}
 if (!cms_check_toggle($zuordnen)) {echo "FEHLER"; exit;}

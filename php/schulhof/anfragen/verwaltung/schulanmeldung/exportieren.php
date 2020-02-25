@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['gruppe'])) {$gruppe = $_POST['gruppe'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.exportieren")) {
 	$fehler = false;

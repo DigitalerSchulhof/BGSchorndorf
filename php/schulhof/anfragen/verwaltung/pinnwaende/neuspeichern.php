@@ -23,7 +23,7 @@ if (isset($_POST['schreibenx'])) {$schreibenx = $_POST['schreibenx'];} else {ech
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 $beschreibung = cms_texttrafo_e_db($beschreibung);
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.information.pinnwände.anlegen")) {
 	$fehler = false;

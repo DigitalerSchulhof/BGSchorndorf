@@ -30,7 +30,7 @@ if (isset($_POST['datenschutz'])) {$datenschutz = $_POST['datenschutz'];} else {
 if (isset($_POST['hausmeister'])) {$hausmeister = $_POST['hausmeister'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION["SCHULJAHREBEARBEITEN"])) {$id = $_SESSION["SCHULJAHREBEARBEITEN"];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 $dbs = cms_verbinden('s');
 

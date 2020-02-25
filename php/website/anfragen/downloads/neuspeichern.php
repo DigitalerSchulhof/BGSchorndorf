@@ -17,7 +17,7 @@ if (isset($_POST['dateiname'])) {$dateiname = $_POST['dateiname'];} else {echo "
 if (isset($_POST['dateigroesse'])) {$dateigroesse = $_POST['dateigroesse'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if(!cms_check_ganzzahl($spalte))
 	die("FEHLER");

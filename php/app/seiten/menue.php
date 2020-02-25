@@ -1,6 +1,6 @@
 <?php
 function cms_appmenue() {
-	global $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_IMLN, $CMS_EINSTELLUNGEN;
+	global $CMS_BENUTZERART, $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_IMLN, $CMS_EINSTELLUNGEN;
 	$menue = "";
 
 	if (($CMS_BENUTZERART == 's') || ($CMS_BENUTZERART == 'l')) {
@@ -76,31 +76,31 @@ function cms_appmenue() {
 	$menue .= "</span></li>";
 
 
-	/*if ($CMS_RECHTE['Planung']['Buchungen vornehmen']) {
+	/*if (cms_r("schulhof.organisation.buchungen.[|räume,leihgeräte].vornehmen")) {
 		$menue .= "<li><a class=\"cms_uebersicht_app_buchen\" href=\"App/Aufgaben/Buchen\">";
 			$menue .= "<h3>Buchen</h3>";
 			$menue .= "<p>Leihgeräte oder Räume buchen</p>";
 		$menue .= "</a></li>";
 	}*/
-	if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
+	if (cms_r("schulhof.technik.geräte.probleme")) {
 		$menue .= "<li><a class=\"cms_uebersicht_app_geraetemelden\" href=\"App/Probleme_melden/Geräte\">";
 			$menue .= "<h3>Geräte melden</h3>";
 			$menue .= "<p>Defekte Geräte den zuständigen Stellen melden</p>";
 		$menue .= "</a></li>";
 	}/*
-	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
+	if (cms_r("schulhof.technik.geräte.verwalten")) {
 		$menue .= "<li><a class=\"cms_uebersicht_app_geraeteverwalten\" href=\"App/Aufgaben/Geräte_verwalten\">";
 			$menue .= "<h3>Geräte verwalten</h3>";
 			$menue .= "<p>Gerätezustände ändern oder Aufgaben deligieren</p>";
 		$menue .= "</a></li>";
 	}*/
-	if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
+	if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
 		$menue .= "<li><a class=\"cms_uebersicht_app_hausmeisterauftraege\" href=\"App/Probleme_melden/Hausmeisteraufträge\">";
 			$menue .= "<h3>Hausmeisteraufträge erteilen</h3>";
 			$menue .= "<p>Hausmeisteraufträge erteilen</p>";
 		$menue .= "</a></li>";
 	}/*
-	if ($CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+	if (cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
 		$menue .= "<li><a class=\"cms_uebersicht_app_hausmeister\" href=\"App/Aufgaben/Hausmeisteraufträge\">";
 			$menue .= "<h3>Hausmeisteraufträge markieren</h3>";
 			$menue .= "<p>Hausmeisteraufträge markieren</p>";
@@ -108,7 +108,7 @@ function cms_appmenue() {
 	}*/
 
 
-	if (($CMS_RECHTE['Tagebücher']['Notfallzustand']) && ($CMS_IMLN)) {
+	if ((cms_r("lehrerzimmer.tagebuch.notfallzustand")) && ($CMS_IMLN)) {
 		if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand'] == '0') {
 			$menue .= "<li><a class=\"cms_uebersicht_app_notfallzustand\" href=\"javascript:cms_notfallzustand_anzeigen('1', 'app')\">";
 				$menue .= "<h3>Notfallzustand ausrufen</h3>";

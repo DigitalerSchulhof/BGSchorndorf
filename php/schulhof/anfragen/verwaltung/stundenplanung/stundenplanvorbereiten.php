@@ -27,7 +27,7 @@ if ($art == 'm') {
 	}
 }
 else {
-	cms_rechte_laden();
+	
 	if ($art == 'p') {
 		if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.daten")) {
 			$_SESSION['PERSONSTUNDENPLANID'] = $id;

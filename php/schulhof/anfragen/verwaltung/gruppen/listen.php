@@ -13,7 +13,7 @@ if (isset($_POST['name'])) {$art = $_POST['name'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 $loeschen 	= cms_r("schulhof.gruppen.$art.löschen");
 $bearbeiten = cms_r("schulhof.gruppen.$art.bearbeiten");

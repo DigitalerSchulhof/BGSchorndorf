@@ -16,11 +16,10 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/meldungen.php");
 include_once("../../lehrerzimmer/funktionen/generieren.php");
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-//$zugriff = $CMS_RECHTE['Tagebücher']['Notfallzustand'];
-$zugriff = true;
+$zugriff = cms_r("lehrerzimmer.tagebuch.notfallzustand");
 
 if ($angemeldet && $zugriff) {
   $dbs = cms_verbinden('s');

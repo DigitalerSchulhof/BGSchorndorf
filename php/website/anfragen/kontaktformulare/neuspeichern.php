@@ -18,7 +18,7 @@ foreach ($beschreibungen as $i => $b) {
 	array_push($bes, urldecode(base64_decode($b)));
 }
 $beschreibungen = $bes;
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.anlegen")) {
 	$fehler = false;

@@ -11,7 +11,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {$jahr = '';}
 
-cms_rechte_laden();
+
 
 $bearbeiten = cms_r("schulhof.organisation.ferien.bearbeiten");
 $loeschen   = cms_r("schulhof.organisation.ferien.löschen");

@@ -54,7 +54,7 @@ foreach ($gruppen as $g) {
 if (!isset($_POST['sichtbardownload'])) {echo "FEHLER";exit;}
 postLesen("nachrichtloeschen");
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;

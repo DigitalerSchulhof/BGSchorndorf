@@ -28,7 +28,7 @@ if (isset($_POST['vertretungsplanung'])) {$vertretungsplanung = $_POST['vertretu
 if (isset($_POST['datenschutz'])) {$datenschutz = $_POST['datenschutz'];} else {echo "FEHLER";exit;}
 if (isset($_POST['hausmeister'])) {$hausmeister = $_POST['hausmeister'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 $dbs = cms_verbinden('s');
 

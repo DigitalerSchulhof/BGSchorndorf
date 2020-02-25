@@ -23,7 +23,7 @@ $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 if (!preg_match("/^dateien\/website\/([\_\-a-zA-Z0-9]+\/)*[\_\-a-zA-Z0-9]+\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $bild)) {echo "FEHLER"; exit;}
 if (!preg_match("/^(https?:\/\/)?[a-zA-ZÄÖÜäöü]+[\_\-a-zA-ZÄÖÜäöü\.\/]*$/", $link)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.auszeichnungen.anlegen")) {
 	$fehler = false;

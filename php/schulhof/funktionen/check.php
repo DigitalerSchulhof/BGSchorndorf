@@ -184,16 +184,19 @@ function cms_angemeldet () {
 }
 
 include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");
-
+$geladen = false;
 function cms_rechte_laden($aktiverbenutzer = '-', $dynamisch = true) {
-	global $CMS_SCHLUESSEL;
-	cms_allerechte_laden();
+	global $CMS_SCHLUESSEL, $geladen;
+	if(!$geladen) {
+		cms_allerechte_laden();
 
-	cms_rechte_laden_nutzer($aktiverbenutzer);
-	cms_rechte_laden_rollen($aktiverbenutzer);
-	if($dynamisch) {
-		cms_rechte_laden_bedingte_rechte();
-		cms_rechte_laden_bedingte_rollen();
+		cms_rechte_laden_nutzer($aktiverbenutzer);
+		cms_rechte_laden_rollen($aktiverbenutzer);
+		if($dynamisch) {
+			cms_rechte_laden_bedingte_rechte();
+			cms_rechte_laden_bedingte_rollen();
+		}
+		$geladen = true;
 	}
 }
 

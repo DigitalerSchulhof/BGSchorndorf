@@ -14,7 +14,7 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $CMS_BENUTZERID);
 
 $zugriff = $CMS_GRUPPENRECHTE['bearbeiten'] || cms_r("schulhof.gruppen.$art.bearbeiten");

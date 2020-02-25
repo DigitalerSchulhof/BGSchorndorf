@@ -23,7 +23,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (($modus != '0') && ($modus != '1')) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-cms_rechte_laden();
+
 
 if ($modus == "1") {
 	$zugriff = cms_r("schulhof.verwaltung.nutzerkonten.einstellungen.ändern");

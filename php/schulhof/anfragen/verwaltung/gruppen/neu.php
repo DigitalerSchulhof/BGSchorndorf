@@ -54,7 +54,7 @@ if ($art == 'Kurse') {
 }
 
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $zugriff = cms_r("schulhof.gruppen.$art.anlegen");

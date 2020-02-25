@@ -12,5 +12,5 @@ $CMS_DBL_USER = "root";
 $CMS_DBL_PASS = "";
 $CMS_DBL_DB = "cms_lehrerzimmer";
 
-$CMS_SH_SERVER = "https://localhost/BGSchorndorf";
+$CMS_SH_SERVER = "https://localhost/lehrerdateien";
 ?>

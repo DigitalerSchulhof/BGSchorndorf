@@ -15,7 +15,7 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER"; exi
 if (isset($_POST['zusatz'])) {$zusatz = $_POST['zusatz'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 $angemeldet = cms_angemeldet();
 
 if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}

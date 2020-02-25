@@ -9,7 +9,7 @@ session_start();
 
 if (isset($_POST['seite'])) {$seite = $_POST['seite'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.freigeben")) {
 	$fehler = false;

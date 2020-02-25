@@ -12,7 +12,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen("bedingung");
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
   // Eingabe überprüfen

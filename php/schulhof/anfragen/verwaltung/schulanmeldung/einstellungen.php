@@ -30,7 +30,7 @@ if (isset($_POST['einschulung'])) {$einschulung = cms_texttrafo_e_db($_POST['ein
 if (isset($_POST['klasse'])) {$klasse = cms_texttrafo_e_db($_POST['klasse']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['einleitung'])) {$einleitung = cms_texttrafo_e_db($_POST['einleitung']);} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.vorbereiten")) {
 	$fehler = false;

@@ -11,7 +11,7 @@ if (isset($_POST['klasseninfo'])) {$klasseninfo = $_POST['klasseninfo'];} else {
 if (isset($_POST['stufeninfo'])) {$stufeninfo = $_POST['stufeninfo'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION["VERANTWORTLICHKEITENSCHULJAHR"])) {$SCHULJAHR = $_SESSION["VERANTWORTLICHKEITENSCHULJAHR"];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 $dbs = cms_verbinden('s');
 

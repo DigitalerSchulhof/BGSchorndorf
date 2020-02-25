@@ -124,7 +124,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		cms_rechte_laden();
+
 	}
 
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
@@ -538,6 +538,7 @@
 
 					$code .= "</span></div></div>";
 					echo $code;
+					$code = "";
 				}
 			}
 

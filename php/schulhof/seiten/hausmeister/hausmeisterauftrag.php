@@ -1,7 +1,7 @@
 <?php
 function cms_neuerhausmeisterauftrag($dbs, $app = "nein") {
-  global $CMS_RECHTE, $CMS_SCHLUESEL;
-  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
+  global $CMS_SCHLUESEL;
+  if (cms_r("schuhof.technik.hausmeisteraufträge.erteilen")) {
     $spalten = 2;
     $auftraege = "";
     $beschreibung = "";

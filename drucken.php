@@ -37,7 +37,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		cms_rechte_laden();
+		
 	}
 
 	if (isset($_SESSION['IMLN'])) {

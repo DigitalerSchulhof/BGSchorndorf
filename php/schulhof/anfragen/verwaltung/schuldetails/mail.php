@@ -13,7 +13,7 @@ if (isset($_POST['benutzer'])) 		{$benutzer = $_POST['benutzer'];} 		else {echo 
 if (isset($_POST['passwort'])) 		{$passwort = $_POST['passwort'];} 		else {echo "FEHLER"; exit;}
 if (isset($_POST['smtpauth'])) 		{$smtpauth = $_POST['smtpauth'];} 		else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail")) {
 	$fehler = false;

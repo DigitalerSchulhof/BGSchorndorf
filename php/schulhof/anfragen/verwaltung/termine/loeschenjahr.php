@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 	$fehler = false;

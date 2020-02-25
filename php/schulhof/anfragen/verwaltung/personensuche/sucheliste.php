@@ -20,7 +20,7 @@ if (array_key_exists('BENUTZERSCHULJAHR', $_SESSION)) {$CMS_BENUTZERSCHULJAHR = 
 
 if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0) && ($CMS_BENUTZERSCHULJAHR !== null)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 

@@ -24,7 +24,7 @@ if (!cms_check_ganzzahl($monat, 1,12)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($jahr, 0)) {echo "FEHLER";exit;}
 if (($erster != 'j') && ($erster != 'n')) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 	$dbs = cms_verbinden('s');

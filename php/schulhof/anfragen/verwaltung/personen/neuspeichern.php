@@ -18,7 +18,7 @@ if (isset($_POST['lehrerkuerzel'])) {$lehrerkuerzel = $_POST['lehrerkuerzel'];} 
 if (isset($_POST['stundenplan'])) {$stundenplan = $_POST['stundenplan'];} else {echo "FEHLER";exit;}
 
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.anlegen")) {
 

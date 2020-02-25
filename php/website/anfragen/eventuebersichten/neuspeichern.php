@@ -17,7 +17,7 @@ if (isset($_POST['galerie'])) {$galerie = $_POST['galerie'];} else {echo "FEHLER
 if (isset($_POST['galerieanzahl'])) {$galerieanzahl = $_POST['galerieanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.anlegen")) {
 	$fehler = false;

@@ -16,7 +16,7 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {$modus = '';}
 if (isset($_POST['typ'])) {$typ = $_POST['typ'];} else {echo "FEHLER";exit;}
 if (isset($_POST['geloescht'])) {$geloescht = $_POST['geloescht'];} else {echo "FEHLER";exit;}
 if (isset($_POST['startseite'])) {$startseite = $_POST['startseite'];} else {echo "FEHLER";exit;}
-cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 

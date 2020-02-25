@@ -8,7 +8,7 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 	if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {

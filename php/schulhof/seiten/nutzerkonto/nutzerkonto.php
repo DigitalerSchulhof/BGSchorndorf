@@ -133,7 +133,7 @@ $aufgaben = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img
 $aufgaben .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Aufgaben</h4>";
 $aufgabenda = false;
 $sql = "";
-if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+if (cms_r("schulhof.techink.geräte.verwalten")) {
 	$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x");
   if ($sql->execute()) {
     $sql->bind_result($anzahldefekt);
@@ -154,7 +154,7 @@ if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
 	}
 	$sql->close();
 }
-if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl");
   if ($sql->execute()) {
 		$sql->bind_result($auf);
@@ -168,7 +168,7 @@ if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
   }
   $sql->close();
 }
-if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren]")) {
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'");
   if ($sql->execute()) {
 		$sql->bind_result($auf);
@@ -182,7 +182,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik
   }
   $sql->close();
 }
-if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status = 0");
   if ($sql->execute()) {
 		$sql->bind_result($auf);
@@ -196,7 +196,7 @@ if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
   }
   $sql->close();
 }
-if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] && $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
 	$sql = "";
   foreach($CMS_GRUPPEN as $i => $g) {
     $gk = cms_textzudb($g);
@@ -226,10 +226,10 @@ $genehmigungen = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"
 $genehmigungen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Genehmigungen</h4>";
 $genehmigungenda = false;
 $sql = "";
-if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
-if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
-	foreach ($CMS_GRUPPEN as $g) {
-		$gk = cms_textzudb($g);
+if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+foreach ($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	if(cms_r("schulhof.gruppen.$gk.artikel.blogeinträge.genehmigen")) {
 		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
 	}
 }
@@ -250,10 +250,10 @@ if (strlen($sql) > 0) {
 }
 
 $sql = "";
-if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
-if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
-	foreach ($CMS_GRUPPEN as $g) {
-		$gk = cms_textzudb($g);
+if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+foreach ($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	if(cms_r("schulhof.gruppen.$gk.artikel.termine.genehmigen")) {
 		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
 	}
 }
@@ -274,7 +274,7 @@ if (strlen($sql) > 0) {
 }
 
 $sql = "";
-if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+if (cms_r("artikel.genehmigen.galerien")) {
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0");
   if ($sql->execute()) {
     $sql->bind_result($gen);
@@ -418,7 +418,7 @@ else {
 <div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_4">
 	<div class="cms_reitermenue_i">
 		<?php
-		if ($CMS_RECHTE['Persönlich']['Notizen anlegen']) {
+		if (cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
 			$code = "";
 			$notizen = "";
 			$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");
@@ -483,7 +483,7 @@ echo $code;
 
 <?php
 $aktionen = "";
-if ($CMS_RECHTE['Tagebücher']['Notfallzustand']) {
+if (cms_r("lehrerzimmer.tagebuch.notfallzustand")) {
 	if ($CMS_IMLN) {
 		if ($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand'] == '0') {
 			$aktionen .= "<li><span class=\"cms_button_wichtig\" onclick=\"cms_notfallzustand_anzeigen('1')\">Notfallzustand ausrufen</span></li> ";
@@ -501,7 +501,7 @@ if ($CMS_RECHTE['Tagebücher']['Notfallzustand']) {
 		}
 	}
 }
-if ($CMS_RECHTE['Website']['Termine anlegen']) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.termine.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
 }
 if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) {

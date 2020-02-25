@@ -30,7 +30,7 @@ if (!$fehler) {
 
   $code = "";
   if ($gefunden)  {
-    include_once("../../lehrerzimmer/seiten/verwaltung/vertreungsplanung/vplaninternausgeben.php");
+    include_once("../../lehrerzimmer/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php");
     if ($zeit == 'h') {
       $code = cms_vertretungsplan_komplettansicht_heute($dbs, $dbl, $art);
     }

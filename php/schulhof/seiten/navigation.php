@@ -492,10 +492,10 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenerzeugen_vorbereiten($CMS_BENUTZERSCHULJAHR, '-')\">Stunden und Tagebücher erzeugen</a></li> ";
 	}
-	if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+	if (cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">Vertretungsplan</a></li> ";
 	}
-	if (cms_r("schulhof.planung.vertretungsplan.ausplanungen")) {
+	if (cms_r("lehrerzimmer.vertretungsplan.ausplanungen")) {
 		$VERplanung .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">Ausplanungen</a></li> ";
 	}
 	// ORGANISATION

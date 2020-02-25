@@ -17,7 +17,7 @@ if (!cms_check_ganzzahl($id,0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if (cms_angemeldet()) {

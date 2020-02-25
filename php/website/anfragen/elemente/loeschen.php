@@ -11,7 +11,7 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 $fehler = false;
 

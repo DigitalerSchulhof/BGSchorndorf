@@ -27,9 +27,9 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/meldungen.php");
 include_once("../../lehrerzimmer/funktionen/generieren.php");
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
-$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+$zugriff = cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen");
 
 if ($angemeldet && $zugriff) {
   $dbs = cms_verbinden('s');

@@ -72,7 +72,7 @@ if (isset($_POST['mail2'])) {$mail2 = cms_texttrafo_e_db($_POST['mail2']);} else
 if (isset($_SESSION['ANMELDUNG BEARBEITEN'])) {$schuelerid = $_SESSION['ANMELDUNG BEARBEITEN'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($schuelerid,0)) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.bearbeiten")) {
 	$fehler = false;

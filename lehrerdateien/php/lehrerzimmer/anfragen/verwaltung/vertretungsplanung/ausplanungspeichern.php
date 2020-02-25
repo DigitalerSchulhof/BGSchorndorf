@@ -46,10 +46,10 @@ if ((($art == 'k') || ($art == 's')) && ($grund != 'ex') && ($grund != 'sh') && 
     ($grund != 'k') && ($grund != 's')) {cms_anfrage_beenden();exit;}
 
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-$zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'] || $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+$zugriff = cms_r("lehrerzimmer.vertretungsplan.*");
 
 if ($angemeldet && $zugriff) {
   $code = "";

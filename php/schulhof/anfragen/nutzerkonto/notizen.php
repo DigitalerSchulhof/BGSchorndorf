@@ -11,7 +11,7 @@ if (isset($_POST['notizen'])) {$notizen = $_POST['notizen'];} else {echo "FEHLER
 if (isset($_SESSION['BENUTZERID'])) {$id = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
 	// PROFILDATEN UPDATEN

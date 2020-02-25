@@ -29,9 +29,9 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/check.php");
 
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Administration']['Schulnetze verwalten'];
+
+$zugriff = cms_r("technik.server.netze");
 
 if ($angemeldet && $zugriff) {
 	$fehler = false;

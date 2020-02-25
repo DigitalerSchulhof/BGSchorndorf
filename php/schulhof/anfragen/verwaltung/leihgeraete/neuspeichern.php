@@ -18,7 +18,7 @@ if (isset($_POST['blockierunganzahl'])) {$blockierunganzahl = $_POST['blockierun
 if (isset($_POST['blockierungids'])) {$blockierungids = $_POST['blockierungids'];} else {echo "FEHLER"; exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.anlegen")) {
 	$fehler = false;

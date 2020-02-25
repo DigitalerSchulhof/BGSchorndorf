@@ -14,7 +14,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen(array("text", "id"));
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.information.newsletter.schreiben")) {
 	$dbs = cms_verbinden('s');

@@ -35,7 +35,7 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER";exit;}
 
 $gk = cms_textzudb($gruppe);
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');

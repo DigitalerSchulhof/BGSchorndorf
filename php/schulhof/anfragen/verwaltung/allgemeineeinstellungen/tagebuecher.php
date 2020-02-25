@@ -14,8 +14,8 @@ if (isset($_POST['hausaufgaben'])) {$hausaufgaben = $_POST['hausaufgaben'];} els
 if (isset($_POST['entschuldigungen'])) {$entschuldigungen = $_POST['entschuldigungen'];} else {echo "FEHLER";exit;}
 if (isset($_POST['mindestabwesenheit'])) {$mindestabwesenheit = $_POST['mindestabwesenheit'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
+
+$zugriff = cms_r("schulhof.verwaltung.einstellungen");
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

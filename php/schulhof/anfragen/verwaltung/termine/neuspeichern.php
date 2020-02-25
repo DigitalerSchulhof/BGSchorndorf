@@ -45,7 +45,7 @@ if (isset($_POST['inhalt'])) 					{$text = $_POST['inhalt'];} 										else {ec
 if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {

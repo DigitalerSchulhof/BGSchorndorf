@@ -25,8 +25,8 @@ include_once("../../lehrerzimmer/funktionen/generieren.php");
 $dbs = cms_verbinden('s');
 
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'];
+
+$zugriff = cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung");
 
 if ($angemeldet && $zugriff) {
   $code = "";

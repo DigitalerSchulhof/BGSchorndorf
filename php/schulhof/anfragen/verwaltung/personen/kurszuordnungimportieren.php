@@ -22,8 +22,8 @@ if (!cms_check_ganzzahl($stufe, 0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($sj, 0)) {echo "FEHLER"; exit;}
 if (($idart != 'zweit') && ($idart != 'dritt') && ($idart != 'viert') && ($idart != 'sh')) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Personen den Kursen zuordnen'];
+
+$zugriff = cms_r("schulhof.verwaltung.personen.zuordnen.kurse");
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

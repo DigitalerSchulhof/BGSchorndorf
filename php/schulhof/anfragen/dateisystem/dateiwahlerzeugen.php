@@ -23,7 +23,7 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
 $angemeldet = cms_angemeldet();
-cms_rechte_laden();
+
 
 $zugriff = false;
 $fehler = false;

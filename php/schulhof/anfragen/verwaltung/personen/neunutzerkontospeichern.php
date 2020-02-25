@@ -15,7 +15,7 @@ if (isset($_POST['email'])) {$mail = $_POST['email'];} else {echo "FEHLER"; exit
 if (isset($_SESSION['PERSONENDETAILS'])) {$id = $_SESSION['PERSONENDETAILS'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id,0)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 

@@ -38,7 +38,7 @@ if ($beginn-$ende >= 0) {echo "FEHLER"; exit;}
 
 // Pinnwand laden
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 
 // Prüfen, ob der Anschlag zur ausführenden Person gehört
 $zugehoerig = false;

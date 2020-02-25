@@ -23,7 +23,7 @@ $CMS_HOSTINGPARTNEREX = "Strato AG";
 $CMS_HOSTINGPARTNERIN = "Strato AG";
 
 $CMS_WEBMASTER = "webmaster@digitaler-schulhof.de";
-$CMS_DOMAIN = "http://localhost/BGSchorndorf";
+$CMS_DOMAIN = "http://localhost";
 
 $CMS_MAILABSENDER = "nichtantworten@digitaler-schulhof.de";
 $CMS_MAILHOST = "smtp.strato.de";
@@ -40,10 +40,10 @@ $CMS_DBP_USER = "root";
 $CMS_DBP_PASS = "";
 $CMS_DBP_DB = "cms_personen";
 
-$CMS_BASE = "http://localhost/BGSchorndorf/";
+$CMS_BASE = "http://localhost";
 
 $CMS_LN_ZB_VPN = 1;
-$CMS_LN_DA = "http://localhost/BGSchorndorf/lehrerdateien/";
+$CMS_LN_DA = "http://localhost/lehrerdateien/";
 
 $CMS_DBV_HOST = "localhost";
 $CMS_DBV_USER = "root";

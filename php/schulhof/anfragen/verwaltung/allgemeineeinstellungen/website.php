@@ -30,7 +30,7 @@ if (isset($_POST['fehlermeldungangemeldet'])) {$fehlermeldungangemeldet = $_POST
 if (isset($_POST['feedbackaktiv'])) {$feedbackaktiv = $_POST['feedbackaktiv'];} else {echo "FEHLER";exit;}
 if (isset($_POST['feedbackangemeldet'])) {$feedbackangemeldet = $_POST['feedbackangemeldet'];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;

@@ -20,7 +20,7 @@ if (isset($_POST['f_ebenenzusatze'])) {$f_ebenenzusatze = $_POST['f_ebenenzusatz
 if (isset($_POST['f_ebenenzusatzs'])) {$f_ebenenzusatzs = $_POST['f_ebenenzusatzs'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['f_tiefe'])) {$f_tiefe = $_POST['f_tiefe'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.navigation")) {
 	$fehler = false;

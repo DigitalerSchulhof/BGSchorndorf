@@ -3,7 +3,7 @@ $raumbez = cms_linkzutext($CMS_URL[3]);
 
 $code = "<h2>Probleme mit Geräten in Raum »".$raumbez."« melden</h2>";
 
-if ($CMS_RECHTE['Technik']['Geräte-Probleme melden'] && $CMS_RECHTE['Planung']['Räume sehen']) {
+if (cms_r("schulhof.technik.geräte.probleme && schulhof.organisation.räume.sehen")) {
   $fehler = false;
 
   // RAUM LADEN

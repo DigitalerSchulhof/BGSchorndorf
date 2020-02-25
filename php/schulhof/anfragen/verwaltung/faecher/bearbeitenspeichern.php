@@ -15,7 +15,7 @@ if (isset($_POST['icon'])) {$icon = $_POST['icon'];} else {echo "FEHLER";exit;}
 if (isset($_POST['kollegen'])) {$kollegen = $_POST['kollegen'];} else {echo "FEHLER‚";exit;}
 if (isset($_SESSION["FAECHERBEARBEITEN"])) {$id = $_SESSION["FAECHERBEARBEITEN"];} else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fächer.bearbeiten")) {
 	$fehler = false;

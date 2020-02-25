@@ -12,7 +12,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {$jahr = '';}
 
-cms_rechte_laden();
+
 
 $fehler =  (!cms_check_ganzzahl($jahr,0));
 

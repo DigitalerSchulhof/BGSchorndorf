@@ -13,7 +13,7 @@ if (isset($_POST['position'])) {$position = $_POST['position'];} else {echo "FEH
 if (isset($_POST['inhalt'])) {$inhalt = $_POST['inhalt'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if(!cms_check_ganzzahl($spalte))
 	die("FEHLER");

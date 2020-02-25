@@ -28,14 +28,14 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/meldungen.php");
 include_once("../../lehrerzimmer/funktionen/generieren.php");
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+$zugriff = cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung");
 
 if ($angemeldet && $zugriff) {
   $code = "";
-  include_once("../../lehrerzimmer/seiten/verwaltung/vertreungsplanung/vplanunterrichtausgeben.php");
+  include_once("../../lehrerzimmer/seiten/verwaltung/vertretungsplanung/vplanunterrichtausgeben.php");
   // Ausgabezeiträume bestimmen
   $hb = mktime(0,0,0,$monat,$tag,$jahr);
   $he = mktime(0,0,0,$monat,$tag+1,$jahr)-1;

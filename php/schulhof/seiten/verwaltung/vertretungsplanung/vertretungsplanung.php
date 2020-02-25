@@ -3,7 +3,7 @@
 <h1>Vertretungsplanung</h1>
 <?php
 $code = "";
-if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+if (cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
   if (!$CMS_IMLN) {
     $code .= cms_meldung_firewall();
   }

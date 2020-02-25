@@ -433,7 +433,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 			$code .= $datenschutz;
 
 			if (strlen($code) == 0) {
-				$code .= "<p class=\"cms_notiz\">Keine Anprechpartner angelegt.</p>";
+				$code .= "<p class=\"cms_notiz\">Keine Anprechpartner angelegt</p>";
 			}
 
 

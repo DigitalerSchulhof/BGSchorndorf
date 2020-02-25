@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (isset($_POST['notizen'])) {$notizen = cms_texttrafo_e_event($_POST['notizen']);} else {$notizen = '';}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 	$fehler = false;

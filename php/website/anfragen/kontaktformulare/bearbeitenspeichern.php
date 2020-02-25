@@ -22,7 +22,7 @@ foreach ($beschreibungen as $i => $b) {
 }
 $beschreibungen = $bes;
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.bearbeiten")) {
 	$fehler = false;

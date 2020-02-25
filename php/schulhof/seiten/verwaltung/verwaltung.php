@@ -192,7 +192,7 @@ if (cms_r("schulhof.planung.schuljahre.stundentagebücher.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+if (cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_vertretungsplanung\" href=\"Schulhof/Verwaltung/Planung/Vertretungsplanung\">";
 			$code .=  "<h3>Vertretungsplan</h3>";
@@ -200,7 +200,7 @@ if (cms_r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("schulhof.planung.vertretungsplan.ausplanungen")) {
+if (cms_r("lehrerzimmer.vertretungsplan.ausplanungen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_planung_ausplanung\" href=\"Schulhof/Verwaltung/Planung/Ausplanungen\">";
 			$code .=  "<h3>Ausplanungen durchführen</h3>";

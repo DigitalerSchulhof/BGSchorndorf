@@ -11,7 +11,7 @@ session_start();
 if (isset($_POST['sj'])) {$sj = $_POST['sj'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($sj, 0)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.löschen")) {
 	$dbs = cms_verbinden('s');

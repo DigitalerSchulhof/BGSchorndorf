@@ -9,7 +9,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen(array("aktiv", "position", "typ", "bezeichnung", "beschreibung"));
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen")) {
 	$fehler = false;

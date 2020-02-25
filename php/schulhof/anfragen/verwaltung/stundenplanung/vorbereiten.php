@@ -13,7 +13,7 @@ if (isset($_POST['zrid'])) {$zrid = $_POST['zrid'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($sjid, 0)) {echo "FEHLER";exit;}
 if (!(cms_check_ganzzahl($zrid, 0) || $zrid == '-')) {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$_SESSION["STUNDENPLANUNGSCHULJAHR"] = $sjid;

@@ -21,7 +21,7 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten")) {
 	$fehler = false;

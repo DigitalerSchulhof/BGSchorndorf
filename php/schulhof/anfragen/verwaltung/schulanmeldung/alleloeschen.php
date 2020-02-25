@@ -8,7 +8,7 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 
 session_start();
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.löschen")) {
 	$dbs = cms_verbinden('s');

@@ -13,7 +13,7 @@ if (isset($_POST['gewaehlt'])) {$gewaehlt = $_POST['gewaehlt'];} else {echo "FEH
 if (!cms_check_ganzzahl($gewaehlt,0)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.gruppen.stufen.anlegen")) {
 

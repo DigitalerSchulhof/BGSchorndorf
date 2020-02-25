@@ -18,7 +18,7 @@ if (isset($_POST['nachvor'])) {$nachvor = $_POST['nachvor'];} else {echo "FEHLER
 if (isset($_POST['vor'])) {$vor = $_POST['vor'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['nach'])) {$nach = $_POST['nach'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.ids.importieren")) {
 

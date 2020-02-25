@@ -15,7 +15,7 @@ if (isset($_POST['base'])) 		{$base = $_POST['base'];} 							else {echo "FEHLER
 if (isset($_POST['lnzbvpn'])) 	{$lnzbvpn = $_POST['lnzbvpn'];} 			else {echo "FEHLER";exit;}
 if (isset($_POST['lnda'])) 		{$lnda = $_POST['lnda'];} 							else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("technik.server.netze")) {
 	$fehler = false;

@@ -21,7 +21,7 @@ if (isset($_POST['extvorname2'])) 					{$extvorname2 = $_POST['extvorname2'];} 	
 if (isset($_POST['extnachname2'])) 					{$extnachname2 = $_POST['extnachname2'];} 										else {echo "FEHLER";exit;}
 if (isset($_POST['extmail2'])) 							{$extmail2 = $_POST['extmail2'];} 														else {echo "FEHLER";exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;

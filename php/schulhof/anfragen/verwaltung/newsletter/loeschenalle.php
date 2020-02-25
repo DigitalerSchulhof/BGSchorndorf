@@ -8,7 +8,7 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.newsletter.löschen")) {
 	$dbs = cms_verbinden("s");

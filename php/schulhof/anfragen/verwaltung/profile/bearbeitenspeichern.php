@@ -15,7 +15,7 @@ if (isset($_POST['faecherids'])) {$faecherids = $_POST['faecherids'];} else {ech
 if (isset($_SESSION['PROFILBEARBEITEN'])) {$pid = $_SESSION['PROFILBEARBEITEN'];} else {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.profile.bearbeiten")) {
 	$fehler = false;

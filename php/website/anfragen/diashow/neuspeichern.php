@@ -9,10 +9,8 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen(array("aktiv", "position", "titel", "bildanzahl", "bildids"));
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.diashow.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -20,7 +18,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_titel($titel)) {$fehler = true;}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

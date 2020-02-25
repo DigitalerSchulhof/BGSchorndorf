@@ -9,7 +9,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.verantwortlichkeiten")) {
 	$_SESSION["VERANTWORTLICHKEITENSCHULJAHR"] = $id;

@@ -15,7 +15,7 @@ if (isset($_POST['boxenanzahl'])) {$boxenanzahl = $_POST['boxenanzahl'];} else {
 if (isset($_POST['boxenids'])) {$boxenids = $_POST['boxenids'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.boxen.anlegen")) {
 	$fehler = false;

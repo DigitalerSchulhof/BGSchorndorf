@@ -11,7 +11,7 @@ postLesen(array("name", "mail", "id"));
 if(!cms_check_name($name) || !cms_check_mail($mail))
   die("FEHLER");
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.bearbeiten")) {
   $dbs = cms_verbinden("s");;

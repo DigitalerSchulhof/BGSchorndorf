@@ -37,7 +37,7 @@ foreach ($personengruppen as $p) {
 	}
 }
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;

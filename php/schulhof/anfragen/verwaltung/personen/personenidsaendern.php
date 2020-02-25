@@ -18,7 +18,7 @@ if (!cms_check_ganzzahl($dritt,0) && ($dritt != '')) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($viert,0) && ($viert != '')) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.ids.bearbeiten")) {
 

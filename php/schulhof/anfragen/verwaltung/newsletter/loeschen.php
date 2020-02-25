@@ -14,7 +14,7 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("website.elemente.newsletter.löschen")) {
 	$dbs = cms_verbinden('s');

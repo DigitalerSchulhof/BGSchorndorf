@@ -14,7 +14,7 @@ if (!cms_check_idliste($zuordnungin) && strlen($zuordnungin) > 2) {echo "FEHLER"
 if (isset($_SESSION['PERSONENDETAILS'])) {$person = $_SESSION['PERSONENDETAILS'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($person,0)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.schülereltern")) {
 	$fehler = false;

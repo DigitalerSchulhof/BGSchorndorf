@@ -30,7 +30,7 @@ if (!cms_check_ganzzahl($endeS,0,23)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($endeM,0,59)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if($art === "r") {$rart = "räume";}

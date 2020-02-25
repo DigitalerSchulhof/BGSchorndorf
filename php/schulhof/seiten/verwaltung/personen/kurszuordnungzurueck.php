@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if ($CMS_RECHTE['Personen']['Personen den Kursen zuordnen']) {
+if (cms_r("schulhof.verwaltung.personen.zuordnen.kurse")) {
 	$SCHULJAHRE = "";
 	$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre ORDER BY beginn DESC");
 	if ($sql->execute()) {

@@ -23,7 +23,7 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if($art === "r") { $rart = "räume"; }

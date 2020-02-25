@@ -12,7 +12,7 @@ if (!cms_check_ganzzahl($rolle,0)) {echo "FEHLER"; exit;}
 if (isset($_POST['anschalten'])) {$anschalten = $_POST['anschalten'];} else {echo "FEHLER"; exit;}
 if (!cms_check_toggle($anschalten)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
 	$fehler = false;
@@ -67,12 +67,6 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
 		$dbs = cms_verbinden('s');
 		// Wenn die Rolle vergeben werden soll:
 		if ($anschalten == 1) {
-			// Alle Rechtezuordnungen löschen, falls Rechte zugeordnet, die durch die Rolle abgedeckt
-			$sql = $dbs->prepare("DELETE FROM rechtzuordnung WHERE person = ? AND recht IN (SELECT recht FROM rollenrechte WHERE rolle = ?);");
-		  $sql->bind_param("ii", $person, $rolle);
-		  $sql->execute();
-		  $sql->close();
-
 			// Neue Rolle vergeben
 			$sql = $dbs->prepare("INSERT INTO rollenzuordnung (person, rolle) VALUES (?, ?);");
 		  $sql->bind_param("ii", $person, $rolle);

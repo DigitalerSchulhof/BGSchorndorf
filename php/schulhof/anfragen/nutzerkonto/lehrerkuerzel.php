@@ -14,7 +14,7 @@ if (isset($_SESSION['BENUTZERID'])) {$id = $_SESSION['BENUTZERID'];} else {echo 
 if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 if (($modus != '1') && ($modus != 0)) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
+
 
 if ($modus == "1") {
 	if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}

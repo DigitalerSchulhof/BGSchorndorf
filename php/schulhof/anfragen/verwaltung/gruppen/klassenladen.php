@@ -13,7 +13,7 @@ if (isset($_POST['stufe'])) {$stufe = $_POST['stufe'];} else {echo "FEHLER"; exi
 if (!cms_check_ganzzahl($stufe,0) && ($stufe != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-cms_rechte_laden();
+
 
 if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.anlegen")) {
 

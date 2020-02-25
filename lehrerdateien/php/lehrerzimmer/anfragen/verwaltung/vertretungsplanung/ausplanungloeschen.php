@@ -19,10 +19,10 @@ if (($art != 'l') && ($art != 'r') && ($art != 'k') && ($art != 's')) {cms_anfra
 if (!cms_check_ganzzahl($id,0)) {cms_anfrage_beenden(); exit;}
 
 $angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-$zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'] || $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
+$zugriff = cms_r("lehrerzimmer.vertretungsplan.*");
 
 if ($angemeldet && $zugriff) {
   $dbl = cms_verbinden('l');

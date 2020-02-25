@@ -63,7 +63,7 @@ if ($CMS_BENUTZERART == 'x') {
 	if (($sichtbarx == '1') && ($schreibenx == '1')) {$pinnwandrecht = true;}
 }
 
-cms_rechte_laden();
+
 $zugriff = cms_r("schulhof.information.pinnwände.anschläge.anlegen") || $pinnwandrecht;
 
 if (cms_angemeldet() && $zugriff) {

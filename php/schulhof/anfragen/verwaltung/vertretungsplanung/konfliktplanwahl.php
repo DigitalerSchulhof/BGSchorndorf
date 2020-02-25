@@ -17,9 +17,9 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (($planart != 'l') && ($planart != 'r') && ($planart != 'k') && ($planart != 's')) {echo "FEHLER"; exit;}
 
-cms_rechte_laden();
 
-if (cms_angemeldet() && cms_r("schulhof.planung.vertretungsplan.vertretungsplanung")) {
+
+if (cms_angemeldet() && cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
   $dbs = cms_verbinden('s');
   $AUSGABE = array();
   $fehler = false;

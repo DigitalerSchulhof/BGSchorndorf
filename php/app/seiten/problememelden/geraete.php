@@ -1,9 +1,9 @@
 <?php
 $code = "<h2>Probleme mit Geräten melden</h2>";
 
-if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
+if (cms_r("schulhof.technik.geräte.probleme")) {
   $ausgaber = "";
-  if ($CMS_RECHTE['Planung']['Räume sehen']) {
+  if (cms_r("schulhof.organisation.räume.sehen")) {
     $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM raeume WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;");
     if ($sql->execute()) {
       $sql->bind_result($rid, $rbez);
@@ -18,7 +18,7 @@ if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
 
   }
   $ausgabel = "";
-  if ($CMS_RECHTE['Planung']['Leihgeräte sehen']) {
+  if (cms_r("schulhof.organisation.leihgeräte.sehen")) {
     $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM leihen WHERE verfuegbar = 1) AS x ORDER BY bezeichnung ASC;");
     if ($sql->execute()) {
       $sql->bind_result($lid, $lbez);
