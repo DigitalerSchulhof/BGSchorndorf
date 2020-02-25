@@ -12,7 +12,7 @@ $code .= "<h1>Listen aus $g</h1>";
 if (cms_valide_gruppe($g)) {
 
   $zugriff = false;
-  if ($CMS_RECHTE['Gruppen'][$g." Listen sehen"] || $CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {$zugriff = true;}
+  if (cms_r("schulhof.information.listen.gruppen.$g") || cms_r("schulhof.information.listen.gruppen.$g.sehenwenn")) {$zugriff = true;}
 
   $sql = "";
   if (cms_r("schulhof.information.listen.gruppen.$g")) {

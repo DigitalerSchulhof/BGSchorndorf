@@ -8,21 +8,21 @@ include_once("../../schulhof/funktionen/meldungen.php");
 include_once("../../schulhof/funktionen/dateisystem.php");
 
 session_start();
+
 postLesen(array("id", "spalte", "position", "modus", "zusatz"));
 
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 $dbs = cms_verbinden("s");
-$CMS_RECHTE = cms_rechte_laden();
-$angemeldet = cms_angemeldet();
+cms_rechte_laden();
 
 if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
-else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
+if ($id == '-') {$zugriff = cms_r("website.elemente.diashow.anlegen");}
+else {$zugriff = cms_r("website.elemente.diashow.bearbeiten");}
 
-if (($zugriff) && ($angemeldet)) {
+if (cms_angemeldet() && $zugriff) {
   $fehler = false;
 
   $benutzertyp = $_SESSION["BENUTZERART"];
@@ -30,7 +30,7 @@ if (($zugriff) && ($angemeldet)) {
   $neu = true;
   $titel = "Neue Diashow";
 
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
   $dbs = cms_verbinden('s');
 
   if ($id != '-') {
@@ -65,7 +65,7 @@ if (($zugriff) && ($angemeldet)) {
 
     $typen = array();
 
-      if ($CMS_RECHTE['Website']['Inhalte freigeben'])
+    if (cms_r("website.freigeben"))
         $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_diashow_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_diashow_aktiv\" name=\"website_element_diashow_aktiv\" value=\"0\"></td></tr>";

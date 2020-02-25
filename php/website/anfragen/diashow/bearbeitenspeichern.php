@@ -12,10 +12,9 @@ if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSIT
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.diashow.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -23,7 +22,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_titel($titel)) {$fehler = true;}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -52,7 +51,7 @@ if (cms_angemeldet() && $zugriff) {
 		$dbs = cms_verbinden("s");
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
 
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
+		if (!cms_r("website.freigeben")) {
 			$sql = "UPDATE diashows SET spalte = ?, position = ?, aktiv = ?, titelneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("iiisi", $spalte, $position, $aktiv, $titel, $id);

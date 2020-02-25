@@ -19,7 +19,6 @@ function cms_rolle_ausgeben ($rolle) {
 			$sql->fetch();
 			$sql->close();
 		}
-		$sql->close();
 	}
 
 	$code .= "<div class=\"cms_spalte_2\">";

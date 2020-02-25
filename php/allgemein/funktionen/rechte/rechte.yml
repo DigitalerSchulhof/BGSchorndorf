@@ -434,6 +434,10 @@ website:
       anlegen: Newsletteranmeldeformulare anlegen
       bearbeiten: Newsletteranmeldeformulare bearbeiten
       löschen: Newsletteranmeldeformulare löschen
+    diashow:
+      anlegen: Diashows anlegen
+      bearbeiten: Diashows bearbeiten
+      löschen: Diashows löschen
   auszeichnungen:
     anlegen: Auszeichnungen anlegen
     bearbeiten: Auszeichnungen bearbeiten

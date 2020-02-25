@@ -477,10 +477,10 @@ function cms_sonderrollen_generieren() {
 	global $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERART;
 	$code = "";
 	$dbs = cms_verbinden('s');
-  if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
+  if (cms_r("schulhof.technik.geräte.probleme")) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
   }
-  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
+  if (cms_r("schulhof.technik.hausmeisteraufträge.erstellen")) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li>";
   }
 	if (cms_r("schulhof.technik.geräte.verwalten")) {
