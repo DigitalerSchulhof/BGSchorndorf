@@ -53,7 +53,7 @@ cms_personaldaten_ausgeben ($_SESSION["BENUTZERID"]);
 <div class="cms_spalte_4">
 <div class="cms_spalte_i">
 	<?php
-	if ($CMS_RECHTE['Personen']['Ansprechpartner sehen']) {
+	if (@$CMS_RECHTE['Personen']['Ansprechpartner sehen']) {
 		echo "<h2>Ansprechpartner</h2>";
 		cms_personaldaten_ansprechpartner_ausgeben($_SESSION['BENUTZERID']);
 	}

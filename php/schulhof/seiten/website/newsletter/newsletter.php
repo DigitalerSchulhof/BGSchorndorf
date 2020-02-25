@@ -5,10 +5,10 @@
 
 <?php
 
-$bearbeiten = $CMS_RECHTE['Website']['Newsletter bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Newsletter löschen'];
-$anlegen = $CMS_RECHTE['Website']['Newsletter anlegen'];
-$sehen = $CMS_RECHTE["Website"]["Newsletter Empfängerliste sehen"];
+$anlegen    = cms_r("schulhof.information.newsletter.anlegen");
+$bearbeiten = cms_r("schulhof.information.newsletter.bearbeiten");
+$loeschen   = cms_r("schulhof.information.newsletter.löschen");
+$sehen      = cms_r("schulhof.information.newsletter.empfänger.sehen");
 $anzeigen = $bearbeiten || $loeschen || $anlegen || $sehen;
 
 $canzeigen = "";
@@ -76,7 +76,7 @@ $canzeigen .= '</tbody>';
 $canzeigen .= '</tr>';
 $canzeigen .= '</table>';
 
-if ($CMS_RECHTE['Website']['Newsletter löschen']) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen_vorbereiten()">Alle Newsletter löschen</span></p>';}
+if (cms_r("schulhof.information.newsletter.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen_vorbereiten()">Alle Newsletter löschen</span></p>';}
 
 cms_trennen($dbs);
 

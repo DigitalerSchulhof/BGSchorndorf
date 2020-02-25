@@ -4,9 +4,7 @@
 <h1>Raum bearbeiten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Räume bearbeiten'];
-if ($zugriff) {
-
+if (cms_r("schulhof.planung.räume.bearbeiten")) {
 	if (isset($_SESSION["RAUMBEARBEITEN"])) {
 		include_once('php/schulhof/seiten/verwaltung/raeume/raumdetails.php');
 		echo cms_raum_ausgeben($_SESSION["RAUMBEARBEITEN"]);

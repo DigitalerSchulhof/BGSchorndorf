@@ -11,11 +11,9 @@ postLesen(array("aktiv", "position", "typ", "bezeichnung", "beschreibung"));
 if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
+cms_rechte_laden();
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -23,7 +21,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -35,7 +33,7 @@ if (cms_angemeldet() && $zugriff) {
 
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
 
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
+		if (!cms_r("website.freigeben")) {
 			$sql = $dbs->prepare("UPDATE wnewsletter SET position = $position, bezeichnungneu = ?, beschreibungneu = ?, typneu = ? WHERE id = ?");
 
 			$sql->bind_param("siii", $bezeichnung, $beschreibung, $typ, $id);

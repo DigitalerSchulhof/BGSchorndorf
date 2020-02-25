@@ -16,14 +16,10 @@ if (isset($_POST['endeJ'])) 					{$endeJ = $_POST['endeJ'];} 										else {ech
 if (isset($_POST['bezeichnung'])) 		{$bezeichnung = $_POST['bezeichnung'];} 				else {echo "FEHLER";exit;}
 if (isset($_POST['art'])) 						{$art = $_POST['art'];} 												else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Organisation']['Ferien anlegen']) {
-	$zugriff = true;
-}
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.anlegen")) {
 	$fehler = false;
 
 	$mehrtaegigt = 0;

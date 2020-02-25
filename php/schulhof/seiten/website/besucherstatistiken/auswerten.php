@@ -334,9 +334,9 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
 }
 
 function cms_besucherstatistik_schulhof_jahresplaettchen() {
-  global $kd, $CMS_RECHTE;
-  if(!$CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'])
-    return; // Erroa kommt später
+  global $kd;
+  if(!cms_r("statistik.besucher.schulhof.sehen"))
+    return;
   $code = "";
   $code .= "<span id='cms_besucherstatistik_zeitraum_toggle_letzte' class='cms_toggle cms_toggle_aktiv cms_besucherstatistik_toggle' onclick='cms_besucherstatistik_schulhof_zeitraum(\"letzte\", 0, 0, 0, 0)'>Letzte zwölf Monate</span>";
   $code .= " <span id='cms_besucherstatistik_zeitraum_toggle_gesamt' class='cms_toggle cms_besucherstatistik_toggle' onclick='cms_besucherstatistik_schulhof_zeitraum(\"gesamt\", 0, 0, 0, 0, \"gesamt\")'>Gesamter Zeitraum</span>";

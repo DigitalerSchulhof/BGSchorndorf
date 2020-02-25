@@ -36,7 +36,7 @@ if ($angemeldet) {
 			if ($schreibenx == '1') {$zugriff = true;}
 		}
 
-		if ($zugriff || $CMS_RECHTE['Organisation']['Pinnwandanschläge bearbeiten']) {
+		if ($zugriff || cms_r("schulhof.information.pinnwände.anschläge.bearbeiten")) {
 			$code .= "";
 			$code .= "<h1>Anschlag für die Pinnwand »$bezeichnung"."« bearbeiten</h1>";
 

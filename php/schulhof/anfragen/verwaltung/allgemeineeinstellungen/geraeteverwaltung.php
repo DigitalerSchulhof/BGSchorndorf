@@ -21,10 +21,9 @@ if (isset($_POST['extvorname2'])) 					{$extvorname2 = $_POST['extvorname2'];} 	
 if (isset($_POST['extnachname2'])) 					{$extnachname2 = $_POST['extnachname2'];} 										else {echo "FEHLER";exit;}
 if (isset($_POST['extmail2'])) 							{$extmail2 = $_POST['extmail2'];} 														else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
 	if (!cms_check_toggle($extexistiert1)) {$fehler = true;}

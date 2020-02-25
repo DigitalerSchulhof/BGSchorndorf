@@ -1,12 +1,12 @@
 <?php
 function cms_galerie_details_laden($id, $ziel) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Website']['Galerien anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Galerien bearbeiten'] && ($id != '-'))) {$zugriff = true;}
+  if (($id == '-') && cms_r("artikel.galerien.anlegen")) || (($id != '-') && cms_r("artikel.galerien.bearbeiten"))) {$zugriff = true;}
 
   $bezeichnung = '';
   $vorschaubild = "";
@@ -63,7 +63,7 @@ function cms_galerie_details_laden($id, $ziel) {
 
 	if ($angemeldet && $zugriff) {
     $genehmigung = false;
-    if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {$genehmigung = true; $genehmigt = 1;}
+    if (cms_r("artikel.genehmigen.galerien")) {$genehmigung = true; $genehmigt = 1;}
 
     if (!$genehmigung) {
       $code .= cms_meldung ('info', "<h4>Genehmigung erforderlich</h4><p>Bis die Genehmigung erteilt wird, handelt es sich um eine vorläufige Galerie.</p>");

@@ -36,14 +36,14 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['GALERIEID'])) {$galerieid = $_SESSION['GALERIEID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Galerien bearbeiten']) {
+if (cms_r("artikel.galerien.bearbeiten")) {
 	$zugriff = true;
 }
 
-if (!$CMS_RECHTE['Organisation']['Galerien genehmigen']) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.galerien")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

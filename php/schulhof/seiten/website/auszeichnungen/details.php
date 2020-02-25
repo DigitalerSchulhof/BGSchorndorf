@@ -1,12 +1,12 @@
 <?php
 function cms_auszeichnung_details_laden($id) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Website']['Auszeichnungen anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Auszeichnungen bearbeiten'] && ($id != '-'))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("website.auszeichnungen.anlegen")) || (($id != '-') && cms_r("website.auszeichnungen.bearbeiten"))) {$zugriff = true;}
 
   $bild = '';
   $bez = '';

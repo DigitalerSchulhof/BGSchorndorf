@@ -504,19 +504,37 @@ if ($CMS_RECHTE['Tagebücher']['Notfallzustand']) {
 if ($CMS_RECHTE['Website']['Termine anlegen']) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
 }
-if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_blogeintrag('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Blogeintrag</span></li> ";
 }
-if ($CMS_RECHTE['Website']['Galerien anlegen']) {
+if (cms_r("artikel.galerien.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neue_galerie('".implode('/', $CMS_URL)."')\">+ Neue öffentliche Galerie</span></li> ";
 }
-
-
-/*if ($CMS_RECHTE['Persönlich']['Termine anlegen']) {
-	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_persoenlicher_termin('".implode('/', $CMS_URL)."')\">+ Neuer persönlicher Termin</span></li> ";
-}*/
 if (strlen($aktionen) > 0) {
 	echo "<h2>Aktionen</h2><ul class=\"cms_aktionen_liste\">$aktionen</ul>";
+}
+
+$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
+if (strlen($sonderrollencodeverwaltung) != 0) {
+	$sonderrollencode = "<h2>Aufgaben</h2>";
+	$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";
+	echo $sonderrollencode;
+}
+
+if (cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
+	$code = "<h2>Notizen</h2>";
+	$notizen = "";
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");
+	if ($sql->execute()) {
+		$sql->bind_result($notizen);
+		$sql->fetch();
+	}
+	$sql->close();
+
+	if (strlen($notizen) == 0) {$zusatzklasse = " cms_notizzettelleer";} else {$zusatzklasse = "";}
+	$code .= "<p><textarea id=\"cms_persoenlichenotizen\" class=\"cms_notizzettel$zusatzklasse\">$notizen</textarea></p>";
+	$code .= "<p><span class=\"cms_button\" onclick=\"cms_persoenliche_notizen_speichern()\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto\">Abbrechen</a></p>";
+	echo $code;
 }
 ?>
 

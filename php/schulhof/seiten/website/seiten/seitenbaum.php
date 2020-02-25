@@ -1,6 +1,5 @@
 <?php
 function cms_seitenbaum_ausgeben($dbs, $oberseite, $tiefe, $bearbeiten = false) {
-	global $CMS_RECHTE;
 	$code = "";
 	$dbs = cms_verbinden('s');
 
@@ -40,16 +39,16 @@ function cms_seitenbaum_ausgeben($dbs, $oberseite, $tiefe, $bearbeiten = false) 
 
 				// Aktionen
 				$code .= "<td>";
-				if ($CMS_RECHTE['Website']['Seiten bearbeiten']) {
+				if (cms_r("website.seiten.bearbeiten")) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_bearbeiten_vorbereiten('$sid');\"><span class=\"cms_hinweis\">Seite bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 				}
-				if ($CMS_RECHTE['Website']['Startseite festlegen'] && ($sstat != 's') && ($sart == 's')) {
-					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_startseite_anzeigen('$sbez', '$sid');\"><span class=\"cms_hinweis\">Seite zur Startseite machen</span><img src=\"res/icons/klein/startseite.png\"></span> ";
+				if ((($sstat != 's') && ($sart == 's')) && cms_r("website.seiten.startseite")) {
+					$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_schulhof_website_seite_startseite_anzeigen($sbez', '$sid');\"><span class=\"cms_hinweis\">Seite zur Startseite machen</span><img src=\"res/icons/klein/startseite.png\"></span> ";
 				}
-				if ($CMS_RECHTE['Website']['Seiten anlegen']) {
+				if (cms_r("website.seiten.anlegen")) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion_ja\" onclick=\"cms_schulhof_website_seite_neu_vorbereiten('$sid');\"><span class=\"cms_hinweis\">Neue Unterseite anlegen</span><img src=\"res/icons/klein/hinzufuegen.png\"></span> ";
 				}
-				if ($CMS_RECHTE['Website']['Seiten löschen']) {
+				if (cms_r("website.seiten.löschen")) {
 					$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_website_seite_loeschen_anzeigen('$sbez', '$sid');\"><span class=\"cms_hinweis\">Seite löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 				}
 				$code .= "</td>";

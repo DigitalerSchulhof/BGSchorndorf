@@ -6,7 +6,7 @@
     Status  2 => Behoben
    */
   function cms_fehlermeldungen_liste() {
-    global $CMS_SCHLUESSEL, $CMS_RECHTE;
+    global $CMS_SCHLUESSEL;
     $ausgabe = "<h2>Fehlermeldungen</h2><table class=\"cms_liste\">";
       $ausgabe .= "<thead>";
         $ausgabe .= "<tr><th></th><th>Bezeichnung</th><th>Beschreibung</th><th>Datum</th><th>Status</th><th>Aktionen</th></tr>";
@@ -46,7 +46,7 @@
           $liste .= "<td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$statusT</span><img src=\"res/icons/klein/".$statusI.".png\"></span> ";
 
           $liste .= '<td>';
-            if ($CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
+            if (cms_r("technik.fehlermeldungen")) {
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '2');\"><span class=\"cms_hinweis\">Als behoben markieren</span><img src=\"res/icons/klein/fehlermeldung_beheben.png\"></span> ";
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '1');\"><span class=\"cms_hinweis\">Als in Bearbeitung markieren</span><img src=\"res/icons/klein/fehlermeldung_bearbeitung.png\"></span> ";
               $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_fehlermeldung_status_setzen('$fid', '0');\"><span class=\"cms_hinweis\">Als offen markieren</span><img src=\"res/icons/klein/fehlermeldung_oeffnen.png\"></span> ";
@@ -71,7 +71,7 @@
   }
 
   function cms_fehlermeldung_details($id) {
-    global $CMS_SCHLUESSEL, $CMS_RECHTE;
+    global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden("s");
     $sql = $dbs->prepare("SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(header, '$CMS_SCHLUESSEL') AS header, AES_DECRYPT(session, '$CMS_SCHLUESSEL') AS session, AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel, status FROM fehlermeldungen WHERE id = ?");
     $sql->bind_param("i", $id);
@@ -167,7 +167,7 @@
       $code .= "</div>";
     $code .= "</div>";
     $code .= "<div class=\"cms_spalte_i\">";
-    if($CMS_RECHTE['Website']['Fehlermeldungen verwalten'])
+    if(cms_r("technik.fehlermeldungen"))
       $code .= "<a class=\"cms_button_ja\" onclick=\"cms_fehlermeldung_status_setzen($id, 2)\">Als behoben markieren</a> ";
     return $code;
   }

@@ -1,10 +1,8 @@
 <?php
-function cms_terminverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_GRUPPEN;
+function cms_terminverwaltung_suche($dbs, $jahr) {
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = $CMS_RECHTE['Organisation']['Termine genehmigen'];
-
-  if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
+  $genehmigen = cms_r("artikel.genehmigen.termine");
 
   $gruppen = cms_gruppeninfos_generieren($dbs);
 
@@ -46,10 +44,10 @@ function cms_terminverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
       if ($genehmigen && ($daten['genehmigt'] != '1')) {
         $schulhoftermine .= "<a class=\"cms_aktion_klein\" href=\"Schulhof/Aufgaben/Termine_genehmigen\"><span class=\"cms_hinweis\">zum Genehmigungscenter</span><img src=\"res/icons/klein/akzeptieren.png\"></a> ";
       }
-      if ($bearbeiten) {
+      if (cms_r("artikel.{$daten['oeffentlichkeit']}.termine.bearbeiten")) {
         $schulhoftermine .= "<span class=\"cms_aktion_klein\" onclick=\"cms_termine_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Website/Termine')\"><span class=\"cms_hinweis\">Termin bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
       }
-      if ($loeschen) {
+      if (cms_r("artikel.{$daten['oeffentlichkeit']}.termine.löschen")) {
         $schulhoftermine .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_termine_loeschen_vorbereiten('".$daten['id']."', '".$daten['bezeichnung']."', 'Schulhof/Website/Termine')\"><span class=\"cms_hinweis\">Termin löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
       }
       $schulhoftermine .= '</td>';
@@ -57,9 +55,7 @@ function cms_terminverwaltung_suche($dbs, $jahr, $bearbeiten, $loeschen) {
     }
     $anfrage->free();
     if (strlen($schulhoftermine) == 0) {
-      $spalten = 6;
-      if ($aktionen) {$spalten++;}
-      $code .= "<tr><td colspan=\"$spalten\" class=\"cms_notiz\">-- keine Termine vorhanden --</td></tr>";
+      $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Termine vorhanden --</td></tr>";
     }
     else {$code .= $schulhoftermine;}
   }

@@ -9,10 +9,9 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['zuordnung'])) {$zuordnung = $_POST['zuordnung'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Seiten anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.seiten.anlegen")) {
 	$_SESSION["SEITENNEUZUORDNUNG"] = $zuordnung;
 	echo "ERFOLG";
 }

@@ -3,7 +3,7 @@
 
 <?php
 $code = "";
-if ($CMS_RECHTE['Personen']['Personen löschen']) {
+if (cms_r("schulhof.verwaltung.personen.löschen")) {
 	$SCHULJAHRE = "";
 	$SCHULJAHR = null;
 

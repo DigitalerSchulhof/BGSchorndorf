@@ -4,9 +4,7 @@
 <h1>VPN-Anleitung gestalten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Administration']['VPN verwalten'];
-
-if ($zugriff) {
+if (cms_r("technik.server.vpn")) {
 
 
 

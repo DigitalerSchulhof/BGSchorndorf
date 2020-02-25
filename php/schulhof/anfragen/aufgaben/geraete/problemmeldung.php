@@ -15,10 +15,9 @@ if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
 $CMS_BENUTZERID = $_SESSION["BENUTZERID"];
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Technik']['Geräte-Probleme melden'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.technik.geräte.probleme")) {
 	$fehler = false;
 
 	$ids = explode('|', $geraeteids);

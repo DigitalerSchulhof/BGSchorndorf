@@ -6,11 +6,7 @@
 <?php
 include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
 
-
-
-$zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
-
-if ($zugriff) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
   $zeitraum = $_SESSION["STUNDENPLANZEITRAUM"];
 

@@ -1,34 +1,34 @@
 <?php
 function cms_listen_links_anzeigen($einschraenkung = false) {
-	global $CMS_RECHTE, $CMS_GRUPPEN;
+	global $CMS_GRUPPEN;
 	$liste = "";
 
-	if ($CMS_RECHTE['Personen']['Lehrerliste sehen']) {
+	if (cms_r("schulhof.information.listen.lehrer")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Lehrer\">Lehrer</a></li> ";
 	}
-	if ($CMS_RECHTE['Personen']['Schülerliste sehen']) {
+	if (cms_r("schulhof.information.listen.schüler")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Schüler\">Schüler</a></li> ";
 	}
-	if ($CMS_RECHTE['Personen']['Elternliste sehen']) {
+	if (cms_r("schulhof.information.listen.eltern")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Eltern\">Eltern</a></li> ";
 	}
-	if ($CMS_RECHTE['Personen']['Verwaltungsliste sehen']) {
+	if (cms_r("schulhof.information.listen.verwaltungsangestellte")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Verwaltung\">Verwaltungsangestellte</a></li> ";
 	}
-	if ($CMS_RECHTE['Personen']['Externenliste sehen']) {
+	if (cms_r("schulhof.information.listen.externe")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Externe\">Externe</a></li> ";
 	}
 
-	if ($CMS_RECHTE['Personen']['Elternvertreter sehen']) {
+	if (cms_r("schulhof.information.listen.elternvertreter")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Elternvertreter\">Elternvertreter</a></li> ";
 	}
-	if ($CMS_RECHTE['Personen']['Schülervertreter sehen']) {
+	if (cms_r("schulhof.information.listen.schülervertreter")) {
 		$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Personen/Schülervertreter\">Schülervertreter</a></li> ";
 	}
 
 	if ($einschraenkung != 'personen') {
 		foreach ($CMS_GRUPPEN as $g) {
-			if ($CMS_RECHTE['Gruppen'][$g.' Listen sehen'] || $CMS_RECHTE['Gruppen'][$g.' Listen sehen wenn Mitglied']) {
+			if(cms_r("schulhof.information.listen.gruppen.$g.[|sehen,sehenwenn]")) {
 				$liste .= "<li><a class=\"cms_button\" href=\"Schulhof/Listen/Gruppen/".cms_textzulink($g)."\">$g</a></li> ";
 			}
 		}

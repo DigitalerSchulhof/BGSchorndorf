@@ -11,14 +11,25 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte löschen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
-	$fehler = false;
+$fehler = false;
 
-	$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
-  if (!in_array($art, $elemente)) {$fehler = true;}
+$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
+if (!in_array($art, $elemente)) {$fehler = true;}
+
+$rarten = array(
+	"editoren" 	=> "editor",
+	"downloads"	=> "download",
+	"boxaussen"	=> "boxen",
+	"eventuebersichten"	=> "eventübersicht",
+	"kontaktformulare"	=> "kontaktformular",
+	"wnewsletter"	=> "newsletter"
+);
+
+$rart = $rarten[$art];
+
+if (cms_angemeldet() && cms_r("website.elemente.$rart.löschen")) {
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');

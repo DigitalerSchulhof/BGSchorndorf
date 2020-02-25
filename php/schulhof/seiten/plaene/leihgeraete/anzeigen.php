@@ -19,13 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-$zugriff = $CMS_RECHTE['Planung']['Leihgeräte sehen'];
-
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.sehen")) {
 
 
 	$geraete = array();
@@ -76,7 +70,7 @@ if ($angemeldet && $zugriff) {
 			}
 			$code .= "</table>";
 
-			if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
+			if (cms_r("schulhof.technik.geräte.probleme")) {
 				$code .= "<p><span id=\"cms_gerateproblemknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_geraeteproblem', 'cms_gerateproblemknopf', 'Problem melden', 'Problemmeldung abbrechen')\">Problem melden</span></p>";
 
 				$code .= "<div id=\"cms_geraeteproblem\" class=\"cms_versteckt\" style=\"display: none;\">";

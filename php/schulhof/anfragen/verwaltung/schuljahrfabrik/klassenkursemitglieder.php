@@ -12,13 +12,12 @@ if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION[
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKUEBERTRAGUNGSID'])) {$SCHULJAHRFABRIKUEBERTRAGUNGSID = $_SESSION['SCHULJAHRFABRIKUEBERTRAGUNGSID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+cms_rechte_laden();
 
 if ($uebertragungsid != $SCHULJAHRFABRIKUEBERTRAGUNGSID) {echo "FEHLER";exit;}
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	// Mitglieder hinzufügen
 	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT kurs, person, dateiupload, dateidownload, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon FROM klassenmitglieder JOIN kurseklassen ON klassenmitglieder.gruppe = kurseklassen.klasse JOIN klassen ON kurseklassen.klasse = klassen.id JOIN personen ON personen.id = person WHERE schuljahr = ? AND art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL')");
 	$sql->bind_param("i", $neuschuljahr);

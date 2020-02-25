@@ -20,10 +20,9 @@ $inhalt = cms_texttrafo_e_db($inhalt);
 if (isset($_SESSION["DAUERBRENNERBEARBEITEN"])) {$id = $_SESSION["DAUERBRENNERBEARBEITEN"];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Dauerbrenner bearbeiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.information.dauerbrenner.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

@@ -54,11 +54,10 @@ if ($art == 'Kurse') {
 }
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (isset($CMS_RECHTE['Gruppen'][$art.' anlegen'])) {$zugriff = isset($CMS_RECHTE['Gruppen'][$art.' anlegen']);}
-else {$zugriff = false;}
+$zugriff = cms_r("schulhof.gruppen.$art.anlegen");
 
 $artk = cms_textzudb($art);
 $artg = cms_vornegross($art);

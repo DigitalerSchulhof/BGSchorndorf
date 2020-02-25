@@ -20,10 +20,10 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 $gruppek = strtolower($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $zugriff = false;
-if ($gruppe == 'Blogeinträge') {$zugriff = $CMS_RECHTE['Organisation']['Blogeinträge genehmigen'];}
-else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'];}
+if ($gruppe == 'Blogeinträge') {$zugriff = cms_r("artikel.genehmigen.blogeinträge");}
+else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = cms_r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen");}
 
 if (cms_angemeldet() && $zugriff) {
 	if ($gruppe == 'Blogeinträge') {

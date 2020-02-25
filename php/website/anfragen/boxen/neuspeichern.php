@@ -15,10 +15,9 @@ if (isset($_POST['boxenanzahl'])) {$boxenanzahl = $_POST['boxenanzahl'];} else {
 if (isset($_POST['boxenids'])) {$boxenids = $_POST['boxenids'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.boxen.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -27,7 +26,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (($ausrichtung != 'u') && ($ausrichtung != 'n')) {$fehler = true;}
 	if (!cms_check_ganzzahl($breite,0)) {$fehler = true;}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -60,7 +59,7 @@ if (cms_angemeldet() && $zugriff) {
 		for ($i=1; $i<count($bids); $i++) {
 			if (isset($_POST["baktiv_".$bids[$i]])) {$boxen[$i]['aktiv'] = $_POST["baktiv_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['aktiv'] != '0') && ($boxen[$i]['aktiv'] != '1')) {$fehler = true; }
-			if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$boxen[$i]['aktiv'] = 0;}
+			if (!cms_r("website.freigeben")) {$boxen[$i]['aktiv'] = 0;}
 
 			if (isset($_POST["bstyle_".$bids[$i]])) {$boxen[$i]['style'] = $_POST["bstyle_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['style'] != '1') && ($boxen[$i]['style'] != '2') && ($boxen[$i]['style'] != '3') && ($boxen[$i]['style'] != '4') &&

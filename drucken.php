@@ -37,7 +37,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		$CMS_RECHTE = cms_rechte_laden();
+		cms_rechte_laden();
 	}
 
 	if (isset($_SESSION['IMLN'])) {
@@ -128,7 +128,7 @@
 		$code .= "</div>";
 
 		if (isset($_SESSION['DRUCKANSICHT'])) {
-			if (($_SESSION['DRUCKANSICHT'] == 'Schulanmeldung') && ($CMS_ANGEMELDET) && ($CMS_RECHTE['Organisation']['Schulanmeldungen akzeptieren'])) {
+			if (($_SESSION['DRUCKANSICHT'] == 'Schulanmeldung') && ($CMS_ANGEMELDET) && cms_r("schulhof.organisation.schulanmeldung.akzeptieren")) {
 				if (isset($_SESSION['ANMELDUNG BEARBEITEN'])) {
 					include_once('php/website/seiten/schulanmeldung/navigation.php');
 					$id = $_SESSION['ANMELDUNG BEARBEITEN'];

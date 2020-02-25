@@ -11,10 +11,9 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (isset($_POST['status'])) {$status = $_POST['status'];} else {$status = 0;}
 if (isset($_POST['notizen'])) {$notizen = cms_texttrafo_e_db($_POST['notizen']);} else {$notizen = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Fehlermeldungen sehen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("technik.fehlermeldungen")) {
 	$fehler = false;
   if($id === '')
     $fehler = true;
@@ -28,7 +27,7 @@ if (cms_angemeldet() && $zugriff) {
 			echo "ERFOLG";
 			return;
 		} elseif($notizen == "") {
-			if(!$CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
+			if(!cms_r("technik.fehlermeldungen")) {
 				echo "BERECHTIGUNG";
 				die();
 			}
@@ -46,7 +45,7 @@ if (cms_angemeldet() && $zugriff) {
 
 			echo "ERFOLG";
 		} else {
-			if(!$CMS_RECHTE['Website']['Fehlermeldungen verwalten']) {
+			if(!cms_r("technik.fehlermeldungen")) {
 				echo "BERECHTIGUNG";
 				die();
 			}

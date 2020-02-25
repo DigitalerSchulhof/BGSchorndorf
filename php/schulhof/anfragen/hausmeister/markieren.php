@@ -15,14 +15,12 @@ if (isset($_POST['id'])) 	{$id = $_POST['id'];} 		else {echo "FEHLER";exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} 	else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} 	                    else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-
-$zugriff = $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren'];
 
 if (($art != 'n') && ($art != 'e')) {echo "FEHLER";exit;}
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

@@ -30,12 +30,13 @@ if (!cms_check_ganzzahl($endeS,0,23)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($endeM,0,59)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['Planung']['Buchungen vornehmen'];
+if($art === "r") {$rart = "räume";}
+else if($art === "l") {$rart = "leihgeräte";}
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.buchungen.$rart.vornehmen")) {
 	$fehler = false;
 
 	$beginn = mktime($beginnS, $beginnM, 0, $datumM, $datumT, $datumJ);

@@ -13,17 +13,16 @@ postLesen(array("id", "spalte", "position", "modus", "zusatz"));
 
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$angemeldet = cms_angemeldet();
+cms_rechte_laden();
 
 if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
-else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
+if ($id == '-') {$zugriff = cms_r("website.elemente.kontaktformular.anlegen");}
+else {$zugriff = cms_r("website.elemente.kontaktformular.bearbeiten");}
 
-if (($zugriff) && ($angemeldet)) {
+if (cms_angemeldet() && $zugriff) {
   $fehler = false;
 
   $neu = true;
@@ -32,10 +31,11 @@ if (($zugriff) && ($angemeldet)) {
   $anhang = '1';
   $ids = array();
   $namen = array();
+  $ansicht = "m";
   $mails = array();
   $beschreibungen = array();
 
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
@@ -85,7 +85,7 @@ if (($zugriff) && ($angemeldet)) {
 
     $code .= "<table class=\"cms_formular\">";
 
-      if ($CMS_RECHTE['Website']['Inhalte freigeben'])
+      if (cms_r("website.freigeben"))
         $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_kontaktformular_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_kontaktformular_aktiv\" name=\"website_element_kontaktformular_aktiv\" value=\"0\"></td></tr>";

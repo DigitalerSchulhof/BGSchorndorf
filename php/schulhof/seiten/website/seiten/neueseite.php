@@ -4,8 +4,7 @@
 <h1>Neue Seite anlegen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Website']['Seiten anlegen'];
-if ($zugriff) {
+if (cms_r("website.seiten.anlegen")) {
 
 	if (isset($_SESSION['SEITENNEUZUORDNUNG'])) {
 		include_once('php/schulhof/seiten/website/seiten/seitendetails.php');

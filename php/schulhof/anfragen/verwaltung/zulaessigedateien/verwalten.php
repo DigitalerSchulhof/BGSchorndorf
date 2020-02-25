@@ -12,10 +12,9 @@ if (isset($_POST['groesse'])) 	{$groesse = $_POST['groesse'];} 	else {$groesse =
 if (isset($_POST['einheit'])) 	{$einheit = $_POST['einheit'];} 	else {$einheit = '';}
 if (isset($_POST['max'])) 		{$max = $_POST['max'];} 			else {$max = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Zulässige Dateien verwalten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("technik.server.dateienerlaubnis")) {
 	$fehler = false;
 
 	if ((!cms_check_ganzzahl($groesse,0)) || ($groesse < 1)) {$fehler = true;}

@@ -290,8 +290,6 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
   $js .= "var c = new Chart(ctx, ".json_encode($config).");";
   if($anzeigetyp == "bereiche_balken")
     $js .= "c.canvas.parentNode.style.height = '".(34+count($datenAufrufe)*50)."px';";
-  // if($anzeigetyp == "gesamtaufrufe_linie")
-    // $js .= "var gradient = ctx.createLinearGradient(0, 0, 0, 400); gradient.addColorStop(1, 'rgba($startR,$startG,$startB, $startA)'); gradient.addColorStop(0.5, 'rgba($endeR,$endeG,$endeB, $endeA)'); c.data.datasets[0].backgroundColor = gradient; c.update();";
   $js .= "Chart.defaults.global.defaultFontFamily = 'rob, sans-serif';";
   $code .= "<script>".$js."</script>";
 
@@ -299,27 +297,32 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
 }
 
 function cms_besucherstatistik_website_jahresplaettchen($typ) {
-  global $kd, $CMS_RECHTE;
-  if(!$CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'])
-    return; // Erroa kommt später
+  global $kd;
   $code = "";
 
   $tabelle = "";
   switch($typ) {
     case "t":
       $tabelle = "termine";
+      $rart = "termine";
       break;
     case "g":
       $tabelle = "galerien";
+      $rart = "galerien";
       break;
     case "b":
       $tabelle = "blog";
+      $rart = "blogeinträge";
       break;
     case "w":
       $tabelle = "website";
+      $rart = "seiten";
       break;
     default:
       return cms_meldung_fehler();
+  }
+  if(!cms_r("statistik.besucher.website.$rart")) {
+    return;
   }
 
   $code .= "<span id='cms_besucherstatistik_zeitraum_toggle_letzte' class='cms_toggle cms_toggle_aktiv cms_besucherstatistik_toggle' onclick='cms_besucherstatistik_website_zeitraum(\"$typ\", \"letzte\", 0, 0, 0, 0)'>Letzte zwölf Monate</span>";

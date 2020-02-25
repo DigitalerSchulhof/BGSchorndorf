@@ -1,12 +1,12 @@
 <?php
 function cms_ferien_details_laden($id) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE;
+  global $CMS_SCHLUESSEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Organisation']['Ferien anlegen'] && ($id == '-')) || ($CMS_RECHTE['Organisation']['Ferien bearbeiten'] && ($id != '-'))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("schulhof.organisation.ferien.anlegen")) || (($id != '-') && cms_r("schulhof.organisation.ferien.bearbeiten"))) {$zugriff = true;}
 
   $bez = '';
   $art = '';

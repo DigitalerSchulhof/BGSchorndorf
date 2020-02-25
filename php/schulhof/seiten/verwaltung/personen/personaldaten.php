@@ -1,12 +1,11 @@
 <?php
 function cms_personaldaten_ausgeben($id) {
-	global $CMS_RECHTE;
 	$zugriff = true;
 	$detailansicht = false;
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = $CMS_RECHTE['Personen']['Persönliche Daten sehen'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.daten");
 		$detailansicht = true;
 	}
 
@@ -54,7 +53,7 @@ function cms_personaldaten_ausgeben($id) {
 					else if ($profildaten_art == "v") {echo "Verwaltung";}
 				echo "</td></tr>";
 
-				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Personen bearbeiten'])) {
+				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || cms_r("schulhof.verwaltung.personen.bearbeiten"))) {
 					echo "<tr><th>Benutzername:</th><td>$profildaten_benutzername</td></tr>";
 				}
 				echo "<tr><th>Titel:</th><td>$profildaten_titel</td></tr>";
@@ -65,7 +64,7 @@ function cms_personaldaten_ausgeben($id) {
 					else if ($profildaten_geschlecht == "w") {echo '&#x2640;';}
 					else if ($profildaten_geschlecht == "u") {echo '&#x26a5;';}
 				echo "</td></tr>";
-				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Personen bearbeiten'])) {
+				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || cms_r("schulhof.verwaltung.personen.bearbeiten"))) {
 					echo "<tr><th>eMailadresse:</th><td>$profildaten_email</td></tr>";
 				}
 
@@ -82,7 +81,7 @@ function cms_personaldaten_ausgeben($id) {
 						$code .= "<tr class=\"$versteckklasse\"><th>Lehrerkürzel:</th><td>$profildaten_lehrerkuerzel</td></tr>";
 						$versteckt = true;
 					}
-					if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Anmeldedetails sehen'])) {
+					if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || cms_r("schulhof.verwaltung.nutzerkonten.anmeldedetails"))) {
 						$code .= "<tr class=\"$versteckklasse\"><th>Letzte Anmeldung:</th><td>$letzteanzeige</td></tr>";
 						$code .= "<tr class=\"$versteckklasse\"><th>Vorletzte Anmeldung:</th><td>$vorletzteanzeige</td></tr>";
 						$code .= "<tr class=\"$versteckklasse\"><th>Online:</th><td><img src=\"res/icons/klein/$status\"/></td></tr>";
@@ -118,44 +117,36 @@ function cms_personaldaten_ausgeben($id) {
 				$nutzerkontoaktionen = "";
 
 				if (!is_null($profildaten_nutzerkonto)) {
-					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten bearbeiten'];
-					if ($zugriff) {
+					if (cms_r("schulhof.verwaltung.nutzerkonten.bearbeiten")) {
 						$nutzerkontoaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Nutzerkonto_bearbeiten\">Benutzerkonto bearbeiten</a></li> ";
 					}
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Persönliche Einstellungen ändern'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.nutzerkonten.einstellungen.[|sehen,ändern]")) {
 					$nutzerkontoaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_personen_einstellungen($id)\">Einstellungen</span></li> ";
 				}
 				if (!is_null($profildaten_nutzerkonto)) {
-					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten löschen'];
-					if ($zugriff) {
+					if (cms_r("schulhof.verwaltung.nutzerkonten.löschen")) {
 						$nutzerkontoaktionen .= "<li><span class=\"cms_button_nein\" onclick=\"cms_schulhof_verwaltung_nutzerkonto_loeschen_anzeige('$anzeigename', $id)\">Nutzerkonto löschen</span></li>";
 					}
 				}
 				else {
-					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'];
-					if ($zugriff) {
-						$nutzerkontoaktionen .=  "<li><span class=\"cms_button_ja\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Neues_Nutzerkonto_anlegen')\">Nutzerkonto anlegen</span></li> ";
+					if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
+						$nutzerkontoaktionen .=  "<li><span class=\"cms_button_ja\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Neues_Nutzerkonto')\">Nutzerkonto anlegen</span></li> ";
 					}
 				}
 
 
 				$personenaktionen = "";
-				$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.bearbeiten")) {
 					$personenaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Bearbeiten\">Persönliche Daten ändern</a></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
-				if (($zugriff) && ($profildaten_art == "l")) {
+				if (($profildaten_art == "l") && cms_r("schulhof.verwaltung.lehrer.kürzel")) {
 					$personenaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Lehrerkürzel_ändern\">Lehrerkürzel ändern</a></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Rechte und Rollen zuordnen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 					$personenaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Rollen_und_Rechte\">Rollen und Rechte vergeben</a></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Personen löschen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.löschen")) {
 					$personenaktionen .= "<li><span class=\"cms_button_nein\" onclick=\"cms_schulhof_verwaltung_person_loeschen_anzeige('$anzeigename', $id)\">Person löschen</span></li> ";
 				}
 				if (strlen($personenaktionen) > 0) {
@@ -167,8 +158,7 @@ function cms_personaldaten_ausgeben($id) {
 					$code = "<ul class=\"cms_aktionen_liste\">".$nutzerkontoaktionen."</ul>";
 				}
 				$code .= $personenaktionen;
-				$zugriff =  $CMS_RECHTE['Personen']['Nutzerkonten bearbeiten'] && !is_null($profildaten_nutzerkonto);
-				if ($zugriff) {
+				if (!is_null($profildaten_nutzerkonto) && cms_r("schulhof.verwaltung.nutzerkonten.bearbeiten")) {
 					$code .= "<p class=\"cms_notiz\">Das Passwort kann nur durch die jeweilige Person selbst geändert werden.</p>";
 				}
 
@@ -187,20 +177,16 @@ function cms_personaldaten_ausgeben($id) {
 				echo "</ul>";
 
 				$personenaktionen = "";
-				$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.bearbeiten")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Bearbeiten')\">Persönliche Daten ändern</span></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
-				if (($zugriff) && ($profildaten_art == "l")) {
+				if (($profildaten_art == "l") && cms_r("schulhof.verwaltung.lehrer.kürzel")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Lehrerkürzel_ändern')\">Lehrerkürzel ändern</span></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Rechte und Rollen zuordnen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Rollen_und_Rechte')\">Rollen und Rechte vergeben</span></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Personen löschen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.löschen")) {
 					$personenaktionen .= "<li><span class=\"cms_button_nein\" onclick=\"cms_schulhof_verwaltung_person_loeschen_anzeige('$anzeigename', $id)\">Person löschen</span></li> ";
 				}
 				if (strlen($personenaktionen) > 0) {
@@ -277,13 +263,13 @@ function cms_personaldaten_ausgeben($id) {
 
 
 function cms_personaldaten_ansprechpartner_ausgeben($id) {
-	global $CMS_RECHTE, $CMS_BENUTZERSCHULJAHR;
+	global $CMS_BENUTZERSCHULJAHR;
 	$zugriff = true;
 	$detailansicht = false;
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = $CMS_RECHTE['Personen']['Ansprechpartner sehen'];
+		$zugriff = cms_r("schulhof.verwaltung.nutzerkonten.ansprechpartner");
 		$detailansicht = true;
 	}
 
@@ -469,8 +455,7 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");
 		$verwaltung = true;
 	}
 
@@ -541,8 +526,8 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 
 
 function cms_personaldaten_lehrerkuerzel_aendern($id) {
-	global $CMS_RECHTE, $CMS_EINSTELLUNGEN;
-	$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
+	global $CMS_EINSTELLUNGEN;
+	$zugriff = cms_r("schulhof.verwaltung.lehrer.kürzel");
 	$verwaltung = false;
 
 	// Berechtigung prüfen
@@ -636,8 +621,7 @@ function cms_personaldaten_aendern($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");
 		$verwaltung = true;
 	}
 
@@ -749,8 +733,7 @@ function cms_personenids_aendern($id) {
 	$verwaltung = false;
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.ids.bearbeiten");
 		$verwaltung = true;
 	}
 
@@ -837,8 +820,7 @@ function cms_personaldaten_einstellungen_aendern($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = ($CMS_RECHTE['Personen']['Persönliche Einstellungen ändern']);
+		$zugriff = cms_r("schulhof.verwaltung.nutzerkonten.einstellungen.ändern");
 		$verwaltung = true;
 	}
 

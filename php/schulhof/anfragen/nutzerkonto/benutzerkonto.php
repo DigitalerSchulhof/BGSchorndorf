@@ -14,10 +14,10 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 if ($modus == "1") {
-	$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
+	$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");
 	if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 }
 else {

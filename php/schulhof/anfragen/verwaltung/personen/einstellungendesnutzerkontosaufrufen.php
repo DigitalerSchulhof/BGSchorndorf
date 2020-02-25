@@ -9,9 +9,9 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-if (cms_angemeldet() && ($CMS_RECHTE['Personen']['Persönliche Einstellungen ändern'])) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.einstellungen.sehen")) {
 	$_SESSION["PERSONENDETAILS"] = $id;
 	echo "ERFOLG";
 }

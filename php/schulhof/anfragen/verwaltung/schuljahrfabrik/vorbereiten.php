@@ -12,10 +12,9 @@ if (isset($_POST['zielschuljahr'])) {$zielschuljahr = $_POST['zielschuljahr'];} 
 
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	$_SESSION["SCHULJAHRFABRIKSCHULJAHR"] = $id;
 	$_SESSION["SCHULJAHRFABRIKSCHULJAHRNEU"] = $zielschuljahr;
 	echo "ERFOLG";

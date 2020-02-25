@@ -18,10 +18,9 @@ if (!cms_check_idfeld($kurseids)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($zeitraum,0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($SCHULJAHR,0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schienen anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.anlegen")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

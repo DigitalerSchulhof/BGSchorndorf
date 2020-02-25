@@ -23,10 +23,9 @@ if (isset($_POST['schreibenx'])) {$schreibenx = $_POST['schreibenx'];} else {ech
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 $beschreibung = cms_texttrafo_e_db($beschreibung);
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Pinnwände anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.information.pinnwände.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

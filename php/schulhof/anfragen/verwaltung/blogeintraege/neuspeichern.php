@@ -37,14 +37,18 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) {
 	$zugriff = true;
 }
 
-if (!$CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.blogeinträge")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {

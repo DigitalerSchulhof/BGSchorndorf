@@ -190,6 +190,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_importieren']       = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungimportieren.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Kurszuordnung_Lehrer_und_Schüler'] = 'php/schulhof/seiten/verwaltung/personen/kurszuordnungklasseregelunterricht.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Personen/Nicht_zugeordnet_löschen']        = 'php/schulhof/seiten/verwaltung/personen/nichtzugeordnetloeschen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Bedingte_Rechte']                          = 'php/schulhof/seiten/verwaltung/bedingte_rechte.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen']                                   = 'php/schulhof/seiten/verwaltung/rollen/rollen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen/Rolle_bearbeiten']                  = 'php/schulhof/seiten/verwaltung/rollen/rollebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen']                = 'php/schulhof/seiten/verwaltung/rollen/neuerolle.php';

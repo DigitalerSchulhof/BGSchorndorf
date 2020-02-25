@@ -8,10 +8,9 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Newsletter löschen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.löschen")) {
 	$dbs = cms_verbinden("s");
 
 	$sql = $dbs->prepare("DELETE FROM newslettertypen");

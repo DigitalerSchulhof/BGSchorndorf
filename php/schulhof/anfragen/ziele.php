@@ -368,8 +368,8 @@ $CMS_ZIELE[364] = 'php/schulhof/anfragen/verwaltung/newsletter/empfaengerloesche
 $CMS_ZIELE[365] = 'php/schulhof/anfragen/verwaltung/newsletter/loeschen.php';
 $CMS_ZIELE[366] = 'php/schulhof/anfragen/nutzerkonto/favorisieren.php';
 $CMS_ZIELE[367] = 'php/schulhof/anfragen/nutzerkonto/favoritumbenennen.php';
-$CMS_ZIELE[368] = '';
-$CMS_ZIELE[369] = '';
+$CMS_ZIELE[368] = 'php/schulhof/anfragen/verwaltung/bedingte_rechte/rechte.php';
+$CMS_ZIELE[369] = 'php/schulhof/anfragen/verwaltung/bedingte_rechte/rollen.php';
 $CMS_ZIELE[370] = 'php/schulhof/anfragen/verwaltung/vertretungsplanung/datumspeichern.php';
 $CMS_ZIELE[371] = 'php/schulhof/anfragen/verwaltung/vertretungsplanung/vplanvorschau.php';
 $CMS_ZIELE[372] = 'php/schulhof/anfragen/verwaltung/personen/personenidimportieren.php';
@@ -380,4 +380,5 @@ $CMS_ZIELE[376] = 'php/schulhof/anfragen/verwaltung/personen/kurszuordnungstufel
 $CMS_ZIELE[377] = 'php/schulhof/anfragen/verwaltung/personen/kurszuordnungklasseregelunterricht.php';
 $CMS_ZIELE[378] = 'php/schulhof/anfragen/aufgaben/geraete/geraetdeligieren.php';
 $CMS_ZIELE[379] = 'php/schulhof/anfragen/verwaltung/personen/nichtzugeordnetschuelerladen.php';
+$CMS_ZIELE[380] = 'php/schulhof/anfragen/verwaltung/bedingte_rechte/syntax_pruefen.php';
 ?>

@@ -8,12 +8,10 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['Organisation']['Buchungen löschen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.[|räume,lehrgeräte].löschen")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');

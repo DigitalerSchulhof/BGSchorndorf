@@ -15,10 +15,9 @@ if (isset($_POST['plzort'])) 		{$plzort = $_POST['plzort'];} 			else {echo "FEHL
 if (isset($_POST['webmaster'])) 	{$webmaster = $_POST['webmaster'];} 	else {echo "FEHLER"; exit;}
 if (isset($_POST['domain'])) 	{$domain = $_POST['domain'];} 	else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.adressen")) {
 	$fehler = false;
 
 	if (!cms_check_mail($webmaster)) {

@@ -11,11 +11,9 @@ if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "
 if ((!cms_check_ganzzahl($schuljahr,0)) && ($schuljahr != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Kurse anlegen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.anlegen")) {
 
 	// Finde Anzahl an Gruppen
 	$faecher = array();

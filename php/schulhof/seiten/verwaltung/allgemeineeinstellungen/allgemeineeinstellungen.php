@@ -4,8 +4,7 @@
 <h1>Allgemeine Einstellungen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
-if ($zugriff) {
+if (cms_r("schulhof.verwaltung.einstellungen")) {
 	$code = "";
 
 	$personen = array("Lehrer", "Schüler", "Verwaltungsangestellte", "Eltern", "Externe");

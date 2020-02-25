@@ -12,8 +12,6 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	// Nachrichten löschen, die Limits überschreiten
 

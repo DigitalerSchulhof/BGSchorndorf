@@ -8,10 +8,10 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 if (cms_angemeldet()) {
-	if(!$CMS_RECHTE['Website']['Auffälliges verwalten']) {
+	if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 		echo "BERECHTIGUNG";
 		die();
 	}

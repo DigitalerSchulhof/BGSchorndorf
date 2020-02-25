@@ -4,9 +4,7 @@
 <h1>Leihgeräte</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Leihgeräte anlegen'] || $CMS_RECHTE['Organisation']['Leihgeräte bearbeiten'] || $CMS_RECHTE['Organisation']['Leihgeräte löschen'];
-
-if ($zugriff) {
+if (cms_r("schulhof.organisation.leihgeräte.*")) {
 ?>
 	<table class="cms_liste">
 		<thead>
@@ -47,27 +45,27 @@ if ($zugriff) {
 
 			if (strlen($ausstattung) > 0) {$ausstattung = substr($ausstattung, 2);}
 
-			$ausgabe .= "<tr>";
-				$ausgabe .= "<td><img src=\"res/icons/klein/leihgeraete.png\"></td>";
-				$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
-				$ausgabe .= "<td>".$ausstattung."</td>";
-				$ausgabe .= "<td>";
-				if ($daten['verfuegbar'] == 1) {$icon = "gruen"; $hinweis = "verfügbar";} else {$icon = "rot"; $hinweis = "nicht verfügbar";}
-				$ausgabe .= "<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/$icon.png\"><span class=\"cms_hinweis\">$hinweis</span></span> ";
-				if ($daten['buchbar'] == 1) {$icon = "gruen"; $hinweis = "buchbar";} else {$icon = "rot"; $hinweis = "nicht buchbar";}
-				$ausgabe .= "<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/$icon.png\"><span class=\"cms_hinweis\">$hinweis</span></span> ";
-				if ($daten['externverwaltbar'] == 1) {$icon = "gruen"; $hinweis = "extern verwaltbar";} else {$icon = "rot"; $hinweis = "nicht extern verwaltbar";}
-				$ausgabe .= "<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/$icon.png\"><span class=\"cms_hinweis\">$hinweis</span></span>";
-				$ausgabe .= "</td>";
-				// Aktionen
-				$ausgabe .= "<td>";
-				$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
-				if ($CMS_RECHTE['Organisation']['Räume bearbeiten']) {
-					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_leihgeraet_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
-				}
-				if ($CMS_RECHTE['Organisation']['Räume löschen']) {
-					$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_leihgeraet_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
-				}
+				$ausgabe .= "<tr>";
+					$ausgabe .= "<td><img src=\"res/icons/klein/leihgeraete.png\"></td>";
+					$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
+					$ausgabe .= "<td>".$ausstattung."</td>";
+					$ausgabe .= "<td>";
+					if ($daten['verfuegbar'] == 1) {$icon = "gruen"; $hinweis = "verfügbar";} else {$icon = "rot"; $hinweis = "nicht verfügbar";}
+					$ausgabe .= "<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/$icon.png\"><span class=\"cms_hinweis\">$hinweis</span></span> ";
+					if ($daten['buchbar'] == 1) {$icon = "gruen"; $hinweis = "buchbar";} else {$icon = "rot"; $hinweis = "nicht buchbar";}
+					$ausgabe .= "<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/$icon.png\"><span class=\"cms_hinweis\">$hinweis</span></span> ";
+					if ($daten['externverwaltbar'] == 1) {$icon = "gruen"; $hinweis = "extern verwaltbar";} else {$icon = "rot"; $hinweis = "nicht extern verwaltbar";}
+					$ausgabe .= "<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/$icon.png\"><span class=\"cms_hinweis\">$hinweis</span></span>";
+					$ausgabe .= "</td>";
+					// Aktionen
+					$ausgabe .= "<td>";
+					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
+					if (cms_r("schulhof.organisation.räume.bearbeiten")) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_leihgeraet_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+					}
+					if (cms_r("schulhof.organisation.räume.löschen")) {
+						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_leihgeraet_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+					}
 
 				$ausgabe .= "</td>";
 
@@ -85,7 +83,7 @@ if ($zugriff) {
 		</tbody>
 	</table>
 <?php
-	if ($CMS_RECHTE['Organisation']['Leihgeräte anlegen']) {
+if (cms_r("schulhof.organisation.leihgeräte.anlegen")) {
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Leihgeräte/Neue_Leihgeräte_anlegen\">+ Neue Leihgeräte anlegen</a></p>";
 	}
 }

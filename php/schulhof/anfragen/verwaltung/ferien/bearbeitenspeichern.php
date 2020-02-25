@@ -18,10 +18,10 @@ if (isset($_POST['art'])) 						{$art = $_POST['art'];} 												else {echo "
 
 if (isset($_SESSION['FERIENID'])) {$id = $_SESSION['FERIENID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Organisation']['Ferien bearbeiten']) {
+if (cms_r("schulhof.organisation.ferien.bearbeiten")) {
 	$zugriff = true;
 }
 if (cms_angemeldet() && $zugriff) {

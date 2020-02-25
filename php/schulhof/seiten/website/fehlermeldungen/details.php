@@ -3,9 +3,8 @@
 
 <h1>Fehlermeldung (Detailansicht)</h1>
 <?php
-$zugriff = $CMS_RECHTE['Website']['Fehlermeldungen sehen'];
 $code = "";
-if ($zugriff) {
+if (cms_r("technik.fehlermeldungen")) {
   include_once("php/schulhof/seiten/website/fehlermeldungen/auswerten.php");
   if (!isset($_SESSION["BUGID"])) {
         $code .= cms_meldung_bastler();

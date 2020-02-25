@@ -18,10 +18,9 @@ foreach ($beschreibungen as $i => $b) {
 	array_push($bes, urldecode(base64_decode($b)));
 }
 $beschreibungen = $bes;
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.kontaktformular.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -41,7 +40,7 @@ if (cms_angemeldet() && $zugriff) {
 		if(!cms_check_mail($m))
 			$fehler = true;
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);

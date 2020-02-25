@@ -226,7 +226,7 @@ function cms_schulhof_datenschutz() {
 
 
 function cms_schulhof_rechte() {
-  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_RECHTE, $CMS_HOSTINGPARTNERIN;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_HOSTINGPARTNERIN;
 
   $link = "";
   $linkanzeige = "";

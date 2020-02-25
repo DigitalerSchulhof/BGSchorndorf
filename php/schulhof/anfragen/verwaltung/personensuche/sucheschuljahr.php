@@ -19,10 +19,7 @@ if (isset($_POST['nachname'])) {$nachname = $_POST['nachname'];} else {echo "FEH
 if (isset($_POST['gewaehlt'])) {$gewaehlt = $_POST['gewaehlt'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['feld'])) {$feld = $_POST['feld'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = true;
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet()) {
 	$dbs = cms_verbinden('s');
 
 	// Zusammenbauen der Bedingung

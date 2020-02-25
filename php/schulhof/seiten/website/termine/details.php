@@ -1,12 +1,10 @@
 <?php
 function cms_termin_details_laden($id, $ziel) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
-
-  if (($CMS_RECHTE['Website']['Termine anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Termine bearbeiten'] && ($id != '-'))) {$zugriff = true;}
 
   $bez = '';
   $ort = '';
@@ -56,13 +54,15 @@ function cms_termin_details_laden($id, $ziel) {
     }
   }
 
+  if ((($id == '-') && cms_r("artikel.$oeffentlichkeit.termine.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.termine.bearbeiten"))) {$zugriff = true;}
+
 	if ($fehler) {$zugriff = false;}
 	$angemeldet = cms_angemeldet();
 
 
 	if ($angemeldet && $zugriff) {
     $genehmigung = false;
-    if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$genehmigung = true; $genehmigt = 1;}
+    if (cms_r("artikel.genehmigen.termine")) {$genehmigung = true; $genehmigt = 1;}
 
     if (!$genehmigung) {
       $code .= cms_meldung ('info', "<h4>Genehmigung erforderlich</h4><p>Bis die Genehmigung erteilt wird, handelt es sich um einen vorläufigen Termin.</p>");
@@ -161,7 +161,7 @@ function cms_termin_details_laden($id, $ziel) {
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'termine', $id);
 
-    if ($CMS_RECHTE['Website']['Dateien hochladen']) {
+    if (cms_r("website.dateien.hochladen")) {
       $inhalt = "<h3>Websitedateien</h3>";
       $rechte = cms_websitedateirechte_laden();
       $inhalt .= cms_dateisystem_generieren ('website', 'website', 'cms_website_dateien', 's', 'website', '-', $rechte);

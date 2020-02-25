@@ -1,6 +1,6 @@
 <?php
 function cms_pinnwandanschlaege_ausgeben ($anschlagid, $pinnwandid) {
-	global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_RECHTE, $CMS_BENUTZERID;
+	global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERID;
 	$dbs = cms_verbinden('s');
 	$code = "";
 
@@ -19,7 +19,7 @@ function cms_pinnwandanschlaege_ausgeben ($anschlagid, $pinnwandid) {
 	  }
 	  $sql->close();
 
-		if (($ersteller != $CMS_BENUTZERID) && !$CMS_RECHTE['Organisation']['Pinnwandanschäge bearbeiten']) {$fehler = true;}
+		if (($ersteller != $CMS_BENUTZERID) && !cms_r("schulhof.information.pinnwände.anschläge.bearbeiten")) {$fehler = true;}
 	}
 
 	if (!$fehler) {

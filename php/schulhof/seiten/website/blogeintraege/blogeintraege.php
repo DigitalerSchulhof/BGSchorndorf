@@ -6,9 +6,9 @@
 <?php
 include_once('php/schulhof/seiten/website/blogeintraege/blogeintragsuche.php');
 
-$bearbeiten = $CMS_RECHTE['Website']['Blogeinträge bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Blogeinträge löschen'];
-$anzeigen = $bearbeiten || $loeschen;
+$bearbeiten = cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.bearbeiten");
+$loeschen   = cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.löschen");
+$anzeigen   = $bearbeiten || $loeschen;
 
 if ($anzeigen) {
   $canlegen = '';
@@ -56,14 +56,14 @@ if ($anzeigen) {
     $canzeigen .= '<tr><td class="cms_notiz" colspan="'.$spalten.'">Keine Blogeinträge verfügbar</td></tr>';
   }
   else {
-    $canzeigen .= cms_blogeintragverwaltung_suche($dbs, $jahraktuell, $bearbeiten, $loeschen);
+    $canzeigen .= cms_blogeintragverwaltung_suche($dbs, $jahraktuell);
   }
   $canzeigen .= '</tbody>';
   $canzeigen .= '</tr>';
   $canzeigen .= '</table>';
   $canzeigen .= '<p><input type="hidden" name="cms_verwaltung_blogeintraege_jahr_angezeigt" id="cms_verwaltung_blogeintraege_jahr_angezeigt" value="'.$jahraktuell.'"></p>';
 
-  if ($CMS_RECHTE['Website']['Blogeinträge löschen']) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_blogeintraege_jahr_loeschen_vorbereiten()">Alle Blogeinträge dieses Jahres löschen</span></p>';}
+  if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_blogeintraege_jahr_loeschen_vorbereiten()">Alle Blogeinträge dieses Jahres löschen</span></p>';}
 
   cms_trennen($dbs);
 
@@ -71,7 +71,7 @@ if ($anzeigen) {
   $code .= $canzeigen;
 
 
-  if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+  if (cms_r("artikel.%ARTIKELSTUFEN.blogeinträge.anlegen")) {
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_neuer_blogeintrag('Schulhof/Website/Blogeinträge')\">+ Neuer öffentlicher Blogeintrag</span></p>";
   }
 }

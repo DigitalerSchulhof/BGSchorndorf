@@ -11,10 +11,9 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Profile löschen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.profile.löschen")) {
 
 	$fehler = false;
 

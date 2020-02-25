@@ -11,11 +11,10 @@ if (isset($_SESSION['ZEITRAUMRYTHMISIEREN'])) {$zeitraum = $_SESSION['ZEITRAUMRY
 
 if (!cms_check_ganzzahl($zeitraum,0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume rythmisieren'];
+cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren")) {
 	$fehler = false;
 	// Prüfen, wie viele Rythmen der Zeitraum zulässt
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, beginn, ende, rythmen FROM zeitraeume WHERE id = ?");

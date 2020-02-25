@@ -29,10 +29,9 @@ if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenid
 if (isset($_SESSION['ZEITRAUMBEARBEITEN'])) {$zeitraumid = $_SESSION['ZEITRAUMBEARBEITEN'];} else {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

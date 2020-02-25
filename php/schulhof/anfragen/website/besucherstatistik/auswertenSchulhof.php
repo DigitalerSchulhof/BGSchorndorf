@@ -13,25 +13,18 @@ session_start();
 if (isset($_POST['start'])) {$start = $_POST['start'];} else {echo "FEHLER";exit;}
 if (isset($_POST['ende'])) {$ende = $_POST['ende'];} else {echo "FEHLER";exit;}
 if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {$modus = '';}
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = true;
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet()) {
 
-	$fehler = false;
-	if (!$fehler) {
-    if(!$CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen']) {
-      echo "BERECHTIGUNG";
-    } else {
-			$gesamt = $modus == "gesamt";
-			echo cms_besucherstatistik_schulhof("gesamtaufrufe_linie", json_decode($start, true), json_decode($ende, true), $gesamt);
-			echo cms_besucherstatistik_schulhof("rollen_pie", json_decode($start, true), json_decode($ende, true), $gesamt);
-			echo cms_besucherstatistik_schulhof("bereiche_balken", json_decode($start, true), json_decode($ende, true), $gesamt);
-    }
+  if(!cms_r("statistik.besucher.schulhof.sehen")) {
+    echo "BERECHTIGUNG";
+  } else {
+		$gesamt = $modus == "gesamt";
+		echo cms_besucherstatistik_schulhof("gesamtaufrufe_linie", json_decode($start, true), json_decode($ende, true), $gesamt);
+		echo cms_besucherstatistik_schulhof("rollen_pie", json_decode($start, true), json_decode($ende, true), $gesamt);
+		echo cms_besucherstatistik_schulhof("bereiche_balken", json_decode($start, true), json_decode($ende, true), $gesamt);
   }
-	else {
-		echo "FEHLER";
-	}
 }
 else {
 	echo "BERECHTIGUNG";

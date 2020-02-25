@@ -96,7 +96,7 @@ function cms_galerie_zeiten($daten) {
 }
 
 function cms_galeriedetailansicht_ausgeben($dbs) {
-	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_RECHTE, $CMS_BLOGID;
+	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BLOGID;
 	$code = "";
 	$gefunden = false;
 	$fehler = false;

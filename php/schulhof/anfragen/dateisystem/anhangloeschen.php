@@ -11,10 +11,7 @@ session_start();
 if (isset($_POST['datei'])) {$datei = $_POST['datei'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
-
-if ($angemeldet) {
+if (cms_angemeldet()) {
   $fehler = false;
 	if (is_file("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/temp/".$datei)) {
     $fehler = !unlink("../../../dateien/schulhof/personen/$CMS_BENUTZERID/postfach/temp/".$datei);

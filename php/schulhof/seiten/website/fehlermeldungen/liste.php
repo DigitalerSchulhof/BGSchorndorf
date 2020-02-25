@@ -1,8 +1,7 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-  $zugriff = $CMS_RECHTE['Website']['Fehlermeldungen sehen'];
-  if (!$zugriff) {
+  if (!cms_r("technik.fehlermeldungen")) {
     echo cms_meldung_berechtigung();
   } else {
     $code = "";

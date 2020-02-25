@@ -12,9 +12,9 @@ if (!cms_check_ganzzahl($rolle,0)) {echo "FEHLER"; exit;}
 if (isset($_POST['anschalten'])) {$anschalten = $_POST['anschalten'];} else {echo "FEHLER"; exit;}
 if (!cms_check_toggle($anschalten)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
-if (cms_angemeldet() && ($CMS_RECHTE['Personen']['Rechte und Rollen zuordnen'])) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
 	$fehler = false;
 
 	if (!isset($_SESSION['PERSONENDETAILS'])) {
@@ -38,8 +38,8 @@ if (cms_angemeldet() && ($CMS_RECHTE['Personen']['Rechte und Rollen zuordnen']))
   $sql->close();
 
 	// Prüfen, ob zu vergebende Rolle existiert und diesem Benutzer zugeordnet werden kann
-	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM rollen WHERE id = ? AND personenart = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');");
-  $sql->bind_param("is", $rolle, $personenart);
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM rollen WHERE id = ?;");
+  $sql->bind_param("i", $rolle);
   if ($sql->execute()) {
     $sql->bind_result($anzahl);
 		if ($sql->fetch()) {if ($anzahl != 1) {$fehler = true;}}

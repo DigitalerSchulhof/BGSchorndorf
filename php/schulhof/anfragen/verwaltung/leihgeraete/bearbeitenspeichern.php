@@ -21,10 +21,9 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Leihgeräte bearbeiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

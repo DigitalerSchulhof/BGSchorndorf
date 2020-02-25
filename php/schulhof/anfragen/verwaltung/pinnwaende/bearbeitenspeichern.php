@@ -25,10 +25,9 @@ $beschreibung = cms_texttrafo_e_db($beschreibung);
 if (isset($_SESSION["PINNWANDBEARBEITEN"])) {$id = $_SESSION["PINNWANDBEARBEITEN"];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Pinnwände bearbeiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.information.pinnwände.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

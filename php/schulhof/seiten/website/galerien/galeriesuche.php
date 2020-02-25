@@ -1,10 +1,8 @@
 <?php
-function cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID, $CMS_GRUPPEN;
+function cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen) {
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_GRUPPEN;
 
-  $genehmigen = $CMS_RECHTE['Organisation']['Galerien genehmigen'];
-
-  if ($bearbeiten || $loeschen || $genehmigen) {$aktionen = true;}
+  $genehmigen = cms_r("artikel.genehmigen.galerien");
 
   $gruppen = cms_gruppeninfos_generieren($dbs);
 
@@ -66,10 +64,10 @@ function cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loesc
     if ($genehmigen && ($daten['genehmigt'] != '1')) {
       $schulhofgalerien .= "<a class=\"cms_aktion_klein\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\"><span class=\"cms_hinweis\">Zum Genehmigungscenter</span><img src=\"res/icons/klein/akzeptieren.png\"></a> ";
     }
-    if ($bearbeiten) {
+    if (cms_r("artikel.galerien.bearbeiten")) {
       $schulhofgalerien .= "<span class=\"cms_aktion_klein\" onclick=\"cms_galerie_bearbeiten_vorbereiten('".$daten['id']."', 'Schulhof/Website/Galerien')\"><span class=\"cms_hinweis\">Galerie bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
     }
-    if ($loeschen) {
+    if (cms_r("artikel.galerien.löschen")) {
       $schulhofgalerien .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_galerie_loeschen_vorbereiten('".$daten['id']."', '".$daten['bezeichnung']."', 'Schulhof/Website/Galerien')\"><span class=\"cms_hinweis\">Galerie löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
     }
     $schulhofgalerien .= '</td>';

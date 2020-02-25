@@ -11,9 +11,9 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 $CMS_BENUTZERID = $_SESSION['BENUTZERID'];
-$zugriff = ($CMS_RECHTE['Personen']['Nutzerkonten löschen']) || ($id == $CMS_BENUTZERID);
+$zugriff = ($id == $CMS_BENUTZERID) || cms_r("schulhof.verwaltung.nutzerkonten.löschen");
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

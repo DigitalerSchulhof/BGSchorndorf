@@ -13,24 +13,32 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Blogeinträge löschen'];
+cms_rechte_laden();
+$fehler = false;
+
+$sql = $dbs->prepare("SELECT datum, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM blogeintraege WHERE id = ?");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($datum, $oeffentlichkeit, $bezeichnung);
+	if (!$sql->fetch()) {$fehler = true;}
+}
+else {$fehler = true;}
+$sql->close();
+
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.blogeinträge.löschen")) {
+	$zugriff = true;
+}
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
-	$fehler = false;
-
-	$sql = $dbs->prepare("SELECT datum, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM blogeintraege WHERE id = ?");
-  $sql->bind_param("i", $id);
-  if ($sql->execute()) {
-    $sql->bind_result($datum, $oeffentlichkeit, $bezeichnung);
-    if (!$sql->fetch()) {$fehler = true;}
-  }
-  else {$fehler = true;}
-  $sql->close();
 
 	if (!$fehler) {
 		$monatsname = cms_monatsnamekomplett(date('m', $datum));

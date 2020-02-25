@@ -10,10 +10,9 @@ session_start();
 if (isset($_POST['id'])) {$id = cms_texttrafo_e_db($_POST['id']);} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen bearbeiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.bearbeiten")) {
 	$_SESSION['ANMELDUNG BEARBEITEN'] = $id;
 	echo "ERFOLG";
 }

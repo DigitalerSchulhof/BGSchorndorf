@@ -6,13 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Identitätsdiebstähle behandeln</h1>";
 
-$zugriff = $CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln'];
-$fehler = false;
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 	$dbs = cms_verbinden('s');
 	$code .= "<table class=\"cms_liste\">";
 		$code .= "<thead>";

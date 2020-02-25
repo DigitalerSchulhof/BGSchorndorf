@@ -17,10 +17,9 @@ if (!cms_check_ganzzahl($fach, 0) && ($fach != '-')) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($stufe, 0) && ($stufe != '-')) {echo "FEHLER";exit;}
 if (!cms_check_idfeld($gewaehlt)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schienen bearbeiten'] || $CMS_RECHTE['Planung']['Schienen anlegen'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.[|anlegen,bearbeiten]")) {
 	$code = "";
 
 	// gewählt zu array:

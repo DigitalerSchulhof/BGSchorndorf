@@ -13,10 +13,9 @@ if (isset($_POST['benutzer'])) 		{$benutzer = $_POST['benutzer'];} 		else {echo 
 if (isset($_POST['passwort'])) 		{$passwort = $_POST['passwort'];} 		else {echo "FEHLER"; exit;}
 if (isset($_POST['smtpauth'])) 		{$smtpauth = $_POST['smtpauth'];} 		else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail")) {
 	$fehler = false;
 
 	if (!cms_check_mail($absender)) {

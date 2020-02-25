@@ -12,10 +12,10 @@ $code .= "<h1>Listen aus $g</h1>";
 if (cms_valide_gruppe($g)) {
 
   $zugriff = false;
-  if ($CMS_RECHTE['Gruppen'][$g." Listen sehen"] || $CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {$zugriff = true;}
+  if (cms_r("schulhof.information.listen.gruppen.$g") || cms_r("schulhof.information.listen.gruppen.$g.sehenwenn")) {$zugriff = true;}
 
   $sql = "";
-  if ($CMS_RECHTE['Gruppen'][$g." Listen sehen"]) {
+  if (cms_r("schulhof.information.listen.gruppen.$g")) {
     if (($g == "Klassen") || ($g == "Kurse")) {
       $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, reihenfolge FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id LEFT JOIN stufen ON stufe = stufen.id WHERE ($gk.schuljahr IS NULL OR $gk.schuljahr = ?)) AS x ORDER BY reihenfolge, sbez ASC, gbez ASC");
     }
@@ -27,7 +27,7 @@ if (cms_valide_gruppe($g)) {
     }
     $sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
   }
-  else if ($CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {
+  else if(cms_r("schulhof.information.listen.gruppen.$g.sehenwenn")) {
     if (($g == "Klassen") || ($g == "Kurse")) {
       $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, reihenfolge FROM $gk JOIN $gk"."mitglieder ON $gk"."mitglieder.gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id LEFT JOIN stufen ON stufe = stufen.id WHERE ($gk.schuljahr IS NULL OR $gk.schuljahr = ?) AND $gk"."mitglieder.person = ?) AS x ORDER BY reihenfolge, sbez ASC, gbez ASC");
     }

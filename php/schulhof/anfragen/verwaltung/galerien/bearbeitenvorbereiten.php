@@ -10,13 +10,13 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER";exit;}
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 $fehler = false;
 
-$zugriff = $CMS_RECHTE['Website']['Galerien bearbeiten'];
+$zugriff = cms_r("artikel.galerien.bearbeiten");
 
 if (cms_angemeldet() && $zugriff) {
 	$_SESSION["GALERIEID"] = $id;

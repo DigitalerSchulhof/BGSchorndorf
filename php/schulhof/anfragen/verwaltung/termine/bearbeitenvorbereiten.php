@@ -10,13 +10,32 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id,0)) {echo "FEHLER";exit;}
 if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER";exit;}
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 $fehler = false;
 
-$zugriff = $CMS_RECHTE['Website']['Termine bearbeiten'];
+$sql = $dbs->prepare("SELECT beginn, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM termine WHERE id = ?");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($BEGINN, $bezeichnung, $oeffentlichkeit);
+	if (!$sql->fetch()) {$fehler = true;}
+}
+else {$fehler = true;}
+$sql->close();
+
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.termine.bearbeiten")) {
+	$zugriff = true;
+}
+
+if($fehler) {
+	die("FEHLER");
+}
 
 if (cms_angemeldet() && $zugriff) {
 	$_SESSION["TERMINID"] = $id;

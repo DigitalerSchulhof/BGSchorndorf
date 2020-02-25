@@ -6,9 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Auszeichnung bearbeiten</h1>";
 
-$zugriff = $CMS_RECHTE['Website']['Auszeichnungen bearbeiten'];
-
-if ($zugriff) {
+if (cms_r("website.auszeichnungen.bearbeiten")) {
   include_once("php/schulhof/seiten/website/auszeichnungen/details.php");
 
   if (!isset($_SESSION["AUSZEICHNUNGBEAREITENID"])) {

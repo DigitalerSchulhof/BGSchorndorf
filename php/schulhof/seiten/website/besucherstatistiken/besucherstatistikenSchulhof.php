@@ -11,8 +11,7 @@
 <div id="besucherstatistik">
 </div>
 <?php
-  $zugriff = $CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'];
-  if (!$zugriff) {
+  if(!cms_r("statistik.besucher.schulhof.sehen"))
     echo cms_meldung_berechtigung();
   } else {
     $code = "";

@@ -28,12 +28,11 @@ if (isset($_POST['vertretungsplanung'])) {$vertretungsplanung = $_POST['vertretu
 if (isset($_POST['datenschutz'])) {$datenschutz = $_POST['datenschutz'];} else {echo "FEHLER";exit;}
 if (isset($_POST['hausmeister'])) {$hausmeister = $_POST['hausmeister'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schuljahre anlegen'];
+cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

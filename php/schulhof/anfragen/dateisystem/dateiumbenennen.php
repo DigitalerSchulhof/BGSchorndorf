@@ -17,9 +17,6 @@ if (isset($_POST['nameneu'])) {$nameneu = $_POST['nameneu'];} else {$nameneu = '
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
-
 $zugriff = false;
 $fehler = false;
 $existiert = false;
@@ -50,7 +47,7 @@ else {$fehler = true;}
 $zugriff = $gruppenrechte['dateiumbenennen'];
 
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 
 	if (strlen($namealt) < 1) {
 		$fehler = true;

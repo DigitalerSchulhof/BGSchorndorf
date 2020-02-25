@@ -6,9 +6,9 @@
 <?php
 include_once('php/schulhof/seiten/verwaltung/ferien/feriensuche.php');
 
-$bearbeiten = $CMS_RECHTE['Organisation']['Ferien bearbeiten'];
-$loeschen = $CMS_RECHTE['Organisation']['Ferien löschen'];
-$anlegen = $CMS_RECHTE['Organisation']['Ferien anlegen'];
+$bearbeiten = cms_r("schulhof.organisation.ferien.bearbeiten");
+$loeschen   = cms_r("schulhof.organisation.ferien.löschen");
+$anlegen    = cms_r("schulhof.organisation.ferien.anlegen");
 $anzeigen = $bearbeiten || $loeschen || $anlegen;
 
 
@@ -64,7 +64,7 @@ $canzeigen .= '</tr>';
 $canzeigen .= '</table>';
 $canzeigen .= '<p><input type="hidden" name="cms_verwaltung_ferien_jahr_angezeigt" id="cms_verwaltung_ferien_jahr_angezeigt" value="'.$jahraktuell.'"></p>';
 
-if ($CMS_RECHTE['Organisation']['Ferien löschen']) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_ferien_jahr_loeschen_vorbereiten()">Alle Ferien dieses Jahres löschen</span></p>';}
+if (cms_r("schulhof.organisation.ferien.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_ferien_jahr_loeschen_vorbereiten()">Alle Ferien dieses Jahres löschen</span></p>';}
 
 cms_trennen($dbs);
 

@@ -11,12 +11,11 @@ if (isset($_POST['klasseninfo'])) {$klasseninfo = $_POST['klasseninfo'];} else {
 if (isset($_POST['stufeninfo'])) {$stufeninfo = $_POST['stufeninfo'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION["VERANTWORTLICHKEITENSCHULJAHR"])) {$SCHULJAHR = $_SESSION["VERANTWORTLICHKEITENSCHULJAHR"];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Verantwortlichkeiten festlegen'];
+cms_rechte_laden();
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.verantwortlichkeiten")) {
 	$fehler = false;
 
 	$KLASSENIDS = array();

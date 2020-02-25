@@ -13,6 +13,7 @@
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
 	include_once("php/allgemein/funktionen/captcha.php");
+	include_once("php/allgemein/funktionen/rechte/rechte.php");
 
 	session_start();
 
@@ -123,7 +124,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		$CMS_RECHTE = cms_rechte_laden();
+		cms_rechte_laden();
 	}
 
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
@@ -203,6 +204,8 @@
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tagebuch.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/app.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/rechtebaum.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bedingterechte.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
@@ -293,6 +296,8 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/newsletter.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/rechtebaum.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/bedingte_rechte.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
 		}
@@ -495,7 +500,7 @@
 		}
 
 		if (($CMS_ANGEMELDET) && ($CMS_URL[0] == 'Website')) {
-			if ($CMS_RECHTE['Website']['Inhalte anlegen'] || $CMS_RECHTE['Website']['Inhalte bearbeiten'] || $CMS_RECHTE['Website']['Inhalte löschen']) {
+			if (cms_r("website.elemente.%ELEMENTE%.*")) {
 				include_once("php/website/seiten/bearbeiten.php");
 			}
 		}

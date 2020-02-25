@@ -21,10 +21,9 @@ if (isset($_SESSION['SEITENBEARBEITENZUORDNUNG'])) {$zuordnung = $_SESSION['SEIT
 else {if (is_null($_SESSION['SEITENBEARBEITENZUORDNUNG'])) {$zuordnung = '-';} else {echo "FEHLER"; exit;}}
 if (isset($_SESSION['SEITENBEARBEITENID'])) {$id = $_SESSION['SEITENBEARBEITENID'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Seiten bearbeiten'];
+cms_rechte_laden();
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.seiten.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -37,8 +36,8 @@ if (cms_angemeldet() && $zugriff) {
 	if (($sidebar != 0) && ($sidebar != 1)) {$fehler = true;}
 
 	if (($status != 'i') && ($status != 'a') && ($status != 's')) {$fehler = true;}
-	if (($status == 's') && (!$CMS_RECHTE['Website']['Startseite festlegen'])) {$fehler = true;}
-	if (($status != 'i') && (!$CMS_RECHTE['Website']['Inhalte freigeben'])) {$fehler = true;}
+	if (($status == 's') && (!cms_r("website.seiten.startseite"))) {$fehler = true;}
+	if (($status != 'i') && (!cms_r("website.freigeben"))) {$fehler = true;}
 
 	if (($art == 'm') && ($status == 's')) {$fehler = true;}
 

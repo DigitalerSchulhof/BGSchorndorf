@@ -9,8 +9,6 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['signatur'])) {$signatur = $_POST['signatur'];} else {$signatur = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 
 	$id = $_SESSION['BENUTZERID'];

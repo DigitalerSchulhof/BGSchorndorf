@@ -20,8 +20,7 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
+cms_rechte_laden();
 
 $zugriff = false;
 $fehler = false;
@@ -32,11 +31,10 @@ if (($bereich == "website") && ($pfadteile[0] == 'website')) {
 	$zugriff = true;
 }
 else if ($bereich == "Stundenplan") {
-	$zugriff = $CMS_RECHTE['Gruppen']['Klassen anlegen'] || $CMS_RECHTE['Gruppen']['Klassen bearbeiten'] || $CMS_RECHTE['Gruppen']['Kurse anlegen'] || $CMS_RECHTE['Gruppen']['Kurse bearbeiten'] || $CMS_RECHTE['Organisation']['Räume anlegen'] || $CMS_RECHTE['Organisation']['Räume bearbeiten'];
-	$zugriff = $zugriff || $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
+	$zugriff = cms_r("schulhof.gruppen.[|klassen,kurse].[|anlegen,bearbeiten] || schulhof.organisation.räume.[|anlegen,bearbeiten] || schulhof.verwaltung.lehrer.kürzel");
 }
 else if ($bereich == "Vertretungsplan") {
-	$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
+	$zugriff = cms_r("schulhof.verwaltung.einstellungen");
 }
 else if ($bereich == "gruppe") {
 	if (count($pfadteile) < 4) {$fehler = true;}
@@ -56,7 +54,7 @@ else {$fehler = true;}
 $bereichlaenge = strlen($bereich);
 $idlaenge = strlen($id);
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		echo cms_dateiwaehler_ordner($pfad, 's', $bereich, $id, $feldid, $art, true);
 	}

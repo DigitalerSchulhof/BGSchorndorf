@@ -17,11 +17,9 @@ if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSIT
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];
+cms_rechte_laden();
 
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.boxen.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -30,7 +28,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (($ausrichtung != 'u') && ($ausrichtung != 'n')) {$fehler = true;}
 	if (!cms_check_ganzzahl($breite,0)) {$fehler = true;}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -45,7 +43,7 @@ if (cms_angemeldet() && $zugriff) {
 			$boxen[$i]['id'] = $bids[$i];
 			if (isset($_POST["baktiv_".$bids[$i]])) {$boxen[$i]['aktiv'] = $_POST["baktiv_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['aktiv'] != '0') && ($boxen[$i]['aktiv'] != '1')) {$fehler = true; }
-			if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$boxen[$i]['aktiv'] = 0;}
+			if (!cms_r("website.freigeben")) {$boxen[$i]['aktiv'] = 0;}
 
 			if (isset($_POST["bstyle_".$bids[$i]])) {$boxen[$i]['style'] = $_POST["bstyle_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['style'] != '1') && ($boxen[$i]['style'] != '2') && ($boxen[$i]['style'] != '3') && ($boxen[$i]['style'] != '4') &&
@@ -62,7 +60,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
+		if (!cms_r("website.freigeben")) {
 			$sql = "UPDATE boxenaussen SET position = ?, ausrichtungneu = ?, breiteneu = ? WHERE id = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("isii", $position, $ausrichtung, $breite, $id);
@@ -91,7 +89,7 @@ if (cms_angemeldet() && $zugriff) {
 				array_push($eingetragen, $bid);
 			}
 			else {
-				if ($CMS_RECHTE['Website']['Inhalte freigeben']) {
+				if (cms_r("website.freigeben")) {
 					$sql = "UPDATE boxen SET position = $position, aktiv = '".$boxen[$i]['aktiv']."', ";
 					$sql .= "titelalt = titelaktuell, titelaktuell = '".$boxen[$i]['titel']."', titelneu = '".$boxen[$i]['titel']."', ";
 					$sql .= "inhaltalt = inhaltaktuell, inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";

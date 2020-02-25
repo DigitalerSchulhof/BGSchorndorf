@@ -1,149 +1,132 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
-<h1>Rollen und Rechte vergeben</h1>
-
 <?php
+include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
+use Async\YAML;
+
 // PROFILDATEN LADEN
-$fehler = true;
 if (!isset($_SESSION['PERSONENDETAILS'])) {
 	echo cms_meldung_bastler();
 }
 else {
 	$id = $_SESSION['PERSONENDETAILS'];
-	$zugriff = $CMS_RECHTE['Personen']['Rechte und Rollen zuordnen'];
-	if ($zugriff) {
+	if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
+		echo "<h1>Rollen und Rechte vergeben</h1>";
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
-		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?";
+		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(art, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?";
 		$sql = $dbs->prepare($sql);
 		$sql->bind_param("i", $id);
 		$sql->bind_result($vorname, $nachname, $personart);
-
-		$fehler = false;
-		if ($sql->execute()) {
-			if ($sql->fetch()) {
-			}
-			else {$fehler = false;}
-		}
-		else {$fehler = false;}
-
-		if ($fehler) {
+		if(!$sql->execute() || !$sql->fetch())
 			echo cms_meldung_unbekannt();
-		}
+		echo "<p class=\"cms_notiz\">Für $vorname $nachname</p>";
 
-		cms_trennen($dbs);
+		if(cms_r("schulhof.verwaltung.rechte.rollen.zuordnen")) {
+			echo "<div class=\"cms_spalte_2\">";
+				echo "<h3>Rollen</h3>";
+
+				$rollencode = "";
+				$sql = "SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') as bezeichnung, rollen.id FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = ?) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle) AS rollen ORDER BY id ASC";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $id);
+				$sql->bind_result($person, $bez, $rid);
+				$sql->execute();
+				while ($sql->fetch()) {
+					if ($person == $id)
+						$rollencode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(0, $rid)\">$bez</span> ";
+					else
+						$rollencode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(1, $rid)\">$bez</span> ";
+				}
+				$sql->close();
+				if ($rollencode == "")
+					$rollencode = cms_meldung_fehler();	// Es gibt immer mind. Admin
+				echo $rollencode;
+			echo "</div>";
+		}
+		if(cms_r("schulhof.verwaltung.rechte.zuordnen")) {
+			echo "<div class=\"cms_spalte_2\">";
+				echo "<h3>Rechte</h3>";
+				$rechte = YAML::loader(dirname(__FILE__)."/../../../../allgemein/funktionen/rechte/rechte.yml");
+				$alle = false;
+
+				$cms_desnutzersrechte = array();
+				$cms_derrollerechte = array();
+				cms_rechte_laden_nutzer($id, $cms_desnutzersrechte);
+				cms_rechte_laden_rollen($id, $cms_derrollerechte);
+
+				// u: Unterstes
+				// k: Hat Kinder	(Pfad nach rechts)
+				// 	c: Eingeklappt (Grünes +)
+
+				$recht_machen = function($pfad, $recht, $kinder = null, $unterstes = false) use (&$recht_machen, $cms_desnutzersrechte, $cms_derrollerechte) {
+					$code = "";
+
+					$knoten = $recht;
+
+					// Alternativer Knotenname
+					if(!is_null($kinder) && !is_array($kinder))
+						$recht = $kinder;
+					if(is_array($kinder) && isset($kinder["knotenname"])) {
+						$recht = $kinder["knotenname"];
+						unset($kinder["knotenname"]);
+					}
+
+					// Hat die Person das Recht?
+					$rechtecheck = function($r, $pf) {
+						foreach(explode(".", $pf) as $p) {
+							if($r === true)
+								return true;
+							else
+								if(isset($r[$p])) {
+									if(($r = $r[$p]) === true)
+										return true;
+								} else
+									return false;
+						}
+					};
+
+					$personhatrecht = false;
+					$rollehatrecht = false;
+
+					if(substr("$pfad.$knoten", 2) !== false && ($pf = explode(".", substr("$pfad.$knoten", 2))) !== null) {
+						$personhatrecht = $rechtecheck($cms_desnutzersrechte, substr("$pfad.$knoten", 2));
+						$rollehatrecht = $rechtecheck($cms_derrollerechte, substr("$pfad.$knoten", 2));
+					}
+					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($personhatrecht&&!$rollehatrecht?" cms_recht_nutzer":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_nutzer(this)\">".mb_ucfirst($recht)."</span></span>";
+
+					// Kinder ausgeben
+					$c = 0;
+					if(is_array($kinder)) {
+						$code .= "<div class=\"cms_rechtekinder\"".($recht?"style=\"display: none;\"":"").">";
+						foreach($kinder as $n => $i)
+							$code .= "<div class=\"cms_rechtebox".(!is_null($i) && !is_array($i)?" cms_recht_wert":"").(++$c==count($kinder)?" cms_recht_unterstes":"")."\">".$recht_machen("$pfad.$knoten", $n, $i, $c == count($kinder))."</div>";
+						$code .= "</div>";
+					}
+					$code .= "</div>";
+					return $code;
+				};
+
+				echo "<div id=\"cms_rechtepapa\" class=\"cms_spalte_i\">".$recht_machen("", "", $rechte, true)."</div>";
+
+				echo "<div class=\"cms_spalte_2\">";
+					echo "<span class=\"cms_button_ja\" onclick=\"cms_rechte_speichern_nutzer()\">Speichern</span> <span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Personen')\">Abbrechen</span>";
+					echo "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+					echo "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this)\">Alle ausklappen</span>";
+				echo "</div>";
+				echo "<div class=\"cms_spalte_2\">";
+					echo "<h3>Legende</h3>";
+					echo "<span class=\"cms_demorecht\">Unvergebenes Recht</span> ";
+					echo "<span class=\"cms_demorecht cms_demorecht_nutzer\">Vergebenes Recht</span> ";
+					echo "<span class=\"cms_demorecht cms_demorecht_rolle\">Recht einer zugeordneten Rolle</span> ";
+				echo "</div>";
+			echo "</div>";
+		}
 	}
 	else {
 		echo cms_meldung_berechtigung();
 	}
 }
 ?>
-</div>
-
-<?php
-if (!$fehler) {
-	$dbs = cms_verbinden('s');
-?>
-
-<div class="cms_spalte_2">
-<div class="cms_spalte_i">
-	<?php
-	echo "<h3>Für $vorname $nachname verfügbare Rollen</h3>";
-
-	$rollencode = "";
-	$sql = $dbs->prepare("SELECT * FROM (SELECT person, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, rollen.id AS rolle FROM rollen LEFT JOIN (SELECT person, rolle FROM rollenzuordnung WHERE person = ?) AS rollenzuordnung ON rollen.id = rollenzuordnung.rolle WHERE personenart = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS rollen ORDER BY bezeichnung ASC");
-	$sql->bind_param("is", $id, $personart);
-
-	if ($sql->execute()) {
-		$sql->bind_result($pid, $rbez, $rid);
-		while ($sql->fetch()) {
-			if ($pid == $id) {$rollencode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(0, $rid)\">$rbez</span> ";}
-			else {$rollencode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_rolle_vergeben(1, $rid)\">$rbez</span> ";}
-		}
-	}
-	$sql->close();
-
-	if ($rollencode == "") {
-		$rollencode = "<p class=\"cms_notiz\">Keine Rollen verfügbar</p>";
-	}
-
-	echo $rollencode;
-	?>
-</div>
-</div>
-
-<div class="cms_spalte_2">
-<div class="cms_spalte_i">
-	<h3>In den zugeordneten Rollen enthaltene Rechte</h3>
-	<?php
-
-	$rechtecode = "";
-	$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = ?))) AS rechte ORDER BY kategorie ASC, bezeichnung ASC");
-	$sql->bind_param("i", $id);
-	$altekategorie = "";
-	if ($sql->execute()) {
-		$sql->bind_result($rid, $rkat, $rbez);
-		while ($sql->fetch()) {
-			if ($altekategorie != $rkat) {
-				$rechtecode .= "</p><h4>$rkat</h4><p>";
-				$altekategorie = $rkat;
-			}
-			$rechtecode .= "<span class=\"cms_toggle_aktiv_fest\">$rbez</span> ";
-		}
-		$rechtecode .= "</p>";
-		$rechtecode = substr($rechtecode, 4);
-	}
-	$sql->close();
-
-	if ($rechtecode == "") {
-		$rechtecode = "<p class=\"cms_notiz\">Keine Rollen zugeordnet</p>";
-	}
-
-	echo $rechtecode;
-	?>
-</div>
-</div>
-
 <div class="cms_clear"></div>
-
-<div class="cms_spalte_i">
-	<?php
-	echo "<h3>Zusätzliche verfügbare Rechte für $vorname $nachname</h3>";
-
-	$rechtecode = "";
-	$sql = $dbs->prepare("SELECT id AS recht, kategorie, bezeichnung, person FROM (SELECT id, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte WHERE id NOT IN (SELECT recht AS id FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = ?))) AS rechte LEFT JOIN (SELECT person, recht FROM rechtzuordnung WHERE person = ?) AS rechtzuordnung ON rechte.id = rechtzuordnung.recht ORDER BY kategorie ASC, bezeichnung ASC");
-	$sql->bind_param("ii", $id, $id);
-
-	$altekategorie = "";
-
-	if ($sql->execute()) {
-		$sql->bind_result($rid, $rkat, $rbez, $rpers);
-		while ($sql->fetch()) {
-			if ($altekategorie != $rkat) {
-				$rechtecode .= "</p><h4>$rkat</h4><p>";
-				$altekategorie = $rkat;
-			}
-			if ($rpers == $id) {$rechtecode .= "<span class=\"cms_toggle cms_toggle_aktiv\" onclick=\"cms_schulhof_verwaltung_personen_recht_vergeben(0, $rid)\">$rbez</span> ";}
-			else {$rechtecode .= "<span class=\"cms_toggle\" onclick=\"cms_schulhof_verwaltung_personen_recht_vergeben(1, $rid)\">$rbez</span> ";}
-		}
-		$rechtecode .= "</p>";
-		$rechtecode = substr($rechtecode, 4);
-	}
-	$sql->close();
-
-	if ($rechtecode == "") {
-		$rechtecode = "<p class=\"cms_notiz\">Keine zusätzlichen Rechte verfügbar</p>";
-	}
-
-	echo $rechtecode;
-	?>
-
-
-<p><span class="cms_button" onclick="cms_schulhof_verwaltung_personen_rollenundrechtevergabe();">Speichern</span> <a class="cms_button_nein" href="Schulhof/Verwaltung/Personen/Details">Abbrechen</a></p>
-</div>
-
-<?php
-	cms_trennen($dbs);
-}
-?>
