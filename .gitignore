@@ -1,8 +1,10 @@
 /css/*
 /php/phpmailer/*
+/php/schulhof/funktionen/config.php
 /php/schulhof/funktionen/configBG.php
 /php/schulhof/funktionen/configDSH.php
 /php/schulhof/funktionen/configbackup.php
+/lehrerdateien/php/lehrerzimmer/funktionen/config.php
 /lehrerdateien/php/lehrerzimmer/funktionen/configBG.php
 /lehrerdateien/php/lehrerzimmer/funktionen/configDSH.php
 /lehrerdateien/php/lehrerzimmer/funktionen/configbackup.php
