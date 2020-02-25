@@ -451,7 +451,7 @@ artikel:
     bearbeiten: Galerien bearbeiten
     löschen: Galerien löschen
   0: # Mitglieder zugeordneter Gruppen
-    knotenname: "Sichtbarkeit: Lehrer"
+    knotenname: "Sichtbarkeit: Gruppenmitglieder"
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten

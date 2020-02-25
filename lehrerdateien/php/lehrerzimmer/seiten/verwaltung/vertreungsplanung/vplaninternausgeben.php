@@ -471,7 +471,7 @@ function cms_vertretungsplan_komplettansicht($dbs, $dbl, $art, $beginn, $ende) {
     $code = "<table class=\"cms_liste\">".$code."</table>";
   }
   else {
-    $code = "<p class=\"cms_notiz\">Keine Vertretungen.</p>";
+    $code = "<p class=\"cms_notiz\">Keine Vertretungen</p>";
   }
 
   $vtext = "";

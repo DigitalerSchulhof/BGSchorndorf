@@ -9,7 +9,7 @@ if ($CMS_EINSTELLUNGEN['Vertretungsplan extern'] == '1') {
 	if (strlen($vplan) > 0) {
 		$code .= $vplan;
 	}
-	else {$code .= "<p class=\"cms_notiz\">Aktuell keine Vertretungen.</p>";}
+	else {$code .= "<p class=\"cms_notiz\">Aktuell Keine Vertretungen</p>";}
 }
 else {
 	include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
@@ -19,7 +19,7 @@ else {
 	if ((strlen($vplan) > 0) || (strlen($vplan) > 0)) {
 		$code .= $vplan;
 	}
-	else {$code .= "<p class=\"cms_notiz\">Aktuell keine Vertretungen.</p>";}
+	else {$code .= "<p class=\"cms_notiz\">Aktuell Keine Vertretungen</p>";}
 }
 
 echo "<div class=\"cms_spalte_i\">".$code."</div>";

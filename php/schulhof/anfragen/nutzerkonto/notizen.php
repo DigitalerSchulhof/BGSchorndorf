@@ -13,7 +13,7 @@ if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 
 
 
-if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
+if (cms_angemeldet() && cms_r("schulhof.nutzerkonto.notizen")) {
 	// PROFILDATEN UPDATEN
 	$dbs = cms_verbinden('s');
 	$notizen = cms_texttrafo_e_db($notizen);

@@ -324,7 +324,7 @@ if ($CMS_EINSTELLUNGEN['Vertretungsplan extern'] == '1') {
 	if (strlen($vplan) > 0) {
 		echo $vplan;
 	}
-	else {echo "<p class=\"cms_notiz\">Aktuell keine Vertretungen.</p>";}
+	else {echo "<p class=\"cms_notiz\">Aktuell Keine Vertretungen</p>";}
 }
 else {
 	include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
@@ -334,7 +334,7 @@ else {
 	if ((strlen($vplan) > 0) || (strlen($vplan) > 0)) {
 		echo $vplan;
 	}
-	else {echo "<p class=\"cms_notiz\">Aktuell keine Vertretungen.</p>";}
+	else {echo "<p class=\"cms_notiz\">Aktuell Keine Vertretungen</p>";}
 }
 ?>
 </div>
@@ -418,7 +418,7 @@ else {
 <div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_4">
 	<div class="cms_reitermenue_i">
 		<?php
-		if (cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
+		if (cms_r("schulhof.nutzerkonto.notizen")) {
 			$code = "";
 			$notizen = "";
 			$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");

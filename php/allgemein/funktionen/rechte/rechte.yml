@@ -1,7 +1,61 @@
 schulhof:
+  nutzerkonto:
+    notizen: Notizen anlegen
+    termine: Persönliche Termine anlegen
+    postfach:
+      schreiben:
+        lehrer: Lehrern Nachrichten schreiben
+        schüler: Schülern Nachrichten schreiben
+        verwaltungsangestellte: Verwaltungsangestellten Nachrichten schreiben
+        eltern: Eltern Nachrichten schreiben
+        externe: Externen Nachrichten schreiben
+        gruppen:
+          gremien:
+            vorsitzenden: Vorsitzenden von Gremien schreiben
+            aufsicht: Aufsichten von Gremien schreiben
+            mitglieder: Mitgliedern von Gremien schreiben
+          fachschaften:
+            vorsitzenden: Vorsitzenden von Fachschaften schreiben
+            aufsicht: Aufsichten von Fachschaften schreiben
+            mitglieder: Mitgliedern von Fachschaften schreiben
+          klassen:
+            vorsitzenden: Vorsitzenden von Klassen schreiben
+            aufsicht: Aufsichten von Klassen schreiben
+            mitglieder: Mitgliedern von Klassen schreiben
+          kurse:
+            vorsitzenden: Vorsitzenden von Kursen schreiben
+            aufsicht: Aufsichten von Kursen schreiben
+            mitglieder: Mitgliedern von Kursen schreiben
+          stufen:
+            vorsitzenden: Vorsitzenden von Stufen schreiben
+            aufsicht: Aufsichten von Stufen schreiben
+            mitglieder: Mitgliedern von Stufen schreiben
+          argbeitsgemeinschaften:
+            vorsitzenden: Vorsitzenden von Arbeitsgemeinschaften schreiben
+            aufsicht: Aufsichten von Arbeitsgemeinschaften schreiben
+            mitglieder: Mitgliedern von Arbeitsgemeinschaften schreiben
+          arbeitskreise:
+            vorsitzenden: Vorsitzenden von Arbeitskreisen schreiben
+            aufsicht: Aufsichten von Arbeitskreisen schreiben
+            mitglieder: Mitgliedern von Arbeitskreisen schreiben
+          fahrten:
+            vorsitzenden: Vorsitzenden von Fahrten schreiben
+            aufsicht: Aufsichten von Fahrten schreiben
+            mitglieder: Mitgliedern von Fahrten schreiben
+          wettbewerbe:
+            vorsitzenden: Vorsitzenden von Wettbewerben schreiben
+            aufsicht: Aufsichten von Wettbewerben schreiben
+            mitglieder: Mitgliedern von Wettbewerben schreiben
+          ereignisse:
+            vorsitzenden: Vorsitzenden von Ereignissen schreiben
+            aufsicht: Aufsichten von Ereignissen schreiben
+            mitglieder: Mitgliedern von Ereignissen schreiben
+          sonstigegruppen:
+            vorsitzenden: Vorsitzenden von Sonstigen Gruppen schreiben
+            aufsicht: Aufsichten von Sonstigen Gruppen schreiben
+            mitglieder: Mitgliedern von Sonstigen Gruppen schreiben
   verwaltung:
     nutzerkonten:
-      notizen: Notizen anlegen
       anmeldedetails: Anmeldedetails sehen
       ansprechpartner: Ansprechpartner Anderer sehen
       sehen: Nutzerkonten sehen
@@ -451,7 +505,7 @@ artikel:
     bearbeiten: Galerien bearbeiten
     löschen: Galerien löschen
   0: # Mitglieder zugeordneter Gruppen
-    knotenname: "Sichtbarkeit: Lehrer"
+    knotenname: "Sichtbarkeit: Gruppenmitglieder"
     blogeinträge:
       anlegen: Blogeinträge anlegen
       bearbeiten: Blogeinträge bearbeiten
