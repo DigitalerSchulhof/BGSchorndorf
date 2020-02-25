@@ -8,23 +8,7 @@ function cms_einstellungen_anfragennachbehandlung(rueckgabe) {
 function cms_einstellungen_rechte_aendern() {
 	cms_laden_an('Rechte-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 
-	var personen = ["lehrer", "eltern", "schueler", "verwaltungsangestellte", "externe"];
-	var fehler = false;
-	var formulardaten = new FormData();
-	var wert = "";
-
-	for (var p=0; p<personen.length; p++) {
-		wert = document.getElementById('cms_persoenlichetermine_'+personen[p]).value;
-		if (!cms_check_toggle(wert)) {fehler = true;}
-		else {
-			formulardaten.append('termine'+personen[p], wert);
-		}
-		wert = document.getElementById('cms_persoenlichenotiz_'+personen[p]).value;
-		if (!cms_check_toggle(wert)) {fehler = true;}
-		else {
-			formulardaten.append('notizen'+personen[p], wert);
-		}
-	}
+	// TO BE CHANGED
 
 	if (fehler) {
 		cms_meldung_an('fehler', 'Rechte-Einstellungen ändern', '<p>Die Rechte-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -32,46 +16,6 @@ function cms_einstellungen_rechte_aendern() {
 	else {
 		cms_laden_an('Rechte-Einstellungen ändern', 'Die Änderungen werden übernommen.');
 		formulardaten.append("anfragenziel", 	'230');
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
-	}
-}
-
-function cms_einstellungen_postfach_aendern() {
-	cms_laden_an('Postfach-Einstellungen ändern', 'Die Eingaben werden überprüft.');
-
-	var adressaten = ["lehrer","verwaltungsangestellte","schueler","eltern", "externe"];
-	var gruppenvorspann = ["gruppenmitglieder", "gruppenvorsitzende", "gruppenaufsicht"];
-	var gruppen = ['gremien','fachschaften','klassen','kurse','stufen','arbeitsgemeinschaften','arbeitskreise','fahrten','wettbewerbe','ereignisse','sonstigegruppen'];
-	var personen = ["lehrer", "eltern", "schueler", "verwaltungsangestellte","externe"];
-	var fehler = false;
-	var formulardaten = new FormData();
-	var wert = "";
-
-	for (var p=0; p<personen.length; p++) {
-		for (var a=0; a<adressaten.length; a++) {
-			wert = document.getElementById('cms_postfach_'+personen[p]+'an'+adressaten[a]).value;
-			if (!cms_check_toggle(wert)) {fehler = true;}
-			else {
-				formulardaten.append(personen[p]+adressaten[a], wert);
-			}
-		}
-		for (var gv=0; gv<gruppenvorspann.length; gv++) {
-			for (var g=0; g<gruppen.length; g++) {
-				wert = document.getElementById('cms_postfach_'+personen[p]+'an'+gruppenvorspann[gv]+gruppen[g]).value;
-				if (!cms_check_toggle(wert)) {fehler = true;}
-				else {
-					formulardaten.append(personen[p]+gruppenvorspann[gv]+gruppen[g], wert);
-				}
-			}
-		}
-	}
-
-	if (fehler) {
-		cms_meldung_an('fehler', 'Postfach-Einstellungen ändern', '<p>Die Postfach-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		cms_laden_an('Postfach-Einstellungen ändern', 'Die Änderungen werden übernommen.');
-		formulardaten.append("anfragenziel", 	'70');
 		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }
@@ -125,16 +69,6 @@ function cms_einstellungen_gruppen_aendern() {
 	}
 
 	var objekte = ['termine','blog'];
-
-	for (var p=0; p<personen.length; p++) {
-		for (var o=0; o<objekte.length; o++) {
-			wert = document.getElementById('cms_'+personen[p]+objekte[o]+'internvorschlagen').value;
-			if (!cms_check_toggle(wert)) {fehler = true;}
-			else {
-				formulardaten.append(personen[p]+objekte[o]+'internvorschlagen', wert);
-			}
-		}
-	}
 
 	if (fehler) {
 		cms_meldung_an('fehler', 'Gruppen-Einstellungen ändern', '<p>Die Gruppen-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -331,16 +265,6 @@ function cms_einstellungen_website_aendern() {
 
 	var meldung = '<p>Die Website-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
-
-	for (var p=0; p<personen.length; p++) {
-		for (var g=0; g<gruppen.length; g++) {
-			wert = document.getElementById('cms_'+personen[p]+gruppen[g]+'vorschlagen').value;
-			if (!cms_check_toggle(wert)) {fehler = true;}
-			else {
-				formulardaten.append(personen[p]+gruppen[g]+'vorschlagen', wert);
-			}
-		}
-	}
 
 	if (fehler) {
 		meldung += '<li>Die Eingaben für die öffentlichen Termine, Blogeinträge und Galerien sind ungültig.</li>';
