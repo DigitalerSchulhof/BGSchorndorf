@@ -1,6 +1,8 @@
 function cms_stundenplanzeitraeume_vorbereiten(id) {
   cms_laden_an('Stundenplanzeiträume vorbereiten', 'Die Zeiträume des Schuljahres werden vorbereitet ...');
 
+  var id = id || '-';
+
   var formulardaten = new FormData();
   formulardaten.append('id', id);
   formulardaten.append("anfragenziel", 	'325');
@@ -8,6 +10,9 @@ function cms_stundenplanzeitraeume_vorbereiten(id) {
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {
       cms_link('Schulhof/Verwaltung/Planung/Zeiträume');
+    }
+    else if (rueckgabe == "KEIN") {
+      cms_meldung_an('info', 'Kein Schuljahr aktiv', '<p>Für dieses Benutzerkonto ist im Moment kein Schuljahr aktiv.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
     }
     else {cms_fehlerbehandlung(rueckgabe);}
   }

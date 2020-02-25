@@ -1,5 +1,6 @@
 function cms_schuljahrfabrik_vorbereiten(id, ziel, zielschuljahr) {
   var ziel = ziel || 'Grundlagen';
+  var id = id || '-';
   var zielschuljahr = zielschuljahr || null;
   cms_laden_an('Schuljahrfabrik vorbereiten', 'Die Schuljahresfabrik des Schuljahres werden vorbereitet ...');
 
@@ -11,6 +12,9 @@ function cms_schuljahrfabrik_vorbereiten(id, ziel, zielschuljahr) {
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {
       cms_link('Schulhof/Verwaltung/Planung/Schuljahrfabrik/'+ziel);
+    }
+    else if (rueckgabe == "KEIN") {
+      cms_meldung_an('info', 'Kein Schuljahr aktiv', '<p>Für dieses Benutzerkonto ist im Moment kein Schuljahr aktiv.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
     }
     else {cms_fehlerbehandlung(rueckgabe);}
   }

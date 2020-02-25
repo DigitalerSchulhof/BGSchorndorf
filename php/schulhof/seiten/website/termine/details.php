@@ -22,8 +22,6 @@ function cms_termin_details_laden($id, $ziel) {
   $notifikationen = 1;
   $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
   foreach ($CMS_GRUPPEN as $g) {
-    // Speichert die Gruppeninformationen
-    $zugeordnet[$g] = array();
     // Speichert die IDs der zugeordneten Gruppen
     $zgruppenids[$g] = "";
   }
@@ -43,14 +41,15 @@ function cms_termin_details_laden($id, $ziel) {
 
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."termine JOIN $gk ON ".$gk."termine.gruppe = $gk.id WHERE termin = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-  			while ($daten = $anfrage->fetch_assoc()) {
-  				array_push($daten, $zugeordnet[$g]);
-          $zgruppenids[$g] .= "|".$daten['id'];
+      $sql = $dbs->prepare("SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."termine JOIN $gk ON ".$gk."termine.gruppe = $gk.id WHERE termin = ?) AS x ORDER BY bezeichnung");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($zgid);
+  			while ($sql->fetch()) {
+          $zgruppenids[$g] .= "|".$zgid;
   			}
-  			$anfrage->free();
   		}
+      $sql->close();
     }
   }
 

@@ -34,20 +34,22 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,l
   }
 
   // SQL für die gesuchten Schuljahre zusammenbauen
-  $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    while ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC");
+  if ($sql->execute()) {
+    $sql->bind_result($sjid, $sjbez, $sjbeginn, $sjende);
+    while ($sql->fetch()) {
       array_push($schuljahre, $daten);
-      $alleids .= "|".$daten['id'];
-      if (($jetzt < $daten['ende']) && ($jetzt > $daten['beginn'])) {
+      $alleids .= "|".$sjid;
+      if (($jetzt < $sjende) && ($jetzt > $sjbeginn)) {
         $zklasse = '_aktiv';
-        $jahrescode = cms_stundenplanung_zeitraeume_ausgeben($dbs, $daten['id']);
+        $jahrescode = cms_stundenplanung_zeitraeume_ausgeben($dbs, $sjid);
       }
       else {$zklasse = "";}
-      $schuljahrcode .= "<span id=\"cms_zeitraum_".$daten['id']."\" class=\"cms_toggle$zklasse\" onclick=\"cms_zeitraum_jahr_laden('".$daten['id']."', '$spalten')\">".$daten['bezeichnung']."</span> ";
+      $schuljahrcode .= "<span id=\"cms_zeitraum_".$sjid."\" class=\"cms_toggle$zklasse\" onclick=\"cms_zeitraum_jahr_laden('".$sjid."', '$spalten')\">".$sjbez."</span> ";
     }
     $anfrage->free();
   }
+  $sql->close();
   cms_trennen($dbs);
 
   if (strlen($schuljahrcode) > 0) {$schuljahrcode = "<p>".$schuljahrcode;}

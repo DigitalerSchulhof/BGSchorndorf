@@ -29,7 +29,7 @@ if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 
 					// Aktionen
 					$ausgabe .= "<td>";
-					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
+					$bezeichnung = cms_texttrafo_e_event($sjbez);
 					if (cms_r("schulhof.planung.schuljahre.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_schuljahr_bearbeiten_vorbereiten($sjid);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}

@@ -10,9 +10,8 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (isset($_POST['zielschuljahr'])) {$zielschuljahr = $_POST['zielschuljahr'];} else {echo "FEHLER";exit;}
 
+if ($id == '-') {echo "KEIN";exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
-
-
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	$_SESSION["SCHULJAHRFABRIKSCHULJAHR"] = $id;
