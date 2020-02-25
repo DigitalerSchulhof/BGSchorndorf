@@ -1,11 +1,10 @@
 <?php
 
 function cms_postfach_empfaengerpool_generieren($dbs) {
-  global $CMS_EINSTELLUNGEN, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
+  global $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 
   $empfaengerpool = array();
   if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {return $empfaengerpool;}
-  if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {return $empfaengerpool;}
   $sql = "";
   $limit = 4;
 
@@ -30,28 +29,35 @@ function cms_postfach_empfaengerpool_generieren($dbs) {
     $limit = 4;
   }
 
-  if ($CMS_EINSTELLUNGEN['Postfach - '.$benutzergruppe.' dürfen Lehrer schreiben'] == 1) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('l', '$CMS_SCHLUESSEL'))";}
-  if ($CMS_EINSTELLUNGEN['Postfach - '.$benutzergruppe.' dürfen Verwaltungsangestellte schreiben'] == 1) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('v', '$CMS_SCHLUESSEL'))";}
-  if ($CMS_EINSTELLUNGEN['Postfach - '.$benutzergruppe.' dürfen Schüler schreiben'] == 1) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))";}
-  if ($CMS_EINSTELLUNGEN['Postfach - '.$benutzergruppe.' dürfen Eltern schreiben'] == 1) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('e', '$CMS_SCHLUESSEL'))";}
-  if ($CMS_EINSTELLUNGEN['Postfach - '.$benutzergruppe.' dürfen Externe schreiben'] == 1) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('x', '$CMS_SCHLUESSEL'))";}
+  if (cms_r("schulhof.nutzerkonto.postfach.lehrer")) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('l', '$CMS_SCHLUESSEL'))";}
+  if (cms_r("schulhof.nutzerkonto.postfach.verwaltungsangestellte")) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('v', '$CMS_SCHLUESSEL'))";}
+  if (cms_r("schulhof.nutzerkonto.postfach.schüler")) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))";}
+  if (cms_r("schulhof.nutzerkonto.postfach.eltern")) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('e', '$CMS_SCHLUESSEL'))";}
+  if (cms_r("schulhof.nutzerkonto.postfach.externe")) {$sql .= " UNION (SELECT id FROM personen WHERE art = AES_ENCRYPT('x', '$CMS_SCHLUESSEL'))";}
+
+  if (cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {
+    $schuljahrzusatz = "(schuljahr IS NULL OR schuljahr = $CMS_BENUTZERSCHULJAHR)";
+  }
+  else {
+    $schuljahrzusatz = "schuljahr IS NULL";
+  }
 
   foreach ($CMS_GRUPPEN AS $g) {
-    if ($CMS_EINSTELLUNGEN["Postfach - $benutzergruppe dürfen $g Mitglieder schreiben"] == 1) {
-      $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT person AS id FROM $gk"."mitglieder WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND schuljahr = $CMS_BENUTZERSCHULJAHR))";
+    $gk = cms_textzudb($g);
+    if (cms_r("schulhof.nutzerkonto.postfach.gruppen.$gk.mitglieder")) {
+      $sql .= " UNION (SELECT person AS id FROM $gk"."mitglieder WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND $schuljahrzusatz))";
     }
   }
   foreach ($CMS_GRUPPEN AS $g) {
-    if ($CMS_EINSTELLUNGEN["Postfach - $benutzergruppe dürfen $g Vorsitzende schreiben"] == 1) {
+    if (cms_r("schulhof.nutzerkonto.postfach.gruppen.$gk.vorsitzende")) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT person AS id FROM $gk"."vorsitz WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit AND schuljahr = $CMS_BENUTZERSCHULJAHR) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND schuljahr = $CMS_BENUTZERSCHULJAHR)))";
+      $sql .= " UNION (SELECT person AS id FROM $gk"."vorsitz WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit AND $schuljahrzusatz) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND $schuljahrzusatz)))";
     }
   }
-  if ($CMS_EINSTELLUNGEN["Postfach - $benutzergruppe dürfen $g Aufsicht schreiben"] == 1) {
+  if (cms_r("schulhof.nutzerkonto.postfach.gruppen.$gk.aufsicht")) {
     foreach ($CMS_GRUPPEN AS $g) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT person AS id FROM $gk"."aufsicht WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit AND schuljahr = $CMS_BENUTZERSCHULJAHR) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND schuljahr = $CMS_BENUTZERSCHULJAHR)))";
+      $sql .= " UNION (SELECT person AS id FROM $gk"."aufsicht WHERE (gruppe IN (SELECT id AS gruppe FROM $gk WHERE sichtbar >= $limit AND $schuljahrzusatz) OR gruppe IN (SELECT gruppe FROM $gk"."mitglieder JOIN $gk ON $gk"."mitglieder.gruppe = $gk.id WHERE person = $CMS_BENUTZERID AND $schuljahrzusatz)))";
     }
   }
 

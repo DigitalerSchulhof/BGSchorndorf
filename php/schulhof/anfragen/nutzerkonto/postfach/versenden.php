@@ -17,9 +17,9 @@ if (isset($_POST['betreff'])) {$betreff = $_POST['betreff'];} else {echo "FEHLER
 if (isset($_POST['nachricht'])) {$nachricht = $_POST['nachricht'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
-if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {echo "FEHLER";exit;}
+if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {$CMS_BENUTZERSCHULJAHR = null;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
-if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0) && ($CMS_BENUTZERSCHULJAHR !== null)) {echo "FEHLER"; exit;}
 
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $dbs = cms_verbinden('s');
