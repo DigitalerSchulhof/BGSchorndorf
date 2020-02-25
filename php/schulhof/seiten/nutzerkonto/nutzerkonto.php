@@ -514,28 +514,6 @@ if (strlen($aktionen) > 0) {
 	echo "<h2>Aktionen</h2><ul class=\"cms_aktionen_liste\">$aktionen</ul>";
 }
 
-$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
-if (strlen($sonderrollencodeverwaltung) != 0) {
-	$sonderrollencode = "<h2>Aufgaben</h2>";
-	$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";
-	echo $sonderrollencode;
-}
-
-if (cms_r("schulhof.verwaltung.nutzerkonten.notizen")) {
-	$code = "<h2>Notizen</h2>";
-	$notizen = "";
-	$sql = $dbs->prepare("SELECT AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen FROM nutzerkonten WHERE id = $CMS_BENUTZERID");
-	if ($sql->execute()) {
-		$sql->bind_result($notizen);
-		$sql->fetch();
-	}
-	$sql->close();
-
-	if (strlen($notizen) == 0) {$zusatzklasse = " cms_notizzettelleer";} else {$zusatzklasse = "";}
-	$code .= "<p><textarea id=\"cms_persoenlichenotizen\" class=\"cms_notizzettel$zusatzklasse\">$notizen</textarea></p>";
-	$code .= "<p><span class=\"cms_button\" onclick=\"cms_persoenliche_notizen_speichern()\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto\">Abbrechen</a></p>";
-	echo $code;
-}
 ?>
 
 </div>

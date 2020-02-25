@@ -89,7 +89,7 @@ function cms_rolle_ausgeben ($rolle) {
 		$code .= "</div>";
 		$code .= "<div class=\"cms_spalte_2\">";
 			$code .= "<h3>Legende</h3>";
-			$code .= "<span class=\"cms_demorecht\">Unvergebenes Recht</span> ";
+			$code .= "<span class=\"cms_demorecht\">Nicht vergebenes Recht</span> ";
 			$code .= "<span class=\"cms_demorecht cms_demorecht_rolle\">Vergebenes Recht</span> ";
 		$code .= "</div>";
 	$code .= "</div>";

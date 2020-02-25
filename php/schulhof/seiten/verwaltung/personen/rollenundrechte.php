@@ -117,7 +117,7 @@ else {
 				echo "</div>";
 				echo "<div class=\"cms_spalte_2\">";
 					echo "<h3>Legende</h3>";
-					echo "<span class=\"cms_demorecht\">Unvergebenes Recht</span> ";
+					echo "<span class=\"cms_demorecht\">Nicht vergebenes Recht</span> ";
 					echo "<span class=\"cms_demorecht cms_demorecht_nutzer\">Vergebenes Recht</span> ";
 					echo "<span class=\"cms_demorecht cms_demorecht_rolle\">Recht einer zugeordneten Rolle</span> ";
 				echo "</div>";
