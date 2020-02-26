@@ -130,14 +130,14 @@ function issue_body_machen() {
   $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = ?";
   $sql = $dbs->prepare($sql);
   $sql->bind_param("i", $id);
-  if ($anfrage = $dbs->query($sql)) {
+  if ($sql->execute()) {
     $sql->bind_result($id, $vorname, $nachname, $titel);
     if ($sql->fetch()) {
       $ersteller = cms_generiere_anzeigename($vorname, $nachname, $titel);
       $fehler = false;
     }
-    $sql->close();
   }
+  $sql->close();
 
   $beschreibung = explode("\n", $beschreibung);
   foreach($beschreibung as $i => $b)

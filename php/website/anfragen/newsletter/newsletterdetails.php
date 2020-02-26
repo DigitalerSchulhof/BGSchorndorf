@@ -38,20 +38,22 @@ if (cms_angemeldet() && $zugriff) {
     $neu = false;
     $dbs = cms_verbinden('s');
     $modusk = strtolower($modus);
-    $sql = "SELECT * FROM wnewsletter WHERE id = $id";
-    if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
-      if ($anfrage = $dbs->query($sql)) {
-        if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM wnewsletter WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
+        if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $bezeichnung = $daten['bezeichnung'.$modusk];
           $beschreibung = $daten['beschreibung'.$modusk];
           $typ = $daten['typ'.$modusk];
           $aktiv = $daten['aktiv'];
         }
         else {$fehler = true;}
-        $anfrage->free();
       } else $fehler = true;
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 

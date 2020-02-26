@@ -17,62 +17,81 @@ function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = 
 	if ($bereich != 'Bearbeiten') {$sqlzusatz = "AND status = 'a'";} else {$sqlzusatz = "";}
 
 	// Suche Unterseiten
-	$sql = "SELECT id, bezeichnung, art FROM seiten WHERE zuordnung = '$start' $sqlzusatz ORDER BY position ASC";
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		while ($daten = $anfrage->fetch_assoc()) {
-			$neuuntermenuebegonnen = false;
-			$pfadbez = str_replace(' ', '_', $daten['bezeichnung']);
-			if (strlen($pfad)>0) {$neuerpfad = $pfad."/".$pfadbez;}
-			else {$neuerpfad = $pfadbez;}
-			if (($daten['art'] == 'b') || ($daten['art'] == 'g') || ($daten['art'] == 't')) {
-				$seite = date('Y');
-				$monat = cms_monatsnamekomplett(date('n'));
-				if ($daten['art'] == 'b') {$bereich = 'Blog';}
-				if ($daten['art'] == 'g') {$bereich = 'Galerien';}
-				if ($daten['art'] == 't') {$bereich = 'Termine';}
-				$code .= "<li><a href=\"Website/$bereich/$seite/$monat\">".$daten['bezeichnung']."</a>";
-				if ($tiefe > 0) {
-					global $CMS_SCHLUESSEL;
-					$tabelle = strtolower($bereich);
-					$jahrb = null;
-					$jahre = null;
-					if ($daten['art'] == 't') {$sql = "SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')";}
-					else if ($daten['art'] == 'b') {$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = 1";}
-					else if ($daten['art'] == 'g') {$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = 1";}
-					// Jahre ausgeben
-					if ($a = $dbs->query($sql)) {	// Safe weil keine Eingabe
-						if ($j = $a->fetch_assoc()) {
-							if (!is_null($j['beginn'])) {
-								$jahrb = date('Y', $j['beginn']);
-								$jahre = date('Y', $j['ende']);
-							}
-						}
-						$a->free();
-					}
-					$jahrcode = "";
-					if (!is_null($jahrb) && !is_null($jahre)) {
-						for ($i=$jahre; $i>=$jahrb; $i--) {
-							$jahrcode.= "<li><a href=\"Website/$bereich/$i/$monat\">".$i."</a></li>";
-						}
-						if (strlen($jahrcode) > 0) {
-							$code .= "<div class=\"cms_naviuntermenue\"><ul>$jahrcode";
-							$neuuntermenuebegonnen = true;
+	$sql = $dbs->prepare("SELECT id, bezeichnung, art FROM seiten WHERE zuordnung = ? $sqlzusatz ORDER BY position ASC");
+	$sql->bind_param("i", $start);
+	$SEITEN = array();
+	if ($sql->execute()) {
+		$sql->bind_result($sid, $sbez, $sart);
+		while ($sql->fetch()) {
+			$S = array();
+			$S['id'] = $sid;
+			$S['bezeichnung'] = $sbez;
+			$S['art'] = $art;
+			array_push($SEITEN, $S);
+		}
+	}
+	$sql->close();
+
+	foreach ($SEITEN as $daten) {
+		$neuuntermenuebegonnen = false;
+		$pfadbez = str_replace(' ', '_', $daten['bezeichnung']);
+		if (strlen($pfad)>0) {$neuerpfad = $pfad."/".$pfadbez;}
+		else {$neuerpfad = $pfadbez;}
+		if (($daten['art'] == 'b') || ($daten['art'] == 'g') || ($daten['art'] == 't')) {
+			$seite = date('Y');
+			$monat = cms_monatsnamekomplett(date('n'));
+			if ($daten['art'] == 'b') {$bereich = 'Blog';}
+			if ($daten['art'] == 'g') {$bereich = 'Galerien';}
+			if ($daten['art'] == 't') {$bereich = 'Termine';}
+			$code .= "<li><a href=\"Website/$bereich/$seite/$monat\">".$daten['bezeichnung']."</a>";
+			if ($tiefe > 0) {
+				global $CMS_SCHLUESSEL;
+				$tabelle = strtolower($bereich);
+				$jahrb = null;
+				$jahre = null;
+				if ($daten['art'] == 't') {
+					$sql = $dbs->prepare("SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')");
+				}
+				else if ($daten['art'] == 'b') {
+					$sql = $dbs->prepare("SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = 1");
+				}
+				else if ($daten['art'] == 'g') {
+					$sql = $dbs->prepare("SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = 1");
+				}
+				// Jahre ausgeben
+				if ($sql->execute()) {	// Safe weil keine Eingabe
+					$sql->bind_result($jbeginn, $jende);
+					if ($sql->fetch()) {
+						if (!is_null($jbeginn)) {
+							$jahrb = date('Y', $jbeginn);
+							$jahre = date('Y', $jende);
 						}
 					}
 				}
+				$sql->close();
+				$jahrcode = "";
+				if (!is_null($jahrb) && !is_null($jahre)) {
+					for ($i=$jahre; $i>=$jahrb; $i--) {
+						$jahrcode.= "<li><a href=\"Website/$bereich/$i/$monat\">".$i."</a></li>";
+					}
+					if (strlen($jahrcode) > 0) {
+						$code .= "<div class=\"cms_naviuntermenue\"><ul>$jahrcode";
+						$neuuntermenuebegonnen = true;
+					}
+				}
 			}
-			else {
-				if (($bereich != "Seiten") && ($bereich != 'Bearbeiten')) {$bereich = "Seiten";}
-				if (($seite != "Alt") && ($seite != 'Aktuell') && ($seite != 'Neu')) {$seite = "Aktuell";}
-				$code .= "<li><a href=\"Website/$bereich/$seite/$neuerpfad\">".$daten['bezeichnung']."</a>";
-			}
-			if ($tiefe > 0) {
-				$neuetiefe = $tiefe;
-				if ($tiefe != 4) {$neuetiefe--;}
-				$code .= cms_navigation_ausgeben_unterseite($dbs, $daten['id'], $neuetiefe, $neuerpfad, '', $neuuntermenuebegonnen);
-			}
-			$code .= "</li>";
 		}
+		else {
+			if (($bereich != "Seiten") && ($bereich != 'Bearbeiten')) {$bereich = "Seiten";}
+			if (($seite != "Alt") && ($seite != 'Aktuell') && ($seite != 'Neu')) {$seite = "Aktuell";}
+			$code .= "<li><a href=\"Website/$bereich/$seite/$neuerpfad\">".$daten['bezeichnung']."</a>";
+		}
+		if ($tiefe > 0) {
+			$neuetiefe = $tiefe;
+			if ($tiefe != 4) {$neuetiefe--;}
+			$code .= cms_navigation_ausgeben_unterseite($dbs, $daten['id'], $neuetiefe, $neuerpfad, '', $neuuntermenuebegonnen);
+		}
+		$code .= "</li>";
 	}
 
 	if (isset($CMS_URL[1])) {
@@ -118,27 +137,34 @@ function cms_zeitnavigation_ausgeben($dbs, $art) {
 	global $CMS_URL;
 	$code = "";
 	$gefunden = false;
+	$fehler = false;
 
 	$linkart = $CMS_URL[1];
 	if ($CMS_URL[1] == 'Blog') {
-		$sql = "SELECT MAX(datum) as max, MIN(datum) AS min FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4";
+		$sql = $dbs->prepare("SELECT MAX(datum) as max, MIN(datum) AS min FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4");
 	}
 	else if ($CMS_URL[1] == 'Termine') {
-		$sql = "SELECT MAX(ende) as max, MIN(beginn) AS min FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4";
+		$sql = $dbs->prepare("SELECT MAX(ende) as max, MIN(beginn) AS min FROM termine WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4");
 	}
 	else if ($CMS_URL[1] == 'Galerien') {
-		$sql = "SELECT MAX(datum) as max, MIN(datum) AS min FROM galerien WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4";
+		$sql = $dbs->prepare("SELECT MAX(datum) as max, MIN(datum) AS min FROM galerien WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4");
 	}
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-		if ($daten = $anfrage->fetch_assoc()) {
-			if($daten["max"] != NULL && $daten["min"] != NULL) {
-				$minjahr = date('Y', $daten['min']);
-				$maxjahr = date('Y', $daten['max']);
-				$gefunden = true;
+	else {$fehler = true;}
+
+	if (!$fehler) {
+		if ($sql->execute()) {
+			$sql->bind_result($zmax, $zmin);
+			if ($sql->fetch()) {
+				if($zmax != NULL && $zmin != NULL) {
+					$minjahr = date('Y', $zmin);
+					$maxjahr = date('Y', $zmax);
+					$gefunden = true;
+				}
 			}
 		}
-		$anfrage->free();
+		$sql->close();
 	}
+
 
 	if ($gefunden) {
 		if (isset($CMS_URL[2])) {$jahr = $CMS_URL[2];}

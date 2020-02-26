@@ -42,9 +42,11 @@ if (($zugriff) && ($angemeldet)) {
     $neu = false;
     $dbs = cms_verbinden('s');
     $modusk = strtolower($modus);
-    $sql = "SELECT * FROM eventuebersichten WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-      if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM eventuebersichten WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
         if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $termine = $daten['termine'.$modusk];
           $blog = $daten['blog'.$modusk];
@@ -57,9 +59,9 @@ if (($zugriff) && ($angemeldet)) {
         $aktiv = $daten['aktiv'];
       }
       else {$fehler = true;}
-      $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 

@@ -41,10 +41,12 @@ if (cms_angemeldet() && $zugriff) {
     $neu = false;
     $dbs = cms_verbinden('s');
     $modusk = strtolower($modus);
-    $sql = "SELECT * FROM kontaktformulare WHERE id = $id";
-    if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
-      if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-        if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM kontaktformulare WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
+        if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $betreff = $daten['betreff'.$modusk];
           $kopie = $daten['kopie'.$modusk];
           $anhang = $daten['anhang'.$modusk];
@@ -56,18 +58,24 @@ if (cms_angemeldet() && $zugriff) {
       } else {
         $fehler = true;
       }
+    }
+    else {$fehler = true;}
+    $sql->close();
+
+    if (!$fehler) {
       $sql = "SELECT id, name, beschreibung, mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?";
       $sql = $dbs->prepare($sql);
       $sql->bind_param("i", $id);
       $sql->bind_result($eid, $ename, $ebes, $email);
-      if($sql->execute()) {
-        while($sql->fetch()) {
+      if ($sql->execute()) {
+        while ($sql->fetch()) {
           array_push($ids, $eid);
           array_push($namen, $ename);
           array_push($mails, $email);
           array_push($beschreibungen, $ebes);
         }
       }
+      $sql->close();
     }
     else {$fehler = true;}
     cms_trennen($dbs);

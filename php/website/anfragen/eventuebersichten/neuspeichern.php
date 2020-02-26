@@ -52,15 +52,10 @@ if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.anlegen")) {
 		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
-		$sql = "UPDATE eventuebersichten SET spalte = $spalte, position = $position, aktiv = '$aktiv', ";
-		$sql .= "terminealt = '$termine', termineaktuell = '$termine', termineneu = '$termine', ";
-		$sql .= "termineanzahlalt = '$termineanzahl', termineanzahlaktuell = '$termineanzahl', termineanzahlneu = '$termineanzahl', ";
-		$sql .= "blogalt = '$blog', blogaktuell = '$blog', blogneu = '$blog', ";
-		$sql .= "bloganzahlalt = '$bloganzahl', bloganzahlaktuell = '$bloganzahl', bloganzahlneu = '$bloganzahl', ";
-		$sql .= "galeriealt = '$galerie', galerieaktuell = '$galerie', galerieneu = '$galerie', ";
-		$sql .= "galerieanzahlalt = '$galerieanzahl', galerieanzahlaktuell = '$galerieanzahl', galerieanzahlneu = '$galerieanzahl' ";
-		$sql .= "WHERE id = $id";
-		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
+		$sql = $dbs->prepare("UPDATE eventuebersichten SET spalte = ?, position = ?, aktiv = ?, terminealt = ?, termineaktuell = ?, termineneu = ?, termineanzahlalt = ?, termineanzahlaktuell = ?, termineanzahlneu = ?, blogalt = ?, blogaktuell = ?, blogneu = ?, bloganzahlalt = ?, bloganzahlaktuell = ?, bloganzahlneu = ?, galeriealt = ?, galerieaktuell = ?, galerieneu = ?, galerieanzahlalt = ?, galerieanzahlaktuell = ?, galerieanzahlneu = ? WHERE id = ?");
+		$sql->bind_param("iissssiiisssiiisssiiii", $spalte, $position, $aktiv, $termine, $termine, $termine, $termineanzahl, $termineanzahl, $termineanzahl, $blog, $blog, $blog, $bloganzahl, $bloganzahl, $bloganzahl, $galerie, $galerie, $galerie, $galerieanzahl, $galerieanzahl, $galerieanzahl, $id);
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {
