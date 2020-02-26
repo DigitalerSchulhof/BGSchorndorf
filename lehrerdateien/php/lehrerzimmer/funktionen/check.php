@@ -453,7 +453,7 @@ function cms_einstellungen_laden() {
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
 	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen");
-	if ($sql->execute())) {
+	if ($sql->execute()) {
 		$sql->bind_param($inhalt, $wert);
 		while ($sql->fetch()) {
 			$einstellungen[$inhalt] = $wert;

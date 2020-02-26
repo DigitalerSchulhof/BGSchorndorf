@@ -23,17 +23,18 @@ if ($anzeigen) {
   $jahrende = $jahrgewaehlt;
   $jahre = false;
 
-  $sql = "SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM termine";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM termine)";
+  if ($sql->execute()) {
+    $sql->bind_result($tanfang, $tende);
+    if ($sql->fetch()) {
       if (!is_null($daten['anfang'])) {
-        $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);
-        $jahrende = max(date('Y', $daten['ende']), $jahrende);
+        $jahranfang = min(date('Y', $tanfang), $jahranfang);
+        $jahrende = max(date('Y', $tende), $jahrende);
         $jahre = true;
       }
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   if ($jahre) {
     $canzeigen .= "<p>";

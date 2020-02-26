@@ -81,40 +81,40 @@ if (cms_angemeldet() && cms_r("website.elemente.boxen.bearbeiten")) {
 			$boxen[$i]['inhalt'] = cms_texttrafo_e_db($boxen[$i]['inhalt']);
 			if (substr($bids[$i],0,4) == 'temp') {
 				$bid = cms_generiere_kleinste_id('boxen');
-				$sql = "UPDATE boxen SET boxaussen = $id, position = $position, aktiv = '".$boxen[$i]['aktiv']."', ";
-				$sql .= "titelalt = '".$boxen[$i]['titel']."', titelaktuell = '".$boxen[$i]['titel']."', titelneu = '".$boxen[$i]['titel']."', ";
-				$sql .= "inhaltalt = '".$boxen[$i]['inhalt']."', inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";
-				$sql .= "stylealt = '".$boxen[$i]['style']."', styleaktuell = '".$boxen[$i]['style']."', styleneu = '".$boxen[$i]['style']."' ";
-				$sql .= "WHERE id = $bid";
+				$sql = $dbs->prepare("UPDATE boxen SET boxaussen = ?, position = ?, aktiv = ?, titelalt = ?, titelaktuell = ?, titelneu = ?, inhaltalt = ?, inhaltaktuell = ?, inhaltneu = ?, stylealt = ?, styleaktuell = ?, styleneu = ? WHERE id = ?");
+				$sql->bind_param("iissssssssssi", $id, $position, $boxen[$i]['aktiv'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['style'], $boxen[$i]['style'], $bid);
 				array_push($eingetragen, $bid);
 			}
 			else {
 				if (cms_r("website.freigeben")) {
-					$sql = "UPDATE boxen SET position = $position, aktiv = '".$boxen[$i]['aktiv']."', ";
-					$sql .= "titelalt = titelaktuell, titelaktuell = '".$boxen[$i]['titel']."', titelneu = '".$boxen[$i]['titel']."', ";
-					$sql .= "inhaltalt = inhaltaktuell, inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";
-					$sql .= "stylealt = styleaktuell, styleaktuell = '".$boxen[$i]['style']."', styleneu = '".$boxen[$i]['style']."' ";
-					$sql .= "WHERE id = ".$boxen[$i]['id']." AND boxaussen = $id";
+					$sql->prepare("UPDATE boxen SET position = ?, aktiv = ?, titelalt = titelaktuell, titelaktuell = ?, titelneu = ?, inhaltalt = inhaltaktuell, inhaltaktuell = ?, inhaltneu = ?, stylealt = styleaktuell, styleaktuell = ?, styleneu = ? WHERE id = ? AND boxaussen = ?");
+					$sql->bind_param("isssssssii", $position, $boxen[$i]['aktiv'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['style'], $boxen[$i]['id'], $id);
 				}
 				else {
-					$sql = "UPDATE boxen SET position = $position, ";
-					$sql .= "titelneu = '".$boxen[$i]['titel']."', ";
-					$sql .= "inhaltneu = '".$boxen[$i]['inhalt']."', ";
-					$sql .= "styleneu = '".$boxen[$i]['style']."' ";
-					$sql .= "WHERE id = ".$boxen[$i]['id']." AND boxaussen = $id";
+					$sql->prepare("UPDATE boxen SET position = ?, titelneu = ?, inhaltneu = ?, styleneu = ? WHERE id = ? AND boxaussen = ?");
+					$sql->bind_param("isssii", $position, $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['id'], $id);
 				}
 				array_push($eingetragen, $boxen[$i]['id']);
 			}
-			$dbs->query($sql);	// TODO: Irgendwie safe machen
+			$sql->execute();
+			$sql->close();
 			$position++;
 		}
+
 		// Lösche Boxen, die nicht mehr dazu gehören
 		$sqlwhere = "";
+		$loeschfehler = false;
 		foreach ($eingetragen as $e) {
+			if (!cms_check_ganzzahl($e, 0)) {$loeschfehler = true;}
 			$sqlwhere .= " AND id != ".$e;
 		}
-		$sql = "DELETE FROM boxen WHERE boxaussen = $id".$sqlwhere;
-		$dbs->query($sql);
+		if (!$loeschfehler) {
+			$sql = $dbs->prepare("DELETE FROM boxen WHERE boxaussen = ?".$sqlwhere);
+			$sql->bind_param("i", $id);
+			$sql->execute();
+			$sql->close();
+		}
+
 
 		echo "ERFOLG";
 	}
