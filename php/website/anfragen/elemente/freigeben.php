@@ -26,8 +26,10 @@ if (cms_angemeldet() && cms_r("website.freigeben")) {
 		if ($art == 'editoren') {$sql = "alt = aktuell, aktuell = neu";}
 		if ($art == 'downloads') {$sql = "pfadalt = pfadaktuell, pfadaktuell = pfadneu, titelalt = titelaktuell, titelaktuell = titelneu, beschreibungalt = beschreibungaktuell, beschreibungaktuell = beschreibungneu, dateinamealt = dateinameaktuell, dateinameaktuell = dateinameneu, dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = dateigroesseneu";}
 		if ($art == 'boxenaussen') {
-			$sql = "UPDATE boxen SET titelalt = titelaktuell, titelaktuell = titelneu, inhaltalt = inhaltaktuell, inhaltaktuell = inhaltneu, stylealt = styleaktuell, styleaktuell = styleneu WHERE boxaussen = $id";
-			$dbs->query($sql);	// Safe weil ID Check
+			$sql = $dbs->prepare("UPDATE boxen SET titelalt = titelaktuell, titelaktuell = titelneu, inhaltalt = inhaltaktuell, inhaltaktuell = inhaltneu, stylealt = styleaktuell, styleaktuell = styleneu WHERE boxaussen = ?");
+			$sql->bind_param("i", $id);
+			$sql->execute();
+			$sql->close();
 			$sql = "ausrichtungalt = ausrichtungaktuell, ausrichtungaktuell = ausrichtungneu, breitealt = breiteaktuell, breiteaktuell = breiteneu";
 		}
 		if ($art == 'eventuebersichten') {$sql = "terminealt = termineaktuell, termineaktuell = termineneu, termineanzahlalt = termineanzahlaktuell, termineanzahlaktuell = termineanzahlneu, blogalt = blogaktuell, blogaktuell = blogneu, bloganzahlalt = bloganzahlaktuell, bloganzahlaktuell = bloganzahlneu, galeriealt = galerieaktuell, galerieaktuell = galerieneu, galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = galerieanzahlneu";}
@@ -42,8 +44,10 @@ if (cms_angemeldet() && cms_r("website.freigeben")) {
 			$sql->execute();
 			$sql = "titelalt = titelaktuell, titelaktuell = titelneu";
 		}
-		$sql = "UPDATE $art SET ".$sql." WHERE id = $id";
-		$dbs->query($sql);	// TODO: Irgendwie safe machen
+		$sql = $dbs->prepare("UPDATE $art SET ".$sql." WHERE id = ?");
+		$sql->bind_param("i", $id);
+		$sql->execute();
+		$sql->close();
 		cms_trennen($dbs);
 		echo "ERFOLG";
 	}

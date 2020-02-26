@@ -46,19 +46,15 @@ if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.bearbeiten")) {
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
 		if (!cms_r("website.freigeben")) {
-			$sql = "UPDATE eventuebersichten SET position = $position, termineneu = '$termine', termineanzahlneu = '$termineanzahl', blogneu = '$blog', bloganzahlneu = '$bloganzahl', galerieneu = '$galerie', galerieanzahlneu = '$galerieanzahl' WHERE id = $id";
+			$sql = $dbs->prepare("UPDATE eventuebersichten SET position = ?, termineneu = ?, termineanzahlneu = ?, blogneu = ?, bloganzahlneu = ?, galerieneu = ?, galerieanzahlneu = ? WHERE id = ?");
+			$sql->bind_result("isisisii", $position, $termine, $termineanzahl, $blog, $bloganzahl, $galerie, $galerieanzahl, $id);
 		}
 		else {
-			$sql = "UPDATE eventuebersichten SET position = $position, aktiv = '$aktiv', ";
-			$sql .= "terminealt = termineaktuell, termineaktuell = '$termine', termineneu = '$termine', ";
-			$sql .= "termineanzahlalt = termineanzahlaktuell, termineanzahlaktuell = '$termineanzahl', termineanzahlneu = '$termineanzahl', ";
-			$sql .= "blogalt = blogaktuell, blogaktuell = '$blog', blogneu = '$blog', ";
-			$sql .= "bloganzahlalt = bloganzahlaktuell, bloganzahlaktuell = '$bloganzahl', bloganzahlneu = '$bloganzahl', ";
-			$sql .= "galeriealt = galerieaktuell, galerieaktuell = '$galerie', galerieneu = '$galerie', ";
-			$sql .= "galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = '$galerieanzahl', galerieanzahlneu = '$galerieanzahl' ";
-			$sql .= "WHERE id = $id";
+			$sql = $dbs->prepare("UPDATE eventuebersichten SET position = ?, aktiv = ?, terminealt = termineaktuell, termineaktuell = ?, termineneu = ?, termineanzahlalt = termineanzahlaktuell, termineanzahlaktuell = ?, termineanzahlneu = ?, blogalt = blogaktuell, blogaktuell = ?, blogneu = ?, bloganzahlalt = bloganzahlaktuell, bloganzahlaktuell = ?, bloganzahlneu = ?, galeriealt = galerieaktuell, galerieaktuell = ?, galerieneu = ?, galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = ?, galerieanzahlneu = ? WHERE id = ?");
+			$sql->bind_result("isssiissiissiii", $position, $aktiv, $termine, $termine, $termineanzahl, $termineanzahl, $blog, $blog, $bloganzahl, $bloganzahl, $galerie, $galerie, $galerieanzahl, $galerieanzahl, $id);
 		}
-		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {

@@ -228,9 +228,12 @@ function cms_spalte_ausgeben($dbs, $spalte) {
 
   // Suche Elemente
   foreach ($CMS_ELEMENTE as $element) {
-    $sql = "SELECT * FROM $element WHERE spalte = $spalte";
-    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machne
-      while ($e = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM $element WHERE spalte = ?");
+    $sql->bind_param("i", $spalte);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($e = $ergebnis->fetch_assoc()) {
+        $sql->close();
         if ($element == 'editoren') {$elementcode[$e['position']] = cms_editoren_ausgeben($e);}
         if ($element == 'downloads') {$elementcode[$e['position']] = cms_downloads_ausgeben($e);}
         if ($element == 'boxenaussen') {$elementcode[$e['position']] = cms_boxenaussen_ausgeben($dbs, $e);}
@@ -239,7 +242,9 @@ function cms_spalte_ausgeben($dbs, $spalte) {
         if ($element == 'wnewsletter') {$elementcode[$e['position']] = cms_newsletter_ausgeben($dbs, $e);}
         if ($element == 'diashows') {$elementcode[$e['position']] = cms_diashow_ausgeben($dbs, $e);}
       }
-      $anfrage->free();
+    }
+    else {
+      $sql->close();
     }
   }
 

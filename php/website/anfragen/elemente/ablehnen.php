@@ -26,8 +26,10 @@ if (cms_angemeldet() && cms_r("website.freigeben")) {
 		if ($art == 'editroren') {$sql = "neu = aktuell";}
 		else if ($art == 'downloads') {$sql = "pfadneu = pfadaktuell, titelneu = titelaktuell, beschreibungneu = beschreibungaktuell, dateinamealt = dateinameaktuell, dateigroessealt = dateigroesseaktuell";}
 		else if ($art == 'boxenaussen') {
-			$sql = "UPDATE boxen SET titelneu = titelaktuell, inhaltneu = inhaltaktuell, styleneu = styleaktuell WHERE boxaussen = '$id'";
-			$dbs->query($sql);	// Safe weil ID Check
+			$sql = $dbs->prepare("UPDATE boxen SET titelneu = titelaktuell, inhaltneu = inhaltaktuell, styleneu = styleaktuell WHERE boxaussen = ?");
+			$sql->bind_param("i", $id);
+			$sql->execute();
+			$sql->close();
 			$sql = "ausrichtungneu = ausrichtungaktuell, breiteneu = breiteaktuell";
 		}
 		else if ($art == 'eventuebersichten') {$sql = "termineneu = termineaktuell, termineanzahlneu = termineanzahlaktuell, blogneu = blogaktuell, bloganzahlneu = bloganzahlaktuell, galerieneu = galerieaktuell, galerieanzahlneu = galerieanzahlaktuell";}
@@ -41,8 +43,10 @@ if (cms_angemeldet() && cms_r("website.freigeben")) {
 
 			$sql = "titelneu = titelaktuell";
 		}
-		$sql = "UPDATE $art SET ".$sql."  WHERE id = $id";
-		$dbs->query($sql);	// TODO: Irgendwie safe machen
+		$dbs->prepare("UPDATE $art SET ".$sql."  WHERE id = ?");
+		$sql->bind_param("i", $id);
+		$sql->execute();
+		$sql->close();
 		cms_trennen($dbs);
 		echo "ERFOLG";
 	}

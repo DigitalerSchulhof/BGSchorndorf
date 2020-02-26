@@ -35,18 +35,20 @@ if (cms_angemeldet() && cms_r("website.elemente.editor.anlegen")) {
 
 	if (!$fehler) {
 		// Prüfen, ob es eine übergeordnete Seite gibt
-		$sql = "SELECT COUNT(id) AS anzahl FROM spalten WHERE id = '$spalte'";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] == 0) {
+		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM spalten WHERE id = ?");
+		$sql->bind_param("i", $spalte);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl == 0) {
 					$fehler = true;
 					echo "ZUORDNUNG";
 				}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
 		else {$fehler = true;}
+		$sql->close();
 	}
 
 	if (!$fehler) {
@@ -62,8 +64,10 @@ if (cms_angemeldet() && cms_r("website.elemente.editor.anlegen")) {
 		$inhalt = str_replace('<br></p>', '</p>', $inhalt);
 		$inhalt = str_replace('<p></p>', '', $inhalt);
 		$inhalt = cms_texttrafo_e_db($inhalt);
-		$sql = "UPDATE editoren SET spalte = $spalte, position = $position, alt = '$inhalt', aktuell = '$inhalt', neu = '$inhalt', aktiv = '$aktiv' WHERE id = $id";
-		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
+		$sql = $dbs->prepare("UPDATE editoren SET spalte = ?, position = ?, alt = ?, aktuell = ?, neu = ?, aktiv = ? WHERE id = ?");
+		$sql->bind_param("iissssi", $spalte, $position, $inhalt, $inhalt, $inhalt, $aktiv, $id);
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {
