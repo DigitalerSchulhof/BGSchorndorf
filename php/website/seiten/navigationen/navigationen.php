@@ -523,7 +523,7 @@ function cms_mobilnavigation($dbs) {
 		// Hauptnavigation laden
 		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE art = 'h'");
 		if ($sql->execute()) {
-			$ergebnis = $sql->get_result()
+			$ergebnis = $sql->get_result();
 			if ($daten = $ergebnis->fetch_assoc()) {
 				$navi = $daten;
 			}
