@@ -520,7 +520,7 @@ ALTER TABLE `diashows` CHANGE `spalte` `spalte` BIGINT(255) UNSIGNED NULL, CHANG
 
 ALTER TABLE `diashowbilder` CHANGE `diashow` `diashow` BIGINT(255) UNSIGNED NULL, CHANGE `pfadalt` `pfadalt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `pfadaktuell` `pfadaktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `pfadneu` `pfadneu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungalt` `beschreibungalt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungaktuell` `beschreibungaktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungneu` `beschreibungneu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
 
-
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `name` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `beschreibung` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `mail` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
 
 
 

@@ -628,7 +628,6 @@ function cms_mobilnavigation_oberseite($dbs, $oberseite) {
 					$seite['unterseiten'] = $seiteunterseiten;
 				}
 			}
-			$sql->close();
 			$code .= "<li><a href=\"".$pfadzurseite.$bezlink."\">".$seite['bezeichnung']."</a>";
 			if ($seite['unterseiten'] > 0) {
 				$code .= "<span id=\"cms_mobilmenue_knopf_".$seite['id']."\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_aendern('".$seite['id']."')\">&#8628;</span>";
@@ -646,6 +645,7 @@ function cms_mobilnavigation_oberseite($dbs, $oberseite) {
 			$code .= "</li>";
 		}
 	}
+	$sql->close();
 	if (strlen($code) > 0) {$code = "<ul>".$code."</ul>";}
 	return $code;
 }

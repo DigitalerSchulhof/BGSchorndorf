@@ -21,7 +21,7 @@ if (!in_array($art, $elemente)) {$fehler = true;}
 $rarten = array(
 	"editoren" 	=> "editor",
 	"downloads"	=> "download",
-	"boxaussen"	=> "boxen",
+	"boxenaussen"	=> "boxen",
 	"eventuebersichten"	=> "eventübersicht",
 	"kontaktformulare"	=> "kontaktformular",
 	"wnewsletter"	=> "newsletter"
@@ -48,7 +48,7 @@ if (cms_angemeldet() && cms_r("website.elemente.$rart.löschen")) {
 		$sql->bind_param("i", $id);
 		$sql->execute();
 		$sql->close();
-		
+
 		cms_trennen($dbs);
 		echo "ERFOLG";
 	}

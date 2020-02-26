@@ -725,7 +725,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
               if($anhang)
                 $acode .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
               if($kopie)
-                $acode .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
+                $acode .= "<tr><th>Kopie an mich: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
               $acode .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
               $acode .= "<tr></tr>";
               $acode .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";
@@ -766,7 +766,7 @@ function cms_kontaktformulare_ausgeben($dbs, $k) {
               if($anhang)
                 $code .= "<tr><th>Anhänge hinzufügen: </th><td><input type=\"file\" class=\"cms_kontaktformular_anhang\" multiple><p class=\"cms_notiz\">Insgesamt max. 8MiB</p></td></tr>";
               if($kopie)
-                $code .= "<tr><th>Kopie an Sie: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
+                $code .= "<tr><th>Kopie an mich: </th><td>".cms_select_generieren("", "cms_kontaktformular_kopie", array(1 => "Ja", 0 => "Nein"), 1, true)."</td></tr>";
               $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung: </th><td>".cms_captcha_generieren('', $uid)." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</tr>";
               $code .= "<tr></tr>";
               $code .= "<tr><th></th><td><input type=\"text\" class=\"cms_spamverhinderung\" id=\"cms_spamverhinderung_$uid\"></td></tr>";

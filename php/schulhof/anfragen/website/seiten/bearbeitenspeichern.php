@@ -21,8 +21,6 @@ if (isset($_SESSION['SEITENBEARBEITENZUORDNUNG'])) {$zuordnung = $_SESSION['SEIT
 else {if (is_null($_SESSION['SEITENBEARBEITENZUORDNUNG'])) {$zuordnung = '-';} else {echo "FEHLER"; exit;}}
 if (isset($_SESSION['SEITENBEARBEITENID'])) {$id = $_SESSION['SEITENBEARBEITENID'];} else {echo "FEHLER"; exit;}
 
-
-
 if (cms_angemeldet() && cms_r("website.seiten.bearbeiten")) {
 	$fehler = false;
 
@@ -48,7 +46,7 @@ if (cms_angemeldet() && cms_r("website.seiten.bearbeiten")) {
 
 	$dbs = cms_verbinden('s');
 	if (!$fehler) {
-		if ($zuordnung == '-') {$zuordnung = "zuordnung IS NULL";}
+		if ($zuordnung === '-') {$zuordnung = "zuordnung IS NULL";}
 		else if (cms_check_ganzzahl($zuordnung)) {$zuordnung = "zuordnung = $zuordnung";}
 		else {$zuordnung = "";}
 		// Prüfen, ob die Position nicht über max liegt

@@ -112,7 +112,7 @@ function cms_schulhof_website_seite_neu_speichern() {
 				cms_meldung_an('fehler', 'Neue Seite anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe.match(/MAXPOS/)) {
-				meldung += '<li>die Seite, wurde an einer ungültige Position einsortiert.</li>';
+				meldung += '<li>die Seite, wurde an einer ungültigen Position einsortiert.</li>';
 				cms_meldung_an('fehler', 'Neue Seite anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
@@ -221,7 +221,7 @@ function cms_schulhof_website_seite_bearbeiten() {
 				cms_meldung_an('fehler', 'Seite bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe.match(/MAXPOS/)) {
-				meldung += '<li>die Seite, wurde an einer ungültige Position einsortiert.</li>';
+				meldung += '<li>die Seite, wurde an einer ungültigen Position einsortiert.</li>';
 				cms_meldung_an('fehler', 'Seite bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {

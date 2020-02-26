@@ -54,7 +54,6 @@ if (cms_angemeldet() && $zugriff) {
           $aktiv = $daten['aktiv'];
         }
         else {$fehler = true;}
-        $anfrage->free();
       } else {
         $fehler = true;
       }
