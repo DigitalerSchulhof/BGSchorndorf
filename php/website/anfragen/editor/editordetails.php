@@ -36,20 +36,21 @@ if (($zugriff) && ($angemeldet)) {
   if ($id != '-') {
     $neu = false;
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM editoren WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-      if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM editoren WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
         if ($modus == 'Aktuell') {$inhalt = $daten['aktuell'];}
         else if ($modus == 'Neu') {$inhalt = $daten['neu'];}
         else if ($modus == 'Alt') {$inhalt = $daten['alt'];}
         else {$fehler = true;}
-
         $aktiv = $daten['aktiv'];
       }
       else {$fehler = true;}
-      $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 

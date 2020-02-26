@@ -47,10 +47,15 @@ if (cms_angemeldet() && cms_r("website.elemente.download.bearbeiten")) {
 		$titel = cms_texttrafo_e_db($titel);
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
 		if (!cms_r("website.freigeben")) {
-			$sql = "UPDATE downloads SET position = $position, pfadneu = '$pfad', titelneu = '$titel', beschreibungneu = '$beschreibung', dateinameneu = '$dateiname', dateigroesseneu = '$dateigroesse' WHERE id = $id";
+			$sql = $dbs->prepare("UPDATE downloads SET position = ?, pfadneu = ?, titelneu = ?, beschreibungneu = ?, dateinameneu = ?, dateigroesseneu = ? WHERE id = ?");
+			$sql->bind_param("isssssi", $position, $pfad, $titel, $beschreibung, $dateiname, $dateigroesse, $id);
 		}
-		else {$sql = "UPDATE downloads SET position = $position, aktiv = '$aktiv', pfadalt = pfadaktuell, pfadaktuell = '$pfad', pfadneu = '$pfad', titelalt = titelaktuell, titelaktuell = '$titel', titelneu = '$titel', beschreibungalt = beschreibungaktuell, beschreibungaktuell = '$beschreibung', beschreibungneu = '$beschreibung', dateinamealt = dateinameaktuell, dateinameaktuell = '$dateiname', dateinameneu = '$dateiname', dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = '$dateigroesse', dateigroesseneu = '$dateigroesse' WHERE id = $id";}
-		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
+		else {
+			$sql = $dbs->prepare("UPDATE downloads SET position = ?, aktiv = ?, pfadalt = pfadaktuell, pfadaktuell = ?, pfadneu = ?, titelalt = titelaktuell, titelaktuell = ?, titelneu = ?, beschreibungalt = beschreibungaktuell, beschreibungaktuell = ?, beschreibungneu = ?, dateinamealt = dateinameaktuell, dateinameaktuell = ?, dateinameneu = ?, dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = ?, dateigroesseneu = ? WHERE id = ?");
+			$sql->bind_param("isssssssssssi", $position, $aktiv, $pfad, $pfad, $titel, $titel, $beschreibung, $beschreibung, $dateiname, $dateiname, $dateigroesse, $dateigroesse, $id);
+		}
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {

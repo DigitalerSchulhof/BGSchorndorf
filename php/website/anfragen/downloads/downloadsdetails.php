@@ -40,9 +40,11 @@ if (cms_angemeldet() && $zugriff) {
   if ($id != '-') {
     $neu = false;
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM downloads WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-      if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM downloads WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
         if ($modus == 'Aktuell') {
           $pfad = $daten['pfadaktuell'];
           $titel = $daten['titelaktuell'];
@@ -72,6 +74,7 @@ if (cms_angemeldet() && $zugriff) {
       $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 

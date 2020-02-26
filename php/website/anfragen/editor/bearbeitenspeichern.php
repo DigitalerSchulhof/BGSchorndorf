@@ -36,9 +36,16 @@ if (cms_angemeldet() && cms_r("website.elemente.editor.bearbeiten")) {
 		$inhalt = str_replace('<br></p>', '</p>', $inhalt);
 		$inhalt = str_replace('<p></p>', '', $inhalt);
 		$inhalt = cms_texttrafo_e_db($inhalt);
-		if (!cms_r("website.freigeben")) {$sql = "UPDATE editoren SET position = $position, neu = '$inhalt' WHERE id = $id";}
-		else {$sql = "UPDATE editoren SET position = $position, alt = aktuell, aktuell = '$inhalt', neu = '$inhalt', aktiv = '$aktiv' WHERE id = $id";}
-		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
+		if (!cms_r("website.freigeben")) {
+			$sql = $dbs->prepare("UPDATE editoren SET position = ?, neu = ? WHERE id = ?");
+			$sql->bind_param("isi", $position, $inhalt, $id);
+		}
+		else {
+			$sql = $dbs->prepare("UPDATE editoren SET position = ?, alt = aktuell, aktuell = ?, neu = ?, aktiv = ? WHERE id = ?");
+			$sql->bind_param("isssi", $position, $inhalt, $inhalt, $aktiv, $id);
+		}
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {

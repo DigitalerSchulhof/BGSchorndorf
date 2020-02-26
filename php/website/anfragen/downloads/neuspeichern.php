@@ -46,18 +46,20 @@ if (cms_angemeldet() && cms_r("website.elemente.download.anlegen")) {
 
 	if (!$fehler) {
 		// Prüfen, ob es eine übergeordnete Seite gibt
-		$sql = "SELECT COUNT(id) AS anzahl FROM spalten WHERE id = '$spalte'";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] == 0) {
+		$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM spalten WHERE id = ?");
+		$sql->bind_param("i", $spalte);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl == 0) {
 					$fehler = true;
 					echo "ZUORDNUNG";
 				}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
 		else {$fehler = true;}
+		$sql->close();
 	}
 
 	if (!$fehler) {
@@ -67,13 +69,14 @@ if (cms_angemeldet() && cms_r("website.elemente.download.anlegen")) {
 	}
 
 	if (!$fehler) {
-		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
 		$titel = cms_texttrafo_e_db($titel);
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
-		$sql = "UPDATE downloads SET spalte = $spalte, position = $position, aktiv = '$aktiv', pfadalt = '$pfad', pfadaktuell = '$pfad', pfadneu = '$pfad', titelalt = '$titel', titelaktuell = '$titel', titelneu = '$titel', beschreibungalt = '$beschreibung', beschreibungaktuell = '$beschreibung', beschreibungneu = '$beschreibung', dateinamealt = '$dateiname', dateinameaktuell = '$dateiname', dateinameneu = '$dateiname', dateigroessealt = '$dateigroesse', dateigroesseaktuell = '$dateigroesse', dateigroesseneu = '$dateigroesse' WHERE id = $id";
-		$anfrage = $dbs->query($sql);	// TODO: Irgendwie safe machen
+		$sql = $dbs->prepare("UPDATE downloads SET spalte = ?, position = ?, aktiv = ?, pfadalt = ?, pfadaktuell = ?, pfadneu = ?, titelalt = ?, titelaktuell = ?, titelneu = ?, beschreibungalt = ?, beschreibungaktuell = ?, beschreibungneu = ?, dateinamealt = ?, dateinameaktuell = ?, dateinameneu = ?, dateigroessealt = ?, dateigroesseaktuell = ?, dateigroesseneu = ? WHERE id = ?");
+		$sql->bind_param("iissssssssssssssssi", $spalte, $position, $aktiv, $pfad, $pfad, $pfad, $titel, $titel, $titel, $beschreibung, $beschreibung, $beschreibung, $dateiname, $dateiname, $dateiname, $dateigroesse, $dateigroesse, $dateigroesse, $id);
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {

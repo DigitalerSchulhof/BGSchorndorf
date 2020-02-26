@@ -36,18 +36,20 @@ if (cms_angemeldet() && $zugriff) {
   if ($id != '-') {
     $neu = false;
     $modusk = strtolower($modus);
-    $sql = "SELECT * FROM diashows WHERE id = $id";
+    $sql = $dbs->prepare("SELECT * FROM diashows WHERE id = ?");
+    $sql->bind_param("i", $id);
     if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
-      if ($anfrage = $dbs->query($sql)) {
-        if ($daten = $anfrage->fetch_assoc()) {
+      if ($sql->execute()) {
+        $ergebnis = $sql->get_result();
+        if ($daten = $ergebnis->fetch_assoc()) {
           $titel = $daten['titel'.$modusk];
           $aktiv = $daten['aktiv'];
         }
         else {$fehler = true;}
-        $anfrage->free();
       } else $fehler = true;
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 

@@ -38,9 +38,11 @@ if (cms_angemeldet() && $zugriff) {
     $neu = false;
     $modusk = strtolower($modus);
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM boxenaussen WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-      if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM boxenaussen WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
         if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $ausrichtung = $daten['ausrichtung'.$modusk];
           $breite = $daten['breite'.$modusk];
@@ -49,13 +51,15 @@ if (cms_angemeldet() && $zugriff) {
         $aktiv = $daten['aktiv'];
       }
       else {$fehler = true;}
-      $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
 
-    $sql = "SELECT * FROM boxen WHERE boxaussen = ".$id." ORDER BY position";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-      while ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM boxen WHERE boxaussen = ? ORDER BY position");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      while ($daten = $ergebnis->fetch_assoc()) {
         if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $boxen[$daten['position']-1]['titel'] = $daten['titel'.$modusk];
           $boxen[$daten['position']-1]['inhalt'] = $daten['inhalt'.$modusk];
@@ -64,9 +68,9 @@ if (cms_angemeldet() && $zugriff) {
         $boxen[$daten['position']-1]['id'] = $daten['id'];
         $boxen[$daten['position']-1]['aktiv'] = $daten['aktiv'];
       }
-      $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 

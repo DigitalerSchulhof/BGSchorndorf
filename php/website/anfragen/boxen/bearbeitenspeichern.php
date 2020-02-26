@@ -87,11 +87,11 @@ if (cms_angemeldet() && cms_r("website.elemente.boxen.bearbeiten")) {
 			}
 			else {
 				if (cms_r("website.freigeben")) {
-					$sql->prepare("UPDATE boxen SET position = ?, aktiv = ?, titelalt = titelaktuell, titelaktuell = ?, titelneu = ?, inhaltalt = inhaltaktuell, inhaltaktuell = ?, inhaltneu = ?, stylealt = styleaktuell, styleaktuell = ?, styleneu = ? WHERE id = ? AND boxaussen = ?");
+					$sql = $dbs->prepare("UPDATE boxen SET position = ?, aktiv = ?, titelalt = titelaktuell, titelaktuell = ?, titelneu = ?, inhaltalt = inhaltaktuell, inhaltaktuell = ?, inhaltneu = ?, stylealt = styleaktuell, styleaktuell = ?, styleneu = ? WHERE id = ? AND boxaussen = ?");
 					$sql->bind_param("isssssssii", $position, $boxen[$i]['aktiv'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['style'], $boxen[$i]['id'], $id);
 				}
 				else {
-					$sql->prepare("UPDATE boxen SET position = ?, titelneu = ?, inhaltneu = ?, styleneu = ? WHERE id = ? AND boxaussen = ?");
+					$sql = $dbs->prepare("UPDATE boxen SET position = ?, titelneu = ?, inhaltneu = ?, styleneu = ? WHERE id = ? AND boxaussen = ?");
 					$sql->bind_param("isssii", $position, $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['id'], $id);
 				}
 				array_push($eingetragen, $boxen[$i]['id']);

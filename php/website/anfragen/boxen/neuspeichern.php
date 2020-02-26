@@ -46,9 +46,9 @@ if (cms_angemeldet() && cms_r("website.elemente.boxen.anlegen")) {
 				}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
 		else {$fehler = true;}
+		$sql->close();
 	}
 
 	// Boxen überprüfen
@@ -90,12 +90,10 @@ if (cms_angemeldet() && cms_r("website.elemente.boxen.anlegen")) {
 			$boxen[$i]['titel'] = cms_texttrafo_e_db($boxen[$i]['titel']);
 			$boxen[$i]['inhalt'] = cms_texttrafo_e_db($boxen[$i]['inhalt']);
 			$bid = cms_generiere_kleinste_id('boxen');
-			$sql = "UPDATE boxen SET boxaussen = $id, position = $position, aktiv = '".$boxen[$i]['aktiv']."', ";
-			$sql .= "titelalt = '".$boxen[$i]['titel']."', titelaktuell = '".$boxen[$i]['titel']."', titelneu = '".$boxen[$i]['titel']."', ";
-			$sql .= "inhaltalt = '".$boxen[$i]['inhalt']."', inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";
-			$sql .= "stylealt = '".$boxen[$i]['style']."', styleaktuell = '".$boxen[$i]['style']."', styleneu = '".$boxen[$i]['style']."' ";
-			$sql .= "WHERE id = $bid";
-			$dbs->query($sql);	// TODO: Irgendwie safe machen
+			$sql = $dbs->prepare("UPDATE boxen SET boxaussen = ?, position = ?, aktiv = ?, titelalt = ?, titelaktuell = ?, titelneu = ?, inhaltalt = ?, inhaltaktuell = ?, inhaltneu = ?, stylealt = ?, styleaktuell = ?, styleneu = ? WHERE id = ?");
+			$sql->bind_param("iissssssssssi", $id, $position, $boxen[$i]['aktiv'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['style'], $boxen[$i]['style'], $bid);
+			$sql->execute();
+			$sql->close();
 			$position++;
 		}
 		echo "ERFOLG";
