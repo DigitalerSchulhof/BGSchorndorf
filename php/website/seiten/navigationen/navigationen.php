@@ -235,70 +235,96 @@ function cms_navigationsebene_ausgeben($dbs, $pfad, $gesamtpfad, $oberseite, $ti
 
 	$code = "";
 	$finale = "";
-	if ($oberseite == '-') {$sql = "SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung IS NULL $sqlzusatz ORDER BY position";}
-	else {$sql = "SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung = '$oberseite' $sqlzusatz ORDER BY position";}
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
-		while ($daten = $anfrage->fetch_assoc()) {
-			$untermneueneubegonnen = false;
-			$pfadbez = str_replace(' ', '_', $daten['bezeichnung']);
-			if (strlen($pfad)>0) {$neuerpfad = $pfad."/".$pfadbez;}
-			else {$neuerpfad = $pfadbez;}
+	if ($oberseite == '-') {
+		$sql = $dbs->prepare("SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung IS NULL $sqlzusatz ORDER BY position");
+	}
+	else {
+		$sql = $dbs->prepare("SELECT id, bezeichnung, zuordnung, art FROM seiten WHERE zuordnung = ? $sqlzusatz ORDER BY position");
+		$sql->bind_param("i", $oberseite);
+	}
 
-			if (($daten['art'] == 'b') || ($daten['art'] == 'g') || ($daten['art'] == 't')) {
-				$seite = date('Y');
-				$monat = cms_monatsnamekomplett(date('n'));
-				if ($daten['art'] == 'b') {$bereich = 'Blog';}
-				if ($daten['art'] == 'g') {$bereich = 'Galerien';}
-				if ($daten['art'] == 't') {$bereich = 'Termine';}
-				if ($bereich == $CMS_URL[1]) {$zklasse = " class=\"cms_navigation_aktiveseite\"";} else {$zklasse = "";}
-				$code .= "<li><a$zklasse href=\"Website/$bereich/$seite/$monat\">".$daten['bezeichnung']."</a>";
+	$SEITEN = array();
+	if ($sql->execute()) {
+		$sql->bind_result($sid, $sbez, $szu, $sart);
+		while ($sql->fetch()) {
+			$S = array();
+			$S['id'] = $sid;
+			$S['bezeichnung'] = $sbez;
+			$S['zuordnung'] = $szu;
+			$S['art'] = $sart;
+			array_push($SEITEN, $S);
+		}
+	}
+	$sql->close();
 
-				if (($tiefe > 0) && ($CMS_URL[1] == $bereich) && ((is_int(intval($CMS_URL[2]))) || ($CMS_URL[2] != '-'))) {
-					global $CMS_SCHLUESSEL;
-					$tabelle = strtolower($bereich);
-					$jahrb = null;
-					$jahre = null;
-					if ($daten['art'] == 't') {$sql = "SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')";}
-					else if ($daten['art'] == 'b') {$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = 1";}
-					else if ($daten['art'] == 'g') {$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = 1";}
-					// Jahre ausgeben
-					if ($a = $dbs->query($sql)) {	// Safe weil keine Eingabe
-						if ($j = $a->fetch_assoc()) {
-							if (!is_null($j['beginn'])) {
-								$jahrb = date('Y', $j['beginn']);
-								$jahre = date('Y', $j['ende']);
-							}
-						}
-						$a->free();
-					}
-					if (!is_null($jahrb) && !is_null($jahre)) {
-						$jahrcode = "";
-						for ($i=$jahre; $i>=$jahrb; $i--) {
-							if ($i == $CMS_URL[2]) {$zklasse = " class=\"cms_navigation_aktiveseite\"";} else {$zklasse = "";}
-							$jahrcode.= "<li><a$zklasse href=\"Website/$bereich/$i/$monat\">".$i."</a></li>";
-						}
-						if (strlen($jahrcode) > 0) {
-							$code .= "<div class=\"cms_naviuntermenue\"><ul>$jahrcode";
-							$untermneueneubegonnen = true;
+
+	foreach ($SEITEN as $daten) {
+		$untermneueneubegonnen = false;
+		$pfadbez = str_replace(' ', '_', $daten['bezeichnung']);
+		if (strlen($pfad)>0) {$neuerpfad = $pfad."/".$pfadbez;}
+		else {$neuerpfad = $pfadbez;}
+
+		if (($daten['art'] == 'b') || ($daten['art'] == 'g') || ($daten['art'] == 't')) {
+			$seite = date('Y');
+			$monat = cms_monatsnamekomplett(date('n'));
+			if ($daten['art'] == 'b') {$bereich = 'Blog';}
+			if ($daten['art'] == 'g') {$bereich = 'Galerien';}
+			if ($daten['art'] == 't') {$bereich = 'Termine';}
+			if ($bereich == $CMS_URL[1]) {$zklasse = " class=\"cms_navigation_aktiveseite\"";} else {$zklasse = "";}
+			$code .= "<li><a$zklasse href=\"Website/$bereich/$seite/$monat\">".$daten['bezeichnung']."</a>";
+
+			if (($tiefe > 0) && ($CMS_URL[1] == $bereich) && ((is_int(intval($CMS_URL[2]))) || ($CMS_URL[2] != '-'))) {
+				global $CMS_SCHLUESSEL;
+				$tabelle = strtolower($bereich);
+				$jahrb = null;
+				$jahre = null;
+				if ($daten['art'] == 't') {
+					$sql = $dbs->prepare("SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')");
+				}
+				else if ($daten['art'] == 'b') {
+					$sql = $dbs->prepare("SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = 1");
+				}
+				else if ($daten['art'] == 'g') {
+					$sql = $dbs->prepare("SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = 1");
+				}
+				// Jahre ausgeben
+				if ($sql->execute()) {
+					$sql->bind_result($jbeginn, $jende);
+					if ($sql->fetch()) {
+						if (!is_null($jbeginn)) {
+							$jahrb = date('Y', $jbeginn);
+							$jahre = date('Y', $jende);
 						}
 					}
 				}
+				$sql->close();
+				if (!is_null($jahrb) && !is_null($jahre)) {
+					$jahrcode = "";
+					for ($i=$jahre; $i>=$jahrb; $i--) {
+						if ($i == $CMS_URL[2]) {$zklasse = " class=\"cms_navigation_aktiveseite\"";} else {$zklasse = "";}
+						$jahrcode.= "<li><a$zklasse href=\"Website/$bereich/$i/$monat\">".$i."</a></li>";
+					}
+					if (strlen($jahrcode) > 0) {
+						$code .= "<div class=\"cms_naviuntermenue\"><ul>$jahrcode";
+						$untermneueneubegonnen = true;
+					}
+				}
 			}
-			else {
-				if (($bereich != "Seiten") && ($bereich != 'Bearbeiten')) {$bereich = "Seiten";}
-				if (($seite != "Alt") && ($seite != 'Aktuell') && ($seite != 'Neu')) {$seite = "Aktuell";}
-				if ($neuerpfad == substr($gesamtpfad, 0, strlen($neuerpfad))) {$zklasse = " class=\"cms_navigation_aktiveseite\"";} else {$zklasse = "";}
-				$code .= "<li><a$zklasse href=\"Website/$bereich/$seite/$neuerpfad\">".$daten['bezeichnung']."</a>";
-			}
-
-			$impfad = preg_match("/".str_replace('/', '\/', $neuerpfad)."/", $gesamtpfad);
-			if (($tiefe > 0) && $impfad) {
-				$neuetiefe = $tiefe;
-				if ($tiefe != 4) {$neuetiefe--;}
-				$code .= cms_navigationsebene_ausgeben($dbs, $neuerpfad, $gesamtpfad, $daten['id'], $neuetiefe, '', $durchgang+1, $untermneueneubegonnen);
-			}
-			$code .= "</li>";
 		}
+		else {
+			if (($bereich != "Seiten") && ($bereich != 'Bearbeiten')) {$bereich = "Seiten";}
+			if (($seite != "Alt") && ($seite != 'Aktuell') && ($seite != 'Neu')) {$seite = "Aktuell";}
+			if ($neuerpfad == substr($gesamtpfad, 0, strlen($neuerpfad))) {$zklasse = " class=\"cms_navigation_aktiveseite\"";} else {$zklasse = "";}
+			$code .= "<li><a$zklasse href=\"Website/$bereich/$seite/$neuerpfad\">".$daten['bezeichnung']."</a>";
+		}
+
+		$impfad = preg_match("/".str_replace('/', '\/', $neuerpfad)."/", $gesamtpfad);
+		if (($tiefe > 0) && $impfad) {
+			$neuetiefe = $tiefe;
+			if ($tiefe != 4) {$neuetiefe--;}
+			$code .= cms_navigationsebene_ausgeben($dbs, $neuerpfad, $gesamtpfad, $daten['id'], $neuetiefe, '', $durchgang+1, $untermneueneubegonnen);
+		}
+		$code .= "</li>";
 	}
 
 	if (($tiefe > 0) && (($CMS_URL[1] == 'Blog') || ($CMS_URL[1] == 'Termine') || ($CMS_URL[1] == 'Galerien')) &&
@@ -307,19 +333,27 @@ function cms_navigationsebene_ausgeben($dbs, $pfad, $gesamtpfad, $oberseite, $ti
 		$jahrb = null;
 		$jahre = null;
 		$monat = cms_monatsnamekomplett(date('n'));
-		if ($CMS_URL[1] == 'Termine') {$sql = "SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')";}
-		else if ($CMS_URL[1] == 'Blog') {$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = 1";}
-		else if ($CMS_URL[1] == 'Galerien') {$sql = "SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = 1";}
+		if ($CMS_URL[1] == 'Termine') {
+			$sql = $dbs->prepare("SELECT MIN(beginn) AS beginn, MAX(ende) AS ende FROM termine WHERE oeffentlicht = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND genehmigt = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')");
+		}
+		else if ($CMS_URL[1] == 'Blog') {
+			$sql = $dbs->prepare("SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM blogeintraege WHERE aktiv = 1");
+		}
+		else if ($CMS_URL[1] == 'Galerien') {
+			$sql = $dbs->prepare("SELECT MIN(datumaktuell) AS beginn, MAX(datumaktuell) AS ende FROM galerien WHERE aktiv = 1");
+		}
 		// Jahre ausgeben
-		if ($a = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			if ($j = $a->fetch_assoc()) {
-				if (!is_null($j['beginn'])) {
-					$jahrb = date('Y', $j['beginn']);
-					$jahre = date('Y', $j['ende']);
+		if ($sql->execute()) {
+			$sql->bind_result($jbeginn, $jeden);
+			if ($sql->fetch()) {
+				if (!is_null($jbeginn)) {
+					$jahrb = date('Y', $jbeginn);
+					$jahre = date('Y', $jeden);
 				}
 			}
-			$a->free();
 		}
+		$sql->close();
+
 		if (!is_null($jahrb) && !is_null($jahre)) {
 			$jahrcode = "";
 			for ($i=$jahre; $i>=$jahrb; $i--) {
@@ -377,14 +411,16 @@ function cms_navimenue_monat_unterseiten($dbs, $art, $jahr, $monat) {
 		$mname = cms_monatsnamekomplett($monat);
 		$monatsbeginn = mktime(0,0,0,$monat, 1, $jahr);
 		$monatsende = mktime(0,0,0,$monat+1,1,$jahr)-1;
-		$sql = "SELECT titelaktuell FROM blogeintraege WHERE aktiv = '1' AND (datumaktuell BETWEEN $monatsbeginn AND $monatsende) ORDER BY datumaktuell ASC, titelaktuell ASC";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			while ($daten = $anfrage->fetch_assoc()) {
-				$titellink = str_replace(' ', '_', $daten['titelaktuell']);
-				$code .= "<li><a href=\"Website/$bereich/$jahr/$mname"."/".$titellink."\">".$daten['titelaktuell']."</a></li>";
+		$sql = $dbs->prepare("SELECT titelaktuell FROM blogeintraege WHERE aktiv = '1' AND (datumaktuell BETWEEN ? AND ?) ORDER BY datumaktuell ASC, titelaktuell ASC");
+		$sql->bind_param("ii", $monatsbeginn, $monatsende);
+		if ($sql->execute()) {
+			$sql->bind_result($titakt);
+			while ($sql->fetch()) {
+				$titellink = str_replace(' ', '_', $titakt);
+				$code .= "<li><a href=\"Website/$bereich/$jahr/$mname"."/".$titellink."\">$titakt</a></li>";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		if (strlen($code) > 0) {
 			$code = "<div class=\"cms_naviuntermenue\"><ul>$code</ul></div>";
 		}
@@ -414,15 +450,18 @@ function cms_navigation_ausgeben ($id) {
 	$dbs = cms_verbinden('s');
 	$nav = "-";
 	if ((($id == 'h') && ($CMS_GERAET == 'P')) || ($id == 's') || ($id == 'f')) {
-		$sql = "SELECT * FROM navigationen WHERE art = '$id'";
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE art = ?");
+		$sql->bind_param("s", $id);
 	}
 	else {
-		$sql = "SELECT * FROM navigationen WHERE id = $id";
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE id = ?");
+		$sql->bind_param("i", $id);
 	}
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
-		if ($daten = $anfrage->fetch_assoc()) {$nav = $daten;}
-		$anfrage->free();
+	if ($sql->execute()) {
+		$ergebnis = $sql->get_result();
+		if ($daten = $ergebnis->fetch_assoc()) {$nav = $daten;}
 	}
+	$sql->close();
 	$code = "";
 
 	if ($nav != '-') {
@@ -482,38 +521,55 @@ function cms_mobilnavigation($dbs) {
 
 		$navicode .= "<div id=\"cms_mobilmenue_seiten\">";
 		// Hauptnavigation laden
-		$sql = "SELECT * FROM navigationen WHERE art = 'h'";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			if ($daten = $anfrage->fetch_assoc()) {
+		$sql = $dbs->prepare("SELECT * FROM navigationen WHERE art = 'h'");
+		if ($sql->execute()) {
+			$ergebnis = $sql->get_result()
+			if ($daten = $ergebnis->fetch_assoc()) {
 				$navi = $daten;
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
+		$sql->close();
 
 		if (!$fehler) {
 			if (($navi['ebene'] == 'e') || ($navi['ebene'] == 'd') || ($navi['ebene'] == 'u')) {
-				$sql = "SELECT bezeichnung, id FROM seiten WHERE zuordnung = '-' ORDER BY position";
-				if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-					while ($seite = $anfrage->fetch_assoc()) {
-						$bezlink = str_replace(' ', '_', $seite['bezeichnung']);
-						$navicode .= "<h3>".$seite['bezeichnung']."</h3>";
-						$navicode .= "<div id=\"cms_mobilmenue_seite_".$seite['id']."\">";
-						$navicode .= cms_mobilnavigation_oberseite($dbs, $seite['id']);
-						$navicode .= "</div>";
+				$SEITEN = array();
+				$sql = $dbs->prepare("SELECT bezeichnung, id FROM seiten WHERE zuordnung = '-' ORDER BY position");
+				if ($sql->execute()) {
+					$sql->bind_result($sbez, $sid);
+					while ($sql->fetch()) {
+						$S = array();
+						$S['id'] = $sid;
+						$S['bezeichnung'] = $sbez;
+						array_push($SEITEN, $S);
+						$bezlink = str_replace(' ', '_', $sbez);
 					}
-					$anfrage->free();
+				}
+				$sql->close();
+
+				foreach ($SEITEN as $S) {
+					$navicode .= "<h3>".$S['bezeichnung']."</h3>";
+					$navicode .= "<div id=\"cms_mobilmenue_seite_".$S['id']."\">";
+					$navicode .= cms_mobilnavigation_oberseite($dbs, $S['id']);
+					$navicode .= "</div>";
 				}
 			}
 			else if ($navi['ebene'] == 's') {
-				$sql = "SELECT id FROM seiten WHERE id = '".$navi['ebenenzusatz']."' ORDER BY position";
-				if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-					while ($seite = $anfrage->fetch_assoc()) {
-						$navicode .= "<div id=\"cms_mobilmenue_seite_".$seite['id']."\">";
-						$navicode .= cms_mobilnavigation_oberseite($dbs, $seite['id']);
-						$navicode .= "</div>";
+				$SEITEN = array();
+				$sql = $dbs->prepare("SELECT id FROM seiten WHERE id = ? ORDER BY position");
+				$sql->bind_param("i", $navi['ebenenzusatz']);
+				if ($sql->execute()) {
+					$sql->bind_result($sid);
+					while ($sql->fetch()) {
+						array_push($SEITEN, $sid);
 					}
-					$anfrage->free();
+				}
+				$sql->close();
+
+				foreach ($SEITEN as $sid) {
+					$navicode .= "<div id=\"cms_mobilmenue_seite_$sid\">";
+					$navicode .= cms_mobilnavigation_oberseite($dbs, $sid);
+					$navicode .= "</div>";
 				}
 			}
 		}
@@ -543,38 +599,52 @@ function cms_mobilnavigation_oberseite($dbs, $oberseite) {
 	$aktjahr = date('Y', $jetzt);
 	$aktmonat = cms_monatsnamekomplett(date('n', $jetzt));
 
-	$sql = "SELECT bezeichnung, id, art FROM seiten WHERE zuordnung = '$oberseite' ORDER BY position";
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		while ($seite = $anfrage->fetch_assoc()) {
-			// Klassische Seite oder Menüpunkt
-			if (($seite['art'] == 's') || ($seite['art'] == 'm')) {
-				$bezlink = str_replace(' ', '_', $seite['bezeichnung']);
-				// Prüfen, ob Unterseiten existieren
-				$seite['unterseiten'] = 0;
-				$sql = "SELECT COUNT(*) AS unterseiten FROM seiten WHERE zuordnung = '".$seite['id']."'";
-				if ($anfrage2 = $dbs->query($sql)) {	// Safe weil interne ID
-					if ($daten = $anfrage2->fetch_assoc()) {$seite['unterseiten'] = $daten['unterseiten'];}
-					$anfrage2->free();
+	$SEITEN = array();
+	$sql = $dbs->prepare("SELECT bezeichnung, id, art FROM seiten WHERE zuordnung = ? ORDER BY position");
+	$sql->bind_param("i", $oberseite);
+	if ($sql->execute()) {
+		$sql->bind_result($sbez, $sid, $sart);
+		while ($sql->fetch()) {
+			$S = array();
+			$S['id'] = $sid;
+			$S['art'] = $sart;
+			$S['bezeichnung'] = $sbez;
+			array_push($SEITEN, $S);
+		}
+	}
+	$sql->close();
+
+	$sql = $dbs->prepare("SELECT COUNT(*) AS unterseiten FROM seiten WHERE zuordnung = ?");
+	foreach ($SEITEN as $seite) {
+		// Klassische Seite oder Menüpunkt
+		if (($seite['art'] == 's') || ($seite['art'] == 'm')) {
+			$bezlink = str_replace(' ', '_', $seite['bezeichnung']);
+			// Prüfen, ob Unterseiten existieren
+			$seite['unterseiten'] = 0;
+			$sql->bind_param("i", $seite['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($seiteunterseiten);
+				if ($sql->fetch()) {
+					$seite['unterseiten'] = $seiteunterseiten;
 				}
-				$code .= "<li><a href=\"".$pfadzurseite.$bezlink."\">".$seite['bezeichnung']."</a>";
-				if ($seite['unterseiten'] > 0) {
-					$code .= "<span id=\"cms_mobilmenue_knopf_".$seite['id']."\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_aendern('".$seite['id']."')\">&#8628;</span>";
-					$code .= "<div id=\"cms_mobilmenue_seite_".$seite['id']."\" style=\"display:none;\"></div>";
-				}
-				$code .= "</li>";
 			}
-			else if (($seite['art'] == 'b') || ($seite['art'] == 'g') || ($seite['art'] == 't')) {
-				if ($seite['art'] == 'b') {$seite['art'] = 'Blog';}
-				else if ($seite['art'] == 'g') {$seite['art'] = 'Galerien';}
-				else {$seite['art'] = 'Termine';}
-				$code .= "<li><a href=\"Website/".$seite['art']."/$aktjahr/$aktmonat\">".$seite['bezeichnung']."</a>";
+			$sql->close();
+			$code .= "<li><a href=\"".$pfadzurseite.$bezlink."\">".$seite['bezeichnung']."</a>";
+			if ($seite['unterseiten'] > 0) {
 				$code .= "<span id=\"cms_mobilmenue_knopf_".$seite['id']."\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_aendern('".$seite['id']."')\">&#8628;</span>";
 				$code .= "<div id=\"cms_mobilmenue_seite_".$seite['id']."\" style=\"display:none;\"></div>";
-				$code .= "</li>";
 			}
-
+			$code .= "</li>";
 		}
-		$anfrage->free();
+		else if (($seite['art'] == 'b') || ($seite['art'] == 'g') || ($seite['art'] == 't')) {
+			if ($seite['art'] == 'b') {$seite['art'] = 'Blog';}
+			else if ($seite['art'] == 'g') {$seite['art'] = 'Galerien';}
+			else {$seite['art'] = 'Termine';}
+			$code .= "<li><a href=\"Website/".$seite['art']."/$aktjahr/$aktmonat\">".$seite['bezeichnung']."</a>";
+			$code .= "<span id=\"cms_mobilmenue_knopf_".$seite['id']."\" class=\"cms_mobilmenue_aufklappen\" onclick=\"cms_mobinavi_aendern('".$seite['id']."')\">&#8628;</span>";
+			$code .= "<div id=\"cms_mobilmenue_seite_".$seite['id']."\" style=\"display:none;\"></div>";
+			$code .= "</li>";
+		}
 	}
 	if (strlen($code) > 0) {$code = "<ul>".$code."</ul>";}
 	return $code;
