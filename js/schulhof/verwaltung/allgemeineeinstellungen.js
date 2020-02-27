@@ -8,8 +8,6 @@ function cms_einstellungen_anfragennachbehandlung(rueckgabe) {
 function cms_einstellungen_rechte_aendern() {
 	cms_laden_an('Rechte-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 
-	// TO BE CONTINUED...
-
 	var rekpruefen = function(e, pfad, rechte) {
 		if(!e.length)
 			return;

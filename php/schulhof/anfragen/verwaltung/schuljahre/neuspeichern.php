@@ -96,7 +96,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.anlegen")) {
 					$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$ids." AND art != AES_ENCRYPT(?, '$CMS_SCHLUESSEL');");
 					$sql->bind_param("s", $art);
 					if ($sql->execute()) {
-						$sql->bind_param($checkanzahl);
+						$sql->bind_result($checkanzahl);
 						if ($sql->fetch()) {
 							if ($checkanzahl != 0) {
 								$personenfehler = true;

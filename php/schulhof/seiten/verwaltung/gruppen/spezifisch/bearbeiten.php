@@ -17,7 +17,7 @@ if (isset($_SESSION['Gruppen']['bearbeiten']['id'])) {
   $gruppenrechte = cms_gruppenrechte_laden($dbs, $gruppe, $_SESSION['Gruppen']['bearbeiten']['id'], $CMS_BENUTZERID);
   cms_trennen($dbs);
   $bearbeiten = $gruppenrechte['bearbeiten'] || cms_r("schulhof.gruppen.$gruppe.bearbeiten");
-  $code .= cms_gruppen_verwaltung_gruppeneigenschaften ($gruppe, cms_r("schulhof.gruppen.$gruppe.anlegen") $bearbeiten, $_SESSION['Gruppen']['bearbeiten']['id']);
+  $code .= cms_gruppen_verwaltung_gruppeneigenschaften ($gruppe, cms_r("schulhof.gruppen.$gruppe.anlegen"), $bearbeiten, $_SESSION['Gruppen']['bearbeiten']['id']);
 }
 else {
   $code .= cms_meldung_bastler();
