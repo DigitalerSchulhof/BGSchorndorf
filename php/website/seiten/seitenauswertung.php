@@ -232,8 +232,8 @@ function cms_spalte_ausgeben($dbs, $spalte) {
     $sql->bind_param("i", $spalte);
     if ($sql->execute()) {
       $ergebnis = $sql->get_result();
-      if ($e = $ergebnis->fetch_assoc()) {
-        $sql->close();
+      $sql->close();
+      while ($e = $ergebnis->fetch_assoc()) {
         if ($element == 'editoren') {$elementcode[$e['position']] = cms_editoren_ausgeben($e);}
         if ($element == 'downloads') {$elementcode[$e['position']] = cms_downloads_ausgeben($e);}
         if ($element == 'boxenaussen') {$elementcode[$e['position']] = cms_boxenaussen_ausgeben($dbs, $e);}
