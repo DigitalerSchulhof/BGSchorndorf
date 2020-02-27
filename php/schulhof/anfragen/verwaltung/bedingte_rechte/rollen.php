@@ -12,14 +12,11 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen("bedingungen");
 
-
-
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bedingt")) {
   if(($bedingungen = json_decode($bedingungen, true)) === null)
     die("FEHLER");
 
   // Eingabe überprüfen
-
   foreach($bedingungen as $rolle => $bed) {
     if(!cms_check_ganzzahl($rolle))
       die("FEHLER");
@@ -33,7 +30,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bedingt")) {
   $dbs = cms_verbinden("s");
 
 
-  $sql = "DELETE FROM bedingterollen";
+  $sql = "DELETE FROM bedingterollen WHERE rolle < 1 OR rolle > 5";
   $sql = $dbs->prepare($sql);
   $sql->execute();
 
@@ -41,10 +38,15 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bedingt")) {
   $sql = $dbs->prepare($sql);
   $sql->bind_param("is", $rolle, $bedingung);
 
-  foreach($bedingungen as $rolle => $bed)
-    foreach($bed as $bedingung)
-      if($bedingung != "")
-        $sql->execute();
+  foreach($bedingungen as $rolle => $bed) {
+    foreach($bed as $bedingung) {
+      if($bedingung != "") {
+        if($rolle < 1 || $rolle > 5) {
+          $sql->execute();
+        }
+      }
+    }
+  }
 
   echo "ERFOLG";
 }

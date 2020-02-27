@@ -50,6 +50,7 @@ schulhof:
           aufsicht: Aufsichten von Ereignissen schreiben
           mitglieder: Mitgliedern von Ereignissen schreiben
         sonstigegruppen:
+          knotenname: Sonstige Gruppen
           vorsitzende: Vorsitzenden von Sonstigen Gruppen schreiben
           aufsicht: Aufsichten von Sonstigen Gruppen schreiben
           mitglieder: Mitgliedern von Sonstigen Gruppen schreiben
@@ -325,6 +326,7 @@ schulhof:
           sehen: Kurse sehen
           sehenwenn: Kurse sehen wenn Mitglied
         sonstigegruppen:
+          knotenname: Sonstige Gruppen
           sehen: Sonstige Gruppen sehen
           sehenwenn: Sonstige Gruppen sehen wenn Mitglied
         stufen:

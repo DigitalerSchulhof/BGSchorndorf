@@ -8,16 +8,42 @@ function cms_einstellungen_anfragennachbehandlung(rueckgabe) {
 function cms_einstellungen_rechte_aendern() {
 	cms_laden_an('Rechte-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 
-	// TO BE CHANGED
+	// TO BE CONTINUED...
 
-	if (fehler) {
-		cms_meldung_an('fehler', 'Rechte-Einstellungen ändern', '<p>Die Rechte-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		cms_laden_an('Rechte-Einstellungen ändern', 'Die Änderungen werden übernommen.');
-		formulardaten.append("anfragenziel", 	'230');
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
-	}
+	var rekpruefen = function(e, pfad, rechte) {
+		if(!e.length)
+			return;
+		e.each(function() {
+			e = $(this);
+			if(e.is(".cms_recht_rolle"))
+				rechte.push((pfad+"."+e.data("knoten")+(e.is(".cms_hat_kinder")?".*":"")).substr(2));
+			else
+				if(e.is(".cms_hat_kinder"))
+					rekpruefen(e.find(">.cms_rechtekinder>.cms_rechtebox>.cms_recht"), pfad+"."+e.data("knoten"), rechte);
+		});
+	};
+
+	var rechtelehrer = [];
+	var rechteschueler = [];
+	var rechteverwaltung = [];
+	var rechteeltern = [];
+	var rechteexterne = [];
+
+	rekpruefen($("#cms_rechtepapa_lehrer>.cms_recht"), "", rechtelehrer);
+	rekpruefen($("#cms_rechtepapa_schueler>.cms_recht"), "", rechteschueler);
+	rekpruefen($("#cms_rechtepapa_verwaltung>.cms_recht"), "", rechteverwaltung);
+	rekpruefen($("#cms_rechtepapa_eltern>.cms_recht"), "", rechteeltern);
+	rekpruefen($("#cms_rechtepapa_externe>.cms_recht"), "", rechteexterne);
+
+	var formulardaten = new FormData();
+	cms_laden_an('Rechte-Einstellungen ändern', 'Die Änderungen werden übernommen.');
+	formulardaten.append("rechtelehrer", 			rechtelehrer);
+	formulardaten.append("rechteschueler", 		rechteschueler);
+	formulardaten.append("rechteverwaltung", 	rechteverwaltung);
+	formulardaten.append("rechteeltern", 			rechteeltern);
+	formulardaten.append("rechteexterne", 		rechteexterne);
+	formulardaten.append("anfragenziel", 			'230');
+	cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
 }
 
 

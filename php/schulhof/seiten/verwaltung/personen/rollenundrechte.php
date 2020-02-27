@@ -94,7 +94,7 @@ else {
 						$personhatrecht = $rechtecheck($cms_desnutzersrechte, substr("$pfad.$knoten", 2));
 						$rollehatrecht = $rechtecheck($cms_derrollerechte, substr("$pfad.$knoten", 2));
 					}
-					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($personhatrecht&&!$rollehatrecht?" cms_recht_nutzer":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_nutzer(this)\">".mb_ucfirst($recht)."</span></span>";
+					$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($personhatrecht&&!$rollehatrecht?" cms_recht_nutzer":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"".($pfad?"icon ":"")."cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_nutzer(this)\">".mb_ucfirst($recht)."</span></span>";
 
 					// Kinder ausgeben
 					$c = 0;

@@ -3,7 +3,6 @@ $(document).ready(function() {
     $(this).toggleClass("cms_recht_eingeklappt");
     $(this).siblings(".cms_rechtekinder").slideToggle("slow");
   });
-  $("#cms_rechtepapa>.cms_recht>.icon").removeClass("icon");
 });
 
 function cms_recht_vergeben_rolle(dis) {
@@ -108,12 +107,13 @@ function cms_rechte_speichern_nutzer() {
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_alle_rechte_ausklappen(box) {
+function cms_alle_rechte_ausklappen(box, papa) {
+  papa = papa ? (papa + " ") : "";
   if($(box).html() == "Alle ausklappen") {
-    $(".cms_recht>.icon").removeClass("cms_recht_eingeklappt").siblings(".cms_rechtekinder").slideDown("slow");
+    $(papa+".cms_recht>.icon").removeClass("cms_recht_eingeklappt").siblings(".cms_rechtekinder").show();
     $(box).html("Alle einklappen");
   } else {
-    $(".cms_recht>.icon").addClass("cms_recht_eingeklappt").siblings(".cms_rechtekinder").slideUp("slow");
+    $(papa+".cms_recht>.icon").addClass("cms_recht_eingeklappt").siblings(".cms_rechtekinder").hide();
     $(box).html("Alle ausklappen");
   }
 }

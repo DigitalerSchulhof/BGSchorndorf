@@ -45,7 +45,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
         unset($kinder["knotenname"]);
       }
 
-      $code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"")."\" data-knoten=\"$knoten\"><i class=\"icon cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_bedingt_recht(this)\">".mb_ucfirst($recht)."</span></span>";
+      $code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"")."\" data-knoten=\"$knoten\"><i class=\"".($pfad?"icon ":"")."cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_bedingt_recht(this)\">".mb_ucfirst($recht)."</span></span>";
 
       // Kinder ausgeben
       $c = 0;
@@ -101,7 +101,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
     echo "<div class=\"cms_spalte_2\">";
       echo "<div class=\"cms_spalte_i\">";
         $rollencode = "";
-        $sql = "SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') as bezeichnung, id FROM rollen WHERE id != 0) AS rollen ORDER BY id ASC";
+        $sql = "SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') as bezeichnung, id FROM rollen WHERE id < 1 OR id > 5) AS rollen ORDER BY id ASC";
         $sql = $dbs->prepare($sql);
         $sql->bind_result($bez, $rid);
         $sql->execute();
@@ -110,7 +110,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
         }
         $sql->close();
         if(!$rollencode)
-          $rollencode = "<p class=\"cms_notiz\">keine Rollen verfügbar</p>";
+          $rollencode = "<p class=\"cms_notiz\">Keine Rollen verfügbar</p>";
         echo $rollencode;
       echo "</div>";
     echo "</div>";
@@ -126,14 +126,20 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
             $sql->execute();
             $sql->bind_result($rolle, $bedingung, $rid);
             while($sql->fetch()) {
+              $fix = false;
+              if($rid < 6 && $rid > 0) {
+                $fix = true;
+              }
               $rolle     = htmlentities($rolle);
               $bedingung = htmlentities($bedingung);
               echo "<tr>".
                 "<td><input class=\"cms_bedingt_rolle_rolle\" type=\"hidden\" value=\"$rid\">$rolle</td>".
-                "<td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this)\" class=\"cms_bedingt_bedingung\" type=\"text\" value=\"$bedingung\"></td>".
-                "<td>".
-                  "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_bedingt_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ".
-                  "<span class=\"cms_syntax_ok cms_aktion_klein cms_button_ja\"><span class=\"cms_hinweis\">Syntax ist in Ordnung</span><img src=\"res/icons/klein/richtig.png\"></span>".
+                "<td><input onkeyup=\"cms_bedingte_bedingung_syntax_pruefen(this)\" class=\"cms_bedingt_bedingung\" type=\"text\" ".($fix?"readonly":"")." value=\"$bedingung\"></td>".
+                "<td>";
+              if(!$fix) {
+                echo "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_bedingt_loeschen(this)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+              }
+              echo "<span class=\"cms_syntax_ok cms_aktion_klein cms_button_ja\"><span class=\"cms_hinweis\">Syntax ist in Ordnung</span><img src=\"res/icons/klein/richtig.png\"></span>".
                   "<span style=\"display: none\" class=\"cms_syntax_fehler cms_aktion_klein cms_button_nein\"><span class=\"cms_hinweis\">Syntaxfehler!</span><img src=\"res/icons/klein/falsch.png\"></span>".
                 "</td>".
               "</tr>";
@@ -146,7 +152,7 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
     echo "<div class=\"cms_clear\"></div>";
   }
 
-  echo '<script>$(window).ready(function() {$(".cms_bedingt_bedingung").triggecms_r("keyup"))</script>';
+  echo '<script>$(window).ready(function() {$(".cms_bedingt_bedingung").trigger("keyup");})</script>';
 
 } else {
 	echo cms_meldung_berechtigung();

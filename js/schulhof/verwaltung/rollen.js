@@ -31,7 +31,6 @@ function cms_schulhof_rolle_neu_speichern() {
 		fehler = true;
 	}
 
-
 	if (fehler) {
 		cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}

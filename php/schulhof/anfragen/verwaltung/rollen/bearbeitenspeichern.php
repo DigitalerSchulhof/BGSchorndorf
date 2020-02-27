@@ -10,7 +10,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 postLesen("bezeichnung", "rechte");
 if (isset($_SESSION["ROLLEBEARBEITEN"])) {$id = $_SESSION["ROLLEBEARBEITEN"];} else {echo "FEHLER"; exit;}
-if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
+if (!cms_check_ganzzahl($id, 6)) {echo "FEHLER"; exit;}
 
 
 
@@ -24,8 +24,6 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 	if(!count($rechte) || $rechte[0] == "") {
 		die("ERFOLG");
 	}
-	// Administrator darf nicht verändert werden
-	if ($id == 0) {$fehler = true;}
 
 
 	$dbs = cms_verbinden('s');

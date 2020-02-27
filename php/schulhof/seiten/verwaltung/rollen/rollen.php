@@ -32,34 +32,68 @@
 		foreach ($ROLLEN as $daten) {
 			$ausgabe .= "<tr>";
 				$icon = "";
-				if($daten["id"] == 0)
-					$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/code_xml.png\"></span>";
+				$zugeordnet = "";
+				switch($daten["id"]) {
+					case 0:
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/code_xml.png\"></span>";
+						break;
+					case 1:
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/lehrer.png\"></span>";
+						$zugeordnet = "Lehrer";
+						break;
+					case 2:
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/schueler.png\"></span>";
+						$zugeordnet = "Schüler";
+						break;
+					case 3:
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/verwaltung.png\"></span>";
+						$zugeordnet = "Verwaltungsangestellte";
+						break;
+					case 4:
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/eltern.png\"></span>";
+						$zugeordnet = "Eltern";
+						break;
+					case 5:
+						$icon = " <span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/extern.png\"></span>";
+						$zugeordnet = "Externe";
+						break;
+				}
 				$ausgabe .= "<td><span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/rollen.png\"></span>$icon</td>";
 				$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
 
-				// Personen mit dieser Rolle suchen
-				$sql->bind_param("i", $daten['id']);
-				$personen = "";
-				if ($sql->execute()) {
-					$sql->bind_result($rvor, $rnach, $rtit);
-					while ($sql->fetch()) {
-						$personen .= ", ".cms_generiere_anzeigename($rvor, $rnach, $rtit);
+				if($zugeordnet == "") {
+					// Personen mit dieser Rolle suchen
+					$sql->bind_param("i", $daten['id']);
+					$personen = "";
+					if ($sql->execute()) {
+						$sql->bind_result($rvor, $rnach, $rtit);
+						while ($sql->fetch()) {
+							$personen .= ", ".cms_generiere_anzeigename($rvor, $rnach, $rtit);
+						}
 					}
+					if ($personen != "") {
+						$ausgabe .= "<td>".(substr($personen, 2))."</td>";
+					}
+					else {$ausgabe .= "<td>Nicht zugeordnet</td>";}
+				} else {
+					$ausgabe .= "<td>Alle $zugeordnet</td>";
 				}
-				if ($personen != "") {
-					$ausgabe .= "<td>".(substr($personen, 2))."</td>";
-				}
-				else {$ausgabe .= "<td>Nicht zugeordnet</td>";}
 
 				// Aktionen
 				$ausgabe .= "<td>";
-				if ($daten['id'] != 0) {
+				if ($daten['id'] > 5) {
 					$bezeichnung = cms_texttrafo_e_event($daten['bezeichnung']);
 					if (cms_r("schulhof.verwaltung.rechte.rollen.bearbeiten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_rolle_bearbeiten_vorbereiten(".$daten['id'].");\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
 					}
 					if (cms_r("schulhof.verwaltung.rechte.rollen.löschen")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_rolle_loeschen_anzeigen('$bezeichnung', ".$daten['id'].");\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+					}
+				} else {
+					if($daten['id'] > 0) {
+						if (cms_r("schulhof.verwaltung.einstellungen")) {
+							$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_link('Schulhof/Verwaltung/Allgemeine_Einstellungen#tab-1');\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+						}
 					}
 				}
 				$ausgabe .= "</td>";

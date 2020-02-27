@@ -4,6 +4,9 @@
 <h1>Allgemeine Einstellungen</h1>
 
 <?php
+include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
+use Async\YAML;
+
 if (cms_r("schulhof.verwaltung.einstellungen")) {
 	$code = "";
 
@@ -22,12 +25,120 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5, 5, true)\">Geräteverwaltung</span></li> ";
 	$code .= "</ul>";
 
+	$rechte = YAML::loader(dirname(__FILE__)."/../../../../allgemein/funktionen/rechte/rechte.yml");
+
+
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Rechte</h2>";
 
-		$code .= "<p class=\"cms_notiz\">Änderungen ausstehend</p>";
+		$lehrerrechte = array();
+		$schülerrechte = array();
+		$verwaltungrechte = array();
+		$elternrechte = array();
+		$externerechte = array();
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 1", $lehrerrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 2", $schülerrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 3", $verwaltungrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 4", $elternrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 5", $externerechte, '');
 
+		$recht_machen = function($pfad, $recht, $rechte, $kinder = null, $unterstes = false) use (&$recht_machen) {
+			$code = "";
+			$knoten = $recht;
+			// Alternativer Knotenname
+			if(!is_null($kinder) && !is_array($kinder))
+				$recht = $kinder;
+			if(is_array($kinder) && isset($kinder["knotenname"])) {
+				$recht = $kinder["knotenname"];
+				unset($kinder["knotenname"]);
+			}
+
+			// Hat die Rolle das Recht?
+			$rechtecheck = function($r, $pf) {
+				foreach(explode(".", $pf) as $p) {
+					if($r === true)
+						return true;
+					else {
+						if(isset($r[$p])) {
+							if(($r = $r[$p]) === true)
+								return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			};
+			$rollehatrecht = false;
+			if(substr("$pfad.$knoten", 2) !== false && ($pf = explode(".", substr("$pfad.$knoten", 2))) !== null) {
+				$rollehatrecht = $rechtecheck($rechte, substr("$pfad.$knoten", 2));
+			}
+			$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"".($pfad?"icon ":"")."cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_rolle(this)\">".mb_ucfirst($recht)."</span></span>";
+			// Kinder ausgeben
+			$c = 0;
+			if(is_array($kinder)) {
+				$code .= "<div class=\"cms_rechtekinder\"".($recht?"style=\"display: none;\"":"").">";
+				foreach($kinder as $n => $i)
+					$code .= "<div class=\"cms_rechtebox".(!is_null($i) && !is_array($i)?" cms_recht_wert":"").(++$c==count($kinder)?" cms_recht_unterstes":"")."\">".$recht_machen("$pfad.$knoten", $n, $rechte, $i, $c == count($kinder))."</div>";
+				$code .= "</div>";
+			}
+			$code .= "</div>";
+			return $code;
+		};
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/lehrer.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_lehrer\">".$recht_machen("", "", $lehrerrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_lehrer')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/schueler.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_schueler\" class=\"cms_spalte_i\">".$recht_machen("", "", $schülerrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_schueler')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/verwaltung.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_verwaltung\">".$recht_machen("", "", $verwaltungrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_verwaltung')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/eltern.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_eltern\">".$recht_machen("", "", $elternrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_eltern')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/externe.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_externe\">".$recht_machen("", "", $externerechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_externe')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3>Legende</h3>";
+			$code .= "<span class=\"cms_demorecht\">Nicht vergebenes Recht</span><br>";
+			$code .= "<span class=\"cms_demorecht cms_demorecht_rolle\">Vergebenes Recht</span> ";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_clear\"></div>";
 		$code .= "<p><span class=\"cms_button\" onclick=\"cms_einstellungen_rechte_aendern()\">Speichern</span> ";
 		$code .= "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Allgemeine_Einstellungen');\">Abbrechen</span></p>";
 		$code .= "</div>";
