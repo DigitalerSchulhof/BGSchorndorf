@@ -104,6 +104,8 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 			$code .= "</div>";
 		$code .= "</div></div>";
 
+		$code .= "<div class=\"cms_clear\"></div>";
+
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 			$code .= "<h3><img src=\"res/icons/gross/verwaltung.png\"></h3>";
 			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_verwaltung\">".$recht_machen("", "", $verwaltungrechte, $rechte, true)."</div>";
@@ -121,6 +123,8 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_eltern')\">Alle ausklappen</span>";
 			$code .= "</div>";
 		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_clear\"></div>";
 
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 			$code .= "<h3><img src=\"res/icons/gross/externe.png\"></h3>";
