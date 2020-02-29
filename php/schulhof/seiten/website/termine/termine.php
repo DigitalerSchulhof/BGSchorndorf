@@ -23,11 +23,11 @@ if ($anzeigen) {
   $jahrende = $jahrgewaehlt;
   $jahre = false;
 
-  $sql = $dbs->prepare("SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM termine)";
+  $sql = $dbs->prepare("SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM termine");
   if ($sql->execute()) {
     $sql->bind_result($tanfang, $tende);
     if ($sql->fetch()) {
-      if (!is_null($daten['anfang'])) {
+      if (!is_null($tanfang)) {
         $jahranfang = min(date('Y', $tanfang), $jahranfang);
         $jahrende = max(date('Y', $tende), $jahrende);
         $jahre = true;

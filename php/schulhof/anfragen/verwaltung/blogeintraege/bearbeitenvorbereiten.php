@@ -16,6 +16,7 @@ if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER";exit;}
 $zugriff = false;
 $fehler = false;
 
+$dbs = cms_verbinden('s');
 $sql = $dbs->prepare("SELECT datum, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM blogeintraege WHERE id = ?");
 $sql->bind_param("i", $id);
 if ($sql->execute()) {
@@ -24,6 +25,7 @@ if ($sql->execute()) {
 }
 else {$fehler = true;}
 $sql->close();
+cms_trennen($dbs);
 
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
   die("FEHLER");

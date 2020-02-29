@@ -20,14 +20,16 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 
 $fehler = false;
 
+$dbs = cms_verbinden('s');
 $sql = $dbs->prepare("SELECT beginn, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM termine WHERE id = ?");
 $sql->bind_param("i", $id);
 if ($sql->execute()) {
-	$sql->bind_result($BEGINN, $bezeichnung, $oeffentlichkeit);
+	$sql->bind_result($BEGINN, $oeffentlichkeit, $bezeichnung);
 	if (!$sql->fetch()) {$fehler = true;}
 }
 else {$fehler = true;}
 $sql->close();
+cms_trennen($dbs);
 
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
   die("FEHLER");

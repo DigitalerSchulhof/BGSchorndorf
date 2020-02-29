@@ -113,10 +113,10 @@ if ($angemeldet) {
 						$anschlaege .= $ainhalt;
 						$aktionen = "";
 						if (($aersteller == $CMS_BENUTZERID) || cms_r("schulhof.information.pinnwände.anschläge.bearbeiten")) {
-							$aktionen .= "<span class=\"cms_button\" onclick=\"cms_pinnwandanschlag_bearbeiten_vorbereiten($aid.", '".cms_textzulink($bezeichnung)."')\">Bearbeiten</span> ";
+							$aktionen .= "<span class=\"cms_button\" onclick=\"cms_pinnwandanschlag_bearbeiten_vorbereiten($aid, '".cms_textzulink($bezeichnung)."')\">Bearbeiten</span> ";
 						}
 						if (($aersteller == $CMS_BENUTZERID) || cms_r("schulhof.information.pinnwände.anschläge.löschen")) {
-							$aktionen .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_pinnwandanschlag_loeschen_anzeigen($aid.", '".cms_textzulink($bezeichnung)."')\">Löschen</span> ";
+							$aktionen .= "<span class=\"cms_button cms_button_nein\" onclick=\"cms_pinnwandanschlag_loeschen_anzeigen($aid, '".cms_textzulink($bezeichnung)."')\">Löschen</span> ";
 						}
 						if (strlen($aktionen) > 0) {
 							$code .= "<p>$aktionen</p>";

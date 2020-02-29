@@ -44,7 +44,7 @@ function cms_termin_details_laden($id, $ziel) {
       $sql = $dbs->prepare("SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."termine JOIN $gk ON ".$gk."termine.gruppe = $gk.id WHERE termin = ?) AS x ORDER BY bezeichnung");
       $sql->bind_param("i", $id);
       if ($sql->execute()) {
-        $sql->bind_result($zgid);
+        $sql->bind_result($zgid, $zbez);
   			while ($sql->fetch()) {
           $zgruppenids[$g] .= "|".$zgid;
   			}

@@ -126,7 +126,7 @@ if (cms_angemeldet() && $zugriff) {
 					$faecher = array();
 					$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest");
 		  		if ($sql->execute()) {
-						$sql->bind_param($fid, $fbez, $fkurz, $ficon);
+						$sql->bind_result($fid, $fbez, $fkurz, $ficon);
 		  			while ($sql->fetch()) {
 							$f = array();
 							$f['id'] = $fid;

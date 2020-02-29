@@ -23,7 +23,7 @@ if (isset($_SESSION['ANSCHLAGBEARBEITEN'])) {$id = $_SESSION['ANSCHLAGBEARBEITEN
 $titel = cms_texttrafo_e_db($titel);
 $inhalt = cms_texttrafo_e_db($inhalt);
 
-if (!cms_check_name($titel))              {echo "FEHLER"; exit;}
+if (!cms_check_nametitel($titel))              {echo "FEHLER"; exit;}
 if (!cms_check_titel($pinnwand))          {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($vonT,1,31))      {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($vonM,1,12))      {echo "FEHLER"; exit;}

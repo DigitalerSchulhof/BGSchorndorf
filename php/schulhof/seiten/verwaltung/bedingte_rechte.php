@@ -6,29 +6,6 @@ include_once(dirname(__FILE__)."/../../../allgemein/funktionen/yaml.php");
 use Async\YAML;
 
 if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.rollen.bedingt")) {
-  echo "<div class=\"cms_spalte_i\">".cms_meldung("warnung", "<h4>Technische Eingaben</h4><p>Gynmasialnivea vorrausgesetzt 😈</p>").cms_meldung("info", "<h4>Bedingte Rollen-/Rechtezuordnung</h4><p>Für Rollen und Rechte können Bedingungen gesetzt werden, die es ermöglichen, Benutzern anhand von gewissen Kriterien Rollen und Rechte zu vergeben.</p>".
-  "<p><u>Zur Verfügung stehende Daten:</u><br>".
-  "<b>zeit:</b> Aktuelle UNIX-Zeit (Zahl)<br>".
-  "<b>nutzer.id</b> (Zahl)<br>".
-  "<b>nutzer.vorname</b> (Zeichenkette)<br>".
-  "<b>nutzer.nachname</b> (Zeichenkette)<br>".
-  "<b>nutzer.titel</b> (Zeichenkette)<br>".
-  "<b>nutzer.art</b> (Zeichenkette: \"s\" (Schüler), \"l\" (Lehrer), \"e\" (Eltern), \"v\" (Verwaltung), \"x\" (Externe))<br>".
-  "<b>nutzer.imln:</b> Ist Benutzer im Lehrernetz (Boolean)<br>".
-  "<b>nutzer.hatRolle[rolle]</b> (Boolean)<br>".
-  "<u>Zur Verfügung stehende logische Operatoren:</u><br>".
-  "<b>!</b> Nicht<br>".
-  "<b>==</b> Ist gleich<br>".
-  "<b>!=</b> Ist ungleich<br>".
-  "<b>&lt;</b> Ist kleiner als<br>".
-  "<b>&gt;</b> Ist größer als</p><p>".
-  "<u>Beispiele:</u><br>".
-  "Alle Lehrer oder Benutzer 97: <b>(nutzer.art == \"l\" || nutzer.id == 97)</b><br>".
-  "Schüler namens »Max«: <b>(nutzer.art == \"s\" && nutzer.vorname == \"Max\")</b><br>".
-  "Benutzer 97 bis zum Zeitpunkt x und alle Eltern: <b>((nutzer.id == 97 && zeit < 1577369965) || nutzer.art == \"e\")</b><br>".
-  "Rolle »Stundenplanung« und im Lehrernetz: <b>(nutzer.imln && nutzer.hatRolle[\"Stundenplanung\"])</b><br>"
-  )."</div>";
-
 
   if(cms_r("schulhof.verwaltung.rechte.bedingt")) {
     $rechte = YAML::loader(dirname(__FILE__)."/../../../allgemein/funktionen/rechte/rechte.yml");
@@ -59,7 +36,32 @@ if (cms_r("schulhof.verwaltung.rechte.bedingt || schulhof.verwaltung.rechte.roll
       return $code;
     };
 
-    echo "<div class=\"cms_spalte_i\"><h1>Bedingte Rechtezuordnung</h1></div>";
+    echo "<div class=\"cms_spalte_i\"><h1>Bedingte Rechtezuordnung</h1>";
+
+    echo cms_meldung("warnung", "<h4>Technische Eingaben</h4><p>Gynmasialniveau vorrausgesetzt!</p>");
+    echo cms_meldung("info", "<h4>Bedingte Rollen-/Rechtezuordnung</h4><p>Für Rollen und Rechte können Bedingungen gesetzt werden, die es ermöglichen, Benutzern anhand von gewissen Kriterien Rollen und Rechte zu vergeben.</p>".
+    "<p><u>Zur Verfügung stehende Daten:</u><br>".
+    "<b>zeit:</b> Aktuelle UNIX-Zeit (Zahl)<br>".
+    "<b>nutzer.id</b> (Zahl)<br>".
+    "<b>nutzer.vorname</b> (Zeichenkette)<br>".
+    "<b>nutzer.nachname</b> (Zeichenkette)<br>".
+    "<b>nutzer.titel</b> (Zeichenkette)<br>".
+    "<b>nutzer.art</b> (Zeichenkette: \"s\" (Schüler), \"l\" (Lehrer), \"e\" (Eltern), \"v\" (Verwaltung), \"x\" (Externe))<br>".
+    "<b>nutzer.imln:</b> Ist Benutzer im Lehrernetz (Boolean)<br>".
+    "<b>nutzer.hatRolle[rolle]</b> (Boolean)<br>".
+    "<u>Zur Verfügung stehende logische Operatoren:</u><br>".
+    "<b>!</b> Nicht<br>".
+    "<b>==</b> Ist gleich<br>".
+    "<b>!=</b> Ist ungleich<br>".
+    "<b>&lt;</b> Ist kleiner als<br>".
+    "<b>&gt;</b> Ist größer als</p><p>".
+    "<u>Beispiele:</u><br>".
+    "Alle Lehrer oder Benutzer 97: <b>(nutzer.art == \"l\" || nutzer.id == 97)</b><br>".
+    "Schüler namens »Max«: <b>(nutzer.art == \"s\" && nutzer.vorname == \"Max\")</b><br>".
+    "Benutzer 97 bis zum Zeitpunkt x und alle Eltern: <b>((nutzer.id == 97 && zeit < 1577369965) || nutzer.art == \"e\")</b><br>".
+    "Rolle »Stundenplanung« und im Lehrernetz: <b>(nutzer.imln && nutzer.hatRolle[\"Stundenplanung\"])</b><br>"
+    )."</div>";
+
     echo "<div class=\"cms_spalte_2\">";
       echo "<div class=\"cms_spalte_i\">";
         echo "<div id=\"cms_rechtepapa\" class=\"cms_spalte_i\">".$recht_machen("", "", $rechte, true)."</div>";

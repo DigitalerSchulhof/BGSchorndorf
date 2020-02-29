@@ -38,7 +38,7 @@ function cms_listen_links_anzeigen($einschraenkung = false) {
 		return "<ul>".$liste."</ul>";
 	}
 	else {
-		return '<p>Keine Listen verfügbar</p>';
+		return '<p class="cms_notiz">Keine Listen verfügbar</p>';
 	}
 }
 ?>

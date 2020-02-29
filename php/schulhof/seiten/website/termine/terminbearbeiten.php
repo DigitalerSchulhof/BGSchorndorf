@@ -11,7 +11,7 @@ $id = $_SESSION["TERMINID"] ?? -1;
 $sql = $dbs->prepare("SELECT beginn, oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM termine WHERE id = ?");
 $sql->bind_param("i", $id);
 if ($sql->execute()) {
-	$sql->bind_result($BEGINN, $bezeichnung, $oeffentlichkeit);
+	$sql->bind_result($BEGINN, $oeffentlichkeit, $bezeichnung);
 	if (!$sql->fetch()) {/* Fehler kommt später */}
 }
 else {/* Fehler kommt später */}

@@ -103,8 +103,7 @@ if (cms_angemeldet() && $zugriff) {
 			if (isset($_POST["bbeschreibung_".$bids[$i]])) {$dd['beschreibung'] = $_POST["bbeschreibung_".$bids[$i]];} else {echo "FEHLER"; exit;}
 
 			if (isset($_POST["bpfad_".$bids[$i]])) {$dd['pfad'] = $_POST["bpfad_".$bids[$i]];} else {echo "FEHLER"; exit;}
-			if (!is_file('../../../'.$dd['pfad'])) {$fehler = true; }
-      if(!cms_check_titel($dd["beschreibung"])) {$fehler = true; }
+			if (!is_file('../../../'.$dd['pfad'])) {$fehler = true;}
 
       array_push($bilder, $dd);
 		}

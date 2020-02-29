@@ -73,8 +73,7 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr) {
   }
 
   if (strlen($schulhofblogeintraege) == 0) {
-    $spalten = 6;
-    if ($aktionen) {$spalten++;}
+    $spalten = 7;
     $code .= "<tr><td colspan=\"$spalten\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
   }
   else {$code .= $schulhofblogeintraege;}

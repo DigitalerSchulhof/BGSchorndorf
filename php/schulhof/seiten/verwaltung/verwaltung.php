@@ -431,6 +431,7 @@ if ($code) {
 	$ausgabe .=  "</div>";
 }
 
+
 // TECHNIK
 $code = "";
 if (cms_r("schulhof.technik.geräte.verwalten")) {
@@ -459,7 +460,7 @@ if (cms_r("schulhof.technik.haustechnik")) {
 }
 
 if ($code) {
-	$ausgabe .=  "<div class=\"cms_spalte_4\">";
+	$ausgabe .=  "<div class=\"cms_clear\"></div><div class=\"cms_spalte_4\">";
 		$ausgabe .=  "<div class=\"cms_spalte_i\">";
 			$ausgabe .=  "<h2>Technik</h2><ul class=\"cms_uebersicht\">".$code."</ul>";
 		$ausgabe .=  "</div>";

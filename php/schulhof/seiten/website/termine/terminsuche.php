@@ -36,7 +36,7 @@ function cms_terminverwaltung_suche($dbs, $jahr) {
     $zuordnungen = "";
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql = $dbs->preapre("SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."termine JOIN $gk ON gruppe = id WHERE termin = ?) AS x ORDER BY bezeichnung ASC");
+      $sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."termine JOIN $gk ON gruppe = id WHERE termin = ?) AS x ORDER BY bezeichnung ASC");
       $sql->bind_param("i", $daten['id']);
       if ($sql->execute()) {
         $sql->bind_result($zbez, $zicon);

@@ -136,19 +136,19 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
         $sql = "kommt noch";
         if($seitenTyp == "t") {
           $bereich = "Gelöschter Termin";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM termine WHERE id = $id";
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM termine WHERE id = ?";
         }
         if($seitenTyp == "g") {
           $bereich = "Gelöschte Galerie";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM galerien WHERE id = $id";
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM galerien WHERE id = ?";
         }
         if($seitenTyp == "b") {
           $bereich = "Gelöschter Blogeintrag";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM blogeintraege WHERE id = $id";
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM blogeintraege WHERE id = ?";
         }
         if($seitenTyp == "w") {
           $bereich = "Gelöschte Seite";
-          $sql = "SELECT bezeichnung AS titel FROM seiten WHERE id = $id";
+          $sql = "SELECT bezeichnung AS titel FROM seiten WHERE id = ?";
         }
 
         // Titel laden falls vorhanden
@@ -157,9 +157,12 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
           $sql->bind_param("i", $id);
           $sql->bind_result($bereich);
           $sql->execute();
-          if(!$sql->fetch())
-            if($geloescht === "false")
+          if(!$sql->fetch()) {
+            if ($geloescht === "false") {
               continue;
+            }
+          }
+          $sql->close();
         }
 
         $datenHBar[$bereich] = (isset($datenHBar[$bereich])?$datenHBar[$bereich]:0)+$sqld["sum"];
@@ -202,7 +205,7 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
 
     // Startseite holen
     if($startseite === "false") {
-      $sql = $dbs->execute("SELECT bezeichnung FROM seiten WHERE status = 's'");
+      $sql = $dbs->prepare("SELECT bezeichnung FROM seiten WHERE status = 's'");
       $sql->execute();
       $sql->bind_result($startseite);
       $sql->fetch();

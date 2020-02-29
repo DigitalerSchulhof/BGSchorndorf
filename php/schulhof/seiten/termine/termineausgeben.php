@@ -303,7 +303,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termin_ablehnen('Termine', '".$termin['id']."', '$linkl')\">Termin ablehnen</span> ";
 				}
 				if (cms_r("artikel.{$termin['oeffentlichkeit']}.termine.löschen")) {
-					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termine_loeschen_vorbereiten('".$termin['id']."', '".$daten['bezeichnung']."', '$linkl')\">Termin löschen</span> ";
+					$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_termine_loeschen_vorbereiten('".$termin['id']."', '".$termin['bezeichnung']."', '$linkl')\">Termin löschen</span> ";
 				}
 			}
 			else if ($termin['art'] == 'in') {

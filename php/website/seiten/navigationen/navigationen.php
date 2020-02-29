@@ -478,10 +478,12 @@ function cms_navigation_ausgeben ($id) {
 			$code = cms_navigation_ausgeben_ebene($dbs, $nav['ebenenzusatz'], $nav['tiefe'], $zusatz, $nav['art']);
 		}
 		if ($nav['ebene'] == 'd') {
+			$zusatz = explode("/", $zusatz);
 			$dieseebene = count($zusatz)-1;
 			$code = cms_navigation_ausgeben_ebene($dbs, $dieseebene, 1, $zusatz, $nav['art']);
 		}
 		if ($nav['ebene'] == 'u') {
+			$zusatz = explode("/", $zusatz);
 			$dieseebene = count($zusatz);
 			$code = cms_navigation_ausgeben_ebene($dbs, $dieseebene, 0, $zusatz, $nav['art']);
 		}
