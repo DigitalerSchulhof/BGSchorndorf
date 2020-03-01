@@ -52,12 +52,12 @@ function cms_wechselbild_aendern(id, alt, neu) {
   var ausblendenknopf = document.getElementById('cms_wechselbilder_knopf_'+id+'_'+alt);
   var einblendenknopf = document.getElementById('cms_wechselbilder_knopf_'+id+'_'+neu);
 
-  ausblenden.style.opacity = 0;
   ausblenden.style.zIndex = 1;
-  einblenden.style.opacity = 1;
   einblenden.style.zIndex = 2;
   ausblendenknopf.className = "cms_wechselbilder_knopf";
   einblendenknopf.className = "cms_wechselbilder_knopf_aktiv";
+  ausblenden.style.opacity = 0;
+  einblenden.style.opacity = 1;
 
   angezeigt.value = neu;
   window.clearTimeout(wechselbilderzeit[id]);
