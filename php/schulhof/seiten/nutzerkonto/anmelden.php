@@ -39,6 +39,10 @@ if ($anmeldung_moeglich) {
 	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch »Einwilligung A« erteilt.</p>";
 
 	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a></p>";
+
+	$code .= '<h3>Jetzt auch als App</h3>';
+	$code .= "<p><a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/apple.png');\" href=\"https://apps.apple.com/de/app/digitaler-schulhof/id1500912100\" target=\"_blank\">iPhone / iPad</a> <span class=\"cms_iconbutton cms_button_passiv\" style=\"background-image:url('res/icons/gross/android.png');\">Android</a></p>";
+	$code .= "<p class=\"cms_notiz\">Die Freigabe für den Google Play Store steht noch aus.</p>";
 }
 else {
 	$dbs = cms_verbinden('s');

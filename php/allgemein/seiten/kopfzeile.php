@@ -59,8 +59,8 @@
 					echo "<span id=\"cms_appzurueck\" class=\"cms_link\" onclick=\"window.history.back();\">&larr; zurück</span>";
 					include_once('php/app/seiten/menue.php');
 					echo "<div id=\"cms_appmenue_a\">".cms_appmenue()."<span id=\"cms_appmenue_schliessen\" onclick=\"cms_ausblenden('cms_appmenue_a')\">&times;</span>";
-					echo "<p id=\"cms_app_impressum\">Verantwortlich für die Verarbeitung von Daten in dieser App ist das Land Baden-Württemberg vertreten durch<br>$CMS_NAMESCHULLEITER • $CMS_SCHULE<br>$CMS_STRASSE • $CMS_PLZORT";
-				    echo "</p>";
+					echo "<p id=\"cms_app_impressum\">Verantwortlich für die Verarbeitung von Daten in dieser App ist das Land Baden-Württemberg vertreten durch<br>$CMS_NAMESCHULLEITER • $CMS_SCHULE<br>$CMS_STRASSE • $CMS_PLZORT<br><br>";
+				  echo "Die verwendeten Icons stammen von Fatcow und wurden unter der Lizenz Creative Commons Attribution 3.0 veröffentlicht.</p>";
 					echo "</div>";
 				}
 			}
