@@ -53,7 +53,9 @@ function cms_wechselbild_aendern(id, alt, neu) {
   var einblendenknopf = document.getElementById('cms_wechselbilder_knopf_'+id+'_'+neu);
 
   ausblenden.style.opacity = 0;
+  ausblenden.style.zIndex = 1;
   einblenden.style.opacity = 1;
+  einblenden.style.zIndex = 2;
   ausblendenknopf.className = "cms_wechselbilder_knopf";
   einblendenknopf.className = "cms_wechselbilder_knopf_aktiv";
 

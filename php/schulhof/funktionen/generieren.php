@@ -772,7 +772,7 @@ function cms_wechselbilder_generieren($inhalte, $id = "") {
   $knoepfe = "";
   $icode = "";
 
-  $icode .= "<li style=\"opacity: 1;\" class=\"cms_wechselbilder_bild\" id=\"cms_wechselbilder_bild_".$CMS_WECHSELBILDER."_0\">".$inhalte[0]."</li>";
+  $icode .= "<li style=\"opacity: 1; z-index: 2;\" class=\"cms_wechselbilder_bild\" id=\"cms_wechselbilder_bild_".$CMS_WECHSELBILDER."_0\">".$inhalte[0]."</li>";
   $knoepfe .= "<span id=\"cms_wechselbilder_knopf_".$CMS_WECHSELBILDER."_0\" class=\"cms_wechselbilder_knopf_aktiv\" onclick=\"cms_wechselbild_zeigen('$CMS_WECHSELBILDER', '0')\"></span> ";
 
   for ($i=1; $i<count($inhalte); $i++) {
