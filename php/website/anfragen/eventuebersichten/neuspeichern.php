@@ -13,6 +13,7 @@ if (isset($_POST['termine'])) {$termine = $_POST['termine'];} else {echo "FEHLER
 if (isset($_POST['termineanzahl'])) {$termineanzahl = $_POST['termineanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['blog'])) {$blog = $_POST['blog'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['bloganzahl'])) {$bloganzahl = $_POST['bloganzahl'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['blogart'])) {$blogart = $_POST['blogart'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['galerie'])) {$galerie = $_POST['galerie'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['galerieanzahl'])) {$galerieanzahl = $_POST['galerieanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
@@ -26,6 +27,7 @@ if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.anlegen")) {
 	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true;}
 	if (($termine != 0) && ($termine != 1)) {$fehler = true;}
 	if (($blog != 0) && ($blog != 1)) {$fehler = true;}
+	if (($blogart != 'a') && ($blogart != 'd') && ($blogart != 'l')) {$fehler = true;}
 	if (($galerie != 0) && ($galerie != 1)) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_ganzzahl($termineanzahl,0)) {$fehler = true;}
@@ -33,7 +35,7 @@ if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.anlegen")) {
 	if (!cms_check_ganzzahl($galerieanzahl,0)) {$fehler = true;}
 
 	if ($termine == '0') {$termineanzahl = '10';}
-	if ($blog == '0') {$bloganzahl = '5';}
+	if ($blog == '0') {$bloganzahl = '5'; $blogart = 'a';}
 	if ($galerie == '0') {$galerieanzahl = '5';}
 
 	if (!cms_r("website.freigeben")) {$aktiv = 0;}
@@ -52,8 +54,8 @@ if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.anlegen")) {
 		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_einfuegen($dbs, $spalte, $position);
-		$sql = $dbs->prepare("UPDATE eventuebersichten SET spalte = ?, position = ?, aktiv = ?, terminealt = ?, termineaktuell = ?, termineneu = ?, termineanzahlalt = ?, termineanzahlaktuell = ?, termineanzahlneu = ?, blogalt = ?, blogaktuell = ?, blogneu = ?, bloganzahlalt = ?, bloganzahlaktuell = ?, bloganzahlneu = ?, galeriealt = ?, galerieaktuell = ?, galerieneu = ?, galerieanzahlalt = ?, galerieanzahlaktuell = ?, galerieanzahlneu = ? WHERE id = ?");
-		$sql->bind_param("iissssiiisssiiisssiiii", $spalte, $position, $aktiv, $termine, $termine, $termine, $termineanzahl, $termineanzahl, $termineanzahl, $blog, $blog, $blog, $bloganzahl, $bloganzahl, $bloganzahl, $galerie, $galerie, $galerie, $galerieanzahl, $galerieanzahl, $galerieanzahl, $id);
+		$sql = $dbs->prepare("UPDATE eventuebersichten SET spalte = ?, position = ?, aktiv = ?, terminealt = ?, termineaktuell = ?, termineneu = ?, termineanzahlalt = ?, termineanzahlaktuell = ?, termineanzahlneu = ?, blogalt = ?, blogaktuell = ?, blogneu = ?, bloganzahlalt = ?, bloganzahlaktuell = ?, bloganzahlneu = ?, blogartalt = ?, blogartaktuell = ?, blogartneu = ?, galeriealt = ?, galerieaktuell = ?, galerieneu = ?, galerieanzahlalt = ?, galerieanzahlaktuell = ?, galerieanzahlneu = ? WHERE id = ?");
+		$sql->bind_param("iissssiiisssiiissssssiiii", $spalte, $position, $aktiv, $termine, $termine, $termine, $termineanzahl, $termineanzahl, $termineanzahl, $blog, $blog, $blog, $bloganzahl, $bloganzahl, $bloganzahl, $blogart, $blogart, $blogart, $galerie, $galerie, $galerie, $galerieanzahl, $galerieanzahl, $galerieanzahl, $id);
 		$sql->execute();
 		$sql->close();
 		echo "ERFOLG";

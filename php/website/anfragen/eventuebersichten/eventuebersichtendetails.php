@@ -34,6 +34,7 @@ if (($zugriff) && ($angemeldet)) {
   $blog = '1';
   $galerie = '0';
   $termineanzahl = 10;
+  $blogart = 'a';
   $bloganzahl = 5;
   $galerieanzahl = 5;
   if (cms_r("website.freigeben")) {$aktiv = 1;}
@@ -52,6 +53,7 @@ if (($zugriff) && ($angemeldet)) {
           $blog = $daten['blog'.$modusk];
           $galerie = $daten['galerie'.$modusk];
           $termineanzahl = $daten['termineanzahl'.$modusk];
+          $blogart = $daten['blogart'.$modusk];
           $bloganzahl = $daten['bloganzahl'.$modusk];
           $galerieanzahl = $daten['galerieanzahl'.$modusk];
         }
@@ -78,10 +80,18 @@ if (($zugriff) && ($angemeldet)) {
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_eventuebersicht_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "<tr><th>Termine:</th><td>".cms_schieber_generieren('website_element_eventuebersicht_termine', $termine, 'cms_eventuebersichten_aendern(\'termine\');')."</td></tr>";
     if ($termine != '1') {$style = "display: none;";} else {$style = "display: table-row;";}
-    $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_termine_zeile\"><th><span class=\"cms_hinweis_aussen\">Terminanzahl:<span class=\"cms_hinweis\">Wie viele anstehenden Termine sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_termineanzahl\" name=\"cms_website_element_eventuebersicht_galerienanzahl\" value=\"$termineanzahl\"></td></tr>";
+    $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_termine_zeile\"><th><span class=\"cms_hinweis_aussen\">Terminanzahl:<span class=\"cms_hinweis\">Wie viele anstehenden Termine sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_termineanzahl\" name=\"cms_website_element_eventuebersicht_termineanzahl\" value=\"$termineanzahl\"></td></tr>";
     $code .= "<tr><th>Blog:</th><td>".cms_schieber_generieren('website_element_eventuebersicht_blog', $blog, 'cms_eventuebersichten_aendern(\'blog\');')."</td></tr>";
     if ($blog != '1') {$style = "display: none;";} else {$style = "display: table-row;";}
-    $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_blog_zeile\"><th><span class=\"cms_hinweis_aussen\">Bloganzahl:<span class=\"cms_hinweis\">Wie viele der letzten Blogeinträge sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_bloganzahl\" name=\"cms_website_element_eventuebersicht_galerienanzahl\" value=\"$bloganzahl\"></td></tr>";
+    $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_blog_zeile1\"><th><span class=\"cms_hinweis_aussen\">Bloganzahl:<span class=\"cms_hinweis\">Wie viele der letzten Blogeinträge sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_bloganzahl\" name=\"cms_website_element_eventuebersicht_bloganzahl\" value=\"$bloganzahl\"></td></tr>";
+    $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_blog_zeile2\"><th><span class=\"cms_hinweis_aussen\">Blogart:<span class=\"cms_hinweis\">Wie sollen die Blogeinträge angezeigt werden</span></span></th><td><select id=\"cms_website_element_eventuebersicht_blogart\" name=\"cms_website_element_eventuebersicht_blogart\">";
+      if ($blogart == 'a') {$selected = " selected=\"selected\"";} else {$selected = "";}
+      $code .= "<option$selected value=\"a\">Artikel</option>";
+      if ($blogart == 'l') {$selected = " selected=\"selected\"";} else {$selected = "";}
+      $code .= "<option$selected value=\"l\">Liste</option>";
+      if ($blogart == 'd') {$selected = " selected=\"selected\"";} else {$selected = "";}
+      $code .= "<option$selected value=\"d\">Diashow</option>";
+    $code .= "</select></td></tr>";
     $code .= "<tr><th>Galerien:</th><td>".cms_schieber_generieren('website_element_eventuebersicht_galerien', $galerie, 'cms_eventuebersichten_aendern(\'galerien\');')."</td></tr>";
     if ($galerie != '1') {$style = "display: none;";} else {$style = "display: table-row;";}
     $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_galerien_zeile\"><th><span class=\"cms_hinweis_aussen\">Galerienanzahl:<span class=\"cms_hinweis\">Wie viele der letzten Galerien sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_galerienanzahl\" name=\"cms_website_element_eventuebersicht_galerienanzahl\" value=\"$galerieanzahl\"></td></tr>";

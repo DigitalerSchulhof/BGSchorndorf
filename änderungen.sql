@@ -543,7 +543,6 @@ CREATE TABLE `bedingterollen` ( `rolle` BIGINT(255) UNSIGNED NOT NULL, `bedingun
 ALTER TABLE `bedingterollen` ADD CONSTRAINT `bedingterollenrolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (
