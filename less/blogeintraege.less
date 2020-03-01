@@ -156,7 +156,6 @@
 }
 
 .cms_bloguebersicht_artikel li {
-  display: flex;
   flex-wrap: nowrap;
   padding: 0px;
   margin: 0px;
@@ -200,5 +199,66 @@
 }
 
 .cms_bloguebersicht_artikel .cms_bloglink .cms_bloglink_vorschaubild {
+  width: 100%;
+}
+
+
+
+
+
+.cms_bloguebersicht_diashow {
+  padding: 0px;
+  margin: 0px;
+  border-top: 1px solid @schattierthell_background;
+  border-bottom: 1px solid @schattierthell_background;
+  list-style-type: none;
+  display: block;
+  position: relative;
+}
+
+.cms_bloguebersicht_diashow .cms_wechselbilder_m {margin: 0px !important;}
+
+.cms_bloguebersicht_diashow .cms_wechselbilder_wahl {top: 35px !important;}
+
+.cms_bloguebersicht_diashow .cms_bloglink {
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 5px 10px;
+  position: relative;
+  transition: 250ms ease-in-out;
+  text-align: left !important;
+}
+
+.cms_bloguebersicht_diashow .cms_bloglink h3 {
+  font-size: 110%;
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_bloguebersicht_diashow .cms_bloglink p,
+.cms_bloguebersicht_diashow .cms_bloglink h3,
+.cms_bloguebersicht_diashow .cms_bloglink span {
+  color: #000000;
+}
+
+.cms_bloguebersicht_diashow .cms_bloglink h3+img {
+  width: 100%;
+}
+
+.cms_bloguebersicht_diashow .cms_bloglink .cms_notiz {margin-top: 0px;}
+.cms_bloguebersicht_diashow .cms_bloglink p:last-child {margin-bottom: 0px;}
+
+.cms_bloguebersicht_diashow .cms_bloglink:hover {
+  background-color: @schattierthell_background;
+}
+.cms_bloguebersicht_diashow .cms_bloglink:hover .cms_button {
+  background-color: @buttonhover_background;
+  color: @buttonhover_color;
+}
+
+.cms_bloguebersicht_diashow .cms_bloglink .cms_bloglink_vorschaubild {
   width: 100%;
 }

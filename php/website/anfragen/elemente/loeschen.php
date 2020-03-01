@@ -15,7 +15,7 @@ if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 
 $fehler = false;
 
-$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
+$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
 if (!in_array($art, $elemente)) {$fehler = true;}
 
 $rarten = array(
@@ -24,7 +24,8 @@ $rarten = array(
 	"boxenaussen"	=> "boxen",
 	"eventuebersichten"	=> "eventübersicht",
 	"kontaktformulare"	=> "kontaktformular",
-	"wnewsletter"	=> "newsletter"
+	"wnewsletter"	=> "newsletter",
+	"diashows" => "diashow"
 );
 
 $rart = $rarten[$art];

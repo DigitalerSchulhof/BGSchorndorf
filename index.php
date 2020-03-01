@@ -35,7 +35,8 @@
 	$CMS_IMNB = false;
 	$CMS_VERSION = rand(0,1000000);
 	//$CMS_VERSION = "0.5.7.3";
-	$TITELBILDERJS = "";
+	$CMS_WECHSELBILDER = 0;
+	$CMS_DIASHOWZEIT = 7000;
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
 	else {
@@ -170,6 +171,7 @@
 		// <!-- Einbindung der Stylesheets -->
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seite.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/wechselbilder.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/navigationen.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buttons.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/links.css?v=$CMS_VERSION\">";
@@ -223,13 +225,12 @@
     echo "<script src=\"js/allgemein/contextmenue.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/schulhof/nutzerkonto/anmelden.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/zugehoerig.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
+    echo "<script src=\"js/website/wechselbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
 
 		echo "<script src=\"js/website/newsletter.js?v=$CMS_VERSION\"></script>";
-		echo "<script src=\"js/website/galerien.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
@@ -306,6 +307,7 @@
     <script><?php
 			$CMS_ONLOAD_EXTERN_EVENTS = "";
 			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\n";
+			echo "var CMS_DIASHOWZEIT = $CMS_DIASHOWZEIT;\n";
 	    if ($CMS_ANGEMELDET) {
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
 					echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";
@@ -460,42 +462,18 @@
 		if ($CMS_URL[0] != 'App') {echo '<div id="cms_platzhalter_bild"></div>';}
 
 		if ($CMS_URL[0] == "Website") {
-			$bildercode = "";
 			$code = "";
-
 			// Alle Titelbilder
 			$verzeichnis = scandir('dateien/titelbilder');
 			array_splice($verzeichnis, 0, 2);
-			$bilder = array();
+			$inhalte = array();
 			foreach ($verzeichnis as $b) {
 				if ((is_file('dateien/titelbilder/'.$b)) && (getimagesize('dateien/titelbilder/'.$b))) {
-					array_push($bilder, $b);
+					array_push($inhalte, "<img src=\"dateien/titelbilder/".$b."\">");
 				}
 			}
-			$wahlknoepfe = "";
-			if (count($bilder) > 0) {
-				$bildercode .= "<li style=\"opacity: 1;\" id=\"cms_hauptbilder_0\"><img src=\"dateien/titelbilder/".$bilder[0]."\"></li>";
-				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_0\" class=\"cms_titelbild_knopf_aktiv\" onclick=\"cms_titelbild_zeigen('0')\"></span> ";
-			}
-			if (count($bilder) > 1) {
-				$TITELBILDERJS = "cms_titelbilder_starten();";
-			}
-			for ($i=1; $i<count($bilder); $i++) {
-				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_hauptbilder_$i\"><img src=\"dateien/titelbilder/".$bilder[$i]."\"></li>";
-				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_$i\" class=\"cms_titelbild_knopf\" onclick=\"cms_titelbild_zeigen('$i')\"></span> ";
-			}
-			if (strlen($bildercode) > 0) {
-				$code .= '<div id="cms_hauptbild_o">';
-					$code .= '<ul id="cms_hauptbilder_m">';
-					$code .= $bildercode;
-					$code .= '</ul>';
-					$code .= "<div class=\"cms_clear\"></div>";
-					$code .= "<input type=\"hidden\" id=\"cms_titelbilder_anzahl\" id=\"cms_titelbilder_azahl\" value=\"".(count($bilder))."\">";
-					$code .= "<input type=\"hidden\" id=\"cms_titelbilder_angezeigt\" id=\"cms_titelbilder_angezeigt\" value=\"0\">";
-					$code .= '<span class="cms_hauptbilder_voriges" onclick="cms_titelbild_voriges()"></span><span class="cms_hauptbilder_naechstes" onclick="cms_titelbild_naechstes()"></span>';
-					$code .= "<p class=\"cms_titelbilder_wahl\">$wahlknoepfe</p>";
-				$code .= '</div>';
-			}
+
+			$code .= cms_wechselbilder_generieren($inhalte, "cms_hauptbild_");
 			echo $code;
 		}
 
@@ -567,7 +545,7 @@
 		<?php
 		if ($CMS_ANGEMELDET) {
 			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EVENTS."\n";
+				echo "window.onload = function () {".$CMS_ONLOAD_EVENTS."\n";
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {echo "cms_netzcheck();\n";}
 				echo "};";
 			echo "</script>";

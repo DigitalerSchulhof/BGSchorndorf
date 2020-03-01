@@ -9,7 +9,9 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 
 	$zeiten = cms_blogeintrag_zeiten($daten);
 
-	$code .= "<li>";
+	if ($art != 'diashow') {
+		$code .= "<li>";
+	}
 	$link = "";
 	if ($CMS_URL[0] == 'Website') {$link = "Website/Blog/";}
 	else if ($CMS_URL[0] == 'Schulhof') {
@@ -28,7 +30,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 		if ($daten['art'] == 'oe') {$code .= "<img class=\"cms_bloglink_vorschaubild\" src=\"".$daten['vorschaubild']."\">";}
 			else {$code .= "<img class=\"cms_bloglink_vorschaubild\" src=\"".cms_generiere_bilddaten($daten['vorschaubild'])."\">";}
 	}
-	if ($art == 'liste') {$code .= "<h3>".$daten['bezeichnung']."</h3>";}
+	if (($art == 'liste') || ($art == 'diashow')) {$code .= "<h3>".$daten['bezeichnung']."</h3>";}
 	$code .= "<p>".$daten['vorschau']."</p>";
 
 	// Prüfen, ob Downloads vorliegen
@@ -50,7 +52,9 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	$code .= "<div class=\"cms_clear\"></div>";
 	$code .= "</div>";
 	$code .= "</a>";
-	$code .= "</li>";
+	if ($art != 'diashow') {
+		$code .= "</li>";
+	}
 
 	return $code;
 }

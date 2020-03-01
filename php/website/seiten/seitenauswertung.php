@@ -518,6 +518,7 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
     $termineanzahl = $e['termineanzahl'.$zusatz];
     $blog = $e['blog'.$zusatz];
     $bloganzahl = $e['bloganzahl'.$zusatz];
+    $blogart = $e['blogart'.$zusatz];
     $galerie = $e['galerie'.$zusatz];
     $galerieanzahl = $e['galerieanzahl'.$zusatz];
     $aktiv = $e['aktiv'];
@@ -537,6 +538,7 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
       $felder = 0;
 
       $blogcode = "";
+      $bloginhalte = array();
       if ($blog == 1) {
         $BLOGS = array();
         $sql = $dbs->prepare("SELECT id, 'oe' AS art, genehmigt, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM blogeintraege WHERE aktiv = 1 AND genehmigt = 1 AND oeffentlichkeit = 4 AND datum < ? ORDER BY datum DESC LIMIT ?");
@@ -560,8 +562,20 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
         $sql->close();
 
         include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
-        foreach ($BLOGS AS $daten) {
-          $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
+        if ($blogart == 'd') {
+          foreach ($BLOGS AS $daten) {
+            array_push($bloginhalte, cms_blogeintrag_link_ausgeben($dbs, $daten, 'diashow'));
+          }
+        }
+        else if ($blogart == 'l') {
+          foreach ($BLOGS AS $daten) {
+            $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'liste');
+          }
+        }
+        else {
+          foreach ($BLOGS AS $daten) {
+            $blogcode .= cms_blogeintrag_link_ausgeben($dbs, $daten, 'artikel');
+          }
         }
       }
 
@@ -628,8 +642,21 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
         }
       }
 
-      if (strlen($blogcode) > 0) {
-        $code .= "<div class=\"cms_eventuebersicht_box_a cms_eventuebersicht_box_blog\"><div class=\"cms_eventuebersicht_box_i\"><h2>Aktuelles</h2><ul class=\"cms_bloguebersicht_artikel\">".$blogcode."</ul><p><a class=\"cms_button\" href=\"Website/Blog/".date('Y')."/".cms_monatsnamekomplett(date('m'))."\">Ältere Einträge</a></p></div></div>";
+      if ((strlen($blogcode) > 0) || (count($bloginhalte) > 0)) {
+        $code .= "<div class=\"cms_eventuebersicht_box_a cms_eventuebersicht_box_blog\"><div class=\"cms_eventuebersicht_box_i\"><h2>Aktuelles</h2>";
+        if ($blogart == 'd') {
+          $code .= "<div class=\"cms_bloguebersicht_diashow\">";
+          $code .= cms_wechselbilder_generieren($bloginhalte);
+          $code .= "</div>";
+        }
+        else if ($blogart == 'l') {
+          $code .= "<ul class=\"cms_bloguebersicht_liste\">".$blogcode."</ul>";
+        }
+        else {
+          $code .= "<ul class=\"cms_bloguebersicht_artikel\">".$blogcode."</ul>";
+        }
+
+        $code .= "<p><a class=\"cms_button\" href=\"Website/Blog/".date('Y')."/".cms_monatsnamekomplett(date('m'))."\">Ältere Einträge</a></p></div></div>";
       }
       if (strlen($termincode) > 0) {
         $code .= "<div class=\"cms_eventuebersicht_box_a cms_eventuebersicht_box_termine\"><div class=\"cms_eventuebersicht_box_i\"><h2>Anstehende Termine</h2><ul class=\"cms_terminuebersicht\">".$termincode."</ul><p><a class=\"cms_button\" href=\"Website/Termine/".date('Y')."/".cms_monatsnamekomplett(date('m'))."\">Mehr Termine</a></p></div></div>";
@@ -873,53 +900,24 @@ function cms_diashow_ausgeben($dbs, $k) {
 
     $kid = $k["id"];
 
+    $inhalte = array();
     $sql = "SELECT pfad$zusatz, beschreibung$zusatz FROM diashowbilder WHERE diashow = ?";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("i", $kid);
     $sql->bind_result($pfad, $beschreibung);
     $sql->execute();
 
-    $bilder = array();
-
     while($sql->fetch()) {
-      if($pfad != "") {
-        $bilder[] = array("pfad" => $pfad, "beschreibung" => $beschreibung);
-      }
+      $icode = "<img src=\"$pfad\">";
+      if (strlen($beschreibung) > 0) {$icode .= "<p class=\"cms_wechselbilder_galerie_unterschrift\">".$beschreibung."</p>";}
+      array_push($inhalte, $icode);
     }
 
     $code .= "<div class=\"cms_diashow\">";
       $jetzt = time();
 
       $code .= "<div class=\"cms_diashow_box_a\"><div class=\"cms_diashow_box_i\"><h2>$titel</h2>";
-
-      $wahlknoepfe = "";
-      $bildercode = "";
-      if (count($bilder) > 0) {
-        $bildercode = "<li style=\"opacity: 1;\" id=\"cms_galeriebilder_0\"><img src=\"".$bilder[0]["pfad"]."\">";
-        if (strlen($bilder[0]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[0]["beschreibung"]."</p>";}
-        $code .= "</li>";
-        $wahlknoepfe = "<span id=\"cms_galeriebilder_knopf_0\" class=\"cms_galeriebild_knopf_aktiv\" onclick=\"cms_galeriebild_zeigen('0')\"></span> ";
-      }
-      for ($i=1; $i<count($bilder); $i++) {
-        $bildercode .= "<li style=\"opacity: 0;\" id=\"cms_galeriebilder_$i\"><img src=\"".$bilder[$i]["pfad"]."\">";
-        if (strlen($bilder[$i]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[$i]["beschreibung"]."</p>";}
-        $bildercode .= "</li>";
-        $wahlknoepfe .= "<span id=\"cms_galeriebilder_knopf_$i\" class=\"cms_galeriebild_knopf\" onclick=\"cms_galeriebild_zeigen('$i')\"></span> ";
-      }
-      if (strlen($bildercode) > 0) {
-        $code .= '<div id="cms_galeriebild_o">';
-          $code .= "<p class=\"cms_galeriebilder_wahl\">$wahlknoepfe</p>";
-          $code .= '<ul id="cms_galeriebild_m">';
-          $code .= $bildercode;
-          $code .= '</ul>';
-          $code .= "<div class=\"cms_clear\"></div>";
-          $code .= "<input type=\"hidden\" id=\"cms_galeriebilder_anzahl\" id=\"cms_galeriebilder_anzahl\" value=\"".(count($bilder))."\">";
-          $code .= "<input type=\"hidden\" id=\"cms_galeriebilder_angezeigt\" id=\"cms_galeriebilder_angezeigt\" value=\"0\">";
-          $code .= '<span class="cms_galeriebilder_voriges" onclick="cms_galeriebild_voriges()"></span><span class="cms_galeriebilder_naechstes" onclick="cms_galeriebild_naechstes()"></span>';
-        $code .= '</div>';
-        $code .= "<script>cms_galeriebilder_starten();</script>";
-      }
-
+      $code .= cms_wechselbilder_generieren($inhalte);
       $code .= "</div></div>";
       $code .= "<div class=\"cms_clear\"></div>";
 

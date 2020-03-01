@@ -51,7 +51,7 @@ function cms_galerie_zusatzinfo($dbs, $daten) {
 		$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ".$daten['id'].")";
 	}
 	$sql = substr($sql, 7);
-	$dbs = cms_verbinden("s");	
+	$dbs = cms_verbinden("s");
 	$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
 	if ($sql->execute()) {
 		$sql->bind_result($bez, $icon);
@@ -160,14 +160,17 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			$kalender = "<div class=\"cms_termin_detialkalenderblatt\">".cms_galerie_kalenderblatterzeugen($galerie, $zeiten)."</div>";
 			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_galeriedetailansicht_galerieinfos($dbs, $galerie, $zeiten)."</div>";
 
-			$bilder = array();
+			$inhalte = array();
 
 			$sql = "SELECT id, galerie, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung FROM galerienbilder WHERE galerie = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("i", $galerie['id']);
 			if ($sql->execute()) {
-				foreach ($sql->get_result() as $daten) {
-					array_push($bilder, $daten);
+				$sql->bind_result($gbid, $gbgal, $gbpfad, $gbbesch);
+				while ($sql->fetch()) {
+					$icode = "<img src=\"$gbpfad\">";
+					if (strlen($gbbesch) > 0) {$icode .= "<p class=\"cms_wechselbilder_galerie_unterschrift\">$gbbesch</p>";}
+					array_push($inhalte, $icode);
 				}
 				$sql->close();
 			}
@@ -178,33 +181,7 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			$code .= "<h1>".$galerie['bezeichnung']."</h1>";
 			$code .= "<p>".$galerie['beschreibung']."</p>";
 
-			$wahlknoepfe = "";
-			$bildercode = "";
-			if (count($bilder) > 0) {
-				$bildercode = "<li style=\"opacity: 1;\" id=\"cms_galeriebilder_0\"><img src=\"".$bilder[0]["pfad"]."\">";
-				if (strlen($bilder[0]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[0]["beschreibung"]."</p>";}
-				$code .= "</li>";
-				$wahlknoepfe = "<span id=\"cms_galeriebilder_knopf_0\" class=\"cms_galeriebild_knopf_aktiv\" onclick=\"cms_galeriebild_zeigen('0')\"></span> ";
-			}
-			for ($i=1; $i<count($bilder); $i++) {
-				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_galeriebilder_$i\"><img src=\"".$bilder[$i]["pfad"]."\">";
-				if (strlen($bilder[$i]["beschreibung"]) > 0) {$bildercode .= "<p class=\"cms_galerie_unterschrift\">".$bilder[$i]["beschreibung"]."</p>";}
-				$bildercode .= "</li>";
-				$wahlknoepfe .= "<span id=\"cms_galeriebilder_knopf_$i\" class=\"cms_galeriebild_knopf\" onclick=\"cms_galeriebild_zeigen('$i')\"></span> ";
-			}
-			if (strlen($bildercode) > 0) {
-				$code .= '<div id="cms_galeriebild_o">';
-					$code .= "<p class=\"cms_galeriebilder_wahl\">$wahlknoepfe</p>";
-					$code .= '<ul id="cms_galeriebild_m">';
-					$code .= $bildercode;
-					$code .= '</ul>';
-					$code .= "<div class=\"cms_clear\"></div>";
-					$code .= "<input type=\"hidden\" id=\"cms_galeriebilder_anzahl\" id=\"cms_galeriebilder_anzahl\" value=\"".(count($bilder))."\">";
-					$code .= "<input type=\"hidden\" id=\"cms_galeriebilder_angezeigt\" id=\"cms_galeriebilder_angezeigt\" value=\"0\">";
-					$code .= '<span class="cms_galeriebilder_voriges" onclick="cms_galeriebild_voriges()"></span><span class="cms_galeriebilder_naechstes" onclick="cms_galeriebild_naechstes()"></span>';
-				$code .= '</div>';
-				$code .= "<script>cms_galeriebilder_starten();</script>";
-			}
+			$code .= cms_wechselbilder_generieren($inhalte);
 
 			// Bilder Ende
 			$CMS_GALERIEID = $galerie["id"];

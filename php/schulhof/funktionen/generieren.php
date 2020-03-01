@@ -761,4 +761,38 @@ if (!function_exists('mb_ucfirst')) {
 		return $str;
 	}
 }
+
+function cms_wechselbilder_generieren($inhalte, $id = "") {
+  global $CMS_WECHSELBILDER;
+  $code = "";
+  if (!is_array($inhalte)) {return "";}
+  if (count($inhalte) == 0) {return "";}
+  if (strlen($id) == 0) {$id = "cms_wechselbilder_".$CMS_WECHSELBILDER."_";}
+
+  $knoepfe = "";
+  $icode = "";
+
+  $icode .= "<li style=\"opacity: 1;\" class=\"cms_wechselbilder_bild\" id=\"cms_wechselbilder_bild_".$CMS_WECHSELBILDER."_0\">".$inhalte[0]."</li>";
+  $knoepfe .= "<span id=\"cms_wechselbilder_knopf_".$CMS_WECHSELBILDER."_0\" class=\"cms_wechselbilder_knopf_aktiv\" onclick=\"cms_wechselbild_zeigen('$CMS_WECHSELBILDER', '0')\"></span> ";
+
+  for ($i=1; $i<count($inhalte); $i++) {
+    $icode .= "<li style=\"opacity: 0;\" class=\"cms_wechselbilder_bild\" id=\"cms_wechselbilder_bild_".$CMS_WECHSELBILDER."_$i\">".$inhalte[$i]."</li>";
+    $knoepfe .= "<span id=\"cms_wechselbilder_knopf_".$CMS_WECHSELBILDER."_$i\" class=\"cms_wechselbilder_knopf\" onclick=\"cms_wechselbild_zeigen('$CMS_WECHSELBILDER', '$i')\"></span> ";
+  }
+
+  $code .= "<div class=\"cms_wechselbilder_o\" id=\"$id"."_o\">";
+    $code .= "<ul class=\"cms_wechselbilder_m\" id=\"$id"."_m\">";
+    $code .= $icode;
+    $code .= "</ul><div class=\"cms_clear\"></div>";
+    $code .= "<input type=\"hidden\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_anzahl\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_anzahl\" value=\"".(count($inhalte))."\">";
+    $code .= "<input type=\"hidden\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_angezeigt\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_angezeigt\" value=\"0\">";
+    $code .= '<span class="cms_wechselbild_voriges" onclick="cms_wechselbild_voriges('.$CMS_WECHSELBILDER.')"></span><span class="cms_wechselbild_naechstes" onclick="cms_wechselbild_naechstes('.$CMS_WECHSELBILDER.')"></span>';
+    $code .= "<p class=\"cms_wechselbilder_wahl\">$knoepfe</p>";
+    $code .= "</ul>";
+    $code .= "<script>cms_wechselbilder_starten($CMS_WECHSELBILDER);</script>";
+  $code .= "</div>";
+
+  $CMS_WECHSELBILDER ++;
+  return $code;
+}
 ?>
