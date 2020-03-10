@@ -543,6 +543,10 @@ CREATE TABLE `bedingterollen` ( `rolle` BIGINT(255) UNSIGNED NOT NULL, `bedingun
 ALTER TABLE `bedingterollen` ADD CONSTRAINT `bedingterollenrolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+ALTER TABLE `voranmeldung_schueler` ADD `staat` VARBINARY(2000) NULL DEFAULT NULL AFTER `ort`;
+ALTER TABLE `voranmeldung_eltern` ADD `haupt` VARBINARY(50) NULL DEFAULT NULL AFTER `briefe`, ADD `rolle` VARBINARY(50) NULL DEFAULT NULL AFTER `haupt`;
+
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (

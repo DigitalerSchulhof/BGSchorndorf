@@ -36,6 +36,7 @@ if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$sstrasse = cms_texttrafo_e_db(
 if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$shausnummer = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_HAUSNUMMER']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$splz = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_PLZ']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_S_ORT'])) {$sort = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_ORT']);} else {echo "FEHLER"; exit;}
+if (isset($_SESSION['VORANMELDUNG_S_STAAT'])) {$sstaat = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_STAAT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_S_TEILORT'])) {$steilort = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_TEILORT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_S_TELEFON1'])) {$stelefon1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_TELEFON1']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_S_TELEFON2'])) {$stelefon2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_S_TELEFON2']);} else {echo "FEHLER"; exit;}
@@ -53,6 +54,8 @@ if (isset($_SESSION['VORANMELDUNG_A1_VORNAME'])) {$vorname1 = cms_texttrafo_e_db
 if (isset($_SESSION['VORANMELDUNG_A1_GESCHLECHT'])) {$geschlecht1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_GESCHLECHT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A1_SORGERECHT'])) {$sorgerecht1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_SORGERECHT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A1_BRIEFE'])) {$briefe1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_BRIEFE']);} else {echo "FEHLER"; exit;}
+if (isset($_SESSION['VORANMELDUNG_A1_ROLLE'])) {$rolle1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_ROLLE']);} else {echo "FEHLER"; exit;}
+if (isset($_SESSION['VORANMELDUNG_A1_HAUPT'])) {$haupt1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_HAUPT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A1_STRASSE'])) {$strasse1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_STRASSE']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A1_HAUSNUMMER'])) {$hausnummer1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_HAUSNUMMER']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A1_PLZ'])) {$plz1 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A1_PLZ']);} else {echo "FEHLER"; exit;}
@@ -68,6 +71,8 @@ if (isset($_SESSION['VORANMELDUNG_A2_VORNAME'])) {$vorname2 = cms_texttrafo_e_db
 if (isset($_SESSION['VORANMELDUNG_A2_GESCHLECHT'])) {$geschlecht2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_GESCHLECHT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A2_SORGERECHT'])) {$sorgerecht2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_SORGERECHT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A2_BRIEFE'])) {$briefe2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_BRIEFE']);} else {echo "FEHLER"; exit;}
+if (isset($_SESSION['VORANMELDUNG_A2_ROLLE'])) {$rolle2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_ROLLE']);} else {echo "FEHLER"; exit;}
+if (isset($_SESSION['VORANMELDUNG_A2_HAUPT'])) {$haupt2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_HAUPT']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A2_STRASSE'])) {$strasse2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_STRASSE']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A2_HAUSNUMMER'])) {$hausnummer2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_HAUSNUMMER']);} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['VORANMELDUNG_A2_PLZ'])) {$plz2 = cms_texttrafo_e_db($_SESSION['VORANMELDUNG_A2_PLZ']);} else {echo "FEHLER"; exit;}
@@ -101,8 +106,8 @@ if (!$fehler) {
 	$dbs = cms_verbinden('s');
 	// Schüler eintragen
 	$schuelerid = cms_generiere_kleinste_id('voranmeldung_schueler', 's', '0');
-	$sql = $dbs->prepare("UPDATE voranmeldung_schueler SET vorname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), rufname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), nachname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsdatum = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsland = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), muttersprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), verkehrssprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geschlecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religion = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religionsunterricht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), staatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zstaatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), strasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), hausnummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), plz = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), teilort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), mail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), einschulung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeschule = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeklasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kuenftigesprofil = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geimpft = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), akzeptiert = AES_ENCRYPT('nein', '$CMS_SCHLUESSEL'), eingegangen = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
-	$sql->bind_param("ssssssssssssssssssssssssssssss", $svorname, $srufname, $snachname, $sgeburtsdatum, $sgeburtsort, $sgeburtsland, $smuttersprache, $sverkehrssprache, $sgeschlecht, $sreligion, $sreligionsunterricht, $sland1, $sland2, $sstrasse, $shausnummer, $splz, $sort, $steilort, $stelefon1, $stelefon2, $shandy1, $shandy2, $smail, $seinschulung, $svorigeschule, $sklasse, $sprofil, $simpfung, $jetzt, $schuelerid);
+	$sql = $dbs->prepare("UPDATE voranmeldung_schueler SET vorname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), rufname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), nachname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsdatum = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geburtsland = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), muttersprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), verkehrssprache = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geschlecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religion = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), religionsunterricht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), staatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zstaatsangehoerigkeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), strasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), hausnummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), plz = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), staat = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), teilort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), mail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), einschulung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeschule = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorigeklasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), kuenftigesprofil = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geimpft = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), akzeptiert = AES_ENCRYPT('nein', '$CMS_SCHLUESSEL'), eingegangen = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+	$sql->bind_param("sssssssssssssssssssssssssssssss", $svorname, $srufname, $snachname, $sgeburtsdatum, $sgeburtsort, $sgeburtsland, $smuttersprache, $sverkehrssprache, $sgeschlecht, $sreligion, $sreligionsunterricht, $sland1, $sland2, $sstrasse, $shausnummer, $splz, $sort, $sstaat, $steilort, $stelefon1, $stelefon2, $shandy1, $shandy2, $smail, $seinschulung, $svorigeschule, $sklasse, $sprofil, $simpfung, $jetzt, $schuelerid);
 	$sql->execute();
 	$sql->close();
 
@@ -110,16 +115,16 @@ if (!$fehler) {
 	// Ansprechpartner 1 eintragen
 	$id = cms_generiere_kleinste_id('voranmeldung_eltern', 's', '0');
 
-	$sql = $dbs->prepare("UPDATE voranmeldung_eltern SET schueler = ?, nummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), nachname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geschlecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sorgerecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), briefe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), strasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), hausnummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), plz = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), teilort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), mail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+	$sql = $dbs->prepare("UPDATE voranmeldung_eltern SET schueler = ?, nummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), nachname = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), geschlecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), sorgerecht = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), briefe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), haupt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), rolle = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), strasse = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), hausnummer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), plz = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), teilort = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon1 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), telefon2 = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), handy = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), mail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
 	$nummer = 'eins';
-	$sql->bind_param("isssssssssssssssi", $schuelerid, $nummer, $vorname1, $nachname1, $geschlecht1, $sorgerecht1, $briefe1, $strasse1, $hausnummer1, $plz1, $ort1, $teilort1, $telefon11, $telefon21, $handy11, $mail1, $id);
+	$sql->bind_param("isssssssssssssssssi", $schuelerid, $nummer, $vorname1, $nachname1, $geschlecht1, $sorgerecht1, $briefe1, $haupt1, $rolle1, $strasse1, $hausnummer1, $plz1, $ort1, $teilort1, $telefon11, $telefon21, $handy11, $mail1, $id);
 	$sql->execute();
 
 	// Ansprechpartner 2 eintragen
 	if ($ansprechpartner2 == '1') {
 		$id = cms_generiere_kleinste_id('voranmeldung_eltern', 's', '0');
 		$nummer = 'zwei';
-		$sql->bind_param("isssssssssssssssi", $schuelerid, $nummer, $vorname2, $nachname2, $geschlecht2, $sorgerecht2, $briefe2, $strasse2, $hausnummer2, $plz2, $ort2, $teilort2, $telefon12, $telefon22, $handy12, $mail2, $id);
+		$sql->bind_param("isssssssssssssssssi", $schuelerid, $nummer, $vorname2, $nachname2, $geschlecht2, $sorgerecht2, $briefe2, $haupt2, $rolle2, $strasse2, $hausnummer2, $plz2, $ort2, $teilort2, $telefon12, $telefon22, $handy12, $mail2, $id);
 		$sql->execute();
 	}
 	$sql->close();
@@ -151,6 +156,7 @@ if (!$fehler) {
 	unset($_SESSION['VORANMELDUNG_S_HAUSNUMMER']);
 	unset($_SESSION['VORANMELDUNG_S_PLZ']);
 	unset($_SESSION['VORANMELDUNG_S_ORT']);
+	unset($_SESSION['VORANMELDUNG_S_STAAT']);
 	unset($_SESSION['VORANMELDUNG_S_TEILORT']);
 	unset($_SESSION['VORANMELDUNG_S_TELEFON1']);
 	unset($_SESSION['VORANMELDUNG_S_TELEFON2']);
@@ -168,6 +174,8 @@ if (!$fehler) {
 	unset($_SESSION['VORANMELDUNG_A1_GESCHLECHT']);
 	unset($_SESSION['VORANMELDUNG_A1_SORGERECHT']);
 	unset($_SESSION['VORANMELDUNG_A1_BRIEFE']);
+	unset($_SESSION['VORANMELDUNG_A1_HAUPT']);
+	unset($_SESSION['VORANMELDUNG_A1_ROLLE']);
 	unset($_SESSION['VORANMELDUNG_A1_STRASSE']);
 	unset($_SESSION['VORANMELDUNG_A1_HAUSNUMMER']);
 	unset($_SESSION['VORANMELDUNG_A1_PLZ']);
@@ -183,6 +191,8 @@ if (!$fehler) {
 	unset($_SESSION['VORANMELDUNG_A2_GESCHLECHT']);
 	unset($_SESSION['VORANMELDUNG_A2_SORGERECHT']);
 	unset($_SESSION['VORANMELDUNG_A2_BRIEFE']);
+	unset($_SESSION['VORANMELDUNG_A2_HAUPT']);
+	unset($_SESSION['VORANMELDUNG_A2_ROLLE']);
 	unset($_SESSION['VORANMELDUNG_A2_STRASSE']);
 	unset($_SESSION['VORANMELDUNG_A2_HAUSNUMMER']);
 	unset($_SESSION['VORANMELDUNG_A2_PLZ']);

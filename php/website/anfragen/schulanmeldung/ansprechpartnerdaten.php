@@ -14,6 +14,8 @@ if (isset($_POST['vorname1'])) {$vorname1 = $_POST['vorname1'];} else {echo "FEH
 if (isset($_POST['geschlecht1'])) {$geschlecht1 = $_POST['geschlecht1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sorgerecht1'])) {$sorgerecht1 = $_POST['sorgerecht1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['briefe1'])) {$briefe1 = $_POST['briefe1'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['haupt1'])) {$haupt1 = $_POST['haupt1'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['rolle1'])) {$rolle1 = $_POST['rolle1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['strasse1'])) {$strasse1 = $_POST['strasse1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['hausnummer1'])) {$hausnummer1 = $_POST['hausnummer1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['plz1'])) {$plz1 = $_POST['plz1'];} else {echo "FEHLER"; exit;}
@@ -29,6 +31,8 @@ if (isset($_POST['vorname2'])) {$vorname2 = $_POST['vorname2'];} else {echo "FEH
 if (isset($_POST['geschlecht2'])) {$geschlecht2 = $_POST['geschlecht2'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['sorgerecht2'])) {$sorgerecht2 = $_POST['sorgerecht2'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['briefe2'])) {$briefe2 = $_POST['briefe2'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['haupt2'])) {$haupt2 = $_POST['haupt2'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['rolle2'])) {$rolle2 = $_POST['rolle2'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['strasse2'])) {$strasse2 = $_POST['strasse2'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['hausnummer2'])) {$hausnummer2 = $_POST['hausnummer2'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['plz2'])) {$plz2 = $_POST['plz2'];} else {echo "FEHLER"; exit;}
@@ -50,6 +54,8 @@ if (!cms_check_name($nachname1)) {$fehler = true;}
 if (($geschlecht1 != 'm') && ($geschlecht1 != 'w') && ($geschlecht1 != 'd')) {$fehler = true;}
 if (!cms_check_toggle($sorgerecht1)) {$fehler = true;}
 if (!cms_check_toggle($briefe1)) {$fehler = true;}
+if (!cms_check_toggle($haupt1)) {$fehler = true;}
+if (($rolle1 != 'Mu') && ($rolle1 != 'Va') && ($rolle1 != 'Pf')) {$fehler = true;}
 if (strlen($strasse1) <= 0) {$fehler = true;}
 if (strlen($hausnummer1) <= 0) {$fehler = true;}
 if (strlen($plz1) <= 0) {$fehler = true;}
@@ -63,6 +69,8 @@ if ($ansprechpartner2 == '1') {
 	if (($geschlecht2 != 'm') && ($geschlecht2 != 'w') && ($geschlecht2 != 'd')) {$fehler = true;}
 	if (!cms_check_toggle($sorgerecht2)) {$fehler = true;}
 	if (!cms_check_toggle($briefe2)) {$fehler = true;}
+	if (!cms_check_toggle($haupt2)) {$fehler = true;}
+	if (($rolle2 != 'Mu') && ($rolle2 != 'Va') && ($rolle2 != 'Pf')) {$fehler = true;}
 	if (strlen($strasse2) <= 0) {$fehler = true;}
 	if (strlen($hausnummer2) <= 0) {$fehler = true;}
 	if (strlen($plz2) <= 0) {$fehler = true;}
@@ -72,12 +80,13 @@ if ($ansprechpartner2 == '1') {
 }
 
 if (!$fehler) {
-
 	$_SESSION['VORANMELDUNG_A1_NACHNAME'] = $nachname1;
 	$_SESSION['VORANMELDUNG_A1_VORNAME'] = $vorname1;
 	$_SESSION['VORANMELDUNG_A1_GESCHLECHT'] = $geschlecht1;
 	$_SESSION['VORANMELDUNG_A1_SORGERECHT'] = $sorgerecht1;
 	$_SESSION['VORANMELDUNG_A1_BRIEFE'] = $briefe1;
+	$_SESSION['VORANMELDUNG_A1_HAUPT'] = $haupt1;
+	$_SESSION['VORANMELDUNG_A1_ROLLE'] = $rolle1;
 	$_SESSION['VORANMELDUNG_A1_STRASSE'] = $strasse1;
 	$_SESSION['VORANMELDUNG_A1_HAUSNUMMER'] = $hausnummer1;
 	$_SESSION['VORANMELDUNG_A1_PLZ'] = $plz1;
@@ -93,6 +102,8 @@ if (!$fehler) {
 	$_SESSION['VORANMELDUNG_A2_GESCHLECHT'] = $geschlecht2;
 	$_SESSION['VORANMELDUNG_A2_SORGERECHT'] = $sorgerecht2;
 	$_SESSION['VORANMELDUNG_A2_BRIEFE'] = $briefe2;
+	$_SESSION['VORANMELDUNG_A2_HAUPT'] = $haupt2;
+	$_SESSION['VORANMELDUNG_A2_ROLLE'] = $rolle2;
 	$_SESSION['VORANMELDUNG_A2_STRASSE'] = $strasse2;
 	$_SESSION['VORANMELDUNG_A2_HAUSNUMMER'] = $hausnummer2;
 	$_SESSION['VORANMELDUNG_A2_PLZ'] = $plz2;

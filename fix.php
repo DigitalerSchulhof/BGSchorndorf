@@ -22,8 +22,9 @@ $dbs = cms_verbinden('s');
 //   echo "ALTER TABLE `$gk"."termineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
 // }
 
-$dbs->query("ALTER TABLE `rollen` DROP `personenart`");
-$dbs->query("DELETE FROM `rollen` WHERE id > 0");
-$dbs->query("INSERT INTO `rollen` (`id`, `bezeichnung`, `idvon`, `idzeit`) VALUES (1, AES_ENCRYPT('Lehrer', '$CMS_SCHLUESSEL'), NULL, NULL), (2, AES_ENCRYPT('Schüler', '$CMS_SCHLUESSEL'), NULL, NULL), (3, AES_ENCRYPT('Verwaltung', '$CMS_SCHLUESSEL'), NULL, NULL), (4, AES_ENCRYPT('Eltern', '$CMS_SCHLUESSEL'), NULL, NULL), (5, AES_ENCRYPT('Externe', '$CMS_SCHLUESSEL'), NULL, NULL);");
-$dbs->query("INSERT INTO `bedingterollen` (`rolle`, `bedingung`) VALUES (1, AES_ENCRYPT('nutzer.art==\"l\"', '$CMS_SCHLUESSEL')), (2, AES_ENCRYPT('nutzer.art==\"s\"', '$CMS_SCHLUESSEL')), (3, AES_ENCRYPT('nutzer.art==\"v\"', '$CMS_SCHLUESSEL')), (4, AES_ENCRYPT('nutzer.art==\"e\"', '$CMS_SCHLUESSEL')), (5, AES_ENCRYPT('nutzer.art==\"x\"', '$CMS_SCHLUESSEL'));");
+// $dbs->query("ALTER TABLE `rollen` DROP `personenart`");
+// $dbs->query("DELETE FROM `rollen` WHERE id > 0");
+// $dbs->query("INSERT INTO `rollen` (`id`, `bezeichnung`, `idvon`, `idzeit`) VALUES (1, AES_ENCRYPT('Lehrer', '$CMS_SCHLUESSEL'), NULL, NULL), (2, AES_ENCRYPT('Schüler', '$CMS_SCHLUESSEL'), NULL, NULL), (3, AES_ENCRYPT('Verwaltung', '$CMS_SCHLUESSEL'), NULL, NULL), (4, AES_ENCRYPT('Eltern', '$CMS_SCHLUESSEL'), NULL, NULL), (5, AES_ENCRYPT('Externe', '$CMS_SCHLUESSEL'), NULL, NULL);");
+// $dbs->query("INSERT INTO `bedingterollen` (`rolle`, `bedingung`) VALUES (1, AES_ENCRYPT('nutzer.art==\"l\"', '$CMS_SCHLUESSEL')), (2, AES_ENCRYPT('nutzer.art==\"s\"', '$CMS_SCHLUESSEL')), (3, AES_ENCRYPT('nutzer.art==\"v\"', '$CMS_SCHLUESSEL')), (4, AES_ENCRYPT('nutzer.art==\"e\"', '$CMS_SCHLUESSEL')), (5, AES_ENCRYPT('nutzer.art==\"x\"', '$CMS_SCHLUESSEL'));");
+}
 ?>

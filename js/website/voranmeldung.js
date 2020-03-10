@@ -88,6 +88,7 @@ function cms_schuelerdaten_speichern() {
 	var hausnummer = document.getElementById('cms_voranmeldung_schueler_hausnummer').value;
 	var plz = document.getElementById('cms_voranmeldung_schueler_postleitzahl').value;
 	var ort = document.getElementById('cms_voranmeldung_schueler_ort').value;
+	var staat = document.getElementById('cms_voranmeldung_schueler_staat').value;
 	var teilort = document.getElementById('cms_voranmeldung_schueler_teilort').value;
 	var telefon1 = document.getElementById('cms_voranmeldung_schueler_telefon1').value;
 	var telefon2 = document.getElementById('cms_voranmeldung_schueler_telefon2').value;
@@ -191,6 +192,11 @@ function cms_schuelerdaten_speichern() {
 		meldung += '<li>Der Ort ist ungültig.</li>';
 	}
 
+	if (staat.length <= 0) {
+		fehler = true;
+		meldung += '<li>Der Staat des Wohnorts ist ungültig.</li>';
+	}
+
 	if ((telefon1.length <= 0) && (telefon2.length <= 0) && (handy1.length <= 0) && (handy2.length <= 0)) {
 		fehler = true;
 		meldung += '<li>Es muss mindestens eine Telefonnummer angegeben werden.</li>';
@@ -246,6 +252,7 @@ function cms_schuelerdaten_speichern() {
 		formulardaten.append("hausnummer", hausnummer);
 		formulardaten.append("plz", plz);
 		formulardaten.append("ort", ort);
+		formulardaten.append("staat", staat);
 		formulardaten.append("teilort", teilort);
 		formulardaten.append("telefon1", telefon1);
 		formulardaten.append("telefon2", telefon2);
@@ -280,6 +287,8 @@ function cms_ansprechpartnerdaten_speichern() {
 	var geschlecht1 = document.getElementById('cms_voranmeldung_ansprechpartner1_geschlecht').value;
 	var sorgerecht1 = document.getElementById('cms_voranmeldung_ansprechpartner1_sorgerecht').value;
 	var briefe1 = document.getElementById('cms_voranmeldung_ansprechpartner1_briefe').value;
+	var haupt1 = document.getElementById('cms_voranmeldung_ansprechpartner1_haupt').value;
+	var rolle1 = document.getElementById('cms_voranmeldung_ansprechpartner1_rolle').value;
 	var strasse1 = document.getElementById('cms_voranmeldung_ansprechpartner1_strasse').value;
 	var hausnummer1 = document.getElementById('cms_voranmeldung_ansprechpartner1_hausnummer').value;
 	var plz1 = document.getElementById('cms_voranmeldung_ansprechpartner1_postleitzahl').value;
@@ -295,6 +304,8 @@ function cms_ansprechpartnerdaten_speichern() {
 	var geschlecht2 = document.getElementById('cms_voranmeldung_ansprechpartner2_geschlecht').value;
 	var sorgerecht2 = document.getElementById('cms_voranmeldung_ansprechpartner2_sorgerecht').value;
 	var briefe2 = document.getElementById('cms_voranmeldung_ansprechpartner2_briefe').value;
+	var haupt2 = document.getElementById('cms_voranmeldung_ansprechpartner2_haupt').value;
+	var rolle2 = document.getElementById('cms_voranmeldung_ansprechpartner2_rolle').value;
 	var strasse2 = document.getElementById('cms_voranmeldung_ansprechpartner2_strasse').value;
 	var hausnummer2 = document.getElementById('cms_voranmeldung_ansprechpartner2_hausnummer').value;
 	var plz2 = document.getElementById('cms_voranmeldung_ansprechpartner2_postleitzahl').value;
@@ -324,6 +335,11 @@ function cms_ansprechpartnerdaten_speichern() {
 		meldung += '<li>Das Geschlecht des ersten Ansprechpartners ist ungültig.</li>';
 	}
 
+	if ((rolle1 != 'Mu') && (rolle1 != 'Va') && (rolle1 != 'Pf')) {
+		fehler = true;
+		meldung += '<li>Die Eingabe für der Rolle des ersten Ansprechpartners ist ungültig.</li>';
+	}
+
 	if (!cms_check_toggle(sorgerecht1)) {
 		fehler = true;
 		meldung += '<li>Die Eingabe für das Sorgerecht des ersten Ansprechpartners ist ungültig.</li>';
@@ -332,6 +348,11 @@ function cms_ansprechpartnerdaten_speichern() {
 	if (!cms_check_toggle(briefe1)) {
 		fehler = true;
 		meldung += '<li>Die Eingabe für die Einbeziehung des ersten Ansprechpartners in Breife ist ungültig.</li>';
+	}
+
+	if (!cms_check_toggle(haupt1)) {
+		fehler = true;
+		meldung += '<li>Die Eingabe für den Hauptansprechpartner beim ersten Ansprechpartner ist ungültig.</li>';
 	}
 
 	if (strasse1.length <= 0) {
@@ -374,58 +395,68 @@ function cms_ansprechpartnerdaten_speichern() {
 	if (ansprechpartner2 == '1') {
 		if (!cms_check_name(vorname2)) {
 			fehler = true;
-			meldung += '<li>Die Eingabe für den Vornamen des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>Die Eingabe für den Vornamen des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if (!cms_check_name(nachname2)) {
 			fehler = true;
-			meldung += '<li>Die Eingabe für den Nachname des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>Die Eingabe für den Nachname des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if ((geschlecht2 != 'm') && (geschlecht2 != 'w') && (geschlecht2 != 'd')) {
 			fehler = true;
-			meldung += '<li>Das Geschlecht des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>Das Geschlecht des zweiten Ansprechpartners ist ungültig.</li>';
+		}
+
+		if ((rolle2 != 'Mu') && (rolle2 != 'Va') && (rolle2 != 'Pf')) {
+			fehler = true;
+			meldung += '<li>Die Eingabe für der Rolle des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if (!cms_check_toggle(sorgerecht2)) {
 			fehler = true;
-			meldung += '<li>Die Eingabe für das Sorgerecht des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>Die Eingabe für das Sorgerecht des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if (!cms_check_toggle(briefe2)) {
 			fehler = true;
-			meldung += '<li>Die Eingabe für die Einbeziehung des ersten Ansprechpartners in Breife ist ungültig.</li>';
+			meldung += '<li>Die Eingabe für die Einbeziehung des zweiten Ansprechpartners in Breife ist ungültig.</li>';
+		}
+
+		if (!cms_check_toggle(haupt2)) {
+			fehler = true;
+			meldung += '<li>Die Eingabe für den Hauptansprechpartner beim zweiten Ansprechpartner ist ungültig.</li>';
 		}
 
 		if (strasse2.length <= 0) {
 			fehler = true;
-			meldung += '<li>Die Straße des ersten Ansprechpartners ist ungültig.</li>';
+			meldung += '<li>Die Straße des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if (hausnummer2.length <= 0) {
 			fehler = true;
-			meldung += '<li>Die Hausnummer des ersten Ansprechpartners  ist ungültig.</li>';
+			meldung += '<li>Die Hausnummer des ersten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if (plz2.length <= 0) {
 			fehler = true;
-			meldung += '<li>Die Postleitzahl des ersten Ansprechpartners  ist ungültig.</li>';
+			meldung += '<li>Die Postleitzahl des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if (ort2.length <= 0) {
 			fehler = true;
-			meldung += '<li>Der Ort des ersten Ansprechpartners  ist ungültig.</li>';
+			meldung += '<li>Der Ort des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
 		if ((telefon12.length <= 0) && (telefon22.length <= 0) && (handy12.length <= 0)) {
 			fehler = true;
-			meldung += '<li>Es muss mindestens eine Telefonnummer für den  ersten Ansprechpartner angegeben werden.</li>';
+			meldung += '<li>Es muss mindestens eine Telefonnummer für den zweiten Ansprechpartner angegeben werden.</li>';
 		}
 
 		if (mail2.length) {
 			if (!cms_check_mail(mail2)) {
 				fehler = true;
-				meldung += '<li>Die eingegebene eMailadresse des ersten Ansprechpartners ist ungültig.</li>';
+				meldung += '<li>Die eingegebene eMailadresse des zweiten Ansprechpartners ist ungültig.</li>';
 			}
 		}
 	}
@@ -437,6 +468,8 @@ function cms_ansprechpartnerdaten_speichern() {
 		formulardaten.append("geschlecht1", geschlecht1);
 		formulardaten.append("sorgerecht1", sorgerecht1);
 		formulardaten.append("briefe1", briefe1);
+		formulardaten.append("haupt1", haupt1);
+		formulardaten.append("rolle1", rolle1);
 		formulardaten.append("strasse1", strasse1);
 		formulardaten.append("hausnummer1", hausnummer1);
 		formulardaten.append("plz1", plz1);
@@ -452,6 +485,8 @@ function cms_ansprechpartnerdaten_speichern() {
 		formulardaten.append("geschlecht2", geschlecht2);
 		formulardaten.append("sorgerecht2", sorgerecht2);
 		formulardaten.append("briefe2", briefe2);
+		formulardaten.append("haupt2", haupt2);
+		formulardaten.append("rolle2", rolle2);
 		formulardaten.append("strasse2", strasse2);
 		formulardaten.append("hausnummer2", hausnummer2);
 		formulardaten.append("plz2", plz2);
