@@ -413,12 +413,19 @@ if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-
 if (cms_r("schulhof.information.newsletter.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">";
 			$code .=  "<h3>Newsletter</h3>";
 			$code .=  "<p>Newsletter und Mailinglisten verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("website.weiterleiten")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_weiterleiten\" href=\"Schulhof/Website/Weiterleiten\">";
+			$code .=  "<h3>Weiterleiten</h3>";
+			$code .=  "<p>Weiterleitungen einrichten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }

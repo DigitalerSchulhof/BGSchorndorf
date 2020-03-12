@@ -26,7 +26,7 @@
           $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"$ffback\">";
 
           if (strpos(wordwrap($ffback, 80), "\n")==0) {
-            $liste .= substr($ffback, 0, 80)
+            $liste .= substr($ffback, 0, 80);
           }
           else {
             $liste .= substr($ffback, 0, strpos(wordwrap($ffback, 80), "\n"));

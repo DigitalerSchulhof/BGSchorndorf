@@ -85,6 +85,11 @@ function cms_brotkrumen($url, $favorisieren = true) {
 		$code .= $favorisieren;
 	}
 
+	// Weiterleitung einrichten
+	if(cms_r("website.weiterleiten")) {
+		$code .= "<span class=\"cms_neue_weiterleitung\"><img onclick=\"cms_neue_weiterleitung('/".join('/', $url)."')\" src=\"res/icons/klein/weiterleiten.png\"></span>";
+	}
+
 	return substr($code, 3);
 }
 ?>

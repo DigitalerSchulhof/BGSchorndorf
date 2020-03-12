@@ -45,12 +45,25 @@
 			if ($_SESSION['DSGVO_FENSTERWEG']) {$_SESSION['GERAET'] = $CMS_GERAET;}
 		}
 	}
+	$dbs = cms_verbinden('s');
 
 	// Welche Seite ist gesucht?
 	// Variablen laden
 	if (isset($_GET['URL'])) {
 		$CMS_URL = explode('/', $_GET['URL']);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
+
+		// Weiterleitungen
+		$sql = "SELECT AES_DECRYPT(zu, '$CMS_SCHLUESSEL') FROM weiterleiten WHERE von = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+		$sql = $dbs->prepare($sql);
+		$r = "/$CMS_URLGANZ";
+		$sql->bind_param("s", $r);
+		$sql->bind_result($ziel);
+		if($sql->execute() && $sql->fetch()) {
+			header("Location: $ziel");
+			die;
+		}
+
 		// Fallback bei ungültigen URLs
 		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern") && ($CMS_URL[0] != "App")) {
 			$CMS_URL = array();
@@ -373,7 +386,6 @@
 
 
 	<?php
-		$dbs = cms_verbinden('s');
 		// Startseite laden
 		if ($CMS_URLGANZ == "Website") {
 			$CMS_SEITENDETAILS = cms_startseitendetails_erzeugen($dbs);

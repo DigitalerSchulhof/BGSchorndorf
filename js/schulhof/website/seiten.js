@@ -125,7 +125,6 @@ function cms_schulhof_website_seite_neu_speichern() {
 	}
 }
 
-
 function cms_schulhof_website_seite_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Seite bearbeiten', 'Die Berechtigung wird geprüft.');
 
@@ -142,7 +141,6 @@ function cms_schulhof_website_seite_bearbeiten_vorbereiten (id) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
-
 
 function cms_schulhof_website_seite_bearbeiten() {
 	cms_laden_an('Seite bearbeiten', 'Die Eingaben werden überprüft.');
@@ -234,11 +232,9 @@ function cms_schulhof_website_seite_bearbeiten() {
 	}
 }
 
-
 function cms_schulhof_website_seite_loeschen_anzeigen (anzeigename, id) {
 	cms_meldung_an('warnung', 'Seite löschen', '<p>Soll die Seite <b>'+anzeigename+'</b> wirklich gelöscht werden?</p><p><b>Alle Unterseiten</b> dieser Seite werden ebenfalls gelöscht!</p><p>Mit der Löschung einer Seite werden auch <b>alle Inhalte</b> dieser Seite gelöscht. Dateien, die auf dieser Seite verwendet werden, sind von der Löschung nicht betroffen. Sie müssen separat gelöscht werden.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_website_seite_loeschen(\''+anzeigename+'\','+id+')">Löschung durchführen</span></p>');
 }
-
 
 function cms_schulhof_website_seite_loeschen(anzeigename, id) {
 	cms_laden_an('Seite löschen', 'Die Seite <b>'+anzeigename+'</b> wird gelöscht.<br>Je nach dem wie viele Unterseiten enthalten sind und wie voll diese Seiten sind, kann das einen Moment dauern.');
@@ -257,11 +253,9 @@ function cms_schulhof_website_seite_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-
 function cms_schulhof_website_seite_startseite_anzeigen (anzeigename, id) {
 	cms_meldung_an('warnung', 'Seite zur Startseite machen', '<p>Soll die Seite <b>'+anzeigename+'</b> wirklich zur Startseite gemacht werden?</p><p>Die vorige Startseite wird danach als aktive Seite angezeigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_ja" onclick="cms_schulhof_website_seite_startseite(\''+anzeigename+'\','+id+')">Neue Startseite festlegen</span></p>');
 }
-
 
 function cms_schulhof_website_seite_startseite(anzeigename, id) {
 	cms_laden_an('Seite zur Startseite machen', 'Die Seite <b>'+anzeigename+'</b> wird zur Startseite gemacht.');
@@ -286,4 +280,135 @@ function cms_seitenwahl_auswahl(id, bezeichnung, seite) {
 	feld.innerHTML = bezeichnung;
 	eingabe.value = seite;
 	cms_ausblenden(id+'_wahl_seitenwahlF');
+}
+
+
+function cms_neue_weiterleitung(ziel) {
+	ziel = ziel || "";
+	cms_laden_an('Neue Weiterleitung einrichten', 'Daten werden verarbeitet.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("ziel",     			ziel);
+	formulardaten.append("anfragenziel", 	'340');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Website/Weiterleiten/Neu");
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_weiterleitung_neu_speichern() {
+	var von = document.getElementById('cms_weiterleitung_von').value;
+	var zu 	= document.getElementById('cms_weiterleitung_zu').value;
+
+	var meldung = '<p>Die Weiterleitung konnte nicht erstellt werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+	if (!/\/(.*)*/.test(von)) {
+		meldung += '<li>die neue URL ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!/\/(.*)*/.test(zu)) {
+		meldung += '<li>die Zielseite ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Neue Weiterleitung einrichten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Neue Weiterleitung einrichten', 'Daten werden verarbeitet.');
+		var formulardaten = new FormData();
+		formulardaten.append("von",     			von);
+		formulardaten.append("zu",     				zu);
+		formulardaten.append("anfragenziel", 	'341');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "DOPPELT") {
+				cms_meldung_an('fehler', 'Neue Weiterleitung einrichten', "<p>Eine Weiterleitung für diese URL ist schon vorhanden.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			} else if (rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Website/Weiterleiten");
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_weiterleitung_bearbeiten_vorbereiten (id) {
+	cms_laden_an('Weiterleitung bearbeiten', 'Die Berechtigung wird geprüft.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", id);
+	formulardaten.append("anfragenziel", 	'383');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Website/Weiterleiten/Details');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_weiterleitung_bearbeiten_speichern(id) {
+	cms_laden_an('Weiterleitung speichern', 'Daten werden verarbeitet.');
+	var von = document.getElementById('cms_weiterleitung_von').value;
+	var zu 	= document.getElementById('cms_weiterleitung_zu').value;
+
+	var meldung = '<p>Die Weiterleitung konnte nicht erstellt werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+	if (!/\/(.*)*/.test(von)) {
+		meldung += '<li>die neue URL ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!/\/(.*)*/.test(zu)) {
+		meldung += '<li>die Zielseite ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Neue Weiterleitung einrichten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Neue Weiterleitung einrichten', 'Daten werden verarbeitet.');
+		var formulardaten = new FormData();
+		formulardaten.append("id",     			id);
+		formulardaten.append("von",     			von);
+		formulardaten.append("zu",     				zu);
+		formulardaten.append("anfragenziel", 	'381');
+
+		function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "DOPPELT") {
+			cms_meldung_an('fehler', 'Neue Weiterleitung einrichten', "<p>Eine Weiterleitung für diese URL ist schon vorhanden.</p>", '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		} else if (rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Website/Weiterleiten");
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_weiterleitung_loeschen(id) {
+	cms_laden_an('Weiterleitung löschen', 'Daten werden verarbeitet.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("id",     				id);
+	formulardaten.append("anfragenziel", 	'382');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Website/Weiterleiten");
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }

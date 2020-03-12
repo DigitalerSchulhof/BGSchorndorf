@@ -14,7 +14,7 @@
       $ausgabe .= "<tbody>";
 
       $dbs = cms_verbinden('s');
-      $sql = $sql->prepare("SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen ORDER BY status ASC, zeitstempel DESC");
+      $sql = $dbs->prepare("SELECT id, ersteller, AES_DECRYPT(url, '$CMS_SCHLUESSEL') AS url, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, zeitstempel, status FROM fehlermeldungen ORDER BY status ASC, zeitstempel DESC");
       $liste = "";
       if ($sql->execute()) {
         $sql->bind_result($fid, $ferst, $furl, $ftit, $fbes, $fzeit, $fstatus);

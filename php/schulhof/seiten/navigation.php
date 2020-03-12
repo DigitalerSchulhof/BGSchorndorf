@@ -571,6 +571,10 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("schulhof.information.newsletter.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Newsletter\">Newsletter</a></li> ";
 	}
+	if (cms_r("website.weiterleiten")) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Weiterleiten\">Weiterleitungen</a></li> ";
+	}
+
 
 	// WEBSITE
 	$VERtechnik = "";

@@ -31,6 +31,8 @@ if(cms_r("technik.fehlermeldungen"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_fehlermeldungen\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a> ";
 if(cms_r("schulhof.information.newsletter.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">Newsletter</a> ";
+if (cms_r("website.weiterleiten"))
+  $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_weiterleiten\" href=\"Schulhof/Website/Weiterleiten\">Weiterleitungen</a> ";
 
 if (strlen($website) > 0)
 	$code .= "<p>".$website."</p>";
