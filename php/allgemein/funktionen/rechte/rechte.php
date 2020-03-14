@@ -439,6 +439,9 @@
 
   function cms_rechte_laden_bedingte_rechte() {
     global $CMS_SCHLUESSEL, $cms_bedingte_nutzerrechte;
+    if(!isset($_SESSION["BENUTZERID"])) {
+      return;
+    }
     $zeit             = time();
     $nutzer_id        = $_SESSION["BENUTZERID"];
     $nutzer_vorname   = $_SESSION["BENUTZERVORNAME"];
@@ -587,6 +590,9 @@
 
   function cms_rechte_laden_bedingte_rollen() {
     global $CMS_SCHLUESSEL, $cms_bedingte_rollenrechte;
+    if(!isset($_SESSION["BENUTZERID"])) {
+      return;
+    }
     $zeit             = time();
     $nutzer_id        = $_SESSION["BENUTZERID"];
     $nutzer_vorname   = $_SESSION["BENUTZERVORNAME"];

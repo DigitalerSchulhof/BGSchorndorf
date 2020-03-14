@@ -439,6 +439,9 @@
 
   function cms_rechte_laden_bedingte_rechte() {
     global $CMS_SCHLUESSEL, $cms_bedingte_nutzerrechte, $CMS_BENUTZERID, $CMS_BENUTZERART;
+    if(!isset($CMS_BENUTZERID)) {
+      return;
+    }
     $zeit             = time();
     $nutzer_id        = $CMS_BENUTZERID;
     $dbs = cms_verbinden("s");
@@ -592,6 +595,9 @@
 
   function cms_rechte_laden_bedingte_rollen() {
     global $CMS_SCHLUESSEL, $cms_bedingte_nutzerrechte, $CMS_BENUTZERID, $CMS_BENUTZERART;
+    if(!isset($CMS_BENUTZERID)) {
+      return;
+    }
     $zeit             = time();
     $nutzer_id        = $CMS_BENUTZERID;
     $dbs = cms_verbinden("s");
