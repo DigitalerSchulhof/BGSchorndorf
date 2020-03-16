@@ -790,6 +790,8 @@ function cms_erstelle_tagesinfo($stds) {
 
 
 function cms_vplan_ausgeben($PLAN) {
+  global $CMS_SCHLUESSEL;
+  $dbs = cms_verbinden("s");
   $code = "";
   $minpp = 1;
   $yakt = 20;
@@ -837,10 +839,32 @@ function cms_vplan_ausgeben($PLAN) {
     }
       // Schulstunden dieses Tages ausgeben
       $code .= "<span class=\"cms_stundenplan_spaltentitel\">".$t['wochentag']."</span>";
+
+      $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("i", $aktzeitraum);
+      $sql->bind_result($sjbez);
+      $sql->execute();
+      $sql->fetch();
+      $sql->close();
+      $sjbez = cms_textzulink($sjbez);
+
       foreach ($t['schulstunden'] as $s) {
         $code .= "<span class=\"cms_stundenplan_stundenfeld\" style=\"top: ".($s['beginny']*$minpp+$yakt)."px;height: ".($s['dauer']*$minpp)."px;\">";
         foreach ($s['stunden'] AS $std) {
-          $code .= cms_vplan_unterricht_ausgeben($std);
+          $kid = $std['kursid'];
+
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM kurse WHERE id = ?";
+          $sql = $dbs->prepare($sql);
+          $sql->bind_param("i", $kid);
+          $sql->bind_result($kbez);
+          $sql->execute();
+          $sql->fetch();
+          $sql->close();
+          $kbez = cms_textzulink($kbez);
+          $kz = " onclick=\"cms_link('Schulhof/Gruppen/$sjbez/Kurse/$kbez', true);\"";
+
+          $code .= cms_vplan_unterricht_ausgeben($std, $kz);
         }
         $code .= "</span>";
       }
@@ -854,11 +878,11 @@ function cms_vplan_ausgeben($PLAN) {
   return $code;
 }
 
-function cms_vplan_unterricht_ausgeben($std) {
+function cms_vplan_unterricht_ausgeben($std, $kz = "") {
   $klasse = "";
   if ($std['vplanart'] == 'e') {$klasse = "_ausfall";}
   else if ($std['vplanart'] != '-') {$klasse = "_geaendert";}
-  $code = "<span class=\"cms_stundenplan_stunde$klasse\">";
+  $code = "<span$kz class=\"cms_stundenplan_stunde$klasse\">";
     $code .= $std['kurs']."<br>".$std['lehrer']."<br>".$std['raum'];
   $code .= "</span>";
   return $code;

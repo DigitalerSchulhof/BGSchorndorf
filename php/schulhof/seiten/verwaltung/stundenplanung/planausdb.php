@@ -3,7 +3,7 @@ function cms_personenregelplan_aus_db($dbs, $person, $zeitraum) {
   global $CMS_SCHLUESSEL;
   $sql = "";
   if ($zeitraum != '-') {
-    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND regelunterricht.kurs IN (SELECT gruppe FROM kursemitglieder WHERE person = ?) ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
+    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, kurse.id, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND regelunterricht.kurs IN (SELECT gruppe FROM kursemitglieder WHERE person = ?) ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
   }
   $INFO = cms_stunden_generieren($dbs, $sql, $person, $zeitraum);
   return cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO);
@@ -13,7 +13,7 @@ function cms_raumregelplan_aus_db($dbs, $raum, $zeitraum) {
   global $CMS_SCHLUESSEL;
   $sql = "";
   if ($zeitraum != '-') {
-    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND raum = ? ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
+    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, kurse.id, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND raum = ? ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
   }
   $INFO = cms_stunden_generieren($dbs, $sql, $raum, $zeitraum);
   return cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO);
@@ -23,7 +23,7 @@ function cms_klassenregelplan_aus_db($dbs, $klasse, $zeitraum) {
   global $CMS_SCHLUESSEL;
   $sql = "";
   if ($zeitraum != '-') {
-    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND regelunterricht.kurs IN (SELECT kurs FROM kurseklassen WHERE klasse = ?) ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
+    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, kurse.id, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND regelunterricht.kurs IN (SELECT kurs FROM kurseklassen WHERE klasse = ?) ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
   }
   $INFO = cms_stunden_generieren($dbs, $sql, $klasse, $zeitraum);
   return cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO);
@@ -33,7 +33,7 @@ function cms_stufenregelplan_aus_db($dbs, $stufe, $zeitraum) {
   global $CMS_SCHLUESSEL;
   $sql = "";
   if ($zeitraum != '-') {
-    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND kurse.stufe = ? ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
+    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, kurse.id, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND kurse.stufe = ? ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
   }
   $INFO = cms_stunden_generieren($dbs, $sql, $stufe, $zeitraum);
   return cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO);
@@ -43,7 +43,7 @@ function cms_lehrerregelplan_aus_db($dbs, $person, $zeitraum) {
   global $CMS_SCHLUESSEL;
   $sql = "";
   if ($zeitraum != '-') {
-    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND lehrer = ? ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
+    $sql = "SELECT regelunterricht.schulstunde, schulstunden.beginns, schulstunden.beginnm, schulstunden.endes, schulstunden.endem, regelunterricht.tag, regelunterricht.rythmus, kurse.id, AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(lehrer.kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), faecher.farbe FROM regelunterricht JOIN schulstunden ON regelunterricht.schulstunde = schulstunden.id JOIN kurse ON regelunterricht.kurs = kurse.id JOIN raeume ON regelunterricht.raum = raeume.id JOIN lehrer on regelunterricht.lehrer = lehrer.id JOIN personen ON lehrer.id = personen.id JOIN faecher ON kurse.fach = faecher.id WHERE schulstunden.zeitraum = ? AND lehrer = ? ORDER BY regelunterricht.tag, schulstunden.beginns, schulstunden.beginnm, regelunterricht.rythmus";
   }
   $INFO = cms_stunden_generieren($dbs, $sql, $person, $zeitraum);
   return cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO);
@@ -112,13 +112,14 @@ function cms_stunden_generieren($dbs, $sqlstd, $zielid, $zeitraum) {
     }
   }
   if ($sql->execute()) {
-    $sql->bind_result($std, $stdbeginns, $stdbeginnm, $stdendes, $stdendem, $stdtag, $stdrythmus, $stdkurs, $stdraum, $stdlkurz, $stdlvorname, $stdlnachname, $stdltitel, $stdfarbe);
+    $sql->bind_result($std, $stdbeginns, $stdbeginnm, $stdendes, $stdendem, $stdtag, $stdrythmus, $stdkursid, $stdkurs, $stdraum, $stdlkurz, $stdlvorname, $stdlnachname, $stdltitel, $stdfarbe);
     while ($sql->fetch()) {
       $s = array();
       $s['beginns'] = $stdbeginns;
       $s['beginnm'] = $stdbeginnm;
       $s['endes'] = $stdendes;
       $s['endem'] = $stdendem;
+      $s['kursid'] = $stdkursid;
       $s['kurs'] = $stdkurs;
       $s['raum'] = $stdraum;
       $s['rythmus'] = $stdrythmus;
@@ -142,9 +143,18 @@ function cms_stunden_generieren($dbs, $sqlstd, $zielid, $zeitraum) {
 }
 
 function cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO) {
+  global $CMS_SCHLUESSEL;
   if ($zeitraum == '-') {
     return cms_meldung('info', '<h4>Nicht verfügbar</h4><p>Im Moment ist kein Stundenplan verfügbar.</p>');
   }
+  $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') FROM schuljahre JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+  $sql = $dbs->prepare($sql);
+  $sql->bind_param("i", $zeitraum);
+  $sql->bind_result($sjbez);
+  $sql->execute();
+  $sql->fetch();
+  $sql->close();
+  $sjbez = cms_textzulink($sjbez);
 
   $SCHULSTUNDEN = $INFO['schulstunden'];
   $SCHULSTUNDENIDS = $INFO['schulstundenids'];
@@ -188,7 +198,18 @@ function cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO) {
           $code .= "<span class=\"cms_stundenplan_stundenfeld\" style=\"top: ".$SCHULSTUNDEN[$s]['beginny']."px;height: ".($SCHULSTUNDEN[$s]['endey']-$SCHULSTUNDEN[$s]['beginny'])."px;\">";
           for ($r=0; $r<=$INFO['rythmenmax']; $r++) {
             foreach ($STUNDEN[$t][$s][$r] AS $std) {
-              $code .= cms_stunde_ausgeben($std);
+              $kid = $std['kursid'];
+              $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM kurse WHERE id = ?";
+              $sql = $dbs->prepare($sql);
+              $sql->bind_param("i", $kid);
+              $sql->bind_result($kbez);
+              $sql->execute();
+              $sql->fetch();
+              $sql->close();
+              $kbez = cms_textzulink($kbez);
+              $kz = " onclick=\"cms_link('Schulhof/Gruppen/$sjbez/Kurse/$kbez', true);\"";
+
+              $code .= cms_stunde_ausgeben($std, $kz);
             }
           }
           $code .= "</span>";
@@ -200,14 +221,14 @@ function cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO) {
   return $code;
 }
 
-function cms_stunde_ausgeben($std) {
+function cms_stunde_ausgeben($std, $kz = "") {
   $style = "";
   if ((($std['farbe'] >= 0) && ($std['farbe'] <= 8)) ||
       (($std['farbe'] >= 16) && ($std['farbe'] <= 41)) ||
       (($std['farbe'] >= 46) && ($std['farbe'] <= 47))) {
     $style = "color:#ffffff;";} else {$style="";
   }
-  $code = "<span class=\"cms_stundenplan_stunde cms_farbbeispiel_".$std['farbe']."\" style=\"$style\">";
+  $code = "<span$kz class=\"cms_stundenplan_stunde cms_farbbeispiel_".$std['farbe']."\" style=\"$style\">";
     $code .= $std['kurs']."<br>".$std['lehrer']."<br>".$std['raum'];
     if ($std['rythmus'].'' != '0') {
       $code .= "<span class=\"cms_stundenplan_stunde_rythmus\">".chr(64+$std['rythmus'])."</span>";
