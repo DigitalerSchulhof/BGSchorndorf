@@ -261,7 +261,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 			$code .= cms_meldung_fehler();	// Sollte bei erfolgreichem Laden nicht sichtbar sein
 		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_berechtigung\">";
-			$code .= cms_meldung_berechtigung();
+			$code .= cms_meldung_berechtigung(false);
 		$code .= "</div>";
 		$code .= "<div id=\"cms_chat_stumm\">";
 			if($CMS_BENUTZERART == 's')

@@ -207,9 +207,8 @@ function cms_stundenplan_ausgeben($dbs, $zeitraum, $INFO) {
               $sql->fetch();
               $sql->close();
               $kbez = cms_textzulink($kbez);
-              $kz = " onclick=\"cms_link('Schulhof/Gruppen/$sjbez/Kurse/$kbez', true);\"";
 
-              $code .= cms_stunde_ausgeben($std, $kz);
+              $code .= cms_stunde_ausgeben($std, " onclick=\"cms_link('Schulhof/Gruppen/$sjbez/Kurse/$kbez', true);\"");
             }
           }
           $code .= "</span>";

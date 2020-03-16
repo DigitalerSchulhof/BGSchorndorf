@@ -862,9 +862,8 @@ function cms_vplan_ausgeben($PLAN) {
           $sql->fetch();
           $sql->close();
           $kbez = cms_textzulink($kbez);
-          $kz = " onclick=\"cms_link('Schulhof/Gruppen/$sjbez/Kurse/$kbez', true);\"";
 
-          $code .= cms_vplan_unterricht_ausgeben($std, $kz);
+          $code .= cms_vplan_unterricht_ausgeben($std, " onclick=\"cms_link('Schulhof/Gruppen/$sjbez/Kurse/$kbez', true);\"");
         }
         $code .= "</span>";
       }
