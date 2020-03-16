@@ -367,7 +367,7 @@ function authentifizieren($nachricht, $socket) {
 	$sql->bind_param("i", $id);
 	$sql->bind_result($nid, $p, $d, $i, $m, $ls, $v, $n, $t, $sm);
 	$sql->execute();
-	while($sql->fetch())
+	while($sql->fetch()) {
 		$daten["nachrichten"][] = array(
 			"id" => $nid,
 			"person" => $p,
@@ -378,12 +378,16 @@ function authentifizieren($nachricht, $socket) {
 			"name" => cms_generiere_anzeigename($v, $n, $t),
 			"geloescht" => !!$ls,	// (bool)
 			"eigen" => $p == $id);
+	}
 	$daten["loeschen"] = $rechte["nachrichtloeschen"];
 	$daten["stummschalten"] = $rechte["nutzerstummschalten"];
 	$daten["stumm"] = $bannbis;
 	$daten["leer"] = !count($daten["nachrichten"]);
-	$daten["mehr"] = count($daten["nachrichten"]) > $limit;
-	array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+	$daten["mehr"] = false;
+	if(count($daten["nachrichten"]) > $limit) {
+		$daten["mehr"] = true;
+		array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+	}
 	$daten["nachrichten"] = array_reverse($daten["nachrichten"]);
 	senden($socket, "2", $daten);
 
@@ -416,7 +420,7 @@ function nachrichtSenden($nachricht, $socket) {
 
 	$gebannt = 1;
 	// Stummschaltung prüfen
-	$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis < ".time();
+	$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND (chatbannbis < ".time()." OR chatbannbis IS NULL)";
 	$sql = $dbs->prepare($sql);
 	$sql->bind_param("ii", $id, $gid);
 	$sql->bind_result($gebannt);

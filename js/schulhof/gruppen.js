@@ -653,7 +653,7 @@ var socketChat = {
     socketChat.status = 1;
     if(socketChat.verbindenInterval)
       clearInterval(socketChat.verbindenInterval)
-    socketChat.socket = new WebSocket("wss://"+socketChat.server.ip+":"+socketChat.server.port);
+    socketChat.socket = new WebSocket("ws://"+socketChat.server.ip+":"+socketChat.server.port);
     socketChat.eventsSetzten();
   },
   senden: function(nachricht) {
@@ -795,6 +795,16 @@ var socketChat = {
       daten["banndauer"] = banndauer;
     socketChat.senden(daten);
   },
+  stummschalten: function(dauer) {
+    if(dauer) {
+      socketChat.stummTimeout = setTimeout(function() {
+        socketChat.chat.removeClass("cms_chat_stumm");
+        socketChat.stummTimeout = null;
+      }, dauer*1000-new Date().getTime());
+    }
+    if(socketChat.stummTimeout != null)
+      socketChat.chat.addClass("cms_chat_stumm");
+  },
   events: {
     close: function(e) {
       socketChat.neuVerbinden();
@@ -831,10 +841,7 @@ var socketChat = {
           socketChat.rechte.loeschen = daten.loeschen;
           socketChat.rechte.stummschalten = daten.stummschalten;
           if(daten.stumm) {
-            socketChat.chat.addClass("cms_chat_stumm");
-            socketChat.stummTimeout = setTimeout(function() {
-              socketChat.chat.removeClass("cms_chat_stumm");
-            }, daten.stumm*1000-new Date().getTime());
+            socketChat.stummschalten(daten.stumm);
           }
           socketChat.nachrichten.html("");
 
@@ -853,14 +860,12 @@ var socketChat = {
           socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
           var lid = daten["lid"];
           socketChat.nachrichten.find("#cms_chat_nachricht_"+lid).removeClass("cms_chat_nachricht_gemeldet").addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html(daten["inhalt"]);
+          socketChat.stummschalten();
           break;
         case "5":
-          if(daten.stumm) {
-            socketChat.chat.addClass("cms_chat_stumm");
-            socketChat.stummTimeout = setTimeout(function() {
-              socketChat.chat.removeClass("cms_chat_stumm");
-            }, daten.stumm*1000-new Date().getTime());
-          } else
+          if(daten.stumm)
+            socketChat.stummschalten(daten.stumm)
+          else
             cms_meldung_fehler();
           break;
         case "6":
@@ -868,6 +873,7 @@ var socketChat = {
           socketChat.chat.setClass("cms_chat_mehr", daten.mehr);
 
           $.each(daten.nachrichten, function(k, v) { socketChat.nachrichtAnzeigen(v, true); });
+          socketChat.stummschalten();
 
           break;
         case "7":
