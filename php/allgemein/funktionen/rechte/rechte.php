@@ -55,8 +55,10 @@
   	if ($person === '-')
       $person = $_SESSION['BENUTZERID'] ?? "-";
 
-    $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rechtezuordnung WHERE person = ?";
-    cms_rechte_laden_sql($sql, $arr, "i", $person);
+    if($person !== '-') {
+      $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rechtezuordnung WHERE person = ?";
+      cms_rechte_laden_sql($sql, $arr, "s", $person);
+    }
   }
 
   function cms_rechte_laden_rollen($person = '-', &$arr = null) { // $arr: Zu befüllendes Array
@@ -69,8 +71,10 @@
     if ($person === '-')
       $person = $_SESSION['BENUTZERID'] ?? "-";
 
-    $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte JOIN rollenzuordnung ON rollenrechte.rolle = rollenzuordnung.rolle WHERE rollenzuordnung.person = ?";
-    cms_rechte_laden_sql($sql, $arr, "i", $person);
+    if($person !== '-') {
+      $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte JOIN rollenzuordnung ON rollenrechte.rolle = rollenzuordnung.rolle WHERE rollenzuordnung.person = ?";
+      cms_rechte_laden_sql($sql, $arr, "s", $person);
+    }
   }
 
   function cms_allerechte_laden() {
