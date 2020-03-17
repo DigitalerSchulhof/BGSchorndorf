@@ -425,7 +425,7 @@ function cms_registrieren (element) {
 		formulardaten.append("korrekt", korrekt);
 		formulardaten.append("spam", spam);
 		formulardaten.append("uid", uid);
-		formulardaten.append("anfragenziel", 	'340');
+		formulardaten.append("anfragenziel", 	'390');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
@@ -475,7 +475,7 @@ function cms_registrieren_uebernehmen (res) {
 		formulardaten.append("idper", 	per);
 		formulardaten.append("idreg", 	res);
 		formulardaten.append("benutzername", 	benutzer);
-		formulardaten.append("anfragenziel", 	'341');
+		formulardaten.append("anfragenziel", 	'391');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
@@ -500,7 +500,7 @@ function cms_registrieren_loeschen(id) {
 
 	var formulardaten = new FormData();
 	formulardaten.append("idreg",     		id);
-	formulardaten.append("anfragenziel", 	'381');
+	formulardaten.append("anfragenziel", 	'392');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {

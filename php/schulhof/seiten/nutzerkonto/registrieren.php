@@ -8,7 +8,7 @@
 <?php
 $CMS_EINWILLIGUNG_A = false;
 
-echo cms_meldung("warnung", "<h4>Mehrfache Registrierungen</h4><p>Bitte registrieren Sie sich nicht mehrmals!! Eine Registrierung ist eingegangen, wenn Sie die entsprechende Meldung erhalten. Die Verknüpfung mit einer Person im Schulhof erfolgt händisch innerhalb 24 Stunden. Sie erhalten eine eMail, wenn die Registrierung abgeschlossen ist.</p><p><b>Sollten Sie nach spätestens 24 Stunden keine Mail erhalten haben, melden Sie sich bitte telefnisch unter 0170/4722719. REGISTRIEREN SIE SICH NICHT ERNEUT!!</b></p>");
+echo cms_meldung("warnung", "<h4>Mehrfache Registrierungen</h4><p>Bitte registrieren Sie sich nicht mehrmals!! Eine Registrierung ist eingegangen, wenn Sie die entsprechende Meldung erhalten. Die Verknüpfung mit einer Person im Schulhof erfolgt händisch innerhalb 24 Stunden. Sie erhalten eine eMail, wenn die Registrierung abgeschlossen ist.</p>");
 
 if (isset($_SESSION["DSGVO_EINWILLIGUNG_A"])) {$CMS_EINWILLIGUNG_A = $_SESSION["DSGVO_EINWILLIGUNG_A"];}
 if (!$CMS_EINWILLIGUNG_A) {echo cms_meldung_einwilligungA();}
