@@ -19,9 +19,7 @@ function cms_weiterleitung_details($id = '-') {
     }
   }
 
-  $code = "<div><div class=\"cms_spalte_i\">";
-
-  $code .= "<h3>Neue URL:</h3>";
+  $code = "<h3>Neue URL:</h3>";
   $code .= "<input type=\"text\" name=\"cms_weiterleitung_von\" id=\"cms_weiterleitung_von\" value=\"$von\" placeholder=\"/FAQ/Anfahrt\">";
   $code .= "<h3>Zielseite:</h3>";
   $code .= "<input type=\"text\" name=\"cms_weiterleitung_zu\" id=\"cms_weiterleitung_zu\" value=\"$zu\" placeholder=\"/Website/Seiten/Information/Lage/Anfahrt\">";
@@ -33,9 +31,6 @@ function cms_weiterleitung_details($id = '-') {
     $code .= "<span class=\"cms_button_ja\" onclick=\"cms_weiterleitung_bearbeiten_speichern($id)\">Weiterleitung bearbeiten</span>";
   }
   $code .= " <span class=\"cms_button_nein\" onclick=\"cms_link('/Schulhof/Website/Weiterleiten')\">Abbrechen</span></p>";
-
-  $code .= "</div></div>";
-  $code .= "<div class=\"cms_clear\"></div>";
 
   $dbs->close();
   return $code;
