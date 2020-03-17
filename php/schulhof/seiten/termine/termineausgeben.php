@@ -251,16 +251,19 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		}
 	}
 
-	$gefunden = $gefunden && isset($termin["aktiv"]) && $termin["aktiv"];
-
 	if ($gefunden) {
 		if ($jahr != date('Y', $termin['beginn'])) {$gefunden = false;}
 		if ($monat != date('m', $termin['beginn'])) {$gefunden = false;}
 		if ($tag != date('d', $termin['beginn'])) {$gefunden = false;}
 	}
 
-	if ($gefunden) {
+	if (($gefunden) && ($art == 'oe')) {
+		$gefunden = $gefunden && isset($termin["aktiv"]) && $termin["aktiv"];
 		$gefunden = cms_oeffentlich_sichtbar($dbs, 'termine', $termin);
+	}
+	else if ($gefunden) {
+		$gruppenrecht = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
+		$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ((isset($termin["aktiv"]) && $termin["aktiv"]) || $gruppenrecht['termine']);
 	}
 
 	if ($gefunden) {

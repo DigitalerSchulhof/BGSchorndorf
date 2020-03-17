@@ -205,8 +205,6 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			}
 		}
 
-		$gefunden = $gefunden && isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"];
-
 		if($gefunden) {
 			if ($jahr != date('Y', $blogeintrag['datum'])) {$gefunden = false;}
 			if ($monat != date('m', $blogeintrag['datum'])) {$gefunden = false;}
@@ -214,7 +212,12 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		}
 
 		if (($gefunden) && ($art == 'oe')) {
+			$gefunden = $gefunden && (isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]);
 			$gefunden = cms_oeffentlich_sichtbar($dbs, 'blogeintraege', $blogeintrag);
+		}
+		else if ($gefunden) {
+			$gruppenrecht = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
+			$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ((isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]) || $gruppenrecht['blogeintraege']);
 		}
 
 		if ($gefunden) {

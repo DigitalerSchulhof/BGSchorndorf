@@ -28,7 +28,8 @@ if (in_array($g, $CMS_GRUPPEN)) {
 }
 else {$fehler = true;}
 
-
+$gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gruppenid);
+if (!$gruppenrecht['sichtbar']) {$fehler = true;}
 
 if (!$fehler) {
 	include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
