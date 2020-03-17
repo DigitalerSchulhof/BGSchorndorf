@@ -79,10 +79,10 @@ function cms_meldung_geschuetzer_inhalt () {
 }
 
 function cms_meldung_einwilligungA () {
-	return cms_meldung("info", "<h4 class=\"cms_himweis_dsgvo_a\">Datenschutzhinweis - Einwilligung A</h4><p>Für die Verwendung dieses Inhalts muss Einwilligung A erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a></p>");
+	return cms_meldung("info", "<h4 class=\"cms_himweis_dsgvo_a\">Datenschutzhinweis - Einwilligung A</h4><p>Für die Verwendung dieses Inhalts muss Einwilligung A erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a> <span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'j', 'n');\">Einwilligung A erteilen</span></p>");
 }
 
 function cms_meldung_einwilligungB () {
-	return cms_meldung("info", "<h4 class=\"cms_himweis_dsgvo_b\">Datenschutzhinweis - Einwilligung B</h4><p>Für die Verwendung von Inhalten Dritter muss Einwilligung B erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a></p>");
+	return cms_meldung("info", "<h4 class=\"cms_himweis_dsgvo_b\">Datenschutzhinweis - Einwilligung B</h4><p>Für die Verwendung von Inhalten Dritter muss Einwilligung B erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a> <span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'n', 'j');\">Einwilligung B erteilen</span></p>");
 }
 ?>
