@@ -104,11 +104,11 @@ if (!$fehler) {
 				if (($g == "Gremien") || ($g == "Fachschaften")) {
 					$code .= "<li><a class=\"cms_button\" href=\"$CMS_URLGANZ/Beschlüsse\">Beschlüsse</a> </li> ";
 				}
-				if ($CMS_BENUTZERART == 'l') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Lehrer dürfen $g Mitglieder schreiben"];}
-				else if ($CMS_BENUTZERART == 'e') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Eltern dürfen $g Mitglieder schreiben"];}
-				else if ($CMS_BENUTZERART == 's') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Schüler dürfen $g Mitglieder schreiben"];}
-				else if ($CMS_BENUTZERART == 'v') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Verwaltungsangestellte dürfen $g Mitglieder schreiben"];}
-				else if ($CMS_BENUTZERART == 'x') {$allenschreiben = $CMS_EINSTELLUNGEN["Postfach - Externe dürfen $g Mitglieder schreiben"];}
+				if ($CMS_BENUTZERART == 'l') {$allenschreiben = cms_r("schulhof.nutzerkonto.postfach.lehrer.$gk.mitglieder");;}
+				else if ($CMS_BENUTZERART == 'e') {$allenschreiben = cms_r("schulhof.nutzerkonto.postfach.eltern.$gk.mitglieder");}
+				else if ($CMS_BENUTZERART == 's') {$allenschreiben = cms_r("schulhof.nutzerkonto.postfach.schüler.$gk.mitglieder");}
+				else if ($CMS_BENUTZERART == 'v') {$allenschreiben = cms_r("schulhof.nutzerkonto.postfach.verwaltungsangestellte.$gk.mitglieder");}
+				else if ($CMS_BENUTZERART == 'x') {$allenschreiben = cms_r("schulhof.nutzerkonto.postfach.externe.$gk.mitglieder");}
 				else {$allenschreiben = false;}
 				if ($GRUPPENRECHTE['mitglied'] && $allenschreiben) {$code .= "<li><span onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('gruppe', '', '', '', '$g', '$gruppenid')\" class=\"cms_button\">Allen schreiben</span></li> ";}
 				if ($GRUPPENRECHTE['bearbeiten']) {

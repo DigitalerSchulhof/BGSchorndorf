@@ -296,6 +296,24 @@ function cms_geraeteverwalten_knopf($dbs) {
   return "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten".$anzahl."</a>";
 }
 
+function cms_registrierungen_knopf($dbs) {
+  $zusatz = "";
+  $sqlwhere = "";
+  $anzahlneu = 0;
+  $anzahl = "";
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM nutzerregistrierung");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlneu);
+    $sql->fetch();
+  }
+  $sql->close();
+  $zusatz = '';
+  if ($anzahlneu > 0) {
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</span>";
+  }
+  return "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Registrierungen\">Registrierungen übernehmen $anzahl</a>";
+}
+
 function cms_terminegenehmigen_knopf($dbs) {
   global $CMS_GRUPPEN;
   $zusatz = "";
@@ -476,6 +494,9 @@ function cms_sonderrollen_generieren() {
 	$dbs = cms_verbinden('s');
   if ($CMS_BENUTZERART == 'l') {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Tagebuch\">Tagebucheinträge vornehmen</a></li> ";
+  }
+  if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
+    $code .= "<li>".cms_registrierungen_knopf($dbs)."</li> ";
   }
   if (cms_r("schulhof.technik.geräte.probleme")) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";

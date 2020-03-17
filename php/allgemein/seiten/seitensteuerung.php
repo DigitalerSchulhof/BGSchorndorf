@@ -82,7 +82,9 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Bis_bald!']                                 = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Automatische_Abmeldung']                    = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Zugeschickt!']                              = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Registriert!']                              = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Passwort_vergessen']                                  = 'php/schulhof/seiten/nutzerkonto/passwortvergessen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Registrieren']                                        = 'php/schulhof/seiten/nutzerkonto/registrieren.php';
 
   // Nutzerkonto
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto']                                         = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
@@ -115,6 +117,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten']                           = 'php/schulhof/seiten/aufgaben/geraete/verwalten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten/Problembericht_bearbeiten'] = 'php/schulhof/seiten/aufgaben/geraete/problemberichtbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Identitätsdiebstähle_behandeln']             = 'php/schulhof/seiten/aufgaben/identitaetsdiebstahl/identitaetsdiebstahl.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Registrierungen']                            = 'php/schulhof/seiten/aufgaben/registrierungen/registrierungen.php';
   // Hausmeister
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister']                                         = 'php/schulhof/seiten/hausmeister/hausmeister.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge']                                = 'php/schulhof/seiten/hausmeister/auftraege.php';

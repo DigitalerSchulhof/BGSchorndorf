@@ -80,7 +80,7 @@
 		}
 
 		// Schulhof Zugriff verhindern
-		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Schulhof") && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen")))   {
+		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Schulhof") && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen") && ($CMS_URL[1] != "Registrieren")))   {
 			$CMS_URL = array();
 		  $CMS_URL[0] = "Schulhof";
 		  $CMS_URL[1] = "Anmeldung";

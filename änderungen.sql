@@ -547,6 +547,23 @@ ALTER TABLE `voranmeldung_schueler` ADD `staat` VARBINARY(2000) NULL DEFAULT NUL
 ALTER TABLE `voranmeldung_eltern` ADD `haupt` VARBINARY(50) NULL DEFAULT NULL AFTER `briefe`, ADD `rolle` VARBINARY(50) NULL DEFAULT NULL AFTER `haupt`;
 
 
+CREATE TABLE `nutzerregistrierung` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `titel` varbinary(3000) DEFAULT NULL,
+  `vorname` varbinary(3000) DEFAULT NULL,
+  `nachname` varbinary(3000) DEFAULT NULL,
+  `klasse` varbinary(3000) DEFAULT NULL,
+  `email` varbinary(3000) DEFAULT NULL,
+  `salt` varbinary(100) DEFAULT NULL,
+  `passwort` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
+  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `nutzerregistrierung`
+  ADD PRIMARY KEY (`id`);
+
+
 -- LEHRERDATENBANK
 
 CREATE TABLE `ausplanungstufen` (

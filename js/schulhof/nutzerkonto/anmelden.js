@@ -327,3 +327,187 @@ function cms_passwort_vergessen () {
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
+
+
+
+function cms_registrieren (element) {
+	cms_laden_an('Registrieren', 'Die eingegebenen Daten werden überprüft.');
+	var titel = document.getElementById('cms_registrierung_titel').value;
+	var vorname = document.getElementById('cms_registrierung_vorname').value;
+	var nachname = document.getElementById('cms_registrierung_nachname').value;
+	var klasse = document.getElementById('cms_registrierung_klasse').value;
+	var passwort = document.getElementById('cms_schulhof_registrierung_passwort').value;
+	var passwort2 = document.getElementById('cms_schulhof_registrierung_passwort_wiederholen').value;
+	var mail = document.getElementById('cms_schulhof_registrierung_mail').value;
+	var datenschutz = document.getElementById('cms_registrierung_datenschutz').value;
+	var volljaehrig = document.getElementById('cms_registrierung_volljaehrig').value;
+	var korrekt = document.getElementById('cms_registrierung_korrekt').value;
+	var spam = document.getElementById('cms_spamverhinderung').value;
+  var box = $(element).parents("table.cms_formular");
+  var uid = box.find(".cms_spamschutz").data("uuid");
+
+	var meldung = '<p>Die Registrierung konnte nicht abgeschlossen werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+  if (vorname.length == 0) {
+		meldung += '<li>es wurde kein Vorname eingegeben.</li>';
+		fehler = true;
+	}
+	if (!cms_check_name(vorname)) {
+		meldung += '<li>für den Vornamen wurden ungültige Zeichen verwendet.</li>';
+		fehler = true;
+	}
+
+	if (nachname.length == 0) {
+		meldung += '<li>es wurde kein Nachname eingegeben.</li>';
+		fehler = true;
+	}
+	if (!cms_check_name(nachname)) {
+		meldung += '<li>für den Nachnamen wurden ungültige Zeichen verwendet.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_nametitel(titel)) {
+		meldung += '<li>für den Titel wurden ungültige Zeichen verwendet.</li>';
+		fehler = true;
+	}
+
+  if (passwort.length == 0) {
+    meldung += '<li>es wurde kein Passwort angegeben.</li>';
+    fehler = true;
+  }
+
+  if (passwort != passwort2) {
+    meldung += '<li>die Passworte stimmen nicht überein.</li>';
+    fehler = true;
+  }
+
+	if (!cms_check_mail(mail)) {
+		meldung += '<li>es wurde keine gültige eMailadresse eingegeben.</li>';
+		fehler = true;
+	}
+
+	if (datenschutz != '1') {
+		meldung += '<li>die Datenschutzvereinbarung wurde nicht akzeptiert.</li>';
+		fehler = true;
+	}
+
+	if (volljaehrig != '1') {
+		meldung += '<li>die Entscheidungsberechtigung liegt nicht vor.</li>';
+		fehler = true;
+	}
+
+	if (korrekt != '1') {
+		meldung += '<li>die Daten wurden nicht geprüft und als korrekt markiert.</li>';
+		fehler = true;
+	}
+
+  if (spam.length == 0) {
+    meldung += '<li>die Angabe zur Spamverhinderung fehlt.</li>';
+    fehler = true;
+  }
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Registrierung abschicken', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+		formulardaten.append("titel", 	titel);
+		formulardaten.append("vorname", 	vorname);
+		formulardaten.append("nachname", 	nachname);
+		formulardaten.append("klasse", 	klasse);
+		formulardaten.append("passwort", 	passwort);
+		formulardaten.append("passwort2", 	passwort2);
+		formulardaten.append("mail", 	mail);
+		formulardaten.append("datenschutz", datenschutz);
+		formulardaten.append("volljaehrig", volljaehrig);
+		formulardaten.append("korrekt", korrekt);
+		formulardaten.append("spam", spam);
+		formulardaten.append("uid", uid);
+		formulardaten.append("anfragenziel", 	'390');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_link('Schulhof/Anmeldung/Registriert!');
+			}
+			else {
+				cms_fehlerbehandlung(rueckgabe);
+			}
+		}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_registrieren_uebernehmen (res) {
+	cms_laden_an('Registrierung übernehmen', 'Die eingegebenen Daten werden überprüft.');
+	var per = document.getElementById('cms_registrierung_per_'+res).value;
+	var benutzer = document.getElementById('cms_registrierung_ben_'+res).value;
+
+	var meldung = '<p>Die Registrierung konnte nicht übernommen werden, denn ...</p><ul>';
+	var fehler = false;
+
+	// Pflichteingaben prüfen
+  if (!cms_check_ganzzahl(per,0)) {
+		meldung += '<li>die ausgewählte Person ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!cms_check_ganzzahl(res,0)) {
+		meldung += '<li>die ausgewählte Registrierung ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!cms_check_name(benutzer)) {
+		meldung += '<li>der Benutzername ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (benutzer.length < 6) {
+		meldung += '<li>der Benutzername ist zu kurz.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Registrierung übernehmen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+		formulardaten.append("idper", 	per);
+		formulardaten.append("idreg", 	res);
+		formulardaten.append("benutzername", 	benutzer);
+		formulardaten.append("anfragenziel", 	'391');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+        cms_meldung_an('erfolg', 'Registrierung übernehmen', '<p>Die Registrierung wurde übernommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Aufgaben/Registrierungen\');">OK</span></p>');
+			}
+			else {
+				cms_fehlerbehandlung(rueckgabe);
+			}
+		}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_registrieren_loeschen_anzeigen (id, vorname, nachname) {
+	cms_meldung_an('warnung', 'Registrierung löschen', '<p>Soll die Registrierung <b>'+vorname+' '+nachname+'</b> wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_registrieren_loeschen('+id+')">Löschung durchführen</span></p>');
+}
+
+
+function cms_registrieren_loeschen(id) {
+	cms_laden_an('Registrierung löschen', 'Das Registrierung wird gelöscht.');
+
+	var formulardaten = new FormData();
+	formulardaten.append("idreg",     		id);
+	formulardaten.append("anfragenziel", 	'392');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Registrierung löschen', '<p>Die Registrierung wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Aufgaben/Registrierungen\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
