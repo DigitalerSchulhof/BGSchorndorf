@@ -46,14 +46,14 @@
   }
 
   function cms_rechte_laden_nutzer($person = '-', &$arr = null) { // $arr: Zu befüllendes Array
-    global $CMS_SCHLUESSEL, $cms_nutzerrechte;
+    global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $cms_nutzerrechte;
     $dbs = cms_verbinden("s");
 
     if(is_null($arr)) // Fallback
       $arr = &$cms_nutzerrechte;
 
   	if ($person === '-')
-      $person = $_SESSION['BENUTZERID'] ?? "-";
+      $person = $CMS_BENUTZERID ?? "-";
 
     if($person !== '-') {
       $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rechtezuordnung WHERE person = ?";
@@ -62,14 +62,14 @@
   }
 
   function cms_rechte_laden_rollen($person = '-', &$arr = null) { // $arr: Zu befüllendes Array
-    global $CMS_SCHLUESSEL, $cms_nutzerrechte;
+    global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $cms_nutzerrechte;
     $dbs = cms_verbinden("s");
 
     if(is_null($arr))
       $arr = &$cms_nutzerrechte;
 
     if ($person === '-')
-      $person = $_SESSION['BENUTZERID'] ?? "-";
+      $person = $CMS_BENUTZERID ?? "-";
 
     if($person !== '-') {
       $sql = "SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte JOIN rollenzuordnung ON rollenrechte.rolle = rollenzuordnung.rolle WHERE rollenzuordnung.person = ?";
@@ -77,7 +77,7 @@
     }
   }
 
-    function cms_allerechte_laden() {
+  function cms_allerechte_laden() {
     global $cms_allerechte;
 
     if(!RECHTEPRUEFEN)  // Nur ausführen, um zu prüfen, ob Recht existiert
