@@ -49,7 +49,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$schulleiterhidden .= "|".$ssperson;
 			}
 		}
@@ -59,7 +59,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$stellschulleiterhidden .= "|".$ssperson;
 			}
 		}
@@ -69,7 +69,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$abteilungsleiterhidden .= "|".$ssperson;
 			}
 		}
@@ -79,7 +79,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$sekretariathidden .= "|".$ssperson;
 			}
 		}
@@ -89,7 +89,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$vertretungsplanunghidden .= "|".$ssperson;
 			}
 		}
@@ -99,7 +99,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$sozialarbeithidden .= "|".$ssperson;
 			}
 		}
@@ -109,7 +109,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$oberstufenberaterhidden .= "|".$ssperson;
 			}
 		}
@@ -119,7 +119,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$beratungslehrerhidden .= "|".$ssperson;
 			}
 		}
@@ -129,7 +129,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$verbindungslehrerhidden .= "|".$ssperson;
 			}
 		}
@@ -139,7 +139,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$schuelersprecherhidden .= "|".$ssperson;
 			}
 		}
@@ -149,7 +149,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$elternbeirathidden .= "|".$ssperson;
 			}
 		}
@@ -159,7 +159,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$datenschutzhidden .= "|".$ssperson;
 			}
 		}
@@ -169,7 +169,7 @@ function cms_schuljahr_ausgeben ($schuljahr) {
 		$sql->bind_param("i", $schuljahr);
 		if ($sql->execute()) {
 			$sql->bind_result($ssperson);
-			if ($sql->fetch()) {
+			while ($sql->fetch()) {
 				$hausmeisterhidden .= "|".$ssperson;
 			}
 		}

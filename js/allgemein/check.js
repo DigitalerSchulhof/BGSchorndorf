@@ -23,7 +23,7 @@ function cms_check_nametitel (titel) {
 }
 
 function cms_check_titel(titel) {
-	return titel.match(/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]+$/);
+	return titel.match(/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]*[\-a-zA-Z0-9äöüßÄÖÜ]+$/);
 }
 
 function cms_check_buchstaben(text) {

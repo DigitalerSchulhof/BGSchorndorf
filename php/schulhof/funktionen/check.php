@@ -35,7 +35,7 @@ function cms_check_titel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]+$/", $titel) != 1) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]*[\-a-zA-Z0-9äöüßÄÖÜ]+$/", $titel) != 1) {
 		return false;
 	}
 	else if (($titel == '.') || ($titel == '..')) {
@@ -247,18 +247,18 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	    $sql->bind_result($anzahl);
 	    if ($sql->fetch()) {
 				if ($anzahl > 0) {
-					$cms_gruppenrechte['dateiupload'] = true;
-					$cms_gruppenrechte['dateidownload'] = true;
-					$cms_gruppenrechte['dateiloeschen'] = true;
-					$cms_gruppenrechte['dateiumbenennen'] = true;
-					$cms_gruppenrechte['termine'] = true;
-					$cms_gruppenrechte['blogeintraege'] = true;
-					$cms_gruppenrechte['chatten'] = true;
-					$cms_gruppenrechte['nachrichtloeschen'] = true;
-					$cms_gruppenrechte['nutzerstummschalten'] = true;
+					$cms_gruppenrechte['dateiupload'] = false;
+					$cms_gruppenrechte['dateidownload'] = false;
+					$cms_gruppenrechte['dateiloeschen'] = false;
+					$cms_gruppenrechte['dateiumbenennen'] = false;
+					$cms_gruppenrechte['termine'] = false;
+					$cms_gruppenrechte['blogeintraege'] = false;
+					$cms_gruppenrechte['chatten'] = false;
+					$cms_gruppenrechte['nachrichtloeschen'] = false;
+					$cms_gruppenrechte['nutzerstummschalten'] = false;
 					$cms_gruppenrechte['mitglied'] = true;
 					$cms_gruppenrechte['sichtbar'] = true;
-					$cms_gruppenrechte['bearbeiten'] = true;
+					$cms_gruppenrechte['bearbeiten'] = false;
 				}
 			}
 	  }
