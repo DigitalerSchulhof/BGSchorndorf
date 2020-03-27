@@ -5,6 +5,60 @@ include_once("php/schulhof/funktionen/generieren.php");
 include_once("php/schulhof/funktionen/texttrafo.php");
 include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 $dbs = cms_verbinden('s');
+$dbp = cms_verbinden('p');
+
+$PERSONEN = array();
+
+$sql = $dbs->prepare("SELECT id FROM nutzerkonten WHERE id IN (SELECT id FROM personen WHERE art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL'))");
+if ($sql->execute()) {
+  $sql->bind_result($nid);
+  while ($sql->fetch()) {
+    array_push($PERSONEN, $nid);
+  }
+}
+$sql->close();
+
+$anzahl = 0;
+$sonder = 0;
+
+foreach ($PERSONEN as $P) {
+  $eingang = array();
+  $sql = $dbp->prepare("SELECT id FROM posteingang_$P WHERE absender = 29");
+  if ($sql->execute()) {
+    $sql->bind_result($peid);
+    while ($sql->fetch()) {
+      array_push($eingang, $peid);
+    }
+  }
+  $sql->close();
+
+  if (count($eingang) > 0) {
+    $sql = $dbp->prepare("UPDATE posteingang_$P SET alle = ? WHERE id = ?");
+    $alleneu = "|".$P;
+    foreach ($eingang as $e) {
+      $sql->bind_param("si", $alleneu, $e);
+      $sql->execute();
+      echo "Empfänger aus Nachricht $e für ".$P." entfernt<br>";
+      $anzahl ++;
+    }
+    $sql->close();
+  }
+
+
+  //echo "Nachrichten ".$P." vom Chef<br>";
+  //print_r($eingang);
+  //echo "<br><br>";
+
+  if (count($eingang) > 1) {$sonder++;}
+
+}
+
+
+echo "SONDER:".$sonder."<br>";
+echo "TOTAL:".$anzahl;
+
+cms_trennen($dbp);
+cms_trennen($dbs);
 // $sql = $dbs->prepare("SELECT id FROM unterricht WHERE tkurs IN (SELECT id FROM kurse WHERE stufe IN (SELECT id FROM stufen WHERE tagebuch = 1))");
 // $tagebuch = array();
 // if ($sql->execute()) {
@@ -26,5 +80,5 @@ $dbs = cms_verbinden('s');
 // $dbs->query("DELETE FROM `rollen` WHERE id > 0");
 // $dbs->query("INSERT INTO `rollen` (`id`, `bezeichnung`, `idvon`, `idzeit`) VALUES (1, AES_ENCRYPT('Lehrer', '$CMS_SCHLUESSEL'), NULL, NULL), (2, AES_ENCRYPT('Schüler', '$CMS_SCHLUESSEL'), NULL, NULL), (3, AES_ENCRYPT('Verwaltung', '$CMS_SCHLUESSEL'), NULL, NULL), (4, AES_ENCRYPT('Eltern', '$CMS_SCHLUESSEL'), NULL, NULL), (5, AES_ENCRYPT('Externe', '$CMS_SCHLUESSEL'), NULL, NULL);");
 // $dbs->query("INSERT INTO `bedingterollen` (`rolle`, `bedingung`) VALUES (1, AES_ENCRYPT('nutzer.art==\"l\"', '$CMS_SCHLUESSEL')), (2, AES_ENCRYPT('nutzer.art==\"s\"', '$CMS_SCHLUESSEL')), (3, AES_ENCRYPT('nutzer.art==\"v\"', '$CMS_SCHLUESSEL')), (4, AES_ENCRYPT('nutzer.art==\"e\"', '$CMS_SCHLUESSEL')), (5, AES_ENCRYPT('nutzer.art==\"x\"', '$CMS_SCHLUESSEL'));");
-}
+
 ?>

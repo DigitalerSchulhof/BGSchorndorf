@@ -57,6 +57,7 @@ function cms_nachricht_lesen($dbs, $app = "nein") {
 			// Empfänger laden
 			$empf = "(".str_replace('|', ',', substr($empfaenger, 1)).")";
 			$empfaengercode = "";
+			$empfaengerzahl = 0;
 			if (cms_check_idliste($empf)) {
 				$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, erstellt FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id IN $empf");
 				if ($sql->execute()) {
@@ -64,6 +65,7 @@ function cms_nachricht_lesen($dbs, $app = "nein") {
 					while ($sql->fetch()) {
 						if ($zeit > $eerstellt) {$empfaengercode .= ", ".cms_generiere_anzeigename($evor, $enach, $etitel);}
 						else {$empfaengercode .= ", "."<i>existiert nicht mehr</i>";}
+						$empfaengerzahl ++;
 					}
 				}
 				$sql->close();
@@ -97,8 +99,9 @@ function cms_nachricht_lesen($dbs, $app = "nein") {
 				$code .= "<span class=\"cms_iconbutton_nein\" id=\"cms_button_postfach_loeschen\" onclick=\"cms_schulhof_postfach_nachricht_loeschen_anzeige('$modus', '$betreff', '$datum', $id, 'app')\">Löschen</span> ";
 			}
 			$code .= "</p>";
-			$code .= "<p class=\"cms_empfaenger\"><b>Empfänger:</b> $empfaengercode</p>";
-
+			if ($empfaengerzahl > 1) {
+				$code .= "<p class=\"cms_empfaenger\"><b>Empfänger:</b> $empfaengercode</p>";
+			}
 
 			// Tags
 			$tagzahl = 0;

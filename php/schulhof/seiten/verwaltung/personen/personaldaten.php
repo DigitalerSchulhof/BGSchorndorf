@@ -312,7 +312,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 					while ($sql->fetch()) {
 						$anzeigename = cms_generiere_anzeigename($pvor, $pnach, $ptit);
 						if (!is_null($pnutzerkonto)) {
-							$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $pid, 'p')\">$anzeigename</span></li> ";
+							$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\">$anzeigename</span></li> ";
 						}
 						else {
 							$code  .= "<span class=\"cms_button_passiv\" onclick=\"cms_schulhof_kein_nutzerkonto('$anzeigename')\">$anzeigename</span> ";

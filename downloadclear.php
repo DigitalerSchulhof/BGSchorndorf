@@ -14,4 +14,5 @@ foreach ($dateien as $d) {
 chmod($pfad, 0775);
 
 echo "DATEIEN GELÖSCHT<br>";
+echo phpinfo();
 ?>

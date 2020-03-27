@@ -4,6 +4,7 @@ function cms_postfach_senden(app) {
 
 	var empfaenger = document.getElementById('cms_postfach_empfaenger_personensuche_gewaehlt').value;
 	var betreff = document.getElementById('cms_postfach_betreff').value;
+	var offen = document.getElementById('cms_postfach_offensenden').value;
 	var nachricht = document.getElementsByClassName('note-editable');
 	nachricht = nachricht[0].innerHTML;
 
@@ -20,6 +21,11 @@ function cms_postfach_senden(app) {
 		fehler = true;
 	}
 
+	if (!cms_check_toggle(offen)) {
+		meldung += '<li>die Eingabe zum Anzeigen oder Verbergen der Empfänger ist ungültig.</li>';
+		fehler = true;
+	}
+
 	if (fehler) {
 		cms_meldung_an('fehler', 'Nachricht versenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
@@ -28,6 +34,7 @@ function cms_postfach_senden(app) {
 		formulardaten.append("empfaenger",  empfaenger);
 		formulardaten.append("betreff",     betreff);
 		formulardaten.append("nachricht",   nachricht);
+		formulardaten.append("offen",   offen);
 		formulardaten.append("anfragenziel", 	'50');
 
 		function anfragennachbehandlung(rueckgabe) {

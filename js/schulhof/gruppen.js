@@ -653,7 +653,7 @@ var socketChat = {
     socketChat.status = 1;
     if(socketChat.verbindenInterval)
       clearInterval(socketChat.verbindenInterval)
-    socketChat.socket = new WebSocket("ws://"+socketChat.server.ip+":"+socketChat.server.port);
+    socketChat.socket = new WebSocket("wss://"+socketChat.server.ip+":"+socketChat.server.port);
     socketChat.eventsSetzten();
   },
   senden: function(nachricht) {

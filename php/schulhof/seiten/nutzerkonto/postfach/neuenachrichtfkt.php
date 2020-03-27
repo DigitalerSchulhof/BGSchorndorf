@@ -60,8 +60,9 @@ function cms_neue_nachricht($dbs, $app = "nein") {
 				$code .= "<span class=\"cms_iconbutton\" id=\"cms_button_postfach_anhang\" onclick=\"cms_einblenden('cms_nutzerkonto_postfach_nachricht_anhang_aktionen_hochladen', 'table-row')\">Anhang</span>";
 			$code .= "</p>";
 
+			if (count(explode('|',substr($POSTEMPFAENGER,1))) > 5) {$offenversenden = 0;} else {$offenversenden = 1;}
 			$code .= "<table class=\"cms_liste\">";
-				$code .= "<tr><th>Empfänger:</th><td>".cms_personensuche_mail_generieren($dbs, 'cms_postfach_empfaenger', $POSTEMPFAENGERPOOL, $POSTEMPFAENGER)."</td></tr>";
+				$code .= "<tr><th>Empfänger:</th><td>".cms_personensuche_mail_generieren($dbs, 'cms_postfach_empfaenger', $POSTEMPFAENGERPOOL, $POSTEMPFAENGER)."<p>".cms_togglebutton_generieren ("cms_postfach_offensenden", "Empfänger anzeigen", $offenversenden)."</p></td></tr>";
 				$code .= "<tr><th>Betreff:</th><td><input type=\"text\" name=\"cms_postfach_betreff\" id=\"cms_postfach_betreff\" value=\"$POSTBETREFF\"></td></tr>";
 				$code .= "<tr><th>Anhang:</th><td><div id=\"cms_nutzerkonto_postfach_nachricht_schreiben_anhang_box\">$dateien</div>".cms_postfach_anhang_dateiupload()."</td></tr>";
 			$code .= "</table>";

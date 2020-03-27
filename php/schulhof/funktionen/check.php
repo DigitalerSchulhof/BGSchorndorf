@@ -240,25 +240,25 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 
 	if (!$fehler) {
 		$gk = cms_textzudb($gruppe);
-		// Vorsitz / Aufsicht prüfen
-		$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM $gk"."vorsitz WHERE gruppe = ? AND person = ?) UNION (SELECT COUNT(*) AS anzahl FROM $gk"."aufsicht WHERE gruppe = ? AND person = ?)) AS x");
-	  $sql->bind_param("iiii", $gruppenid, $benutzer, $gruppenid, $benutzer);
+		// Vorsitz
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk"."vorsitz WHERE gruppe = ? AND person = ?");
+	  $sql->bind_param("ii", $gruppenid, $benutzer);
 	  if ($sql->execute()) {
 	    $sql->bind_result($anzahl);
 	    if ($sql->fetch()) {
 				if ($anzahl > 0) {
-					$cms_gruppenrechte['dateiupload'] = false;
-					$cms_gruppenrechte['dateidownload'] = false;
-					$cms_gruppenrechte['dateiloeschen'] = false;
-					$cms_gruppenrechte['dateiumbenennen'] = false;
-					$cms_gruppenrechte['termine'] = false;
-					$cms_gruppenrechte['blogeintraege'] = false;
-					$cms_gruppenrechte['chatten'] = false;
-					$cms_gruppenrechte['nachrichtloeschen'] = false;
-					$cms_gruppenrechte['nutzerstummschalten'] = false;
+					$cms_gruppenrechte['dateiupload'] = true;
+					$cms_gruppenrechte['dateidownload'] = true;
+					$cms_gruppenrechte['dateiloeschen'] = true;
+					$cms_gruppenrechte['dateiumbenennen'] = true;
+					$cms_gruppenrechte['termine'] = true;
+					$cms_gruppenrechte['blogeintraege'] = true;
+					$cms_gruppenrechte['chatten'] = true;
+					$cms_gruppenrechte['nachrichtloeschen'] = true;
+					$cms_gruppenrechte['nutzerstummschalten'] = true;
 					$cms_gruppenrechte['mitglied'] = true;
 					$cms_gruppenrechte['sichtbar'] = true;
-					$cms_gruppenrechte['bearbeiten'] = false;
+					$cms_gruppenrechte['bearbeiten'] = true;
 				}
 			}
 	  }
@@ -283,6 +283,22 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 					if ($nutzerstummschalten == '1') {$cms_gruppenrechte['nutzerstummschalten'] = true;}
 					$cms_gruppenrechte['mitglied'] = true;
 					$cms_gruppenrechte['sichtbar'] = true;
+				}
+		  }
+		  $sql->close();
+		}
+
+		if (!$cms_gruppenrechte['mitglied']) {
+			// Aufsicht prüfen
+			$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk"."aufsicht WHERE gruppe = ? AND person = ?");
+		  $sql->bind_param("ii", $gruppenid, $benutzer);
+		  if ($sql->execute()) {
+		    $sql->bind_result($anzahl);
+		    if ($sql->fetch()) {
+					if ($anzahl > 0) {
+						$cms_gruppenrechte['mitglied'] = true;
+						$cms_gruppenrechte['sichtbar'] = true;
+					}
 				}
 		  }
 		  $sql->close();
@@ -603,11 +619,11 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
   if ($CMS_BENUTZERART == 'x') {$personart = "Externe";}
 
   if ((strlen($personart) > 0) && (strlen($zielpersonart) > 0)) {
-    $recht['l'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Lehrer schreiben'];
-    $recht['e'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Eltern schreiben'];
-    $recht['s'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Schüler schreiben'];
-    $recht['v'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Verwaltungsangestellte schreiben'];
-    $recht['x'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Externe schreiben'];
+    $recht['l'] = cms_r("schulhof.nutzerkonto.postfach.lehrer");
+    $recht['e'] = cms_r("schulhof.nutzerkonto.postfach.eltern");
+    $recht['s'] = cms_r("schulhof.nutzerkonto.postfach.schüler");
+    $recht['v'] = cms_r("schulhof.nutzerkonto.postfach.verwaltungsangestellte");
+    $recht['x'] = cms_r("schulhof.nutzerkonto.postfach.externe");
 
     if ($recht[$zielpersonart]) {return true;}
     else {
