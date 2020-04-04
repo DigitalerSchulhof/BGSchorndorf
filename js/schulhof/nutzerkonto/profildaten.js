@@ -250,39 +250,21 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei öffentlichen Galerien ist ungültig.</li>';
 		fehler = true;
 	}
-	if (isNaN(postalletage)) {
-		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(postalletage,1,1000)) {
+		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten ist keine Zahl oder liegt nicht innerhalb von 1 und 1000.</li>';
 		fehler = true;
 	}
-	if (isNaN(postpapierkorbtage)) {
-		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(postpapierkorbtage,1,100)) {
+		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist keine Zahl oder liegt nicht innerhalb von 1 und 100.</li>';
 		fehler = true;
 	}
-	if (isNaN(uebersichtsanzahl)) {
-		meldung += '<li>die Eingabe der Anzahl von Elementen in Übersichten ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(uebersichtsanzahl,1,25)) {
+		meldung += '<li>die Eingabe der Anzahl von Elementen in Übersichten ist keine Zahl oder liegt nicht innerhalb von 1 und 25.</li>';
 		fehler = true;
 	}
-	if (isNaN(inaktivitaetszeit)) {
-		meldung += '<li>die Eingabe der zulässigen Inaktivitätszeit ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(inaktivitaetszeit,1,300)) {
+		meldung += '<li>die Eingabe der zulässigen Inaktivitätszeit ist keine Zahl oder liegt nicht innerhalb von 1 und 300.</li>';
 		fehler = true;
-	}
-	if (!fehler) {
-		if (postalletage < 1) {
-			meldung += '<li>die Zahl an Tagen zur automatischen Löschung von Nachrichten ist zu klein.</li>';
-			fehler = true;
-		}
-		if (postpapierkorbtage < 1) {
-			meldung += '<li>die Zahl an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist zu klein.</li>';
-			fehler = true;
-		}
-		if ((uebersichtsanzahl < 1) || (uebersichtsanzahl > 20)) {
-			meldung += '<li>die Zahl von Elementen in Übersichten muss zwischen 1 und 20 liegen.</li>';
-			fehler = true;
-		}
-		if (inaktivitaetszeit < 5) {
-			meldung += '<li>die minimale Inaktivitätszeit beträgt 5 Minuten.</li>';
-			fehler = true;
-		}
 	}
 
 	if (fehler) {

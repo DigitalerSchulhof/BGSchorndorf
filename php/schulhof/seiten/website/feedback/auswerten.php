@@ -36,10 +36,10 @@
           $liste .= "<td>".date("d.m.Y", $fzeit)."</td>";
 
           $liste .= '<td>';
+            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_details('$fid');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/feedback_information.png\"></span> ";
             if (cms_r("technik.feedback")) {
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_loeschen('$fzeit');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/feedback_loeschen.png\"></span> ";
+              $liste .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_feedback_loeschen('$fid');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
             }
-            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_feedback_details('$fzeit');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/feedback_information.png\"></span> ";
           $liste .= '</td>';
           $liste .= '</tr>';
         }

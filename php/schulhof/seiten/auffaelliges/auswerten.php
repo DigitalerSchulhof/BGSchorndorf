@@ -33,10 +33,10 @@
           $liste .= "<td>".date("d.m.Y H:i", $aufzeit)."</td>";
 
           $liste .= '<td>';
-            if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_loeschen('$aufid');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/auffaelliges_loeschen.png\"></span> ";
-            }
             $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_details('$aufid');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/auffaelliges_information.png\"></span> ";
+            if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+              $liste .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_auffaelliges_loeschen('$aufid');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+            }
           $liste .= '</td>';
           $liste .= '</tr>';
         }
@@ -92,8 +92,7 @@
   function cms_auffaelliges_details($id) {
     global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden("s");
-    $sql = $dbs->prepare("SELECT auffaelliges.id, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL'), AES_DECRYPT(eingaben, '$CMS_SCHLUESSEL') AS eingaben, AES_DECRYPT(details, '$CMS_SCHLUESSEL') AS details, AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel, ursacher, nutzerkonten.id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), erstellt FROM auffaelliges LEFT JOIN personen ON ursacher = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE auffaelliges.id = ?");
-
+    $sql = $dbs->prepare("SELECT auffaelliges.id, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL'), AES_DECRYPT(eingaben, '$CMS_SCHLUESSEL') AS eingaben, AES_DECRYPT(details, '$CMS_SCHLUESSEL') AS details, AES_DECRYPT(auffaelliges.notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel, ursacher, nutzerkonten.id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), erstellt FROM auffaelliges LEFT JOIN personen ON ursacher = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE auffaelliges.id = ?");
 
     $sql->bind_param("i", $id);
     if ($sql->execute()) {

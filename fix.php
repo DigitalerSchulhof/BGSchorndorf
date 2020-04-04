@@ -19,15 +19,16 @@ if ($sql->execute()) {
 $sql->close();
 
 $anzahl = 0;
-$sonder = 0;
 
 foreach ($PERSONEN as $P) {
   $eingang = array();
-  $sql = $dbp->prepare("SELECT id FROM posteingang_$P WHERE absender = 29");
+  $sql = $dbp->prepare("SELECT id, alle FROM posteingang_$P");
   if ($sql->execute()) {
-    $sql->bind_result($peid);
+    $sql->bind_result($peid, $pealle);
     while ($sql->fetch()) {
-      array_push($eingang, $peid);
+      if (strlen($pealle) > 180) {
+        array_push($eingang, $peid);
+      }
     }
   }
   $sql->close();
@@ -42,19 +43,16 @@ foreach ($PERSONEN as $P) {
       $anzahl ++;
     }
     $sql->close();
+
+    /*$anzahl ++;
+    echo "Nachrichten ".$P." mit vielen Empfängern<br>";
+    print_r($eingang);
+    echo "<br><br>";*/
   }
-
-
-  //echo "Nachrichten ".$P." vom Chef<br>";
-  //print_r($eingang);
-  //echo "<br><br>";
-
-  if (count($eingang) > 1) {$sonder++;}
 
 }
 
 
-echo "SONDER:".$sonder."<br>";
 echo "TOTAL:".$anzahl;
 
 cms_trennen($dbp);

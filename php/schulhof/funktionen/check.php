@@ -222,6 +222,7 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		$benutzerart = $CMS_BENUTZERART;
 	}
 
+	$cms_gruppenrechte['gruppenart'] = $gruppe;
 	$cms_gruppenrechte['dateiupload'] = false;
 	$cms_gruppenrechte['dateidownload'] = false;
 	$cms_gruppenrechte['dateiloeschen'] = false;
@@ -343,22 +344,16 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 
 function cms_internterminvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
-	return $gruppenrechte['termine'] || ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] &&
-																			(($CMS_BENUTZERART == 'l' && $CMS_EINSTELLUNGEN['Lehrer dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 's' && $CMS_EINSTELLUNGEN['Schüler dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 'e' && $CMS_EINSTELLUNGEN['Eltern dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 'v' && $CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 'x' && $CMS_EINSTELLUNGEN['Externe dürfen intern Termine vorschlagen'])));
+	$gruppenart = cms_textzudb($gruppenrechte['gruppenart']);
+	return $gruppenrechte['termine'] ||
+	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.termine.anlegen"));
 }
 
 function cms_internblogvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
-	return $gruppenrechte['blogeintraege'] || ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] &&
-																						(($CMS_BENUTZERART == 'l' && $CMS_EINSTELLUNGEN['Lehrer dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 's' && $CMS_EINSTELLUNGEN['Schüler dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 'e' && $CMS_EINSTELLUNGEN['Eltern dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 'v' && $CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 'x' && $CMS_EINSTELLUNGEN['Externe dürfen intern Blogeinträge vorschlagen'])));
+	$gruppenart = cms_textzudb($gruppenrechte['gruppenart']);
+	return $gruppenrechte['blogeintraege'] ||
+	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.blogeinträge.anlegen"));
 }
 
 function cms_timeout_verlaengern() {

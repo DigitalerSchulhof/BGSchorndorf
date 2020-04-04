@@ -60,7 +60,10 @@ if (!$fehler) {
 			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 				$code .= "<h2>Blog</h2>";
 				$blogcode = cms_gruppenblogeintraege_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, 'liste', $CMS_URLGANZ);
-				if (strlen($blogcode) > 0) {$code .= "<ul class=\"cms_bloguebersicht_liste\">".$blogcode."</ul>";}
+				if (strlen($blogcode) > 0) {
+					$code .= "<ul class=\"cms_bloguebersicht_liste\">".$blogcode."</ul>";
+					$code .= "<p><a class=\"cms_button\" href=\"$CMS_URLGANZ/Blog\">Alle Blogeinträge</a></p>";
+				}
 				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Blogeinträge vorhanden.</p>";}
 			$code .= "</div></div>";
 			$code .= "<div class=\"cms_clear\"></div>";
@@ -100,7 +103,6 @@ if (!$fehler) {
 			}
 			$code .= "<ul class=\"cms_aktionen_liste\">";
 				//$code .= "<li><a class=\"cms_button\" href=\"$CMS_URLGANZ/Termine\">Kalender</a> </li> ";
-				$code .= "<li><a class=\"cms_button\" href=\"$CMS_URLGANZ/Blog\">Blog</a> </li> ";
 				if (($g == "Gremien") || ($g == "Fachschaften")) {
 					$code .= "<li><a class=\"cms_button\" href=\"$CMS_URLGANZ/Beschlüsse\">Beschlüsse</a> </li> ";
 				}
