@@ -98,6 +98,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['mobil'] .= "<li><a href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['mobil'] .= "<li><a href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Blog\">Blog</a></li> ";
+						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Notentabelle\">Notentabelle</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
 						$code['mobil'] .= "<li><a href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li>";
@@ -140,6 +141,7 @@ function cms_schulhofnavigation_nutzerkonto($dbs) {
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Termine\">Kalender</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Blog\">Blog</a></li> ";
+						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Notentabelle\">Notentabelle</a></li> ";
 						if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's')) {$code['pc'] .= "<li><a class=\"cms_button\" href=\"javascript:cms_stundenplan_vorbereiten('m', '$CMS_BENUTZERID', '-')\">Stundenplan</a></li> ";}
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
 						$code['pc'] .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";

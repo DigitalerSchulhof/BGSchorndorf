@@ -816,4 +816,19 @@ function cms_wechselbilder_generieren($inhalte, $id = "") {
   $CMS_WECHSELBILDER ++;
   return $code;
 }
+
+function kgv($m, $n) {
+    if ($m == 0 || $n == 0) return 0;
+    $r = ($m * $n) / ggt($m, $n);
+    return abs($r);
+}
+
+function ggt($a, $b) {
+    while ($b != 0) {
+        $t = $b;
+        $b = $a % $b;
+        $a = $t;
+    }
+    return $a;
+}
 ?>

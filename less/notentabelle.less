@@ -1,0 +1,278 @@
+// "out": "../css/notentabelle.css", "sourcemap": "false", "compress": "true", "autoprefixer": ""
+
+@import "standard.less";
+
+#notentabelle {
+  width: 100%;
+  margin-bottom: @standardabsatz_schulhof_margin;
+  border-collapse: collapse;
+  border-spacing: collapse;
+  table-layout: fixed;
+
+  th {
+    &, * {
+      font-weight: bold;
+    }
+    &#bereich {
+      &>div {
+        display: flex;
+        flex-direction: row;
+
+        &>div {
+          &:nth-child(1) {
+            // Löschen
+            display: none;
+            flex: 0 0 21px;
+          }
+          &:nth-child(2) {
+            // Gewichtung
+            display: none;
+            flex: 0 0 30px;
+          }
+          &:nth-child(3) {
+            // Bereich
+            flex: 1 0;
+          }
+        }
+      }
+    }
+  }
+  tr.e {
+    th#bereich {
+      &>div div{
+        display: initial;
+      }
+    }
+  }
+
+  .neuerBereich {
+    td {
+      border-left: 1px solid #ffffff;
+      border-top: 1px solid #ffffff;
+    }
+  }
+  .kurs {
+
+    // Rahmen
+    .fach,
+    .einstellungen {
+      border-top: 1px solid #ffffff;
+      border-left: 1px solid #ffffff;
+    }
+    .bereiche,
+    .noten,
+    .avg {
+      >div .bereich {
+        border-top: 1px solid #ffffff;
+        border-left: 1px solid #ffffff;
+      }
+    }
+    .bereiche>div .bereich {
+      .gewichtung,
+      .loeschen {
+        border-right: 1px solid #ffffff;
+      }
+    }
+    .noten >div .bereich {
+      .note {
+        &:not(:first-child) {
+          border-left: 1px solid #ffffff;
+        }
+      }
+    }
+    .einstellungen {
+      border-right: 1px solid #ffffff;
+    }
+    &:last-child {
+      border-bottom: 1px solid #ffffff;
+    }
+    // Ende Rahmen
+
+
+    .fach {
+      padding: 3px;
+    }
+    .bereiche {
+      padding: 0;
+
+      &>div {
+        display: flex;
+        flex-direction: column;
+
+        .bereich {
+          height: 22px;
+          display: flex;
+          flex-direction: row;
+
+          background-color: #dddddd;
+          &:nth-child(even) {
+            background-color: #eeeeee;
+          }
+
+          .gewichtung {
+            text-align: center;
+            padding: 3px;
+            display: none;
+            flex: 0 0 30px;
+          }
+
+          .loeschen {
+            text-align: center;
+            font-weight: bold;
+            padding: 3px;
+            background-color: @fehler_background;
+            cursor: pointer;
+            display: none;
+            flex: 0 0 21px;
+            &::before {
+              content: "-";
+            }
+          }
+          &.weg {
+            .loeschen {
+              background-color: @erfolg_background;
+              &::before {
+                content: "+";
+              }
+            }
+          }
+          .bez {
+            padding: 3px;
+            flex-grow: 1;
+          }
+        }
+      }
+    }
+    .bereiche,
+    .noten,
+    .avg {
+      padding: 0;
+      &>div {
+        display: flex;
+        flex-direction: column;
+
+        .bereich {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          height: 22px;
+
+          background-color: #dddddd;
+          &:nth-child(even) {
+            background-color: #eeeeee;
+          }
+          &:empty {
+            background-color: #aaaaaa;
+          }
+
+          .note {
+            flex: 1;
+            text-align: center;
+            padding: 3px;
+
+            &.neue {
+              background-color: lighten(@erfolg_background, 10%);
+            }
+            &.weg {
+              background-color: lighten(@fehler_background, 10%);
+            }
+          }
+
+          &.neue {
+            background-color: lighten(@erfolg_background, 10%);
+          }
+          &.weg {
+            background-color: lighten(@fehler_background, 10%);
+            >.neu {
+              display: none;
+            }
+            >.neue {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+
+    .noten {
+      &>div {
+        .bereich {
+          .note {
+            &.neu {
+              &:not(:first-child) { // Wenn nicht die einzige Box
+                flex: 0 0 30px;
+              }
+              cursor: pointer;
+              background-color: @erfolg_background;
+            }
+          }
+        }
+      }
+    }
+    .einstellungen {
+      padding: 3px;
+      .bearbeiten {
+        display: block;
+      }
+      .abbrechen,
+      .speichern {
+        display: none;
+      }
+    }
+
+    &+.neu {
+      td {
+        height: 22px;
+        text-align: center;
+        cursor: pointer;
+        background-color: @erfolg_background;
+      }
+    }
+    &.e {
+      .bereiche {
+        >div .bereich {
+          .gewichtung {
+            display: block;
+          }
+          .loeschen {
+            display: block;
+          }
+        }
+      }
+      .noten {
+        &>div {
+          .bereich:not(.weg) {
+            .note {
+              cursor: pointer;
+              &:not(.weg):not(.neu):hover {
+                background-color: @fehler_background;
+                overflow: hidden;
+                &::before {
+                  width: 100%;
+                  height: 100%;
+                  display: block;
+                  font-weight: bold;
+                  content: "-";
+                }
+              }
+              &.weg {
+                &:hover {
+                  background-color: lighten(@erfolg_background, 10%);
+                }
+              }
+            }
+          }
+        }
+      }
+      .einstellungen {
+        .bearbeiten {
+          display: none;
+        }
+        .abbrechen,
+        .speichern {
+          display: block;
+        }
+      }
+    }
+  }
+}

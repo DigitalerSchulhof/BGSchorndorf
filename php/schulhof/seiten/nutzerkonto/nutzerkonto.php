@@ -46,15 +46,6 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 }
 
 ?>
-<!--<p><span class="cms_button_ja cms_button">Halbjahr 1</span></p>
-
-<table class="table table-bordered">
-	<tr><th rowspan="3">Kurs</th><th colspan="10">Schriftlich</th><th colspan="8">Mündlich</th><th colspan="2">Sonstiges</th><th rowspan="3">Schnitt</th></tr>
-	<tr><th colspan="4">KAs</th><th colspan="4">Kurztestes</th><th colspan="2">Heft</th><th colspan="4">Unterricht</th><th colspan="4">Hausaufgaben</th><th colspan="2">Problem der Woche</th></tr>
-	<tr><th>1</th><th>2</th><th>3</th><th>4</th><th>1</th><th>2</th><th>3</th><th>4</th><th>1</th><th>2</th><th>1</th><th>2</th><th>3</th><th>4</th><th>1</th><th>2</th><th>3</th><th>4</th><th>1</th><th>2</th></tr>
-	<tr><td>Mathematik</td><td>12</td><td>13</td><td>4</td><td>10</td><td>9</td><td>7</td><td>7</td><td>11</td><td>12</td><td>15</td><td>3</td><td>14</td><td>8</td><td>5</td><td>7</td><td>2</td><td>6</td><td>1</td><td>12</td><td>0</td><td>17,89</td></tr>
-
-</table>-->
 
 <?php
 
