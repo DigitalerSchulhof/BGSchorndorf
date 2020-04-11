@@ -2,15 +2,15 @@
 @import "standard.less";
 
 .cms_button_bedingt_logisch {
-  background-color: @bedingt_logisch;
+  background-color: @bedingthell_logisch;
 }
 
 .cms_button_bedingt_bedingung {
-  background-color: @bedingt_bedingung;
+  background-color: @bedingthell_bedingung;
 }
 
 .cms_bedingt_gui_logisch {
-  background-color: @bedingt_logisch;
+  background-color: @bedingthell_logisch;
   background-repeat: no-repeat;
   background-position: 5px 5px;
   display: inline-block;
@@ -30,7 +30,7 @@
     margin-left: 20px;
     margin-top: 20px;
 
-    background-color: @schattierthell_background;
+    background-color: @schattierthell_backgroundhell;
     padding: 3px;
 
     .cms_aktion_klein {
@@ -52,4 +52,27 @@
 
 .cms_bedingt_bedingung {
   margin-bottom: 5px;
+}
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_button_bedingt_logisch {
+    background-color: @bedingtdunkel_logisch;
+  }
+
+  .cms_button_bedingt_bedingung {
+    background-color: @bedingtdunkel_bedingung;
+  }
+
+  .cms_bedingt_gui_logisch {
+    background-color: @bedingtdunkel_logisch;
+
+    .cms_bedingt_gui_logisch_feld,
+    .cms_bedingt_gui_logisch_hinzufuegen {
+      background-color: @schattiertdunkel_backgroundhell;
+    }
+  }
 }

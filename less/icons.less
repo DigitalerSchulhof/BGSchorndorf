@@ -60,7 +60,7 @@
 .cms_schuljahrfabrik_stundenplanung {background-image: url("../res/icons/gross/sjfstundenplanung.png");}
 
 .cms_tag_gross {
-	border: 1px solid @schattierthell_background;
+	border: 1px solid @schattierthell_backgroundhell;
 	border-radius: 8px;
 	display: inline-block;
 	width: 14px;
@@ -154,7 +154,7 @@
 .cms_farbbeispiel_63 {background-color: #FFAB91 !important;}
 
 .cms_box_style_1 			{background-color: @standardhell_background;}
-.cms_box_style_2 			{background-color: @schattierthell_background;}
+.cms_box_style_2 			{background-color: @schattierthell_backgroundhell;}
 .cms_box_style_3 			{background-color: @themafarbe1;}
 .cms_box_style_4 			{background-color: @themafarbe2;}
 .cms_box_style_5 			{background-color: @themafarbe3;}
@@ -257,4 +257,12 @@
   position: absolute;
   right: 10px;
   top: 10px;
+}
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+	.cms_tag_gross {
+		border: 1px solid @schattiertdunkel_backgroundhell;
+	}
 }

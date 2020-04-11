@@ -26,14 +26,14 @@
   font-weight: bold;
   line-height: 20px;
   height: 20px;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
   display: block;
   text-align: center;
   padding: 0px 1px 0px 1px;
 }
 
 .cms_stundenplan_zeitliniebez {
-  background: @schattiertdunkel_background;
+  background: @schattierthell_backgrounddunkel;
   font-weight: bold;
   font-size: 150%;
   position: absolute;
@@ -49,7 +49,7 @@
   width: 100%;
   display: block;
   position: absolute;
-  border-top: 1px solid @schattiertdunkel_background;
+  border-top: 1px solid @schattierthell_backgrounddunkel;
 }
 
 .cms_stundenplan_zeitlinietext {
@@ -58,7 +58,7 @@
   position: absolute;
   padding: 3px;
   left: 35px;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
   text-align: left;
 }
 
@@ -94,15 +94,15 @@
 }
 
 .cms_stundenfeld_blockiert {
-  background: @schattiertdunkel_background;
+  background: @schattierthell_backgrounddunkel;
 }
 
 .cms_stundenplanung_markiert {
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
 }
 
 .cms_vplan_stunde_markiert {
-  border: 2px dashed @schattiertdunkel_background;
+  border: 2px dashed @schattierthell_backgrounddunkel;
 }
 
 .cms_stundenplanung_stundenfeld:hover {
@@ -112,7 +112,7 @@
 .cms_stundenplanung_stunde {
   display: inline-block;
   width: 100%;
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   height: 100%;
   text-align: center;
   position: relative;
@@ -139,14 +139,14 @@
   }
 }
 
-.cms_stundenplan_stunde {background: @schattierthell_background;}
-.cms_stundenplan_stunde_entfall {border: 2px dashed @info_background; background: @standardhell_background;}
-.cms_stundenplan_stunde_entfallgeaendert {border: 2px dashed @erfolg_background; background: @standardhell_background;}
-.cms_stundenplan_stunde_ausfall {color: @standardschrifthell_color;background: @fehler_background;}
-.cms_stundenplan_stunde_geloest {background: @info_background;}
-.cms_stundenplan_stunde_geaendert {background: @erfolg_background;}
-.cms_stundenplan_stunde_konflikt {background: @fehler_background;}
-.cms_stundenplan_stunde_ueberschneidung {background: @warnung_background;}
+.cms_stundenplan_stunde {background: @schattierthell_backgroundhell;}
+.cms_stundenplan_stunde_entfall {border: 2px dashed @infohell; background: @standardhell_background;}
+.cms_stundenplan_stunde_entfallgeaendert {border: 2px dashed @erfolghell; background: @standardhell_background;}
+.cms_stundenplan_stunde_ausfall {color: @standardschrifthell_color;background: @fehlerhell;}
+.cms_stundenplan_stunde_geloest {background: @infohell;}
+.cms_stundenplan_stunde_geaendert {background: @erfolghell;}
+.cms_stundenplan_stunde_konflikt {background: @fehlerhell;}
+.cms_stundenplan_stunde_ueberschneidung {background: @warnunghell;}
 
 .cms_stundenplan_stunde_rythmus {
   position: absolute;
@@ -160,7 +160,7 @@
 
 .cms_stundenplanung_stundeinfo {
   color: @standardschrifthell_color;
-  background: @hinweise_background;
+  background: @hinweisehell_background;
   padding: 0px 5px 0px 5px;
   position: absolute;
   font-family: 'robl';
@@ -190,22 +190,22 @@
   display: inline-block;
   width: 40px;
   text-align: center;
-  border: 2px solid @schattiertdunkel_background;
+  border: 2px solid @schattierthell_backgrounddunkel;
 }
 
 .cms_stundenplan_stunde_gewaehlt {
-  border: 2px dotted @erfolg_akzent;
+  border: 2px dotted @erfolgdunkel;
 }
 
-.cms_wochentag_rythmus_leer {background: @schattierthell_background; border-color: @schattierthell_background;}
+.cms_wochentag_rythmus_leer {background: @schattierthell_backgroundhell; border-color: @schattierthell_backgroundhell;}
 .cms_wochentag_rythmus {background: @standardhell_background;}
-.cms_wochentag_rythmus_schulfrei {background: @info_background;}
-.cms_wochentag_rythmus_ferien {background: @erfolg_background;}
+.cms_wochentag_rythmus_schulfrei {background: @infohell;}
+.cms_wochentag_rythmus_ferien {background: @erfolghell;}
 
 .cms_stundenplan_spaltentitel .cms_notiz {color: inherit !important;}
 
 .cms_vplan_geloest {
-  color: @info_akzent !important;
+  color: @infodunkel !important;
 }
 
 #cms_spalte_wochenplaene, #cms_spalte_konflikte, #cms_spalte_lehrer,
@@ -220,7 +220,7 @@
 }
 
 .cms_stundenplan_spalte_trenner {
-  border-left: 1px solid @schattiertdunkel_background !important;
+  border-left: 1px solid @schattierthell_backgrounddunkel !important;
 }
 
 .cms_vplan_konfliktplan_wahl {width: 100%;}
@@ -231,19 +231,19 @@
 }
 
 tr.cms_vplan_ausgewaehlt td {
-  background-color: @schattiertdunkel_background;
+  background-color: @schattierthell_backgrounddunkel;
 }
 
 tr.cms_vplan_ausgewaehlt:hover td {
-  background-color: @schattiertdunkel_background !important;
+  background-color: @schattierthell_backgrounddunkel !important;
 }
 
 .cms_vplan_konfliktgrund {
-  background-color: @fehler_background !important;
+  background-color: @fehlerhell !important;
 }
 
 .cms_vplan_konfliktwarnung {
-  background-color: @warnung_background !important;
+  background-color: @warnunghell !important;
 }
 
 #cms_lvplan_heute {
@@ -306,17 +306,17 @@ tr.cms_vplan_ausgewaehlt:hover td {
 }
 
 .cms_markierte_liste_0 td {background: @standardhell_background;}
-.cms_markierte_liste_1 td {background: @schattierthell_background; border-bottom: 1px solid @standardhell_background;}
+.cms_markierte_liste_1 td {background: @schattierthell_backgroundhell; border-bottom: 1px solid @standardhell_background;}
 
-.cms_vplanliste_entfall td:first-child {border-left: 4px solid @fehler_background;}
-.cms_vplanliste_neu td:first-child {border-left: 4px solid @erfolg_background;}
+.cms_vplanliste_entfall td:first-child {border-left: 4px solid @fehlerhell;}
+.cms_vplanliste_neu td:first-child {border-left: 4px solid @erfolghell;}
 
 .cms_auswaehlen {
   position: relative;
 }
 
 .cms_konflikte_liste_menue {
-  background: @hinweise_background;
+  background: @hinweisehell_background;
   position: absolute;
   border-radius: @button_radius;
   top: 0px;
@@ -326,4 +326,116 @@ tr.cms_vplan_ausgewaehlt:hover td {
   transition-delay: 1s;
   opacity: 0;
   z-index: 2;
+}
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_stundenplan_spalte {
+    border-left: 1px solid @standarddunkel_background;
+    border-right: 1px solid @standarddunkel_background;
+  }
+
+  .cms_stundenplan_spalte .cms_stundenplan_spaltentitel {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_stundenplan_zeitliniebez {
+    background: @schattiertdunkel_backgrounddunkel;
+    color: @standardschriftdunkel_color;
+  }
+
+  .cms_stundenplan_zeitliniebeginn, .cms_stundenplan_zeitlinieende {
+    border-top: 1px solid @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_stundenplan_zeitlinietext {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_vollbild {
+    background: @standarddunkel_background;
+  }
+
+  .cms_stundenfeld_blockiert {
+    background: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_stundenplanung_markiert {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_vplan_stunde_markiert {
+    border: 2px dashed @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_stundenplanung_stunde {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_stundenplan_stunde {background: @schattiertdunkel_backgroundhell;}
+  .cms_stundenplan_stunde_entfall {border: 2px dashed @infodunkel; background: @standarddunkel_background;}
+  .cms_stundenplan_stunde_entfallgeaendert {border: 2px dashed @erfolgdunkel; background: @standarddunkel_background;}
+  .cms_stundenplan_stunde_ausfall {color: @standardschriftdunkel_color;background: @fehlerdunkel;}
+  .cms_stundenplan_stunde_geloest {background: @infodunkel;}
+  .cms_stundenplan_stunde_geaendert {background: @erfolgdunkel;}
+  .cms_stundenplan_stunde_konflikt {background: @fehlerdunkel;}
+  .cms_stundenplan_stunde_ueberschneidung {background: @warnungdunkel;}
+
+  .cms_stundenplanung_stundeinfo {
+    color: @standardschriftdunkel_color;
+    background: @hinweisedunkel_background;
+  }
+
+  .cms_wochentag_rythmus, .cms_wochentag_rythmus_schulfrei,
+  .cms_wochentag_rythmus_ferien, .cms_wochentag_rythmus_leer {
+    border: 2px solid @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_stundenplan_stunde_gewaehlt {
+    border: 2px dotted @erfolghell;
+  }
+
+  .cms_wochentag_rythmus_leer {background: @schattiertdunkel_backgroundhell; border-color: @schattiertdunkel_backgroundhell;}
+  .cms_wochentag_rythmus {background: @standarddunkel_background;}
+  .cms_wochentag_rythmus_schulfrei {background: @infodunkel;}
+  .cms_wochentag_rythmus_ferien {background: @erfolgdunkel;}
+
+  .cms_vplan_geloest {
+    color: @infohell !important;
+  }
+
+  .cms_stundenplan_spalte_trenner {
+    border-left: 1px solid @schattiertdunkel_backgrounddunkel !important;
+  }
+
+  tr.cms_vplan_ausgewaehlt td {
+    background-color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  tr.cms_vplan_ausgewaehlt:hover td {
+    background-color: @schattiertdunkel_backgrounddunkel !important;
+  }
+
+  .cms_vplan_konfliktgrund {
+    background-color: @fehlerdunkel !important;
+  }
+
+  .cms_vplan_konfliktwarnung {
+    background-color: @warnungdunkel !important;
+  }
+
+  .cms_markierte_liste_0 td {background: @standarddunkel_background;}
+  .cms_markierte_liste_1 td {background: @schattiertdunkel_backgroundhell; border-bottom: 1px solid @standarddunkel_background;}
+
+  .cms_vplanliste_entfall td:first-child {border-left: 4px solid @fehlerdunkel;}
+  .cms_vplanliste_neu td:first-child {border-left: 4px solid @erfolgdunkel;}
+
+  .cms_konflikte_liste_menue {
+    background: @hinweisedunkel_background;
+  }
 }

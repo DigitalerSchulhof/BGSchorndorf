@@ -3,7 +3,7 @@
 
 #cms_blende_o, #cms_aktionsschicht_o {
 	display: none;
-	background: @hinweise_background;
+	background: @hinweisehell_background;
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -35,4 +35,19 @@
 
 #cms_laden {
 	padding: 10px;
+}
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+	#cms_blende_o, #cms_aktionsschicht_o {
+		background: @hinweisedunkel_background;
+	}
+
+	#cms_blende_i, .cms_aktionsschicht_i {
+		background: @standarddunkel_background;
+		box-shadow: 0px 0px 20px @standarddunkel_background;
+	}
 }

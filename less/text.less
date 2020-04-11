@@ -2,7 +2,7 @@
 @import "standard.less";
 
 .cms_notiz, .cms_hochladen_fortschritt_anzeige {
-  color: @notiz_color;
+  color: @notizhell_color;
   font-size: 70% !important;
 }
 
@@ -93,6 +93,7 @@ b, strong {
   font-size: inherit;
   text-decoration: inherit;
   font-family: inherit;
+  color: inherit;
 }
 i, em {
   font-style: italic;
@@ -100,6 +101,7 @@ i, em {
   text-decoration: inherit;
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
 }
 u {
   font-style: inherit;
@@ -107,6 +109,7 @@ u {
   text-decoration: underline;
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
 }
 
 p span, p b, p i, p u,
@@ -115,6 +118,7 @@ td span, td b, td i, td u,
 th span, th b, th i, th u {
   font-size: inherit;
   font-family: inherit;
+  color: inherit;
 }
 
 blockquote {
@@ -124,9 +128,10 @@ blockquote {
   padding: 30px 10px 10px 80px;
   min-height: 70px;
   font-family: inherit;
+  color: inherit;
 }
 
-pre, .cms_konsole {
+pre, .cms_konsole, .cms_code {
   background: @standarddunkel_background;
   color: @standardschrifthell_color;
   padding: 10px;
@@ -169,4 +174,21 @@ pre, .cms_konsole {
 
 .cms_uebersicht * {
   line-height: 1.2em;
+}
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_notiz, .cms_hochladen_fortschritt_anzeige {
+    color: @notizhell_color;
+  }
+
+  pre, .cms_konsole, .cms_code {
+    background: @schattiertdunkel_backgroundhell;
+    color: @standardschrifthell_color;
+  }
 }

@@ -2,7 +2,7 @@
 @import "standard.less";
 
 .cms_uebersicht .cms_ersteller {
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
   display: none;
 }
 
@@ -24,7 +24,7 @@
 
 .cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
   cursor: pointer;
-  background-color: @schattierthell_background;
+  background-color: @schattierthell_backgroundhell;
 }
 
 .cms_blogliste_details:hover {
@@ -35,9 +35,9 @@
   margin-bottom: 0px;
 }
 
-.cms_beschluss_angenommen {color: @erfolg_akzent;}
-.cms_beschluss_abgelehnt {color: @fehler_akzent;}
-.cms_beschluss_vertagt {color: @schattiertdunkel_background;}
+.cms_beschluss_angenommen {color: @erfolgdunkel;}
+.cms_beschluss_abgelehnt {color: @fehlerdunkel;}
+.cms_beschluss_vertagt {color: @schattierthell_backgrounddunkel;}
 
 .cms_beschlusseintrag p.cms_beschlussicons {
   margin: 0px;
@@ -67,7 +67,7 @@
 }
 
 .cms_aktionen_uebersicht li:last-child > p {
-  border-bottom: 1px solid @schattierthell_background;
+  border-bottom: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_gruppen_oeffentlich_art {
@@ -89,8 +89,8 @@
   border-radius: 8px;
 }
 
-.cms_oe {background: @info_background;}
-.cms_in {background: @warnung_background;}
+.cms_oe {background: @infohell;}
+.cms_in {background: @warnunghell;}
 
 .cms_beschluss {
   color: @standardschriftdunkel_color;
@@ -111,18 +111,18 @@
 }
 
 .cms_beschluss_pro {
-  border-left: 3px solid @erfolg_akzent;
-  background: @erfolg_background;
+  border-left: 3px solid @erfolgdunkel;
+  background: @erfolghell;
 }
 
 .cms_beschluss_contra {
-  border-left: 3px solid @fehler_akzent;
-  background: @fehler_background;
+  border-left: 3px solid @fehlerdunkel;
+  background: @fehlerhell;
 }
 
 .cms_beschluss_enthaltung {
-  border-left: 3px solid @schattiertdunkel_background;
-  background: @schattierthell_background;
+  border-left: 3px solid @schattierthell_backgrounddunkel;
+  background: @schattierthell_backgroundhell;
 }
 
 .cms_beschluss_stimmen {
@@ -130,9 +130,9 @@
   margin-bottom: 0px;
 }
 
-.cms_beschluss_stimmen_pro {background: @erfolg_akzent;}
-.cms_beschluss_stimmen_contra {background: @fehler_akzent;}
-.cms_beschluss_stimmen_enthaltung {background: @schattiertdunkel_background;}
+.cms_beschluss_stimmen_pro {background: @erfolgdunkel;}
+.cms_beschluss_stimmen_contra {background: @fehlerdunkel;}
+.cms_beschluss_stimmen_enthaltung {background: @schattierthell_backgrounddunkel;}
 
 .cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
   display: inline-block;
@@ -189,7 +189,7 @@
         position: relative;
         min-width: 40%;
         max-width: 60%;
-        background-color: @chatanderer;
+        background-color: @chatandererhell;
         border-radius: @button_radius;
         float: left;
         padding: 5px;
@@ -206,7 +206,7 @@
             .cms_chat_aktion {
               // .cms_hinweis
               color: @standardschrifthell_color !important;
-              background: @hinweise_background;
+              background: @hinweisehell_background;
               padding: 0px 5px 0px 5px;
               position: absolute;
               font-family: 'robl';
@@ -251,7 +251,7 @@
       &.cms_chat_nachricht_eigen {
         .cms_chat_nachricht_innen {
           float: right;
-          background-color: @chateigen;
+          background-color: @chateigenhell;
           .cms_chat_nachricht_aktion {
             &[data-aktion=mehr] {
               display: none;
@@ -280,7 +280,7 @@
       &.cms_chat_nachricht_gemeldet {
         opacity: 0.8;
         .cms_chat_nachricht_innen {
-          background-color: mix(@fehler_background, white);
+          background-color: mix(@fehlerhell, white);
           .cms_chat_nachricht_aktion {
             &[data-aktion=mehr] {
               [data-mehr=melden] {
@@ -329,7 +329,7 @@
   }
 
   #cms_chat_mehr {
-    color: @standardlink_color;
+    color: @standardlinkhell_color;
     cursor: pointer;
   }
 
@@ -391,6 +391,105 @@
     }
     #cms_chat_berechtigung {
       display: block;
+    }
+  }
+}
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_uebersicht .cms_ersteller {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
+    background-color: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_beschluss_angenommen {color: @erfolghell;}
+  .cms_beschluss_abgelehnt {color: @fehlerhell;}
+  .cms_beschluss_vertagt {color: @schattiertdunkel_backgrounddunkel;}
+
+  .cms_aktionen_uebersicht li:last-child > p {
+    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_oe {background: @infodunkel;}
+  .cms_in {background: @warnungdunkel;}
+
+  .cms_beschluss {
+    color: @standardschrifthell_color;
+  }
+
+  .cms_beschluss:hover {
+    color: @standardschrifthell_color;
+  }
+
+  .cms_beschluss_pro {
+    border-left: 3px solid @erfolghell;
+    background: @erfolgdunkel;
+  }
+
+  .cms_beschluss_contra {
+    border-left: 3px solid @fehlerhell;
+    background: @fehlerdunkel;
+  }
+
+  .cms_beschluss_enthaltung {
+    border-left: 3px solid @schattiertdunkel_backgrounddunkel;
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_beschluss_stimmen_pro {background: @erfolghell;}
+  .cms_beschluss_stimmen_contra {background: @fehlerhell;}
+  .cms_beschluss_stimmen_enthaltung {background: @schattiertdunkel_backgrounddunkel;}
+
+  .cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
+    color: @standardschriftdunkel_color;
+  }
+
+  .cms_beschluss_langfristig {
+    color: @standardschrifthell_color;
+    background: @standarddunkel_background;
+  }
+
+  .cms_beschlussuebersicht_jahr .cms_beschluss {
+    border-right: 10px solid @standarddunkel_background;
+  }
+
+  #cms_chat {
+    #cms_chat_nachrichten {
+      .cms_chat_nachricht_aussen {
+        .cms_chat_nachricht_innen {
+          background-color: @chatandererdunkel;
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              .cms_chat_aktion {
+                color: @standardschriftdunkel_color !important;
+                background: @hinweisedunkel_background;
+              }
+            }
+          }
+        }
+        &.cms_chat_nachricht_eigen {
+          .cms_chat_nachricht_innen {
+            background-color: @chateigenhell;
+          }
+        }
+        &.cms_chat_nachricht_gemeldet {
+          opacity: 0.8;
+          .cms_chat_nachricht_innen {
+            background-color: mix(@fehlerdunkel, white);
+          }
+        }
+      }
+    }
+
+    #cms_chat_mehr {
+      color: @standardlinkdunkel_color;
     }
   }
 }

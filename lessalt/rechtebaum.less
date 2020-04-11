@@ -1,0 +1,116 @@
+// "out": "../css/rechtebaum.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
+@import "standard.less";
+
+#cms_rechtepapa {
+  margin-left: -34px;
+}
+.cms_rechtebox {
+  margin-left: 24px;
+  &:not(.cms_recht_unterstes) {
+    background-size: 24px;
+    background-image: url('../res/sonstiges/rechtebaum/leer.png');
+    background-repeat: repeat-y;
+  }
+  .cms_recht {
+    // Icon
+    &>.icon {
+      content: " ";
+      display: inline-block;
+      background-size: cover;
+      background-image: url('../res/sonstiges/rechtebaum/wert.png');
+      line-height: 24px;
+      float: left;
+      height: 24px;
+      width:  24px;
+    }
+    &.cms_hat_kinder {
+      &>.icon {
+        cursor: pointer;
+        background-image: url('../res/sonstiges/rechtebaum/wert_k.png');
+        &.cms_recht_eingeklappt {
+          background-image: url('../res/sonstiges/rechtebaum/wert_k_c.png');
+        }
+      }
+    }
+    &.cms_recht_unterstes {
+      &>.icon {
+        background-image: url('../res/sonstiges/rechtebaum/wert_u.png');
+      }
+    }
+    &.cms_recht_unterstes.cms_hat_kinder {
+      &>.icon {
+        background-image: url('../res/sonstiges/rechtebaum/wert_u_k.png');
+        &.cms_recht_eingeklappt {
+          background-image: url('../res/sonstiges/rechtebaum/wert_u_k_c.png');
+        }
+      }
+    }
+    .cms_recht_beschreibung {
+      height: 24px;
+      display: inline-block;
+      .cms_recht_beschreibung_i {
+        height: 20px;
+        cursor: pointer;
+        transition: 250ms ease-in-out;
+        border-radius: 1px;
+        padding: 3px;
+        margin: 2px;
+        display: inline-block;
+        border: 1px solid @standarddunkel_background;
+        &:hover {
+          border-color: transparent;
+          color: @buttonhell_color;
+          background-color: @buttonhell_background;
+        }
+      }
+    }
+    &.cms_recht_nutzer {
+      .cms_recht_beschreibung_i {
+        border-color: transparent;
+        color: @standardschriftdunkel_color;
+        background-color: @erfolghell;
+        &:hover {
+          background-color: @fehlerhell;
+        }
+      }
+    }
+    &.cms_recht_rolle {
+      .cms_recht_beschreibung_i {
+        border-color: transparent;
+        cursor: default;
+        background-color: @infohell !important;
+        color: @standardschriftdunkel_color !important;
+      }
+    }
+  }
+}
+
+.cms_demorecht {
+  height: 24px;
+  display: inline-block;
+  padding: 5px;
+  margin-bottom: 2px;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: 250ms ease-in-out;
+  border: 1px solid @standarddunkel_background;
+  &:hover {
+    border-color: transparent;
+    color: @buttonhell_color;
+    background-color: @buttonhell_background;
+  }
+  &.cms_demorecht_nutzer {
+    border-color: transparent;
+    color: @standardschriftdunkel_color;
+    background-color: @erfolghell;
+    &:hover {
+      background-color: @fehlerhell;
+    }
+  }
+  &.cms_demorecht_rolle {
+    border-color: transparent;
+    cursor: default;
+    background-color: @infohell !important;
+    color: @standardschriftdunkel_color !important;
+  }
+}

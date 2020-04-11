@@ -1,7 +1,6 @@
 // "out": "../css/pinnwaende.css", "sourcemap": "false", "compress": "true", "autoprefixer": "true"
 @import "standard.less";
 
-
 .cms_pinnwand_anschlaege {
   display: flex;
   flex-wrap: wrap;
@@ -13,7 +12,7 @@
 
 .cms_pinnwand_anschlag_innen {
   margin: 10px;
-  box-shadow: 0px 0px 10px @schattierthell_background;
+  box-shadow: 0px 0px 10px @schattierthell_backgroundhell;
 }
 
 .cms_pinnwand_datum,
@@ -36,7 +35,7 @@
 }
 
 .cms_pinnwand_titel, .cms_pinnwand_datum, .cms_pinnwand_ersteller {
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   padding-bottom: 5px;
 }
 
@@ -51,3 +50,27 @@
 }
 
 .cms_pinnwand_ersteller .cms_link {font-size: inherit;}
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_pinnwand_anschlag_innen {
+    box-shadow: 0px 0px 10px @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_pinnwand_titel {
+    color: @standardschrifthell_color;
+  }
+
+  .cms_pinnwand_titel, .cms_pinnwand_datum, .cms_pinnwand_ersteller {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_pinnwand_datum, .cms_pinnwand_ersteller {
+    color: @standardschrifthell_color;
+  }
+}

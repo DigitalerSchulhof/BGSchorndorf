@@ -4,6 +4,7 @@
 * {
 	font-family: @standardschriftart, sans-serif;
 	font-size: @standardschriftgroesse;
+	color: @standardschriftdunkel_color;
 	font-weight: normal;
 	padding: 0px;
 	margin: 0px;
@@ -14,19 +15,19 @@
 }
 
 body {
-  background: @seitenbackground;
+  background: @seitenbackgroundhell;
 }
 
 .cms_seite_normal #cms_kopfzeile_o {
   margin-top: @kopfzeile_o_margintop;
-  background: @kopfzeile_background;
+  background: @kopfzeile_backgroundhell;
   position: @kopfzeile_o_position;
   top: @kopfzeile_o_top;
 	border-bottom: @kopfzeile_o_borderbottom;
   left: 0px;
   width: 100%;
   z-index: 20;
-  box-shadow: @kopfzeile_boxshadow;
+  box-shadow: @kopfzeile_boxshadowhell;
 }
 
 #cms_platzhalter_bild {
@@ -36,11 +37,11 @@ body {
 }
 
 #cms_website_bearbeiten_o {
-  background: @warnung_background;
+  background: @warnunghell;
 }
 
 #cms_hauptbild_o {
-  background: @seitenbackground;
+  background: @seitenbackgroundhell;
   margin: 0px;
   padding: 0px;
   position: relative;
@@ -52,7 +53,7 @@ body {
 
 #cms_fusszeile_o {
 	border-top: @fusszeile_o_bordertop;
-  background: @fusszeile_o_background;
+  background: @fusszeile_o_backgroundhell;
 }
 
 .cms_seite_normal #cms_kopfzeile_i {
@@ -94,7 +95,7 @@ body {
 
 		#cms_logo_o, #cms_logo_u {
 		  position: relative;
-		  color: @logo_schrift_farbe;
+		  color: @logo_schrift_farbehell;
 		  font-size: 170%;
 		  padding: 2px 0px 0px 0px;
 		  display: block;
@@ -116,7 +117,7 @@ body {
   padding: 2px 5px;
   text-align: center;
   z-index: 5000;
-  background: @info_background;
+  background: @infohell;
 }
 
 .cms_spalte_i {
@@ -280,7 +281,62 @@ body {
 }
 
 .cms_groesseaendern:hover {
-	background-color: @schattiertdunkel_background;
+	background-color: @schattierthell_backgrounddunkel;
 }
 
 .cms_groesseaendern:hover {cursor: ew-resize;}
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+	* {
+		color: @standardschrifthell_color;
+	}
+
+
+	body {
+	  background: @fusszeile_o_backgrounddunkel;
+	}
+
+	.cms_seite_normal #cms_kopfzeile_o {
+		background: @kopfzeile_backgrounddunkel;
+	  box-shadow: @kopfzeile_boxshadowdunkel;
+	}
+
+	#cms_website_bearbeiten_o {
+	  background: @warnungdunkel;
+	}
+
+	#cms_hauptbild_o {
+	  background: @seitenbackgrounddunkel;
+	}
+
+	#cms_hauptteil_o {
+	  background: @standarddunkel_background;
+	}
+
+	#cms_fusszeile_o {
+		background: @fusszeile_o_backgrounddunkel;
+	}
+
+	.cms_seite_normal #cms_logo #cms_logo_schrift #cms_logo_o,
+	.cms_seite_normal #cms_logo #cms_logo_schrift #cms_logo_u {
+		color: @logo_schrift_farbedunkel;
+	}
+
+	#cms_netzcheckstatus {
+	  background: @infodunkel;
+	}
+
+	.cms_vollbild {
+	  background: @standarddunkel_background;
+	}
+
+	.cms_groesseaendern:hover {
+		background-color: @schattiertdunkel_backgrounddunkel;
+	}
+}

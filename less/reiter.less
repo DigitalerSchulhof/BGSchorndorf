@@ -17,8 +17,8 @@
 }
 
 .cms_reiter {
-  color: @reiter_color;
-  background: @reiter_background;
+  color: @reiterhell_color;
+  background: @reiterhell_background;
   border-top-right-radius: @reiter_radiustr;
   border-top-left-radius: @reiter_radiustl;
   border-bottom-right-radius: @reiter_radiusbr;
@@ -26,8 +26,8 @@
 }
 
 .cms_reiter:hover, .cms_reiter_aktiv:hover {
-  color: @reiterhover_color;
-  background: @reiterhover_background;
+  color: @reiterhellhover_color;
+  background: @reiterhellhover_background;
   cursor: pointer;
   border-top-right-radius: @reiterhover_radiustr;
   border-top-left-radius: @reiterhover_radiustl;
@@ -36,8 +36,8 @@
 }
 
 .cms_reiter_aktiv {
-  color: @reiteraktiv_color;
-  background: @reiteraktiv_background;
+  color: @reiterhellaktiv_color;
+  background: @reiterhellaktiv_background;
   cursor: pointer;
   border-top-right-radius: @reiteraktiv_radiustr;
   border-top-left-radius: @reiteraktiv_radiustl;
@@ -46,7 +46,7 @@
 }
 
 .cms_reitermenue_o {
-  border-color: @schattiertdunkel_background;
+  border-color: @schattierthell_backgrounddunkel;
   border-style: solid;
   border-width: 0px;
   border-top-width: 2px;
@@ -59,9 +59,47 @@
 }
 
 .cms_unternavigation_o .cms_reitermenue_i {
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
 }
 
 .cms_hauptteil_o .cms_reitermenue_i {
   background: @standardhell_background;
+}
+
+
+
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_reiter {
+    color: @reiterdunkel_color;
+    background: @reiterdunkel_background;
+  }
+
+  .cms_reiter:hover, .cms_reiter_aktiv:hover {
+    color: @reiterdunkelhover_color;
+    background: @reiterdunkelhover_background;
+  }
+
+  .cms_reiter_aktiv {
+    color: @reiterdunkelaktiv_color;
+    background: @reiterdunkelaktiv_background;
+  }
+
+  .cms_reitermenue_o {
+    border-color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_unternavigation_o .cms_reitermenue_i {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_hauptteil_o .cms_reitermenue_i {
+    background: @standarddunkel_background;
+  }
 }

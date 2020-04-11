@@ -4,29 +4,29 @@
 a, .cms_link {
   font-size: inherit;
   text-decoration: none;
-  color: @standardlink_color;
+  color: @standardlinkhell_color;
   transition: 500ms ease-in-out;
   display: inline-block;
 }
 
 a:hover, .cms_link:hover {
-  color: @standardlinkhover_color;
+  color: @standardlinkhellhover_color;
   display: inline-block;
   cursor: pointer;
 }
 
 #cms_fusszeile_o .cms_notiz a:hover {
-  color: @fusszeile_linkhover_color !important;
+  color: @fusszeilehell_linkhover_color !important;
   display: inline-block;
 }
 
 #cms_fusszeile_o .cms_notiz a {
-  color: @fusszeile_link_color !important;
+  color: @fusszeilehell_link_color !important;
   display: inline-block;
 }
 
 .cms_brotkrumen {
-  color: @unscheinbar_color;
+  color: @unscheinbarhell_color;
   font-size: 80%;
 }
 
@@ -51,4 +51,30 @@ a:hover, .cms_link:hover {
 
 .cms_neue_weiterleitung img:hover {
   cursor: pointer;
+}
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  a, .cms_link {
+    color: @standardlinkdunkel_color;
+  }
+
+  a:hover, .cms_link:hover {
+    color: @standardlinkdunkelhover_color;
+  }
+
+  #cms_fusszeile_o .cms_notiz a:hover {
+    color: @fusszeiledunkel_linkhover_color !important;
+  }
+
+  #cms_fusszeile_o .cms_notiz a {
+    color: @fusszeiledunkel_link_color !important;
+  }
+
+  .cms_brotkrumen {
+    color: @unscheinbardunkel_color;
+  }
 }

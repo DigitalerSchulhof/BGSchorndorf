@@ -20,7 +20,7 @@
 
 #cms_dsgvo_datenschutz .cms_meldung {
   margin: 0px;
-  box-shadow: 0px 0px 10px @fehler_akzent;
+  box-shadow: 0px 0px 10px @fehlerdunkel;
 }
 
 #cms_netzcheckstatus span {font-size: inherit;}
@@ -30,12 +30,12 @@
 }
 
 .cms_absender {text-align: right;}
-.cms_empfaenger, .cms_anhangtitel {color: @schattiertdunkel_background;}
+.cms_empfaenger, .cms_anhangtitel {color: @schattierthell_backgrounddunkel;}
 
 .cms_postfach_papierkorb_aussen {
   width: 6px;
   height: 23px;
-  background: @fehler_background;
+  background: @fehlerhell;
   border-radius: @button_radius;
   display: inline-block;
   line-height: 0px;
@@ -47,7 +47,7 @@
 .cms_postfach_papierkorb_innen {
   width: 6px;
   height: 23px;
-  background: @erfolg_background;
+  background: @erfolghell;
   border-radius: @button_radius;
   display: block;
   position: absolute;
@@ -85,22 +85,14 @@
 .cms_signatur, .cms_originalnachricht_meta {
   margin-top: 15px;
   padding-top:5px;
-  border-top: 1px dotted @schattiertdunkel_background;
-  color: @schattiertdunkel_background;
+  border-top: 1px dotted @schattierthell_backgrounddunkel;
+  color: @schattierthell_backgrounddunkel;
   font-size: 80%;
 }
 
 .cms_originalnachricht {
   padding-left: 5px;
-  border-left: 2px solid @schattierthell_background;
-}
-
-#cms_geraeteproblem_kommentar {
-  color: @fehler_akzent;
-}
-
-#cms_geraeteproblem {
-    margin-top: 20px;
+  border-left: 2px solid @schattierthell_backgroundhell;
 }
 
 .cms_versteckt {
@@ -113,7 +105,7 @@
   left: 0px;
   z-index: 1000;
   padding: 10px 10px 30px 10px;
-  background: @warnung_background;
+  background: @warnunghell;
   display: none;
 }
 
@@ -145,7 +137,7 @@
   z-index: 2;
   width: 100%;
   max-width: 800px;
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 10px;
@@ -160,14 +152,14 @@
   padding: 5px !important;
   border-radius: 5px;
   color: @standardschrifthell_color;
-  background-color: @fehler_akzent;
+  background-color: @fehlerdunkel;
 }
 
 .cms_auftragausstehend {
   padding: 5px !important;
   border-radius: 5px;
   color: @standardschrifthell_color;
-  background-color: @fehler_akzent;
+  background-color: @fehlerdunkel;
   display: inline-block;
   text-align: center;
   font-size: 80%;
@@ -177,7 +169,7 @@
   padding: 5px !important;
   border-radius: 5px;
   color: @standardschrifthell_color;
-  background-color: @erfolg_akzent;
+  background-color: @erfolgdunkel;
   display: inline-block;
   text-align: center;
   font-size: 80%;
@@ -205,47 +197,6 @@
   font-size: 120%;
 }
 
-.cms_problemmeldung_box {
-  display: flex;
-}
-
-.cms_problemmeldung {
-  display: flex;
-  flex-wrap: wrap;
-  width: 20%;
-  border-right: 5px solid @standardhell_background;
-}
-
-.cms_problemmeldunginnen {
-  border-radius: 10px;
-  padding: 10px;
-  display: block;
-  width: 100%;
-}
-
-.cms_geraetelegende1, .cms_geraetelegende2, .cms_geraetelegende3, .cms_geraetelegende4, .cms_geraetelegende5 {
-  display: inline-block;
-  padding: 5px;
-  border-radius: 5px;
-  margin-bottom: 5px;
-}
-
-.cms_geraetelegende2, .cms_geraetelegende3, .cms_geraetelegende4, .cms_geraetelegende5 {margin-right: 5px;}
-
-.cms_problemmeldung_standort, .cms_problemmeldung_status, .cms_problemmeldung_meldung, .cms_problemmeldung_kommentar, .cms_problemmeldung_zeit {display: block;}
-
-.cms_problemmeldung_standort, .cms_problemmeldung_status, .cms_problemmeldung_meldung, .cms_problemmeldung_kommentar {margin-bottom: 5px;}
-
-.cms_problemmeldung_standort, .cms_problemmeldung_status {font-size: 120%;}
-
-.cms_problemmeldung_standort {font-weight:bold;}
-
-.cms_problem1 .cms_problemmeldunginnen, .cms_geraetelegende1 {background: @info_background; border: 2px solid @info_akzent;}
-.cms_problem2 .cms_problemmeldunginnen, .cms_geraetelegende2 {background: @warnung_background; border: 2px solid @warnung_akzent;}
-.cms_problem3 .cms_problemmeldunginnen, .cms_geraetelegende3 {background: @fehler_background; border: 2px solid @fehler_akzent;}
-.cms_problem4 .cms_problemmeldunginnen, .cms_geraetelegende4 {background: @schattiertdunkel_background; border: 2px solid @standarddunkel_background;}
-.cms_problem5 .cms_problemmeldunginnen, .cms_geraetelegende5 {background: @standardhell_background; border: 2px solid @schattierthell_background;}
-
 .cms_gesichert {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -268,4 +219,66 @@
 .cms_legende span {
   width: 33.3333333%;
   display: inline-block;
+}
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  #cms_dsgvo_datenschutz .cms_meldung {
+    box-shadow: 0px 0px 10px @fehlerhell;
+  }
+
+  .cms_empfaenger, .cms_anhangtitel {color: @schattiertdunkel_backgrounddunkel;}
+
+  .cms_postfach_papierkorb_aussen {
+    background: @fehlerdunkel;
+  }
+
+  .cms_postfach_papierkorb_innen {
+    background: @erfolgdunkel;
+  }
+
+  .cms_signatur, .cms_originalnachricht_meta {
+    border-top: 1px dotted @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_originalnachricht {
+    border-left: 2px solid @schattiertdunkel_backgroundhell;
+  }
+
+  #cms_debug {
+    background: @warnungdunkel;
+  }
+
+  #cms_gruppe_icon_auswahl {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_genehmigungausstehend {
+    color: @standardschriftdunkel_color;
+    background-color: @fehlerhell;
+  }
+
+  .cms_auftragausstehend {
+    color: @standardschriftdunkel_color;
+    background-color: @fehlerhell;
+  }
+
+  .cms_auftragerledigt {
+    color: @standardschriftdunkel_color;
+    background-color: @erfolghell;
+  }
+
+  .cms_spamschutz {
+    border: 1px solid @standarddunkel_background;
+  }
+
+  .cms_vollbild {
+    background: @standarddunkel_background;
+  }
 }

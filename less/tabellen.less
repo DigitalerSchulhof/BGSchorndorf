@@ -3,13 +3,13 @@
 
 td.cms_notiz {
   text-align: center !important;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
 }
 
 th.cms_zwischenueberschrift,
 th.cms_zwischenueberschrift *  {
   text-align: center !important;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
   font-weight: bold;
 }
 
@@ -22,7 +22,7 @@ table .cms_senkrecht {
 .cms_formular {
   border-collapse: collapse;
   border-spacing: 0px;
-  background: @formular_background;
+  background: @formularhell_background;
   width: 100%;
 }
 
@@ -79,8 +79,8 @@ table .cms_senkrecht {
   border-collapse: collapse;
   border-spacing: 0px;
   background: @standardhell_background;
-  border-top: 1px @schattierthell_background solid;
-  border-bottom: 1px @schattierthell_background solid;
+  border-top: 1px @schattierthell_backgroundhell solid;
+  border-bottom: 1px @schattierthell_backgroundhell solid;
   margin-bottom: 7px;
   tr.min, td.min {
     width: 1%;
@@ -92,8 +92,8 @@ table .cms_senkrecht {
   font-weight: bold;
   padding: 3px 7px;
   text-align: left;
-  border-top: 1px @schattierthell_background solid;
-  border-bottom: 1px @schattierthell_background solid;
+  border-top: 1px @schattierthell_backgroundhell solid;
+  border-bottom: 1px @schattierthell_backgroundhell solid;
   line-height: 1.5em;
   transition: 250ms ease-in-out;
 }
@@ -102,7 +102,7 @@ table .cms_senkrecht {
   font-weight: normal;
   padding: 3px 7px;
   text-align: left;
-  border-bottom: 1px @schattierthell_background solid;
+  border-bottom: 1px @schattierthell_backgroundhell solid;
   transition: 250ms ease-in-out;
 }
 
@@ -111,12 +111,12 @@ table .cms_senkrecht {
 }
 
 .cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 }
 
 .cms_postfach_liste .cms_postfach_vorschau {
   border-top: none;
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   display: none;
 }
 
@@ -132,7 +132,7 @@ table .cms_senkrecht {
 .cms_tabelle_zwischentitel {
   font-weight: bold !important;
   text-align: center !important;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
 }
 
 table.cms_zeitwahl {
@@ -165,12 +165,12 @@ table.table td:last-child {
 }
 
 table.table tr:nth-child(2n+1) td {
-  background-color: #eeeeee;
+  background-color: @formularfeldhell_background;
 }
 
 th.cms_zwischenueberschrift {
   text-align: center;
-  background-color: @schattierthell_background;
+  background-color: @schattierthell_backgroundhell;
 }
 
 th.cms_zahl, td.cms_zahl {
@@ -185,9 +185,59 @@ th.cms_zahl, td.cms_zahl {
   cursor: crosshair;
 }
 
-.table-bordered th {
-  background: @themafarbe1;
-  color: #ffffff;
-  font-weight:bold;
-  margin: 1px;
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  td.cms_notiz {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  th.cms_zwischenueberschrift,
+  th.cms_zwischenueberschrift *  {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_formular {
+    background: @formulardunkel_background;
+  }
+
+  .cms_liste {
+    background: @standarddunkel_background;
+    border-top: 1px @schattiertdunkel_backgroundhell solid;
+    border-bottom: 1px @schattiertdunkel_backgroundhell solid;
+  }
+
+  .cms_liste th {
+    border-top: 1px @schattiertdunkel_backgroundhell solid;
+    border-bottom: 1px @schattiertdunkel_backgroundhell solid;
+  }
+
+  .cms_liste td {
+    border-bottom: 1px @schattiertdunkel_backgroundhell solid;
+  }
+
+  .cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
+  	background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_postfach_liste .cms_postfach_vorschau {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_tabelle_zwischentitel {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  table.table td {
+    border-right: 1px solid @standarddunkel_background !important;
+  }
+
+  table.table tr:nth-child(2n+1) td {
+    background-color: @formularfelddunkel_background;
+  }
 }

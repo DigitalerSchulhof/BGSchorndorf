@@ -26,12 +26,12 @@
 }
 
 .cms_buchungsspalte_ferien {
-  background: @erfolg_background;
+  background: @erfolghell;
 }
 
 .cms_buchungsspalte .cms_buchungsspaltetitel {
   font-weight: bold;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
   position: absolute;
   top: -40px;
   text-align: center;
@@ -42,13 +42,13 @@
 .cms_buchungsuhrzeit {
   display: inline-block;
   position: absolute;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
   opacity: .5;
 }
 
 .cms_buchungsuhrzeitlinien {
   width: 100%;
-  border-top: 1px solid @schattiertdunkel_background;
+  border-top: 1px solid @schattierthell_backgrounddunkel;
   opacity: .5;
   position: absolute;
   left: 0px;
@@ -63,9 +63,9 @@
   left: 2%;
 }
 
-.cms_buchung_blockierung {background: @schattierthell_background; border: 1px solid @schattiertdunkel_background;}
-.cms_buchung_selbst {background: @info_background; border: 1px solid @info_akzent;}
-.cms_buchung_fremd {background: @warnung_background; border: 1px solid @warnung_akzent;}
+.cms_buchung_blockierung {background: @schattierthell_backgroundhell; border: 1px solid @schattierthell_backgrounddunkel;}
+.cms_buchung_selbst {background: @infohell; border: 1px solid @infodunkel;}
+.cms_buchung_fremd {background: @warnunghell; border: 1px solid @warnungdunkel;}
 
 .cms_buchung_zeit, .cms_buchung_von, .cms_buchung_aktion {
   display: block;
@@ -99,4 +99,32 @@
   font-weight: bold;
   margin-bottom: 3px;
   font-size:  80%;
+}
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_buchungsspalte {
+    border-left: 3px solid @standarddunkel_background;
+  }
+
+  .cms_buchungsspalte_ferien {
+    background: @erfolgdunkel;
+  }
+
+  .cms_buchungsspalte .cms_buchungsspaltetitel {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_buchungsuhrzeit {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_buchungsuhrzeitlinien {
+    border-top: 1px solid @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_buchung_blockierung {background: @schattiertdunkel_backgroundhell; border: 1px solid @schattiertdunkel_backgrounddunkel;}
+  .cms_buchung_selbst {background: @infodunkel; border: 1px solid @infohell;}
+  .cms_buchung_fremd {background: @warnungdunkel; border: 1px solid @warnunghell;}
 }

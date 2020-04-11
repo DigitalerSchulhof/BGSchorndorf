@@ -11,10 +11,10 @@
 }
 
 .cms_kalender_kw, .cms_kalender_tag {font-weight: bold; padding: 6px 0px 5px 0px;}
-.cms_kalender_kw {color: @schattiertdunkel_background;}
+.cms_kalender_kw {color: @schattierthell_backgrounddunkel;}
 
 .cms_kalender_kwzahl, .cms_kalender_tagzahl {font-weight: normal;}
-.cms_kalender_kwzahl {color: @schattiertdunkel_background;}
+.cms_kalender_kwzahl {color: @schattierthell_backgrounddunkel;}
 
 .cms_kalenderzahl {
   color: @standardschriftdunkel_color;
@@ -28,72 +28,39 @@
 }
 
 .cms_kalenderzahl:hover {
-  border: 3px solid @schattiertdunkel_background;
+  border: 3px solid @schattierthell_backgrounddunkel;
   color: @standardschriftdunkel_color;
 }
 
-.cms_kalenderzahl_heute {border: 3px solid @fehler_akzent;}
-.cms_kalenderzahl_gewaehlt {background: @info_background !important;}
-.cms_kalenderzahl_persoenlich {background: @fehler_background;}
-.cms_kalenderzahl_oeffentlich {background: @warnung_background;}
-.cms_kalenderzahl_ferien {background: @erfolg_background;}
-.cms_kalenderzahl_sichtbar {background: @schattierthell_background;}
+.cms_kalenderzahl_heute {border: 3px solid @fehlerdunkel;}
+.cms_kalenderzahl_gewaehlt {background: @infohell !important;}
+.cms_kalenderzahl_persoenlich {background: @fehlerhell;}
+.cms_kalenderzahl_oeffentlich {background: @warnunghell;}
+.cms_kalenderzahl_ferien {background: @erfolghell;}
+.cms_kalenderzahl_sichtbar {background: @schattierthell_backgroundhell;}
 
-.cms_kalender {
-  &.cms_kalender_wocheansicht {
-    width: 100%;
-    border-bottom: 0;
-    position: relative;
-    .cms_tage {
-      height: 30px;
-      th {
-        width: 130px;
-        text-align: center;
-      }
-    }
-    tr {
-      .cms_stunde {
-        position: relative;
-        border-bottom: 1px transparent; // Höhe muss gleich bleiben
-        background: inherit !important;
-        span {
-          position: absolute;
-          top: 0px;
-          transform: translateY(-50%);
-          z-index: 10;
-          text-align: right;
-          right: 10px;
-        }
-      }
-      td:not(.cms_stunde) {
-        padding: 5px;
-      }
-      &:nth-of-type(3) {
-        height: 10px !important;
-      }
-      &.cms_ganztaegig {
-        border-bottom-width: 3px;
-      }
-      &.cms_stunde {
-        position: relative;
-        .cms_termin {
-          position: absolute;
-          width: 120px;
-          padding: 5px;
-          background-color: #FFE4E1;
-          border: 1px solid #dddddd;
-          border-radius: 4px;
-          cursor: pointer;
-          h3 {
-            margin-top: 5px;
-          }
-        }
-      }
-      & {
-        td,th {
-          background-color: #ffffff !important;
-        }
-      }
-    }
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_kalender_kw {color: @schattiertdunkel_backgrounddunkel;}
+
+  .cms_kalender_kwzahl {color: @schattiertdunkel_backgrounddunkel;}
+
+  .cms_kalenderzahl {
+    color: @standardschrifthell_color;
+    border: 3px solid @standarddunkel_background;
   }
+
+  .cms_kalenderzahl:hover {
+    border: 3px solid @schattiertdunkel_backgrounddunkel;
+    color: @standardschrifthell_color;
+  }
+
+  .cms_kalenderzahl_heute {border: 3px solid @fehlerhell;}
+  .cms_kalenderzahl_gewaehlt {background: @infodunkel !important;}
+  .cms_kalenderzahl_persoenlich {background: @fehlerdunkel;}
+  .cms_kalenderzahl_oeffentlich {background: @warnungdunkel;}
+  .cms_kalenderzahl_ferien {background: @erfolgdunkel;}
+  .cms_kalenderzahl_sichtbar {background: @schattiertdunkel_backgroundhell;}
 }

@@ -2,12 +2,27 @@
 @import "standard.less";
 
 .cms_tagebuch_offen:hover {cursor: pointer;}
-.cms_tagebuch_freigabe {background: @schattierthell_background;}
-.cms_tagebuch_gesperrt {background: @fehler_background;}
+.cms_tagebuch_freigabe {background: @schattierthell_backgroundhell;}
+.cms_tagebuch_gesperrt {background: @fehlerhell;}
 
-.cms_tagebuch_leistungsmessung {color: @fehler_akzent;}
-.cms_tagebuch_entschuldigt {color: @erfolg_akzent;}
-.cms_tagebuch_unentschuldigt {color: @fehler_akzent;}
-.cms_tagebuch_positiv {color: @erfolg_akzent;}
-.cms_tagebuch_negativ {color: @fehler_akzent;}
-.cms_tagebuch_neutral {color: @info_akzent;}
+.cms_tagebuch_leistungsmessung {color: @fehlerdunkel;}
+.cms_tagebuch_entschuldigt {color: @erfolgdunkel;}
+.cms_tagebuch_unentschuldigt {color: @fehlerdunkel;}
+.cms_tagebuch_positiv {color: @erfolgdunkel;}
+.cms_tagebuch_negativ {color: @fehlerdunkel;}
+.cms_tagebuch_neutral {color: @infodunkel;}
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_tagebuch_freigabe {background: @schattiertdunkel_backgroundhell;}
+  .cms_tagebuch_gesperrt {background: @fehlerdunkel;}
+
+  .cms_tagebuch_leistungsmessung {color: @fehlerhell;}
+  .cms_tagebuch_entschuldigt {color: @erfolghell;}
+  .cms_tagebuch_unentschuldigt {color: @fehlerhell;}
+  .cms_tagebuch_positiv {color: @erfolghell;}
+  .cms_tagebuch_negativ {color: @fehlerhell;}
+  .cms_tagebuch_neutral {color: @infohell;}
+}

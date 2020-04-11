@@ -1,0 +1,67 @@
+// "out": "../css/reiter.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
+@import "standard.less";
+
+.cms_reitermenue, .cms_reitermenue li {
+  margin-bottom: 0px !important;
+  display: inline-block;
+  list-style-type: none;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+
+.cms_reiter, .cms_reiter_aktiv {
+  display: inline-block;
+  padding: 7px 10px 4px 10px;
+  transition: 250ms ease-in-out;
+  font-weight: bold;
+}
+
+.cms_reiter {
+  color: @reiterhell_color;
+  background: @reiterhell_background;
+  border-top-right-radius: @reiter_radiustr;
+  border-top-left-radius: @reiter_radiustl;
+  border-bottom-right-radius: @reiter_radiusbr;
+  border-bottom-left-radius: @reiter_radiusbl;
+}
+
+.cms_reiter:hover, .cms_reiter_aktiv:hover {
+  color: @reiterhellhover_color;
+  background: @reiterhellhover_background;
+  cursor: pointer;
+  border-top-right-radius: @reiterhover_radiustr;
+  border-top-left-radius: @reiterhover_radiustl;
+  border-bottom-right-radius: @reiterhover_radiusbr;
+  border-bottom-left-radius: @reiterhover_radiusbl;
+}
+
+.cms_reiter_aktiv {
+  color: @reiterhellaktiv_color;
+  background: @reiterhellaktiv_background;
+  cursor: pointer;
+  border-top-right-radius: @reiteraktiv_radiustr;
+  border-top-left-radius: @reiteraktiv_radiustl;
+  border-bottom-right-radius: @reiteraktiv_radiusbr;
+  border-bottom-left-radius: @reiteraktiv_radiusbl;
+}
+
+.cms_reitermenue_o {
+  border-color: @schattierthell_backgrounddunkel;
+  border-style: solid;
+  border-width: 0px;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  display: none;
+}
+
+.cms_reitermenue_i {
+  padding: 10px 0px;
+}
+
+.cms_unternavigation_o .cms_reitermenue_i {
+  background: @schattierthell_backgroundhell;
+}
+
+.cms_hauptteil_o .cms_reitermenue_i {
+  background: @standardhell_background;
+}

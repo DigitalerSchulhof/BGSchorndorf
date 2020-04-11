@@ -67,8 +67,8 @@
   border-bottom-right-radius: @navi_haupt_li_a_radiusbr;
   border-bottom-left-radius: @navi_haupt_li_a_radiusbl;
   display: inline-block;
-  background-color: @navi_haupt_li_a_background;
-  color: @navi_haupt_li_a_color;
+  background-color: @navi_haupt_li_a_backgroundhell;
+  color: @navi_haupt_li_a_colorhell;
   padding: @navi_haupt_li_a_padding;
   font-weight: bold;
   line-height: 20px;
@@ -100,8 +100,8 @@
 #cms_hauptnavigation > li:hover > span.cms_kategorie1,
 #cms_kopfnavigation li:hover > a,
 #cms_kopfnavigation li:hover > span {
-  background-color: @navi_haupt_lihover_a_background;
-  color: @navi_haupt_lihover_a_color;
+  background-color: @navi_haupt_lihover_a_backgroundhell;
+  color: @navi_haupt_lihover_a_colorhell;
 }
 
 #cms_kopfnavigation > li {
@@ -118,7 +118,7 @@
 }
 
 #cms_kopfnavigation > li > .cms_naviuntermenue {
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   width: 200px;
   position: absolute;
   right: @navi_haupt_untermenue_right;
@@ -131,8 +131,8 @@
 }
 
 #cms_kopfnavigation > li ul {
-  border-top: 3px solid @themafarbe1;
-  border-bottom: 3px solid @themafarbe1;
+  border-top: 3px solid @navi_haupt_akzenthell;
+  border-bottom: 3px solid @navi_haupt_akzenthell;
   padding: 5px;
 }
 
@@ -163,9 +163,9 @@
 }
 
 .cms_unternavigation_m {
-  background: @schattierthell_background;
-  border-bottom: 3px solid @themafarbe1;
-  border-top: 3px solid @themafarbe1;
+  background: @schattierthell_backgroundhell;
+  border-bottom: 3px solid @navi_haupt_akzenthell;
+  border-top: 3px solid @navi_haupt_akzenthell;
   width: @seitenbreite;
   margin: 0 auto;
 }
@@ -195,11 +195,11 @@
 }
 
 .cms_navigation > li {
-  border-top: 1px solid @schattierthell_background;
+  border-top: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_navigation > li:last-child {
-  border-bottom: 1px solid @schattierthell_background;
+  border-bottom: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_navigation > li a,
@@ -213,23 +213,23 @@
 .cms_navigation > li a:hover,
 .cms_navigation > li span:hover {
   color: @standardschriftdunkel_color;
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   transform: translate(0px) !important;
   cursor: pointer;
 }
 
 .cms_navigation > li > .cms_navigation_aktiveseite {
   color: @standardschrifthell_color;
-  background: @themafarbe1;
+  background: @navi_haupt_akzenthell;
 }
 
 .cms_navigation > li > .cms_navigation_aktiveseite:hover {
   color: @standardschrifthell_color;
-  background: @themafarbe1;
+  background: @navi_haupt_akzenthell;
 }
 
 .cms_navigation > li li .cms_navigation_aktiveseite {
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
 }
 
 .cms_navigation .cms_naviuntermenue {
@@ -244,7 +244,7 @@
 
 #cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
   width: 100%;
-  background: @erfolg_background;
+  background: @erfolghell;
   border-radius: 5px;
   transition: 100ms ease-in-out;
 }
@@ -261,7 +261,7 @@
   width: 100%;
   border-radius: 5px;
   margin-bottom: 3px;
-  background: @fehler_background;
+  background: @fehlerhell;
 }
 
 #cms_aktivitaet_out, #cms_maktivitaet_out {
@@ -277,7 +277,7 @@
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   display: inline-block;
-  background-color: @themafarbe1 !important;
+  background-color: @navi_haupt_mobilnavi_backgroundhell !important;
   color: @standardschrifthell_color !important;
   padding: 4px 10px;
   font-weight: bold;
@@ -291,7 +291,7 @@
 
 #cms_mobilnavigation:hover {
   cursor: pointer !important;
-  background-color: @themafarbe3 !important;
+  background-color: @navi_haupt_mobilnavihover_backgroundhell !important;
 }
 
 .cms_menuicon {
@@ -310,7 +310,7 @@
   top: 0px;
   width: 100%;
   height: 100%;
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
   z-index: 100000;
   overflow-y: scroll;
 }
@@ -363,8 +363,8 @@
   margin: 0px;
 }
 
-#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattiertdunkel_background;}
-#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattiertdunkel_background;}
+#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattierthell_backgrounddunkel;}
+#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattierthell_backgrounddunkel;}
 
 #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
   padding: 5px;
@@ -378,7 +378,7 @@
 #cms_mobilmenue_seiten li .cms_meldezahl {
   position: absolute;
   padding: 3px 5px;
-  background: @schattiertdunkel_background;
+  background: @schattierthell_backgrounddunkel;
   border-radius: 10px;
   opacity: 1;
   color: @standardschrifthell_color;
@@ -393,7 +393,7 @@
 }
 
 #cms_mobilmenue_seiten li .cms_meldezahl_wichtig {
-  background: @fehler_akzent !important;
+  background: @fehlerdunkel !important;
 }
 
 #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
@@ -408,8 +408,12 @@
   text-align: center;
 }
 
-#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {background-color: @themafarbe3;}
-#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {background-color: @schattiertdunkel_background;}
+#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+  background-color: @navi_haupt_mobilnavihover_backgroundhell;
+}
+#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {
+  background-color: @schattierthell_backgrounddunkel;
+}
 
 #cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
   cursor: default !important;
@@ -458,7 +462,7 @@
 .cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
   display: block;
   padding: 5px 5px 5px 47px;
-  border-top: 1px solid @schattierthell_background;
+  border-top: 1px solid @schattierthell_backgroundhell;
   background-repeat: no-repeat;
   background-position: 5px 5px;
   min-height: 42px;
@@ -480,7 +484,7 @@
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
 .cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
-    border-bottom: 1px solid @schattierthell_background;
+    border-bottom: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_uebersicht li a p,
@@ -533,7 +537,7 @@
 }
 
 .cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
-  background-color: @schattierthell_background;
+  background-color: @schattierthell_backgroundhell;
   transform: translateX(0) translateY(0);
   cursor: pointer;
 }
@@ -546,7 +550,7 @@
 
 .cms_anteilbalken_innen {
   width: 100%;
-  background: @fehler_background;
+  background: @fehlerhell;
   border-radius: 5px;
   transition: 100ms ease-in-out;
 }
@@ -559,12 +563,201 @@
   width: 100%;
   border-radius: 5px;
   margin-bottom: 3px;
-  background: @schattierthell_background;
+  background: @schattierthell_backgroundhell;
 }
 
 .cms_anteilbalken_notiz {
   text-align: center;
   margin-bottom: 20px;
   font-size: 70%;
-  color: @schattiertdunkel_background;
+  color: @schattierthell_backgrounddunkel;
+}
+
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_hauptnavigation .cms_kategorie1,
+  #cms_kopfnavigation > li > a, #cms_kopfnavigation > li > span {
+    background-color: @navi_haupt_li_a_backgrounddunkel;
+    color: @navi_haupt_li_a_colordunkel;
+  }
+
+  #cms_hauptnavigation > li:hover > span.cms_kategorie1,
+  #cms_kopfnavigation li:hover > a,
+  #cms_kopfnavigation li:hover > span {
+    background-color: @navi_haupt_lihover_a_backgrounddunkel;
+    color: @navi_haupt_lihover_a_colordunkel;
+  }
+
+  #cms_kopfnavigation > li > .cms_naviuntermenue {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  #cms_kopfnavigation > li ul {
+    border-top: 3px solid @navi_haupt_akzentdunkel;
+    border-bottom: 3px solid @navi_haupt_akzentdunkel;
+  }
+
+  #cms_kopfnavigation > li ul li a,
+  #cms_kopfnavigation > li ul li span {
+    color: @standardschrifthell_color;
+  }
+
+  #cms_kopfnavigation > li ul li a:hover,
+  #cms_kopfnavigation > li ul li span:hover {
+    color: @standardschrifthell_color;
+    cursor: pointer;
+  }
+
+  .cms_unternavigation_m {
+    background: @schattiertdunkel_backgroundhell;
+    border-bottom: 3px solid @navi_haupt_akzentdunkel;
+    border-top: 3px solid @navi_haupt_akzentdunkel;
+  }
+
+  .cms_navigation > li {
+    border-top: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_navigation > li:last-child {
+    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_navigation > li a,
+  .cms_navigation > li span {
+    color: @standardschrifthell_color;
+  }
+
+  .cms_navigation > li a:hover,
+  .cms_navigation > li span:hover {
+    color: @standardschrifthell_color;
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_navigation > li > .cms_navigation_aktiveseite {
+    color: @standardschriftdunkel_color;
+    background: @navi_haupt_akzentdunkel;
+  }
+
+  .cms_navigation > li > .cms_navigation_aktiveseite:hover {
+    color: @standardschriftdunkel_color;
+    background: @navi_haupt_akzentdunkel;
+  }
+
+  .cms_navigation > li li .cms_navigation_aktiveseite {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  #cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
+    background: @erfolgdunkel;
+  }
+
+  #cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {
+    background: @fehlerdunkel;
+  }
+
+  #cms_aktivitaet_out, #cms_maktivitaet_out {
+    border: 1px solid @standarddunkel_background;
+  }
+
+  #cms_mobilnavigation {
+    background-color: @navi_haupt_mobilnavi_backgrounddunkel !important;
+    color: @standardschriftdunkel_color !important;
+  }
+
+  #cms_mobilnavigation:hover {
+    cursor: pointer !important;
+    background-color: @navi_haupt_mobilnavihover_backgrounddunkel !important;
+  }
+
+  .cms_menuicon {
+    background-color: @standardschriftdunkel_color;
+  }
+
+  #cms_mobilmenue_a {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  #cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattiertdunkel_backgrounddunkel;}
+  #cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattiertdunkel_backgrounddunkel;}
+
+  #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
+    color: @standardschrifthell_color;
+  }
+
+  #cms_mobilmenue_seiten li .cms_meldezahl {
+    background: @schattiertdunkel_backgrounddunkel;
+    color: @standardschriftdunkel_color;
+  }
+
+  #cms_mobilmenue_seiten li .cms_meldezahl_wichtig {
+    background: @fehlerhell !important;
+  }
+
+  #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+    color: @standardschriftdunkel_color;
+  }
+
+  #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+    background-color: @navi_haupt_mobilnavihover_backgrounddunkel;
+  }
+  #cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {
+    background-color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  #cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
+    color: @standardschrifthell_color !important;
+  }
+
+  .cms_uebersicht li a,
+  .cms_uebersicht li span.cms_appmenue_element,
+  .cms_uebersicht li span.cms_uebersicht_notifikation,
+  .cms_uebersicht li span.cms_uebersicht_verwaltung_termin,
+  .cms_uebersicht li span.cms_blogeintrag,
+  .cms_uebersicht li span.cms_beschlusseintrag,
+  .cms_uebersicht li span.cms_uebersicht_verwaltung_gremien,
+  .cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften,
+  .cms_uebersicht li span.cms_uebersicht_verwaltung_ferien,
+  .cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
+    border-top: 1px solid @schattiertdunkel_backgroundhell;
+    color: @standardschrifthell_color;
+  }
+
+  .cms_uebersicht li:last-child a,
+  .cms_uebersicht li:last-child span.cms_appmenue_element,
+  .cms_uebersicht li:last-child span.cms_uebersicht_notifikation,
+  .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_termin,
+  .cms_uebersicht li:last-child span.cms_blogeintrag,
+  .cms_uebersicht li:last-child span.cms_beschlusseintrag,
+  .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_gremien,
+  .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
+  .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
+  .cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
+      border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
+    background-color: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_uebersicht .cms_blog_keinhover {
+    background-color: @standarddunkel_background !important;
+  }
+
+  .cms_anteilbalken_innen {
+    background: @fehlerdunkel;
+  }
+
+  .cms_anteilbalken_aussen {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_anteilbalken_notiz {
+    color: @schattiertdunkel_backgrounddunkel;
+  }
 }

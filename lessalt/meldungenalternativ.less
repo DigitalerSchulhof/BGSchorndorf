@@ -1,0 +1,102 @@
+// "out": "../css/meldungen.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
+@import "standard.less";
+
+.cms_meldung {
+	background-color: @schattierthell_backgroundhell;
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	border-left: 4px solid @schattierthell_backgrounddunkel;
+	padding: 10px 10px 10px 10px;
+	margin: 10px 0px;
+	min-height: 42px;
+	text-align: left !important;
+}
+
+.cms_meldung:first-child {
+	margin-top: 0px !important;
+}
+
+.cms_meldung_laden {
+	background-color: @standardhell_background;
+	border: 3px dashed @schattierthell_backgroundhell;
+	padding: 5px;
+	margin: 10px 0px;
+	text-align: center;
+	color: @schattierthell_backgrounddunkel;
+}
+
+.cms_meldung_info {
+	background-color: @infohell;
+	border-color: @infodunkel;
+}
+
+.cms_meldung_vplan {
+	background-color: @schattierthell_backgroundhell;
+	border-color: @schattierthell_backgrounddunkel;
+	opacity: 1;
+}
+
+.cms_meldung_erfolg {
+	background-color: @erfolghell;
+	border-color: @erfolgdunkel;
+}
+
+.cms_meldung_fehler {
+	background-color: @fehlerhell;
+	border-color: @fehlerdunkel;
+}
+
+.cms_meldung_warnung {
+	background-color: @warnunghell;
+	border-color: @warnungdunkel;
+}
+
+.cms_meldung_bauarbeiten {
+	background-color: @warnunghell;
+	border-color: @warnungdunkel;
+}
+
+.cms_meldung_firewall {
+	background-color: @infohell;
+	border-color: @infodunkel;
+}
+
+.cms_gesichertedaten {
+	font-family: inherit;
+	background-color: @standardhell_background;
+	border: 2px dashed @erfolghell;
+	padding: 5px;
+	margin: 10px 0px;
+}
+
+.cms_geschuetzerinhalt {
+	font-family: inherit;
+	background-color: @standardhell_background;
+	color: @schattierthell_backgrounddunkel;
+	border: 2px dashed @fehlerhell;
+	padding: 5px;
+	margin: 10px 0px;
+}
+
+.cms_geschuetzerinhalt p, .cms_ladebox {
+	color: @schattierthell_backgrounddunkel;
+	text-align: center;
+}
+
+.cms_ladebox {
+	border: 2px dashed @schattierthell_backgrounddunkel;
+	padding: 10px;
+}
+
+.cms_systemvoraussetzung {
+	background: @schattierthell_backgroundhell;
+	border-radius: 5px;
+}
+
+.cms_systemvoraussetzung li {
+	width:100%;
+	padding: 10px;
+	text-align: center;
+	margin: 0px;
+	list-style-type: none;
+}

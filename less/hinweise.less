@@ -13,7 +13,7 @@
 
 .cms_hinweis {
   color: @standardschrifthell_color !important;
-  background: @hinweise_background;
+  background: @hinweisehell_background;
   padding: 0px 5px 0px 5px;
   position: absolute;
   font-family: 'robl';
@@ -84,4 +84,15 @@ td:last-child .cms_hinweis, .cms_notifikation_schliessen .cms_hinweis,
 .cms_icon_klein .cms_hinweis {
   left: 0px;
   text-align: left;
+}
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_hinweis {
+    color: @standardschriftdunkel_color !important;
+    background: @hinweisedunkel_background;
+  }
 }

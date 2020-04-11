@@ -2,8 +2,9 @@
 @import "standard.less";
 
 * {
-	font-family: 'rob', sans-serif;
-	font-size: 10pt;
+	font-family: @standardschriftart, sans-serif;
+	font-size: @standardschriftgroesse;
+	color: @standardschriftdunkel_color;
 	font-weight: normal;
 	padding: 0px;
 	margin: 0px;
@@ -39,7 +40,7 @@ body.cms_seite_app {
 
 		#cms_logo_o, #cms_logo_u {
 		  position: relative;
-		  color: @logo_schrift_farbe;
+		  color: @logo_schrift_farbehell;
 		  font-size: 170%;
 		  padding: 2px 0px 0px 0px;
 		  display: block;
@@ -54,7 +55,7 @@ body.cms_seite_app {
 #cms_appnavigation {
   border-radius: 5px;
   display: inline-block;
-  background-color: @themafarbe1 !important;
+  background-color: @navi_haupt_mobilnavi_backgroundhell !important;
   color: @standardschrifthell_color !important;
   padding: 4px 10px;
   font-weight: bold;
@@ -75,11 +76,11 @@ body.cms_seite_app {
 
 #cms_appnavigation:hover {
   cursor: pointer !important;
-  background-color: @themafarbe3 !important;
+  background-color: @navi_haupt_mobilnavihover_backgroundhell !important;
 }
 
 #cms_appmenue_a {
-	border-left: 10px solid @schattiertdunkel_background;
+	border-left: 10px solid @schattierthell_backgrounddunkel;
 	display: none;
 	padding: 10px 10px 20px 10px;
 	position: fixed;
@@ -87,9 +88,9 @@ body.cms_seite_app {
 	top: 0px;
 	width: 80%;
 	height: 100%;
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 	z-index: 10;
-	box-shadow: 0px 0px 10px @schattiertdunkel_background;
+	box-shadow: 0px 0px 10px @schattierthell_backgrounddunkel;
 }
 
 #cms_appmenue_a .cms_uebersicht li {
@@ -108,17 +109,17 @@ body.cms_seite_app {
 	text-align: center;
 	left: 0px;
 	top: 0px;
-	background: @schattiertdunkel_background;
+	background: @schattierthell_backgrounddunkel;
 	font-size: 500%;
 	font-weight: bold;
 	color: @standardschrifthell_color;
   transition: 250ms ease-in-out;
-	box-shadow: 0px 0px 10px @schattiertdunkel_background;
+	box-shadow: 0px 0px 10px @schattierthell_backgrounddunkel;
 }
 
 #cms_appmenue_schliessen:hover {
 	cursor: pointer;
-	background: @fehler_background;
+	background: @fehlerhell;
 }
 
 .cms_appmenue_uliste {
@@ -136,5 +137,61 @@ body.cms_seite_app {
 	text-align: right;
 	padding: 20px 0px 0px 15%;
 	font-size: 70%;
-	color: @schattiertdunkel_background;
+	color: @schattierthell_backgrounddunkel;
+}
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+	* {
+		color: @standardschrifthell_color;
+	}
+
+	body.cms_seite_app {
+	  background: @standarddunkel_background !important;
+	}
+
+	.cms_seite_app #cms_logo #cms_logo_schrift #cms_logo_o,
+	.cms_seite_app #cms_logo #cms_logo_schrift #cms_logo_u {
+		color: @logo_schrift_farbedunkel;
+	}
+
+	#cms_appnavigation {
+	  background-color: @navi_haupt_mobilnavi_backgrounddunkel !important;
+	  color: @standardschriftdunkel_color !important;
+	}
+
+	#cms_appnavigation:hover {
+	  background-color: @navi_haupt_mobilnavihover_backgrounddunkel !important;
+	}
+
+	#cms_appmenue_a {
+		border-left: 10px solid @schattiertdunkel_backgrounddunkel;
+		background: @schattiertdunkel_backgroundhell;
+		box-shadow: 0px 0px 10px @schattiertdunkel_backgrounddunkel;
+	}
+
+	#cms_appmenue_a .cms_uebersicht li {
+		border-bottom: 1px solid @standarddunkel_background;
+	}
+
+	#cms_appmenue_a .cms_uebersicht li:first-child {
+		border-top: 1px solid @standarddunkel_background;
+	}
+
+	#cms_appmenue_schliessen {
+		background: @schattiertdunkel_backgrounddunkel;
+		color: @standardschriftdunkel_color;
+		box-shadow: 0px 0px 10px @schattiertdunkel_backgrounddunkel;
+	}
+
+	#cms_appmenue_schliessen:hover {
+		background: @fehlerdunkel;
+	}
+
+	#cms_app_impressum {
+		color: @schattiertdunkel_backgrounddunkel;
+	}
 }

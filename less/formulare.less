@@ -8,9 +8,9 @@ input, textarea, select, .cms_wahl {
   border-top-left-radius: 3px;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
-  background: @formularfeld_background;
+  background: @formularfeldhell_background;
   border: none;
-  border-bottom: 1px solid @formularfeldfocus_background;
+  border-bottom: 1px solid @formularfeldhellfocus_background;
   width: 100%;
   transition: 500ms ease-in-out;
 }
@@ -20,23 +20,12 @@ textarea.cms_textarea {
   height: 250px;
 }
 
-.cms_code {
-  background: @standarddunkel_background;
-  color: @standardschrifthell_color;
-  font-family: monospace;
-}
-
-.cms_code:hover, .cms_code:focus {
-  background: @schattiertdunkel_background;
-  color: @standardschrifthell_color;
-}
-
 input:hover, textarea:hover, select:hover {
-  background: @formularfeldhover_background;
+  background: @formularfeldhellhover_background;
 }
 
 input:focus, textarea:focus, select:focus {
-  background: @formularfeldfocus_background;
+  background: @formularfeldhellfocus_background;
 }
 
 input.cms_klein, select.cms_klein {
@@ -76,7 +65,7 @@ input.cms_input_J {
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 	display: none;
@@ -136,11 +125,11 @@ input.cms_input_J {
 }
 
 .cms_schieber_o_aktiv {
-  background: @erfolg_background;
+  background: @erfolghell;
 }
 
 .cms_schieber_o_inaktiv {
-  background: @fehler_background;
+  background: @fehlerhell;
 }
 
 .cms_schieber_o_aktiv .cms_schieber_i {
@@ -190,15 +179,75 @@ input.cms_input_J {
 }
 
 .cms_notizzettel {
-  background-color: @info_background;
+  background-color: @infohell;
   height: 200px;
   resize: vertical;
 }
 
 .cms_notizzettelleer {
-  background-color: @schattierthell_background;
+  background-color: @schattierthell_backgroundhell;
 }
 
 .cms_notizzettel:hover, .cms_notizzettel:focus {
-  background-color: @schattierthell_background;
+  background-color: @schattierthell_backgroundhell;
+}
+
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  input, textarea, select, .cms_wahl {
+    background: @formularfelddunkel_background;
+    border-bottom: 1px solid @formularfelddunkelfocus_background;
+  }
+
+  input:hover, textarea:hover, select:hover {
+    background: @formularfelddunkelhover_background;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    background: @formularfelddunkelfocus_background;
+  }
+
+  .cms_personensuche_feld,
+  .cms_gruppensuche_feld {
+  	background: @schattiertdunkel_backgroundhell;
+    box-shadow: @standarddunkel_background 0px 0px 7px;
+  }
+
+  .cms_schieber_o_aktiv, .cms_schieber_o_inaktiv {
+    border: 1px solid @standarddunkel_background;
+  }
+
+  .cms_schieber_o_aktiv {
+    background: @erfolgdunkel;
+  }
+
+  .cms_schieber_o_inaktiv {
+    background: @fehlerdunkel;
+  }
+
+  .cms_schieber_i {
+    background: @standarddunkel_background;
+  }
+
+  .cms_schieber_o_aktiv:hover, .cms_schieber_o_inaktiv:hover {
+  	border: 1px solid @standardhell_background;
+  }
+
+  .cms_notizzettel {
+    background-color: @infodunkel;
+  }
+
+  .cms_notizzettelleer {
+    background-color: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_notizzettel:hover, .cms_notizzettel:focus {
+    background-color: @schattiertdunkel_backgroundhell;
+  }
 }

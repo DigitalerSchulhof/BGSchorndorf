@@ -4,13 +4,13 @@
 .cms_terminuebersicht {
   padding: 0px;
   margin: 0px;
-  border-bottom: 1px solid @schattierthell_background;
+  border-bottom: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_terminuebersicht li {
   padding: 0px;
   margin: 0px;
-  border-top: 1px solid @schattierthell_background;
+  border-top: 1px solid @schattierthell_backgroundhell;
   list-style-type: none;
   display: block;
   text-overflow: ellipsis;
@@ -45,7 +45,7 @@
 
 .cms_kalender_zusatzinfo_intern {
   color: @standardschrifthell_color !important;
-  background-color: @schattiertdunkel_background;
+  background-color: @schattierthell_backgrounddunkel;
   border-radius: @button_radius;
   padding: 5px 5px 5px 25px;
   background-position: 5px center;
@@ -60,7 +60,7 @@
 }
 
 .cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
-  color: #000000;
+  color: @standardschriftdunkel_color;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -69,11 +69,11 @@
 .cms_terminlink p:last-child {margin-bottom: 0px;}
 
 .cms_terminlink:hover {
-  background-color: @schattierthell_background;
+  background-color: @schattierthell_backgroundhell;
 }
 .cms_terminlink:hover .cms_button {
-  background-color: @buttonhover_background;
-  color: @buttonhover_color;
+  background-color: @buttonhellhover_background;
+  color: @buttonhellhover_color;
 }
 
 .cms_terminlink .cms_kalenderblaetter {
@@ -84,29 +84,39 @@
   text-align: center;
 }
 
-.cms_terminlink .cms_kalenderblatt {
+.cms_terminlink .cms_kalenderblatt,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt {
   display: inline-block;
   text-align: center;
 }
 
-.cms_terminlink .cms_kalenderblatt_i {
+.cms_terminlink .cms_kalenderblatt_i,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_i {
   display: inline-block;
   width: 32px;
 }
 
 .cms_terminlink .cms_kalenderblatt_monat,
 .cms_terminlink .cms_kalenderblatt_tagnr,
-.cms_terminlink .cms_kalenderblatt_tagbez {
+.cms_terminlink .cms_kalenderblatt_tagbez,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {
   display: block;
   text-align: center;
   width: 100%;
   line-height: 1.2em !important;
 }
 
-.cms_terminlink .cms_kalenderblatt_monat {
-  background: @kalenderblatt_klein_monat_background;
+.cms_terminlink .cms_kalenderblatt_monat,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {
+  background: @kalenderblatthell_klein_monat_background;
   font-weight: @kalenderblatt_klein_monat_fontweight;
-  color: @kalenderblatt_klein_monat_color;
+  color: @kalenderblatthell_klein_monat_color;
   font-size: 10px;
   border-top: @kalenderblatt_klein_monat_bordertop;
   border-left: @kalenderblatt_klein_monat_borderleft;
@@ -117,12 +127,15 @@
   border-top-left-radius: @kalenderblatt_klein_monat_radiustl;
   border-bottom-right-radius: @kalenderblatt_klein_monat_radiusbr;
   border-bottom-left-radius: @kalenderblatt_klein_monat_radiusbl;
+  border-color: @kalenderblatthell_klein_randcolor;
 }
 
-.cms_terminlink .cms_kalenderblatt_tagnr {
-  background: @kalenderblatt_klein_tagnr_background;
+.cms_terminlink .cms_kalenderblatt_tagnr,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {
+  background: @kalenderblatthell_klein_tagnr_background;
   font-weight: @kalenderblatt_klein_tagnr_fontweight;
-  color: @kalenderblatt_klein_tagnr_color;
+  color: @kalenderblatthell_klein_tagnr_color;
   font-size: 18px;
   border-top: @kalenderblatt_klein_tagnr_bordertop;
   border-left: @kalenderblatt_klein_tagnr_borderleft;
@@ -133,12 +146,15 @@
   border-top-left-radius: @kalenderblatt_klein_tagnr_radiustl;
   border-bottom-right-radius: @kalenderblatt_klein_tagnr_radiusbr;
   border-bottom-left-radius: @kalenderblatt_klein_tagnr_radiusbl;
+  border-color: @kalenderblatthell_klein_randcolor;
 }
 
-.cms_terminlink .cms_kalenderblatt_tagbez {
-  background: @kalenderblatt_klein_tagbez_background;
+.cms_terminlink .cms_kalenderblatt_tagbez,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {
+  background: @kalenderblatthell_klein_tagbez_background;
   font-weight: @kalenderblatt_klein_tagbez_fontweight;
-  color: @kalenderblatt_klein_tagbez_color;
+  color: @kalenderblatthell_klein_tagbez_color;
   font-size: 10px;
   border-top: @kalenderblatt_klein_tagbez_bordertop;
   border-left: @kalenderblatt_klein_tagbez_borderleft;
@@ -149,6 +165,7 @@
   border-top-left-radius: @kalenderblatt_klein_tagbez_radiustl;
   border-bottom-right-radius: @kalenderblatt_klein_tagbez_radiusbr;
   border-bottom-left-radius: @kalenderblatt_klein_tagbez_radiusbl;
+  border-color: @kalenderblatthell_klein_randcolor;
 }
 
 .cms_terminlink .cms_kalenderblatt_uhrzeit {
@@ -187,9 +204,9 @@
 }
 
 .cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {
-  background: @kalenderblatt_gross_monat_background;
+  background: @kalenderblatthell_gross_monat_background;
   font-weight: @kalenderblatt_gross_monat_fontweight;
-  color: @kalenderblatt_gross_monat_color;
+  color: @kalenderblatthell_gross_monat_color;
   font-size: 20px;
   border-top: @kalenderblatt_gross_monat_bordertop;
   border-left: @kalenderblatt_gross_monat_borderleft;
@@ -201,12 +218,13 @@
   border-top-left-radius: @kalenderblatt_gross_monat_radiustl;
   border-bottom-right-radius: @kalenderblatt_gross_monat_radiusbr;
   border-bottom-left-radius: @kalenderblatt_gross_monat_radiusbl;
+  border-color: @kalenderblatthell_gross_randcolor;
 }
 
 .cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {
-  background: @kalenderblatt_gross_tagnr_background;
+  background: @kalenderblatthell_gross_tagnr_background;
   font-weight: @kalenderblatt_gross_tagnr_fontweight;
-  color: @kalenderblatt_gross_tagnr_color;
+  color: @kalenderblatthell_gross_tagnr_color;
   font-size: 45px;
   border-top: @kalenderblatt_gross_tagnr_bordertop;
   border-left: @kalenderblatt_gross_tagnr_borderleft;
@@ -217,12 +235,13 @@
   border-top-left-radius: @kalenderblatt_gross_tagnr_radiustl;
   border-bottom-right-radius: @kalenderblatt_gross_tagnr_radiusbr;
   border-bottom-left-radius: @kalenderblatt_gross_tagnr_radiusbl;
+  border-color: @kalenderblatthell_gross_randcolor;
 }
 
 .cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
-  background: @kalenderblatt_gross_tagbez_background;
+  background: @kalenderblatthell_gross_tagbez_background;
   font-weight: @kalenderblatt_gross_tagbez_fontweight;
-  color: @kalenderblatt_gross_tagbez_color;
+  color: @kalenderblatthell_gross_tagbez_color;
   font-size: 20px;
   border-top: @kalenderblatt_gross_tagbez_bordertop;
   border-left: @kalenderblatt_gross_tagbez_borderleft;
@@ -233,6 +252,7 @@
   border-top-left-radius: @kalenderblatt_gross_tagbez_radiustl;
   border-bottom-right-radius: @kalenderblatt_gross_tagbez_radiusbr;
   border-bottom-left-radius: @kalenderblatt_gross_tagbez_radiusbl;
+  border-color: @kalenderblatthell_gross_randcolor;
 }
 
 .cms_termin_detailinformationen {
@@ -279,13 +299,13 @@
   width:8.33333%;
   font-weight: bold;
   padding: 2px 5px;
-  border-right: 1px solid @schattierthell_background;
+  border-right: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_ferienkalender td {
   padding: 2px 5px;
-  border-right: 1px solid @schattierthell_background;
-  border-top: 1px solid @schattierthell_background;
+  border-right: 1px solid @schattierthell_backgroundhell;
+  border-top: 1px solid @schattierthell_backgroundhell;
 }
 
 .cms_ferienkalender td:last-child,
@@ -299,5 +319,90 @@
   text-align: center;
 }
 
-.cms_ferienkalender_we {background-color: @info_background;}
-.cms_ferienkalender_frei {background-color: @erfolg_background;}
+.cms_ferienkalender_we {background-color: @infohell;}
+.cms_ferienkalender_frei {background-color: @erfolghell;}
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_terminuebersicht {
+    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_terminuebersicht li {
+    border-top: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_kalender_zusatzinfo_intern {
+    color: @standardschriftdunkel_color !important;
+    background-color: @schattiertdunkel_backgrounddunkel;
+  }
+
+  .cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
+    color: @standardschrifthell_color;
+  }
+
+  .cms_terminlink:hover {
+    background-color: @schattiertdunkel_backgroundhell;
+  }
+  .cms_terminlink:hover .cms_button {
+    background-color: @buttondunkelhover_background;
+    color: @buttondunkelhover_color;
+  }
+
+  .cms_terminlink .cms_kalenderblatt_monat,
+  .cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,
+  .cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {
+    background: @kalenderblattdunkel_klein_monat_background;
+    color: @kalenderblattdunkel_klein_monat_color;
+    border-color: @kalenderblattdunkel_klein_randcolor;
+  }
+
+  .cms_terminlink .cms_kalenderblatt_tagnr,
+  .cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,
+  .cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {
+    background: @kalenderblattdunkel_klein_tagnr_background;
+    color: @kalenderblattdunkel_klein_tagnr_color;
+    border-color: @kalenderblattdunkel_klein_randcolor;
+  }
+
+  .cms_terminlink .cms_kalenderblatt_tagbez,
+  .cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez {
+    background: @kalenderblattdunkel_klein_tagbez_background;
+    color: @kalenderblattdunkel_klein_tagbez_color;
+    border-color: @kalenderblattdunkel_klein_randcolor;
+  }
+
+  .cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {
+    background: @kalenderblattdunkel_gross_monat_background;
+    color: @kalenderblattdunkel_gross_monat_color;
+    border-color: @kalenderblattdunkel_gross_randcolor;
+  }
+
+  .cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {
+    background: @kalenderblattdunkel_gross_tagnr_background;
+    color: @kalenderblattdunkel_gross_tagnr_color;
+    border-color: @kalenderblattdunkel_gross_randcolor;
+  }
+
+  .cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
+    background: @kalenderblattdunkel_gross_tagbez_background;
+    color: @kalenderblattdunkel_gross_tagbez_color;
+    border-color: @kalenderblattdunkel_gross_randcolor;
+  }
+
+  .cms_ferienkalender th {
+    border-right: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_ferienkalender td {
+    border-right: 1px solid @schattiertdunkel_backgroundhell;
+    border-top: 1px solid @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_ferienkalender_we {background-color: @infodunkel;}
+  .cms_ferienkalender_frei {background-color: @erfolgdunkel;}
+}

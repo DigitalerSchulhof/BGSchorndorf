@@ -1,0 +1,66 @@
+// "out": "../css/voranmeldung.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
+@import "standard.less";
+
+.cms_voranmeldung_navigation {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: @standardabsatz_schulhof_margin 0px @standardabsatz_schulhof_margin 0px;
+  padding: 0px;
+}
+
+.cms_optimierung_P .cms_voranmeldung_navigation li,
+.cms_optimierung_T .cms_voranmeldung_navigation li {
+  width: 25%;
+}
+
+.cms_optimierung_H .cms_voranmeldung_navigation li {
+  width: 50%;
+}
+
+.cms_voranmeldung_navigation li {
+  padding: 10px;
+  background: @buttonhell_background;
+  color: @buttonhell_color;
+  display: block;
+  list-style-type: none;
+  margin: 0px;
+  transition: 250ms ease-in-out;
+  text-align: center !important;
+}
+
+.cms_voranmeldung_navigation li:hover {
+  background: @buttonhellhover_background;
+  color: @buttonhellhover_color;
+  cursor: pointer;
+}
+
+.cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen {
+  background: @erfolghell;
+  color: @buttonhell_color;
+}
+
+.cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen:hover {
+  background: @erfolgdunkel;
+  color: @buttonhellhover_color;
+}
+
+.cms_voranmeldung_navigation li.cms_voranmeldung_aktuell {
+  background: @infohell !important;
+  color: @buttonhell_color !important;
+}
+
+.cms_voranmeldung_navigation li.cms_voranmeldung_aktuell:hover {
+  background: @infodunkel !important;
+  color: @buttonhellhover_color !important;
+  cursor: default !important;
+}
+
+.cms_voranmeldung_navigation li.cms_voranmeldung_fehler {
+  background: @fehlerhell;
+  color: @buttonhell_color;
+}
+
+.cms_voranmeldung_navigation li.cms_voranmeldung_fehler:hover {
+  background: @fehlerdunkel;
+  color: @buttonhellhover_color;
+}

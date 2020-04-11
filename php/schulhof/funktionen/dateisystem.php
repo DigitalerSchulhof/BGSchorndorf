@@ -432,18 +432,18 @@ function cms_dateicheck($pfad) {
 }
 
 function cms_groesse_umrechnen($bytes) {
-    if ($bytes/1024 >= 1) {
-        $bytes = $bytes/1024;
-        if ($bytes/1024 >= 1) {
-            $bytes = $bytes/1024;
-            if ($bytes/1024 >= 1) {
-                $bytes = $bytes/1024;
-                if ($bytes/1024 >= 1) {
-                    $bytes = $bytes/1024;
-                    if ($bytes/1024 >= 1) {
-                        $bytes = $bytes/1024;
-                        if ($bytes/1024 >= 1) {
-                            $bytes = $bytes/1024;
+    if ($bytes/1000 >= 1) {
+        $bytes = $bytes/1000;
+        if ($bytes/1000 >= 1) {
+            $bytes = $bytes/1000;
+            if ($bytes/1000 >= 1) {
+                $bytes = $bytes/1000;
+                if ($bytes/1000 >= 1) {
+                    $bytes = $bytes/1000;
+                    if ($bytes/1000 >= 1) {
+                        $bytes = $bytes/1000;
+                        if ($bytes/1000 >= 1) {
+                            $bytes = $bytes/1000;
                             $bytes = str_replace('.', ',', round($bytes, 2));
                             return $bytes." EB";
                         }

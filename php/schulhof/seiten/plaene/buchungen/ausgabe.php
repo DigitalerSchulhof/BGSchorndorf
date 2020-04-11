@@ -182,7 +182,7 @@ function cms_buchungsplan_laden($buchungsart, $buchungsstandort, $tag, $monat, $
             $code .= "<span class=\"cms_buchung_grund\">".$b['grund']."</span>";
             $code .= "<span class=\"cms_buchung_von\">".cms_generiere_anzeigename($b['vorname'], $b['nachname'], $b['titel'])."</span>";
           }
-          if (($b['person'] == $CMS_BENUTZERID) || cms_r("schulhof.organisation.buchungen.$rart.löschen") {
+          if (($b['person'] == $CMS_BENUTZERID) || cms_r("schulhof.organisation.buchungen.$rart.löschen")) {
             $code .= "<span class=\"cms_buchung_aktion\"><span class=\"cms_button_nein\" onclick=\"cms_buchung_loeschen_vorbereiten(".$b['id'].", '$buchungsart', $buchungsstandort, '$url')\">Löschen</span></span>";
           }
         $code .= "</div>";

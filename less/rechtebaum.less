@@ -59,8 +59,8 @@
         border: 1px solid @standarddunkel_background;
         &:hover {
           border-color: transparent;
-          color: @button_color;
-          background-color: @button_background;
+          color: @buttonhell_color;
+          background-color: @buttonhell_background;
         }
       }
     }
@@ -68,9 +68,9 @@
       .cms_recht_beschreibung_i {
         border-color: transparent;
         color: @standardschriftdunkel_color;
-        background-color: @erfolg_background;
+        background-color: @erfolghell;
         &:hover {
-          background-color: @fehler_background;
+          background-color: @fehlerhell;
         }
       }
     }
@@ -78,7 +78,7 @@
       .cms_recht_beschreibung_i {
         border-color: transparent;
         cursor: default;
-        background-color: @info_background !important;
+        background-color: @infohell !important;
         color: @standardschriftdunkel_color !important;
       }
     }
@@ -96,21 +96,74 @@
   border: 1px solid @standarddunkel_background;
   &:hover {
     border-color: transparent;
-    color: @button_color;
-    background-color: @button_background;
+    color: @buttonhell_color;
+    background-color: @buttonhell_background;
   }
   &.cms_demorecht_nutzer {
     border-color: transparent;
     color: @standardschriftdunkel_color;
-    background-color: @erfolg_background;
+    background-color: @erfolghell;
     &:hover {
-      background-color: @fehler_background;
+      background-color: @fehlerhell;
     }
   }
   &.cms_demorecht_rolle {
     border-color: transparent;
     cursor: default;
-    background-color: @info_background !important;
+    background-color: @infohell !important;
     color: @standardschriftdunkel_color !important;
+  }
+}
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_rechtebox {
+    .cms_recht {
+      .cms_recht_beschreibung {
+        .cms_recht_beschreibung_i {
+          border: 1px solid @standardhell_background;
+          &:hover {
+            color: @buttondunkel_color;
+            background-color: @buttondunkel_background;
+          }
+        }
+      }
+      &.cms_recht_nutzer {
+        .cms_recht_beschreibung_i {
+          color: @standardschrifthell_color;
+          background-color: @erfolgdunkel;
+          &:hover {
+            background-color: @fehlerdunkel;
+          }
+        }
+      }
+      &.cms_recht_rolle {
+        .cms_recht_beschreibung_i {
+          background-color: @infodunkel !important;
+          color: @standardschrifthell_color !important;
+        }
+      }
+    }
+  }
+
+  .cms_demorecht {
+    border: 1px solid @standardhell_background;
+    &:hover {
+      color: @buttondunkel_color;
+      background-color: @buttondunkel_background;
+    }
+    &.cms_demorecht_nutzer {
+      color: @standardschrifthell_color;
+      background-color: @erfolgdunkel;
+      &:hover {
+        background-color: @fehlerdunkel;
+      }
+    }
+    &.cms_demorecht_rolle {
+      background-color: @infodunkel !important;
+      color: @standardschrifthell_color !important;
+    }
   }
 }

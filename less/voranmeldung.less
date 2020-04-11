@@ -19,8 +19,8 @@
 
 .cms_voranmeldung_navigation li {
   padding: 10px;
-  background: @button_background;
-  color: @button_color;
+  background: @buttonhell_background;
+  color: @buttonhell_color;
   display: block;
   list-style-type: none;
   margin: 0px;
@@ -29,38 +29,84 @@
 }
 
 .cms_voranmeldung_navigation li:hover {
-  background: @buttonhover_background;
-  color: @buttonhover_color;
+  background: @buttonhellhover_background;
+  color: @buttonhellhover_color;
   cursor: pointer;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen {
-  background: @erfolg_background;
-  color: @button_color;
+  background: @erfolghell;
+  color: @buttonhell_color;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen:hover {
-  background: @erfolg_akzent;
-  color: @buttonhover_color;
+  background: @erfolgdunkel;
+  color: @buttonhellhover_color;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_aktuell {
-  background: @info_background !important;
-  color: @button_color !important;
+  background: @infohell !important;
+  color: @buttonhell_color !important;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_aktuell:hover {
-  background: @info_akzent !important;
-  color: @buttonhover_color !important;
+  background: @infodunkel !important;
+  color: @buttonhellhover_color !important;
   cursor: default !important;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_fehler {
-  background: @fehler_background;
-  color: @button_color;
+  background: @fehlerhell;
+  color: @buttonhell_color;
 }
 
 .cms_voranmeldung_navigation li.cms_voranmeldung_fehler:hover {
-  background: @fehler_akzent;
-  color: @buttonhover_color;
+  background: @fehlerdunkel;
+  color: @buttonhellhover_color;
+}
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_voranmeldung_navigation li {
+    background: @buttondunkel_background;
+    color: @buttondunkel_color;
+  }
+
+  .cms_voranmeldung_navigation li:hover {
+    background: @buttondunkelhover_background;
+    color: @buttondunkelhover_color;
+  }
+
+  .cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen {
+    background: @erfolgdunkel;
+    color: @buttondunkel_color;
+  }
+
+  .cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen:hover {
+    background: @erfolghell;
+    color: @buttondunkelhover_color;
+  }
+
+  .cms_voranmeldung_navigation li.cms_voranmeldung_aktuell {
+    background: @infodunkel !important;
+    color: @buttondunkel_color !important;
+  }
+
+  .cms_voranmeldung_navigation li.cms_voranmeldung_aktuell:hover {
+    background: @infohell !important;
+    color: @buttondunkelhover_color !important;
+  }
+
+  .cms_voranmeldung_navigation li.cms_voranmeldung_fehler {
+    background: @fehlerdunkel;
+    color: @buttondunkel_color;
+  }
+
+  .cms_voranmeldung_navigation li.cms_voranmeldung_fehler:hover {
+    background: @fehlerhell;
+    color: @buttondunkelhover_color;
+  }
 }

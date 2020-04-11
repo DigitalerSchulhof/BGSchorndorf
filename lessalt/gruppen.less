@@ -1,0 +1,396 @@
+// "out": "../css/gruppen.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
+@import "standard.less";
+
+.cms_uebersicht .cms_ersteller {
+  color: @schattierthell_backgrounddunkel;
+  display: none;
+}
+
+.cms_uebersicht .cms_blogeintrag:hover .cms_ersteller,
+.cms_uebersicht tr:hover .cms_ersteller  {
+  display: block;
+}
+
+.cms_blogeintrag, .cms_beschlusseintrag {
+  padding-left: 5px !important;
+  transition: 250ms ease-in-out;
+  position: relative;
+}
+
+.cms_beschlusseintrag {
+  padding-right: 26px !important;
+  min-height: 45px;
+}
+
+.cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
+  cursor: pointer;
+  background-color: @schattierthell_backgroundhell;
+}
+
+.cms_blogliste_details:hover {
+  cursor: pointer;
+}
+
+.cms_blogeintrag p.cms_inhaltvorschau, .cms_beschlusseintrag p.cms_inhaltvorschau {
+  margin-bottom: 0px;
+}
+
+.cms_beschluss_angenommen {color: @erfolgdunkel;}
+.cms_beschluss_abgelehnt {color: @fehlerdunkel;}
+.cms_beschluss_vertagt {color: @schattierthell_backgrounddunkel;}
+
+.cms_beschlusseintrag p.cms_beschlussicons {
+  margin: 0px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 16px;
+}
+
+.cms_beschluss_icon {
+  display: inline-block;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.cms_beschluss_icon:last-child {
+  margin-bottom: 0px;
+}
+
+.cms_aktionen_uebersicht li > p {
+  padding: 4px 5px 4px 5px;
+  margin: 0px;
+}
+
+.cms_aktionen_uebersicht li .cms_beschlusseintrag {
+  border-bottom: none !important;
+}
+
+.cms_aktionen_uebersicht li:last-child > p {
+  border-bottom: 1px solid @schattierthell_backgroundhell;
+}
+
+.cms_gruppen_oeffentlich_art {
+  padding: 0px;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  display: inline-block;
+}
+
+.cms_oe, .cms_in {
+  display: block;
+  width: 16px;
+  height: 16px;
+  padding: 0px;
+  margin: 0px;
+  border-radius: 8px;
+}
+
+.cms_oe {background: @infohell;}
+.cms_in {background: @warnunghell;}
+
+.cms_beschluss {
+  color: @standardschriftdunkel_color;
+  padding: 5px;
+  margin-bottom: @standardabsatz_schulhof_margin;
+  display: block;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_beschluss h4, .cms_beschluss p {
+  display: block;
+  width: 100%;
+}
+
+.cms_beschluss:hover {
+  color: @standardschriftdunkel_color;
+  display: block;
+}
+
+.cms_beschluss_pro {
+  border-left: 3px solid @erfolgdunkel;
+  background: @erfolghell;
+}
+
+.cms_beschluss_contra {
+  border-left: 3px solid @fehlerdunkel;
+  background: @fehlerhell;
+}
+
+.cms_beschluss_enthaltung {
+  border-left: 3px solid @schattierthell_backgrounddunkel;
+  background: @schattierthell_backgroundhell;
+}
+
+.cms_beschluss_stimmen {
+  font-size: 80%;
+  margin-bottom: 0px;
+}
+
+.cms_beschluss_stimmen_pro {background: @erfolgdunkel;}
+.cms_beschluss_stimmen_contra {background: @fehlerdunkel;}
+.cms_beschluss_stimmen_enthaltung {background: @schattierthell_backgrounddunkel;}
+
+.cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
+  display: inline-block;
+  padding: 2px 7px;
+  font-weight: bold;
+  color: @standardschrifthell_color;
+  text-align: center;
+  min-width: 25px;
+}
+
+.cms_beschluss_stimmen_pro {
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+
+.cms_beschluss_stimmen_contra {
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.cms_beschluss_langfristig {
+  margin-left: 10px;
+  border-radius: 7px;
+  color: @standardschriftdunkel_color;
+  background: @standardhell_background;
+}
+
+.cms_beschlussuebersicht_jahr {
+  display: flex;
+}
+
+.cms_beschlussuebersicht_jahr .cms_beschluss {
+  display: flex;
+  flex-wrap: wrap;
+  width: 25%;
+  border-right: 10px solid @standardhell_background;
+}
+
+#cms_chat {
+  #cms_chat_nachrichten {
+    .cms_chat_datum {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    width: 100%;
+    padding: 5px 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    .cms_chat_nachricht_aussen {
+      width: 100%;
+      margin-bottom: 15px;
+      float: left;
+      .cms_chat_nachricht_innen {
+        position: relative;
+        min-width: 40%;
+        max-width: 60%;
+        background-color: @chatandererhell;
+        border-radius: @button_radius;
+        float: left;
+        padding: 5px;
+        .cms_chat_nachricht_aktion {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: inherit;
+          &[data-aktion=sendend] {
+            display: none;
+          }
+          &[data-aktion=mehr] {
+            cursor: pointer;
+            .cms_chat_aktion {
+              // .cms_hinweis
+              color: @standardschrifthell_color !important;
+              background: @hinweisehell_background;
+              padding: 0px 5px 0px 5px;
+              position: absolute;
+              font-family: 'robl';
+              font-weight: normal !important;
+              display: none;
+              border-radius: @button_radius;
+              z-index: 50;
+              width: 150px;
+              overflow: visible;
+              left: 0px;
+              bottom: 25px;
+              overflow: hidden;
+              text-align: left;
+
+              z-index: 5;
+              p {
+                padding: 5px;
+              }
+            }
+          }
+          img {
+            height: 16px;
+            width: 16px;
+          }
+        }
+        .cms_chat_nachricht_id {
+          display: none;
+        }
+        .cms_chat_nachricht_autor {
+          font-size: 90%;
+        }
+        .cms_chat_nachricht_nachricht {
+          padding-left: 5px;
+          font-size: 110%;
+          white-space: pre-wrap;
+          word-break: break-word
+        }
+        .cms_chat_nachricht_zeit {
+          float: right;
+        }
+      }
+      &.cms_chat_nachricht_eigen {
+        .cms_chat_nachricht_innen {
+          float: right;
+          background-color: @chateigenhell;
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              display: none;
+              .cms_chat_aktion {
+                text-align: right;
+                left: unset;
+                right: 0;
+              }
+            }
+          }
+        }
+      }
+      &.cms_chat_nachricht_sendend {
+        opacity: 0.8;
+        .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=sendend] {
+              display: block;
+            }
+            &[data-aktion=mehr] {
+              display: none;
+            }
+          }
+        }
+      }
+      &.cms_chat_nachricht_gemeldet {
+        opacity: 0.8;
+        .cms_chat_nachricht_innen {
+          background-color: mix(@fehlerhell, white);
+          .cms_chat_nachricht_aktion {
+            &[data-aktion=mehr] {
+              [data-mehr=melden] {
+                opacity: 0.7;
+                cursor: default;
+              }
+            }
+          }
+        }
+      }
+      &.cms_chat_nachricht_geloescht {
+        opacity: 0.7;
+        .cms_chat_nachricht_innen {
+          .cms_chat_nachricht_aktion {
+            display: none;
+          }
+          .cms_chat_nachricht_nachricht {
+            font-style: italic;
+            font-size: 90%;
+          }
+        }
+      }
+    }
+  }
+  #cms_chat_nachricht_verfassen {
+    width: 100%;
+    label {
+      cursor: pointer;
+    }
+    textarea {
+      width: 90%; // Fallback
+      width: ~"calc(100% - 26px)";
+    }
+    .cms_meldung_fehler {
+      display: none;
+    }
+    div:not(.cms_meldung_fehler) {
+      display: inline-block;
+      float: right;
+      width: auto;
+      img {
+        padding: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  #cms_chat_mehr {
+    color: @standardlinkhell_color;
+    cursor: pointer;
+  }
+
+  #cms_chat_status,
+  #cms_chat_laden,
+  #cms_chat_leer,
+  #cms_chat_mehr {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    h3 {
+      margin-top: 0;
+    }
+  }
+  #cms_chat_status,
+  #cms_chat_laden,
+  #cms_chat_berechtigung,
+  #cms_chat_leer,
+  #cms_chat_mehr,
+  #cms_chat_stumm {
+    display: none;
+  }
+
+  // Nach Priorität:
+  &.cms_chat_leer { // 0
+    #cms_chat_leer {
+      display: block;
+    }
+  }
+  &.cms_chat_mehr { // 0
+    #cms_chat_mehr {
+      display: block;
+    }
+  }
+  &.cms_chat_stumm { // 0.1
+    >#cms_chat_nachricht_verfassen {
+      display: none;
+    }
+    #cms_chat_stumm {
+      display: block;
+    }
+  }
+  &.cms_chat_status { // 1
+    >* {
+      display: none;
+    }
+    #cms_chat_status {
+      display: block;
+    }
+  }
+  &.cms_chat_laden {  // 1.1
+    #cms_chat_laden {
+      display: block;
+    }
+  }
+  &.cms_chat_berechtigung { // 2
+    >* {
+      display: none;
+    }
+    #cms_chat_berechtigung {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,202 @@
+// "out": "../css/galerien.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
+@import "standard.less";
+
+.cms_galerie_liste {
+  padding: 0px;
+  margin: 0px;
+  border-bottom: 1px solid @schattierthell_backgroundhell;
+}
+
+.cms_galerieuebersicht_liste li {
+  padding: 0px;
+  margin: 0px;
+  border-top: 1px solid @schattierthell_backgroundhell;
+  list-style-type: none;
+  display: block;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink {
+  width: 100%;
+  display: block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 45px;
+  position: relative;
+  transition: 250ms ease-in-out;
+  min-height: 70px;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink h3 {
+  font-size: 110%;
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink p,
+.cms_galerieuebersicht_liste .cms_galerielink h3,
+.cms_galerieuebersicht_liste .cms_galerielink span {
+  color: #000000;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_notiz {margin-top: 0px;}
+.cms_galerieuebersicht_liste .cms_galerielink p:last-child {margin-bottom: 0px;}
+
+.cms_galerieuebersicht_liste .cms_galerielink:hover {
+  background-color: @schattierthell_backgroundhell;
+}
+.cms_galerieuebersicht_liste .cms_galerielink:hover .cms_button {
+  background-color: @buttonhellhover_background;
+  color: @buttonhellhover_color;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblaetter {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 32px;
+  text-align: center;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt {
+  display: inline-block;
+  text-align: center;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_i {
+  display: inline-block;
+  width: 32px;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {
+  display: block;
+  text-align: center;
+  width: 100%;
+  line-height: 1.2em !important;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {
+  background: @themafarbe1;
+  font-weight: bold;
+  color: @standardschrifthell_color;
+  font-size: 10px;
+  border: 1px solid @schattierthell_backgroundhell;
+  border-bottom: none;
+  padding: 2px 0px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {
+  background: @standardhell_background;
+  font-weight: normal;
+  color: @themafarbe3;
+  font-size: 18px;
+  border-left: 1px solid @schattierthell_backgroundhell;
+  border-right: 1px solid @schattierthell_backgroundhell;
+  padding: 2px 0px;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {
+  background: @standardhell_background;
+  font-weight: normal;
+  color: @themafarbe1;
+  font-size: 10px;
+  border: 1px solid @schattierthell_backgroundhell;
+  border-top: none;
+  padding: 2px 0px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_uhrzet {
+  display: block;
+  text-align: center;
+  font-weight: normal;
+  font-size: 80%;
+  line-height: 1.2em;
+  padding: 5px 0px 0px 0px;
+}
+
+.cms_galerieuebersicht_liste .cms_galerielink .cms_galerielink_vorschaubild {
+  float: right;
+  margin-left: 5px;
+  width: 30%;
+}
+
+.cms_galerieuebersicht_artikel {
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cms_optimierung_P .cms_galerieuebersicht_artikel li,
+.cms_optimierung_T .cms_galerieuebersicht_artikel li {
+  width: 50%;
+}
+
+.cms_optimierung_P .cms_galerieuebersicht_artikel li:nth-child(odd),
+.cms_optimierung_T .cms_galerieuebersicht_artikel li:nth-child(odd) {
+  border-right: 5px solid @standardhell_background;
+}
+
+.cms_optimierung_P .cms_galerieuebersicht_artikel li:nth-child(even),
+.cms_optimierung_T .cms_galerieuebersicht_artikel li:nth-child(even) {
+  border-left: 5px solid @standardhell_background;
+}
+
+.cms_optimierung_H .cms_galerieuebersicht_artikel li {
+  width: 100%;
+}
+
+.cms_galerieuebersicht_artikel li {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 0px;
+  margin: 0px;
+  //border-top: 1px solid @schattierthell_backgroundhell;
+  list-style-type: none;
+  display: block;
+}
+
+.cms_galerieuebersicht_artikel .cms_galerielink {
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 5px 10px;
+  position: relative;
+  transition: 250ms ease-in-out;
+  border-top: 1px solid @schattierthell_backgroundhell;
+}
+
+.cms_galerieuebersicht_artikel .cms_galerielink h3 {
+  font-size: 110%;
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_galerieuebersicht_artikel .cms_galerielink p,
+.cms_galerieuebersicht_artikel .cms_galerielink h3,
+.cms_galerieuebersicht_artikel .cms_galerielink span {
+  color: #000000;
+}
+
+.cms_galerieuebersicht_artikel .cms_galerielink .cms_notiz {margin-top: 0px;}
+.cms_galerieuebersicht_artikel .cms_galerielink p:last-child {margin-bottom: 0px;}
+
+.cms_galerieuebersicht_artikel .cms_galerielink:hover {
+  background-color: @schattierthell_backgroundhell;
+}
+.cms_galerieuebersicht_artikel .cms_galerielink:hover .cms_button {
+  background-color: @buttonhellhover_background;
+  color: @buttonhellhover_color;
+}
+
+.cms_galerieuebersicht_artikel .cms_galerielink .cms_galerielink_vorschaubild {
+  width: 100%;
+}

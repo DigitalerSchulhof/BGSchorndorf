@@ -7,7 +7,7 @@
   left: 0px;
   top: 0px;
 	width: 100%;
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 	border-bottom-right-radius: 5px;
 	border-bottom-left-radius: 5px;
 	z-index: 2;
@@ -41,4 +41,13 @@
   left: 0px!important;
   right: auto!important;
   text-align: left!important;
+}
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_seitenwahl {
+  	background: @schattiertdunkel_backgroundhell;
+    box-shadow: @standarddunkel_background 0px 0px 7px;
+  }
 }

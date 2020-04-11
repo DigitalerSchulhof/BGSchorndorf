@@ -1,0 +1,535 @@
+// "out": "../css/website.css", "sourcemap": "false", "compress": "true", "autoprefixer": "false"
+@import "standard.less";
+
+.cms_termine_jahrueberischt_knoepfe_vorher {
+  display: inline-block;
+  text-align: left;
+  width: 20%;
+}
+
+.cms_termine_jahrueberischt_knoepfe_jahr {
+  display: inline-block;
+  text-align: center;
+  width: 60%;
+  font-weight: bold;
+  color: @schattierthell_backgrounddunkel;
+}
+
+.cms_termine_jahrueberischt_knoepfe_nachher {
+  display: inline-block;
+  text-align: right;
+  width: 20%;
+}
+
+.cms_termine_jahrueberischt_knoepfe_vorher .cms_button,
+.cms_termine_jahrueberischt_knoepfe_nachher .cms_button {
+  font-weight: bold !important;
+  color: @schattierthell_backgrounddunkel!important;
+}
+
+.cms_termine_jahrueberischt_knoepfe_vorher .cms_button:hover,
+.cms_termine_jahrueberischt_knoepfe_nachher .cms_button:hover {
+  font-weight: bold !important;
+  color: @standardschrifthell_color!important;
+}
+
+.cms_termine_jahrueberischt_allemonate_namen {
+  padding-top: 5px;
+  border-top: 1px solid @schattierthell_backgroundhell;
+}
+
+  .cms_termine_jahrueberischt_monat {
+    width: 6.5%;
+    margin-right: 2%;
+    text-align: center;
+    float: left;
+    display: block;
+    color: @schattierthell_backgrounddunkel;
+    font-weight: bold;
+  }
+
+  .cms_termine_jahrueberischt_monat.cms_letzte {
+    margin-right: 0%;
+  }
+
+.cms_termine_jahrueberischt_allemonate_balken {
+  padding: 10px 0px 0px 0px;
+  display: block;
+}
+
+  .cms_termine_jahrueberischt_monathoeheF {
+    width: 6.5%;
+    margin-right: 2%;
+    float: left;
+    display: block;
+    height: 100px;
+    position: relative;
+  }
+
+  .cms_termine_jahrueberischt_monathoeheF.cms_letzte {
+    margin-right: 0%;
+  }
+
+    .cms_termine_jahrueberischt_monathoehe {
+      width: 100%;
+      float: left;
+      display: block;
+      background-color: @zeitleistehell_balken_background;
+      border-top-left-radius: @zeitleiste_balken_radiustl;
+      border-top-right-radius: @zeitleiste_balken_radiustr;
+      border-bottom-left-radius: @zeitleiste_balken_radiusbl;
+      border-bottom-right-radius: @zeitleiste_balken_radiusbr;
+      bottom: 0px;
+      position: absolute;
+      transition: 500ms ease-in-out;
+    }
+
+    .cms_termine_jahrueberischt_monathoehe.cms_jahresuebersicht_aktuell,
+    .cms_termine_jahrueberischt_monathoehe:hover {
+      background-color: @zeitleistehell_balkenhover_background;
+      transform: translate(0px) !important;
+      cursor: pointer
+    }
+
+.cms_element_editor {
+  margin-top: @standardabsatz_schulhof_margin;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_download_anzeige {
+  padding: 5px 5px 5px 42px;
+  background-position: 5px 5px;
+  min-height: 44px;
+  background-repeat: no-repeat;
+  background-color: @schattierthell_backgroundhell;
+  border: 1px solid @schattierthell_backgroundhell;
+  transition: 500ms ease-in-out;
+  border-left: 3px solid @schattierthell_backgrounddunkel;
+  line-height: 1em !important;
+}
+
+.cms_download_anzeige p, .cms_download_anzeige h4 {
+  line-height: 1em !important;
+  transition: 500ms ease-in-out;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+
+.cms_download_anzeige:hover {
+  background-color: @schattierthell_backgrounddunkel;
+  cursor: pointer;
+}
+
+.cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @standardschrifthell_color;}
+
+.cms_download_inaktiv {opacity: .5;}
+.cms_download_inaktiv:hover {cursor: not-allowed;}
+
+.cms_website_menuepunkte {
+  padding: 5px !important;
+  min-height: 0 !important;
+}
+
+.cms_website_menuepunkte_ja {
+  display: block;
+  padding: 5px;
+  background: @erfolghell;
+  border-top: 1px solid @schattierthell_backgroundhell;
+  border-bottom: 1px solid @schattierthell_backgroundhell;
+  font-weight: bold;
+  transition: 500ms ease-in-out;
+}
+
+.cms_website_menuepunkte_ja:hover {
+  background: @erfolgdunkel;
+  color: @standardschrifthell_color;
+  cursor: pointer;
+}
+
+.cms_website_menuepunkte h3:last-child {margin-bottom: 0px;}
+
+.cms_zugehoerig {
+  background: @schattierthell_backgroundhell;
+  padding: 5px;
+  border-top-right-radius: @zugehoerig_radiustr;
+  border-top-left-radius: @zugehoerig_radiustl;
+  border-bottom-right-radius: @zugehoerig_radiusbr;
+  border-bottom-left-radius: @zugehoerig_radiusbl;
+  margin-top: 10px;
+  opacity: 0;
+  text-align: center !important;
+  transition: 250ms ease-in-out;
+}
+
+.cms_zugehoerig h3, .cms_zugehoerig p {text-align: center !important;}
+
+.cms_zugehoerig h3 img {
+  margin-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.cms_zugehoerig table {width: 100%; padding: 0px; margin:0px;}
+.cms_zugehoerig table td {font-size: 70%;}
+
+.cms_zugehoerig td:nth-child(1) {text-align: left;}
+.cms_zugehoerig td:nth-child(2) {text-align: center;}
+.cms_zugehoerig td:nth-child(3) {text-align: right;}
+
+.cms_zugehoerig h4 {margin-top: 10px; color: @schattierthell_backgrounddunkel; text-align: left; padding-left: 5px;}
+.cms_zugehoerig ul {padding: 0px; margin: 0px;}
+.cms_zugehoerig li {padding: 0px; margin: 0px; list-style-type: none;}
+.cms_zugehoerig li a {
+  display: block;
+  transition: 250ms ease-in-out;
+  padding: 2px 5px;
+  margin-bottom: 6px;
+  border-radius: @button_radius;
+  background: @schattierthell_backgroundhell;
+  color: @standardschriftdunkel_color;
+  text-align: left;
+}
+.cms_zugehoerig li a:hover {
+  cursor: pointer;
+  background: @zugehoerighellhover_background;
+  color: @zugehoerighellhover_color;
+}
+.cms_zugehoerig li:last-child a {margin-bottom: 0px;}
+.cms_zugehoerig li a span.cms_zugehoerig_datum {
+  font-size: 70%;
+}
+
+.cms_box_u input, .cms_box_n input {width: 100% !important;}
+
+.cms_boxen_n {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cms_boxen_u {
+  display: block;
+}
+
+.cms_box_u, .cms_box_n {
+  background-color: @standardhell_background;
+  border-radius: @button_radius;
+}
+
+.cms_box_n {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.cms_box_u {
+  width: 100%;
+  margin-bottom: @standardabsatz_schulhof_margin;
+  display: flex;
+}
+
+.cms_box_titel .cms_formular {
+  width: 100%;
+}
+
+.cms_box_u .cms_box_titel,
+.cms_box_u .cms_box_inhalt {
+  float: left;
+}
+
+.cms_box_n .cms_box_titel,
+.cms_box_n .cms_box_inhalt {
+  display: block;
+}
+
+.cms_box_titel, .cms_box_inhalt {padding: 10px;}
+
+.cms_box_u .cms_box_titel {
+  border-top-left-radius: @button_radius;
+  border-bottom-left-radius: @button_radius;
+  border-right: 1px solid @standarddunkel_background;
+}
+
+.cms_box_u .cms_box_inhalt {
+  border-top-right-radius: @button_radius;
+  border-bottom-right-radius: @button_radius;
+}
+
+.cms_box_n .cms_box_titel {
+  border-top-left-radius: @button_radius;
+  border-top-right-radius: @button_radius;
+  border-bottom: 1px solid @standarddunkel_background;
+}
+
+.cms_box_n .cms_box_inhalt {
+  border-bottom-left-radius: @button_radius;
+  border-bottom-right-radius: @button_radius;
+}
+
+.cms_box_1 .cms_box_titel, .cms_box_1 .cms_box_inhalt {background-color: @standardhell_background;}
+.cms_box_2 .cms_box_titel, .cms_box_3 .cms_box_titel,
+.cms_box_4 .cms_box_titel, .cms_box_5 .cms_box_titel
+{background-color: @schattierthell_backgroundhell;}
+
+.cms_box_2 .cms_box_inhalt, .cms_box_2 {background-color: @standardhell_background;}
+.cms_box_3 .cms_box_inhalt, .cms_box_3 {background-color: @themafarbe1;}
+.cms_box_4 .cms_box_inhalt, .cms_box_4 {background-color: @themafarbe2;}
+.cms_box_5 .cms_box_inhalt, .cms_box_5 {background-color: @themafarbe3;}
+
+.cms_box_3 .cms_box_inhalt *, .cms_box_4 .cms_box_inhalt *,
+.cms_box_5 .cms_box_inhalt *, .cms_box_3 .cms_box_inhalt .cms_button:hover,
+.cms_box_4 .cms_box_inhalt .cms_button:hover, .cms_box_5 .cms_box_inhalt .cms_button:hover
+{color: @standardschrifthell_color;}
+
+.cms_box_3 .cms_box_inhalt .cms_button, .cms_box_4 .cms_box_inhalt .cms_button,
+.cms_box_5 .cms_box_inhalt .cms_button, .cms_box_3 .cms_box_inhalt .note-editor *,
+.cms_box_4 .cms_box_inhalt .note-editor *, .cms_box_5 .cms_box_inhalt .note-editor *
+{color: @standardschriftdunkel_color!important;}
+
+.cms_optimierung_H .cms_eventuebersicht_box_termine,
+.cms_optimierung_T .cms_eventuebersicht_aussen_t .cms_eventuebersicht_box_termine,
+.cms_optimierung_P .cms_eventuebersicht_aussen_t .cms_eventuebersicht_box_termine {width: 100%;}
+.cms_optimierung_H .cms_eventuebersicht_box_blog,
+.cms_optimierung_T .cms_eventuebersicht_aussen_b .cms_eventuebersicht_box_blog,
+.cms_optimierung_P .cms_eventuebersicht_aussen_b .cms_eventuebersicht_box_blog {width: 100%;}
+.cms_optimierung_H .cms_eventuebersicht_box_galerien,
+.cms_optimierung_T .cms_eventuebersicht_aussen_g .cms_eventuebersicht_box_galerien,
+.cms_optimierung_P .cms_eventuebersicht_aussen_g .cms_eventuebersicht_box_galerien {width: 100%;}
+
+.cms_optimierung_T .cms_eventuebersicht_aussen_tb .cms_eventuebersicht_box_blog,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tb .cms_eventuebersicht_box_blog {width: 66.66666666%;}
+.cms_optimierung_T .cms_eventuebersicht_aussen_tb .cms_eventuebersicht_box_termine,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tb .cms_eventuebersicht_box_termine {width: 33.33333333%;}
+
+.cms_optimierung_T .cms_eventuebersicht_aussen_tg .cms_eventuebersicht_box_galerien,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tg .cms_eventuebersicht_box_galerien {width: 66.66666666%;}
+.cms_optimierung_T .cms_eventuebersicht_aussen_tg .cms_eventuebersicht_box_termine,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tg .cms_eventuebersicht_box_termine {width: 33.33333333%;}
+
+.cms_optimierung_T .cms_eventuebersicht_aussen_bg .cms_eventuebersicht_box_galerien,
+.cms_optimierung_T .cms_eventuebersicht_aussen_bg .cms_eventuebersicht_box_termine,
+.cms_optimierung_P .cms_eventuebersicht_aussen_bg .cms_eventuebersicht_box_galerien,
+.cms_optimierung_P .cms_eventuebersicht_aussen_bg .cms_eventuebersicht_box_termine {width: 50%;}
+
+.cms_optimierung_T .cms_eventuebersicht_aussen_tbg .cms_eventuebersicht_box_blog,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tbg .cms_eventuebersicht_box_blog {width: 40%;}
+.cms_optimierung_T .cms_eventuebersicht_aussen_tbg .cms_eventuebersicht_box_galerien,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tbg .cms_eventuebersicht_box_galerien {width: 40%;}
+.cms_optimierung_T .cms_eventuebersicht_aussen_tbg .cms_eventuebersicht_box_termine,
+.cms_optimierung_P .cms_eventuebersicht_aussen_tbg .cms_eventuebersicht_box_termine {width: 20%;}
+
+.cms_optimierung_H .cms_eventuebersicht_box_a, .cms_optimierung_T .cms_eventuebersicht_box_a {margin-bottom: 30px;}
+
+.cms_eventuebersicht_box_a {float: left;}
+.cms_eventuebersicht_box_i {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.cms_eventuebersicht_box_a:first-child .cms_eventuebersicht_box_i {padding-left: 0px;}
+.cms_eventuebersicht_box_a:last-child .cms_eventuebersicht_box_i {padding-right: 0px;}
+
+#cms_hauptteil_i img {max-width: 100%;}
+.cms_liste td > img, .cms_formular td > img, .cms_dateisystem_tabelle td > img, .cms_icon_klein_o > img {max-width: none !important;}
+
+.cms_kopfnavigation .cms_websitesuche {
+  margin-right: 10px;
+  position: relative;
+  width: 250px;
+}
+
+#cms_mobilmenue_i .cms_websitesuche {
+  margin-right: 10px;
+  position: relative;
+  width: 100%;
+}
+
+#cms_mobilmenue_i .cms_websitesuche input {
+  border: 1px solid @schattierthell_backgrounddunkel!important;
+}
+
+.cms_websitesuche input {
+  background-color: @standardhell_background;
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  padding: 2px 6px;
+  border: 1px solid @schattierthell_backgroundhell;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.cms_websitesuche input:hover {
+  border: 1px solid @schattierthell_backgrounddunkel;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse,
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse {
+  border-top: 3px solid @themafarbe1;
+  padding: 7px;
+  width: 100%;
+  background-color: @schattierthell_backgroundhell;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  max-height: 400px;
+  overflow-y: scroll;
+  z-index: 5;
+  text-align: left;
+  display: none;
+  min-height: 35px;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse {position: absolute;}
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse {
+  position: relative;
+  border-left: 1px solid @schattierthell_backgrounddunkel;
+  border-right: 1px solid @schattierthell_backgrounddunkel;
+  border-bottom: 1px solid @schattierthell_backgrounddunkel;
+  background-color: @schattierthell_backgroundhell;
+}
+
+.cms_websitesuche_schliessen {
+  position: absolute;
+  right: 7px;
+  top: 5px;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse ul,
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li,
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li {
+  margin: 0px 0px @standardabsatz_schulhof_margin 0px;
+  padding: 0px;
+  display: block;
+  width: 100%;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li:last-child,
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li:last-child {margin-bottom: 0px;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li a,
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li a {
+  display: block;
+  padding: 5px;
+  width: 100%;
+  background: @schattierthell_backgroundhell;
+  color: @standardschriftdunkel_color;
+  border-radius: @button_radius;
+  transform: 250ms ease-in-out;
+}
+
+.cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li a:hover,
+.cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li a:hover {
+  background: @themafarbe3;
+  color: @standardschrifthell_color;
+  transform: none;
+}
+
+.cms_websitesuche h3 {
+  color: @schattierthell_backgrounddunkel;
+  padding: 0px 5px;
+}
+.cms_websitesuche .cms_notiz {
+  line-height: 1.2;
+  color: inherit !important;
+  margin-bottom: 3px;
+}
+
+.cms_websitesuche p:last-child {margin:0px;}
+
+.cms_optimierung_P .cms_auszeichnung,
+.cms_optimierung_T .cms_auszeichnung {
+  text-align: right;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_optimierung_H .cms_auszeichnung {
+  text-align: center !important;
+  margin-bottom: @standardabsatz_schulhof_margin;
+}
+
+.cms_auszeichnung li {
+  padding: 0px;
+  margin: @auszeichnung_margin;
+  display: inline-block;
+}
+
+.cms_auszeichnung a {
+  padding: 10px;
+  display: block;
+  margin: 0px;
+  text-align: center;
+  border-top-left-radius: @auszeichnung_radiustl;
+  border-top-right-radius: @auszeichnung_radiustr;
+  border-bottom-left-radius: @auszeichnung_radiusbl;
+  border-bottom-right-radius: @auszeichnung_radiusbr;
+  background: @auszeichnunghell_background;
+  color: @auszeichnunghell_color;
+}
+
+.cms_auszeichnung p, .cms_auszeichnung b {
+  line-height: 1.5em !important;
+  font-size: 10px !important;
+}
+
+.cms_auszeichnung img {max-height: 150px;}
+
+.cms_auszeichnung b {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.cms_auszeichnung a:hover {
+  transform: translate(0px) !important;
+  background: @auszeichnunghellhover_background;
+  color: @auszeichnunghellhover_color;
+}
+
+
+.cms_datenschutz_einwilligungerteilt {background: @erfolgdunkel;}
+.cms_datenschutz_einwilligungverweigert {background: @fehlerdunkel;}
+
+.cms_datenschutz_einwilligungerteilt, .cms_datenschutz_einwilligungverweigert {
+  color: @standardschrifthell_color;
+  padding: 3px 5px 2px 5px;
+  border-radius: @button_radius;
+}
+
+.cms_datenschutz_einwilligungerteilt:hover,
+.cms_datenschutz_einwilligungverweigert:hover {
+  cursor: pointer;
+}
+
+.cms_kontakt_visitenkarten {
+  padding: 0px;
+  margin-bottom: @standardabsatz_schulhof_margin;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cms_kontakt_visitenkarte {
+  width: 25%;
+  padding: 10px;
+  list-style-type: none;
+  margin: 0px;
+  background: @schattierthell_backgroundhell;
+  display: inline-block;
+  transition: 250ms ease-in-out;
+  position: relative;
+}
+
+.cms_kontakt_visitenkarte:hover {
+  background: @themafarbe2;
+  color: @standardschrifthell_color;
+  display: inline-block;
+  transition: 250ms ease-in-out;
+  cursor: pointer;
+}

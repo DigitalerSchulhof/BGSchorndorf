@@ -6,9 +6,9 @@
 }
 
 .cms_dateisystem_box {
-	border: 1px solid @schattierthell_background;
+	border: 1px solid @schattierthell_backgroundhell;
 	border-radius: 5px;
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
   margin-bottom: @standardabsatz_schulhof_margin;
 }
 
@@ -46,12 +46,12 @@
 }
 
 .cms_dateisystem_pfad_icon:hover, .cms_dateisystem_pfad_aktionen:hover {
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 	cursor: pointer;
 }
 
 .cms_dateisystem_pfad_icon:hover {
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 	cursor: pointer;
 }
 
@@ -86,12 +86,12 @@
 }
 
 .cms_dateisystem_inhalt table tr:hover td {
-	background: @formularfeld_background;
+	background: @formularfeldhell_background;
 }
 
 .cms_dateisystem_status {
 	padding: 5px;
-	background: @schattierthell_background;
+	background: @schattierthell_backgroundhell;
 }
 
 .cms_dateisystem_status p {
@@ -134,11 +134,11 @@ td.cms_dateisystem_ordner:hover {
 
 .cms_dateisystem_uploadzone {
 	border-radius: 5px;
-	background-color: @info_background;
+	background-color: @infohell;
 	height: 100px;
 	width: 100%;
 	margin-top: 6px;
-	border: 1px dashed @info_akzent;
+	border: 1px dashed @infodunkel;
 	background-image: url('../res/icons/gross/dateiupload.png');
 	background-position: center 25px;
 	background-repeat: no-repeat;
@@ -179,7 +179,7 @@ td.cms_dateisystem_ordner:hover {
 	max-height: 50px;
 	overflow-y: scroll;
 	padding: 5px;
-	background: @formularfeld_background;
+	background: @formularfeldhell_background;
 	border-radius: 5px;
 }
 
@@ -199,8 +199,8 @@ td.cms_dateisystem_ordner:hover {
 }
 
 #cms_hochladen_fehlgeschlagen {
-	background: @fehler_background;
-	border: 1px solid @fehler_akzent;
+	background: @fehlerhell;
+	border: 1px solid @fehlerdunkel;
 	padding: 5px;
 	border-radius: 5px;
 	display: none;
@@ -215,4 +215,55 @@ td.cms_dateisystem_ordner:hover {
 .cms_datei_gewaehlt img {
   position: relative;
   bottom: -4px;
+}
+
+
+
+
+
+
+// DARKMODE
+@media (prefers-color-scheme: dark) {
+  .cms_dateisystem_box {
+  	border: 1px solid @schattiertdunkel_backgroundhell;
+  	background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_dateisystem_pfad, .cms_dateisystem_aktionen, .cms_dateisystem_inhalt {
+  	background: @standarddunkel_background;
+  }
+
+  .cms_dateisystem_pfad_icon:hover, .cms_dateisystem_pfad_aktionen:hover {
+  	background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_dateisystem_pfad_icon:hover {
+  	background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_dateisystem_inhalt table tr:hover td {
+  	background: @formularfelddunkel_background;
+  }
+
+  .cms_dateisystem_status {
+  	background: @schattiertdunkel_backgroundhell;
+  }
+
+  .cms_dateisystem_uploadzone {
+  	background-color: @infodunkel;
+  	border: 1px dashed @infohell;
+  }
+
+  .cms_dateisystem_uploadzone p {
+  	color: @standardschriftdunkel_color;
+  }
+
+  .cms_dateisystem_hochladen_dateiliste {
+  	background: @formularfelddunkel_background;
+  }
+
+  #cms_hochladen_fehlgeschlagen {
+  	background: @fehlerdunkel;
+  	border: 1px solid @fehlerhell;
+  }
 }
