@@ -702,7 +702,22 @@ function cms_db_tabellengroesse($datenbank, $tabellen) {
 			$sql->fetch();
 		}
 		$sql->close();
+		cms_trennen($db);
 	}
+	if ($groesse === null) {$groesse = 0;}
+	return $groesse;
+}
+
+function cms_db_groesse($datenbank) {
+	$groesse = 0;
+	$db = cms_verbinden('ü');
+	$sql = $db->prepare("SELECT SUM(data_length + index_length) AS groesse FROM information_schema.tables WHERE table_schema = ?");
+	$sql->bind_param("s", $datenbank);
+	if ($sql->execute()) {
+		$sql->bind_result($groesse);
+		$sql->fetch();
+	}
+	$sql->close();
 	cms_trennen($db);
 	if ($groesse === null) {$groesse = 0;}
 	return $groesse;

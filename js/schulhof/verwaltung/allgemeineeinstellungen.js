@@ -275,6 +275,7 @@ function cms_einstellungen_tagebuch_aendern() {
 
 function cms_einstellungen_website_aendern() {
 	cms_laden_an('Website-Einstellungen ändern', 'Die Eingaben werden überprüft.');
+	var darkmode = document.getElementById('cms_darkmodeverfuegbar').value;
 	var menueseitenweiterleiten = document.getElementById('cms_menueseitenweiterleiten').value;
 	var fehlermeldungaktiv = document.getElementById('cms_fehlermeldungenaktiv').value;
 	var fehlermeldungangemeldet = document.getElementById('cms_fehlermeldungenangemeldet').value;
@@ -294,6 +295,10 @@ function cms_einstellungen_website_aendern() {
 		meldung += '<li>Die Eingaben für die öffentlichen Termine, Blogeinträge und Galerien sind ungültig.</li>';
 	}
 
+	if (!cms_check_toggle(darkmode)) {
+		meldung += '<li>Der Darkmode kann entweder zur Vefügung stehen, oder nicht.</li>';
+		fehler = true;
+	}
 	if (!cms_check_toggle(menueseitenweiterleiten)) {
 		meldung += '<li>Menüs werden entweder weitergleitet, oder nicht.</li>';
 		fehler = true;
@@ -322,9 +327,10 @@ function cms_einstellungen_website_aendern() {
 	else {
 		cms_laden_an('Website-Einstellungen ändern', 'Die Änderungen werden übernommen.');
 		formulardaten.append("anfragenziel", 	'227');
-		formulardaten.append("menueseitenweiterleiten", 		menueseitenweiterleiten);
-		formulardaten.append("fehlermeldungaktiv", 					fehlermeldungaktiv);
-		formulardaten.append("fehlermeldungangemeldet", 		fehlermeldungangemeldet);
+		formulardaten.append("darkmode", 									darkmode);
+		formulardaten.append("menueseitenweiterleiten", 	menueseitenweiterleiten);
+		formulardaten.append("fehlermeldungaktiv", 				fehlermeldungaktiv);
+		formulardaten.append("fehlermeldungangemeldet", 	fehlermeldungangemeldet);
 		formulardaten.append("feedbackaktiv", 						feedbackaktiv);
 		formulardaten.append("feedbackangemeldet", 				feedbackangemeldet);
 		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);

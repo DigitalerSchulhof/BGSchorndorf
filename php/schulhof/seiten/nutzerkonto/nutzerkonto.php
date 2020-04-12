@@ -45,17 +45,6 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 	}
 }
 
-$groesse = 0;
-$groesse += cms_dateisystem_ordner_info("css")['groesse'];
-$groesse += cms_dateisystem_ordner_info("js")['groesse'];
-$groesse += cms_dateisystem_ordner_info("dateien")['groesse'];
-$groesse += cms_dateisystem_ordner_info("res")['groesse'];
-$groesse += cms_dateisystem_ordner_info("php")['groesse'];
-$groesse += cms_dateisystem_ordner_info(".htaccess")['groesse'];
-$groesse += cms_dateisystem_ordner_info("drucken.php")['groesse'];
-$groesse += cms_dateisystem_ordner_info("index.php")['groesse'];
-echo "Systemdateigröße: ".cms_groesse_umrechnen($groesse);
-
 $neuigkeiten = "";
 // Prüfen, ob Tagebücher zu füllen sind
 $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM (SELECT DISTINCT kurse.id FROM kurse JOIN stufen ON kurse.stufe = stufen.id JOIN unterricht ON unterricht.tkurs = kurse.id WHERE kurse.schuljahr = ? AND stufen.tagebuch = 1 AND tlehrer = ?) AS x");

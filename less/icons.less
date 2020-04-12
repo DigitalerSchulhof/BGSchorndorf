@@ -168,7 +168,7 @@
 }
 
 /* VERWALTUNGSBEREICH */
-.cms_uebersicht_verwaltung_technisch {background-color: rgba(255, 255, 0, 0.3);}
+.cms_uebersicht_verwaltung_technisch {background-color: @warnunghell;}
 
 .cms_uebersicht_verwaltung_personen {background-image: url("../res/icons/gross/personen.png");}
 .cms_uebersicht_verwaltung_rollen {background-image: url("../res/icons/gross/rollen.png");}
@@ -182,6 +182,7 @@
 .cms_uebersicht_verwaltung_vpn {background-image: url("../res/icons/gross/vpn.png");}
 .cms_uebersicht_verwaltung_zulaessig {background-image: url("../res/icons/gross/zulaessig.png");}
 .cms_uebersicht_verwaltung_schuldetails {background-image: url("../res/icons/gross/schuldetails.png");}
+.cms_uebersicht_verwaltung_speicherplatz {background-image: url("../res/icons/gross/speicherplatz.png");}
 .cms_uebersicht_verwaltung_geraetearten {background-image: url("../res/icons/gross/geraetearten.png");}
 .cms_uebersicht_verwaltung_leihgeraete {background-image: url("../res/icons/gross/leihgeraete.png");}
 .cms_uebersicht_verwaltung_allgemeine_einstellungen {background-image: url("../res/icons/gross/allgemeineeinstellungen.png");}
@@ -230,6 +231,7 @@
 .cms_uebersicht_verwaltung_website_chatmeldungen  {background-image: url("../res/icons/gross/chatmeldungen.png");}
 .cms_uebersicht_verwaltung_website_newsletter  {background-image: url("../res/icons/gross/newsletter.png");}
 .cms_uebersicht_verwaltung_website_weiterleiten {background-image: url("../res/icons/gross/weiterleiten.png");}
+.cms_uebersicht_verwaltung_website_styleaendern {background-image: url("../res/icons/gross/style.png");}
 
 .cms_uebersicht_verwaltung_technik_geraete {background-image: url("../res/icons/gross/geraete.png");}
 .cms_uebersicht_verwaltung_technik_hausmeister {background-image: url("../res/icons/gross/hausmeister.png");}
@@ -262,6 +264,8 @@
 
 // DARKMODE
 @media (prefers-color-scheme: dark) {
+	.cms_uebersicht_verwaltung_technisch {background-color: @warnungdunkel;}
+
 	.cms_tag_gross {
 		border: 1px solid @schattiertdunkel_backgroundhell;
 	}

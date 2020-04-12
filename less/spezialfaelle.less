@@ -221,6 +221,39 @@
   display: inline-block;
 }
 
+#cms_speicherplatz_frei {
+  width: 100%;
+  height: 20px;
+  margin-bottom: 3px;
+  background: @schattierthell_backgroundhell;
+  line-height: 1;
+}
+
+#cms_speicherplatz_system_balken, #cms_speicherplatz_website_balken,
+#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_gruppen_balken,
+#cms_speicherplatz_personen_balken {
+  height: 100%;
+  width: 0%;
+  display: inline-block;
+  line-height: 1;
+  transition: 250ms ease-in-out;
+}
+
+#cms_speicherplatz_system_icon, #cms_speicherplatz_website_icon,
+#cms_speicherplatz_schulhof_icon, #cms_speicherplatz_gruppen_icon,
+#cms_speicherplatz_personen_icon {
+  height: 15px;
+  width: 15px;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+#cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: @fehlerhell;}
+#cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: @warnunghell;}
+#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @infohell;}
+#cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @erfolghell;}
+#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @schattierthell_backgrounddunkel;}
+
 
 
 
@@ -281,4 +314,16 @@
   .cms_vollbild {
     background: @standarddunkel_background;
   }
+
+
+
+  #cms_speicherplatz_frei {
+    background: @schattiertdunkel_backgroundhell;
+  }
+
+  #cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: @fehlerdunkel;}
+  #cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: @warnungdunkel;}
+  #cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @infodunkel;}
+  #cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @erfolgdunkel;}
+  #cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @schattiertdunkel_backgrounddunkel;}
 }

@@ -180,7 +180,6 @@
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
-
 		// <!-- Einbindung der Stylesheets -->
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seite.css?v=$CMS_VERSION\">";
@@ -311,6 +310,7 @@
 			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/rechtebaum.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/bedingte_rechte.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/speicherplatz.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
 		}

@@ -1,7 +1,7 @@
 <?php
 $dateienplaetten = false;
 $internediensteplaetten = false;
-$einstellungenplaetten = false;
+$einstellungenplaetten = true;
 $zulaessigedateienplaetten = false;
 $gremienklassen = false;
 $postfachordner = false;
@@ -328,6 +328,10 @@ if ($einstellungenplaetten) {
 		$sql->execute(); $id++;
 		if ($g == 'Fachschaften') {$genehmigung = '0';}
 	}
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Website Darkmode', '$CMS_SCHLUESSEL'), AES_ENCRYPT('0', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
+	$sql = $dbs->prepare("INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES ($id, AES_ENCRYPT('Gesamtspeicherplatz', '$CMS_SCHLUESSEL'), AES_ENCRYPT('5000000000', '$CMS_SCHLUESSEL'))");
+	$sql->execute(); $id++;
 
 
 

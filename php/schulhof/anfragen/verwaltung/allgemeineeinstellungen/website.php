@@ -8,6 +8,7 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
+if (isset($_POST['darkmode'])) {$darkmode = $_POST['darkmode'];} else {echo "FEHLER";exit;}
 if (isset($_POST['menueseitenweiterleiten'])) {$menueseitenweiterleiten = $_POST['menueseitenweiterleiten'];} else {echo "FEHLER";exit;}
 if (isset($_POST['fehlermeldungaktiv'])) {$fehlermeldungaktiv = $_POST['fehlermeldungaktiv'];} else {echo "FEHLER";exit;}
 if (isset($_POST['fehlermeldungangemeldet'])) {$fehlermeldungangemeldet = $_POST['fehlermeldungangemeldet'];} else {echo "FEHLER";exit;}
@@ -19,6 +20,7 @@ if (isset($_POST['feedbackangemeldet'])) {$feedbackangemeldet = $_POST['feedback
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
+	if (!cms_check_toggle($darkmode)) {$fehler = true;}
 	if (!cms_check_toggle($menueseitenweiterleiten)) {$fehler = true;}
 	if (!cms_check_toggle($fehlermeldungaktiv)) {$fehler = true;}
 	if (!cms_check_toggle($fehlermeldungangemeldet)) {$fehler = true;}
@@ -28,6 +30,10 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
 
+		$sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
+		$einstellungsname = "Website Darkmode";
+		$sql->bind_param("ss", $darkmode, $einstellungsname);
+		$sql->execute();
 		$sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
 		$einstellungsname = "Menüseiten weiterleiten";
 		$sql->bind_param("ss", $menueseitenweiterleiten, $einstellungsname);
