@@ -181,6 +181,12 @@
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 		// <!-- Einbindung der Stylesheets -->
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$CMS_VERSION\">";
+		// if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
+		// 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$CMS_VERSION\">";
+		// }
+
+
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seite.css?v=$CMS_VERSION\">";
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/text.css?v=$CMS_VERSION\">";
@@ -282,6 +288,7 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/style.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";

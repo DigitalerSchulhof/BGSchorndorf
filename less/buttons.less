@@ -32,14 +32,14 @@
   transform: translate(0px) !important;
   cursor: pointer;
   background-color: @erfolgdunkel;
-  color: @standardschrifthell_color !important;
+  color: @standardschriftdunkel_positiv !important;
 }
 
 .cms_toggle_aktiv:hover {
   transform: translate(0px) !important;
   cursor: pointer;
   background-color: @fehlerdunkel !important;
-  color: @standardschrifthell_color !important;
+  color: @standardschriftdunkel_positiv !important;
 }
 
 .cms_button, .cms_iconbutton, .cms_aktion_klein, .cms_datentypwahl, .cms_toggle,
@@ -59,7 +59,7 @@
 }
 
 .cms_unternavigation_i .cms_button:hover {
-  background-color: @schattierthell_backgrounddunkel !important;
+  background-color: @schattierthell_abstufung2 !important;
   color: @buttonhellhover_color !important;
 }
 
@@ -95,23 +95,23 @@
 
 .cms_toggle_aktiv_fest {
     background-color: @erfolgdunkel;
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
 }
 
 .cms_button_gesichert, .cms_iconbutton_gesichert {
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
   border: 1px dashed @fehlerhell;
   background-color: @standardhell_background;
 }
 
 .cms_button_passiv {
-  color: @schattierthell_backgroundhell;
-  border: 1px solid @schattierthell_backgroundhell;
+  color: @schattierthell_abstufung1;
+  border: 1px solid @schattierthell_abstufung1;
   background-color: @standardhell_background;
 }
 
 .cms_button_passivda {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   border: 1px solid @standarddunkel_background;
   background-color: @standardhell_background;
 }
@@ -161,7 +161,7 @@
 
 /* TOGGLES */
 .cms_toggle {
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
 }
 
 .cms_toggle_aktiv {
@@ -242,11 +242,11 @@
 }
 
 .cms_kategorie_icon {
-	border: 2px solid @schattierthell_backgroundhell;
+	border: 2px solid @schattierthell_abstufung1;
 }
 
 .cms_kategorie_icon.cms_icon_verwendet {
-	background-color: @schattierthell_backgrounddunkel;
+	background-color: @schattierthell_abstufung2;
 }
 
 .cms_kategorie_icon_aktiv:hover, .cms_kategorie_icon:hover {
@@ -273,8 +273,8 @@
   bottom: 1px;
   padding: 2px 5px;
   border-radius: 10px;
-  background: @schattierthell_backgrounddunkel;
-  color: @standardschrifthell_color;
+  background: @schattierthell_abstufung2;
+  color: @standardschriftdunkel_positiv;
   font-size: 70%;
   transition: 250ms ease-in-out;
   display: inline-block;
@@ -324,12 +324,12 @@ h6+.cms_toggleeinblenden {
 @media (prefers-color-scheme: dark) {
   .cms_toggle:hover, .cms_toggle_inaktiv:hover {
     background-color: @erfolghell;
-    color: @standardschriftdunkel_color !important;
+    color: @standardschrifthell_positiv !important;
   }
 
   .cms_toggle_aktiv:hover {
     background-color: @fehlerhell !important;
-    color: @standardschriftdunkel_color !important;
+    color: @standardschrifthell_positiv !important;
   }
 
   .cms_button, .cms_iconbutton, .cms_aktion_klein, .cms_datentypwahl, .cms_toggle,
@@ -349,7 +349,7 @@ h6+.cms_toggleeinblenden {
   }
 
   .cms_unternavigation_i .cms_button:hover {
-    background-color: @schattiertdunkel_backgrounddunkel !important;
+    background-color: @schattiertdunkel_abstufung2 !important;
     color: @buttondunkelhover_color !important;
   }
 
@@ -385,23 +385,23 @@ h6+.cms_toggleeinblenden {
 
   .cms_toggle_aktiv_fest {
       background-color: @erfolghell;
-      color: @standardschriftdunkel_color;
+      color: @standardschrifthell_positiv;
   }
 
   .cms_button_gesichert, .cms_iconbutton_gesichert {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
     border: 1px dashed @fehlerdunkel;
     background-color: @standarddunkel_background;
   }
 
   .cms_button_passiv {
-    color: @schattiertdunkel_backgroundhell;
-    border: 1px solid @schattiertdunkel_backgroundhell;
+    color: @schattiertdunkel_abstufung1;
+    border: 1px solid @schattiertdunkel_abstufung1;
     background-color: @standarddunkel_background;
   }
 
   .cms_button_passivda {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     border: 1px solid @standardhell_background;
     background-color: @standarddunkel_background;
   }
@@ -446,7 +446,7 @@ h6+.cms_toggleeinblenden {
 
   /* TOGGLES */
   .cms_toggle {
-    background-color: @schattiertdunkel_backgroundhell;
+    background-color: @schattiertdunkel_abstufung1;
   }
 
   .cms_toggle_aktiv {
@@ -486,11 +486,11 @@ h6+.cms_toggleeinblenden {
   }
 
   .cms_kategorie_icon {
-  	border: 2px solid @schattiertdunkel_backgroundhell;
+  	border: 2px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_kategorie_icon.cms_icon_verwendet {
-  	background-color: @schattiertdunkel_backgrounddunkel;
+  	background-color: @schattiertdunkel_abstufung2;
   }
 
   .cms_kategorie_icon_aktiv:hover, .cms_kategorie_icon:hover {
@@ -499,8 +499,8 @@ h6+.cms_toggleeinblenden {
   }
 
   .cms_meldezahl {
-    background: @schattiertdunkel_backgrounddunkel;
-    color: @standardschriftdunkel_color;
+    background: @schattiertdunkel_abstufung2;
+    color: @standardschrifthell_positiv;
   }
 
   .cms_meldezahl_wichtig {

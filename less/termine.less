@@ -4,13 +4,13 @@
 .cms_terminuebersicht {
   padding: 0px;
   margin: 0px;
-  border-bottom: 1px solid @schattierthell_backgroundhell;
+  border-bottom: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_terminuebersicht li {
   padding: 0px;
   margin: 0px;
-  border-top: 1px solid @schattierthell_backgroundhell;
+  border-top: 1px solid @schattierthell_abstufung1;
   list-style-type: none;
   display: block;
   text-overflow: ellipsis;
@@ -44,8 +44,8 @@
 }
 
 .cms_kalender_zusatzinfo_intern {
-  color: @standardschrifthell_color !important;
-  background-color: @schattierthell_backgrounddunkel;
+  color: @standardschriftdunkel_positiv !important;
+  background-color: @schattierthell_abstufung2;
   border-radius: @button_radius;
   padding: 5px 5px 5px 25px;
   background-position: 5px center;
@@ -60,7 +60,7 @@
 }
 
 .cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -69,7 +69,7 @@
 .cms_terminlink p:last-child {margin-bottom: 0px;}
 
 .cms_terminlink:hover {
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
 }
 .cms_terminlink:hover .cms_button {
   background-color: @buttonhellhover_background;
@@ -299,13 +299,13 @@
   width:8.33333%;
   font-weight: bold;
   padding: 2px 5px;
-  border-right: 1px solid @schattierthell_backgroundhell;
+  border-right: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_ferienkalender td {
   padding: 2px 5px;
-  border-right: 1px solid @schattierthell_backgroundhell;
-  border-top: 1px solid @schattierthell_backgroundhell;
+  border-right: 1px solid @schattierthell_abstufung1;
+  border-top: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_ferienkalender td:last-child,
@@ -329,24 +329,24 @@
 // DARKMODE
 @media (prefers-color-scheme: dark) {
   .cms_terminuebersicht {
-    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+    border-bottom: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_terminuebersicht li {
-    border-top: 1px solid @schattiertdunkel_backgroundhell;
+    border-top: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_kalender_zusatzinfo_intern {
-    color: @standardschriftdunkel_color !important;
-    background-color: @schattiertdunkel_backgrounddunkel;
+    color: @standardschrifthell_positiv !important;
+    background-color: @schattiertdunkel_abstufung2;
   }
 
   .cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .cms_terminlink:hover {
-    background-color: @schattiertdunkel_backgroundhell;
+    background-color: @schattiertdunkel_abstufung1;
   }
   .cms_terminlink:hover .cms_button {
     background-color: @buttondunkelhover_background;
@@ -395,12 +395,12 @@
   }
 
   .cms_ferienkalender th {
-    border-right: 1px solid @schattiertdunkel_backgroundhell;
+    border-right: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_ferienkalender td {
-    border-right: 1px solid @schattiertdunkel_backgroundhell;
-    border-top: 1px solid @schattiertdunkel_backgroundhell;
+    border-right: 1px solid @schattiertdunkel_abstufung1;
+    border-top: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_ferienkalender_we {background-color: @infodunkel;}

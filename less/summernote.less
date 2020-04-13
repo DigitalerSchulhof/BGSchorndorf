@@ -91,20 +91,20 @@
 .note-icon-video:before {content: "\f134";}
 
 .summernote-ui * {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   box-sizing: border-box;
 }
 
 .note-toolbar {
   padding: 10px 5px;
-  border-bottom: 1px solid @schattierthell_backgroundhell;
+  border-bottom: 1px solid @schattierthell_abstufung1;
 }
 
 .note-btn-group {
   position: relative;
   display: inline-block;
   margin-right: 8px;
-  border: 1px solid @schattierthell_backgroundhell;
+  border: 1px solid @schattierthell_abstufung1;
 }
 
 .note-btn-group > .note-btn-group {
@@ -113,7 +113,7 @@
 }
 
 .note-btn-group > .note-btn.focus, .note-btn-group > .note-btn-group.focus,
-.note-btn-group > .note-btn.active, .note-btn-group > .note-btn-group.active {background-color: @schattierthell_backgroundhell;}
+.note-btn-group > .note-btn.active, .note-btn-group > .note-btn-group.active {background-color: @schattierthell_abstufung1;}
 
 .note-btn-group > .note-btn:first-child, .note-btn-group > .note-btn-group:first-child {margin-left: 0;}
 
@@ -125,7 +125,7 @@
   margin-bottom: 0;
   font-weight: normal;
   line-height: 1.4;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -139,9 +139,9 @@
 }
 
 .note-btn:focus, .note-btn.focus, .note-btn:hover {
-  color: @standardschriftdunkel_color;
-  background-color: @schattierthell_backgroundhell;
-  border-color: @schattierthell_backgroundhell;
+  color: @standardschrifthell_positiv;
+  background-color: @schattierthell_abstufung1;
+  border-color: @schattierthell_abstufung1;
 }
 
 .note-btn.disabled:focus, .note-btn[disabled]:focus, fieldset[disabled] .note-btn:focus, .note-btn.disabled.focus, .note-btn[disabled].focus, fieldset[disabled] .note-btn.focus {
@@ -150,9 +150,9 @@
 }
 
 .note-btn:hover, .note-btn:focus, .note-btn.focus {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   text-decoration: none;
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
   outline: 0;
 }
 
@@ -232,7 +232,7 @@ button.close:hover {
   padding: 5px;
   text-align: left;
   background: @standardhell_background;
-  border: 1px solid @schattierthell_backgroundhell;
+  border: 1px solid @schattierthell_abstufung1;
   background-clip: padding-box;
 }
 
@@ -243,13 +243,13 @@ button.close:hover {
 }
 
 .note-dropdown-item:hover {
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
   transform: translate(0px) !important;
   display: block;
 }
 
 a.note-dropdown-item {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   text-decoration: none;
   padding: 5px;
 }
@@ -306,7 +306,7 @@ a.note-dropdown-item {
   margin: 0px;
   font-weight: bold;
   font-size: 140%;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   text-align: center;
 }
 
@@ -336,7 +336,7 @@ a.note-dropdown-item {
   margin-bottom: 10px;
   font-size: 16px;
   font-weight: bold;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
 }
 
 .note-input {
@@ -359,10 +359,10 @@ a.note-dropdown-item {
   margin-right: 5px;
 }
 
-.note-input::-webkit-input-placeholder {color: @standardschrifthell_color;}
-.note-input:-moz-placeholder {color: @standardschrifthell_color;}
-.note-input::-moz-placeholder {color: @standardschrifthell_color;}
-.note-input:-ms-input-placeholder {color: @standardschrifthell_color;}
+.note-input::-webkit-input-placeholder {color: @standardschriftdunkel_positiv;}
+.note-input:-moz-placeholder {color: @standardschriftdunkel_positiv;}
+.note-input::-moz-placeholder {color: @standardschriftdunkel_positiv;}
+.note-input:-ms-input-placeholder {color: @standardschriftdunkel_positiv;}
 
 .note-tooltip {
   position: absolute;
@@ -429,7 +429,7 @@ a.note-dropdown-item {
 .note-tooltip-content {
   max-width: 200px;
   padding: 3px 8px;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background: @hinweisehell_background;
   text-align: center;
   border-top-left-radius: @hinweise_radiustl;
@@ -535,7 +535,7 @@ a.note-dropdown-item {
   min-width: 100px;
   min-height: 30px;
   padding: 3px 8px;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   text-align: center;
   background-color: @standardhell_background;
 }
@@ -546,7 +546,7 @@ a.note-dropdown-item {
   position: absolute;
   z-index: 100;
   display: none;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   background-color: @infohell;
   opacity:.95;
   pointer-event:none;
@@ -558,7 +558,7 @@ a.note-dropdown-item {
   vertical-align: middle;
 }
 
-.note-editor .note-dropzone.hover {color: @standardschriftdunkel_color;}
+.note-editor .note-dropzone.hover {color: @standardschrifthell_positiv;}
 .note-editor.dragover .note-dropzone {display: table;}
 .note-editor .note-editing-area {position: relative;}
 .note-editor .note-editing-area p {margin: 0 0 10px;}
@@ -572,12 +572,12 @@ a.note-dropdown-item {
 .note-editor .note-editing-area .note-editable table td,
 .note-editor .note-editing-area .note-editable table th {
   padding: 5px 3px;
-  border: 1px solid @schattierthell_backgrounddunkel;
+  border: 1px solid @schattierthell_abstufung2;
 }
 
 .note-editor .note-editing-area .note-editable sup {vertical-align: super;}
 .note-editor .note-editing-area .note-editable sub {vertical-align: sub;}
-.note-editor.note-frame {border: 1px solid @schattierthell_backgroundhell;}
+.note-editor.note-frame {border: 1px solid @schattierthell_abstufung1;}
 .note-editor.note-frame.codeview .note-editing-area .note-editable {display: none;}
 .note-editor.note-frame.codeview .note-editing-area .note-codable {display: block;}
 .note-editor.note-frame .note-editing-area {overflow: hidden;}
@@ -585,12 +585,12 @@ a.note-dropdown-item {
 .note-editor.note-frame .note-editing-area .note-editable {
   padding: 10px;
   overflow: auto;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   word-wrap: break-word;
   background-color: @standardhell_background;
 }
 
-.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {background-color: @schattierthell_backgroundhell;}
+.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {background-color: @schattierthell_abstufung1;}
 
 .note-editor.note-frame .note-editing-area .note-codable {
   display: none;
@@ -598,7 +598,7 @@ a.note-dropdown-item {
   padding: 10px;
   margin-bottom: 0;
   font-family: monospace;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background-color: @standarddunkel_background;
   border: 0;
   box-sizing: border-box;
@@ -615,7 +615,7 @@ a.note-dropdown-item {
 
 .note-editor.note-frame.fullscreen .note-editable {background-color: @standardhell_background;}
 .note-editor.note-frame.fullscreen .note-resizebar {display: none;}
-.note-editor.note-frame .note-statusbar {background-color: @schattierthell_backgroundhell;}
+.note-editor.note-frame .note-statusbar {background-color: @schattierthell_abstufung1;}
 
 .note-editor.note-frame .note-statusbar .note-resizebar {
   width: 100%;
@@ -627,13 +627,13 @@ a.note-dropdown-item {
 .note-editor.note-frame .note-statusbar .note-resizebar .note-icon-bar {
   width: 20px;
   margin: 1px auto;
-  border-top: 1px solid @schattierthell_backgroundhell;;
+  border-top: 1px solid @schattierthell_abstufung1;;
 }
 
 .note-editor.note-frame .note-placeholder {padding: 10px;}
 .note-popover {
   max-width: none;
-  border: 1px solid @schattierthell_backgroundhell;
+  border: 1px solid @schattierthell_abstufung1;
 }
 
 .note-popover .note-popover-content a {
@@ -684,7 +684,7 @@ a.note-dropdown-item {
   z-index: 1;
   width: 20em;
   height: 20em;
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
 }
 
 .note-popover .note-popover-content .note-btn-group .note-table .note-dimension-picker .note-dimension-picker-highlighted,
@@ -785,7 +785,7 @@ a.note-dropdown-item {
 
 .note-popover .note-popover-content .note-dropdown-menu.note-check .note-dropdown-item i,
 .note-toolbar .note-dropdown-menu.note-check .note-dropdown-item i {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   visibility: hidden;
 }
 
@@ -815,7 +815,7 @@ a.note-dropdown-item {
   margin-bottom: 2px;
 }
 
-.note-modal .note-modal-body .help-list-item:hover {background-color: @schattierthell_backgroundhell;}
+.note-modal .note-modal-body .help-list-item:hover {background-color: @schattierthell_abstufung1;}
 
 @-moz-document url-prefix() {
   .note-image-input {height: auto;}
@@ -824,7 +824,7 @@ a.note-dropdown-item {
 .note-placeholder {
   position: absolute;
   display: none;
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
 }
 
 .note-handle .note-control-selection {
@@ -838,7 +838,7 @@ a.note-dropdown-item {
 .note-handle .note-control-selection .note-control-selection-bg {
   width: 100%;
   height: 100%;
-  background-color: @standardschriftdunkel_color;
+  background-color: @standardschrifthell_positiv;
   opacity:.3;
 }
 
@@ -900,7 +900,7 @@ a.note-dropdown-item {
   padding: 5px;
   margin: 5px;
   font-size: 12px;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background-color: @standarddunkel_background;
   opacity: .7;
 }
@@ -948,29 +948,29 @@ a.note-dropdown-item {
 // DARKMODE
 @media (prefers-color-scheme: dark) {
   .summernote-ui * {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .note-toolbar {
-    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+    border-bottom: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .note-btn-group {
-    border: 1px solid @schattiertdunkel_backgroundhell;
+    border: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .note-btn-group > .note-btn.focus, .note-btn-group > .note-btn-group.focus,
-  .note-btn-group > .note-btn.active, .note-btn-group > .note-btn-group.active {background-color: @schattiertdunkel_backgroundhell;}
+  .note-btn-group > .note-btn.active, .note-btn-group > .note-btn-group.active {background-color: @schattiertdunkel_abstufung1;}
 
   .note-btn {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     background-color: @standarddunkel_background;
   }
 
   .note-btn:focus, .note-btn.focus, .note-btn:hover {
-    color: @standardschrifthell_color;
-    background-color: @schattiertdunkel_backgroundhell;
-    border-color: @schattiertdunkel_backgroundhell;
+    color: @standardschriftdunkel_positiv;
+    background-color: @schattiertdunkel_abstufung1;
+    border-color: @schattiertdunkel_abstufung1;
   }
 
   .note-btn.disabled:focus, .note-btn[disabled]:focus, fieldset[disabled] .note-btn:focus, .note-btn.disabled.focus, .note-btn[disabled].focus, fieldset[disabled] .note-btn.focus {
@@ -979,8 +979,8 @@ a.note-dropdown-item {
   }
 
   .note-btn:hover, .note-btn:focus, .note-btn.focus {
-    color: @standardschrifthell_color;
-    background-color: @schattiertdunkel_backgroundhell;
+    color: @standardschriftdunkel_positiv;
+    background-color: @schattiertdunkel_abstufung1;
   }
 
   .note-btn-primary {
@@ -1005,15 +1005,15 @@ a.note-dropdown-item {
 
   .note-dropdown-menu {
     background: @standarddunkel_background;
-    border: 1px solid @schattiertdunkel_backgroundhell;
+    border: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .note-dropdown-item:hover {
-    background-color: @schattiertdunkel_backgroundhell;
+    background-color: @schattiertdunkel_abstufung1;
   }
 
   a.note-dropdown-item {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .note-modal-content {
@@ -1022,7 +1022,7 @@ a.note-dropdown-item {
   }
 
   .note-modal-title {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .note-modal-backdrop {
@@ -1030,7 +1030,7 @@ a.note-dropdown-item {
   }
 
   .note-form-label {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .note-input {
@@ -1038,13 +1038,13 @@ a.note-dropdown-item {
     border-bottom: 1px solid @formularfelddunkelfocus_background;
   }
 
-  .note-input::-webkit-input-placeholder {color: @standardschriftdunkel_color;}
-  .note-input:-moz-placeholder {color: @standardschriftdunkel_color;}
-  .note-input::-moz-placeholder {color: @standardschriftdunkel_color;}
-  .note-input:-ms-input-placeholder {color: @standardschriftdunkel_color;}
+  .note-input::-webkit-input-placeholder {color: @standardschrifthell_positiv;}
+  .note-input:-moz-placeholder {color: @standardschrifthell_positiv;}
+  .note-input::-moz-placeholder {color: @standardschrifthell_positiv;}
+  .note-input:-ms-input-placeholder {color: @standardschrifthell_positiv;}
 
   .note-tooltip-content {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background: @hinweisedunkel_background;
   }
 
@@ -1053,46 +1053,46 @@ a.note-dropdown-item {
   }
 
   .note-popover-content {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     background-color: @standarddunkel_background;
   }
 
   .note-editor .note-dropzone {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     background-color: @infodunkel;
   }
 
-  .note-editor .note-dropzone.hover {color: @standardschrifthell_color;}
+  .note-editor .note-dropzone.hover {color: @standardschriftdunkel_positiv;}
 
   .note-editor .note-editing-area .note-editable table td,
   .note-editor .note-editing-area .note-editable table th {
-    border: 1px solid @schattiertdunkel_backgrounddunkel;
+    border: 1px solid @schattiertdunkel_abstufung2;
   }
 
-  .note-editor.note-frame {border: 1px solid @schattiertdunkel_backgroundhell;}
+  .note-editor.note-frame {border: 1px solid @schattiertdunkel_abstufung1;}
 
   .note-editor.note-frame .note-editing-area .note-editable {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     background-color: @standarddunkel_background;
   }
 
-  .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {background-color: @schattiertdunkel_backgroundhell;}
+  .note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {background-color: @schattiertdunkel_abstufung1;}
 
   .note-editor.note-frame .note-editing-area .note-codable {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     background-color: @standarddunkel_background;
   }
 
   .note-editor.note-frame.fullscreen .note-editable {background-color: @standarddunkel_background;}
-  .note-editor.note-frame .note-statusbar {background-color: @schattiertdunkel_backgroundhell;}
+  .note-editor.note-frame .note-statusbar {background-color: @schattiertdunkel_abstufung1;}
 
   .note-editor.note-frame .note-statusbar .note-resizebar .note-icon-bar {
-    border-top: 1px solid @schattiertdunkel_backgroundhell;;
+    border-top: 1px solid @schattiertdunkel_abstufung1;;
   }
 
   .note-editor.note-frame .note-placeholder {padding: 10px;}
   .note-popover {
-    border: 1px solid @schattiertdunkel_backgroundhell;
+    border: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .note-popover .note-popover-content, .note-toolbar {
@@ -1101,7 +1101,7 @@ a.note-dropdown-item {
 
   .note-popover .note-popover-content .note-btn-group .note-table .note-dimension-picker .note-dimension-picker-unhighlighted,
   .note-toolbar .note-btn-group .note-table .note-dimension-picker .note-dimension-picker-unhighlighted {
-    background-color: @schattiertdunkel_backgroundhell;
+    background-color: @schattiertdunkel_abstufung1;
   }
 
   .note-popover .note-popover-content .note-btn-group .note-table .note-dimension-picker .note-dimension-picker-highlighted,
@@ -1117,7 +1117,7 @@ a.note-dropdown-item {
 
   .note-popover .note-popover-content .note-dropdown-menu.note-check .note-dropdown-item i,
   .note-toolbar .note-dropdown-menu.note-check .note-dropdown-item i {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .note-popover .note-popover-content .note-color-palette div .note-color-btn, .note-toolbar .note-color-palette div .note-color-btn {
@@ -1127,10 +1127,10 @@ a.note-dropdown-item {
   .note-popover .note-popover-content .note-color-palette div .note-color-btn:hover,
   .note-toolbar .note-color-palette div .note-color-btn:hover {border: 1px solid @standardhell_background;}
 
-  .note-modal .note-modal-body .help-list-item:hover {background-color: @schattiertdunkel_backgroundhell;}
+  .note-modal .note-modal-body .help-list-item:hover {background-color: @schattiertdunkel_abstufung1;}
 
   .note-placeholder {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
   }
 
   .note-handle .note-control-selection {
@@ -1138,7 +1138,7 @@ a.note-dropdown-item {
   }
 
   .note-handle .note-control-selection .note-control-selection-bg {
-    background-color: @standardschrifthell_color;
+    background-color: @standardschriftdunkel_positiv;
   }
 
   .note-handle .note-control-selection .note-control-handle {
@@ -1155,7 +1155,7 @@ a.note-dropdown-item {
   }
 
   .note-handle .note-control-selection .note-control-selection-info {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background-color: @standardhell_background;
   }
 

@@ -3,13 +3,13 @@
 
 td.cms_notiz {
   text-align: center !important;
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
 }
 
 th.cms_zwischenueberschrift,
 th.cms_zwischenueberschrift *  {
   text-align: center !important;
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
   font-weight: bold;
 }
 
@@ -79,8 +79,8 @@ table .cms_senkrecht {
   border-collapse: collapse;
   border-spacing: 0px;
   background: @standardhell_background;
-  border-top: 1px @schattierthell_backgroundhell solid;
-  border-bottom: 1px @schattierthell_backgroundhell solid;
+  border-top: 1px @schattierthell_abstufung1 solid;
+  border-bottom: 1px @schattierthell_abstufung1 solid;
   margin-bottom: 7px;
   tr.min, td.min {
     width: 1%;
@@ -92,8 +92,8 @@ table .cms_senkrecht {
   font-weight: bold;
   padding: 3px 7px;
   text-align: left;
-  border-top: 1px @schattierthell_backgroundhell solid;
-  border-bottom: 1px @schattierthell_backgroundhell solid;
+  border-top: 1px @schattierthell_abstufung1 solid;
+  border-bottom: 1px @schattierthell_abstufung1 solid;
   line-height: 1.5em;
   transition: 250ms ease-in-out;
 }
@@ -102,7 +102,7 @@ table .cms_senkrecht {
   font-weight: normal;
   padding: 3px 7px;
   text-align: left;
-  border-bottom: 1px @schattierthell_backgroundhell solid;
+  border-bottom: 1px @schattierthell_abstufung1 solid;
   transition: 250ms ease-in-out;
 }
 
@@ -111,12 +111,12 @@ table .cms_senkrecht {
 }
 
 .cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
-	background: @schattierthell_backgroundhell;
+	background: @schattierthell_abstufung1;
 }
 
 .cms_postfach_liste .cms_postfach_vorschau {
   border-top: none;
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
   display: none;
 }
 
@@ -132,7 +132,7 @@ table .cms_senkrecht {
 .cms_tabelle_zwischentitel {
   font-weight: bold !important;
   text-align: center !important;
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
 }
 
 table.cms_zeitwahl {
@@ -170,7 +170,7 @@ table.table tr:nth-child(2n+1) td {
 
 th.cms_zwischenueberschrift {
   text-align: center;
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
 }
 
 th.cms_zahl, td.cms_zahl {
@@ -194,12 +194,12 @@ th.cms_zahl, td.cms_zahl {
 // DARKMODE
 @media (prefers-color-scheme: dark) {
   td.cms_notiz {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
   }
 
   th.cms_zwischenueberschrift,
   th.cms_zwischenueberschrift *  {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
   }
 
   .cms_formular {
@@ -208,29 +208,29 @@ th.cms_zahl, td.cms_zahl {
 
   .cms_liste {
     background: @standarddunkel_background;
-    border-top: 1px @schattiertdunkel_backgroundhell solid;
-    border-bottom: 1px @schattiertdunkel_backgroundhell solid;
+    border-top: 1px @schattiertdunkel_abstufung1 solid;
+    border-bottom: 1px @schattiertdunkel_abstufung1 solid;
   }
 
   .cms_liste th {
-    border-top: 1px @schattiertdunkel_backgroundhell solid;
-    border-bottom: 1px @schattiertdunkel_backgroundhell solid;
+    border-top: 1px @schattiertdunkel_abstufung1 solid;
+    border-bottom: 1px @schattiertdunkel_abstufung1 solid;
   }
 
   .cms_liste td {
-    border-bottom: 1px @schattiertdunkel_backgroundhell solid;
+    border-bottom: 1px @schattiertdunkel_abstufung1 solid;
   }
 
   .cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
-  	background: @schattiertdunkel_backgroundhell;
+  	background: @schattiertdunkel_abstufung1;
   }
 
   .cms_postfach_liste .cms_postfach_vorschau {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
   .cms_tabelle_zwischentitel {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
   }
 
   table.table td {

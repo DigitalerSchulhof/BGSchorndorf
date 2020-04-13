@@ -30,7 +30,7 @@
 }
 
 .cms_absender {text-align: right;}
-.cms_empfaenger, .cms_anhangtitel {color: @schattierthell_backgrounddunkel;}
+.cms_empfaenger, .cms_anhangtitel {color: @schattierthell_abstufung2;}
 
 .cms_postfach_papierkorb_aussen {
   width: 6px;
@@ -85,14 +85,14 @@
 .cms_signatur, .cms_originalnachricht_meta {
   margin-top: 15px;
   padding-top:5px;
-  border-top: 1px dotted @schattierthell_backgrounddunkel;
-  color: @schattierthell_backgrounddunkel;
+  border-top: 1px dotted @schattierthell_abstufung2;
+  color: @schattierthell_abstufung2;
   font-size: 80%;
 }
 
 .cms_originalnachricht {
   padding-left: 5px;
-  border-left: 2px solid @schattierthell_backgroundhell;
+  border-left: 2px solid @schattierthell_abstufung1;
 }
 
 .cms_versteckt {
@@ -137,7 +137,7 @@
   z-index: 2;
   width: 100%;
   max-width: 800px;
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 10px;
@@ -151,14 +151,14 @@
   font-weight: bold;
   padding: 5px !important;
   border-radius: 5px;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background-color: @fehlerdunkel;
 }
 
 .cms_auftragausstehend {
   padding: 5px !important;
   border-radius: 5px;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background-color: @fehlerdunkel;
   display: inline-block;
   text-align: center;
@@ -168,7 +168,7 @@
 .cms_auftragerledigt {
   padding: 5px !important;
   border-radius: 5px;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background-color: @erfolgdunkel;
   display: inline-block;
   text-align: center;
@@ -223,10 +223,12 @@
 
 #cms_speicherplatz_frei {
   width: 100%;
-  height: 20px;
+  height: 30px;
   margin-bottom: 3px;
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
   line-height: 1;
+  overflow:hidden;
+  border-radius: @sehrgrosserradius;
 }
 
 #cms_speicherplatz_system_balken, #cms_speicherplatz_website_balken,
@@ -252,7 +254,7 @@
 #cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: @warnunghell;}
 #cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @infohell;}
 #cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @erfolghell;}
-#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @schattierthell_backgrounddunkel;}
+#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @schattierthell_abstufung2;}
 
 
 
@@ -265,7 +267,7 @@
     box-shadow: 0px 0px 10px @fehlerhell;
   }
 
-  .cms_empfaenger, .cms_anhangtitel {color: @schattiertdunkel_backgrounddunkel;}
+  .cms_empfaenger, .cms_anhangtitel {color: @schattiertdunkel_abstufung2;}
 
   .cms_postfach_papierkorb_aussen {
     background: @fehlerdunkel;
@@ -276,12 +278,12 @@
   }
 
   .cms_signatur, .cms_originalnachricht_meta {
-    border-top: 1px dotted @schattiertdunkel_backgrounddunkel;
-    color: @schattiertdunkel_backgrounddunkel;
+    border-top: 1px dotted @schattiertdunkel_abstufung2;
+    color: @schattiertdunkel_abstufung2;
   }
 
   .cms_originalnachricht {
-    border-left: 2px solid @schattiertdunkel_backgroundhell;
+    border-left: 2px solid @schattiertdunkel_abstufung1;
   }
 
   #cms_debug {
@@ -289,21 +291,21 @@
   }
 
   #cms_gruppe_icon_auswahl {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
   .cms_genehmigungausstehend {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background-color: @fehlerhell;
   }
 
   .cms_auftragausstehend {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background-color: @fehlerhell;
   }
 
   .cms_auftragerledigt {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background-color: @erfolghell;
   }
 
@@ -318,12 +320,12 @@
 
 
   #cms_speicherplatz_frei {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
   #cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: @fehlerdunkel;}
   #cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: @warnungdunkel;}
   #cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @infodunkel;}
   #cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @erfolgdunkel;}
-  #cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @schattiertdunkel_backgrounddunkel;}
+  #cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @schattiertdunkel_abstufung2;}
 }

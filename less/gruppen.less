@@ -2,7 +2,7 @@
 @import "standard.less";
 
 .cms_uebersicht .cms_ersteller {
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
   display: none;
 }
 
@@ -24,7 +24,7 @@
 
 .cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
   cursor: pointer;
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
 }
 
 .cms_blogliste_details:hover {
@@ -37,7 +37,7 @@
 
 .cms_beschluss_angenommen {color: @erfolgdunkel;}
 .cms_beschluss_abgelehnt {color: @fehlerdunkel;}
-.cms_beschluss_vertagt {color: @schattierthell_backgrounddunkel;}
+.cms_beschluss_vertagt {color: @schattierthell_abstufung2;}
 
 .cms_beschlusseintrag p.cms_beschlussicons {
   margin: 0px;
@@ -67,7 +67,7 @@
 }
 
 .cms_aktionen_uebersicht li:last-child > p {
-  border-bottom: 1px solid @schattierthell_backgroundhell;
+  border-bottom: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_gruppen_oeffentlich_art {
@@ -93,7 +93,7 @@
 .cms_in {background: @warnunghell;}
 
 .cms_beschluss {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   padding: 5px;
   margin-bottom: @standardabsatz_schulhof_margin;
   display: block;
@@ -106,7 +106,7 @@
 }
 
 .cms_beschluss:hover {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   display: block;
 }
 
@@ -121,8 +121,8 @@
 }
 
 .cms_beschluss_enthaltung {
-  border-left: 3px solid @schattierthell_backgrounddunkel;
-  background: @schattierthell_backgroundhell;
+  border-left: 3px solid @schattierthell_abstufung2;
+  background: @schattierthell_abstufung1;
 }
 
 .cms_beschluss_stimmen {
@@ -132,13 +132,13 @@
 
 .cms_beschluss_stimmen_pro {background: @erfolgdunkel;}
 .cms_beschluss_stimmen_contra {background: @fehlerdunkel;}
-.cms_beschluss_stimmen_enthaltung {background: @schattierthell_backgrounddunkel;}
+.cms_beschluss_stimmen_enthaltung {background: @schattierthell_abstufung2;}
 
 .cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
   display: inline-block;
   padding: 2px 7px;
   font-weight: bold;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   text-align: center;
   min-width: 25px;
 }
@@ -156,7 +156,7 @@
 .cms_beschluss_langfristig {
   margin-left: 10px;
   border-radius: 7px;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   background: @standardhell_background;
 }
 
@@ -205,7 +205,7 @@
             cursor: pointer;
             .cms_chat_aktion {
               // .cms_hinweis
-              color: @standardschrifthell_color !important;
+              color: @standardschriftdunkel_positiv !important;
               background: @hinweisehell_background;
               padding: 0px 5px 0px 5px;
               position: absolute;
@@ -402,30 +402,30 @@
 // DARKMODE
 @media (prefers-color-scheme: dark) {
   .cms_uebersicht .cms_ersteller {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
   }
 
   .cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
-    background-color: @schattiertdunkel_backgroundhell;
+    background-color: @schattiertdunkel_abstufung1;
   }
 
   .cms_beschluss_angenommen {color: @erfolghell;}
   .cms_beschluss_abgelehnt {color: @fehlerhell;}
-  .cms_beschluss_vertagt {color: @schattiertdunkel_backgrounddunkel;}
+  .cms_beschluss_vertagt {color: @schattiertdunkel_abstufung2;}
 
   .cms_aktionen_uebersicht li:last-child > p {
-    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+    border-bottom: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_oe {background: @infodunkel;}
   .cms_in {background: @warnungdunkel;}
 
   .cms_beschluss {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .cms_beschluss:hover {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .cms_beschluss_pro {
@@ -439,20 +439,20 @@
   }
 
   .cms_beschluss_enthaltung {
-    border-left: 3px solid @schattiertdunkel_backgrounddunkel;
-    background: @schattiertdunkel_backgroundhell;
+    border-left: 3px solid @schattiertdunkel_abstufung2;
+    background: @schattiertdunkel_abstufung1;
   }
 
   .cms_beschluss_stimmen_pro {background: @erfolghell;}
   .cms_beschluss_stimmen_contra {background: @fehlerhell;}
-  .cms_beschluss_stimmen_enthaltung {background: @schattiertdunkel_backgrounddunkel;}
+  .cms_beschluss_stimmen_enthaltung {background: @schattiertdunkel_abstufung2;}
 
   .cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
   }
 
   .cms_beschluss_langfristig {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     background: @standarddunkel_background;
   }
 
@@ -468,7 +468,7 @@
           .cms_chat_nachricht_aktion {
             &[data-aktion=mehr] {
               .cms_chat_aktion {
-                color: @standardschriftdunkel_color !important;
+                color: @standardschrifthell_positiv !important;
                 background: @hinweisedunkel_background;
               }
             }

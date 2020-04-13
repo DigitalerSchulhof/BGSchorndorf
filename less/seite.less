@@ -4,7 +4,7 @@
 * {
 	font-family: @standardschriftart, sans-serif;
 	font-size: @standardschriftgroesse;
-	color: @standardschriftdunkel_color;
+	color: @standardschrifthell_positiv;
 	font-weight: normal;
 	padding: 0px;
 	margin: 0px;
@@ -15,7 +15,7 @@
 }
 
 body {
-  background: @seitenbackgroundhell;
+  background: @koerperbackgroundhell;
 }
 
 .cms_seite_normal #cms_kopfzeile_o {
@@ -41,7 +41,7 @@ body {
 }
 
 #cms_hauptbild_o {
-  background: @seitenbackgroundhell;
+  background: @koerperbackgroundhell;
   margin: 0px;
   padding: 0px;
   position: relative;
@@ -118,6 +118,10 @@ body {
   text-align: center;
   z-index: 5000;
   background: @infohell;
+}
+
+.cms_netzcheckstatus_lehrer {
+  background: @warnunghell !important;
 }
 
 .cms_spalte_i {
@@ -281,7 +285,7 @@ body {
 }
 
 .cms_groesseaendern:hover {
-	background-color: @schattierthell_backgrounddunkel;
+	background-color: @schattierthell_abstufung2;
 }
 
 .cms_groesseaendern:hover {cursor: ew-resize;}
@@ -294,7 +298,7 @@ body {
 // DARKMODE
 @media (prefers-color-scheme: dark) {
 	* {
-		color: @standardschrifthell_color;
+		color: @standardschriftdunkel_positiv;
 	}
 
 
@@ -312,7 +316,7 @@ body {
 	}
 
 	#cms_hauptbild_o {
-	  background: @seitenbackgrounddunkel;
+	  background: @koerperbackgrounddunkel;
 	}
 
 	#cms_hauptteil_o {
@@ -332,11 +336,15 @@ body {
 	  background: @infodunkel;
 	}
 
+	.cms_netzcheckstatus_lehrer {
+	  background: @warnungdunkel !important;
+	}
+
 	.cms_vollbild {
 	  background: @standarddunkel_background;
 	}
 
 	.cms_groesseaendern:hover {
-		background-color: @schattiertdunkel_backgrounddunkel;
+		background-color: @schattiertdunkel_abstufung2;
 	}
 }

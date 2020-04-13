@@ -1,20 +1,20 @@
 /* STANDARDWERTE */
 @standardschriftart: 'Arial';
 @standardschriftgroesse: 13px;
-@standardschriftdunkel_color: #000000;
-@standardschrifthell_color: #ffffff;
+@standardschrifthell_positiv: #000000;
+@standardschriftdunkel_positiv: #ffffff;
 @standardhell_background: #ffffff;
 @standarddunkel_background: #000000;
 @seitenbreite: 1000px;
-@seitenbackgroundhell: #ffffff;
-@seitenbackgrounddunkel: #ffffff;
+@koerperbackgroundhell: #ffffff;
+@koerperbackgrounddunkel: #ffffff;
 @themafarbe1: #0c76b2;
 @themafarbe2: #2c9d42;
 @themafarbe3: #fee31c;
-@schattierthell_backgroundhell: #dddddd;
-@schattierthell_backgrounddunkel: #aaaaaa;
-@schattiertdunkel_backgroundhell: #333333;
-@schattiertdunkel_backgrounddunkel: #555555;
+@schattierthell_abstufung1: #dddddd;
+@schattierthell_abstufung2: #aaaaaa;
+@schattiertdunkel_abstufung1: #333333;
+@schattiertdunkel_abstufung2: #555555;
 @erfolghell: #c7ff77;
 @erfolgdunkel: #65ad00;
 @fehlerhell: #f49461;
@@ -25,7 +25,7 @@
 @warnungdunkel: #d7a500;
 
 /* RUNDE ECKEN */
-@keinradius: 0px;
+@sehrkleinradius: 0px;
 @kleinerradius: 3px;
 @mittlererradius: 5px;
 @grosserradius: 7px;
@@ -39,7 +39,7 @@
 @buttonhellhover_color: #ffffff;
 @buttondunkel_color: #ffffff;
 @buttondunkelhover_color: #000000;
-@button_radius: @keinradius;
+@button_radius: @sehrkleinradius;
 
 /* TEXT */
 @standardlinkhell_color: @themafarbe1;
@@ -51,8 +51,8 @@
 @standardabsatz_brotkrumen_margin: 10px;
 @notizhell_color: #555555;
 @notizdunkel_color: #555555;
-@unscheinbarhell_color: #dddddd;
-@unscheinbardunkel_color: #dddddd;
+@notizhell_color: #dddddd;
+@notizdunkel_color: #dddddd;
 
 /* FORMULARE */
 @formularhell_background: #dddddd;
@@ -75,32 +75,32 @@
 @kopfzeiledunkel_button_background: @kopfzeile_backgrounddunkel;
 @kopfzeiledunkel_buttonhover_background: @themafarbe3;
 @kopfzeiledunkel_button_color: @themafarbe3;
-@kopfzeilehell_buttonhover_color: @standardschriftdunkel_color;
-@kopfzeiledunkel_buttonhover_color: @standardschrifthell_color;
+@kopfzeilehell_buttonhover_color: @standardschrifthell_positiv;
+@kopfzeiledunkel_buttonhover_color: @standardschriftdunkel_positiv;
 @kopfzeile_boxshadowhell: 0px 0px 10px @themafarbe1;
 @kopfzeile_boxshadowdunkel: 0px 0px 10px @themafarbe3;
 @kopfzeile_websitesuchehell_ergebnissehover_background: @themafarbe3;
 @kopfzeile_websitesuchedunkel_ergebnissehover_background: @themafarbe2;
 
 /* FUSSZEILE */
-@fusszeile_o_backgroundhell: @seitenbackgroundhell;
-@fusszeile_o_backgrounddunkel: @seitenbackgrounddunkel;
+@fusszeile_o_backgroundhell: @koerperbackgroundhell;
+@fusszeile_o_backgrounddunkel: @koerperbackgrounddunkel;
 @fusszeile_o_bordertop: 3px solid @themafarbe1;
 @fusszeilehell_button_background: transparent;
 @fusszeilehell_button_color: @themafarbe1;
 @fusszeilehell_buttonhover_background: @themafarbe1;
-@fusszeilehell_buttonhover_color: @standardschrifthell_color;
+@fusszeilehell_buttonhover_color: @standardschriftdunkel_positiv;
 @fusszeiledunkel_button_background: transparent;
 @fusszeiledunkel_button_color: @themafarbe3;
 @fusszeiledunkel_buttonhover_background: @themafarbe1;
-@fusszeiledunkel_buttonhover_color: @standardschrifthell_color;
+@fusszeiledunkel_buttonhover_color: @standardschriftdunkel_positiv;
 @fusszeilehell_link_color: @themafarbe1;
 @fusszeilehell_linkhover_color: @themafarbe2;
 @fusszeiledunkel_link_color: @themafarbe3;
-@fusszeiledunkel_linkhover_color: @standardschrifthell_color;
+@fusszeiledunkel_linkhover_color: @standardschriftdunkel_positiv;
 
 /* NAVIGATION */
-@navi_bereiche_display: inline-block;
+@navi_haupt_kategorien_display: inline-block;
 @navi_suche_display: inline-block;
 @navi_schulhof_top: 140px;
 @navi_haupt_top: auto;
@@ -114,8 +114,8 @@
 @navi_haupt_mobilnavi_backgrounddunkel: @themafarbe3;
 @navi_haupt_mobilnavihover_backgroundhell: @themafarbe3;
 @navi_haupt_mobilnavihover_backgrounddunkel: @themafarbe1;
-@navi_haupt_li_a_colorhell: @standardschrifthell_color;
-@navi_haupt_li_a_colordunkel: @standardschrifthell_color;
+@navi_haupt_li_a_colorhell: @standardschriftdunkel_positiv;
+@navi_haupt_li_a_colordunkel: @standardschriftdunkel_positiv;
 @navi_haupt_li_a_height: 35px;
 @navi_haupt_li_a_radiustr: 0px;
 @navi_haupt_li_a_radiustl: 0px;
@@ -124,8 +124,8 @@
 @navi_haupt_li_a_padding: 7px 10px;
 @navi_haupt_lihover_a_backgroundhell: @themafarbe2;
 @navi_haupt_lihover_a_backgrounddunkel: @themafarbe3;
-@navi_haupt_lihover_a_colorhell: @standardschrifthell_color;
-@navi_haupt_lihover_a_colordunkel: @standardschriftdunkel_color;
+@navi_haupt_lihover_a_colorhell: @standardschriftdunkel_positiv;
+@navi_haupt_lihover_a_colordunkel: @standardschrifthell_positiv;
 @navi_haupt_akzenthell: @themafarbe1;
 @navi_haupt_akzentdunkel: @themafarbe3;
 @navi_haupt_untermenue_top: 35px;
@@ -143,9 +143,9 @@
 @kalenderblatthell_klein_randcolor: @themafarbe3;
 @kalenderblattdunkel_klein_randcolor: @themafarbe3;
 @kalenderblatthell_klein_monat_background: @standardhell_background;
-@kalenderblatthell_klein_monat_color: @standardschriftdunkel_color;
+@kalenderblatthell_klein_monat_color: @standardschrifthell_positiv;
 @kalenderblattdunkel_klein_monat_background: @standardhell_background;
-@kalenderblattdunkel_klein_monat_color: @standardschriftdunkel_color;
+@kalenderblattdunkel_klein_monat_color: @standardschrifthell_positiv;
 @kalenderblatt_klein_monat_fontweight: bold;
 @kalenderblatt_klein_monat_bordertop: 2px solid;
 @kalenderblatt_klein_monat_borderleft: none;
@@ -156,9 +156,9 @@
 @kalenderblatt_klein_monat_radiusbr: 0px;
 @kalenderblatt_klein_monat_radiusbl: 0px;
 @kalenderblatthell_klein_tagbez_background: @standardhell_background;
-@kalenderblatthell_klein_tagbez_color: @standardschriftdunkel_color;
+@kalenderblatthell_klein_tagbez_color: @standardschrifthell_positiv;
 @kalenderblattdunkel_klein_tagbez_background: @standardhell_background;
-@kalenderblattdunkel_klein_tagbez_color: @standardschriftdunkel_color;
+@kalenderblattdunkel_klein_tagbez_color: @standardschrifthell_positiv;
 @kalenderblatt_klein_tagbez_fontweight: normal;
 @kalenderblatt_klein_tagbez_bordertop: none;
 @kalenderblatt_klein_tagbez_borderleft: none;
@@ -185,9 +185,9 @@
 @kalenderblatthell_gross_randcolor: @themafarbe3;
 @kalenderblattdunkel_gross_randcolor: @themafarbe3;
 @kalenderblatthell_gross_monat_background: @standardhell_background;
-@kalenderblatthell_gross_monat_color: @standardschriftdunkel_color;
+@kalenderblatthell_gross_monat_color: @standardschrifthell_positiv;
 @kalenderblattdunkel_gross_monat_background: @standardhell_background;
-@kalenderblattdunkel_gross_monat_color: @standardschriftdunkel_color;
+@kalenderblattdunkel_gross_monat_color: @standardschrifthell_positiv;
 @kalenderblatt_gross_monat_fontweight: bold;
 @kalenderblatt_gross_monat_bordertop: 5px solid;
 @kalenderblatt_gross_monat_borderleft: none;
@@ -198,9 +198,9 @@
 @kalenderblatt_gross_monat_radiusbr: 0px;
 @kalenderblatt_gross_monat_radiusbl: 0px;
 @kalenderblatthell_gross_tagbez_background: @standardhell_background;
-@kalenderblatthell_gross_tagbez_color: @standardschriftdunkel_color;
+@kalenderblatthell_gross_tagbez_color: @standardschrifthell_positiv;
 @kalenderblattdunkel_gross_tagbez_background: @standardhell_background;
-@kalenderblattdunkel_gross_tagbez_color: @standardschriftdunkel_color;
+@kalenderblattdunkel_gross_tagbez_color: @standardschrifthell_positiv;
 @kalenderblatt_gross_tagbez_fontweight: normal;
 @kalenderblatt_gross_tagbez_bordertop: none;
 @kalenderblatt_gross_tagbez_borderleft: none;
@@ -236,30 +236,30 @@
 @zugehoerig_radiusbl: 0px;
 @zugehoerighellhover_background: @themafarbe3;
 @zugehoerigdunkelhover_background: @themafarbe2;
-@zugehoerighellhover_color: @standardschrifthell_color;
-@zugehoerigdunkelhover_color: @standardschriftdunkel_color;
+@zugehoerighellhover_color: @standardschriftdunkel_positiv;
+@zugehoerigdunkelhover_color: @standardschrifthell_positiv;
 
 /* REITER */
-@reiterhell_background: @schattierthell_backgroundhell;
-@reiterhell_color: @schattierthell_backgrounddunkel;
-@reiterdunkel_background: @schattiertdunkel_backgroundhell;
-@reiterdunkel_color: @schattiertdunkel_backgrounddunkel;
+@reiterhell_background: @schattierthell_abstufung1;
+@reiterhell_color: @schattierthell_abstufung2;
+@reiterdunkel_background: @schattiertdunkel_abstufung1;
+@reiterdunkel_color: @schattiertdunkel_abstufung2;
 @reiter_radiustr: 0px;
 @reiter_radiustl: 0px;
 @reiter_radiusbr: 0px;
 @reiter_radiusbl: 0px;
-@reiterhellaktiv_background: @schattierthell_backgrounddunkel;
-@reiterhellaktiv_color: @standardschrifthell_color;
-@reiterdunkelaktiv_background: @schattiertdunkel_backgrounddunkel;
-@reiterdunkelaktiv_color: @standardschriftdunkel_color;
+@reiterhellaktiv_background: @schattierthell_abstufung2;
+@reiterhellaktiv_color: @standardschriftdunkel_positiv;
+@reiterdunkelaktiv_background: @schattiertdunkel_abstufung2;
+@reiterdunkelaktiv_color: @standardschrifthell_positiv;
 @reiteraktiv_radiustr: 0px;
 @reiteraktiv_radiustl: 0px;
 @reiteraktiv_radiusbr: 0px;
 @reiteraktiv_radiusbl: 0px;
-@reiterhellhover_background: @schattierthell_backgrounddunkel;
-@reiterhellhover_color: @standardschrifthell_color;
-@reiterdunkelhover_background: @schattiertdunkel_backgrounddunkel;
-@reiterdunkelhover_color: @standardschriftdunkel_color;
+@reiterhellhover_background: @schattierthell_abstufung2;
+@reiterhellhover_color: @standardschriftdunkel_positiv;
+@reiterdunkelhover_background: @schattiertdunkel_abstufung2;
+@reiterdunkelhover_color: @standardschrifthell_positiv;
 @reiterhover_radiustr: 0px;
 @reiterhover_radiustl: 0px;
 @reiterhover_radiusbr: 0px;
@@ -267,17 +267,17 @@
 
 /* HINWEISE */
 @hinweisehell_background: rgba(0, 0, 0, 0.75);
-@hinweise_radiustl: @keinradius;
-@hinweise_radiustr: @keinradius;
-@hinweise_radiusbl: @keinradius;
-@hinweise_radiusbr: @keinradius;
+@hinweise_radiustl: @sehrkleinradius;
+@hinweise_radiustr: @sehrkleinradius;
+@hinweise_radiusbl: @sehrkleinradius;
+@hinweise_radiusbr: @sehrkleinradius;
 
 /* AUSZEICHNUNGEN */
 @auszeichnung_margin: 0px 0px 0px 10px;
-@auszeichnung_radiustl: @keinradius;
-@auszeichnung_radiustr: @keinradius;
-@auszeichnung_radiusbl: @keinradius;
-@auszeichnung_radiusbr: @keinradius;
+@auszeichnung_radiustl: @sehrkleinradius;
+@auszeichnung_radiustr: @sehrkleinradius;
+@auszeichnung_radiusbl: @sehrkleinradius;
+@auszeichnung_radiusbr: @sehrkleinradius;
 @auszeichnunghell_background: @fusszeilehell_button_background;
 @auszeichnunghell_color: @fusszeilehell_button_color;
 @auszeichnunghellhover_background: @fusszeilehell_buttonhover_background;
@@ -288,23 +288,23 @@
 @auszeichnungdunkelhover_color: @fusszeiledunkel_buttonhover_color;
 
 /* GALERIEN */
-@galerien_bildknopfhell_background: @schattierthell_backgroundhell;
+@galerien_bildknopfhell_background: @schattierthell_abstufung1;
 @galerien_bildknopfhellhover_background: @themafarbe1;
 @galerien_bildknopfhellaktiv_background: @themafarbe1;
-@galerien_bildknopfdunkel_background: @schattiertdunkel_backgroundhell;
+@galerien_bildknopfdunkel_background: @schattiertdunkel_abstufung1;
 @galerien_bildknopfdunkelhover_background: @themafarbe3;
 @galerien_bildknopfdunkelaktiv_background: @themafarbe3;
 @galerien_bildknopf_width: 12px;
 @galerien_bildknopf_height: 12px;
 
 /* CHAT */
-@chatandererhell: @schattierthell_backgroundhell;
-@chatandererdunkel: @schattiertdunkel_backgroundhell;
+@chatandererhell: @schattierthell_abstufung1;
+@chatandererdunkel: @schattiertdunkel_abstufung1;
 @chateigenhell: @themafarbe3;
 @chateigendunkel: @themafarbe2;
 
 /* BEDINGTE RECHTE */
-@bedingthell_logisch: #94d1ff;
-@bedingthell_bedingung: #ffd95a;
-@bedingtdunkel_logisch: @infodunkel;
-@bedingtdunkel_bedingung: @warnungdunkel;
+@infohell: #94d1ff;
+@warnunghell: #ffd95a;
+@infodunkel: @infodunkel;
+@warnungdunkel: @warnungdunkel;

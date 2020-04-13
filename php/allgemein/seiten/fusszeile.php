@@ -4,12 +4,12 @@ $beta = "&beta;-Testphase Version $CMS_VERSION – ";
 
 if ($CMS_ANGEMELDET) {
 	$lehrer = "";
-	$style = "";
+	$class = "";
 	if ($CMS_IMLN) {
 		$lehrer = ", Lehrerzimmer";
-		$style = "background-color: #ffd95a";
+		$class = "cms_netzcheckstatus_lehrer";
 	}
-	echo "<div id=\"cms_netzcheckstatus\" style=\"$style\">".$beta." <span id=\"cms_netzcheckstatus_sh\">Schulhof</span><span id=\"cms_netzcheckstatus_lz\">$lehrer</span></div>";
+	echo "<div id=\"cms_netzcheckstatus\" class=\"$class\">".$beta." <span id=\"cms_netzcheckstatus_sh\">Schulhof</span><span id=\"cms_netzcheckstatus_lz\">$lehrer</span></div>";
 }
 
 if ($CMS_URL[0] != 'App') {

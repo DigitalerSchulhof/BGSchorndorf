@@ -2,10 +2,10 @@
 @import "standard.less";
 
 .cms_meldung {
-	background-color: @schattierthell_backgroundhell;
+	background-color: @schattierthell_abstufung1;
 	background-repeat: no-repeat;
 	background-position: 5px 5px;
-	border-left: 4px solid @schattierthell_backgrounddunkel;
+	border-left: 4px solid @schattierthell_abstufung2;
 	padding: 10px 10px 10px 10px;
 	margin: 10px 0px;
 	min-height: 42px;
@@ -18,11 +18,11 @@
 
 .cms_meldung_laden {
 	background-color: @standardhell_background;
-	border: 3px dashed @schattierthell_backgroundhell;
+	border: 3px dashed @schattierthell_abstufung1;
 	padding: 5px;
 	margin: 10px 0px;
 	text-align: center;
-	color: @schattierthell_backgrounddunkel;
+	color: @schattierthell_abstufung2;
 }
 
 .cms_meldung_info {
@@ -31,8 +31,8 @@
 }
 
 .cms_meldung_vplan {
-	background-color: @schattierthell_backgroundhell;
-	border-color: @schattierthell_backgrounddunkel;
+	background-color: @schattierthell_abstufung1;
+	border-color: @schattierthell_abstufung2;
 	opacity: 1;
 }
 
@@ -72,24 +72,24 @@
 .cms_geschuetzerinhalt {
 	font-family: inherit;
 	background-color: @standardhell_background;
-	color: @schattierthell_backgrounddunkel;
+	color: @schattierthell_abstufung2;
 	border: 2px dashed @fehlerhell;
 	padding: 5px;
 	margin: 10px 0px;
 }
 
 .cms_geschuetzerinhalt p, .cms_ladebox {
-	color: @schattierthell_backgrounddunkel;
+	color: @schattierthell_abstufung2;
 	text-align: center;
 }
 
 .cms_ladebox {
-	border: 2px dashed @schattierthell_backgrounddunkel;
+	border: 2px dashed @schattierthell_abstufung2;
 	padding: 10px;
 }
 
 .cms_systemvoraussetzung {
-	background: @schattierthell_backgroundhell;
+	background: @schattierthell_abstufung1;
 	border-radius: 5px;
 }
 
@@ -107,14 +107,14 @@
 // DARKMODE
 @media (prefers-color-scheme: dark) {
 	.cms_meldung {
-		background-color: @schattiertdunkel_backgroundhell;
-		border-left: 4px solid @schattiertdunkel_backgrounddunkel;
+		background-color: @schattiertdunkel_abstufung1;
+		border-left: 4px solid @schattiertdunkel_abstufung2;
 		}
 
 	.cms_meldung_laden {
 		background-color: @standarddunkel_background;
-		border: 3px dashed @schattiertdunkel_backgroundhell;
-		color: @schattiertdunkel_backgrounddunkel;
+		border: 3px dashed @schattiertdunkel_abstufung1;
+		color: @schattiertdunkel_abstufung2;
 	}
 
 	.cms_meldung_info {
@@ -123,8 +123,8 @@
 	}
 
 	.cms_meldung_vplan {
-		background-color: @schattiertdunkel_backgroundhell;
-		border-color: @schattiertdunkel_backgrounddunkel;
+		background-color: @schattiertdunkel_abstufung1;
+		border-color: @schattiertdunkel_abstufung2;
 	}
 
 	.cms_meldung_erfolg {
@@ -159,19 +159,19 @@
 
 	.cms_geschuetzerinhalt {
 		background-color: @standarddunkel_background;
-		color: @schattiertdunkel_backgrounddunkel;
+		color: @schattiertdunkel_abstufung2;
 		border: 2px dashed @fehlerdunkel;
 	}
 
 	.cms_geschuetzerinhalt p, .cms_ladebox {
-		color: @schattiertdunkel_backgrounddunkel;
+		color: @schattiertdunkel_abstufung2;
 	}
 
 	.cms_ladebox {
-		border: 2px dashed @schattiertdunkel_backgrounddunkel;
+		border: 2px dashed @schattiertdunkel_abstufung2;
 	}
 
 	.cms_systemvoraussetzung {
-		background: @schattiertdunkel_backgroundhell;
+		background: @schattiertdunkel_abstufung1;
 	}
 }

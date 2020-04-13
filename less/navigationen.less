@@ -7,7 +7,7 @@
 
 .cms_kopfnavigation li {
   list-style-type: none;
-  display: @navi_bereiche_display;
+  display: @navi_haupt_kategorien_display;
   margin-left: 3px;
   margin-right: 0px;
 }
@@ -118,7 +118,7 @@
 }
 
 #cms_kopfnavigation > li > .cms_naviuntermenue {
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
   width: 200px;
   position: absolute;
   right: @navi_haupt_untermenue_right;
@@ -150,7 +150,7 @@
 
 #cms_kopfnavigation > li ul li a,
 #cms_kopfnavigation > li ul li span {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   display: block;
   padding: 3px 7px;
   border-radius: @button_radius;
@@ -158,12 +158,12 @@
 
 #cms_kopfnavigation > li ul li a:hover,
 #cms_kopfnavigation > li ul li span:hover {
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   cursor: pointer;
 }
 
 .cms_unternavigation_m {
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
   border-bottom: 3px solid @navi_haupt_akzenthell;
   border-top: 3px solid @navi_haupt_akzenthell;
   width: @seitenbreite;
@@ -195,16 +195,16 @@
 }
 
 .cms_navigation > li {
-  border-top: 1px solid @schattierthell_backgroundhell;
+  border-top: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_navigation > li:last-child {
-  border-bottom: 1px solid @schattierthell_backgroundhell;
+  border-bottom: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_navigation > li a,
 .cms_navigation > li span {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   display: block;
   padding: 10px 5px;
   transition: 500ms ease-in-out;
@@ -212,24 +212,24 @@
 
 .cms_navigation > li a:hover,
 .cms_navigation > li span:hover {
-  color: @standardschriftdunkel_color;
-  background: @schattierthell_backgroundhell;
+  color: @standardschrifthell_positiv;
+  background: @schattierthell_abstufung1;
   transform: translate(0px) !important;
   cursor: pointer;
 }
 
 .cms_navigation > li > .cms_navigation_aktiveseite {
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background: @navi_haupt_akzenthell;
 }
 
 .cms_navigation > li > .cms_navigation_aktiveseite:hover {
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   background: @navi_haupt_akzenthell;
 }
 
 .cms_navigation > li li .cms_navigation_aktiveseite {
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
 }
 
 .cms_navigation .cms_naviuntermenue {
@@ -245,7 +245,6 @@
 #cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
   width: 100%;
   background: @erfolghell;
-  border-radius: 5px;
   transition: 100ms ease-in-out;
 }
 
@@ -262,6 +261,7 @@
   border-radius: 5px;
   margin-bottom: 3px;
   background: @fehlerhell;
+  overflow:hidden;
 }
 
 #cms_aktivitaet_out, #cms_maktivitaet_out {
@@ -278,7 +278,7 @@
   border-top-left-radius: 5px;
   display: inline-block;
   background-color: @navi_haupt_mobilnavi_backgroundhell !important;
-  color: @standardschrifthell_color !important;
+  color: @standardschriftdunkel_positiv !important;
   padding: 4px 10px;
   font-weight: bold;
   line-height: 20px;
@@ -298,7 +298,7 @@
   width: 20px;
   height: 4px;
   border-radius: 2px;
-  background-color: @standardschrifthell_color;
+  background-color: @standardschriftdunkel_positiv;
   margin: 4px 0;
   display: block;
 }
@@ -310,7 +310,7 @@
   top: 0px;
   width: 100%;
   height: 100%;
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
   z-index: 100000;
   overflow-y: scroll;
 }
@@ -363,13 +363,13 @@
   margin: 0px;
 }
 
-#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattierthell_backgrounddunkel;}
-#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattierthell_backgrounddunkel;}
+#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattierthell_abstufung2;}
+#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattierthell_abstufung2;}
 
 #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
   padding: 5px;
   transition: 250ms ease-in-out;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   display: inline-block;
   border-radius: @button_radius;
   position: relative;
@@ -378,10 +378,10 @@
 #cms_mobilmenue_seiten li .cms_meldezahl {
   position: absolute;
   padding: 3px 5px;
-  background: @schattierthell_backgrounddunkel;
+  background: @schattierthell_abstufung2;
   border-radius: 10px;
   opacity: 1;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
   display: block;
   top: 3px;
   right: 4px;
@@ -399,7 +399,7 @@
 #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
   transform: translate(0px) !important;
   cursor: pointer;
-  color: @standardschrifthell_color;
+  color: @standardschriftdunkel_positiv;
 }
 
 #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {width: 90%;}
@@ -412,12 +412,12 @@
   background-color: @navi_haupt_mobilnavihover_backgroundhell;
 }
 #cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {
-  background-color: @schattierthell_backgrounddunkel;
+  background-color: @schattierthell_abstufung2;
 }
 
 #cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
   cursor: default !important;
-  color: @standardschriftdunkel_color !important;
+  color: @standardschrifthell_positiv !important;
   background-color: transparent !important;
 }
 
@@ -462,11 +462,11 @@
 .cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
   display: block;
   padding: 5px 5px 5px 47px;
-  border-top: 1px solid @schattierthell_backgroundhell;
+  border-top: 1px solid @schattierthell_abstufung1;
   background-repeat: no-repeat;
   background-position: 5px 5px;
   min-height: 42px;
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   position: relative;
 }
 
@@ -484,7 +484,7 @@
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
 .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
 .cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
-    border-bottom: 1px solid @schattierthell_backgroundhell;
+    border-bottom: 1px solid @schattierthell_abstufung1;
 }
 
 .cms_uebersicht li a p,
@@ -537,7 +537,7 @@
 }
 
 .cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
-  background-color: @schattierthell_backgroundhell;
+  background-color: @schattierthell_abstufung1;
   transform: translateX(0) translateY(0);
   cursor: pointer;
 }
@@ -563,14 +563,14 @@
   width: 100%;
   border-radius: 5px;
   margin-bottom: 3px;
-  background: @schattierthell_backgroundhell;
+  background: @schattierthell_abstufung1;
 }
 
 .cms_anteilbalken_notiz {
   text-align: center;
   margin-bottom: 20px;
   font-size: 70%;
-  color: @schattierthell_backgrounddunkel;
+  color: @schattierthell_abstufung2;
 }
 
 
@@ -595,7 +595,7 @@
   }
 
   #cms_kopfnavigation > li > .cms_naviuntermenue {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
   #cms_kopfnavigation > li ul {
@@ -605,52 +605,52 @@
 
   #cms_kopfnavigation > li ul li a,
   #cms_kopfnavigation > li ul li span {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   #cms_kopfnavigation > li ul li a:hover,
   #cms_kopfnavigation > li ul li span:hover {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     cursor: pointer;
   }
 
   .cms_unternavigation_m {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
     border-bottom: 3px solid @navi_haupt_akzentdunkel;
     border-top: 3px solid @navi_haupt_akzentdunkel;
   }
 
   .cms_navigation > li {
-    border-top: 1px solid @schattiertdunkel_backgroundhell;
+    border-top: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_navigation > li:last-child {
-    border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+    border-bottom: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_navigation > li a,
   .cms_navigation > li span {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   .cms_navigation > li a:hover,
   .cms_navigation > li span:hover {
-    color: @standardschrifthell_color;
-    background: @schattiertdunkel_backgroundhell;
+    color: @standardschriftdunkel_positiv;
+    background: @schattiertdunkel_abstufung1;
   }
 
   .cms_navigation > li > .cms_navigation_aktiveseite {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background: @navi_haupt_akzentdunkel;
   }
 
   .cms_navigation > li > .cms_navigation_aktiveseite:hover {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
     background: @navi_haupt_akzentdunkel;
   }
 
   .cms_navigation > li li .cms_navigation_aktiveseite {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
   #cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
@@ -667,7 +667,7 @@
 
   #cms_mobilnavigation {
     background-color: @navi_haupt_mobilnavi_backgrounddunkel !important;
-    color: @standardschriftdunkel_color !important;
+    color: @standardschrifthell_positiv !important;
   }
 
   #cms_mobilnavigation:hover {
@@ -676,23 +676,23 @@
   }
 
   .cms_menuicon {
-    background-color: @standardschriftdunkel_color;
+    background-color: @standardschrifthell_positiv;
   }
 
   #cms_mobilmenue_a {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
-  #cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattiertdunkel_backgrounddunkel;}
-  #cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattiertdunkel_backgrounddunkel;}
+  #cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @schattiertdunkel_abstufung2;}
+  #cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @schattiertdunkel_abstufung2;}
 
   #cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
   }
 
   #cms_mobilmenue_seiten li .cms_meldezahl {
-    background: @schattiertdunkel_backgrounddunkel;
-    color: @standardschriftdunkel_color;
+    background: @schattiertdunkel_abstufung2;
+    color: @standardschrifthell_positiv;
   }
 
   #cms_mobilmenue_seiten li .cms_meldezahl_wichtig {
@@ -700,18 +700,18 @@
   }
 
   #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
-    color: @standardschriftdunkel_color;
+    color: @standardschrifthell_positiv;
   }
 
   #cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
     background-color: @navi_haupt_mobilnavihover_backgrounddunkel;
   }
   #cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {
-    background-color: @schattiertdunkel_backgrounddunkel;
+    background-color: @schattiertdunkel_abstufung2;
   }
 
   #cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
-    color: @standardschrifthell_color !important;
+    color: @standardschriftdunkel_positiv !important;
   }
 
   .cms_uebersicht li a,
@@ -724,8 +724,8 @@
   .cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften,
   .cms_uebersicht li span.cms_uebersicht_verwaltung_ferien,
   .cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
-    border-top: 1px solid @schattiertdunkel_backgroundhell;
-    color: @standardschrifthell_color;
+    border-top: 1px solid @schattiertdunkel_abstufung1;
+    color: @standardschriftdunkel_positiv;
   }
 
   .cms_uebersicht li:last-child a,
@@ -738,11 +738,11 @@
   .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
   .cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
   .cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
-      border-bottom: 1px solid @schattiertdunkel_backgroundhell;
+      border-bottom: 1px solid @schattiertdunkel_abstufung1;
   }
 
   .cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
-    background-color: @schattiertdunkel_backgroundhell;
+    background-color: @schattiertdunkel_abstufung1;
   }
 
   .cms_uebersicht .cms_blog_keinhover {
@@ -754,10 +754,10 @@
   }
 
   .cms_anteilbalken_aussen {
-    background: @schattiertdunkel_backgroundhell;
+    background: @schattiertdunkel_abstufung1;
   }
 
   .cms_anteilbalken_notiz {
-    color: @schattiertdunkel_backgrounddunkel;
+    color: @schattiertdunkel_abstufung2;
   }
 }

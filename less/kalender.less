@@ -11,13 +11,13 @@
 }
 
 .cms_kalender_kw, .cms_kalender_tag {font-weight: bold; padding: 6px 0px 5px 0px;}
-.cms_kalender_kw {color: @schattierthell_backgrounddunkel;}
+.cms_kalender_kw {color: @schattierthell_abstufung2;}
 
 .cms_kalender_kwzahl, .cms_kalender_tagzahl {font-weight: normal;}
-.cms_kalender_kwzahl {color: @schattierthell_backgrounddunkel;}
+.cms_kalender_kwzahl {color: @schattierthell_abstufung2;}
 
 .cms_kalenderzahl {
-  color: @standardschriftdunkel_color;
+  color: @standardschrifthell_positiv;
   padding: 6px 0px 5px 0px;
   border-radius: 7px;
   text-align: center;
@@ -28,8 +28,8 @@
 }
 
 .cms_kalenderzahl:hover {
-  border: 3px solid @schattierthell_backgrounddunkel;
-  color: @standardschriftdunkel_color;
+  border: 3px solid @schattierthell_abstufung2;
+  color: @standardschrifthell_positiv;
 }
 
 .cms_kalenderzahl_heute {border: 3px solid @fehlerdunkel;}
@@ -37,24 +37,24 @@
 .cms_kalenderzahl_persoenlich {background: @fehlerhell;}
 .cms_kalenderzahl_oeffentlich {background: @warnunghell;}
 .cms_kalenderzahl_ferien {background: @erfolghell;}
-.cms_kalenderzahl_sichtbar {background: @schattierthell_backgroundhell;}
+.cms_kalenderzahl_sichtbar {background: @schattierthell_abstufung1;}
 
 
 
 // DARKMODE
 @media (prefers-color-scheme: dark) {
-  .cms_kalender_kw {color: @schattiertdunkel_backgrounddunkel;}
+  .cms_kalender_kw {color: @schattiertdunkel_abstufung2;}
 
-  .cms_kalender_kwzahl {color: @schattiertdunkel_backgrounddunkel;}
+  .cms_kalender_kwzahl {color: @schattiertdunkel_abstufung2;}
 
   .cms_kalenderzahl {
-    color: @standardschrifthell_color;
+    color: @standardschriftdunkel_positiv;
     border: 3px solid @standarddunkel_background;
   }
 
   .cms_kalenderzahl:hover {
-    border: 3px solid @schattiertdunkel_backgrounddunkel;
-    color: @standardschrifthell_color;
+    border: 3px solid @schattiertdunkel_abstufung2;
+    color: @standardschriftdunkel_positiv;
   }
 
   .cms_kalenderzahl_heute {border: 3px solid @fehlerhell;}
@@ -62,5 +62,5 @@
   .cms_kalenderzahl_persoenlich {background: @fehlerdunkel;}
   .cms_kalenderzahl_oeffentlich {background: @warnungdunkel;}
   .cms_kalenderzahl_ferien {background: @erfolgdunkel;}
-  .cms_kalenderzahl_sichtbar {background: @schattiertdunkel_backgroundhell;}
+  .cms_kalenderzahl_sichtbar {background: @schattiertdunkel_abstufung1;}
 }

@@ -23,7 +23,7 @@ function cms_netzcheck(zeigen) {
 			if (anfrage.readyState==4 && anfrage.status==200) {
 				if (zeigen == 'j') {
 					lzfeld.innerHTML = ", Lehrerzimmer";
-					feld.style.backgroundColor = "#ffd95a";
+					feld.className = "cms_netzcheckstatus_lehrer";
 				}
 				CMS_IMLN = true;
 				var formulardaten = new FormData();
@@ -34,7 +34,7 @@ function cms_netzcheck(zeigen) {
 			else if (anfrage.readyState==4) {
 				if (zeigen == 'j') {
 					lzfeld.innerHTML = "";
-					feld.style.backgroundColor = "#94d1ff";
+					feld.className = "";
 				}
 				CMS_IMLN = false;
 				var formulardaten = new FormData();

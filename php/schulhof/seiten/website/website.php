@@ -33,6 +33,9 @@ if(cms_r("schulhof.information.newsletter.*"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">Newsletter</a> ";
 if (cms_r("website.weiterleiten"))
   $website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_weiterleiten\" href=\"Schulhof/Website/Weiterleiten\">Weiterleitungen</a> ";
+if (cms_r("website.styleändern")) {
+	$website .= "<a class=\"cms_iconbutton cms_uebersicht_verwaltung_website_styleaendern\" href=\"Schulhof/Website/Style_ändern\">Style ändern</a> ";
+}
 
 if (strlen($website) > 0)
 	$code .= "<p>".$website."</p>";
