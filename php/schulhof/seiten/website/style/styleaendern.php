@@ -87,6 +87,7 @@ if (cms_r("website.styleändern")) {
   $aliashfarbe = "<option value=\"-\">kein Farbalias</option>";
   $aliashfarbe .= "<option value=\"cms_style_h_haupt_schriftfarbepositiv\">Schriftfarbe positiv</option>";
   $aliashfarbe .= "<option value=\"cms_style_h_haupt_schriftfarbenegativ\">Schriftfarbe negativ</option>";
+  $aliashfarbe .= "<option value=\"cms_style_h_haupt_koerperhintergrund\">Körperhintergrund</option>";
   $aliashfarbe .= "<option value=\"cms_style_h_haupt_hintergrund\">Hintergrund</option>";
   $aliashfarbe .= "<option value=\"cms_style_h_haupt_abstufung1\">Hintergrund Abstufung 1</option>";
   $aliashfarbe .= "<option value=\"cms_style_h_haupt_abstufung2\">Hintergrund Abstufung 2</option>";
@@ -106,6 +107,7 @@ if (cms_r("website.styleändern")) {
   $aliasdfarbe = "<option value=\"-\">kein Farbalias</option>";
   $aliasdfarbe .= "<option value=\"cms_style_d_haupt_schriftfarbepositiv\">Schriftfarbe positiv</option>";
   $aliasdfarbe .= "<option value=\"cms_style_d_haupt_schriftfarbenegativ\">Schriftfarbe negativ</option>";
+  $aliasdfarbe .= "<option value=\"cms_style_d_haupt_koerperhintergrund\">Körperhintergrund</option>";
   $aliasdfarbe .= "<option value=\"cms_style_d_haupt_hintergrund\">Hintergrund</option>";
   $aliasdfarbe .= "<option value=\"cms_style_d_haupt_abstufung1\">Hintergrund Abstufung 1</option>";
   $aliasdfarbe .= "<option value=\"cms_style_d_haupt_abstufung2\">Hintergrund Abstufung 2</option>";
@@ -462,10 +464,10 @@ $code .= "<tr><th>Anzeige der Suche:</th><td colspan=\"2\">".cms_generiere_style
   $code = "<h2>Zugehörig</h2>";
   $code .= "<table class=\"cms_liste\" style=\"table-layout=fixed;\">";
   $code .= "<tr><th style=\"width:30%;\"></th><th style=\"width:35%;\">Heller Modus</th><th style=\"width:35%;\">Dunkler Modus</th></tr>";
-  $code .= "<tr><th>Hintergrund:</th><td>".cms_generiere_stylefarbwahl("cms_style_h_zugehoerig_hintergrund", $styles).cms_generiere_styleselect("cms_style_h_zugehoerig_hintergrund_alias", $aliashfarbe, $styles)."</td>";
-    $code .= "<td>".cms_generiere_stylefarbwahl("cms_style_d_zugehoerig_hintergrund", $styles).cms_generiere_styleselect("cms_style_d_zugehoerig_hintergrund_alias", $aliasdfarbe, $styles)."</td></tr>";
   $code .= "<tr><th>Hintergrund Hover:</th><td>".cms_generiere_stylefarbwahl("cms_style_h_zugehoerig_hintergrundhover", $styles).cms_generiere_styleselect("cms_style_h_zugehoerig_hintergrundhover_alias", $aliashfarbe, $styles)."</td>";
     $code .= "<td>".cms_generiere_stylefarbwahl("cms_style_d_zugehoerig_hintergrundhover", $styles).cms_generiere_styleselect("cms_style_d_zugehoerig_hintergrundhover_alias", $aliasdfarbe, $styles)."</td></tr>";
+  $code .= "<tr><th>Schriftfarbe Hover:</th><td>".cms_generiere_stylefarbwahl("cms_style_h_zugehoerig_farbehover", $styles).cms_generiere_styleselect("cms_style_h_zugehoerig_farbehover_alias", $aliashfarbe, $styles)."</td>";
+    $code .= "<td>".cms_generiere_stylefarbwahl("cms_style_d_zugehoerig_farbehover", $styles).cms_generiere_styleselect("cms_style_d_zugehoerig_farbehover_alias", $aliasdfarbe, $styles)."</td></tr>";
   $code .= "<tr><th>Eckenradius:</th><td colspan=\"2\">".cms_generiere_styleinput("cms_style_zugehoerig_radius", $styles).cms_generiere_styleselect("cms_style_zugehoerig_radius_alias", $aliaswerte, $styles)."</td></tr>";
   $code .= "</table>";
   echo $code;

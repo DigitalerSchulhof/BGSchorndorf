@@ -828,7 +828,7 @@ function cms_generiere_stylefarbwahl($id, $wert) {
   if (strlen($b) < 2) {$b = "0".$b;}
   $hex = "#".$r.$g.$b;
   $alpha = $rgba[3]*100;
-  return "<input class=\"cms_farbwahl_rgb\" type=\"color\" name=\"$id"."_rgb\" id=\"$id"."_rgb\" value=\"$hex\"> <input class=\"cms_farbwahl_alpha\" type=\"number\" name=\"$id"."_alpha\" id=\"$id"."_alpha\" min=\"0\" max=\"100\" step=\"1\" value=\"$alpha\">";
+  return "<input class=\"cms_farbwahl_rgb\" type=\"color\" name=\"$id"."_rgb\" id=\"$id"."_rgb\" value=\"$hex\"> <input class=\"cms_farbwahl_alpha\" type=\"number\" name=\"$id"."_alpha\" id=\"$id"."_alpha\" min=\"0\" max=\"100\" step=\"1\" value=\"$alpha\"> %";
 }
 
 function cms_generiere_styleinput($id, $wert, $typ="text") {

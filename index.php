@@ -180,51 +180,50 @@
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
-		// <!-- Einbindung der Stylesheets -->
-		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$CMS_VERSION\">";
-		// if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
-		// 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$CMS_VERSION\">";
-		// }
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$CMS_VERSION\">";
+		if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
+			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$CMS_VERSION\">";
+		}
 
 
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seite.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/text.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/navigationen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buttons.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/reiter.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/links.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/meldungen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/wechselbilder.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/formulare.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/blende.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tabellen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/spezialfaelle.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/termine.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/blogeintraege.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/icons.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dateisystem.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hinweise.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gruppen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/sitemap.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seitenwahl.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bearbeiten.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/summernote.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/neuigkeiten.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/responsive.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tagebuch.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/app.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/rechtebaum.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bedingterechte.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buchung.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/kalender.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/website.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seite.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/text.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/navigationen.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buttons.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/reiter.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/links.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/meldungen.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/wechselbilder.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/formulare.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/blende.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tabellen.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/spezialfaelle.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/termine.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/blogeintraege.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/icons.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dateisystem.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hinweise.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gruppen.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/sitemap.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seitenwahl.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bearbeiten.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/summernote.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/neuigkeiten.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/responsive.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tagebuch.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/app.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/rechtebaum.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bedingterechte.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buchung.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/kalender.css?v=$CMS_VERSION\">";
+		// echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/website.css?v=$CMS_VERSION\">";
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
@@ -288,7 +287,7 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/style.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/website/style.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
