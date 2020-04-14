@@ -1,5 +1,5 @@
 <?php
-fwrite($hell, ".cms_sitemap_versteckt {");
-fwrite($hell, "display: none;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_sitemap_versteckt {\n");
+fwrite($hell, "display: none;\n");
+fwrite($hell, "}\n");
 ?>

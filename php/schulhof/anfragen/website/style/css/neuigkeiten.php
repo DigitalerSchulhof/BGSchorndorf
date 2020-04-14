@@ -1,112 +1,113 @@
 <?php
-fwrite($hell, ".cms_neuigkeiten {");
-fwrite($hell, "padding: 0px;");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";");
-fwrite($hell, "display: flex;");
-fwrite($hell, "flex-wrap: wrap;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeiten {\n");
+fwrite($hell, "padding: 0px;\n");
+fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
+fwrite($hell, "display: flex;\n");
+fwrite($hell, "flex-wrap: wrap;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit {");
-fwrite($hell, "width: 25%;");
-fwrite($hell, "padding: 10px;");
-fwrite($hell, "list-style-type: none;");
-fwrite($hell, "margin: 0px;");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";");
-fwrite($hell, "display: inline-block;");
-fwrite($hell, "transition: 250ms ease-in-out;");
-fwrite($hell, "position: relative;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit {\n");
+fwrite($hell, "width: 25%;\n");
+fwrite($hell, "padding: 10px;\n");
+fwrite($hell, "list-style-type: none;\n");
+fwrite($hell, "margin: 0px;\n");
+fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
+fwrite($hell, "display: inline-block;\n");
+fwrite($hell, "transition: 250ms ease-in-out;\n");
+fwrite($hell, "position: relative;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit a {color: ".$_POST['cms_style_h_neuigkeit_schrift'].";}");
-fwrite($hell, ".cms_neuigkeit a:hover {color: ".$_POST['cms_style_h_neuigkeit_schrifthover'].";}");
+fwrite($hell, ".cms_neuigkeit a {color: ".$_POST['cms_style_h_neuigkeit_schrift'].";}\n");
+fwrite($hell, ".cms_neuigkeit a:hover {color: ".$_POST['cms_style_h_neuigkeit_schrifthover'].";}\n");
 
-fwrite($hell, ".cms_neuigkeit_notfall {");
-fwrite($hell, "text-align: left !important;");
-fwrite($hell, "width: 100%;");
-fwrite($hell, "padding: 10px;");
-fwrite($hell, "margin: 0px;");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";");
-fwrite($hell, "transition: 250ms ease-in-out;");
-fwrite($hell, "display: block;");
-fwrite($hell, "position: relative;");
-fwrite($hell, "animation-name: notfallanimationhell;");
-fwrite($hell, "animation-delay: 1s;");
-fwrite($hell, "animation-duration: 4s;");
-fwrite($hell, "animation-iteration-count: infinite;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_notfall {\n");
+fwrite($hell, "text-align: left !important;\n");
+fwrite($hell, "width: 100%;\n");
+fwrite($hell, "padding: 10px;\n");
+fwrite($hell, "margin: 0px;\n");
+fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";\n");
+fwrite($hell, "transition: 250ms ease-in-out;\n");
+fwrite($hell, "display: block;\n");
+fwrite($hell, "position: relative;\n");
+fwrite($hell, "animation-name: notfallanimationhell;\n");
+fwrite($hell, "animation-delay: 1s;\n");
+fwrite($hell, "animation-duration: 4s;\n");
+fwrite($hell, "animation-iteration-count: infinite;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, "@keyframes notfallanimationhell {");
-fwrite($hell, "0%   {background-color:".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}");
-fwrite($hell, "37.5%  {background-color:".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}");
-fwrite($hell, "75%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}");
-fwrite($hell, "100%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}");
-fwrite($hell, "}");
+fwrite($hell, "@keyframes notfallanimationhell {\n");
+fwrite($hell, "0%   {background-color:".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
+fwrite($hell, "37.5%  {background-color:".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}\n");
+fwrite($hell, "75%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
+fwrite($hell, "100%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_ln {");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund']." !important;");
-fwrite($hell, "padding: 8px !important;");
-fwrite($hell, "border: 2px dashed ".$_POST['cms_style_h_haupt_abstufung1'].";");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_ln {\n");
+fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund']." !important;\n");
+fwrite($hell, "padding: 8px !important;\n");
+fwrite($hell, "border: 2px dashed ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_ln h4, .cms_neuigkeit_ln p {");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_ln h4, .cms_neuigkeit_ln p {\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_ganz:hover {");
-fwrite($hell, "cursor: pointer;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_ganz:hover {\n");
+fwrite($hell, "cursor: pointer;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_optimierung_H .cms_neuigkeit {");
-fwrite($hell, "width: 50% !important;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_optimierung_H .cms_neuigkeit {\n");
+fwrite($hell, "width: 50% !important;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit:hover {");
-fwrite($hell, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit:hover {\n");
+fwrite($hell, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_icon {");
-fwrite($hell, "position: absolute;");
-fwrite($hell, "top: 10px;");
-fwrite($hell, "left: 10px;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_icon {\n");
+fwrite($hell, "position: absolute;\n");
+fwrite($hell, "top: 10px;\n");
+fwrite($hell, "left: 10px;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_inhalt {");
-fwrite($hell, "display: block;");
-fwrite($hell, "margin-left: 42px;");
-fwrite($hell, "p {");
-fwrite($hell, "overflow: hidden;");
-fwrite($hell, "text-overflow: ellipsis;");
-fwrite($hell, "}");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_inhalt {\n");
+fwrite($hell, "display: block;\n");
+fwrite($hell, "margin-left: 42px;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_inhalt h4 {");
-fwrite($hell, "margin-top: 0px;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_inhalt p {\n");
+fwrite($hell, "overflow: hidden;\n");
+fwrite($hell, "text-overflow: ellipsis;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_inhalt .cms_neuigkeit_vorschau {");
-fwrite($hell, "font-size: 70%;");
-fwrite($hell, "margin-bottom: 0px;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_inhalt h4 {\n");
+fwrite($hell, "margin-top: 0px;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_schliessen, .cms_neuigkeit_oeffnen {");
-fwrite($hell, "position: absolute;");
-fwrite($hell, "bottom: 8px;");
-fwrite($hell, "display: none;");
-fwrite($hell, "line-height: 1;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_inhalt .cms_neuigkeit_vorschau {\n");
+fwrite($hell, "font-size: 70%;\n");
+fwrite($hell, "margin-bottom: 0px;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_schliessen {");
-fwrite($hell, "left: 10px;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_schliessen, .cms_neuigkeit_oeffnen {\n");
+fwrite($hell, "position: absolute;\n");
+fwrite($hell, "bottom: 8px;\n");
+fwrite($hell, "display: none;\n");
+fwrite($hell, "line-height: 1;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit_oeffnen {");
-fwrite($hell, "right: 10px;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_schliessen {\n");
+fwrite($hell, "left: 10px;\n");
+fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_neuigkeit:hover .cms_neuigkeit_schliessen,");
-fwrite($hell, ".cms_neuigkeit:hover .cms_neuigkeit_oeffnen {");
-fwrite($hell, "display: block;");
-fwrite($hell, "}");
+fwrite($hell, ".cms_neuigkeit_oeffnen {\n");
+fwrite($hell, "right: 10px;\n");
+fwrite($hell, "}\n");
+
+fwrite($hell, ".cms_neuigkeit:hover .cms_neuigkeit_schliessen,\n");
+fwrite($hell, ".cms_neuigkeit:hover .cms_neuigkeit_oeffnen {\n");
+fwrite($hell, "display: block;\n");
+fwrite($hell, "}\n");
 
 
 
@@ -115,35 +116,35 @@ fwrite($hell, "}");
 
 
 // DARKMODE
-fwrite($dunkel, ".cms_neuigkeit {");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";");
-fwrite($dunkel, "}");
+fwrite($dunkel, ".cms_neuigkeit {\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
+fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_neuigkeit a {color: ".$_POST['cms_style_d_neuigkeit_schrift'].";}");
-fwrite($dunkel, ".cms_neuigkeit a:hover {color: ".$_POST['cms_style_d_neuigkeit_schrifthover'].";}");
+fwrite($dunkel, ".cms_neuigkeit a {color: ".$_POST['cms_style_d_neuigkeit_schrift'].";}\n");
+fwrite($dunkel, ".cms_neuigkeit a:hover {color: ".$_POST['cms_style_d_neuigkeit_schrifthover'].";}\n");
 
-fwrite($dunkel, ".cms_neuigkeit_notfall {");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";");
-fwrite($dunkel, "animation-name: notfallanimationdunkel;");
-fwrite($dunkel, "}");
+fwrite($dunkel, ".cms_neuigkeit_notfall {\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "animation-name: notfallanimationdunkel;\n");
+fwrite($dunkel, "}\n");
 
-fwrite($dunkel, "@keyframes notfallanimationdunkel {");
-fwrite($dunkel, "0%   {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}");
-fwrite($dunkel, "37.5%  {background-color:".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}");
-fwrite($dunkel, "75%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}");
-fwrite($dunkel, "100%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}");
-fwrite($dunkel, "}");
+fwrite($dunkel, "@keyframes notfallanimationdunkel {\n");
+fwrite($dunkel, "0%   {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, "37.5%  {background-color:".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
+fwrite($dunkel, "75%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, "100%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_neuigkeit_ln {");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund']." !important;");
-fwrite($dunkel, "border: 2px dashed ".$_POST['cms_style_d_haupt_abstufung1'].";");
-fwrite($dunkel, "}");
+fwrite($dunkel, ".cms_neuigkeit_ln {\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund']." !important;\n");
+fwrite($dunkel, "border: 2px dashed ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
+fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_neuigkeit_ln h4, .cms_neuigkeit_ln p {");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";");
-fwrite($dunkel, "}");
+fwrite($dunkel, ".cms_neuigkeit_ln h4, .cms_neuigkeit_ln p {\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
+fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_neuigkeit:hover {");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";");
-fwrite($dunkel, "}");
+fwrite($dunkel, ".cms_neuigkeit:hover {\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
+fwrite($dunkel, "}\n");
 ?>
