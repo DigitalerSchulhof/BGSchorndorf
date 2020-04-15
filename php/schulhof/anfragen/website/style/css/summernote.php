@@ -942,7 +942,7 @@ fwrite($hell, "margin-right: 10px;\n");
 fwrite($hell, "}\n");
 
 
-// DARKMODE"
+// DARKMODE
 fwrite($dunkel, ".summernote-ui * {\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
