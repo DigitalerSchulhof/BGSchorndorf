@@ -58,7 +58,7 @@ fwrite($hell, "	border-radius: 1px;");
 fwrite($hell, "	padding: 3px;");
 fwrite($hell, "	margin: 2px;");
 fwrite($hell, "	display: inline-block;");
-fwrite($hell, "	border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($hell, "	border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}");
 
 fwrite($hell, ".cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i:hover {");
@@ -91,7 +91,7 @@ fwrite($hell, "	margin-bottom: 2px;");
 fwrite($hell, "	border-radius: 1px;");
 fwrite($hell, "	cursor: pointer;");
 fwrite($hell, "	transition: 250ms ease-in-out;");
-fwrite($hell, "	border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($hell, "	border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}");
 
 fwrite($hell, ".cms_demorecht:hover {");
@@ -164,5 +164,4 @@ fwrite($dunkel, ".cms_demorecht.cms_demorecht_rolle {");
 fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter']." !important;\n");
 fwrite($dunkel, "	color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
 fwrite($dunkel, "}");
-
 ?>
