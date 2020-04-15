@@ -28,7 +28,7 @@ fwrite($hell, "}\n");
 fwrite($hell, ".cms_termine_jahrueberischt_knoepfe_vorher .cms_button:hover,\n");
 fwrite($hell, ".cms_termine_jahrueberischt_knoepfe_nachher .cms_button:hover {\n");
 fwrite($hell, "font-weight: bold !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']."!important;\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']."!important;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_termine_jahrueberischt_allemonate_namen {\n");
@@ -118,7 +118,7 @@ fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n")
 fwrite($hell, "cursor: pointer;\n");
 fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
+fwrite($hell, ".cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";}\n");
 
 fwrite($hell, ".cms_download_inaktiv {opacity: .5;}\n");
 fwrite($hell, ".cms_download_inaktiv:hover {cursor: not-allowed;}\n");
@@ -140,7 +140,7 @@ fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_website_menuepunkte_ja:hover {\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "cursor: pointer;\n");
 fwrite($hell, "}\n");
 
@@ -244,7 +244,7 @@ fwrite($hell, ".cms_box_titel, .cms_box_inhalt {padding: 10px;}\n");
 fwrite($hell, ".cms_box_u .cms_box_titel {\n");
 fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
 fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "border-right: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "border-right: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_box_u .cms_box_inhalt {\n");
@@ -255,7 +255,7 @@ fwrite($hell, "}\n");
 fwrite($hell, ".cms_box_n .cms_box_titel {\n");
 fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
 fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_box_n .cms_box_inhalt {\n");
@@ -276,7 +276,7 @@ fwrite($hell, ".cms_box_5 .cms_box_inhalt, .cms_box_5 {background-color: ".$_POS
 fwrite($hell, ".cms_box_3 .cms_box_inhalt *, .cms_box_4 .cms_box_inhalt *,\n");
 fwrite($hell, ".cms_box_5 .cms_box_inhalt *, .cms_box_3 .cms_box_inhalt .cms_button:hover,\n");
 fwrite($hell, ".cms_box_4 .cms_box_inhalt .cms_button:hover, .cms_box_5 .cms_box_inhalt .cms_button:hover\n");
-fwrite($hell, "{color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
+fwrite($hell, "{color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";}\n");
 
 fwrite($hell, ".cms_box_3 .cms_box_inhalt .cms_button, .cms_box_4 .cms_box_inhalt .cms_button,\n");
 fwrite($hell, ".cms_box_5 .cms_box_inhalt .cms_button, .cms_box_3 .cms_box_inhalt .note-editor *,\n");
@@ -427,7 +427,7 @@ fwrite($hell, "}\n");
 fwrite($hell, ".cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li a:hover,\n");
 fwrite($hell, ".cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li a:hover {\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_kopfzeile_suchehintergrundhover'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "transform: none;\n");
 fwrite($hell, "}\n");
 
@@ -496,7 +496,7 @@ fwrite($hell, ".cms_datenschutz_einwilligungerteilt {background: ".$_POST['cms_s
 fwrite($hell, ".cms_datenschutz_einwilligungverweigert {background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
 
 fwrite($hell, ".cms_datenschutz_einwilligungerteilt, .cms_datenschutz_einwilligungverweigert {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "padding: 3px 5px 2px 5px;\n");
 fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
 fwrite($hell, "}\n");
@@ -526,7 +526,7 @@ fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_kontakt_visitenkarte:hover {\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_thema2'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "display: inline-block;\n");
 fwrite($hell, "transition: 250ms ease-in-out;\n");
 fwrite($hell, "cursor: pointer;\n");
@@ -549,7 +549,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_termine_jahrueberischt_knoepfe_vorher .cms_button:hover,\n");
 fwrite($dunkel, ".cms_termine_jahrueberischt_knoepfe_nachher .cms_button:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']."!important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']."!important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_termine_jahrueberischt_allemonate_namen {\n");
@@ -579,17 +579,17 @@ fwrite($dunkel, ".cms_download_anzeige:hover {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
+fwrite($dunkel, ".cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";}\n");
 
 fwrite($dunkel, ".cms_website_menuepunkte_ja {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_website_menuepunkte_ja:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_zugehoerig {\n");
@@ -612,11 +612,11 @@ fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_box_u .cms_box_titel {\n");
-fwrite($dunkel, "border-right: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "border-right: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_box_n .cms_box_titel {\n");
-fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_box_1 .cms_box_titel, .cms_box_1 .cms_box_inhalt {background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
@@ -629,7 +629,7 @@ fwrite($dunkel, ".cms_box_2 .cms_box_inhalt, .cms_box_2 {background-color: ".$_P
 fwrite($dunkel, ".cms_box_3 .cms_box_inhalt *, .cms_box_4 .cms_box_inhalt *,\n");
 fwrite($dunkel, ".cms_box_5 .cms_box_inhalt *, .cms_box_3 .cms_box_inhalt .cms_button:hover,\n");
 fwrite($dunkel, ".cms_box_4 .cms_box_inhalt .cms_button:hover, .cms_box_5 .cms_box_inhalt .cms_button:hover\n");
-fwrite($dunkel, "{color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
+fwrite($dunkel, "{color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";}\n");
 
 fwrite($dunkel, ".cms_box_3 .cms_box_inhalt .cms_button, .cms_box_4 .cms_box_inhalt .cms_button,\n");
 fwrite($dunkel, ".cms_box_5 .cms_box_inhalt .cms_button, .cms_box_3 .cms_box_inhalt .note-editor *,\n");
@@ -675,7 +675,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li a:hover p,\n");
 fwrite($dunkel, ".cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li a:hover p {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_websitesuche h3 {\n");
@@ -692,11 +692,11 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_auszeichnung_hintergrundhover
 fwrite($dunkel, "color: ".$_POST['cms_style_d_auszeichnung_schrifthover'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_datenschutz_einwilligungerteilt {background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
-fwrite($dunkel, ".cms_datenschutz_einwilligungverweigert {background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_datenschutz_einwilligungerteilt {background: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_datenschutz_einwilligungverweigert {background: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";}\n");
 
 fwrite($dunkel, ".cms_datenschutz_einwilligungerteilt, .cms_datenschutz_einwilligungverweigert {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_kontakt_visitenkarte {\n");
@@ -704,7 +704,7 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_kontakt_visitenkarte:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_thema2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_thema2'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 ?>

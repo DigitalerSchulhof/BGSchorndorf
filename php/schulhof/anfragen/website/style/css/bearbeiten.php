@@ -88,25 +88,25 @@ fwrite($hell, "}\n");
 
 // DARKMODE
 fwrite($dunkel, ".cms_website_neu {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_website_neu:hover {background-color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
-fwrite($dunkel, ".cms_website_bearbeiten:hover {background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, ".cms_website_neu:hover {background-color: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_website_bearbeiten:hover {background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
 
-fwrite($dunkel, ".cms_website_neu_menue {background-color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_website_neu_menue {background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
 fwrite($dunkel, ".cms_website_bearbeiten_menue {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_website_neu_element {border-top: 1px solid ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
-fwrite($dunkel, ".cms_website_bearbeiten_element {border-top: 1px solid ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
+fwrite($dunkel, ".cms_website_neu_element {border-top: 1px solid ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_website_bearbeiten_element {border-top: 1px solid ".$_POST['cms_style_d_haupt_meldungwarnungakzent'].";}\n");
 
 fwrite($dunkel, ".cms_element_neuedaten {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_element_neuedaten_anzeige {\n");
-fwrite($dunkel, "border-left: 5px solid ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "border-left: 5px solid ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
 fwrite($dunkel, "}\n");
 ?>

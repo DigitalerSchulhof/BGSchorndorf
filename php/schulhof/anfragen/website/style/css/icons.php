@@ -261,7 +261,7 @@ fwrite($hell, "}\n");
 
 
 // DARKMODE
-fwrite($dunkel, ".cms_uebersicht_verwaltung_technisch {background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, ".cms_uebersicht_verwaltung_technisch {background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
 
 fwrite($dunkel, ".cms_tag_gross {\n");
 fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");

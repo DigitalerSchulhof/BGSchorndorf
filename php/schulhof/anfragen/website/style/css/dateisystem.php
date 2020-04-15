@@ -144,7 +144,7 @@ fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_dateisystem_uploadzone p {\n");
 fwrite($hell, "text-align: center;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "font-size: 90%;\n");
 fwrite($hell, "margin-top: 60px !important;\n");
 fwrite($hell, "}\n");
@@ -247,12 +247,12 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_dateisystem_uploadzone {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
-fwrite($dunkel, "border: 1px dashed ".$_POST['cms_style_h_haupt_meldunginfohinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
+fwrite($dunkel, "border: 1px dashed ".$_POST['cms_style_d_haupt_meldunginfoakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_dateisystem_uploadzone p {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_dateisystem_hochladen_dateiliste {\n");
@@ -260,7 +260,7 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_formular_feldhintergrund'].";
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_hochladen_fehlgeschlagen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
+fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
 fwrite($dunkel, "}\n");
 ?>

@@ -281,8 +281,8 @@ if (cms_r("website.styleändern")) {
     $code .= "<td>".cms_generiere_stylefarbwahl("cms_style_d_mobilnavigation_iconhintergrund", $styles).cms_generiere_styleselect("cms_style_d_mobilnavigation_iconhintergrund_alias", $aliasdfarbe, $styles)."</td></tr>";
   $code .= "<tr><th>Mobilnavigation Iconhintergrund Hover:</th><td>".cms_generiere_stylefarbwahl("cms_style_h_mobilnavigation_iconhintergrundhover", $styles).cms_generiere_styleselect("cms_style_h_mobilnavigation_iconhintergrundhover_alias", $aliashfarbe, $styles)."</td>";
     $code .= "<td>".cms_generiere_stylefarbwahl("cms_style_d_mobilnavigation_iconhintergrundhover", $styles).cms_generiere_styleselect("cms_style_d_mobilnavigation_iconhintergrundhover_alias", $aliasdfarbe, $styles)."</td></tr>";
-  $code .= "<tr><th>Unternavigation Abstand von oben:</th><td colspan=\"2\">".cms_generiere_styleinput("cms_style_d_unternavigation_abstandvonoben", $styles).cms_generiere_styleselect("cms_style_d_unternavigation_abstandvonoben_alias", $aliaswerte, $styles)."</td></tr>";
-$code .= "<tr><th>Anzeige der Suche:</th><td colspan=\"2\">".cms_generiere_styleselect("cms_style_d_suche_anzeige", $aliasanzeige, $styles, 'wert')."</td></tr>";
+  $code .= "<tr><th>Unternavigation Abstand von oben:</th><td colspan=\"2\">".cms_generiere_styleinput("cms_style_unternavigation_abstandvonoben", $styles).cms_generiere_styleselect("cms_style_unternavigation_abstandvonoben_alias", $aliaswerte, $styles)."</td></tr>";
+$code .= "<tr><th>Anzeige der Suche:</th><td colspan=\"2\">".cms_generiere_styleselect("cms_style_suche_anzeige", $aliasanzeige, $styles, 'wert')."</td></tr>";
   $code .= "</table>";
   echo $code;
 

@@ -1,4 +1,4 @@
-<?
+<?php
 fwrite($hell, "* {\n");
 fwrite($hell, "font-family: ".$_POST['cms_style_haupt_schriftart'].", sans-serif;\n");
 fwrite($hell, "font-size: ".$_POST['cms_style_haupt_schriftgroesse'].";\n");
@@ -305,7 +305,7 @@ fwrite($dunkel, "box-shadow: ".$_POST['cms_style_kopfzeile_schattenausmasse']." 
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_website_bearbeiten_o {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_hauptbild_o {\n");
@@ -326,11 +326,11 @@ fwrite($dunkel, "color: ".$_POST['cms_style_d_logo_schriftfarbe'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_netzcheckstatus {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_netzcheckstatus_lehrer {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent']." !important;\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_vollbild {\n");

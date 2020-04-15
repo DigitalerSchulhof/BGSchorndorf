@@ -54,10 +54,10 @@ fwrite($dunkel, "border: 3px solid ".$_POST['cms_style_d_haupt_abstufung2'].";\n
 fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_kalenderzahl_heute {border: 3px solid ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}\n");
-fwrite($dunkel, ".cms_kalenderzahl_gewaehlt {background: ".$_POST['cms_style_h_haupt_meldunginfoakzent']." !important;}\n");
-fwrite($dunkel, ".cms_kalenderzahl_persoenlich {background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, ".cms_kalenderzahl_oeffentlich {background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
-fwrite($dunkel, ".cms_kalenderzahl_ferien {background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_kalenderzahl_heute {border: 3px solid ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";}\n");
+fwrite($dunkel, ".cms_kalenderzahl_gewaehlt {background: ".$_POST['cms_style_d_haupt_meldunginfohinter']." !important;}\n");
+fwrite($dunkel, ".cms_kalenderzahl_persoenlich {background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_kalenderzahl_oeffentlich {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
+fwrite($dunkel, ".cms_kalenderzahl_ferien {background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
 fwrite($dunkel, ".cms_kalenderzahl_sichtbar {background: ".$_POST['cms_style_d_haupt_abstufung1'].";}\n");
 ?>

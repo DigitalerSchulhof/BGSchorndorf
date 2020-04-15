@@ -130,8 +130,8 @@ fwrite($hell, "color: inherit;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, "pre, .cms_konsole, .cms_code {\n");
-fwrite($hell, "background: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "padding: 10px;\n");
 fwrite($hell, "font-family: monospace;\n");
 fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
@@ -181,11 +181,11 @@ fwrite($hell, "}\n");
 
 // DARKMODE
 fwrite($dunkel, ".cms_notiz, .cms_hochladen_fortschritt_anzeige {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_notizschrift'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_notizschrift'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "pre, .cms_konsole, .cms_code {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 ?>

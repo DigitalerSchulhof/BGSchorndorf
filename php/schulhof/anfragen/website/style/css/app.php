@@ -41,7 +41,7 @@ fwrite($hell, "#cms_appnavigation {\n");
 fwrite($hell, "border-radius: 5px;\n");
 fwrite($hell, "display: inline-block;\n");
 fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($hell, "padding: 4px 10px;\n");
 fwrite($hell, "font-weight: bold;\n");
 fwrite($hell, "line-height: 20px;\n");
@@ -97,7 +97,7 @@ fwrite($hell, "top: 0px;\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "font-size: 500%;\n");
 fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "transition: 250ms ease-in-out;\n");
 fwrite($hell, "box-shadow: 0px 0px 10px ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "}\n");
@@ -140,7 +140,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_appnavigation {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_appnavigation:hover {\n");
@@ -163,7 +163,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_appmenue_schliessen {\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "box-shadow: 0px 0px 10px ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
 fwrite($dunkel, "}\n");
 
