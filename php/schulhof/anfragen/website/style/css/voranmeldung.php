@@ -78,32 +78,32 @@ fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrift'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_voranmeldung_navigation li.cms_voranmeldung_abgeschlossen:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_voranmeldung_navigation li.cms_voranmeldung_aktuell {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldunginfoakzent']." !important;\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldunginfohinter']." !important;\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrift']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_voranmeldung_navigation li.cms_voranmeldung_aktuell:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldunginfohinter']." !important;\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldunginfoakzent']." !important;\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_voranmeldung_navigation li.cms_voranmeldung_fehler {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrift'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_voranmeldung_navigation li.cms_voranmeldung_fehler:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
 fwrite($dunkel, "}\n");
 ?>

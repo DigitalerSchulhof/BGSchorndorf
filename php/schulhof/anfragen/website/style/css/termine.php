@@ -42,7 +42,7 @@ fwrite($hell, "min-height: 16px;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_kalender_zusatzinfo_intern {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
 fwrite($hell, "padding: 5px 5px 5px 25px;\n");
@@ -334,7 +334,7 @@ fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_kalender_zusatzinfo_intern {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
 fwrite($dunkel, "}\n");
 
@@ -400,5 +400,6 @@ fwrite($dunkel, "border-right: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'
 fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_ferienkalender_we {background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";}\n");
-fwrite($dunkel, ".cms_ferienkalender_frei {background-color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_ferienkalender_we {background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
+fwrite($dunkel, ".cms_ferienkalender_frei {background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
+?>

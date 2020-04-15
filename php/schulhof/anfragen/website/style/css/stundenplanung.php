@@ -35,7 +35,7 @@ fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "font-weight: bold;\n");
 fwrite($hell, "font-size: 150%;\n");
 fwrite($hell, "position: absolute;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "width: 35px;\n");
 fwrite($hell, "text-align: center;\n");
 fwrite($hell, "line-height: 100%;\n");
@@ -161,7 +161,7 @@ fwrite($hell, "font-weight: bold;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_stundenplanung_stundeinfo {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_hinweis_hintergrund'].";\n");
 fwrite($hell, "padding: 0px 5px 0px 5px;\n");
 fwrite($hell, "position: absolute;\n");
@@ -347,7 +347,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_stundenplan_zeitliniebez {\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_stundenplan_zeitliniebeginn, .cms_stundenplan_zeitlinieende {\n");
@@ -379,16 +379,16 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_stundenplan_stunde {background: ".$_POST['cms_style_d_haupt_abstufung1'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_entfall {border: 2px dashed ".$_POST['cms_style_h_haupt_meldunginfoakzent']."; background: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_entfallgeaendert {border: 2px dashed ".$_POST['cms_style_h_haupt_meldungerfolgakzent']."; background: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_ausfall {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_geloest {background: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_geaendert {background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_konflikt {background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, ".cms_stundenplan_stunde_ueberschneidung {background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_entfall {border: 2px dashed ".$_POST['cms_style_d_haupt_meldunginfohinter']."; background: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_entfallgeaendert {border: 2px dashed ".$_POST['cms_style_d_haupt_meldungerfolghinter']."; background: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_ausfall {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_geloest {background: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_geaendert {background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_konflikt {background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_stundenplan_stunde_ueberschneidung {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
 
 fwrite($dunkel, ".cms_stundenplanung_stundeinfo {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund'].";\n");
 fwrite($dunkel, "}\n");
 
@@ -398,16 +398,16 @@ fwrite($dunkel, "border: 2px solid ".$_POST['cms_style_d_haupt_abstufung2'].";\n
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_stundenplan_stunde_gewaehlt {\n");
-fwrite($dunkel, "border: 2px dotted ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
+fwrite($dunkel, "border: 2px dotted ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_wochentag_rythmus_leer {background: ".$_POST['cms_style_d_haupt_abstufung1']."; border-color: ".$_POST['cms_style_d_haupt_abstufung1'].";}\n");
 fwrite($dunkel, ".cms_wochentag_rythmus {background: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
-fwrite($dunkel, ".cms_wochentag_rythmus_schulfrei {background: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";}\n");
-fwrite($dunkel, ".cms_wochentag_rythmus_ferien {background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_wochentag_rythmus_schulfrei {background: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
+fwrite($dunkel, ".cms_wochentag_rythmus_ferien {background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
 
 fwrite($dunkel, ".cms_vplan_geloest {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_meldunginfohinter']." !important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_meldunginfoakzent']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_stundenplan_spalte_trenner {\n");
@@ -423,18 +423,18 @@ fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung2']." !i
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_vplan_konfliktgrund {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent']." !important;\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_vplan_konfliktwarnung {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent']." !important;\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_markierte_liste_0 td {background: ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
 fwrite($dunkel, ".cms_markierte_liste_1 td {background: ".$_POST['cms_style_d_haupt_abstufung1']."; border-bottom: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
 
-fwrite($dunkel, ".cms_vplanliste_entfall td:first-child {border-left: 4px solid ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, ".cms_vplanliste_neu td:first-child {border-left: 4px solid ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_vplanliste_entfall td:first-child {border-left: 4px solid ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_vplanliste_neu td:first-child {border-left: 4px solid ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
 
 fwrite($dunkel, ".cms_konflikte_liste_menue {\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund'].";\n");

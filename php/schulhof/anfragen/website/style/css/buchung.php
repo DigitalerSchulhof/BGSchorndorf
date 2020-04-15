@@ -106,7 +106,7 @@ fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_hintergrund'
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_buchungsspalte_ferien {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_buchungsspalte .cms_buchungsspaltetitel {\n");
@@ -122,6 +122,6 @@ fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung2'].
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_buchung_blockierung {background: ".$_POST['cms_style_d_haupt_abstufung1']."; border: 1px solid ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-fwrite($dunkel, ".cms_buchung_selbst {background: ".$_POST['cms_style_h_haupt_meldunginfoakzent']."; border: 1px solid ".$_POST['cms_style_h_haupt_meldunginfohinter'].";}\n");
-fwrite($dunkel, ".cms_buchung_fremd {background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent']."; border: 1px solid ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
+fwrite($dunkel, ".cms_buchung_selbst {background: ".$_POST['cms_style_d_haupt_meldunginfohinter']."; border: 1px solid ".$_POST['cms_style_d_haupt_meldunginfoakzent'].";}\n");
+fwrite($dunkel, ".cms_buchung_fremd {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter']."; border: 1px solid ".$_POST['cms_style_d_haupt_meldungwarnungakzent'].";}\n");
 ?>

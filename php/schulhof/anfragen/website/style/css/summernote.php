@@ -357,10 +357,10 @@ fwrite($hell, "width: auto;\n");
 fwrite($hell, "margin-right: 5px;\n");
 fwrite($hell, "}\n");
 
-fwrite($hell, ".note-input::-webkit-input-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
-fwrite($hell, ".note-input:-moz-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
-fwrite($hell, ".note-input::-moz-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
-fwrite($hell, ".note-input:-ms-input-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
+fwrite($hell, ".note-input::-webkit-input-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";}\n");
+fwrite($hell, ".note-input:-moz-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";}\n");
+fwrite($hell, ".note-input::-moz-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";}\n");
+fwrite($hell, ".note-input:-ms-input-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";}\n");
 
 fwrite($hell, ".note-tooltip {\n");
 fwrite($hell, "position: absolute;\n");
@@ -427,7 +427,7 @@ fwrite($hell, "}\n");
 fwrite($hell, ".note-tooltip-content {\n");
 fwrite($hell, "max-width: 200px;\n");
 fwrite($hell, "padding: 3px 8px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_hinweis_hintergrund'].";\n");
 fwrite($hell, "text-align: center;\n");
 fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_hinweis_radius'].";\n");
@@ -596,8 +596,8 @@ fwrite($hell, "width: 100%;\n");
 fwrite($hell, "padding: 10px;\n");
 fwrite($hell, "margin-bottom: 0;\n");
 fwrite($hell, "font-family: monospace;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
+fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "border: 0;\n");
 fwrite($hell, "box-sizing: border-box;\n");
 fwrite($hell, "resize: none;\n");
@@ -805,7 +805,7 @@ fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n"
 fwrite($hell, "}\n");
 
 fwrite($hell, ".note-popover .note-popover-content .note-color-palette div .note-color-btn:hover,\n");
-fwrite($hell, ".note-toolbar .note-color-palette div .note-color-btn:hover {border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";}\n");
+fwrite($hell, ".note-toolbar .note-color-palette div .note-color-btn:hover {border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
 
 fwrite($hell, ".note-modal .note-modal-body label {\n");
 fwrite($hell, "display: inline-block;\n");
@@ -828,7 +828,7 @@ fwrite($hell, "}\n");
 fwrite($hell, ".note-handle .note-control-selection {\n");
 fwrite($hell, "position: absolute;\n");
 fwrite($hell, "display: none;\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".note-handle .note-control-selection > div {position: absolute;}\n");
@@ -843,20 +843,20 @@ fwrite($hell, "}\n");
 fwrite($hell, ".note-handle .note-control-selection .note-control-handle {\n");
 fwrite($hell, "width: 7px;\n");
 fwrite($hell, "height: 7px;\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".note-handle .note-control-selection .note-control-holder {\n");
 fwrite($hell, "width: 7px;\n");
 fwrite($hell, "height: 7px;\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".note-handle .note-control-selection .note-control-sizing {\n");
 fwrite($hell, "width: 7px;\n");
 fwrite($hell, "height: 7px;\n");
 fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".note-handle .note-control-selection .note-control-nw {\n");
@@ -898,9 +898,8 @@ fwrite($hell, "bottom: 0;\n");
 fwrite($hell, "padding: 5px;\n");
 fwrite($hell, "margin: 5px;\n");
 fwrite($hell, "font-size: 12px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($hell, "opacity: .7;\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
+fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".note-hint-popover {\n");
@@ -981,22 +980,22 @@ fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";\n
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-btn-primary {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrift'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-btn-primary:hover, .note-btn-primary:focus, .note-btn-primary.focus {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "button.close {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrift'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "button.close:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
 fwrite($dunkel, "}\n");
 
@@ -1035,13 +1034,13 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_formular_feldhintergrund'].";
 fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_formular_feldfocushintergrund'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".note-input::-webkit-input-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
-fwrite($dunkel, ".note-input:-moz-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
-fwrite($dunkel, ".note-input::-moz-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
-fwrite($dunkel, ".note-input:-ms-input-placeholder {color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";}\n");
+fwrite($dunkel, ".note-input::-webkit-input-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";}\n");
+fwrite($dunkel, ".note-input:-moz-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";}\n");
+fwrite($dunkel, ".note-input::-moz-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";}\n");
+fwrite($dunkel, ".note-input:-ms-input-placeholder {color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";}\n");
 
 fwrite($dunkel, ".note-tooltip-content {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund'].";\n");
 fwrite($dunkel, "}\n");
 
@@ -1056,7 +1055,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-editor .note-dropzone {\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-editor .note-dropzone.hover {color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
@@ -1103,7 +1102,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-popover .note-popover-content .note-btn-group .note-table .note-dimension-picker .note-dimension-picker-highlighted,\n");
 fwrite($dunkel, ".note-toolbar .note-btn-group .note-table .note-dimension-picker .note-dimension-picker-highlighted {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_thema2'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_thema2'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-popover .note-popover-content .note-color .note-dropdown-menu .note-palette .note-color-reset,\n");
@@ -1122,7 +1121,7 @@ fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-popover .note-popover-content .note-color-palette div .note-color-btn:hover,\n");
-fwrite($dunkel, ".note-toolbar .note-color-palette div .note-color-btn:hover {border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";}\n");
+fwrite($dunkel, ".note-toolbar .note-color-palette div .note-color-btn:hover {border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";}\n");
 
 fwrite($dunkel, ".note-modal .note-modal-body .help-list-item:hover {background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";}\n");
 
@@ -1131,7 +1130,7 @@ fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-handle .note-control-selection {\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-handle .note-control-selection .note-control-selection-bg {\n");
@@ -1139,21 +1138,21 @@ fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_schriftfarbeposit
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-handle .note-control-selection .note-control-handle {\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-handle .note-control-selection .note-control-holder {\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-handle .note-control-selection .note-control-sizing {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-handle .note-control-selection .note-control-selection-info {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".note-hint-popover .note-popover-content .note-hint-group .note-hint-item.active,\n");

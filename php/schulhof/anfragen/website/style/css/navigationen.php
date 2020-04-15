@@ -11,7 +11,7 @@ fwrite($hell, "margin-right: 0px;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_kopfnavigation li:first-child {\n");
-fwrite($hell, "display: ".$_POST['cms_style_d_suche_anzeige'].";\n");
+fwrite($hell, "display: ".$_POST['cms_style_suche_anzeige'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_optimierung_P .cms_fussnavigation, .cms_optimierung_T .cms_fussnavigation {\n");
@@ -77,7 +77,7 @@ fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_unternavigation_o {\n");
 fwrite($hell, "position: fixed;\n");
-fwrite($hell, "top: ".$_POST['cms_style_d_unternavigation_abstandvonoben'].";\n");
+fwrite($hell, "top: ".$_POST['cms_style_unternavigation_abstandvonoben'].";\n");
 fwrite($hell, "left: 0px;\n");
 fwrite($hell, "width: 100%;\n");
 fwrite($hell, "transition: 500ms ease-in-out;\n");
@@ -156,7 +156,7 @@ fwrite($hell, "}\n");
 
 fwrite($hell, "#cms_kopfnavigation > li ul li a:hover,\n");
 fwrite($hell, "#cms_kopfnavigation > li ul li span:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "cursor: pointer;\n");
 fwrite($hell, "}\n");
 
@@ -217,12 +217,12 @@ fwrite($hell, "cursor: pointer;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_navigation > li > .cms_navigation_aktiveseite {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_navigation > li > .cms_navigation_aktiveseite:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
 fwrite($hell, "}\n");
 
@@ -276,7 +276,7 @@ fwrite($hell, "border-top-right-radius: 5px;\n");
 fwrite($hell, "border-top-left-radius: 5px;\n");
 fwrite($hell, "display: inline-block;\n");
 fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($hell, "padding: 4px 10px;\n");
 fwrite($hell, "font-weight: bold;\n");
 fwrite($hell, "line-height: 20px;\n");
@@ -296,7 +296,7 @@ fwrite($hell, ".cms_menuicon {\n");
 fwrite($hell, "width: 20px;\n");
 fwrite($hell, "height: 4px;\n");
 fwrite($hell, "border-radius: 2px;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "margin: 4px 0;\n");
 fwrite($hell, "display: block;\n");
 fwrite($hell, "}\n");
@@ -379,7 +379,7 @@ fwrite($hell, "padding: 3px 5px;\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "border-radius: 10px;\n");
 fwrite($hell, "opacity: 1;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "display: block;\n");
 fwrite($hell, "top: 3px;\n");
 fwrite($hell, "right: 4px;\n");
@@ -397,7 +397,7 @@ fwrite($hell, "}\n");
 fwrite($hell, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
 fwrite($hell, "transform: translate(0px) !important;\n");
 fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, "#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {width: 90%;}\n");
@@ -637,12 +637,12 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_navigation > li > .cms_navigation_aktiveseite {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_navigation > li > .cms_navigation_aktiveseite:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
 fwrite($dunkel, "}\n");
 
@@ -651,11 +651,11 @@ fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_aktivitaet_out, #cms_maktivitaet_out {\n");
@@ -664,7 +664,7 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilnavigation {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilnavigation:hover {\n");
@@ -673,7 +673,7 @@ fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhin
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_menuicon {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilmenue_a {\n");
@@ -689,15 +689,15 @@ fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilmenue_seiten li .cms_meldezahl {\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilmenue_seiten li .cms_meldezahl_wichtig {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter']." !important;\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerakzent']." !important;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
@@ -747,7 +747,7 @@ fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund']." !
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_anteilbalken_innen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_anteilbalken_aussen {\n");

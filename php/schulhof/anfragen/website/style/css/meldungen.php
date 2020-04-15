@@ -115,8 +115,8 @@ fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_info {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
+fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_meldunginfoakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_vplan {\n");
@@ -125,39 +125,39 @@ fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_erfolg {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
+fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_fehler {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
+fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_warnung {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
+fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_meldungwarnungakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_bauarbeiten {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
+fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_meldungwarnungakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_meldung_firewall {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
+fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_meldunginfoakzent'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_gesichertedaten {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "border: 2px dashed ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "border: 2px dashed ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_geschuetzerinhalt {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "border: 2px dashed ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "border: 2px dashed ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_geschuetzerinhalt p, .cms_ladebox {\n");

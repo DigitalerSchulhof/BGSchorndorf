@@ -51,15 +51,15 @@ fwrite($hell, "}\n");
 
 // DARKMODE
 fwrite($dunkel, ".cms_button_bedingt_logisch {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_button_bedingt_bedingung {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_bedingt_gui_logisch {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
+fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_bedingt_gui_logisch_feld,\n");

@@ -10,7 +10,7 @@ fwrite($hell, "min-height: 16px;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_hinweis {\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_hinweis_hintergrund'].";\n");
 fwrite($hell, "padding: 0px 5px 0px 5px;\n");
 fwrite($hell, "position: absolute;\n");
@@ -89,7 +89,7 @@ fwrite($hell, "}\n");
 
 // DARKMODE"
 fwrite($dunkel, ".cms_hinweis {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
 fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund'].";\n");
 fwrite($dunkel, "}\n");
 ?>

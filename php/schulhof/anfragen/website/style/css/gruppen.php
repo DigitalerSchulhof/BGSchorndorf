@@ -136,7 +136,7 @@ fwrite($hell, ".cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_b
 fwrite($hell, "display: inline-block;\n");
 fwrite($hell, "padding: 2px 7px;\n");
 fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
 fwrite($hell, "text-align: center;\n");
 fwrite($hell, "min-width: 25px;\n");
 fwrite($hell, "}\n");
@@ -416,16 +416,16 @@ fwrite($dunkel, ".cms_blogeintrag:hover, .cms_beschlusseintrag:hover {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_beschluss_angenommen {color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
-fwrite($dunkel, ".cms_beschluss_abgelehnt {color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_beschluss_angenommen {color: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_beschluss_abgelehnt {color: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";}\n");
 fwrite($dunkel, ".cms_beschluss_vertagt {color: ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
 
 fwrite($dunkel, ".cms_aktionen_uebersicht li:last-child > p {\n");
 fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_oe {background: ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";}\n");
-fwrite($dunkel, ".cms_in {background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, ".cms_oe {background: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
+fwrite($dunkel, ".cms_in {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
 
 fwrite($dunkel, ".cms_beschluss {\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
@@ -436,13 +436,13 @@ fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n")
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_beschluss_pro {\n");
-fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_beschluss_contra {\n");
-fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_beschluss_enthaltung {\n");
@@ -450,12 +450,12 @@ fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_abstufung2']
 fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_beschluss_stimmen_pro {background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
-fwrite($dunkel, ".cms_beschluss_stimmen_contra {background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, ".cms_beschluss_stimmen_pro {background: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
+fwrite($dunkel, ".cms_beschluss_stimmen_contra {background: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";}\n");
 fwrite($dunkel, ".cms_beschluss_stimmen_enthaltung {background: ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
 
 fwrite($dunkel, ".cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_beschluss_langfristig {\n");
@@ -488,5 +488,6 @@ fwrite($dunkel, "}");
 fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {");
 fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_chat_gegenueber']."");
 fwrite($dunkel, "}");
+
 
 ?>

@@ -61,7 +61,7 @@ fwrite($hell, "width: 50% !important;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_neuigkeit:hover {\n");
-fwrite($hell, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
+fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_neuigkeit_icon {\n");
@@ -124,15 +124,15 @@ fwrite($dunkel, ".cms_neuigkeit a {color: ".$_POST['cms_style_d_neuigkeit_schrif
 fwrite($dunkel, ".cms_neuigkeit a:hover {color: ".$_POST['cms_style_d_neuigkeit_schrifthover'].";}\n");
 
 fwrite($dunkel, ".cms_neuigkeit_notfall {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";\n");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
 fwrite($dunkel, "animation-name: notfallanimationdunkel;\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, "@keyframes notfallanimationdunkel {\n");
-fwrite($dunkel, "0%   {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
-fwrite($dunkel, "37.5%  {background-color:".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, "75%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
-fwrite($dunkel, "100%  {background-color:".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+fwrite($dunkel, "0%   {background-color:".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
+fwrite($dunkel, "37.5%  {background-color:".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";}\n");
+fwrite($dunkel, "75%  {background-color:".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
+fwrite($dunkel, "100%  {background-color:".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
 fwrite($dunkel, "}\n");
 
 fwrite($dunkel, ".cms_neuigkeit_ln {\n");
