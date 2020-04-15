@@ -178,6 +178,7 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 		fwrite($dunkel, "}");
 		fclose($hell);
 		fclose($dunkel);
+		fclose($drucken);
 
 		echo "ERFOLG";
 	}

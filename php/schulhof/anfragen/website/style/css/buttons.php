@@ -114,14 +114,6 @@ fwrite($hell, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n"
 fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
 fwrite($hell, "}\n");
 
-fwrite($hell, ".cms_button_anonymFragezeichen, .cms_button_anonymFragezeichen:hover{\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_button_schrift'].";\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_button_anonymFragezeichen:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_button_schrifthover'].";\n");
-fwrite($hell, "}\n");
-
 fwrite($hell, ".cms_button_gesichert:hover, .cms_iconbutton_gesichert:hover,\n");
 fwrite($hell, ".cms_button_passiv:hover, .cms_button_passivda {\n");
 fwrite($hell, "cursor: default;\n");
@@ -405,14 +397,6 @@ fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, ".cms_button_anonymFragezeichen, .cms_button_anonymFragezeichen:hover{\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrift'].";\n");
-fwrite($dunkel, "&:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-
 fwrite($dunkel, "#cms_kopfzeile_i .cms_button {\n");
 fwrite($dunkel, "background-color: ".$_POST['cms_style_d_kopfzeile_buttonhintergrund'].";\n");
 fwrite($dunkel, "color: ".$_POST['cms_style_d_kopfzeile_buttonschrift'].";\n");
@@ -473,9 +457,7 @@ fwrite($dunkel, "}\n");
 
 /* FARBBEISPIELE */
 fwrite($dunkel, ".cms_farbbeispiel, .cms_farbbeispiel_aktiv {\n");
-fwrite($dunkel, "&.cms_farbbeispiel_aktiv {\n");
 fwrite($dunkel, "border: 2px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
 fwrite($dunkel, "}\n");
 
 /* ICONAUSWAHL */

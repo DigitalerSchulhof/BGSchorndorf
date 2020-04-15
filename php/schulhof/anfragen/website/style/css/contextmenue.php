@@ -4,7 +4,7 @@ fwrite($hell, "position: absolute;\n");
 fwrite($hell, "display: none;\n");
 fwrite($hell, "z-index: 1000;\n");
 fwrite($hell, "padding: 4px;\n");
-fwrite($hell, "padding-bottom: 3px;  // Weil cms_aktion hat\n");
+fwrite($hell, "padding-bottom: 3px;\n");
 fwrite($hell, "background-color: rgba(0, 0, 0, 0.75);\n");
 fwrite($hell, "border-radius: 5px;\n");
 fwrite($hell, "}\n");

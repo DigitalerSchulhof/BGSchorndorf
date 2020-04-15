@@ -69,7 +69,7 @@ fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_vollbild_schliessen .cms_hinweis {\n");
 fwrite($hell, "top: 25px;\n");
-fwrite($hell, "bottom: none;\n");
+fwrite($hell, "bottom: 0;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_dateisystem_hochladen_dateiliste .cms_button_nein .cms_hinweis {\n");

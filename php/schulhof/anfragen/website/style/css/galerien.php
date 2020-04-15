@@ -92,7 +92,6 @@ fwrite($hell, "display: flex;\n");
 fwrite($hell, "flex-wrap: nowrap;\n");
 fwrite($hell, "padding: 0px;\n");
 fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "//border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
 fwrite($hell, "list-style-type: none;\n");
 fwrite($hell, "display: block;\n");
 fwrite($hell, "}\n");

@@ -18,7 +18,7 @@ fwrite($hell, "margin-top: 40px;\n");
 fwrite($hell, "margin-bottom: 15px;\n");
 fwrite($hell, "font-weight: bold;\n");
 fwrite($hell, "font-size: 170%;\n");
-fwrite($hell, "overflow: show;\n");
+fwrite($hell, "overflow: visible;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, "h2 {\n");

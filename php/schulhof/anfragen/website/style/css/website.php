@@ -421,14 +421,14 @@ fwrite($hell, "width: 100%;\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
 fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "transform: 250ms ease-in-out;\n");
+fwrite($hell, "transition: 250ms ease-in-out;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_websitesuche #cms_websitesuche_pc_ergebnisse ul li a:hover,\n");
 fwrite($hell, ".cms_websitesuche #cms_websitesuche_mobil_ergebnisse ul li a:hover {\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_kopfzeile_suchehintergrundhover'].";\n");
 fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "transform: none;\n");
+fwrite($hell, "transition: none;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, ".cms_websitesuche h3 {\n");

@@ -169,232 +169,242 @@ fwrite($hell, "width: 25%;\n");
 fwrite($hell, "border-right: 10px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
 fwrite($hell, "}\n");
 
-fwrite($hell, "#cms_chat {\n");
-fwrite($hell, "#cms_chat_nachrichten {\n");
-fwrite($hell, ".cms_chat_datum {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "margin-bottom: 10px;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "padding: 5px 20px;\n");
-fwrite($hell, "max-height: 500px;\n");
-fwrite($hell, "overflow-y: auto;\n");
-fwrite($hell, ".cms_chat_nachricht_aussen {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "margin-bottom: 15px;\n");
-fwrite($hell, "float: left;\n");
-fwrite($hell, ".cms_chat_nachricht_innen {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "min-width: 40%;\n");
-fwrite($hell, "max-width: 60%;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_chat_gegenueber'].";\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "float: left;\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, ".cms_chat_nachricht_aktion {\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "top: 0;\n");
-fwrite($hell, "right: 0;\n");
-fwrite($hell, "padding: inherit;\n");
-fwrite($hell, "&[data-aktion=sendend] {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&[data-aktion=mehr] {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, ".cms_chat_aktion {\n");
-fwrite($hell, "// .cms_hinweis\n");
-fwrite($hell, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_hinweis_hintergrund'].";\n");
-fwrite($hell, "padding: 0px 5px 0px 5px;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "font-family: 'robl';\n");
-fwrite($hell, "font-weight: normal !important;\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "z-index: 50;\n");
-fwrite($hell, "width: 150px;\n");
-fwrite($hell, "overflow: visible;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "bottom: 25px;\n");
-fwrite($hell, "overflow: hidden;\n");
-fwrite($hell, "text-align: left;\n");
+fwrite($hell, "#cms_chat #cms_chat_nachrichten {");
+fwrite($hell, "	width: 100%;");
+fwrite($hell, "	padding: 5px 20px;");
+fwrite($hell, "	max-height: 500px;");
+fwrite($hell, "	overflow-y: auto");
+fwrite($hell, "}");
 
-fwrite($hell, "z-index: 5;\n");
-fwrite($hell, "p {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "img {\n");
-fwrite($hell, "height: 16px;\n");
-fwrite($hell, "width: 16px;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_chat_nachricht_id {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_chat_nachricht_autor {\n");
-fwrite($hell, "font-size: 90%;\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_chat_nachricht_nachricht {\n");
-fwrite($hell, "padding-left: 5px;\n");
-fwrite($hell, "font-size: 110%;\n");
-fwrite($hell, "white-space: pre-wrap;\n");
-fwrite($hell, "word-break: break-word\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_chat_nachricht_zeit {\n");
-fwrite($hell, "float: right;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_nachricht_eigen {\n");
-fwrite($hell, ".cms_chat_nachricht_innen {\n");
-fwrite($hell, "float: right;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_chat_eigen'].";\n");
-fwrite($hell, ".cms_chat_nachricht_aktion {\n");
-fwrite($hell, "&[data-aktion=mehr] {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, ".cms_chat_aktion {\n");
-fwrite($hell, "text-align: right;\n");
-fwrite($hell, "left: unset;\n");
-fwrite($hell, "right: 0;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_nachricht_sendend {\n");
-fwrite($hell, "opacity: 0.8;\n");
-fwrite($hell, ".cms_chat_nachricht_innen {\n");
-fwrite($hell, ".cms_chat_nachricht_aktion {\n");
-fwrite($hell, "&[data-aktion=sendend] {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&[data-aktion=mehr] {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_nachricht_gemeldet {\n");
-fwrite($hell, "opacity: 0.8;\n");
-fwrite($hell, ".cms_chat_nachricht_innen {\n");
-fwrite($hell, "background-color: mix(".$_POST['cms_style_h_haupt_meldungfehlerhinter'].", white);\n");
-fwrite($hell, ".cms_chat_nachricht_aktion {\n");
-fwrite($hell, "&[data-aktion=mehr] {\n");
-fwrite($hell, "[data-mehr=melden] {\n");
-fwrite($hell, "opacity: 0.7;\n");
-fwrite($hell, "cursor: default;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_nachricht_geloescht {\n");
-fwrite($hell, "opacity: 0.7;\n");
-fwrite($hell, ".cms_chat_nachricht_innen {\n");
-fwrite($hell, ".cms_chat_nachricht_aktion {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_chat_nachricht_nachricht {\n");
-fwrite($hell, "font-style: italic;\n");
-fwrite($hell, "font-size: 90%;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "#cms_chat_nachricht_verfassen {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "label {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "textarea {\n");
-fwrite($hell, "width: 90%; // Fallback\n");
-fwrite($hell, "width: ~'calc(100% - 26px)';\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_meldung_fehler {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "div:not(.cms_meldung_fehler) {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "float: right;\n");
-fwrite($hell, "width: auto;\n");
-fwrite($hell, "img {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_datum {");
+fwrite($hell, "	text-align: center;");
+fwrite($hell, "	margin-bottom: 10px");
+fwrite($hell, "}");
 
-fwrite($hell, "#cms_chat_mehr {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_link_schrift'].";\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen {");
+fwrite($hell, "	width: 100%;");
+fwrite($hell, "	margin-bottom: 15px;");
+fwrite($hell, "	float: left");
+fwrite($hell, "}");
 
-fwrite($hell, "#cms_chat_status,\n");
-fwrite($hell, "#cms_chat_laden,\n");
-fwrite($hell, "#cms_chat_leer,\n");
-fwrite($hell, "#cms_chat_mehr {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "margin-top: 10px;\n");
-fwrite($hell, "margin-bottom: 20px;\n");
-fwrite($hell, "h3 {\n");
-fwrite($hell, "margin-top: 0;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "#cms_chat_status,\n");
-fwrite($hell, "#cms_chat_laden,\n");
-fwrite($hell, "#cms_chat_berechtigung,\n");
-fwrite($hell, "#cms_chat_leer,\n");
-fwrite($hell, "#cms_chat_mehr,\n");
-fwrite($hell, "#cms_chat_stumm {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {");
+fwrite($hell, "	position: relative;");
+fwrite($hell, "	min-width: 40%;");
+fwrite($hell, "	max-width: 60%;");
+fwrite($hell, "	background-color: ".$_POST['cms_style_h_chat_gegenueber'].";");
+fwrite($hell, "	border-radius: ".$_POST['cms_style_haupt_radiusmittel'].";");
+fwrite($hell, "	float: left;");
+fwrite($hell, "	padding: 5px");
+fwrite($hell, "}");
 
-fwrite($hell, "// Nach Priorität:\n");
-fwrite($hell, "&.cms_chat_leer { // 0\n");
-fwrite($hell, "#cms_chat_leer {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_mehr { // 0\n");
-fwrite($hell, "#cms_chat_mehr {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_stumm { // 0.1\n");
-fwrite($hell, ">#cms_chat_nachricht_verfassen {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "#cms_chat_stumm {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_status { // 1\n");
-fwrite($hell, ">* {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "#cms_chat_status {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_laden {  // 1.1\n");
-fwrite($hell, "#cms_chat_laden {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "&.cms_chat_berechtigung { // 2\n");
-fwrite($hell, ">* {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "#cms_chat_berechtigung {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion {");
+fwrite($hell, "	position: absolute;");
+fwrite($hell, "	top: 0;");
+fwrite($hell, "	right: 0;");
+fwrite($hell, "	padding: inherit");
+fwrite($hell, "}");
 
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=sendend] {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
 
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {");
+fwrite($hell, "	cursor: pointer");
+fwrite($hell, "}");
 
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {");
+fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;");
+fwrite($hell, "background: ".$_POST['cms_style_h_hinweis_hintergrund'].";");
+fwrite($hell, "	padding: 0 5px 0 5px;");
+fwrite($hell, "	position: absolute;");
+fwrite($hell, "	font-family: 'robl';");
+fwrite($hell, "	font-weight: normal !important;");
+fwrite($hell, "	display: none;");
+fwrite($hell, "	border-radius: ".$_POST['cms_style_hinweis_radius'].";");
+fwrite($hell, "	z-index: 50;");
+fwrite($hell, "	width: 150px;");
+fwrite($hell, "	overflow: visible;");
+fwrite($hell, "	left: 0;");
+fwrite($hell, "	bottom: 25px;");
+fwrite($hell, "	overflow: hidden;");
+fwrite($hell, "	text-align: left;");
+fwrite($hell, "	z-index: 5");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion p {");
+fwrite($hell, "	padding: 5px");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion img {");
+fwrite($hell, "	height: 16px;");
+fwrite($hell, "	width: 16px");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_id {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_autor {");
+fwrite($hell, "	font-size: 90%");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_nachricht {");
+fwrite($hell, "	padding-left: 5px;");
+fwrite($hell, "	font-size: 110%;");
+fwrite($hell, "	white-space: pre-wrap;");
+fwrite($hell, "	word-break: break-word");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_zeit {");
+fwrite($hell, "	float: right");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen {");
+fwrite($hell, "	float: right;");
+fwrite($hell, "	background-color: ".$_POST['cms_style_h_chat_eigen']."");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {");
+fwrite($hell, "	text-align: right;");
+fwrite($hell, "	left: unset;");
+fwrite($hell, "	right: 0");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend {");
+fwrite($hell, "	opacity: .8");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=sendend] {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet {");
+fwrite($hell, "	opacity: .8");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen {");
+fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter']."");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] [data-mehr=melden] {");
+fwrite($hell, "	opacity: .7;");
+fwrite($hell, "	cursor: default");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht {");
+fwrite($hell, "	opacity: .7");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht .cms_chat_nachricht_innen .cms_chat_nachricht_aktion {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht .cms_chat_nachricht_innen .cms_chat_nachricht_nachricht {");
+fwrite($hell, "	font-style: italic;");
+fwrite($hell, "	font-size: 90%");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen {");
+fwrite($hell, "	width: 100%");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen label {");
+fwrite($hell, "	cursor: pointer");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen textarea {");
+fwrite($hell, "	width: 90%;");
+fwrite($hell, "	width: calc(100% - 26px)");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen .cms_meldung_fehler {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen div:not(.cms_meldung_fehler) {");
+fwrite($hell, "	display: inline-block;");
+fwrite($hell, "	float: right;");
+fwrite($hell, "	width: auto");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen div:not(.cms_meldung_fehler) img {");
+fwrite($hell, "	padding: 5px;");
+fwrite($hell, "	cursor: pointer");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_mehr {");
+fwrite($hell, "	color: ".$_POST['cms_style_h_link_schrift'].";");
+fwrite($hell, "	cursor: pointer");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_status,");
+fwrite($hell, "#cms_chat #cms_chat_laden,");
+fwrite($hell, "#cms_chat #cms_chat_leer,");
+fwrite($hell, "#cms_chat #cms_chat_mehr {");
+fwrite($hell, "	text-align: center;");
+fwrite($hell, "	margin-top: 10px;");
+fwrite($hell, "	margin-bottom: 20px");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_status h3,");
+fwrite($hell, "#cms_chat #cms_chat_laden h3,");
+fwrite($hell, "#cms_chat #cms_chat_leer h3,");
+fwrite($hell, "#cms_chat #cms_chat_mehr h3 {");
+fwrite($hell, "	margin-top: 0");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat #cms_chat_status,");
+fwrite($hell, "#cms_chat #cms_chat_laden,");
+fwrite($hell, "#cms_chat #cms_chat_berechtigung,");
+fwrite($hell, "#cms_chat #cms_chat_leer,");
+fwrite($hell, "#cms_chat #cms_chat_mehr,");
+fwrite($hell, "#cms_chat #cms_chat_stumm {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_leer #cms_chat_leer {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_mehr #cms_chat_mehr {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_stumm>#cms_chat_nachricht_verfassen {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_stumm #cms_chat_stumm {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_status>* {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_status #cms_chat_status {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_laden #cms_chat_laden {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_berechtigung>* {");
+fwrite($hell, "	display: none");
+fwrite($hell, "}");
+
+fwrite($hell, "#cms_chat.cms_chat_berechtigung #cms_chat_berechtigung {");
+fwrite($hell, "	display: block");
+fwrite($hell, "}");
 
 
 // DARKMODE
@@ -457,36 +467,26 @@ fwrite($dunkel, ".cms_beschlussuebersicht_jahr .cms_beschluss {\n");
 fwrite($dunkel, "border-right: 10px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
 fwrite($dunkel, "}\n");
 
-fwrite($dunkel, "#cms_chat {\n");
-fwrite($dunkel, "#cms_chat_nachrichten {\n");
-fwrite($dunkel, ".cms_chat_nachricht_aussen {\n");
-fwrite($dunkel, ".cms_chat_nachricht_innen {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_chat_gegenueber'].";\n");
-fwrite($dunkel, ".cms_chat_nachricht_aktion {\n");
-fwrite($dunkel, "&[data-aktion=mehr] {\n");
-fwrite($dunkel, ".cms_chat_aktion {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "&.cms_chat_nachricht_eigen {\n");
-fwrite($dunkel, ".cms_chat_nachricht_innen {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_h_chat_eigen'].";\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "&.cms_chat_nachricht_gemeldet {\n");
-fwrite($dunkel, "opacity: 0.8;\n");
-fwrite($dunkel, ".cms_chat_nachricht_innen {\n");
-fwrite($dunkel, "background-color: mix(".$_POST['cms_style_h_haupt_meldungfehlerakzent'].", white);\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
+fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {");
+fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;");
+fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund']."");
+fwrite($dunkel, "}");
 
-fwrite($dunkel, "#cms_chat_mehr {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_link_schrift'].";\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "}\n");
+fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen {");
+fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_chat_eigen']."");
+fwrite($dunkel, "}");
+
+
+fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen {");
+fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter']."");
+fwrite($dunkel, "}");
+
+fwrite($dunkel, "#cms_chat #cms_chat_mehr {");
+fwrite($dunkel, "	color: ".$_POST['cms_style_d_link_schrift'].";");
+fwrite($dunkel, "}");
+
+fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {");
+fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_chat_gegenueber']."");
+fwrite($dunkel, "}");
+
 ?>

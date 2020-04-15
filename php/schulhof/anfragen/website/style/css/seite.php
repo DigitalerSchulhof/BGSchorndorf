@@ -1,4 +1,4 @@
-<?
+<?php
 fwrite($hell, "* {\n");
 fwrite($hell, "font-family: ".$_POST['cms_style_haupt_schriftart'].", sans-serif;\n");
 fwrite($hell, "font-size: ".$_POST['cms_style_haupt_schriftgroesse'].";\n");

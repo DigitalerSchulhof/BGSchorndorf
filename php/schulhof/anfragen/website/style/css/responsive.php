@@ -65,7 +65,7 @@ fwrite($hell, ".cms_optimierung_T .cms_spalte_2, .cms_optimierung_T .cms_spalte_
 fwrite($hell, ".cms_optimierung_T .cms_spalte_60, .cms_optimierung_T .cms_spalte_40,\n");
 fwrite($hell, ".cms_optimierung_T .cms_spalte_4, .cms_optimierung_T .cms_spalte_34,\n");
 fwrite($hell, ".cms_optimierung_T .cms_spalte_6 .cms_optimierung_T .cms_spalte_15,\n");
-fwrite($hell, ".cms_optimierung_T .cms_spalte_25, {\n");
+fwrite($hell, ".cms_optimierung_T .cms_spalte_25 {\n");
 fwrite($hell, "float: none !important;\n");
 fwrite($hell, "width: 100%;\n");
 fwrite($hell, "padding-bottom: 40px !important;\n");

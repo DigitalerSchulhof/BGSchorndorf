@@ -138,7 +138,6 @@ fwrite($hell, "table.cms_zeitwahl {\n");
 fwrite($hell, "width: 100%;\n");
 fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
 fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "border-spacing: collapse;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, "table.cms_zeitwahl td {width: auto;}\n");
@@ -149,7 +148,6 @@ fwrite($hell, "table.table {\n");
 fwrite($hell, "width: 100%;\n");
 fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
 fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "border-spacing: collapse;\n");
 fwrite($hell, "}\n");
 
 fwrite($hell, "table.table td {\n");
