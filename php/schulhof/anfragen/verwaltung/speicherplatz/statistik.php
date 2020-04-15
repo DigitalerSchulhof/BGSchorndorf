@@ -93,16 +93,19 @@ if (cms_angemeldet() && cms_r("statistik.speicherplatz")) {
 
 	$db_absolut_rein = $dbgroesse;
 	$db_prozentual_rein = $dbgroesse / $speicherplatz * 100;
+	if (preg_match("/[Ee]/", $db_prozentual_rein)) {$db_prozentual_rein = 0;}
 	$db_absolut_einheit = cms_groesse_umrechnen($dbgroesse);
 	$db_prozentual_einheit = str_replace(".", ",", round($db_prozentual_rein, 2))." %";
 
 	$dat_absolut_rein = $datgroesse;
 	$dat_prozentual_rein = $datgroesse / $speicherplatz * 100;
+	if (preg_match("/[Ee]/", $dat_prozentual_rein)) {$dat_prozentual_rein = 0;}
 	$dat_absolut_einheit = cms_groesse_umrechnen($datgroesse);
 	$dat_prozentual_einheit = str_replace(".", ",", round($dat_prozentual_rein, 2))." %";
 
 	$ges_absolut_rein = $datgroesse + $dbgroesse;
 	$ges_prozentual_rein = $ges_absolut_rein / $speicherplatz * 100;
+	if (preg_match("/[Ee]/", $ges_prozentual_rein)) {$ges_prozentual_rein = 0;}
 	$ges_absolut_einheit = cms_groesse_umrechnen($ges_absolut_rein);
 	$ges_prozentual_einheit = str_replace(".", ",", round($ges_prozentual_rein, 2))." %";
 
