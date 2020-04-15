@@ -574,9 +574,11 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("website.weiterleiten")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Weiterleiten\">Weiterleitungen</a></li> ";
 	}
+	if (cms_r("website.styleändern")) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Style_ändern\">Style ändern</a></li> ";
+	}
 
-
-	// WEBSITE
+	// TECHNIK
 	$VERtechnik = "";
 	if (cms_r("schulhof.technik.geräte.verwalten")) {
 		$VERtechnik .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten</a></li> ";
@@ -602,6 +604,10 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("schulhof.verwaltung.schule.[|adressen,mail]")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuldetails\">Schuldetails</a></li> ";
 	}
+	if (cms_r("statistik.speicherplatz")) {
+		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Speicherplatz/Statistik\">Speicherplatzstatistik</a></li> ";
+	}
+
 
 	$VERsupport = "";
 	$VERhilfe = "";
