@@ -6,6 +6,7 @@ fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
 fwrite($hell, "font-weight: normal;\n");
 fwrite($hell, "padding: 0px;\n");
 fwrite($hell, "margin: 0px;\n");
+fwrite($hell, "image-rendering: pixelated;\n");
 fwrite($hell, "list-style-type: none;\n");
 fwrite($hell, "line-height: 1.2em;\n");
 fwrite($hell, "text-decoration: none;\n");
