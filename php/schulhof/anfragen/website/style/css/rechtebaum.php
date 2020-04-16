@@ -17,6 +17,7 @@ fwrite($hell, ".cms_rechtebox .cms_recht>.icon {");
 fwrite($hell, "	content: ' ';");
 fwrite($hell, "	display: inline-block;");
 fwrite($hell, "	background-size: cover;");
+fwrite($hell, "	transition: 0.3s background-image linear;");
 fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert.png');");
 fwrite($hell, "	line-height: 24px;");
 fwrite($hell, "	float: left;");
@@ -143,7 +144,7 @@ fwrite($dunkel, "	color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !im
 fwrite($dunkel, "}");
 
 fwrite($dunkel, ".cms_demorecht {");
-fwrite($dunkel, "	border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
+fwrite($dunkel, "	border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
 fwrite($dunkel, "}");
 
 fwrite($dunkel, ".cms_demorecht:hover {");
