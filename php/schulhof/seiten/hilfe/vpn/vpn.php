@@ -2,8 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-
-if (!cms_r("lehrerzimmer.zugriff")) {
+$zugriff = cms_r("lehrerzimmer.zugriff");
+if (!$zugriff) {
 	echo cms_meldung_berechtigung();
 }
 
@@ -34,7 +34,7 @@ if ($sql->execute()) {
 		$vpninfo[$vpnbez] = $vpnwert;
 	}
 }
-$dbs->close();
+$sql->close();
 
 $os = cms_welches_betriebssystem();
 

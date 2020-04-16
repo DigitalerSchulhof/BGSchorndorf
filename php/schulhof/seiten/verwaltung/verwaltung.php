@@ -429,6 +429,14 @@ if (cms_r("website.weiterleiten")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
+if (cms_r("website.styleändern")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_styleaendern cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Website/Style_ändern\">";
+			$code .=  "<h3>Style ändern</h3>";
+			$code .=  "<p>Farben, Abstände, Schriftarten festlegen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
 
 if ($code) {
 	$ausgabe .=  "<div class=\"cms_spalte_4\">";
@@ -513,6 +521,15 @@ if (cms_r("schulhof.verwaltung.schule.adressen || schulhof.verwaltung.schule.mai
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schuldetails\">";
 			$code .=  "<h3>Schuldetails</h3>";
 			$code .=  "<p>Einstellen ".aufzaehlen(array("der Adresse der Schule" => cms_r("schulhof.verwaltung.schule.adressen"), "der eMailadresse des Schulhofs" => cms_r("schulhof.verwaltung.schule.mail")))."</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+
+if (cms_r("statistik.speicherplatz")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_speicherplatz\" href=\"Schulhof/Verwaltung/Speicherplatz/Statistik\">";
+			$code .=  "<h3>Speicherplatzstatistik</h3>";
+			$code .=  "<p>Speicherplatzauslastung anzeigen</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }

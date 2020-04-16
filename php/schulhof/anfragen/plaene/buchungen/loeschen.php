@@ -24,7 +24,7 @@ if (cms_angemeldet()) {
 	$fehler = false;
 
 	if ($art == 'r') {$buchungstabelle = 'raeumebuchen'; $rart = "räume";}
-	else if ($art == 'l') {$buchungstabelle = 'leihenbuchen'; $rart = "leihgeräte"}
+	else if ($art == 'l') {$buchungstabelle = 'leihenbuchen'; $rart = "leihgeräte";}
 
 	$dbs = cms_verbinden('s');
 

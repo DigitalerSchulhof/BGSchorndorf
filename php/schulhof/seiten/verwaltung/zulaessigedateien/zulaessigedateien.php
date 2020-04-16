@@ -7,8 +7,8 @@
 if (cms_r("technik.server.dateienerlaubnis")) {
 	$code = "<h3>Limit</h3>";
 	$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr><th>Maximale Dateigröße:</th><td><input type=\"text\" name=\"cms_schulhof_zulaessig_groesse\" id=\"cms_schulhof_zulaessig_groesse\" value=\"$CMS_MAX_DATEI\"> ";
-		$code .= "<select class=\"cms_einheit\" name=\"cms_schulhof_zulaessig_einheit\" id=\"cms_schulhof_zulaessig_einheit\">";
+		$code .= "<tr><th>Maximale Dateigröße:</th><td><input class=\"cms_klein\" type=\"text\" name=\"cms_schulhof_zulaessig_groesse\" id=\"cms_schulhof_zulaessig_groesse\" value=\"$CMS_MAX_DATEI\"> ";
+		$code .= "<select class=\"cms_einheit cms_klein\" name=\"cms_schulhof_zulaessig_einheit\" id=\"cms_schulhof_zulaessig_einheit\">";
 			$code .= "<option value=\"B\">Byte</option>";
 			$code .= "<option value=\"KB\">KB</option>";
 			$code .= "<option value=\"MB\">MB</option>";

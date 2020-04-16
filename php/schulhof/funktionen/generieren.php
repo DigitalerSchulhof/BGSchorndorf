@@ -817,6 +817,46 @@ function cms_wechselbilder_generieren($inhalte, $id = "") {
   return $code;
 }
 
+function cms_generiere_stylefarbwahl($id, $wert) {
+  if (!isset($wert[$id])) {return "";}
+  $rgba = explode(",", substr($wert[$id]['wert'], 5, -1));
+  $r = dechex($rgba[0]);
+  $g = dechex($rgba[1]);
+  $b = dechex($rgba[2]);
+  if (strlen($r) < 2) {$r = "0".$r;}
+  if (strlen($g) < 2) {$g = "0".$g;}
+  if (strlen($b) < 2) {$b = "0".$b;}
+  $hex = "#".$r.$g.$b;
+  $alpha = $rgba[3]*100;
+  return "<input class=\"cms_farbwahl_rgb\" type=\"color\" name=\"$id"."_rgb\" id=\"$id"."_rgb\" value=\"$hex\"> <input class=\"cms_farbwahl_alpha\" type=\"number\" name=\"$id"."_alpha\" id=\"$id"."_alpha\" min=\"0\" max=\"100\" step=\"1\" value=\"$alpha\"> %";
+}
+
+function cms_generiere_styleinput($id, $wert, $typ="text") {
+  if (!isset($wert[$id])) {return "";}
+  return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"".$wert[$id]['wert']."\">";
+}
+
+function cms_generiere_styleselect($id, $optionen, $wert, $vergleich = 'alias') {
+  $wertid = str_replace("_alias", "", $id);
+  if (!isset($wert[$wertid])) {return "";}
+  $optionen = str_replace("value=\"".$wert[$wertid][$vergleich]."\"", "value=\"".$wert[$wertid][$vergleich]."\" selected=\"selected\"", $optionen);
+  if ($vergleich == 'alias') {
+    $event = " onchange=\"cms_alias_auswerten('$wertid')\"";
+  }
+  else {
+    $event = "";
+  }
+  return "<select name=\"$id\" id=\"$id\"$event>$optionen</select>";
+}
+
+function cms_generiere_input($id, $wert="", $typ="text") {
+  return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"$wert\">";
+}
+
+function cms_generiere_select($id, $optionen, $wert="") {
+  $optionen = str_replace("value=\"$wert\"", "value=\"$wert\" selected=\"selected\"", $optionen);
+  return "<select name=\"$id\" id=\"$id\">$optionen</select>";
+  
 function kgv($m, $n) {
     if ($m == 0 || $n == 0) return 0;
     $r = ($m * $n) / ggt($m, $n);

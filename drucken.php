@@ -65,7 +65,6 @@
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 	// <!-- Einbindung der Stylesheets -->
-	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?v=$CMS_VERSION\">";
 	echo "<script src=\"js/allgemein/check.js?v=$CMS_VERSION\"></script>";
 	echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";

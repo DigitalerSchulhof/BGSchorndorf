@@ -31,7 +31,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 	$sql->bind_param("ii", $klasse, $zeitraum);
 	if ($sql->execute()) {
 		$sql->bind_result($anzahl);
-		if ($daten = $anfrage->fetch_assoc()) {
+		if ($daten = $anfrage->fetch()) {
 			if ($anzahl != 1) {$fehler = true;}
 		} else {$fehler = true;}
 		$sql->close();
@@ -72,7 +72,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 		$sql->bind_param("iiiii", $zeitraum, $tag, $stunde, $kurs, $raum, $lehrer);
 		if ($sql->execute()) {
 			$sql->bind_result($bkurs, $blehrer, $braum)
-			while ($daten = $anfrage->fetch_assoc()) {
+			while ($daten = $anfrage->fetch()) {
 				$bestehend[$anzahl]['kurs'] = $bkurs;
 				$bestehend[$anzahl]['lehrkraft'] = $blehrer;
 				$bestehend[$anzahl]['raum'] = $braum;

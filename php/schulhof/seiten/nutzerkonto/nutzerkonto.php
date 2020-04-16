@@ -45,10 +45,6 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 	}
 }
 
-?>
-
-<?php
-
 $neuigkeiten = "";
 // Prüfen, ob Tagebücher zu füllen sind
 $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM (SELECT DISTINCT kurse.id FROM kurse JOIN stufen ON kurse.stufe = stufen.id JOIN unterricht ON unterricht.tkurs = kurse.id WHERE kurse.schuljahr = ? AND stufen.tagebuch = 1 AND tlehrer = ?) AS x");

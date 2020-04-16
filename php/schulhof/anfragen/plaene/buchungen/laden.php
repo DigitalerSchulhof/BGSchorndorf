@@ -27,7 +27,7 @@ if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if($art === "r") { $rart = "räume"; }
-else if($art === "r") { $rart = "leihgeräte"; }
+else if($art === "l") { $rart = "leihgeräte"; }
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.buchungen.$rart.[|sehen,anonymisiert]")) {
 	if (cms_r("schulhof.organisation.buchungen.$rart.sehen")) {$anonymisiert = false;}

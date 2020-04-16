@@ -566,7 +566,16 @@ ALTER TABLE `nutzerregistrierung`
 CREATE TABLE `weiterleiten` ( `id` BIGINT(255) UNSIGNED NOT NULL , `von` VARBINARY(5000) NULL DEFAULT NULL , `zu` VARBINARY(5000) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `weiterleiten` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zu`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;
 
-CREATE TABLE `notentabelle_struktur` ( `person` BIGINT(255) UNSIGNED NOT NULL , `kurs` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `bereiche` VARBINARY(5000) NULL DEFAULT NULL , `noten` VARBINARY(5000) NULL DEFAULT NULL ) ENGINE = InnoDB;
-ALTER TABLE `notentabelle_struktur` ADD PRIMARY KEY (`person`, `kurs`);
-ALTER TABLE `notentabelle_struktur` ADD CONSTRAINT `notentabelle_strukturperson` FOREIGN KEY (`person`) REFERENCES `nutzerkonten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `notentabelle_struktur` ADD CONSTRAINT `notentabelle_strukturkurs` FOREIGN KEY (`kurs`) REFERENCES `kurse`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+CREATE TABLE `style` (
+  `name` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+  `wert` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+  `alias` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+  PRIMARY KEY (`name`)
+) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;
+
+ALTER TABLE `style` ADD CONSTRAINT `stylealiasname` FOREIGN KEY (`alias`) REFERENCES `style`(`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+
+CREATE TABLE `notentabelle_bereich` ( `id` BIGINT(255) UNSIGNED NOT NULL , `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `kurs` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL , `gewicht` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `notentabelle_bereich` ADD CONSTRAINT `notentabelle_bereichkurskurse` FOREIGN KEY (`kurs`) REFERENCES `kurse`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `notentabelle_bereich` ADD CONSTRAINT `notentabelle_bereichpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -396,6 +396,13 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<div class=\"cms_spalte_i\"><h2>Website</h2></div>";
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 
+		$code .= "<h3>Darstellung der Website</h3>";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr>";
+		$code .= "<th>Darkmode verfügbar:</th>";
+		$code .= "<td>".cms_schieber_generieren('darkmodeverfuegbar',$einstellungen['Website Darkmode'])."</td>";
+		$code .= "</tr>";
+		$code .= "</table>";
 		$code .= "<h3>Verhalten bei Menüseiten</h3>";
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
