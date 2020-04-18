@@ -53,13 +53,13 @@ if (!$fehler) {
 		$code .= "<div class=\"cms_spalte_34\">";
 			$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 				$code .= "<h2>Termine</h2>";
-				$termincode = cms_gruppentermine_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ);
+				$termincode = cms_gruppentermine_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ, $GRUPPENRECHTE);
 				if (strlen($termincode) > 0) {$code .= "<ul class=\"cms_terminuebersicht\">".$termincode."</ul>";}
 				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine anstehenden Termine vorhanden.</p>";}
 			$code .= "</div></div>";
 			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 				$code .= "<h2>Blog</h2>";
-				$blogcode = cms_gruppenblogeintraege_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, 'liste', $CMS_URLGANZ);
+				$blogcode = cms_gruppenblogeintraege_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, 'liste', $CMS_URLGANZ, $GRUPPENRECHTE);
 				if (strlen($blogcode) > 0) {
 					$code .= "<ul class=\"cms_bloguebersicht_liste\">".$blogcode."</ul>";
 					$code .= "<p><a class=\"cms_button\" href=\"$CMS_URLGANZ/Blog\">Alle Blogeinträge</a></p>";
@@ -69,7 +69,7 @@ if (!$fehler) {
 			$code .= "<div class=\"cms_clear\"></div>";
 			$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 				$code .= "<h2>Beschlüsse</h2>";
-				$beschlusscode = cms_gruppenbeschluesse_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ);
+				$beschlusscode = cms_gruppenbeschluesse_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ, $GRUPPENRECHTE);
 				if (strlen($beschlusscode) > 0) {$code .= "<ul class=\"cms_beschlussuebersicht\">".$beschlusscode."</ul>";}
 				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Beschlüsse vorhanden.</p>";}
 			$code .= "</div></div>";

@@ -42,7 +42,7 @@ if (cms_angemeldet() && $zugriff) {
 	$sql = $dbs->prepare("SELECT beginn, $gruppenid, $oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $tabelle WHERE id = ?");
   $sql->bind_param("i", $id);
   if ($sql->execute()) {
-    $sql->bind_result($BEGINN, $gruppenid, $bezeichnung, $oeffentlichkeit);
+    $sql->bind_result($BEGINN, $gruppenid, $oeffentlichkeit, $bezeichnung);
     if (!$sql->fetch()) {$fehler = true;}
   }
   else {$fehler = true;}
