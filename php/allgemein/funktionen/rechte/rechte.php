@@ -3,7 +3,7 @@
   include_once(dirname(__FILE__)."/../../../schulhof/anfragen/verwaltung/bedingte_rechte/syntax.php");
   use Async\YAML;
 
-  define("RECHTEPRUEFEN", true);  // Prüfen, on angegebene Rechte existieren und ggf warnen
+  define("RECHTEPRUEFEN", false);  // Prüfen, on angegebene Rechte existieren und ggf warnen
 
   $cms_nutzerrechte           = array();  // Wichtig: im Array sind nur Rechte, die der Nutzer hat - d.h. Am Ende jedes "Pfads" im Array steht "true"
   $cms_bedingte_nutzerrechte  = array();
@@ -201,7 +201,6 @@
       $aktuellesFeld .= $r;
       $machtFeld      = true;
     }
-
     $tokens_durchgehen = function($tokens) {
       for($i = 0; $i < count($tokens)+1; $i++) {
         $t  = $tokens[$i]["typ"]    ?? null;
@@ -356,7 +355,7 @@
       $tokens = $tokens_durchgehen($tokens);
     }
 
-    $eval = function($tokens, ...$argumente) use (&$eval, $cms_nutzerrechte){
+    $eval = function($tokens, ...$argumente) use (&$eval, $cms_nutzerrechte, $cms_bedingte_nutzerrechte, $cms_bedingte_rollenrechte){
       $tokens = $tokens[0]      ?? $tokens;
       $typ = $tokens["typ"]     ?? null;
       $wert = $tokens["wert"]   ?? null;
@@ -374,7 +373,7 @@
       }
 
       if($typ === "Felder") {
-        $pfad = array($cms_nutzerrechte);
+        $pfad = array($cms_nutzerrechte, $cms_bedingte_nutzerrechte, $cms_bedingte_rollenrechte);
         foreach($werte as $wert) {
           $e = $eval($wert, ...$pfad);
           if($e === false || $e === true) {
@@ -711,7 +710,6 @@
     };
 
     $extrarollen = array();
-
     foreach($bedingungen as $rolle => $bedingung) {
       $bedingung_baum = cms_bedingt_bedingung_syntax_baum($bedingung);
 
