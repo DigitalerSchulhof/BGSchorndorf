@@ -88,7 +88,10 @@ if (cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
     $code .= cms_meldung("warnung", '<h4>Alte Stunden werden gelöscht</h4><p>Alle noch ausstehenden Stunden bereits erzeugter Zeiträume, inklusive aller zur Vertretung vorgemerkten Stunden, die nach dem Änderungsdatum liegen, werden gelöscht und neu angelegt! <b>Vertretungen müssen also neu eingegeben werden!</b></p>');
 
     $code .= "<p>";
-    if (strlen($zeitraumids) > 0) {$code .= "<span class=\"cms_button\" onclick=\"cms_stundenerzeugen_speichern();\">Stunden und Tagebücher erzeugen</span> ";}
+    if (strlen($zeitraumids) > 0) {
+      if ($CMS_IMLN) {$code .= "<span class=\"cms_button\" onclick=\"cms_stundenerzeugen_speichern();\">Stunden und Tagebücher erzeugen</span> ";}
+      else {$code .= "<span class=\"cms_button_gesichert\">Stunden und Tagebücher erzeugen</span> ";}
+    }
     $code .= "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung\">Abbrechen</a></p>";
   }
   else {$code .= "<h1>Stundenplanung</h1>".cms_meldung_bastler();}

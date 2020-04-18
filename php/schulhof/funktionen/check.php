@@ -236,6 +236,7 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	$cms_gruppenrechte['sichtbar'] = false;
 	$cms_gruppenrechte['bearbeiten'] = false;
 	$cms_gruppenrechte['abonniert'] = 0;
+	$cms_gruppenrechte['aufsicht'] = false;
 
 	if (!cms_valide_gruppe($gruppe) && !cms_valide_kgruppe($gruppe)) {$fehler = true;}
 
@@ -298,6 +299,7 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		    if ($sql->fetch()) {
 					if ($anzahl > 0) {
 						$cms_gruppenrechte['mitglied'] = true;
+						$cms_gruppenrechte['aufsicht'] = true;
 						$cms_gruppenrechte['sichtbar'] = true;
 					}
 				}
@@ -346,14 +348,14 @@ function cms_internterminvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
 	$gruppenart = cms_textzudb($gruppenrechte['gruppenart']);
 	return $gruppenrechte['termine'] ||
-	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.termine.anlegen"));
+	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && !$gruppenrechte['aufsicht'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.termine.anlegen"));
 }
 
 function cms_internblogvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
 	$gruppenart = cms_textzudb($gruppenrechte['gruppenart']);
 	return $gruppenrechte['blogeintraege'] ||
-	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.blogeinträge.anlegen"));
+	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && !$gruppenrechte['aufsicht'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.blogeinträge.anlegen"));
 }
 
 function cms_timeout_verlaengern() {

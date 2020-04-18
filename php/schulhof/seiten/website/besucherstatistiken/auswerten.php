@@ -1,6 +1,6 @@
 <?php
 $kd = false;
-function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $gesamt = false) {
+function cms_besucherstatistik_schulhof($anzeigetyp, $start = array("jahr" => 0, "monat" => 0), $ende = array("jahr" => 0, "monat" => 0), $gesamt = false) {
   global $kd, $CMS_SCHLUESSEL;
   date_default_timezone_set("CET");
 

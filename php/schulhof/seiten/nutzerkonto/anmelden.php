@@ -34,6 +34,10 @@ $anmeldung_moeglich = true;
 if ($anmeldung_moeglich) {
 	$code .= "<p>Um den Schulhof zu betreten, ist eine Anmeldung nötig ...</p>";
 
+	$meldung = "<h4>Wartung des Schulhofs</h4>";
+	$meldung .= "<p>Die Serverwartung ist noch nicht abgeschlossen! Vorübergehende Funktionseinschränkungen und Bugs sind möglich!</p>";
+	$code .= cms_meldung('bauarbeiten', $meldung);
+
 	$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr><th>Benutzername:</th><td><input name=\"cms_schulhof_anmeldung_bentuzer\" id=\"cms_schulhof_anmeldung_bentuzer\" type=\"text\"></td></tr>";
 		$code .= "<tr><th>Passwort:</th><td><input name=\"cms_schulhof_anmeldung_passwort\" id=\"cms_schulhof_anmeldung_passwort\" type=\"password\"></td></tr>";

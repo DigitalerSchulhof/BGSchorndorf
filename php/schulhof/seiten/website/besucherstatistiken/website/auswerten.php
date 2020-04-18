@@ -1,7 +1,7 @@
 <?php
 // Keine Daten
 $kd = false;
-function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $ende = 0, $gesamt = false, $geloescht = true, $startseite = true) {
+function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = array("jahr" => 0, "monat" => 0), $ende = array("jahr" => 0, "monat" => 0), $gesamt = false, $geloescht = true, $startseite = true) {
   global $kd, $CMS_SCHLUESSEL;
   date_default_timezone_set("CET");
   // Typ auswerten

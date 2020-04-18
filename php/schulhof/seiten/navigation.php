@@ -719,7 +719,7 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 							$code['pc'] .= "<li".$style."><span id=\"cms_reiter_verwaltung_2\" class=\"cms_reiter\" onclick=\"cms_reiter('verwaltung', 2,7)\">Organisation</a></li> ";
 							if (strlen($VERwebsite) == 0) {$style = " style=\"display: none\"";} else {$style = "";}
 							$code['pc'] .= "<li".$style."><span id=\"cms_reiter_verwaltung_3\" class=\"cms_reiter\" onclick=\"cms_reiter('verwaltung', 3,7)\">Website</a></li> ";
-							if (strlen($VERadministration) == 0) {$style = " style=\"display: none\"";} else {$style = "";}
+							if (strlen($VERtechnik) == 0) {$style = " style=\"display: none\"";} else {$style = "";}
 							$code['pc'] .= "<li".$style."><span id=\"cms_reiter_verwaltung_4\" class=\"cms_reiter\" onclick=\"cms_reiter('verwaltung', 4,7)\">Technik</a></li> ";
 							if (strlen($VERadministration) == 0) {$style = " style=\"display: none\"";} else {$style = "";}
 							$code['pc'] .= "<li".$style."><span id=\"cms_reiter_verwaltung_5\" class=\"cms_reiter\" onclick=\"cms_reiter('verwaltung', 5,7)\">Administration</a></li> ";
