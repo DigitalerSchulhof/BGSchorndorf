@@ -549,7 +549,6 @@ fwrite($hell, "}\n");
 fwrite($hell, ".cms_anteilbalken_innen {\n");
 fwrite($hell, "width: 100%;\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "border-radius: 5px;\n");
 fwrite($hell, "transition: 100ms ease-in-out;\n");
 fwrite($hell, "}\n");
 
@@ -561,6 +560,7 @@ fwrite($hell, ".cms_anteilbalken_aussen {\n");
 fwrite($hell, "width: 100%;\n");
 fwrite($hell, "border-radius: 5px;\n");
 fwrite($hell, "margin-bottom: 3px;\n");
+fwrite($hell, "overflow: hidden;\n");
 fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
 fwrite($hell, "}\n");
 

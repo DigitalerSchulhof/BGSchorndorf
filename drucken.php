@@ -13,7 +13,7 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	session_start();
 	//$CMS_VERSION = rand(0,1000000);
-	$CMS_VERSION = "0.5.7.3";
+	$CMS_VERSION = "0.5.8";
 	$CMS_ANGEMELDET = cms_angemeldet();
 	if ($CMS_ANGEMELDET) {
 

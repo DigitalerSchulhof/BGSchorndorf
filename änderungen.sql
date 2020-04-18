@@ -526,12 +526,12 @@ ALTER TABLE `kontaktformulareempfaenger` CHANGE `name` `name` VARCHAR(2000) CHAR
 ALTER TABLE `gremienchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `fachschaftenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `klassenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `kursechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `stufenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `arbeitsgemeinschaftenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `arbeitskreisechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `fahrtenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `wettbewerbechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `ereignissechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `sonstigegruppenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;
 
 DROP TABLE `rechtzuordnung`;
+DROP TABLE `rollenrechte`;
 DROP TABLE `rechte`;
 
 CREATE TABLE `rechtezuordnung` ( `person` BIGINT(255) UNSIGNED NOT NULL , `recht` VARBINARY(5000) NOT NULL) ENGINE = InnoDB;
 ALTER TABLE `rechtezuordnung` ADD CONSTRAINT `rechtezuordnungperson` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-DROP TABLE `rollenrechte`;
 CREATE TABLE `rollenrechte` ( `rolle` BIGINT(255) UNSIGNED NOT NULL , `recht` VARBINARY(5000) NOT NULL) ENGINE = InnoDB;
 ALTER TABLE `rollenrechte` ADD CONSTRAINT `rollerechterolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -567,9 +567,9 @@ CREATE TABLE `weiterleiten` ( `id` BIGINT(255) UNSIGNED NOT NULL , `von` VARBINA
 ALTER TABLE `weiterleiten` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zu`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;
 
 CREATE TABLE `style` (
-  `name` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
-  `wert` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
-  `alias` VARCHAR(300) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+  `name` VARCHAR(95) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+  `wert` VARCHAR(95) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+  `alias` VARCHAR(95) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
   PRIMARY KEY (`name`)
 ) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;
 

@@ -19,22 +19,21 @@ function cms_generiere_passwort () {
     return $passwort;
 }
 
-function cms_generiere_kleinste_id ($tabelle, $netz = "l", $benutzer = '-', $verspaetung = 0) {
-  global $CMS_BENUTZERID, $CMS_DBL_HOST, $CMS_DBL_USER, $CMS_DBL_PASS, $CMS_DBL_DB;
+function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
+  global $CMS_BENUTZERID;
   $fehler = false;
   $id = '-';
 
   if ($benutzer == '-') {
-    if (isset($CMS_BENUTZERID)) {$benutzer = $CMS_BENUTZERID;}
-    else {$fehler = true;}
+    $benutzer = $CMS_BENUTZERID;
   }
 
   if (!$fehler) {
 
     if ($netz == "l") {$db = cms_verbinden('l');}
     else if ($netz == "s") {$db = cms_verbinden('s');}
-    $jetzt = time() + $verspaetung;
-
+    else if ($netz == "p") {$db = cms_verbinden('p');}
+    $jetzt = time();
     // Neue ID bestimmten und eintragen
     $sql = $db->prepare("SET FOREIGN_KEY_CHECKS = 0;");
     $sql->execute();
@@ -69,7 +68,6 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "l", $benutzer = '-', $ver
     }
     cms_trennen($db);
   }
-
   return $id;
 }
 

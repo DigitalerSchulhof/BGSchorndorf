@@ -1,30 +1,35 @@
 <?php
-include_once("../../schulhof/funktionen/texttrafo.php");
-include_once("../../allgemein/funktionen/sql.php");
-include_once("../../schulhof/funktionen/config.php");
-include_once("../../schulhof/funktionen/check.php");
-include_once("../../schulhof/funktionen/generieren.php");
-
-session_start();
+include_once("../../lehrerzimmer/funktionen/config.php");
+include_once("../../lehrerzimmer/funktionen/texttrafo.php");
+include_once("../../lehrerzimmer/funktionen/check.php");
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "FEHLER";exit;}
-if (isset($_POST['zeitraum'])) {$zeitraum = $_POST['zeitraum'];} else {echo "FEHLER";exit;}
-if (isset($_POST['kurs'])) {$kurs = $_POST['kurs'];} else {echo "FEHLER";exit;}
-if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {echo "FEHLER";exit;}
-if (isset($_POST['monat'])) {$monat = $_POST['monat'];} else {echo "FEHLER";exit;}
-if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {echo "FEHLER";exit;}
-if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";exit;}
+if (isset($_POST['nutzerid'])) 		    {$nutzerid = $_POST['nutzerid'];} 			        else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['sessionid']))     	{$sessionid = $_POST['sessionid'];} 		        else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['zeitraum'])) {$zeitraum = $_POST['zeitraum'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['kurs'])) {$kurs = $_POST['kurs'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['tag'])) {$tag = $_POST['tag'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['monat'])) {$monat = $_POST['monat'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {cms_anfrage_beenden(); exit;}
 
-if (!cms_check_ganzzahl($schuljahr, 0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($zeitraum, 0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($kurs, 0)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($tag, 1,31)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($monat, 1,12)) {echo "FEHLER";exit;}
-if (!cms_check_ganzzahl($jahr, 0)) {echo "FEHLER";exit;}
-if (($erster != 'j') && ($erster != 'n')) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($schuljahr, 0)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($zeitraum, 0)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($kurs, 0)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($tag, 1,31)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($monat, 1,12)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_ganzzahl($jahr, 0)) {cms_anfrage_beenden(); exit;}
+if (($erster != 'j') && ($erster != 'n')) {cms_anfrage_beenden(); exit;}
 
+// REIHENFOLGE WICHTIG!! NICHT ÄNDERN -->
+include_once("../../lehrerzimmer/funktionen/entschluesseln.php");
+include_once("../../lehrerzimmer/funktionen/sql.php");
+include_once("../../lehrerzimmer/funktionen/meldungen.php");
+include_once("../../lehrerzimmer/funktionen/generieren.php");
+$angemeldet = cms_angemeldet();
 
+// <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 	$dbs = cms_verbinden('s');
@@ -177,12 +182,30 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 	}
 
 	if (!$fehler) {
+		$dbl = cms_verbinden('l');
 		// Alten Unterricht löschen
 		if ($erster == 'j') {
-			$sql = "DELETE FROM unterricht WHERE tbeginn > $jetzt";
-			$sql = $dbs->prepare($sql);
-			$sql->execute();
+			$LOESCHEN = array();
+			$sql = $dbs->prepare("SELECT id FROM unterricht WHERE tbeginn > ?");
+			$sql->bind_param("i", $jetzt);
+			if ($sql->execute()) {
+				$sql->bind_result($loeschid);
+				while ($sql->fetch()) {
+					array_push($LOESCHEN, $loeschid);
+				}
+			}
 			$sql->close();
+
+			if (count($LOESCHEN) > 0) {
+				$loeschenids = implode(",", $LOESCHEN);
+				$sql = $dbs->prepare("DELETE FROM unterricht WHERE id IN ($loeschenids)");
+				$sql->execute();
+				$sql->close();
+
+				$sql = $dbl->prepare("DELETE FROM tagebuch WHERE id IN ($loeschenids)");
+				$sql->execute();
+				$sql->close();
+			}
 		}
 
 		// Anfang der Stundenerzeugung festlegen
@@ -193,7 +216,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 		// Falls in diesem Zeitraum Ferien existieren
 		if ($ferienzeiger < count($FERIEN)) {
 			// Falls gerade Ferien sind, auf Zeit nach Ferien einstellen
-			while (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
+			while (($ferienzeiger < count($FERIEN)) && ($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
 				$jetzt = mktime(0,0,0,date('m', $FERIEN[$ferienzeiger]['ende']),date('d', $FERIEN[$ferienzeiger]['ende'])+1,date('Y', $FERIEN[$ferienzeiger]['ende']));
 				$ferienzeiger++;
 			}
@@ -201,6 +224,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 
 		// Solange Stunden erzeugen, bis der Zeitraum überschritten ist
 		$sql = $dbs->prepare("UPDATE unterricht SET pkurs = ?, pbeginn = ?, pende = ?, plehrer = ?, praum = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = ?");
+		$sqll = $dbl->prepare("INSERT INTO tagebuch (id) VALUES (?)");
 		while ($jetzt < $zende) {
 			// Aktuellen Rythmus finden
 			// Wenn das aktuelle Datum nach dem Ende des Rythmus liegt
@@ -227,19 +251,23 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 				//print_r($SCHULSTUNDEN);echo "<br><br>";
 				foreach ($REGELUNTERRICHT[0][$wochentag] AS $ru) {
 					//print_r($ru); echo "<br><br>";
-					$uid = cms_generiere_kleinste_id('unterricht');
+					$uid = cms_generiere_kleinste_id('unterricht', 's');
 					$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 					$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
 					$sql->bind_param("iiiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
 					$sql->execute();
+					$sqll->bind_param("i", $uid);
+					$sqll->execute();
 				}
 			}
 			foreach ($REGELUNTERRICHT[$aktry][$wochentag] AS $ru) {
-				$uid = cms_generiere_kleinste_id('unterricht');
+				$uid = cms_generiere_kleinste_id('unterricht', 's');
 				$ubeginn = mktime($SCHULSTUNDEN[$ru['schulstunde']]['beginns'], $SCHULSTUNDEN[$ru['schulstunde']]['beginnm'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt));
 				$uende = mktime($SCHULSTUNDEN[$ru['schulstunde']]['endes'], $SCHULSTUNDEN[$ru['schulstunde']]['endem'], 0, date('m', $jetzt), date('d', $jetzt), date('Y', $jetzt))-1;
 				$sql->bind_param("iiiiiiiiiii", $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $ru['kurs'], $ubeginn, $uende, $ru['lehrer'], $ru['raum'], $uid);
 				$sql->execute();
+				$sqll->bind_param("i", $uid);
+				$sqll->execute();
 			}
 
 			// Nächsten Tag bestimmen
@@ -249,7 +277,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 			if ($ferienzeiger < count($FERIEN)) {
 				//echo $jetzt." - ".$FERIEN[$ferienzeiger]['beginn']." - ".$FERIEN[$ferienzeiger]['bez']."<br>";
 				// Falls gerade Ferien sind, auf Zeit nach Ferien einstellen
-				if (($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
+				if (($ferienzeiger < count($FERIEN)) && ($jetzt >= $FERIEN[$ferienzeiger]['beginn']) && ($jetzt <= $FERIEN[$ferienzeiger]['ende'])) {
 					//echo $jetzt." - ".$FERIEN[$ferienzeiger]['beginn']." - ".$FERIEN[$ferienzeiger]['bez']."<br>";
 					$jetzt = mktime(0,0,0,date('m', $FERIEN[$ferienzeiger]['ende']),date('d', $FERIEN[$ferienzeiger]['ende'])+1,date('Y', $FERIEN[$ferienzeiger]['ende']));
 					$ferienzeiger++;
@@ -258,6 +286,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 		}
 		$sql->close();
 
+		cms_lehrerdb_header(false);
 		echo "ERFOLG";
 	}
 	else {

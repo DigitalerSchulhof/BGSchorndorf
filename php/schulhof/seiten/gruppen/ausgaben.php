@@ -1,17 +1,19 @@
 <?php
-function cms_gruppentermine_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS_URLGANZ) {
+function cms_gruppentermine_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS_URLGANZ, $gruppenrechte) {
 	global $CMS_SCHLUESSEL;
 	$code = "";
 
 	if (cms_valide_gruppe($gruppe) && (cms_check_ganzzahl($gruppenid,0))) {
 		$gk = cms_textzudb($gruppe);
 		$TERMINE = array();
+		if (!$gruppenrechte['termine']) {$aktivitaetnoetig = " AND aktiv = 1";}
+		else {$aktivitaetnoetig = "";}
 
 		$jetzt = time();
-		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, 'oe' AS art FROM termine JOIN $gk"."termine ON termine.id = $gk"."termine.termin WHERE gruppe = ? AND ende > ?";
-		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, 'in' AS art FROM $gk"."termineintern WHERE gruppe = ? AND ende > ?";
+		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, 'oe' AS art FROM termine JOIN $gk"."termine ON termine.id = $gk"."termine.termin WHERE gruppe = ? AND ende > ? AND aktiv = 1 LIMIT ?";
+		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, 'in' AS art FROM $gk"."termineintern WHERE gruppe = ? AND ende > ?$aktivitaetnoetig LIMIT ?";
 		$sql = $dbs->prepare("SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY beginn ASC, ende ASC, bezeichnung ASC LIMIT ?");
-		$sql->bind_param("iiiii", $gruppenid, $jetzt, $gruppenid, $jetzt, $limit);
+		$sql->bind_param("iiiiiii", $gruppenid, $jetzt, $limit, $gruppenid, $jetzt, $limit, $limit);
 		// Terminausgabe erzeugen
 		if ($sql->execute()) {	// Safe weil keine Eingabe
 			$sql->bind_result($tid, $tbezeichnung, $tort, $tbeginn, $tende, $tmehrtaegigt, $tuhrzeitbt, $tuhrzeitet, $tortt, $tgenehmigt, $taktiv, $ttext, $tart);
@@ -44,19 +46,21 @@ function cms_gruppentermine_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS_URL
 }
 
 
-function cms_gruppenblogeintraege_ausgeben($dbs, $gruppe, $gruppenid, $limit, $art, $CMS_URLGANZ) {
+function cms_gruppenblogeintraege_ausgeben($dbs, $gruppe, $gruppenid, $limit, $art, $CMS_URLGANZ, $gruppenrechte) {
 	global $CMS_SCHLUESSEL;
 	$code = "";
 
 	if (cms_valide_gruppe($gruppe) && (cms_check_ganzzahl($gruppenid,0))) {
 		$gk = cms_textzudb($gruppe);
 		$BLOGEINTRAEGE = array();
+		if (!$gruppenrechte['blogeintraege']) {$aktivitaetnoetig = " AND aktiv = 1";}
+		else {$aktivitaetnoetig = "";}
 
 		$jetzt = time();
-		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art FROM blogeintraege JOIN $gk"."blogeintraege ON blogeintraege.id = $gk"."blogeintraege.blogeintrag WHERE gruppe = ?";
-		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, '' AS vorschaubild, 'in' AS art FROM $gk"."blogeintraegeintern WHERE gruppe = ?";
+		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art FROM blogeintraege JOIN $gk"."blogeintraege ON blogeintraege.id = $gk"."blogeintraege.blogeintrag WHERE gruppe = ? AND aktiv = 1 LIMIT ?";
+		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, '' AS vorschaubild, 'in' AS art FROM $gk"."blogeintraegeintern WHERE gruppe = ?$aktivitaetnoetig LIMIT ?";
 		$sql = $dbs->prepare("SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY datum DESC, bezeichnung ASC LIMIT ?");
-		$sql->bind_param("iii", $gruppenid, $gruppenid, $limit);
+		$sql->bind_param("iiiii", $gruppenid, $limit, $gruppenid, $limit, $limit);
 		// Blogausgabe erzeugen
 		if ($sql->execute()) {	// Safe weil keine Eingabe
 			$sql->bind_result($bid, $bbezeichnung, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart);
@@ -126,7 +130,7 @@ function cms_gruppenbeschluesse_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS
 }
 
 
-function cms_gruppenblogeintraege_monat_ausgeben($dbs, $gruppe, $gruppenid, $art, $CMS_URLGANZ, $monat, $jahr) {
+function cms_gruppenblogeintraege_monat_ausgeben($dbs, $gruppe, $gruppenid, $art, $CMS_URLGANZ, $monat, $jahr, $gruppenrechte) {
 	global $CMS_SCHLUESSEL;
 	$code = "";
 
@@ -135,8 +139,11 @@ function cms_gruppenblogeintraege_monat_ausgeben($dbs, $gruppe, $gruppenid, $art
     $ende = mktime(0,0,0,$monat+1,1,$jahr)-1;
 		$BLOGEINTRAEGE  = array();
 		$gk = cms_textzudb($gruppe);
-		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art FROM blogeintraege JOIN $gk"."blogeintraege ON blogeintraege.id = $gk"."blogeintraege.blogeintrag WHERE gruppe = ? AND (datum BETWEEN ? AND ?)";
-		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, '' AS vorschaubild, 'in' AS art FROM $gk"."blogeintraegeintern WHERE gruppe = ? AND (datum BETWEEN ? AND ?)";
+		if (!$gruppenrechte['blogeintraege']) {$aktivitaetnoetig = " AND aktiv = 1";}
+		else {$aktivitaetnoetig = "";}
+
+		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art FROM blogeintraege JOIN $gk"."blogeintraege ON blogeintraege.id = $gk"."blogeintraege.blogeintrag WHERE gruppe = ? AND (datum BETWEEN ? AND ?) AND aktiv = 1";
+		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, '' AS vorschaubild, 'in' AS art FROM $gk"."blogeintraegeintern WHERE gruppe = ? AND (datum BETWEEN ? AND ?) $aktivitaetnoetig";
 		$sql = $dbs->prepare("SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY datum DESC, bezeichnung ASC");
 		$sql->bind_param("iiiiii", $gruppenid, $beginn, $ende, $gruppenid, $beginn, $ende);
 		// Blogausgabe erzeugen

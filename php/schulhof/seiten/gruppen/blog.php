@@ -61,7 +61,7 @@ if (!$fehler) {
 		$code .= "</td><td><a class=\"cms_button\" href=\"$bloglink".($jahr+1)."\">".($jahr+1)."</a></td></tr></table>";
 
 		$zwischenurl = implode('/', array_slice($CMS_URL,0,5));
-		$blogcode = cms_gruppenblogeintraege_monat_ausgeben($dbs, $g, $gruppenid, 'artikel', $zwischenurl, $monat, $jahr);
+		$blogcode = cms_gruppenblogeintraege_monat_ausgeben($dbs, $g, $gruppenid, 'artikel', $zwischenurl, $monat, $jahr, $gruppenrecht);
 		if (strlen($blogcode) > 0) {$code .= "<ul class=\"cms_bloguebersicht_artikel\">".$blogcode."</ul>";}
 		else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine Blogeinträge vorhanden.</p>";}
 	$code .= "</div>";
