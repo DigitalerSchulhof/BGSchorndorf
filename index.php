@@ -33,8 +33,8 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	//$CMS_VERSION = rand(0,1000000);
-	$CMS_VERSION = "0.5.8";
+	$CMS_VERSION = rand(0,1000000);
+	//$CMS_VERSION = "0.5.8";
 	$CMS_WECHSELBILDER = 0;
 	$CMS_DIASHOWZEIT = 7000;
 
