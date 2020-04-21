@@ -11,9 +11,8 @@
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
-	session_start();
-	//$CMS_VERSION = rand(0,1000000);
-	$CMS_VERSION = "0.5.8";
+	$CMS_VERSION = rand(0,1000000);
+	//$CMS_VERSION = "0.5.8";
 	$CMS_ANGEMELDET = cms_angemeldet();
 	if ($CMS_ANGEMELDET) {
 

@@ -1,177 +1,175 @@
-<?php
-fwrite($hell, "body.cms_seite_app {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund']." !important;\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_seite_app #cms_kopfzeile_i {\n");
-fwrite($hell, "padding: 10px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+body.cms_seite_app {
+	background: @h_haupt_hintergrund !important;
+}
 
-fwrite($hell, ".cms_seite_app #cms_logo {\n");
-fwrite($hell, "position: static;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "}\n");
+.cms_seite_app #cms_kopfzeile_i {
+	padding: 10px;
+	position: relative;
+}
 
-fwrite($hell, "#cms_logo_bild {\n");
-fwrite($hell, "float: left;\n");
-fwrite($hell, "padding-right: 10px;\n");
-fwrite($hell, "width: ".$_POST['cms_style_logo_breite'].";\n");
-fwrite($hell, "}\n");
+.cms_seite_app #cms_logo {
+	position: static;
+	display: inline-block;
+	text-align: left;
+}
 
-fwrite($hell, "#cms_logo_schrift {\n");
-fwrite($hell, "float: left;\n");
-fwrite($hell, "display: ".$_POST['cms_style_logo_anzeige']." !important;\n");
-fwrite($hell, "}\n");
+#cms_logo_bild {
+	float: left;
+	padding-right: 10px;
+	width: @logo_breite;
+}
 
-fwrite($hell, "#cms_logo_o, #cms_logo_u {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_logo_schriftfarbe'].";\n");
-fwrite($hell, "font-size: 170%;\n");
-fwrite($hell, "padding: 2px 0px 0px 0px;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
+#cms_logo_schrift {
+	float: left;
+	display: @logo_anzeige !important;
+}
 
-fwrite($hell, "#cms_logo_o {\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "}\n");
+#cms_logo_o, #cms_logo_u {
+	position: relative;
+	color: @h_logo_schriftfarbe;
+	font-size: 170%;
+	padding: 2px 0px 0px 0px;
+	display: block;
+}
 
-fwrite($hell, "#cms_appnavigation {\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
-fwrite($hell, "padding: 4px 10px;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "line-height: 20px;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "user-select: none;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "right: 10px;\n");
-fwrite($hell, "top: 10px;\n");
-fwrite($hell, "}\n");
+#cms_logo_o {
+	font-weight: bold;
+}
 
-fwrite($hell, "#cms_appzurueck {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "right: 10px;\n");
-fwrite($hell, "bottom: 10px;\n");
-fwrite($hell, "}\n");
+#cms_appnavigation {
+	border-radius: 5px;
+	display: inline-block;
+	background-color: @h_mobilnavigation_iconhintergrund !important;
+	color: @h_haupt_schriftfarbenegativ !important;
+	padding: 4px 10px;
+	font-weight: bold;
+	line-height: 20px;
+	margin-bottom: 0px;
+	user-select: none;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
 
-fwrite($hell, "#cms_appnavigation:hover {\n");
-fwrite($hell, "cursor: pointer !important;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrundhover']." !important;\n");
-fwrite($hell, "}\n");
+#cms_appzurueck {
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
 
-fwrite($hell, "#cms_appmenue_a {\n");
-fwrite($hell, "border-left: 10px solid ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "padding: 10px 10px 20px 10px;\n");
-fwrite($hell, "position: fixed;\n");
-fwrite($hell, "right: 0px;\n");
-fwrite($hell, "top: 0px;\n");
-fwrite($hell, "width: 80%;\n");
-fwrite($hell, "height: 100%;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "z-index: 10;\n");
-fwrite($hell, "box-shadow: 0px 0px 10px ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
+#cms_appnavigation:hover {
+	cursor: pointer !important;
+	background-color: @h_mobilnavigation_iconhintergrundhover !important;
+}
 
-fwrite($hell, "#cms_appmenue_a .cms_uebersicht li {\n");
-fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
+#cms_appmenue_a {
+	border-left: 10px solid @h_haupt_abstufung2;
+	display: none;
+	padding: 10px 10px 20px 10px;
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	width: 80%;
+	height: 100%;
+	background: @h_haupt_abstufung1;
+	z-index: 10;
+	box-shadow: 0px 0px 10px @h_haupt_abstufung2;
+}
 
-fwrite($hell, "#cms_appmenue_a .cms_uebersicht li:first-child {\n");
-fwrite($hell, "border-top: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
+#cms_appmenue_a .cms_uebersicht li {
+	border-bottom: 1px solid @h_haupt_hintergrund;
+}
 
-fwrite($hell, "#cms_appmenue_schliessen {\n");
-fwrite($hell, "position: fixed;\n");
-fwrite($hell, "width: 20%;\n");
-fwrite($hell, "height: 100px;\n");
-fwrite($hell, "line-height: 100px;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "top: 0px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "font-size: 500%;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "box-shadow: 0px 0px 10px ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
+#cms_appmenue_a .cms_uebersicht li:first-child {
+	border-top: 1px solid @h_haupt_hintergrund;
+}
 
-fwrite($hell, "#cms_appmenue_schliessen:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "}\n");
+#cms_appmenue_schliessen {
+	position: fixed;
+	width: 20%;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	left: 0px;
+	top: 0px;
+	background: @h_haupt_abstufung2;
+	font-size: 500%;
+	font-weight: bold;
+	color: @h_haupt_schriftfarbenegativ;
+	transition: 250ms ease-in-out;
+	box-shadow: 0px 0px 10px @h_haupt_abstufung2;
+}
 
-fwrite($hell, ".cms_appmenue_uliste {\n");
-fwrite($hell, "display: inline-block !important;\n");
-fwrite($hell, "padding: 3px 0px 3px 0px !important;\n");
-fwrite($hell, "margin: 0px 15px 0px 0px !important;\n");
-fwrite($hell, "border: none !important;\n");
-fwrite($hell, "min-height: auto !important;\n");
-fwrite($hell, "background: none !important;\n");
-fwrite($hell, "}\n");
+#cms_appmenue_schliessen:hover {
+	cursor: pointer;
+	background: @h_haupt_meldungfehlerhinter;
+}
 
-fwrite($hell, ".cms_appmenue_uliste:hover {background: none !important;}\n");
+.cms_appmenue_uliste {
+	display: inline-block !important;
+	padding: 3px 0px 3px 0px !important;
+	margin: 0px 15px 0px 0px !important;
+	border: none !important;
+	min-height: auto !important;
+	background: none !important;
+}
 
-fwrite($hell, "#cms_app_impressum {\n");
-fwrite($hell, "text-align: right;\n");
-fwrite($hell, "padding: 20px 0px 0px 15%;\n");
-fwrite($hell, "font-size: 70%;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
+.cms_appmenue_uliste:hover {background: none !important;}
 
+#cms_app_impressum {
+	text-align: right;
+	padding: 20px 0px 0px 15%;
+	font-size: 70%;
+	color: @h_haupt_abstufung2;
+}
 
+// DUNKEL;
 
+body.cms_seite_app {
+	background: @d_haupt_hintergrund !important;
+}
 
-// DARKMODE
-fwrite($dunkel, "body.cms_seite_app {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund']." !important;\n");
-fwrite($dunkel, "}\n");
+.cms_seite_app #cms_logo #cms_logo_schrift #cms_logo_o,
+.cms_seite_app #cms_logo #cms_logo_schrift #cms_logo_u {
+	color: @d_logo_schriftfarbe;
+}
 
-fwrite($dunkel, ".cms_seite_app #cms_logo #cms_logo_schrift #cms_logo_o,\n");
-fwrite($dunkel, ".cms_seite_app #cms_logo #cms_logo_schrift #cms_logo_u {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_logo_schriftfarbe'].";\n");
-fwrite($dunkel, "}\n");
+#cms_appnavigation {
+	background-color: @d_mobilnavigation_iconhintergrund !important;
+	color: @d_haupt_schriftfarbenegativ !important;
+}
 
-fwrite($dunkel, "#cms_appnavigation {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
-fwrite($dunkel, "}\n");
+#cms_appnavigation:hover {
+	background-color: @d_mobilnavigation_iconhintergrundhover !important;
+}
 
-fwrite($dunkel, "#cms_appnavigation:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrundhover']." !important;\n");
-fwrite($dunkel, "}\n");
+#cms_appmenue_a {
+	border-left: 10px solid @d_haupt_abstufung2;
+	background: @d_haupt_abstufung1;
+	box-shadow: 0px 0px 10px @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, "#cms_appmenue_a {\n");
-fwrite($dunkel, "border-left: 10px solid ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "box-shadow: 0px 0px 10px ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+#cms_appmenue_a .cms_uebersicht li {
+	border-bottom: 1px solid @d_haupt_hintergrund;
+}
 
-fwrite($dunkel, "#cms_appmenue_a .cms_uebersicht li {\n");
-fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
+#cms_appmenue_a .cms_uebersicht li:first-child {
+	border-top: 1px solid @d_haupt_hintergrund;
+}
 
-fwrite($dunkel, "#cms_appmenue_a .cms_uebersicht li:first-child {\n");
-fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
+#cms_appmenue_schliessen {
+	background: @d_haupt_abstufung2;
+	color: @d_haupt_schriftfarbenegativ;
+	box-shadow: 0px 0px 10px @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, "#cms_appmenue_schliessen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "box-shadow: 0px 0px 10px ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+#cms_appmenue_schliessen:hover {
+	background: @h_haupt_meldungfehlerakzent;
+}
 
-fwrite($dunkel, "#cms_appmenue_schliessen:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_app_impressum {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
-?>
+#cms_app_impressum {
+	color: @d_haupt_abstufung2;
+}

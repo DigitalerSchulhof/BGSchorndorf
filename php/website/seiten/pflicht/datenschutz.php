@@ -75,7 +75,7 @@ else {$einwilligungB = "<span id=\"cms_datenschutz_einwilligungB\" class=\"cms_d
       <p>Personenbezogene Daten sind alle Daten, die auf Sie persönlich bezeihbar sind, z.B. Name, Adresse, eMail-Adressen oder ihr Nutzerverhalten.</p>
 
       <h4>Dienstleister</h4>
-      <p>Diese Website kann nur durch Server eines Dienstleisters (<?php echo $CMS_HOSTINGPARTNEREX;?>) zur Verfügung gestellt werden. Alle eingeebenen Daten werde auf diesen Servern gespeichert oder verarbeitet.</p>
+      <p>Diese Website kann nur durch Server eines Dienstleisters (<?php echo $CMS_HOSTINGPARTNEREX;?>) zur Verfügung gestellt werden. Alle eingegebenen Daten werde auf diesen Servern gespeichert oder verarbeitet.</p>
 
       <h4>Kontaktformular</h4>
       <p>Alle im Kontaktformular angegeben Daten werden nicht über die Nachricht selbst hinaus zwischengespeichert, sondern per eMail an den gewünschten Empfänger und auf Wunsch an Sie selbst geschickt. Es verbleibt keine Kopie auf den Servern der Website. Die eingegebenen Informationen werden nicht an Dritte weitergeben. Um diesen Dienst nutzen zu können ist <b>Einwilligung A</b> notwendig. Hier werden Cookies erzeugt, die sicherstellen, dass keine Spamnachrichten generiert werden. Diese Cookies werden nach dem Schließen des Browsers gelöscht und enthalten keine personenbezogenen Daten.</p>

@@ -1,266 +1,262 @@
-<?php
-fwrite($hell, ".cms_dateisystem_tabelle {\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_dateisystem_box {\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_tabelle {
+	margin-bottom: 0px;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad, .cms_dateisystem_aktionen, .cms_dateisystem_inhalt {\n");
-fwrite($hell, "margin: 5px 0px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_box {
+	border: 1px solid @h_haupt_abstufung1;
+	border-radius: 5px;
+	background: @h_haupt_abstufung1;
+	margin-bottom: @haupt_absatzschulhof;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt {\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "max-height: 150px;\n");
-fwrite($hell, "overflow-y: scroll;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad, .cms_dateisystem_aktionen, .cms_dateisystem_inhalt {
+	margin: 5px 0px;
+	background: @h_haupt_hintergrund;
+	position: relative;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_icon {\n");
-fwrite($hell, "padding: 2px 5px 5px 5px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "line-height: 16px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt {
+	margin-bottom: 0px;
+	max-height: 150px;
+	overflow-y: scroll;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_aktionen {\n");
-fwrite($hell, "padding: 4px 5px 0px 5px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_icon {
+	padding: 2px 5px 5px 5px;
+	display: inline-block;
+	line-height: 16px;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_aktionen:first-child {\n");
-fwrite($hell, "margin-right: 20px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_aktionen {
+	padding: 4px 5px 0px 5px;
+	display: inline-block;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_icon img {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "top: 2px;\n");
-fwrite($hell, "margin-right: 5px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_aktionen:first-child {
+	margin-right: 20px;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_icon:hover, .cms_dateisystem_pfad_aktionen:hover {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_icon img {
+	position: relative;
+	top: 2px;
+	margin-right: 5px;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_icon:hover {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_icon:hover, .cms_dateisystem_pfad_aktionen:hover {
+	background: @h_haupt_abstufung1;
+	cursor: pointer;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "border-spacing: 0px;\n");
-fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_icon:hover {
+	background: @h_haupt_abstufung1;
+	cursor: pointer;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table td:first-child {\n");
-fwrite($hell, "width: 16px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table {
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table td:first-child img {\n");
-fwrite($hell, "top: 2px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "max-width: none !important;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table td:first-child {
+	width: 16px;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table td {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table td:first-child img {
+	top: 2px;
+	position: relative;
+max-width: none !important;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table td:last-child {\n");
-fwrite($hell, "text-align: right;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table td {
+	padding: 5px;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table td:last-child .cms_hinweis {\n");
-fwrite($hell, "text-align: right;\n");
-fwrite($hell, "left: auto;\n");
-fwrite($hell, "right: 0px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table td:last-child {
+	text-align: right;
+}
 
-fwrite($hell, ".cms_dateisystem_inhalt table tr:hover td {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_formular_feldhintergrund'].";\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table td:last-child .cms_hinweis {
+	text-align: right;
+	left: auto;
+	right: 0px;
+}
 
-fwrite($hell, ".cms_dateisystem_status {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_inhalt table tr:hover td {
+	background: @h_formular_feldhintergrund;
+}
 
-fwrite($hell, ".cms_dateisystem_status p {\n");
-fwrite($hell, "font-size: 75%;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_status {
+	padding: 5px;
+	background: @h_haupt_abstufung1;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_aktionen {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_status p {
+	font-size: 75%;
+}
 
-fwrite($hell, ".cms_dateisystem_pfad_aktionen:hover .cms_hinweis {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "bottom: 40px;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_aktionen {
+	position: relative;
+}
 
-fwrite($hell, "td.cms_dateisystem_meldung {\n");
-fwrite($hell, "text-align: center!important;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_pfad_aktionen:hover .cms_hinweis {
+	display: block;
+	bottom: 40px;
+	left: 0px;
+}
 
-fwrite($hell, "td.cms_dateisystem_ordner:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
+td.cms_dateisystem_meldung {
+	text-align: center!important;
+}
 
-fwrite($hell, ".cms_dateisystem_laden {\n");
-fwrite($hell, "padding: 10px;\n");
-fwrite($hell, "margin-bottom: 5px;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+td.cms_dateisystem_ordner:hover {
+	cursor: pointer;
+}
 
-fwrite($hell, ".cms_dateisystem_meldung {\n");
-fwrite($hell, "padding: 10px;\n");
-fwrite($hell, "margin-bottom: 5px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_laden {
+	padding: 10px;
+	margin-bottom: 5px;
+	text-align: center;
+}
 
-fwrite($hell, ".cms_dateisystem_aktionen_neuerordner, .cms_dateisystem_aktionen_hochladen {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_meldung {
+	padding: 10px;
+	margin-bottom: 5px;
+}
 
-fwrite($hell, ".cms_dateisystem_uploadzone {\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";\n");
-fwrite($hell, "height: 100px;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "margin-top: 6px;\n");
-fwrite($hell, "border: 1px dashed ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";\n");
-fwrite($hell, "background-image: url('../res/icons/gross/dateiupload.png');\n");
-fwrite($hell, "background-position: center 25px;\n");
-fwrite($hell, "background-repeat: no-repeat;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_aktionen_neuerordner, .cms_dateisystem_aktionen_hochladen {
+	padding: 5px;
+	display: none;
+}
 
-fwrite($hell, ".cms_dateisystem_uploadzone p {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "font-size: 90%;\n");
-fwrite($hell, "margin-top: 60px !important;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_uploadzone {
+	border-radius: 5px;
+	background-color: @h_haupt_meldunginfohinter;
+	height: 100px;
+	width: 100%;
+	margin-top: 6px;
+	border: 1px dashed @h_haupt_meldunginfoakzent;
+	background-image: url('../res/icons/gross/dateiupload.png');
+	background-position: center 25px;
+	background-repeat: no-repeat;
+}
 
-fwrite($hell, ".cms_dateisystem_uploadzone:hover {\n");
-fwrite($hell, "cursor: move;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_uploadzone p {
+	text-align: center;
+	color: @h_haupt_schriftfarbenegativ;
+	font-size: 90%;
+	margin-top: 60px !important;
+}
 
-fwrite($hell, ".cms_dateisystem_hochladen_dateiliste li {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_uploadzone:hover {
+	cursor: move;
+}
 
-fwrite($hell, ".cms_dateisystem_hochladen_dateiliste .cms_button_nein {\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "left: -22px;\n");
-fwrite($hell, "top: -3px;\n");
-fwrite($hell, "opacity: 0;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_hochladen_dateiliste li {
+	position: relative;
+}
 
-fwrite($hell, ".cms_dateisystem_hochladen_dateiliste li:hover .cms_button_nein {\n");
-fwrite($hell, "opacity: 1;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_hochladen_dateiliste .cms_button_nein {
+	position: absolute;
+	left: -22px;
+	top: -3px;
+	opacity: 0;
+}
 
-fwrite($hell, ".cms_dateisystem_hochladen_dateiliste li, #cms_hochladen_fehlgeschlagen_liste {\n");
-fwrite($hell, "font-size: 90%;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_hochladen_dateiliste li:hover .cms_button_nein {
+	opacity: 1;
+}
 
-fwrite($hell, ".cms_dateisystem_hochladen_dateiliste {\n");
-fwrite($hell, "margin-top: 0px !important;\n");
-fwrite($hell, "max-height: 50px;\n");
-fwrite($hell, "overflow-y: scroll;\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_formular_feldhintergrund'].";\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_hochladen_dateiliste li, #cms_hochladen_fehlgeschlagen_liste {
+	font-size: 90%;
+}
 
-fwrite($hell, ".cms_upload_dateiknopf {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "}\n");
+.cms_dateisystem_hochladen_dateiliste {
+	margin-top: 0px !important;
+	max-height: 50px;
+	overflow-y: scroll;
+	padding: 5px;
+	background: @h_formular_feldhintergrund;
+	border-radius: 5px;
+}
 
-fwrite($hell, ".cms_upload_dateiknopf:hover .cms_hinweis {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "right: 20px !important;\n");
-fwrite($hell, "bottom: -2px;\n");
-fwrite($hell, "}\n");
+.cms_upload_dateiknopf {
+	position: relative;
+	display: inline-block;
+}
 
-fwrite($hell, ".cms_upload_dateiknopf:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
+.cms_upload_dateiknopf:hover .cms_hinweis {
+	display: block;
+	right: 20px !important;
+	bottom: -2px;
+}
 
-fwrite($hell, "#cms_hochladen_fehlgeschlagen {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "margin-top: 20px;\n");
-fwrite($hell, "}\n");
+.cms_upload_dateiknopf:hover {
+	cursor: pointer;
+}
 
-fwrite($hell, ".cms_datei_gewaehlt {\n");
-fwrite($hell, "font-size: ".$_POST['cms_style_haupt_schriftgroesse'].";\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+#cms_hochladen_fehlgeschlagen {
+	background: @h_haupt_meldungfehlerhinter;
+	border: 1px solid @h_haupt_meldungfehlerakzent;
+	padding: 5px;
+	border-radius: 5px;
+	display: none;
+	margin-top: 20px;
+}
 
-fwrite($hell, ".cms_datei_gewaehlt img {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "bottom: -4px;\n");
-fwrite($hell, "}\n");
+.cms_datei_gewaehlt {
+	font-size: @haupt_schriftgroesse;
+	position: relative;
+}
 
+.cms_datei_gewaehlt img {
+	position: relative;
+	bottom: -4px;
+}
 
+// DUNKEL;
 
+.cms_dateisystem_box {
+	border: 1px solid @d_haupt_abstufung1;
+	background: @d_haupt_abstufung1;
+}
 
+.cms_dateisystem_pfad, .cms_dateisystem_aktionen, .cms_dateisystem_inhalt {
+	background: @d_haupt_hintergrund;
+}
 
+.cms_dateisystem_pfad_icon:hover, .cms_dateisystem_pfad_aktionen:hover {
+	background: @d_haupt_abstufung1;
+}
 
-// DARKMODE
-fwrite($dunkel, ".cms_dateisystem_box {\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_dateisystem_pfad_icon:hover {
+	background: @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_dateisystem_pfad, .cms_dateisystem_aktionen, .cms_dateisystem_inhalt {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
+.cms_dateisystem_inhalt table tr:hover td {
+	background: @d_formular_feldhintergrund;
+}
 
-fwrite($dunkel, ".cms_dateisystem_pfad_icon:hover, .cms_dateisystem_pfad_aktionen:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_dateisystem_status {
+	background: @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_dateisystem_pfad_icon:hover {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_dateisystem_uploadzone {
+	background-color: @d_haupt_meldunginfohinter;
+	border: 1px dashed @d_haupt_meldunginfoakzent;
+}
 
-fwrite($dunkel, ".cms_dateisystem_inhalt table tr:hover td {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_formular_feldhintergrund'].";\n");
-fwrite($dunkel, "}\n");
+.cms_dateisystem_uploadzone p {
+	color: @d_haupt_schriftfarbenegativ;
+}
 
-fwrite($dunkel, ".cms_dateisystem_status {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_dateisystem_hochladen_dateiliste {
+	background: @d_formular_feldhintergrund;
+}
 
-fwrite($dunkel, ".cms_dateisystem_uploadzone {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
-fwrite($dunkel, "border: 1px dashed ".$_POST['cms_style_d_haupt_meldunginfoakzent'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_dateisystem_uploadzone p {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_dateisystem_hochladen_dateiliste {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_formular_feldhintergrund'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_hochladen_fehlgeschlagen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "}\n");
-?>
+#cms_hochladen_fehlgeschlagen {
+	background: @d_haupt_meldungfehlerhinter;
+	border: 1px solid @d_haupt_meldungfehlerakzent;
+}

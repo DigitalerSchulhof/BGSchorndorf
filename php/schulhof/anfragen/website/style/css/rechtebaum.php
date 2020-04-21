@@ -1,168 +1,168 @@
-<?php
-fwrite($hell, "#cms_rechtepapa {");
-fwrite($hell, "	margin-left: -34px");
-fwrite($hell, "}");
+// HELL;
 
-fwrite($hell, ".cms_rechtebox {");
-fwrite($hell, "	margin-left: 24px");
-fwrite($hell, "}");
+#cms_rechtepapa {
+	margin-left: -34px
+}
 
-fwrite($hell, ".cms_rechtebox:not(.cms_recht_unterstes) {");
-fwrite($hell, "	background-size: 24px;");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/leer.png');");
-fwrite($hell, "	background-repeat: repeat-y");
-fwrite($hell, "}");
+.cms_rechtebox {
+	margin-left: 24px
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht>.icon {");
-fwrite($hell, "	content: ' ';");
-fwrite($hell, "	display: inline-block;");
-fwrite($hell, "	background-size: cover;");
-fwrite($hell, "	transition: 0.3s background-image linear;");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert.png');");
-fwrite($hell, "	line-height: 24px;");
-fwrite($hell, "	float: left;");
-fwrite($hell, "	height: 24px;");
-fwrite($hell, "	width: 24px");
-fwrite($hell, "}");
+.cms_rechtebox:not(.cms_recht_unterstes) {
+	background-size: 24px;
+	background-image: url('../res/sonstiges/rechtebaum/leer.png');
+	background-repeat: repeat-y
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_hat_kinder>.icon {");
-fwrite($hell, "	cursor: pointer;");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert_k.png')");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht>.icon {
+	content: ' ';
+	display: inline-block;
+	background-size: cover;
+	transition: 0.3s background-image linear;
+	background-image: url('../res/sonstiges/rechtebaum/wert.png');
+	line-height: 24px;
+	float: left;
+	height: 24px;
+	width: 24px
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_hat_kinder>.icon.cms_recht_eingeklappt {");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert_k_c.png')");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_hat_kinder>.icon {
+	cursor: pointer;
+	background-image: url('../res/sonstiges/rechtebaum/wert_k.png')
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_recht_unterstes>.icon {");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert_u.png')");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_hat_kinder>.icon.cms_recht_eingeklappt {
+	background-image: url('../res/sonstiges/rechtebaum/wert_k_c.png')
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_recht_unterstes.cms_hat_kinder>.icon {");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert_u_k.png')");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_recht_unterstes>.icon {
+	background-image: url('../res/sonstiges/rechtebaum/wert_u.png')
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_recht_unterstes.cms_hat_kinder>.icon.cms_recht_eingeklappt {");
-fwrite($hell, "	background-image: url('../res/sonstiges/rechtebaum/wert_u_k_c.png')");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_recht_unterstes.cms_hat_kinder>.icon {
+	background-image: url('../res/sonstiges/rechtebaum/wert_u_k.png')
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht .cms_recht_beschreibung {");
-fwrite($hell, "	height: 24px;");
-fwrite($hell, "	display: inline-block");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_recht_unterstes.cms_hat_kinder>.icon.cms_recht_eingeklappt {
+	background-image: url('../res/sonstiges/rechtebaum/wert_u_k_c.png')
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i {");
-fwrite($hell, "	height: 20px;");
-fwrite($hell, "	cursor: pointer;");
-fwrite($hell, "	transition: 250ms ease-in-out;");
-fwrite($hell, "	border-radius: 1px;");
-fwrite($hell, "	padding: 3px;");
-fwrite($hell, "	margin: 2px;");
-fwrite($hell, "	display: inline-block;");
-fwrite($hell, "	border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht .cms_recht_beschreibung {
+	height: 24px;
+	display: inline-block
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i:hover {");
-fwrite($hell, "	border-color: transparent;");
-fwrite($hell, "	color: ".$_POST['cms_style_h_button_schrift'].";\n");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_button_hintergrund'].";\n");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i {
+	height: 20px;
+	cursor: pointer;
+	transition: 250ms ease-in-out;
+	border-radius: 1px;
+	padding: 3px;
+	margin: 2px;
+	display: inline-block;
+	border: 1px solid @h_haupt_schriftfarbepositiv;
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i {");
-fwrite($hell, "	border-color: transparent;");
-fwrite($hell, "	color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i:hover {
+	border-color: transparent;
+	color: @h_button_schrift;
+	background-color: @h_button_hintergrund;
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i:hover {");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i {
+	border-color: transparent;
+	color: @h_haupt_schriftfarbepositiv;
+	background-color: @h_haupt_meldungerfolghinter;
+}
 
-fwrite($hell, ".cms_rechtebox .cms_recht.cms_recht_rolle .cms_recht_beschreibung_i {");
-fwrite($hell, "	border-color: transparent;");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldunginfohinter']." !important;\n");
-fwrite($hell, "	color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i:hover {
+	background-color: @h_haupt_meldungfehlerhinter;
+}
 
-fwrite($hell, ".cms_demorecht {");
-fwrite($hell, "	height: 24px;");
-fwrite($hell, "	display: inline-block;");
-fwrite($hell, "	padding: 5px;");
-fwrite($hell, "	margin-bottom: 2px;");
-fwrite($hell, "	border-radius: 1px;");
-fwrite($hell, "	cursor: pointer;");
-fwrite($hell, "	transition: 250ms ease-in-out;");
-fwrite($hell, "	border: 1px solid ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "}");
+.cms_rechtebox .cms_recht.cms_recht_rolle .cms_recht_beschreibung_i {
+	border-color: transparent;
+	background-color: @h_haupt_meldunginfohinter !important;
+	color: @h_haupt_schriftfarbepositiv !important;
+}
 
-fwrite($hell, ".cms_demorecht:hover {");
-fwrite($hell, "	border-color: transparent;");
-fwrite($hell, "	color: ".$_POST['cms_style_h_button_schrift'].";\n");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_button_hintergrund'].";\n");
-fwrite($hell, "}");
+.cms_demorecht {
+	height: 24px;
+	display: inline-block;
+	padding: 5px;
+	margin-bottom: 2px;
+	border-radius: 1px;
+	cursor: pointer;
+	transition: 250ms ease-in-out;
+	border: 1px solid @h_haupt_schriftfarbepositiv;
+}
 
-fwrite($hell, ".cms_demorecht.cms_demorecht_nutzer {");
-fwrite($hell, "	border-color: transparent;");
-fwrite($hell, "	color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($hell, "}");
+.cms_demorecht:hover {
+	border-color: transparent;
+	color: @h_button_schrift;
+	background-color: @h_button_hintergrund;
+}
 
-fwrite($hell, ".cms_demorecht.cms_demorecht_nutzer:hover {");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "}");
+.cms_demorecht.cms_demorecht_nutzer {
+	border-color: transparent;
+	color: @h_haupt_schriftfarbepositiv;
+	background-color: @h_haupt_meldungerfolghinter;
+}
 
-fwrite($hell, ".cms_demorecht.cms_demorecht_rolle {");
-fwrite($hell, "	border-color: transparent;");
-fwrite($hell, "	cursor: default;");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldunginfohinter']." !important;\n");
-fwrite($hell, "	color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($hell, "}");
+.cms_demorecht.cms_demorecht_nutzer:hover {
+	background-color: @h_haupt_meldungfehlerhinter;
+}
 
+.cms_demorecht.cms_demorecht_rolle {
+	border-color: transparent;
+	cursor: default;
+	background-color: @h_haupt_meldunginfohinter !important;
+	color: @h_haupt_schriftfarbepositiv !important;
+}
 
-// DARKMODE
-fwrite($dunkel, ".cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i {");
-fwrite($dunkel, "	border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}");
+// DUNKEL;
 
-fwrite($dunkel, ".cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i:hover {");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_button_schrift'].";\n");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_button_hintergrund'].";\n");
-fwrite($dunkel, "}");
+.cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i {
+	border: 1px solid @d_haupt_schriftfarbepositiv;
+}
 
-fwrite($dunkel, ".cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i {");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "}");
+.cms_rechtebox .cms_recht .cms_recht_beschreibung .cms_recht_beschreibung_i:hover {
+	color: @d_button_schrift;
+	background-color: @d_button_hintergrund;
+}
 
-fwrite($dunkel, ".cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i:hover {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "}");
+.cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i {
+	color: @d_haupt_schriftfarbepositiv;
+	background-color: @d_haupt_meldungerfolghinter;
+}
 
-fwrite($dunkel, ".cms_rechtebox .cms_recht.cms_recht_rolle .cms_recht_beschreibung_i {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter']." !important;\n");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($dunkel, "}");
+.cms_rechtebox .cms_recht.cms_recht_nutzer .cms_recht_beschreibung_i:hover {
+	background-color: @d_haupt_meldungfehlerhinter;
+}
 
-fwrite($dunkel, ".cms_demorecht {");
-fwrite($dunkel, "	border: 1px solid ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}");
+.cms_rechtebox .cms_recht.cms_recht_rolle .cms_recht_beschreibung_i {
+	background-color: @d_haupt_meldunginfohinter !important;
+	color: @d_haupt_schriftfarbepositiv !important;
+}
 
-fwrite($dunkel, ".cms_demorecht:hover {");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_button_schrift'].";\n");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_button_hintergrund'].";\n");
-fwrite($dunkel, "}");
+.cms_demorecht {
+	border: 1px solid @d_haupt_schriftfarbepositiv;
+}
 
-fwrite($dunkel, ".cms_demorecht.cms_demorecht_nutzer {");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "}");
+.cms_demorecht:hover {
+	color: @d_button_schrift;
+	background-color: @d_button_hintergrund;
+}
 
-fwrite($dunkel, ".cms_demorecht.cms_demorecht_nutzer:hover {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "}");
+.cms_demorecht.cms_demorecht_nutzer {
+	color: @d_haupt_schriftfarbepositiv;
+	background-color: @d_haupt_meldungerfolghinter;
+}
 
-fwrite($dunkel, ".cms_demorecht.cms_demorecht_rolle {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter']." !important;\n");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($dunkel, "}");
-?>
+.cms_demorecht.cms_demorecht_nutzer:hover {
+	background-color: @d_haupt_meldungfehlerhinter;
+}
+
+.cms_demorecht.cms_demorecht_rolle {
+	background-color: @d_haupt_meldunginfohinter !important;
+	color: @d_haupt_schriftfarbepositiv !important;
+}

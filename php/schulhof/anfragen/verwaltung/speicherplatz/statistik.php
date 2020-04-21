@@ -22,7 +22,7 @@ if (cms_angemeldet() && cms_r("statistik.speicherplatz")) {
 
 	foreach ($dateien as $d) {
 		if (($d != ".") && ($d != "..") && ($d != ".htaccess")) {
-			echo "Lösche: ".$pfad."/".$d."<br>";
+			// echo "Lösche: ".$pfad."/".$d."<br>";
 			unlink($pfad."/".$d);
 		}
 	}

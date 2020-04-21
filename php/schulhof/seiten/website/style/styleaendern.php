@@ -8,7 +8,7 @@ if (cms_r("website.styleändern")) {
   if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 0) {
     $meldetext = "<h4>Dunkler Modus</h4><p>Viele Betriebssysteme bieten einen Dunklen Modus, da dieser für manche angenehmer zum Lesen erscheint. Dieser Modus ist aktuell <b>deaktiviert</b>.";
     if (cms_r("schulhof.verwaltung.einstellungen")) {
-      $meldetext .= " Er kann in den Allgemeinen Einstellungen aktiviert werden.</p><p><a href=\"Schulhof/Verwaltung/Allgemeine_Einstellungen\" class=\"cms_button\">zu den Allgemeinen Einstellungen</a>";
+      $meldetext .= " Er kann in den Allgemeinen Einstellungen aktiviert werden.</p><p><a href=\"Schulhof/Verwaltung/Allgemeine_Einstellungen#tab-5\" class=\"cms_button\">zu den Allgemeinen Einstellungen</a>";
     }
     $meldetext .= "</p>";
     echo cms_meldung("info", $meldetext);

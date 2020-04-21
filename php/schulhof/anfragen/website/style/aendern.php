@@ -123,15 +123,7 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 		$sql->close();
 		cms_trennen($dbs);
 
-
-		// Dateien schreiben
-		if (file_exists("../../../css/hell.css")) {unlink("../../../css/hell.css");}
-		if (file_exists("../../../css/dunkel.css")) {unlink("../../../css/dunkel.css");}
-		if (file_exists("../../../css/drucken.css")) {unlink("../../../css/drucken.css");}
-		$hell = fopen("../../../css/hell.css", "w");
-		$dunkel = fopen("../../../css/dunkel.css", "w");
-		$drucken = fopen("../../../css/drucken.css", "w");
-		fwrite($dunkel, "@media (prefers-color-scheme: dark) {\n");
+		ob_start();
 
 		include_once("../../schulhof/anfragen/website/style/css/fonts.php");
 		include_once("../../schulhof/anfragen/website/style/css/seite.php");
@@ -175,10 +167,45 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 		include_once("../../schulhof/anfragen/website/style/css/fontsdruck.php");
 		include_once("../../schulhof/anfragen/website/style/css/drucken.php");
 
-		fwrite($dunkel, "}");
-		fclose($hell);
-		fclose($dunkel);
-		fclose($drucken);
+		$ob = ob_get_contents();
+		ob_end_clean();
+		$hell = "";
+		$dunkel = "";
+		$drucken = "";
+		$modus = null;
+
+		foreach(explode("\r\n", $ob) as $zeile) {
+			if($zeile === "// HELL;") {
+				$modus = &$hell;
+				continue;
+			}
+			if($zeile === "// DUNKEL;") {
+				$modus = &$dunkel;
+				continue;
+			}
+			if($zeile === "// DRUCKEN;") {
+				$modus = &$drucken;
+				continue;
+			}
+			if(substr($zeile, 0, 2) !== "//") {	// Kommentare weglassen
+				$zeile = preg_replace("/\\t*/", "", $zeile);
+				$modus .= $zeile;
+			}
+		}
+
+		$hell 		= preg_replace_callback("/@((?!media|font|page|-moz-document|keyframes)[\\w_\\-]+)/", function($match) {return $_POST["cms_style_{$match[1]}"];}, $hell);
+		$dunkel 	= preg_replace_callback("/@((?!media|font|page|-moz-document|keyframes)[\\w_\\-]+)/", function($match) {return $_POST["cms_style_{$match[1]}"];}, $dunkel);
+		$drucken 	= preg_replace_callback("/@((?!media|font|page|-moz-document|keyframes)[\\w_\\-]+)/", function($match) {return $_POST["cms_style_{$match[1]}"];}, $drucken);
+
+		$hell 		= preg_replace("/;}/", "}", $hell);
+		$dunkel 	= preg_replace("/;}/", "}", $dunkel);
+		$drucken 	= preg_replace("/;}/", "}", $drucken);
+
+		$dunkel = "@media (prefers-color-scheme: dark) { $dunkel }";
+
+		file_put_contents("../../../css/hell.css", 		$hell);
+		file_put_contents("../../../css/dunkel.css", 	$dunkel);
+		file_put_contents("../../../css/drucken.css", $drucken);
 
 		echo "ERFOLG";
 	}
