@@ -7,7 +7,6 @@
 	font-weight: normal;
 	padding: 0px;
 	margin: 0px;
-image-rendering: pixelated;
 	list-style-type: none;
 	line-height: 1.2em;
 	text-decoration: none;

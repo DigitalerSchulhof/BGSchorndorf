@@ -260,6 +260,10 @@
 	top: 10px;
 }
 
+img[src^=res/icons/klein] {
+	image-rendering: pixelated;
+}
+
 // DUNKEL;
 
 .cms_uebersicht_verwaltung_technisch {background-color: @d_haupt_meldungwarnunghinter;}
