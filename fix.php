@@ -72,7 +72,7 @@ foreach ($CMS_GRUPPEN AS $g) {
   $gk = cms_textzudb($g);
   //echo "ALTER TABLE `$gk"."termineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
   //echo "ALTER TABLE `$gk"."termineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
-  echo "ALTER TABLE $gk ADD `pinnwand` LONGBLOB NOT NULL AFTER `chataktiv`;<br>";
+  echo "ALTER TABLE $gk ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;<br>";
 }
 
 // $dbs->query("ALTER TABLE `rollen` DROP `personenart`");

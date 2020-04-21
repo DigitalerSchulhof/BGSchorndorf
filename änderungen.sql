@@ -574,3 +574,15 @@ CREATE TABLE `style` (
 ) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;
 
 ALTER TABLE `style` ADD CONSTRAINT `stylealiasname` FOREIGN KEY (`alias`) REFERENCES `style`(`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE gremien ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE fachschaften ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE klassen ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE kurse ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE stufen ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE arbeitsgemeinschaften ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE arbeitskreise ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE fahrten ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE wettbewerbe ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE ereignisse ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE sonstigegruppen ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
