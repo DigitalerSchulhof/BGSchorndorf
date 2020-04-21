@@ -474,6 +474,10 @@
 	color: @h_auszeichnung_schrift;
 }
 
+.cms_auszeichnung a p {
+	color: @h_auszeichnung_schrift;	
+}
+
 .cms_auszeichnung p, .cms_auszeichnung b {
 	line-height: 1.5em !important;
 	font-size: 10px !important;

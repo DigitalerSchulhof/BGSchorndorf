@@ -523,7 +523,7 @@ function cms_voranmeldung_abbrechen() {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Voranmeldung abbrechen', '<p>Die Daten wurden gelöscht</p>', '<p><span class="cms_button" onclick="cms_link(\'Website/Start\');">Zurück zur Website</span> <span class="cms_button" onclick="cms_link(\'Website/Voranmeldung\');">Zurück zur Voranmeldung</span></p>');
+			cms_meldung_an('erfolg', 'Voranmeldung abbrechen', '<p>Die Daten wurden gelöscht</p>', '<p><span class="cms_button" onclick="cms_link(\'\');">Zurück zur Website</span> <span class="cms_button" onclick="cms_link(\'Website/Voranmeldung\');">Zurück zur Voranmeldung</span></p>');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

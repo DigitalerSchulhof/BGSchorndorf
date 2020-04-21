@@ -1160,3 +1160,7 @@ a.note-dropdown-item {
 .note-hint-popover .note-popover-content .note-hint-group .note-hint-item:hover {
 	background-color: @d_hinweis_hintergrund;
 }
+
+.note-icon-font {
+	color: black;
+}

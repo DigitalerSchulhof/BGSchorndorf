@@ -347,7 +347,13 @@ else {
 	<li><span id="cms_reiter_aktuelles_0" class="cms_reiter_aktiv" onclick="cms_reiter('aktuelles', 0,4)">Termine</span></li>
 	<li><span id="cms_reiter_aktuelles_1" class="cms_reiter" onclick="cms_reiter('aktuelles', 1,4)">Blogs</span></li>
 	<li><span id="cms_reiter_aktuelles_2" class="cms_reiter" onclick="cms_reiter('aktuelles', 2,4)">Gruppen</span></li>
-	<li><span id="cms_reiter_aktuelles_3" class="cms_reiter" onclick="cms_reiter('aktuelles', 3,4)">Aufgaben</span></li>
+<?php
+	$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
+
+	if(strlen($sonderrollencodeverwaltung) > 0) {
+		echo "<li><span id=\"cms_reiter_aktuelles_3\" class=\"cms_reiter\" onclick=\"cms_reiter('aktuelles', 3,4)\">Aufgaben</span></li>";
+	}
+ ?>
 	<li><span id="cms_reiter_aktuelles_4" class="cms_reiter" onclick="cms_reiter('aktuelles', 4,4)">Notizen</span></li>
 </ul>
 
@@ -403,7 +409,6 @@ else {
 <div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_3">
 	<div class="cms_reitermenue_i">
 		<?php
-		$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
 		if (strlen($sonderrollencodeverwaltung) != 0) {
 			$sonderrollencode = "";
 			$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";
