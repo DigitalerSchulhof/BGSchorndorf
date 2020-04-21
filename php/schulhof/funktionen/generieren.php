@@ -433,7 +433,7 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   $sql->close();
   $zusatz = '';
   if ($anzahlneu > 0) {
-    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span>";
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span> ";
   }
   else if ($anzahlauftraege > 0) {
     $anzahl = " <span class=\"cms_meldezahl\">$anzahlauftraege</span>";
@@ -502,7 +502,7 @@ function cms_sonderrollen_generieren() {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
   }
   if (cms_r("schulhof.technik.hausmeisteraufträge.erstellen")) {
-    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li>";
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li> ";
   }
 	if (cms_r("schulhof.technik.geräte.verwalten")) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";

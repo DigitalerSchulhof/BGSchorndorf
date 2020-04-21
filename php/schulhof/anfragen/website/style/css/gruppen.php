@@ -407,6 +407,11 @@ background: @h_hinweis_hintergrund;
 	display: block
 }
 
+.cms_notizpinnwand {
+	padding: 5px 7px 5px 7px;
+	border-radius: @haupt_radiusmittel;
+}
+
 // DUNKEL;
 
 .cms_uebersicht .cms_ersteller {

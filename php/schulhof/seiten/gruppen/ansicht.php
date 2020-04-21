@@ -9,16 +9,16 @@ $fehler = false;
 // Prüfen, ob diese Gruppe existiert
 if (in_array($g, $CMS_GRUPPEN)) {
 	if ($schuljahr == "Schuljahrübergreifend") {
-		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, chataktiv, COUNT(*) as anzahl FROM $gk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr IS NULL");
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, chataktiv, AES_DECRYPT(pinnwand, '$CMS_SCHLUESSEL'), COUNT(*) as anzahl FROM $gk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr IS NULL");
 		$sql->bind_param("s", $gbez);
 	}
 	else {
-		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, chataktiv, COUNT(*) as anzahl FROM $gk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr IN (SELECT id FROM schuljahre WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'))");
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon, sichtbar, chataktiv, AES_DECRYPT(pinnwand, '$CMS_SCHLUESSEL'), COUNT(*) as anzahl FROM $gk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr IN (SELECT id FROM schuljahre WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'))");
 		$sql->bind_param("ss", $gbez, $schuljahr);
 	}
 	// Schuljahr finden
 	if ($sql->execute()) {
-    $sql->bind_result($gruppenid, $icon, $sichtbar, $chataktiv, $anzahl);
+    $sql->bind_result($gruppenid, $icon, $sichtbar, $chataktiv, $pinnwand, $anzahl);
     if ($sql->fetch()) {if ($anzahl != 1) {$fehler = true;}
 		}
 		else {$fehler = true;}
@@ -87,6 +87,19 @@ if (!$fehler) {
 			// 		$code .= cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
 			// 	$code .= "</div></div>";
 			// }
+
+			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+			$code .= "<h2>Pinnwand</h2>";
+			if (!$GRUPPENRECHTE['blogeintraege']) {
+				$code .= "<textarea id=\"cms_gruppenpinnwand\" class=\"cms_notizzettel\">$pinnwand</textarea>";
+				$code .= "<p><span class=\"cms_button\" onclick=\"cms_gruppe_pinnwand_speichern('$g', '$gruppenid', '$CMS_URLGANZ')\">Speichern</span> <a class=\"cms_button cms_button_nein\" href=\"$CMS_URLGANZ\">Abbrechen</a></p>";
+			}
+			else {
+				$code .= "<div class=\"cms_notizzettel cms_notizpinnwand\">";
+				$code .= cms_textaustextfeld_anzeigen($pinnwand)."</div>";
+			}
+			$code .= "</div></div>";
+
 			$code .= "<div class=\"cms_clear\"></div>";
 			$code .= "<div class=\"cms_spalte_i\">";
 				$code .= "<h2>Dateien</h2>";

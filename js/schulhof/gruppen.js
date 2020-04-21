@@ -594,6 +594,30 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
+function cms_gruppe_pinnwand_speichern(gruppe, gruppenid, ziel) {
+  cms_laden_an('Pinnwand ändern', 'Der Inhalt der Pinnwand wird geändert.');
+  var pinnwand = document.getElementById('cms_gruppenpinnwand').value;
+
+	var formulardaten = new FormData();
+	formulardaten.append("gruppe", gruppe);
+	formulardaten.append("gruppenid", gruppenid);
+	formulardaten.append("pinnwand", pinnwand);
+	formulardaten.append("anfragenziel", 	'294');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Pinnwand ändern', '<p>Der Inhalt der Pinnwand wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\''+ziel+'\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+
 /*
   0: Init
   1: Verbinden
