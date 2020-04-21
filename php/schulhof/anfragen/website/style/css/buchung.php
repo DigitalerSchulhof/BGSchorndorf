@@ -1,127 +1,127 @@
-<?php
-fwrite($hell, "#cms_neue_buchung {\n");
-fwrite($hell, "margin-bottom: 20px;\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, "#cms_buchungsplan {\n");
-fwrite($hell, "margin-top: 50px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "margin-bottom: 20px;\n");
-fwrite($hell, "}\n");
+#cms_neue_buchung {
+	margin-bottom: 20px;
+}
 
-fwrite($hell, ".cms_buchungsspalte_uhrzeiten, .cms_buchungsspalte {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "float: left;\n");
-fwrite($hell, "}\n");
+#cms_buchungsplan {
+	margin-top: 50px;
+	position: relative;
+	margin-bottom: 20px;
+}
 
-fwrite($hell, ".cms_buchungsspalte_uhrzeiten {\n");
-fwrite($hell, "width: 9%;\n");
-fwrite($hell, "}\n");
+.cms_buchungsspalte_uhrzeiten, .cms_buchungsspalte {
+	position: relative;
+	float: left;
+}
 
-fwrite($hell, ".cms_buchungsspalte {\n");
-fwrite($hell, "width: 13%;\n");
-fwrite($hell, "border-left: 3px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
+.cms_buchungsspalte_uhrzeiten {
+	width: 9%;
+}
 
-fwrite($hell, ".cms_buchungsspalte_ferien {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($hell, "}\n");
+.cms_buchungsspalte {
+	width: 13%;
+	border-left: 3px solid @h_haupt_hintergrund;
+}
 
-fwrite($hell, ".cms_buchungsspalte .cms_buchungsspaltetitel {\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "top: -40px;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
+.cms_buchungsspalte_ferien {
+background: @h_haupt_meldungerfolghinter;
+}
 
-fwrite($hell, ".cms_buchungsuhrzeit {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "opacity: .5;\n");
-fwrite($hell, "}\n");
+.cms_buchungsspalte .cms_buchungsspaltetitel {
+	font-weight: bold;
+	color: @h_haupt_abstufung2;
+	position: absolute;
+	top: -40px;
+	text-align: center;
+	width: 100%;
+	display: block;
+}
 
-fwrite($hell, ".cms_buchungsuhrzeitlinien {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "opacity: .5;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "}\n");
+.cms_buchungsuhrzeit {
+	display: inline-block;
+	position: absolute;
+	color: @h_haupt_abstufung2;
+	opacity: .5;
+}
 
-fwrite($hell, ".cms_buchung_blockierung, .cms_buchung_selbst, .cms_buchung_fremd {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "width: 96%;\n");
-fwrite($hell, "overflow-y: scroll;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "left: 2%;\n");
-fwrite($hell, "}\n");
+.cms_buchungsuhrzeitlinien {
+	width: 100%;
+	border-top: 1px solid @h_haupt_abstufung2;
+	opacity: .5;
+	position: absolute;
+	left: 0px;
+}
 
-fwrite($hell, ".cms_buchung_blockierung {background: ".$_POST['cms_style_h_haupt_abstufung1']."; border: 1px solid ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
-fwrite($hell, ".cms_buchung_selbst {background: ".$_POST['cms_style_h_haupt_meldunginfohinter']."; border: 1px solid ".$_POST['cms_style_h_haupt_meldunginfoakzent'].";}\n");
-fwrite($hell, ".cms_buchung_fremd {background: ".$_POST['cms_style_h_haupt_meldungwarnunghinter']."; border: 1px solid ".$_POST['cms_style_h_haupt_meldungwarnungakzent'].";}\n");
+.cms_buchung_blockierung, .cms_buchung_selbst, .cms_buchung_fremd {
+	padding: 5px;
+	position: absolute;
+	width: 96%;
+	overflow-y: scroll;
+	border-radius: 5px;
+	left: 2%;
+}
 
-fwrite($hell, ".cms_buchung_zeit, .cms_buchung_von, .cms_buchung_aktion {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "font-size:  80%;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_buchung_blockierung {background: @h_haupt_abstufung1; border: 1px solid @h_haupt_abstufung2;}
+.cms_buchung_selbst {background: @h_haupt_meldunginfohinter; border: 1px solid @h_haupt_meldunginfoakzent;}
+.cms_buchung_fremd {background: @h_haupt_meldungwarnunghinter; border: 1px solid @h_haupt_meldungwarnungakzent;}
 
-fwrite($hell, ".cms_buchung_zeit {\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "}\n");
+.cms_buchung_zeit, .cms_buchung_von, .cms_buchung_aktion {
+	display: block;
+	font-size:  80%;
+	text-align: center;
+}
 
-fwrite($hell, ".cms_buchung_aktion {\n");
-fwrite($hell, "margin-top: 3px;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "opacity: 0;\n");
-fwrite($hell, "}\n");
+.cms_buchung_zeit {
+	margin-bottom: 3px;
+}
 
-fwrite($hell, ".cms_buchung_aktion .cms_button_nein {\n");
-fwrite($hell, "line-height: 1;\n");
-fwrite($hell, "font-size: 100%;\n");
-fwrite($hell, "}\n");
+.cms_buchung_aktion {
+	margin-top: 3px;
+	transition: 250ms ease-in-out;
+	opacity: 0;
+}
 
-fwrite($hell, ".cms_buchung_selbst:hover .cms_buchung_aktion,\n");
-fwrite($hell, ".cms_buchung_fremd:hover .cms_buchung_aktion {\n");
-fwrite($hell, "opacity: 1;\n");
-fwrite($hell, "}\n");
+.cms_buchung_aktion .cms_button_nein {
+line-height: 1;
+	font-size: 100%;
+}
 
-fwrite($hell, ".cms_buchung_grund {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "font-size:  80%;\n");
-fwrite($hell, "}\n");
+.cms_buchung_selbst:hover .cms_buchung_aktion,
+.cms_buchung_fremd:hover .cms_buchung_aktion {
+	opacity: 1;
+}
 
+.cms_buchung_grund {
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 3px;
+	font-size:  80%;
+}
 
-// DARKMODE
-fwrite($dunkel, ".cms_buchungsspalte {\n");
-fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
+// DUNKEL;
 
-fwrite($dunkel, ".cms_buchungsspalte_ferien {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "}\n");
+.cms_buchungsspalte {
+	border-left: 3px solid @d_haupt_hintergrund;
+}
 
-fwrite($dunkel, ".cms_buchungsspalte .cms_buchungsspaltetitel {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_buchungsspalte_ferien {
+background: @d_haupt_meldungerfolghinter;
+}
 
-fwrite($dunkel, ".cms_buchungsuhrzeit {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_buchungsspalte .cms_buchungsspaltetitel {
+	color: @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, ".cms_buchungsuhrzeitlinien {\n");
-fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_buchungsuhrzeit {
+	color: @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, ".cms_buchung_blockierung {background: ".$_POST['cms_style_d_haupt_abstufung1']."; border: 1px solid ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-fwrite($dunkel, ".cms_buchung_selbst {background: ".$_POST['cms_style_d_haupt_meldunginfohinter']."; border: 1px solid ".$_POST['cms_style_d_haupt_meldunginfoakzent'].";}\n");
-fwrite($dunkel, ".cms_buchung_fremd {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter']."; border: 1px solid ".$_POST['cms_style_d_haupt_meldungwarnungakzent'].";}\n");
-?>
+.cms_buchungsuhrzeitlinien {
+	border-top: 1px solid @d_haupt_abstufung2;
+}
+
+.cms_buchung_blockierung {background: @d_haupt_abstufung1; border: 1px solid @d_haupt_abstufung2;}
+.cms_buchung_selbst {background: @d_haupt_meldunginfohinter; border: 1px solid @d_haupt_meldunginfoakzent;}
+.cms_buchung_fremd {background: @d_haupt_meldungwarnunghinter; border: 1px solid @d_haupt_meldungwarnungakzent;}

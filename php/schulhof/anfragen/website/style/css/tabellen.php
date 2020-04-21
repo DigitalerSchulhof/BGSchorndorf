@@ -1,239 +1,229 @@
-<?php
-fwrite($hell, "td.cms_notiz {\n");
-fwrite($hell, "text-align: center !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, "th.cms_zwischenueberschrift,\n");
-fwrite($hell, "th.cms_zwischenueberschrift *  {\n");
-fwrite($hell, "text-align: center !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "}\n");
+td.cms_notiz {
+	text-align: center !important;
+	color: @h_haupt_abstufung2;
+}
 
-fwrite($hell, "table .cms_senkrecht {\n");
-fwrite($hell, "writing-mode: vertical-rl;\n");
-fwrite($hell, "transform: rotate(180deg);\n");
-fwrite($hell, "font-weight: inherit;\n");
-fwrite($hell, "}\n");
+th.cms_zwischenueberschrift,
+th.cms_zwischenueberschrift *  {
+	text-align: center !important;
+	color: @h_haupt_abstufung2;
+	font-weight: bold;
+}
 
-fwrite($hell, ".cms_formular {\n");
-fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "border-spacing: 0px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_formular_hintergrund'].";\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
+table .cms_senkrecht {
+writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	font-weight: inherit;
+}
 
-fwrite($hell, ".cms_formular td {\n");
-fwrite($hell, "line-height: 2em;\n");
-fwrite($hell, "}\n");
+.cms_formular {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	background: @h_formular_hintergrund;
+	width: 100%;
+}
 
-fwrite($hell, ".cms_formular th {\n");
-fwrite($hell, "padding-top: 10px !important;\n");
-fwrite($hell, "line-height: 1.5em;\n");
-fwrite($hell, "vertical-align: top !important;\n");
-fwrite($hell, "}\n");
+.cms_formular td {
+	line-height: 2em;
+}
 
-fwrite($hell, ".cms_formular tbody, .cms_formular thead {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
+.cms_formular th {
+	padding-top: 10px !important;
+	line-height: 1.5em;
+vertical-align: top !important;
+}
 
-fwrite($hell, "/*.cms_formular tbody tr th:first-child,\n");
-fwrite($hell, ".cms_liste tbody tr th:first-child {\n");
-fwrite($hell, "width: 33%;\n");
-fwrite($hell, "}*/\n");
+.cms_formular tbody, .cms_formular thead {
+	width: 100%;
+}
 
-fwrite($hell, ".cms_formular th {\n");
-fwrite($hell, "vertical-align: top;\n");
-fwrite($hell, "padding: 5px 7px;\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_formular th {
+vertical-align: top;
+	padding: 5px 7px;
+	text-align: left;
+	font-weight: bold;
+	position: relative;
+}
 
-fwrite($hell, ".cms_formular th * {\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "}\n");
+.cms_formular th * {
+	font-weight: bold;
+}
 
-fwrite($hell, ".cms_formular th .cms_hinweis_aussen {\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "}\n");
+.cms_formular th .cms_hinweis_aussen {
+	font-weight: bold;
+}
 
-fwrite($hell, ".cms_formular td {\n");
-fwrite($hell, "vertical-align: top;\n");
-fwrite($hell, "font-weight: normal;\n");
-fwrite($hell, "padding: 5px 7px;\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_formular td {
+vertical-align: top;
+	font-weight: normal;
+	padding: 5px 7px;
+	text-align: left;
+	position: relative;
+}
 
-fwrite($hell, ".cms_formular td > img {\n");
-fwrite($hell, "top: 5px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_formular td > img {
+	top: 5px;
+	position: relative;
+}
 
-fwrite($hell, ".cms_liste {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "border-spacing: 0px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "border-top: 1px ".$_POST['cms_style_h_haupt_abstufung1']." solid;\n");
-fwrite($hell, "border-bottom: 1px ".$_POST['cms_style_h_haupt_abstufung1']." solid;\n");
-fwrite($hell, "margin-bottom: 7px;\n");
-fwrite($hell, "}\n");
+.cms_liste {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	background: @h_haupt_hintergrund;
+	border-top: 1px @h_haupt_abstufung1 solid;
+	border-bottom: 1px @h_haupt_abstufung1 solid;
+	margin-bottom: 7px;
+}
 
-fwrite($hell, ".cms_liste tr.min,.cms_liste  td.min {\n");
-fwrite($hell, "width: 1%;\n");
-fwrite($hell, "}\n");
+.cms_liste tr.min,.cms_liste  td.min {
+	width: 1%;
+}
 
-fwrite($hell, ".cms_liste th {\n");
-fwrite($hell, "vertical-align: middle;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "padding: 3px 7px;\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "border-top: 1px ".$_POST['cms_style_h_haupt_abstufung1']." solid;\n");
-fwrite($hell, "border-bottom: 1px ".$_POST['cms_style_h_haupt_abstufung1']." solid;\n");
-fwrite($hell, "line-height: 1.5em;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "}\n");
+.cms_liste th {
+vertical-align: middle;
+	font-weight: bold;
+	padding: 3px 7px;
+	text-align: left;
+	border-top: 1px @h_haupt_abstufung1 solid;
+	border-bottom: 1px @h_haupt_abstufung1 solid;
+	line-height: 1.5em;
+	transition: 250ms ease-in-out;
+}
 
-fwrite($hell, ".cms_liste td {\n");
-fwrite($hell, "font-weight: normal;\n");
-fwrite($hell, "padding: 3px 7px;\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "border-bottom: 1px ".$_POST['cms_style_h_haupt_abstufung1']." solid;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "}\n");
+.cms_liste td {
+	font-weight: normal;
+	padding: 3px 7px;
+	text-align: left;
+	border-bottom: 1px @h_haupt_abstufung1 solid;
+	transition: 250ms ease-in-out;
+}
 
-fwrite($hell, ".cms_liste thead th, .cms_liste tr:first-child th, .cms_liste tr:first-child td {\n");
-fwrite($hell, "border-top: none !important;\n");
-fwrite($hell, "}\n");
+.cms_liste thead th, .cms_liste tr:first-child th, .cms_liste tr:first-child td {
+	border-top: none !important;
+}
 
-fwrite($hell, ".cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+.cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
+	background: @h_haupt_abstufung1;
+}
 
-fwrite($hell, ".cms_postfach_liste .cms_postfach_vorschau {\n");
-fwrite($hell, "border-top: none;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+.cms_postfach_liste .cms_postfach_vorschau {
+	border-top: none;
+	background: @h_haupt_abstufung1;
+	display: none;
+}
 
-fwrite($hell, ".cms_postfach_nachricht_lesen:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
+.cms_postfach_nachricht_lesen:hover {
+	cursor: pointer;
+}
 
-fwrite($hell, ".cms_schulhof_nutzerkonto_profildaten_mehrF, .cms_schulhof_verwaltung_personen_details_mehrF,\n");
-fwrite($hell, ".cms_website_seiten_fortgeschritten_mehrF {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+.cms_schulhof_nutzerkonto_profildaten_mehrF, .cms_schulhof_verwaltung_personen_details_mehrF,
+.cms_website_seiten_fortgeschritten_mehrF {
+	display: none;
+}
 
-fwrite($hell, ".cms_tabelle_zwischentitel {\n");
-fwrite($hell, "font-weight: bold !important;\n");
-fwrite($hell, "text-align: center !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
+.cms_tabelle_zwischentitel {
+	font-weight: bold !important;
+	text-align: center !important;
+	color: @h_haupt_abstufung2;
+}
 
-fwrite($hell, "table.cms_zeitwahl {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "}\n");
+table.cms_zeitwahl {
+	width: 100%;
+	margin-bottom: @haupt_absatzschulhof;
+	border-collapse: collapse;
+}
 
-fwrite($hell, "table.cms_zeitwahl td {width: auto;}\n");
-fwrite($hell, "table.cms_zeitwahl td:nth-child(2) {text-align: center !important;}\n");
-fwrite($hell, "table.cms_zeitwahl td:nth-child(3) {text-align: right;}\n");
+table.cms_zeitwahl td {width: auto;}
+table.cms_zeitwahl td:nth-child(2) {text-align: center !important;}
+table.cms_zeitwahl td:nth-child(3) {text-align: right;}
 
-fwrite($hell, "table.table {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "}\n");
+table.table {
+	width: 100%;
+	margin-bottom: @haupt_absatzschulhof;
+	border-collapse: collapse;
+}
 
-fwrite($hell, "table.table td {\n");
-fwrite($hell, "border: none !important;\n");
-fwrite($hell, "padding: 3px;\n");
-fwrite($hell, "border-right: 1px solid ".$_POST['cms_style_h_haupt_hintergrund']." !important;\n");
-fwrite($hell, "background-color: #dddddd;\n");
-fwrite($hell, "}\n");
+table.table td {
+	border: none !important;
+	padding: 3px;
+	border-right: 1px solid @h_haupt_hintergrund !important;
+	background-color: #dddddd;
+}
 
-fwrite($hell, "table.table td:last-child {\n");
-fwrite($hell, "border-right: none !important;\n");
-fwrite($hell, "}\n");
+table.table td:last-child {
+	border-right: none !important;
+}
 
-fwrite($hell, "table.table tr:nth-child(2n+1) td {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_formular_feldhintergrund'].";\n");
-fwrite($hell, "}\n");
+table.table tr:nth-child(2n+1) td {
+	background-color: @h_formular_feldhintergrund;
+}
 
-fwrite($hell, "th.cms_zwischenueberschrift {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+th.cms_zwischenueberschrift {
+	text-align: center;
+	background-color: @h_haupt_abstufung1;
+}
 
-fwrite($hell, "th.cms_zahl, td.cms_zahl {\n");
-fwrite($hell, "text-align: right !important;\n");
-fwrite($hell, "}\n");
+th.cms_zahl, td.cms_zahl {
+	text-align: right !important;
+}
 
-fwrite($hell, ".cms_sortieren:hover {\n");
-fwrite($hell, "cursor: s-resize;\n");
-fwrite($hell, "}\n");
+.cms_sortieren:hover {
+	cursor: s-resize;
+}
 
-fwrite($hell, ".cms_auswaehlen:hover {\n");
-fwrite($hell, "cursor: crosshair;\n");
-fwrite($hell, "}\n");
+.cms_auswaehlen:hover {
+	cursor: crosshair;
+}
 
+// DUNKEL;
 
+td.cms_notiz {
+	color: @d_haupt_abstufung2;
+}
 
+th.cms_zwischenueberschrift,
+th.cms_zwischenueberschrift *  {
+	color: @d_haupt_abstufung2;
+}
 
+.cms_formular {
+	background: @d_formular_hintergrund;
+}
 
+.cms_liste {
+	background: @d_haupt_hintergrund;
+	border-top: 1px @d_haupt_abstufung1 solid;
+	border-bottom: 1px @d_haupt_abstufung1 solid;
+}
 
+.cms_liste th {
+	border-top: 1px @d_haupt_abstufung1 solid;
+	border-bottom: 1px @d_haupt_abstufung1 solid;
+}
 
-// DARKMODE
-fwrite($dunkel, "td.cms_notiz {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_liste td {
+	border-bottom: 1px @d_haupt_abstufung1 solid;
+}
 
-fwrite($dunkel, "th.cms_zwischenueberschrift,\n");
-fwrite($dunkel, "th.cms_zwischenueberschrift *  {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {
+	background: @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_formular {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_formular_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
+.cms_postfach_liste .cms_postfach_vorschau {
+	background: @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_liste {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "border-top: 1px ".$_POST['cms_style_d_haupt_abstufung1']." solid;\n");
-fwrite($dunkel, "border-bottom: 1px ".$_POST['cms_style_d_haupt_abstufung1']." solid;\n");
-fwrite($dunkel, "}\n");
+.cms_tabelle_zwischentitel {
+	color: @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, ".cms_liste th {\n");
-fwrite($dunkel, "border-top: 1px ".$_POST['cms_style_d_haupt_abstufung1']." solid;\n");
-fwrite($dunkel, "border-bottom: 1px ".$_POST['cms_style_d_haupt_abstufung1']." solid;\n");
-fwrite($dunkel, "}\n");
+table.table td {
+	border-right: 1px solid @d_haupt_hintergrund !important;
+}
 
-fwrite($dunkel, ".cms_liste td {\n");
-fwrite($dunkel, "border-bottom: 1px ".$_POST['cms_style_d_haupt_abstufung1']." solid;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_liste tbody tr:hover td, .cms_liste tbody tr:hover th {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_postfach_liste .cms_postfach_vorschau {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_tabelle_zwischentitel {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "table.table td {\n");
-fwrite($dunkel, "border-right: 1px solid ".$_POST['cms_style_d_haupt_hintergrund']." !important;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "table.table tr:nth-child(2n+1) td {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_formular_feldhintergrund'].";\n");
-fwrite($dunkel, "}\n");
-?>
+table.table tr:nth-child(2n+1) td {
+	background-color: @d_formular_feldhintergrund;
+}

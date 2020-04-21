@@ -1,405 +1,402 @@
-<?php
-fwrite($hell, ".cms_terminuebersicht {\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_terminuebersicht li {\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "text-overflow: ellipsis;\n");
-fwrite($hell, "}\n");
+.cms_terminuebersicht {
+	padding: 0px;
+	margin: 0px;
+	border-bottom: 1px solid @h_haupt_abstufung1;
+}
 
-fwrite($hell, ".cms_terminlink {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "padding-top: 5px;\n");
-fwrite($hell, "padding-bottom: 5px;\n");
-fwrite($hell, "padding-right: 5px;\n");
-fwrite($hell, "padding-left: 80px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "min-height: 70px;\n");
-fwrite($hell, "}\n");
+.cms_terminuebersicht li {
+	padding: 0px;
+	margin: 0px;
+	border-top: 1px solid @h_haupt_abstufung1;
+	list-style-type: none;
+	display: block;
+	text-overflow: ellipsis;
+}
 
-fwrite($hell, ".cms_kalenderblaetter {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_terminlink {
+	width: 100%;
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 5px;
+	padding-left: 80px;
+	position: relative;
+	transition: 250ms ease-in-out;
+	min-height: 70px;
+}
 
-fwrite($hell, ".cms_kalender_zusatzinfo {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "padding: 2px 0px 2px 20px;\n");
-fwrite($hell, "font-size: 80%;\n");
-fwrite($hell, "background-position: left center;\n");
-fwrite($hell, "background-repeat: no-repeat;\n");
-fwrite($hell, "margin-right: 10px;\n");
-fwrite($hell, "margin-bottom: 5px;\n");
-fwrite($hell, "min-height: 16px;\n");
-fwrite($hell, "}\n");
+.cms_kalenderblaetter {
+	text-align: center;
+}
 
-fwrite($hell, ".cms_kalender_zusatzinfo_intern {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "padding: 5px 5px 5px 25px;\n");
-fwrite($hell, "background-position: 5px center;\n");
-fwrite($hell, "background-image: url('../res/icons/oegruppen/intern.png');\n");
-fwrite($hell, "}\n");
+.cms_kalender_zusatzinfo {
+	display: inline-block;
+	padding: 2px 0px 2px 20px;
+	font-size: 80%;
+	background-position: left center;
+	background-repeat: no-repeat;
+	margin-right: 10px;
+	margin-bottom: 5px;
+	min-height: 16px;
+}
 
-fwrite($hell, ".cms_terminlink h3 {\n");
-fwrite($hell, "font-size: 110%;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "margin-top: 2px;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
+.cms_kalender_zusatzinfo_intern {
+	color: @h_haupt_schriftfarbenegativ !important;
+	background-color: @h_haupt_abstufung2;
+	border-radius: @button_rundeecken;
+	padding: 5px 5px 5px 25px;
+	background-position: 5px center;
+	background-image: url('../res/icons/oegruppen/intern.png');
+}
 
-fwrite($hell, ".cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "overflow: hidden;\n");
-fwrite($hell, "text-overflow: ellipsis;\n");
-fwrite($hell, "}\n");
+.cms_terminlink h3 {
+	font-size: 110%;
+	font-weight: bold;
+	margin-top: 2px;
+	margin-bottom: @haupt_absatzschulhof;
+}
 
-fwrite($hell, ".cms_terminlink .cms_notiz {margin-top: 0px;}\n");
-fwrite($hell, ".cms_terminlink p:last-child {margin-bottom: 0px;}\n");
+.cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
+	color: @h_haupt_schriftfarbepositiv;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
-fwrite($hell, ".cms_terminlink:hover {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-fwrite($hell, ".cms_terminlink:hover .cms_button {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_button_hintergrundhover'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_button_schrifthover'].";\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_notiz {margin-top: 0px;}
+.cms_terminlink p:last-child {margin-bottom: 0px;}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblaetter {\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "left: 5px;\n");
-fwrite($hell, "top: 5px;\n");
-fwrite($hell, "width: 70px;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_terminlink:hover {
+	background-color: @h_haupt_abstufung1;
+}
+.cms_terminlink:hover .cms_button {
+	background-color: @h_button_hintergrundhover;
+	color: @h_button_schrifthover;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblaetter {
+	position: absolute;
+	left: 5px;
+	top: 5px;
+	width: 70px;
+	text-align: center;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_i,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_i {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "width: 32px;\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt {
+	display: inline-block;
+	text-align: center;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_monat,\n");
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_tagnr,\n");
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_tagbez,\n");
-fwrite($hell, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,\n");
-fwrite($hell, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,\n");
-fwrite($hell, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "line-height: 1.2em !important;\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt_i,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_i {
+	display: inline-block;
+	width: 32px;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_monat,\n");
-fwrite($hell, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_kalenderklein_hintergrundmonat'].";\n");
-fwrite($hell, "font-weight: ".$_POST['cms_style_kalenderklein_schriftdickemonat'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_kalenderklein_farbemonat'].";\n");
-fwrite($hell, "font-size: 10px;\n");
-fwrite($hell, "border-top: ".$_POST['cms_style_kalenderklein_linienstaerkeobenmonat'].";\n");
-fwrite($hell, "border-left: ".$_POST['cms_style_kalenderklein_linienstaerkelinksmonat'].";\n");
-fwrite($hell, "border-right: ".$_POST['cms_style_kalenderklein_linienstaerkerechtsmonat'].";\n");
-fwrite($hell, "border-bottom: ".$_POST['cms_style_kalenderklein_linienstaerkeuntenmonat'].";\n");
-fwrite($hell, "padding: 2px 0px;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_kalenderklein_radiusobenmonat'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_kalenderklein_radiusobenmonat'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_kalenderklein_radiusuntenmonat'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_kalenderklein_radiusuntenmonat'].";\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_kalenderklein_linienfarbe'].";\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt_monat,
+.cms_terminlink .cms_kalenderblatt_tagnr,
+.cms_terminlink .cms_kalenderblatt_tagbez,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {
+	display: block;
+	text-align: center;
+	width: 100%;
+	line-height: 1.2em !important;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_tagnr,\n");
-fwrite($hell, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_kalenderklein_hintergrundtagnr'].";\n");
-fwrite($hell, "font-weight: ".$_POST['cms_style_kalenderklein_schriftdicketagnr'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_kalenderklein_farbetagnr'].";\n");
-fwrite($hell, "font-size: 18px;\n");
-fwrite($hell, "border-top: ".$_POST['cms_style_kalenderklein_linienstaerkeobentagnr'].";\n");
-fwrite($hell, "border-left: ".$_POST['cms_style_kalenderklein_linienstaerkelinkstagnr'].";\n");
-fwrite($hell, "border-right: ".$_POST['cms_style_kalenderklein_linienstaerkerechtstagnr'].";\n");
-fwrite($hell, "border-bottom: ".$_POST['cms_style_kalenderklein_linienstaerkeuntentagnr'].";\n");
-fwrite($hell, "padding: 2px 0px;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_kalenderklein_radiusobentagnr'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_kalenderklein_radiusobentagnr'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_kalenderklein_radiusuntentagnr'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_kalenderklein_radiusuntentagnr'].";\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_kalenderklein_linienfarbe'].";\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt_monat,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {
+	background: @h_kalenderklein_hintergrundmonat;
+	font-weight: @kalenderklein_schriftdickemonat;
+	color: @h_kalenderklein_farbemonat;
+	font-size: 10px;
+	border-top: @kalenderklein_linienstaerkeobenmonat;
+	border-left: @kalenderklein_linienstaerkelinksmonat;
+	border-right: @kalenderklein_linienstaerkerechtsmonat;
+	border-bottom: @kalenderklein_linienstaerkeuntenmonat;
+	padding: 2px 0px;
+	border-top-right-radius: @kalenderklein_radiusobenmonat;
+	border-top-left-radius: @kalenderklein_radiusobenmonat;
+	border-bottom-right-radius: @kalenderklein_radiusuntenmonat;
+	border-bottom-left-radius: @kalenderklein_radiusuntenmonat;
+	border-color: @h_kalenderklein_linienfarbe;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_tagbez,\n");
-fwrite($hell, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez,\n");
-fwrite($hell, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_kalenderklein_hintergrundtagbez'].";\n");
-fwrite($hell, "font-weight: ".$_POST['cms_style_kalenderklein_schriftdicketagbez'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_kalenderklein_farbetagbez'].";\n");
-fwrite($hell, "font-size: 10px;\n");
-fwrite($hell, "border-top: ".$_POST['cms_style_kalenderklein_linienstaerkeobentagbez'].";\n");
-fwrite($hell, "border-left: ".$_POST['cms_style_kalenderklein_linienstaerkelinkstagbez'].";\n");
-fwrite($hell, "border-right: ".$_POST['cms_style_kalenderklein_linienstaerkerechtstagbez'].";\n");
-fwrite($hell, "border-bottom: ".$_POST['cms_style_kalenderklein_linienstaerkeuntentagbez'].";\n");
-fwrite($hell, "padding: 2px 0px;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_kalenderklein_radiusobentagbez'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_kalenderklein_radiusobentagbez'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_kalenderklein_radiusuntentagbez'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_kalenderklein_radiusuntentagbez'].";\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_kalenderklein_linienfarbe'].";\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt_tagnr,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {
+	background: @h_kalenderklein_hintergrundtagnr;
+	font-weight: @kalenderklein_schriftdicketagnr;
+	color: @h_kalenderklein_farbetagnr;
+	font-size: 18px;
+	border-top: @kalenderklein_linienstaerkeobentagnr;
+	border-left: @kalenderklein_linienstaerkelinkstagnr;
+	border-right: @kalenderklein_linienstaerkerechtstagnr;
+	border-bottom: @kalenderklein_linienstaerkeuntentagnr;
+	padding: 2px 0px;
+	border-top-right-radius: @kalenderklein_radiusobentagnr;
+	border-top-left-radius: @kalenderklein_radiusobentagnr;
+	border-bottom-right-radius: @kalenderklein_radiusuntentagnr;
+	border-bottom-left-radius: @kalenderklein_radiusuntentagnr;
+	border-color: @h_kalenderklein_linienfarbe;
+}
 
-fwrite($hell, ".cms_terminlink .cms_kalenderblatt_uhrzeit {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "font-weight: normal;\n");
-fwrite($hell, "font-size: 80%;\n");
-fwrite($hell, "line-height: 1.2em;\n");
-fwrite($hell, "padding: 5px 0px 0px 0px;\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt_tagbez,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagbez {
+	background: @h_kalenderklein_hintergrundtagbez;
+	font-weight: @kalenderklein_schriftdicketagbez;
+	color: @h_kalenderklein_farbetagbez;
+	font-size: 10px;
+	border-top: @kalenderklein_linienstaerkeobentagbez;
+	border-left: @kalenderklein_linienstaerkelinkstagbez;
+	border-right: @kalenderklein_linienstaerkerechtstagbez;
+	border-bottom: @kalenderklein_linienstaerkeuntentagbez;
+	padding: 2px 0px;
+	border-top-right-radius: @kalenderklein_radiusobentagbez;
+	border-top-left-radius: @kalenderklein_radiusobentagbez;
+	border-bottom-right-radius: @kalenderklein_radiusuntentagbez;
+	border-bottom-left-radius: @kalenderklein_radiusuntentagbez;
+	border-color: @h_kalenderklein_linienfarbe;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblaetter {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_terminlink .cms_kalenderblatt_uhrzeit {
+	display: block;
+	text-align: center;
+	font-weight: normal;
+	font-size: 80%;
+	line-height: 1.2em;
+	padding: 5px 0px 0px 0px;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt {\n");
-fwrite($hell, "width: 40%;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblaetter {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_i {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt {
+	width: 40%;
+	display: inline-block;
+	text-align: center;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_monat,\n");
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr,\n");
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "line-height: 1.2em !important;\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_i {
+	display: inline-block;
+	width: 100%;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_kalendergross_hintergrundmonat'].";\n");
-fwrite($hell, "font-weight: ".$_POST['cms_style_kalendergross_schriftdickemonat'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_kalendergross_farbemonat'].";\n");
-fwrite($hell, "font-size: 20px;\n");
-fwrite($hell, "border-top: ".$_POST['cms_style_kalendergross_linienstaerkeobenmonat'].";\n");
-fwrite($hell, "border-left: ".$_POST['cms_style_kalendergross_linienstaerkelinksmonat'].";\n");
-fwrite($hell, "border-right: ".$_POST['cms_style_kalendergross_linienstaerkerechtsmonat'].";\n");
-fwrite($hell, "border-bottom: ".$_POST['cms_style_kalendergross_linienstaerkeuntenmonat'].";\n");
-fwrite($hell, "border-bottom: none;\n");
-fwrite($hell, "padding: 4px 0px;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_kalendergross_radiusobenmonat'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_kalendergross_radiusobenmonat'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_kalendergross_radiusuntenmonat'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_kalendergross_radiusuntenmonat'].";\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_kalendergross_linienfarbe'].";\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_monat,
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr,
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
+	display: block;
+	text-align: center;
+	width: 100%;
+	line-height: 1.2em !important;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_kalendergross_hintergrundtagnr'].";\n");
-fwrite($hell, "font-weight: ".$_POST['cms_style_kalendergross_schriftdicketagnr'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_kalendergross_farbetagnr'].";\n");
-fwrite($hell, "font-size: 45px;\n");
-fwrite($hell, "border-top: ".$_POST['cms_style_kalendergross_linienstaerkeobentagnr'].";\n");
-fwrite($hell, "border-left: ".$_POST['cms_style_kalendergross_linienstaerkelinkstagnr'].";\n");
-fwrite($hell, "border-right: ".$_POST['cms_style_kalendergross_linienstaerkerechtstagnr'].";\n");
-fwrite($hell, "border-bottom: ".$_POST['cms_style_kalendergross_linienstaerkeuntentagnr'].";\n");
-fwrite($hell, "padding: 8px 0px 4px 0px;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_kalendergross_radiusobentagnr'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_kalendergross_radiusobentagnr'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_kalendergross_radiusuntentagnr'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_kalendergross_radiusuntentagnr'].";\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_kalendergross_linienfarbe'].";\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {
+	background: @h_kalendergross_hintergrundmonat;
+	font-weight: @kalendergross_schriftdickemonat;
+	color: @h_kalendergross_farbemonat;
+	font-size: 20px;
+	border-top: @kalendergross_linienstaerkeobenmonat;
+	border-left: @kalendergross_linienstaerkelinksmonat;
+	border-right: @kalendergross_linienstaerkerechtsmonat;
+	border-bottom: @kalendergross_linienstaerkeuntenmonat;
+	border-bottom: none;
+	padding: 4px 0px;
+	border-top-right-radius: @kalendergross_radiusobenmonat;
+	border-top-left-radius: @kalendergross_radiusobenmonat;
+	border-bottom-right-radius: @kalendergross_radiusuntenmonat;
+	border-bottom-left-radius: @kalendergross_radiusuntenmonat;
+	border-color: @h_kalendergross_linienfarbe;
+}
 
-fwrite($hell, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_kalendergross_hintergrundtagbez'].";\n");
-fwrite($hell, "font-weight: ".$_POST['cms_style_kalendergross_schriftdicketagbez'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_kalendergross_farbetagbez'].";\n");
-fwrite($hell, "font-size: 20px;\n");
-fwrite($hell, "border-top: ".$_POST['cms_style_kalendergross_linienstaerkeobentagbez'].";\n");
-fwrite($hell, "border-left: ".$_POST['cms_style_kalendergross_linienstaerkelinkstagbez'].";\n");
-fwrite($hell, "border-right: ".$_POST['cms_style_kalendergross_linienstaerkerechtstagbez'].";\n");
-fwrite($hell, "border-bottom: ".$_POST['cms_style_kalendergross_linienstaerkeuntentagbez'].";\n");
-fwrite($hell, "padding: 4px 0px;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_kalendergross_radiusobentagbez'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_kalendergross_radiusobentagbez'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_kalendergross_radiusuntentagbez'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_kalendergross_radiusuntentagbez'].";\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_kalendergross_linienfarbe'].";\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {
+	background: @h_kalendergross_hintergrundtagnr;
+	font-weight: @kalendergross_schriftdicketagnr;
+	color: @h_kalendergross_farbetagnr;
+	font-size: 45px;
+	border-top: @kalendergross_linienstaerkeobentagnr;
+	border-left: @kalendergross_linienstaerkelinkstagnr;
+	border-right: @kalendergross_linienstaerkerechtstagnr;
+	border-bottom: @kalendergross_linienstaerkeuntentagnr;
+	padding: 8px 0px 4px 0px;
+	border-top-right-radius: @kalendergross_radiusobentagnr;
+	border-top-left-radius: @kalendergross_radiusobentagnr;
+	border-bottom-right-radius: @kalendergross_radiusuntentagnr;
+	border-bottom-left-radius: @kalendergross_radiusuntentagnr;
+	border-color: @h_kalendergross_linienfarbe;
+}
 
-fwrite($hell, ".cms_termin_detailinformationen {\n");
-fwrite($hell, "margin-top: 15px;\n");
-fwrite($hell, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
+	background: @h_kalendergross_hintergrundtagbez;
+	font-weight: @kalendergross_schriftdicketagbez;
+	color: @h_kalendergross_farbetagbez;
+	font-size: 20px;
+	border-top: @kalendergross_linienstaerkeobentagbez;
+	border-left: @kalendergross_linienstaerkelinkstagbez;
+	border-right: @kalendergross_linienstaerkerechtstagbez;
+	border-bottom: @kalendergross_linienstaerkeuntentagbez;
+	padding: 4px 0px;
+	border-top-right-radius: @kalendergross_radiusobentagbez;
+	border-top-left-radius: @kalendergross_radiusobentagbez;
+	border-bottom-right-radius: @kalendergross_radiusuntentagbez;
+	border-bottom-left-radius: @kalendergross_radiusuntentagbez;
+	border-color: @h_kalendergross_linienfarbe;
+}
 
-fwrite($hell, ".cms_termindetails {\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: 7px 0px 0px 0px;\n");
-fwrite($hell, "}\n");
+.cms_termin_detailinformationen {
+	margin-top: 15px;
+}
 
-fwrite($hell, ".cms_termindetails li {\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "margin-right: 0px;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "}\n");
+.cms_termindetails {
+	padding: 0px;
+	margin: 7px 0px 0px 0px;
+}
 
-fwrite($hell, ".cms_termindetails_zusatzinfo {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "padding: 2px 0px 2px 20px;\n");
-fwrite($hell, "background-position: left center;\n");
-fwrite($hell, "background-repeat: no-repeat;\n");
-fwrite($hell, "margin-right: 0px;\n");
-fwrite($hell, "min-height: 16px;\n");
-fwrite($hell, "}\n");
+.cms_termindetails li {
+	padding: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	text-align: center;
+	list-style-type: none;
+}
 
-fwrite($hell, ".cms_termindetails_zusatzinfo:hover {\n");
-fwrite($hell, "cursor: pointer !important;\n");
-fwrite($hell, "}\n");
+.cms_termindetails_zusatzinfo {
+	display: inline-block;
+	padding: 2px 0px 2px 20px;
+	background-position: left center;
+	background-repeat: no-repeat;
+	margin-right: 0px;
+	min-height: 16px;
+}
 
-fwrite($hell, ".cms_termin_detailinformationen h3 {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_termindetails_zusatzinfo:hover {
+	cursor: pointer !important;
+}
 
-fwrite($hell, ".cms_ferienkalender {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "border-spacing: 0px;\n");
-fwrite($hell, "border-collapse: collapse;\n");
-fwrite($hell, "}\n");
+.cms_termin_detailinformationen h3 {
+	text-align: center;
+}
 
-fwrite($hell, ".cms_ferienkalender th {\n");
-fwrite($hell, "width:8.33333%;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "padding: 2px 5px;\n");
-fwrite($hell, "border-right: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+.cms_ferienkalender {
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
 
-fwrite($hell, ".cms_ferienkalender td {\n");
-fwrite($hell, "padding: 2px 5px;\n");
-fwrite($hell, "border-right: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+.cms_ferienkalender th {
+	width:8.33333%;
+	font-weight: bold;
+	padding: 2px 5px;
+	border-right: 1px solid @h_haupt_abstufung1;
+}
 
-fwrite($hell, ".cms_ferienkalender td:last-child,\n");
-fwrite($hell, ".cms_ferienkalender th:last-child {\n");
-fwrite($hell, "border-right: none;\n");
-fwrite($hell, "}\n");
+.cms_ferienkalender td {
+	padding: 2px 5px;
+	border-right: 1px solid @h_haupt_abstufung1;
+	border-top: 1px solid @h_haupt_abstufung1;
+}
 
-fwrite($hell, ".cms_ferienkalender_inhalt {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "width: 50%;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+.cms_ferienkalender td:last-child,
+.cms_ferienkalender th:last-child {
+	border-right: none;
+}
 
-fwrite($hell, ".cms_ferienkalender_we {background-color: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";}\n");
-fwrite($hell, ".cms_ferienkalender_frei {background-color: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
+.cms_ferienkalender_inhalt {
+	display: inline-block;
+	width: 50%;
+	text-align: center;
+}
 
+.cms_ferienkalender_we {background-color: @h_haupt_meldunginfohinter;}
+.cms_ferienkalender_frei {background-color: @h_haupt_meldungerfolghinter;}
 
+// DUNKEL;
 
+.cms_terminuebersicht {
+	border-bottom: 1px solid @d_haupt_abstufung1;
+}
 
+.cms_terminuebersicht li {
+	border-top: 1px solid @d_haupt_abstufung1;
+}
 
-// DARKMODE
-fwrite($dunkel, ".cms_terminuebersicht {\n");
-fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_kalender_zusatzinfo_intern {
+	color: @d_haupt_schriftfarbenegativ !important;
+	background-color: @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, ".cms_terminuebersicht li {\n");
-fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {
+	color: @d_haupt_schriftfarbepositiv;
+}
 
-fwrite($dunkel, ".cms_kalender_zusatzinfo_intern {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_terminlink:hover {
+	background-color: @d_haupt_abstufung1;
+}
+.cms_terminlink:hover .cms_button {
+	background-color: @d_button_hintergrundhover;
+	color: @d_button_schrifthover;
+}
 
-fwrite($dunkel, ".cms_terminlink p, .cms_terminlink h3, .cms_terminlink span {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
+.cms_terminlink .cms_kalenderblatt_monat,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {
+	background: @d_kalenderklein_hintergrundmonat;
+	color: @d_kalenderklein_farbemonat;
+	border-color: @d_kalenderklein_linienfarbe;
+}
 
-fwrite($dunkel, ".cms_terminlink:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, ".cms_terminlink:hover .cms_button {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_button_hintergrundhover'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_button_schrifthover'].";\n");
-fwrite($dunkel, "}\n");
+.cms_terminlink .cms_kalenderblatt_tagnr,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,
+.cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {
+	background: @d_kalenderklein_hintergrundtagnr;
+	color: @d_kalenderklein_farbetagnr;
+	border-color: @d_kalenderklein_linienfarbe;
+}
 
-fwrite($dunkel, ".cms_terminlink .cms_kalenderblatt_monat,\n");
-fwrite($dunkel, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_monat,\n");
-fwrite($dunkel, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_monat {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_kalenderklein_hintergrundmonat'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_kalenderklein_farbemonat'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_kalenderklein_linienfarbe'].";\n");
-fwrite($dunkel, "}\n");
+.cms_terminlink .cms_kalenderblatt_tagbez,
+.cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez {
+	background: @d_kalenderklein_hintergrundtagbez;
+	color: @d_kalenderklein_farbetagbez;
+	border-color: @d_kalenderklein_linienfarbe;
+}
 
-fwrite($dunkel, ".cms_terminlink .cms_kalenderblatt_tagnr,\n");
-fwrite($dunkel, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagnr,\n");
-fwrite($dunkel, ".cms_galerieuebersicht_liste .cms_galerielink .cms_kalenderblatt_tagnr {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_kalenderklein_hintergrundtagnr'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_kalenderklein_farbetagnr'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_kalenderklein_linienfarbe'].";\n");
-fwrite($dunkel, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {
+	background: @d_kalendergross_hintergrundmonat;
+	color: @d_kalendergross_farbemonat;
+	border-color: @d_kalendergross_linienfarbe;
+}
 
-fwrite($dunkel, ".cms_terminlink .cms_kalenderblatt_tagbez,\n");
-fwrite($dunkel, ".cms_bloguebersicht_liste .cms_bloglink .cms_kalenderblatt_tagbez {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_kalenderklein_hintergrundtagbez'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_kalenderklein_farbetagbez'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_kalenderklein_linienfarbe'].";\n");
-fwrite($dunkel, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {
+	background: @d_kalendergross_hintergrundtagnr;
+	color: @d_kalendergross_farbetagnr;
+	border-color: @d_kalendergross_linienfarbe;
+}
 
-fwrite($dunkel, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_kalendergross_hintergrundmonat'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_kalendergross_farbemonat'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_kalendergross_linienfarbe'].";\n");
-fwrite($dunkel, "}\n");
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
+	background: @d_kalendergross_hintergrundtagbez;
+	color: @d_kalendergross_farbetagbez;
+	border-color: @d_kalendergross_linienfarbe;
+}
 
-fwrite($dunkel, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_kalendergross_hintergrundtagnr'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_kalendergross_farbetagnr'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_kalendergross_linienfarbe'].";\n");
-fwrite($dunkel, "}\n");
+.cms_ferienkalender th {
+	border-right: 1px solid @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_kalendergross_hintergrundtagbez'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_kalendergross_farbetagbez'].";\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_kalendergross_linienfarbe'].";\n");
-fwrite($dunkel, "}\n");
+.cms_ferienkalender td {
+	border-right: 1px solid @d_haupt_abstufung1;
+	border-top: 1px solid @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_ferienkalender th {\n");
-fwrite($dunkel, "border-right: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_ferienkalender td {\n");
-fwrite($dunkel, "border-right: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_ferienkalender_we {background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
-fwrite($dunkel, ".cms_ferienkalender_frei {background-color: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
-?>
+.cms_ferienkalender_we {background-color: @d_haupt_meldunginfohinter;}
+.cms_ferienkalender_frei {background-color: @d_haupt_meldungerfolghinter;}

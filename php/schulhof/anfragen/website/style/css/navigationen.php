@@ -1,760 +1,755 @@
-<?php
-fwrite($hell, ".cms_kopfnavigation {\n");
-fwrite($hell, "text-align: right;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_kopfnavigation li {\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "display: ".$_POST['cms_style_hauptnavigation_anzeigekategorie'].";\n");
-fwrite($hell, "margin-left: 3px;\n");
-fwrite($hell, "margin-right: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_kopfnavigation li:first-child {\n");
-fwrite($hell, "display: ".$_POST['cms_style_suche_anzeige'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_optimierung_P .cms_fussnavigation, .cms_optimierung_T .cms_fussnavigation {\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_optimierung_H .cms_fussnavigation {\n");
-fwrite($hell, "padding-right: 0px;\n");
-fwrite($hell, "min-height: auto;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_optimierung_H .cms_auszeichnung {\n");
-fwrite($hell, "position: static !important;\n");
-fwrite($hell, "top: auto !important;\n");
-fwrite($hell, "right: auto !important;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof']." !important;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_optimierung_H #cms_fusszeile_i .cms_notiz {text-align: center;}\n");
-
-fwrite($hell, ".cms_fussnavigation li {\n");
-fwrite($hell, "list-style: none;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "margin-right: 3px;\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_hauptnavigation {\n");
-fwrite($hell, "text-align: right;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "bottom: ".$_POST['cms_style_hauptnavigation_abstandvonunten'].";\n");
-fwrite($hell, "top: ".$_POST['cms_style_hauptnavigation_abstandvonoben'].";\n");
-fwrite($hell, "left: ".$_POST['cms_style_hauptnavigation_abstandvonlinks'].";\n");
-fwrite($hell, "right: ".$_POST['cms_style_hauptnavigation_abstandvonrechts'].";\n");
-fwrite($hell, "margin-top: 0px;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_hauptnavigation > li {\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "margin: ".$_POST['cms_style_hauptnavigation_aussenabstandkategorie'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_hauptnavigation .cms_kategorie1,\n");
-fwrite($hell, "#cms_kopfnavigation > li > a, #cms_kopfnavigation > li > span {\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_hauptnavigation_kategorieradiusor'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_hauptnavigation_kategorieradiusol'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_hauptnavigation_kategorieradiusur'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_hauptnavigation_kategorieradiusul'].";\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_hauptnavigation_kategoriehintergrund'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_hauptnavigation_kategoriefarbe'].";\n");
-fwrite($hell, "padding: ".$_POST['cms_style_hauptnavigation_kategorieinnenabstand'].";\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "line-height: 20px;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "user-select: none;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_unternavigation_o {\n");
-fwrite($hell, "position: fixed;\n");
-fwrite($hell, "top: ".$_POST['cms_style_unternavigation_abstandvonoben'].";\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "transition: 500ms ease-in-out;\n");
-fwrite($hell, "overflow: hidden;\n");
-fwrite($hell, "z-index: 21;\n");
-fwrite($hell, "max-height: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_hauptnavigation > li:hover .cms_unternavigation_o {\n");
-fwrite($hell, "max-height: 500px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation a:hover,\n");
-fwrite($hell, "#cms_kopfnavigation span:hover {\n");
-fwrite($hell, "transform: translate(0px) !important;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_hauptnavigation > li:hover > span.cms_kategorie1,\n");
-fwrite($hell, "#cms_kopfnavigation li:hover > a,\n");
-fwrite($hell, "#cms_kopfnavigation li:hover > span {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_hauptnavigation_kategoriehintergrundhover'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_hauptnavigation_kategoriefarbehover'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation > li {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "height: ".$_POST['cms_style_hauptnavigation_kategoriehoehe'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation span {\n");
-fwrite($hell, "transition: 500ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation span:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation > li > .cms_naviuntermenue {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "width: 200px;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "right: ".$_POST['cms_style_schulhofnavigation_abstandvonrechts'].";\n");
-fwrite($hell, "left: ".$_POST['cms_style_schulhofnavigation_abstandvonlinks'].";\n");
-fwrite($hell, "top: ".$_POST['cms_style_schulhofnavigation_abstandvonoben'].";\n");
-fwrite($hell, "bottom: ".$_POST['cms_style_schulhofnavigation_abstandvonunten'].";\n");
-fwrite($hell, "overflow: hidden;\n");
-fwrite($hell, "max-height: 0px;\n");
-fwrite($hell, "transition: 500ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation > li ul {\n");
-fwrite($hell, "border-top: 3px solid ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
-fwrite($hell, "border-bottom: 3px solid ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation li:hover > .cms_naviuntermenue {\n");
-fwrite($hell, "max-height: 600px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation > li ul li {\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: ".$_POST['cms_style_haupt_absatzschulhof']." 0px ".$_POST['cms_style_haupt_absatzschulhof']." 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation > li ul li a,\n");
-fwrite($hell, "#cms_kopfnavigation > li ul li span {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "padding: 3px 7px;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_kopfnavigation > li ul li a:hover,\n");
-fwrite($hell, "#cms_kopfnavigation > li ul li span:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_unternavigation_m {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "border-bottom: 3px solid ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
-fwrite($hell, "border-top: 3px solid ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
-fwrite($hell, "width: ".$_POST['cms_style_haupt_seitenbreite'].";\n");
-fwrite($hell, "margin: 0 auto;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_unternavigation_i {\n");
-fwrite($hell, "text-align: left;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_unternavigation_i li {\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "margin-top: 0px;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation, .cms_navigation ul {\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation li {\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li {\n");
-fwrite($hell, "border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li:last-child {\n");
-fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li a,\n");
-fwrite($hell, ".cms_navigation > li span {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "padding: 10px 5px;\n");
-fwrite($hell, "transition: 500ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li a:hover,\n");
-fwrite($hell, ".cms_navigation > li span:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "transform: translate(0px) !important;\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li > .cms_navigation_aktiveseite {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li > .cms_navigation_aktiveseite:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_hauptnavigation_akzentfarbe'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation > li li .cms_navigation_aktiveseite {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation .cms_naviuntermenue {\n");
-fwrite($hell, "margin-left: 10px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_navigation .cms_naviuntermenue a,\n");
-fwrite($hell, ".cms_navigation .cms_naviuntermenue span {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "font-size: 12px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($hell, "transition: 100ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {\n");
-fwrite($hell, "height: 5px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_aktivitaet_in_profil, .cms_fortschritt_i {\n");
-fwrite($hell, "height: 10px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "overflow:hidden;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_aktivitaet_out, #cms_maktivitaet_out {\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_optimierung_P #cms_mobilnavigation {display: none;}\n");
-fwrite($hell, ".cms_optimierung_T #cms_hauptnavigation, .cms_optimierung_H #cms_hauptnavigation,\n");
-fwrite($hell, ".cms_optimierung_T #cms_kopfnavigation, .cms_optimierung_H #cms_kopfnavigation\n");
-fwrite($hell, "{display: none !important;}\n");
-
-fwrite($hell, "#cms_mobilnavigation {\n");
-fwrite($hell, "border-top-right-radius: 5px;\n");
-fwrite($hell, "border-top-left-radius: 5px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ']." !important;\n");
-fwrite($hell, "padding: 4px 10px;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "line-height: 20px;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "user-select: none;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "right: 10px;\n");
-fwrite($hell, "bottom: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilnavigation:hover {\n");
-fwrite($hell, "cursor: pointer !important;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrundhover']." !important;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_menuicon {\n");
-fwrite($hell, "width: 20px;\n");
-fwrite($hell, "height: 4px;\n");
-fwrite($hell, "border-radius: 2px;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "margin: 4px 0;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_a {\n");
-fwrite($hell, "/*display: none;*/\n");
-fwrite($hell, "position: fixed;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "top: 0px;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "height: 100%;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "z-index: 100000;\n");
-fwrite($hell, "overflow-y: scroll;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_i {padding: 10px 10px 20px 10px;}\n");
-
-fwrite($hell, "#cms_mobilmenue_i p.cms_mobilmenue_knoepfe {\n");
-fwrite($hell, "display: flex;\n");
-fwrite($hell, "flex-wrap: wrap;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_i p.cms_mobilmenue_knoepfe span, #cms_mobilmenue_i p.cms_mobilmenue_knoepfe a {\n");
-fwrite($hell, "width: 50%;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_i p.cms_mobilmenue_knoepfe span,\n");
-fwrite($hell, "#cms_mobilmenue_i p.cms_mobilmenue_knoepfe a:last-child {\n");
-fwrite($hell, "border-top-left-radius: 0px;\n");
-fwrite($hell, "border-bottom-left-radius: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_i p.cms_mobilmenue_knoepfe a:first-child {\n");
-fwrite($hell, "border-top-right-radius: 0px;\n");
-fwrite($hell, "border-bottom-right-radius: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten p.cms_notiz {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten {\n");
-fwrite($hell, "margin-top: 30px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten > div div {\n");
-fwrite($hell, "padding-left: 10px;\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten ul {\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li {\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
-fwrite($hell, "#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li .cms_meldezahl {\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "padding: 3px 5px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "border-radius: 10px;\n");
-fwrite($hell, "opacity: 1;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "top: 3px;\n");
-fwrite($hell, "right: 4px;\n");
-fwrite($hell, "height: 18px;\n");
-fwrite($hell, "line-height: 12px;\n");
-fwrite($hell, "width: auto;\n");
-fwrite($hell, "min-width: 30px;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li .cms_meldezahl_wichtig {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent']." !important;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
-fwrite($hell, "transform: translate(0px) !important;\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {width: 90%;}\n");
-fwrite($hell, "#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen {\n");
-fwrite($hell, "width: 10%;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_mobilnavigation_iconhintergrundhover'].";\n");
-fwrite($hell, "}\n");
-fwrite($hell, "#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_mobilmenue_seiten li .cms_mobilnavi_passiv {\n");
-fwrite($hell, "cursor: default !important;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($hell, "background-color: transparent !important;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_unternavigation_schliessen {\n");
-fwrite($hell, "position: absolute !important;\n");
-fwrite($hell, "right: 10px;\n");
-fwrite($hell, "top: 5px;\n");
-fwrite($hell, "opacity: 0;\n");
-fwrite($hell, "transition: 500ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_aktionen_liste li {\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "margin-top: 0px;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht {\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "margin-right: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li {\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li a,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_appmenue_element,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_notifikation,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_termin,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_blogeintrag,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_beschlusseintrag,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_gremien,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_ferien,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_vertretungsplanung {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "padding: 5px 5px 5px 47px;\n");
-fwrite($hell, "border-top: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "background-repeat: no-repeat;\n");
-fwrite($hell, "background-position: 5px 5px;\n");
-fwrite($hell, "min-height: 42px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li a.cms_blogvorschau_ohneicon {\n");
-fwrite($hell, "padding: 5px !important;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li:last-child a,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_appmenue_element,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_uebersicht_notifikation,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_termin,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_blogeintrag,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_beschlusseintrag,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_gremien,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,\n");
-fwrite($hell, ".cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {\n");
-fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li a p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_appmenue_element p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_notifikation p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_termin p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_blogeintrag p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_beschlusseintrag p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_gremien p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften p,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_ferien p,\n");
-fwrite($hell, ".cms_uebersicht .cms_blogliste_details p {\n");
-fwrite($hell, "font-size: 90%;\n");
-fwrite($hell, "margin-top: 2px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li a h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_appmenue_element h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_notifikation h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_termin h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_blogeintrag h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_beschlusseintrag h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_gremien h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften h3,\n");
-fwrite($hell, ".cms_uebersicht li span.cms_uebersicht_verwaltung_ferien h3,\n");
-fwrite($hell, ".cms_uebersicht .cms_blogliste_details h3 {\n");
-fwrite($hell, "font-size: 110%;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "margin-top: 2px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht_notifikation .cms_notifikation_schliessen {\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "right: 5px !important;\n");
-fwrite($hell, "top: 5px !important;\n");
-fwrite($hell, "opacity: 0;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht_notifikation:hover .cms_notifikation_schliessen {\n");
-fwrite($hell, "opacity: 1;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht li {\n");
-fwrite($hell, "margin-top: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht a, .cms_uebersicht span.cms_appmenue_element {\n");
-fwrite($hell, "transition: 500ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "transform: translateX(0) translateY(0);\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht .cms_blog_keinhover {\n");
-fwrite($hell, "cursor: default !important;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_hintergrund']." !important;\n");
-fwrite($hell, "}\n");
-
-
-fwrite($hell, ".cms_anteilbalken_innen {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "transition: 100ms ease-in-out;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_anteilbalken_innen {\n");
-fwrite($hell, "height: 10px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_anteilbalken_aussen {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "overflow: hidden;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_anteilbalken_notiz {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "margin-bottom: 20px;\n");
-fwrite($hell, "font-size: 70%;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "}\n");
-
-
-
-
-
-
-
-// DARKMODE
-fwrite($dunkel, ".cms_hauptnavigation .cms_kategorie1,\n");
-fwrite($dunkel, "#cms_kopfnavigation > li > a, #cms_kopfnavigation > li > span {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_hauptnavigation_kategoriehintergrund'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_hauptnavigation_kategoriefarbe'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_hauptnavigation > li:hover > span.cms_kategorie1,\n");
-fwrite($dunkel, "#cms_kopfnavigation li:hover > a,\n");
-fwrite($dunkel, "#cms_kopfnavigation li:hover > span {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_hauptnavigation_kategoriehintergrundhover'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_hauptnavigation_kategoriefarbehover'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_kopfnavigation > li > .cms_naviuntermenue {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_kopfnavigation > li ul {\n");
-fwrite($dunkel, "border-top: 3px solid ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
-fwrite($dunkel, "border-bottom: 3px solid ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_kopfnavigation > li ul li a,\n");
-fwrite($dunkel, "#cms_kopfnavigation > li ul li span {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_kopfnavigation > li ul li a:hover,\n");
-fwrite($dunkel, "#cms_kopfnavigation > li ul li span:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "cursor: pointer;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_unternavigation_m {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "border-bottom: 3px solid ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
-fwrite($dunkel, "border-top: 3px solid ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li {\n");
-fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li:last-child {\n");
-fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li a,\n");
-fwrite($dunkel, ".cms_navigation > li span {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li a:hover,\n");
-fwrite($dunkel, ".cms_navigation > li span:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li > .cms_navigation_aktiveseite {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li > .cms_navigation_aktiveseite:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_hauptnavigation_akzentfarbe'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_navigation > li li .cms_navigation_aktiveseite {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_aktivitaet_out, #cms_maktivitaet_out {\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilnavigation {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrund']." !important;\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ']." !important;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilnavigation:hover {\n");
-fwrite($dunkel, "cursor: pointer !important;\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrundhover']." !important;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_menuicon {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_a {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-fwrite($dunkel, "#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten li .cms_meldezahl {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten li .cms_meldezahl_wichtig {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerakzent']." !important;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_mobilnavigation_iconhintergrundhover'].";\n");
-fwrite($dunkel, "}\n");
-fwrite($dunkel, "#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_mobilmenue_seiten li .cms_mobilnavi_passiv {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_uebersicht li a,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_appmenue_element,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_uebersicht_notifikation,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_uebersicht_verwaltung_termin,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_blogeintrag,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_beschlusseintrag,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_uebersicht_verwaltung_gremien,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_uebersicht_verwaltung_ferien,\n");
-fwrite($dunkel, ".cms_uebersicht li span.cms_uebersicht_vertretungsplanung {\n");
-fwrite($dunkel, "border-top: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_uebersicht li:last-child a,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_appmenue_element,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_uebersicht_notifikation,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_termin,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_blogeintrag,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_beschlusseintrag,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_gremien,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,\n");
-fwrite($dunkel, ".cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {\n");
-fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_uebersicht .cms_blog_keinhover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_hintergrund']." !important;\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_anteilbalken_innen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_anteilbalken_aussen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_anteilbalken_notiz {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
-?>
+// HELL;
+
+.cms_kopfnavigation {
+	text-align: right;
+}
+
+.cms_kopfnavigation li {
+	list-style-type: none;
+	display: @hauptnavigation_anzeigekategorie;
+	margin-left: 3px;
+	margin-right: 0px;
+}
+
+.cms_kopfnavigation li:first-child {
+	display: @suche_anzeige;
+}
+
+.cms_optimierung_P .cms_fussnavigation, .cms_optimierung_T .cms_fussnavigation {
+	margin-bottom: @haupt_absatzschulhof;
+}
+
+.cms_optimierung_H .cms_fussnavigation {
+	padding-right: 0px;
+	min-height: auto;
+	text-align: center;
+}
+
+.cms_optimierung_H .cms_auszeichnung {
+	position: static !important;
+	top: auto !important;
+	right: auto !important;
+	margin-bottom: @haupt_absatzschulhof !important;
+	text-align: center;
+}
+
+.cms_optimierung_H #cms_fusszeile_i .cms_notiz {text-align: center;}
+
+.cms_fussnavigation li {
+list-style: none;
+	display: inline-block;
+	margin-right: 3px;
+	margin-left: 0px;
+}
+
+.cms_hauptnavigation {
+	text-align: right;
+	position: absolute;
+	bottom: @hauptnavigation_abstandvonunten;
+	top: @hauptnavigation_abstandvonoben;
+	left: @hauptnavigation_abstandvonlinks;
+	right: @hauptnavigation_abstandvonrechts;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.cms_hauptnavigation > li {
+	list-style-type: none;
+	display: inline-block;
+	margin: @hauptnavigation_aussenabstandkategorie;
+}
+
+.cms_hauptnavigation .cms_kategorie1,
+#cms_kopfnavigation > li > a, #cms_kopfnavigation > li > span {
+	border-top-right-radius: @hauptnavigation_kategorieradiusor;
+	border-top-left-radius: @hauptnavigation_kategorieradiusol;
+	border-bottom-right-radius: @hauptnavigation_kategorieradiusur;
+	border-bottom-left-radius: @hauptnavigation_kategorieradiusul;
+	display: inline-block;
+	background-color: @h_hauptnavigation_kategoriehintergrund;
+	color: @h_hauptnavigation_kategoriefarbe;
+	padding: @hauptnavigation_kategorieinnenabstand;
+	font-weight: bold;
+	line-height: 20px;
+	margin-bottom: 0px;
+user-select: none;
+	transition: 250ms ease-in-out;
+}
+
+.cms_unternavigation_o {
+	position: fixed;
+	top: @unternavigation_abstandvonoben;
+	left: 0px;
+	width: 100%;
+	transition: 500ms ease-in-out;
+	overflow: hidden;
+	z-index: 21;
+	max-height: 0px;
+}
+
+.cms_hauptnavigation > li:hover .cms_unternavigation_o {
+	max-height: 500px;
+}
+
+#cms_kopfnavigation a:hover,
+#cms_kopfnavigation span:hover {
+	transform: translate(0px) !important;
+}
+
+#cms_hauptnavigation > li:hover > span.cms_kategorie1,
+#cms_kopfnavigation li:hover > a,
+#cms_kopfnavigation li:hover > span {
+	background-color: @h_hauptnavigation_kategoriehintergrundhover;
+	color: @h_hauptnavigation_kategoriefarbehover;
+}
+
+#cms_kopfnavigation > li {
+	position: relative;
+	height: @hauptnavigation_kategoriehoehe;
+}
+
+#cms_kopfnavigation span {
+	transition: 500ms ease-in-out;
+}
+
+#cms_kopfnavigation span:hover {
+	cursor: pointer;
+}
+
+#cms_kopfnavigation > li > .cms_naviuntermenue {
+	background: @h_haupt_abstufung1;
+	width: 200px;
+	position: absolute;
+	right: @schulhofnavigation_abstandvonrechts;
+	left: @schulhofnavigation_abstandvonlinks;
+	top: @schulhofnavigation_abstandvonoben;
+	bottom: @schulhofnavigation_abstandvonunten;
+	overflow: hidden;
+	max-height: 0px;
+	transition: 500ms ease-in-out;
+}
+
+#cms_kopfnavigation > li ul {
+	border-top: 3px solid @h_hauptnavigation_akzentfarbe;
+	border-bottom: 3px solid @h_hauptnavigation_akzentfarbe;
+	padding: 5px;
+}
+
+#cms_kopfnavigation li:hover > .cms_naviuntermenue {
+	max-height: 600px;
+}
+
+#cms_kopfnavigation > li ul li {
+	list-style-type: none;
+	display: block;
+	text-align: left;
+	padding: 0px;
+	margin: @haupt_absatzschulhof 0px @haupt_absatzschulhof 0px;
+}
+
+#cms_kopfnavigation > li ul li a,
+#cms_kopfnavigation > li ul li span {
+	color: @h_haupt_schriftfarbepositiv;
+	display: block;
+	padding: 3px 7px;
+	border-radius: @button_rundeecken;
+}
+
+#cms_kopfnavigation > li ul li a:hover,
+#cms_kopfnavigation > li ul li span:hover {
+	color: @h_haupt_schriftfarbenegativ;
+	cursor: pointer;
+}
+
+.cms_unternavigation_m {
+	background: @h_haupt_abstufung1;
+	border-bottom: 3px solid @h_hauptnavigation_akzentfarbe;
+	border-top: 3px solid @h_hauptnavigation_akzentfarbe;
+	width: @haupt_seitenbreite;
+	margin: 0 auto;
+}
+
+.cms_unternavigation_i {
+	text-align: left;
+	position: relative;
+}
+
+.cms_unternavigation_i li {
+	list-style-type: none;
+	display: inline-block;
+	margin-top: 0px;
+	margin-bottom: 3px;
+	margin-left: 0px;
+}
+
+.cms_navigation, .cms_navigation ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+.cms_navigation li {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+.cms_navigation > li {
+	border-top: 1px solid @h_haupt_abstufung1;
+}
+
+.cms_navigation > li:last-child {
+	border-bottom: 1px solid @h_haupt_abstufung1;
+}
+
+.cms_navigation > li a,
+.cms_navigation > li span {
+	color: @h_haupt_schriftfarbepositiv;
+	display: block;
+	padding: 10px 5px;
+	transition: 500ms ease-in-out;
+}
+
+.cms_navigation > li a:hover,
+.cms_navigation > li span:hover {
+	color: @h_haupt_schriftfarbepositiv;
+	background: @h_haupt_abstufung1;
+	transform: translate(0px) !important;
+	cursor: pointer;
+}
+
+.cms_navigation > li > .cms_navigation_aktiveseite {
+	color: @h_haupt_schriftfarbenegativ;
+	background: @h_hauptnavigation_akzentfarbe;
+}
+
+.cms_navigation > li > .cms_navigation_aktiveseite:hover {
+	color: @h_haupt_schriftfarbenegativ;
+	background: @h_hauptnavigation_akzentfarbe;
+}
+
+.cms_navigation > li li .cms_navigation_aktiveseite {
+	background: @h_haupt_abstufung1;
+}
+
+.cms_navigation .cms_naviuntermenue {
+	margin-left: 10px;
+}
+
+.cms_navigation .cms_naviuntermenue a,
+.cms_navigation .cms_naviuntermenue span {
+	padding: 5px;
+	font-size: 12px;
+}
+
+#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
+	width: 100%;
+	background: @h_haupt_meldungerfolghinter;
+	transition: 100ms ease-in-out;
+}
+
+#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
+	height: 5px;
+}
+
+#cms_aktivitaet_in_profil, .cms_fortschritt_i {
+	height: 10px;
+}
+
+#cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {
+	width: 100%;
+	border-radius: 5px;
+	margin-bottom: 3px;
+	background: @h_haupt_meldungfehlerhinter;
+	overflow:hidden;
+}
+
+#cms_aktivitaet_out, #cms_maktivitaet_out {
+	border: 1px solid @h_haupt_hintergrund;
+}
+
+.cms_optimierung_P #cms_mobilnavigation {display: none;}
+.cms_optimierung_T #cms_hauptnavigation, .cms_optimierung_H #cms_hauptnavigation,
+.cms_optimierung_T #cms_kopfnavigation, .cms_optimierung_H #cms_kopfnavigation
+{display: none !important;}
+
+#cms_mobilnavigation {
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	display: inline-block;
+	background-color: @h_mobilnavigation_iconhintergrund !important;
+	color: @h_haupt_schriftfarbenegativ !important;
+	padding: 4px 10px;
+	font-weight: bold;
+	line-height: 20px;
+	margin-bottom: 0px;
+user-select: none;
+	position: absolute;
+	right: 10px;
+	bottom: 0px;
+}
+
+#cms_mobilnavigation:hover {
+	cursor: pointer !important;
+	background-color: @h_mobilnavigation_iconhintergrundhover !important;
+}
+
+.cms_menuicon {
+	width: 20px;
+	height: 4px;
+	border-radius: 2px;
+	background-color: @h_haupt_schriftfarbenegativ;
+	margin: 4px 0;
+	display: block;
+}
+
+#cms_mobilmenue_a {
+// display: none;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	background: @h_haupt_abstufung1;
+	z-index: 100000;
+	overflow-y: scroll;
+}
+
+#cms_mobilmenue_i {padding: 10px 10px 20px 10px;}
+
+#cms_mobilmenue_i p.cms_mobilmenue_knoepfe {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#cms_mobilmenue_i p.cms_mobilmenue_knoepfe span, #cms_mobilmenue_i p.cms_mobilmenue_knoepfe a {
+	width: 50%;
+	text-align: center;
+}
+
+#cms_mobilmenue_i p.cms_mobilmenue_knoepfe span,
+#cms_mobilmenue_i p.cms_mobilmenue_knoepfe a:last-child {
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+#cms_mobilmenue_i p.cms_mobilmenue_knoepfe a:first-child {
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+#cms_mobilmenue_seiten p.cms_notiz {
+	text-align: center;
+}
+
+#cms_mobilmenue_seiten {
+	margin-top: 30px;
+}
+
+#cms_mobilmenue_seiten > div div {
+	padding-left: 10px;
+	display: none;
+}
+
+#cms_mobilmenue_seiten ul {
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+#cms_mobilmenue_seiten li {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @h_haupt_abstufung2;}
+#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @h_haupt_abstufung2;}
+
+#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
+	padding: 5px;
+	transition: 250ms ease-in-out;
+	color: @h_haupt_schriftfarbepositiv;
+	display: inline-block;
+	border-radius: @button_rundeecken;
+	position: relative;
+}
+
+#cms_mobilmenue_seiten li .cms_meldezahl {
+	position: absolute;
+	padding: 3px 5px;
+	background: @h_haupt_abstufung2;
+	border-radius: 10px;
+	opacity: 1;
+	color: @h_haupt_schriftfarbenegativ;
+	display: block;
+	top: 3px;
+	right: 4px;
+	height: 18px;
+	line-height: 12px;
+	width: auto;
+	min-width: 30px;
+	text-align: center;
+}
+
+#cms_mobilmenue_seiten li .cms_meldezahl_wichtig {
+	background: @h_haupt_meldungfehlerakzent !important;
+}
+
+#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+	transform: translate(0px) !important;
+	cursor: pointer;
+	color: @h_haupt_schriftfarbenegativ;
+}
+
+#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {width: 90%;}
+#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen {
+	width: 10%;
+	text-align: center;
+}
+
+#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+	background-color: @h_mobilnavigation_iconhintergrundhover;
+}
+#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {
+	background-color: @h_haupt_abstufung2;
+}
+
+#cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
+	cursor: default !important;
+	color: @h_haupt_schriftfarbepositiv !important;
+	background-color: transparent !important;
+}
+
+.cms_unternavigation_schliessen {
+	position: absolute !important;
+	right: 10px;
+	top: 5px;
+	opacity: 0;
+	transition: 500ms ease-in-out;
+}
+
+.cms_aktionen_liste li {
+	margin-left: 0px;
+	list-style-type: none;
+	display: inline-block;
+	margin-top: 0px;
+	margin-bottom: 3px;
+}
+
+.cms_uebersicht {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.cms_uebersicht li {
+	list-style-type: none;
+	margin-left: 0px;
+	margin-bottom: 0px;
+	padding: 0px;
+	position: relative;
+}
+
+.cms_uebersicht li a,
+.cms_uebersicht li span.cms_appmenue_element,
+.cms_uebersicht li span.cms_uebersicht_notifikation,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_termin,
+.cms_uebersicht li span.cms_blogeintrag,
+.cms_uebersicht li span.cms_beschlusseintrag,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_gremien,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_ferien,
+.cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
+	display: block;
+	padding: 5px 5px 5px 47px;
+	border-top: 1px solid @h_haupt_abstufung1;
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	min-height: 42px;
+	color: @h_haupt_schriftfarbepositiv;
+	position: relative;
+}
+
+.cms_uebersicht li a.cms_blogvorschau_ohneicon {
+	padding: 5px !important;
+}
+
+.cms_uebersicht li:last-child a,
+.cms_uebersicht li:last-child span.cms_appmenue_element,
+.cms_uebersicht li:last-child span.cms_uebersicht_notifikation,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_termin,
+.cms_uebersicht li:last-child span.cms_blogeintrag,
+.cms_uebersicht li:last-child span.cms_beschlusseintrag,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_gremien,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
+.cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
+	border-bottom: 1px solid @h_haupt_abstufung1;
+}
+
+.cms_uebersicht li a p,
+.cms_uebersicht li span.cms_appmenue_element p,
+.cms_uebersicht li span.cms_uebersicht_notifikation p,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_termin p,
+.cms_uebersicht li span.cms_blogeintrag p,
+.cms_uebersicht li span.cms_beschlusseintrag p,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_gremien p,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften p,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_ferien p,
+.cms_uebersicht .cms_blogliste_details p {
+	font-size: 90%;
+	margin-top: 2px;
+}
+
+.cms_uebersicht li a h3,
+.cms_uebersicht li span.cms_appmenue_element h3,
+.cms_uebersicht li span.cms_uebersicht_notifikation h3,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_termin h3,
+.cms_uebersicht li span.cms_blogeintrag h3,
+.cms_uebersicht li span.cms_beschlusseintrag h3,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_gremien h3,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften h3,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_ferien h3,
+.cms_uebersicht .cms_blogliste_details h3 {
+	font-size: 110%;
+	margin-bottom: 3px;
+	margin-top: 2px;
+}
+
+.cms_uebersicht_notifikation .cms_notifikation_schliessen {
+	position: absolute;
+	right: 5px !important;
+	top: 5px !important;
+	opacity: 0;
+	transition: 250ms ease-in-out;
+}
+
+.cms_uebersicht_notifikation:hover .cms_notifikation_schliessen {
+	opacity: 1;
+}
+
+.cms_uebersicht li {
+	margin-top: 0px;
+}
+
+.cms_uebersicht a, .cms_uebersicht span.cms_appmenue_element {
+	transition: 500ms ease-in-out;
+}
+
+.cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
+	background-color: @h_haupt_abstufung1;
+	transform: translateX(0) translateY(0);
+	cursor: pointer;
+}
+
+.cms_uebersicht .cms_blog_keinhover {
+	cursor: default !important;
+	background-color: @h_haupt_hintergrund !important;
+}
+
+
+.cms_anteilbalken_innen {
+	width: 100%;
+	background: @h_haupt_meldungfehlerhinter;
+	transition: 100ms ease-in-out;
+}
+
+.cms_anteilbalken_innen {
+	height: 10px;
+}
+
+.cms_anteilbalken_aussen {
+	width: 100%;
+	border-radius: 5px;
+	margin-bottom: 3px;
+	overflow: hidden;
+	background: @h_haupt_abstufung1;
+}
+
+.cms_anteilbalken_notiz {
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 70%;
+	color: @h_haupt_abstufung2;
+}
+
+// DUNKEL;
+
+.cms_hauptnavigation .cms_kategorie1,
+#cms_kopfnavigation > li > a, #cms_kopfnavigation > li > span {
+	background-color: @d_hauptnavigation_kategoriehintergrund;
+	color: @d_hauptnavigation_kategoriefarbe;
+}
+
+#cms_hauptnavigation > li:hover > span.cms_kategorie1,
+#cms_kopfnavigation li:hover > a,
+#cms_kopfnavigation li:hover > span {
+	background-color: @d_hauptnavigation_kategoriehintergrundhover;
+	color: @d_hauptnavigation_kategoriefarbehover;
+}
+
+#cms_kopfnavigation > li > .cms_naviuntermenue {
+	background: @d_haupt_abstufung1;
+}
+
+#cms_kopfnavigation > li ul {
+	border-top: 3px solid @d_hauptnavigation_akzentfarbe;
+	border-bottom: 3px solid @d_hauptnavigation_akzentfarbe;
+}
+
+#cms_kopfnavigation > li ul li a,
+#cms_kopfnavigation > li ul li span {
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+#cms_kopfnavigation > li ul li a:hover,
+#cms_kopfnavigation > li ul li span:hover {
+	color: @d_haupt_schriftfarbepositiv;
+	cursor: pointer;
+}
+
+.cms_unternavigation_m {
+	background: @d_haupt_abstufung1;
+	border-bottom: 3px solid @d_hauptnavigation_akzentfarbe;
+	border-top: 3px solid @d_hauptnavigation_akzentfarbe;
+}
+
+.cms_navigation > li {
+	border-top: 1px solid @d_haupt_abstufung1;
+}
+
+.cms_navigation > li:last-child {
+	border-bottom: 1px solid @d_haupt_abstufung1;
+}
+
+.cms_navigation > li a,
+.cms_navigation > li span {
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+.cms_navigation > li a:hover,
+.cms_navigation > li span:hover {
+	color: @d_haupt_schriftfarbepositiv;
+	background: @d_haupt_abstufung1;
+}
+
+.cms_navigation > li > .cms_navigation_aktiveseite {
+	color: @d_haupt_schriftfarbenegativ;
+	background: @d_hauptnavigation_akzentfarbe;
+}
+
+.cms_navigation > li > .cms_navigation_aktiveseite:hover {
+	color: @d_haupt_schriftfarbenegativ;
+	background: @d_hauptnavigation_akzentfarbe;
+}
+
+.cms_navigation > li li .cms_navigation_aktiveseite {
+	background: @d_haupt_abstufung1;
+}
+
+#cms_aktivitaet_in, #cms_maktivitaet_in, #cms_aktivitaet_in_profil, .cms_fortschritt_i {
+	background: @d_haupt_meldungerfolghinter;
+}
+
+#cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {
+	background: @d_haupt_meldungfehlerhinter;
+}
+
+#cms_aktivitaet_out, #cms_maktivitaet_out {
+	border: 1px solid @d_haupt_hintergrund;
+}
+
+#cms_mobilnavigation {
+	background-color: @d_mobilnavigation_iconhintergrund !important;
+	color: @d_haupt_schriftfarbenegativ !important;
+}
+
+#cms_mobilnavigation:hover {
+	cursor: pointer !important;
+	background-color: @d_mobilnavigation_iconhintergrundhover !important;
+}
+
+.cms_menuicon {
+	background-color: @d_haupt_schriftfarbenegativ;
+}
+
+#cms_mobilmenue_a {
+	background: @d_haupt_abstufung1;
+}
+
+#cms_mobilmenue_seiten > div > ul > li {border-top: 1px solid @d_haupt_abstufung2;}
+#cms_mobilmenue_seiten > div > ul > li:last-child {border-bottom: 1px solid @d_haupt_abstufung2;}
+
+#cms_mobilmenue_seiten li a, #cms_mobilmenue_seiten li span {
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+#cms_mobilmenue_seiten li .cms_meldezahl {
+	background: @d_haupt_abstufung2;
+	color: @d_haupt_schriftfarbenegativ;
+}
+
+#cms_mobilmenue_seiten li .cms_meldezahl_wichtig {
+	background: @d_haupt_meldungfehlerakzent !important;
+}
+
+#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+	color: @d_haupt_schriftfarbenegativ;
+}
+
+#cms_mobilmenue_seiten li a:hover, #cms_mobilmenue_seiten li span:hover {
+	background-color: @d_mobilnavigation_iconhintergrundhover;
+}
+#cms_mobilmenue_seiten li span.cms_mobilmenue_aufklappen:hover {
+	background-color: @d_haupt_abstufung2;
+}
+
+#cms_mobilmenue_seiten li .cms_mobilnavi_passiv {
+	color: @d_haupt_schriftfarbepositiv !important;
+}
+
+.cms_uebersicht li a,
+.cms_uebersicht li span.cms_appmenue_element,
+.cms_uebersicht li span.cms_uebersicht_notifikation,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_termin,
+.cms_uebersicht li span.cms_blogeintrag,
+.cms_uebersicht li span.cms_beschlusseintrag,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_gremien,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_fachschaften,
+.cms_uebersicht li span.cms_uebersicht_verwaltung_ferien,
+.cms_uebersicht li span.cms_uebersicht_vertretungsplanung {
+	border-top: 1px solid @d_haupt_abstufung1;
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+.cms_uebersicht li:last-child a,
+.cms_uebersicht li:last-child span.cms_appmenue_element,
+.cms_uebersicht li:last-child span.cms_uebersicht_notifikation,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_termin,
+.cms_uebersicht li:last-child span.cms_blogeintrag,
+.cms_uebersicht li:last-child span.cms_beschlusseintrag,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_gremien,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_fachschaften,
+.cms_uebersicht li:last-child span.cms_uebersicht_verwaltung_ferien,
+.cms_uebersicht li:last-child span.cms_uebersicht_vertretungsplanung {
+	border-bottom: 1px solid @d_haupt_abstufung1;
+}
+
+.cms_uebersicht a:hover, .cms_uebersicht span.cms_appmenue_element:hover {
+	background-color: @d_haupt_abstufung1;
+}
+
+.cms_uebersicht .cms_blog_keinhover {
+	background-color: @d_haupt_hintergrund !important;
+}
+
+.cms_anteilbalken_innen {
+	background: @d_haupt_meldungfehlerhinter;
+}
+
+.cms_anteilbalken_aussen {
+	background: @d_haupt_abstufung1;
+}
+
+.cms_anteilbalken_notiz {
+	color: @d_haupt_abstufung2;
+}

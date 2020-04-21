@@ -1,493 +1,491 @@
-<?php
-fwrite($hell, ".cms_uebersicht .cms_ersteller {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_uebersicht .cms_blogeintrag:hover .cms_ersteller,\n");
-fwrite($hell, ".cms_uebersicht tr:hover .cms_ersteller  {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_blogeintrag, .cms_beschlusseintrag {\n");
-fwrite($hell, "padding-left: 5px !important;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschlusseintrag {\n");
-fwrite($hell, "padding-right: 26px !important;\n");
-fwrite($hell, "min-height: 45px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_blogeintrag:hover, .cms_beschlusseintrag:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_blogliste_details:hover {\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_blogeintrag p.cms_inhaltvorschau, .cms_beschlusseintrag p.cms_inhaltvorschau {\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_angenommen {color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
-fwrite($hell, ".cms_beschluss_abgelehnt {color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($hell, ".cms_beschluss_vertagt {color: ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
-
-fwrite($hell, ".cms_beschlusseintrag p.cms_beschlussicons {\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "top: 5px;\n");
-fwrite($hell, "right: 5px;\n");
-fwrite($hell, "width: 16px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_icon {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "margin-bottom: 5px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_icon:last-child {\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_aktionen_uebersicht li > p {\n");
-fwrite($hell, "padding: 4px 5px 4px 5px;\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_aktionen_uebersicht li .cms_beschlusseintrag {\n");
-fwrite($hell, "border-bottom: none !important;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_aktionen_uebersicht li:last-child > p {\n");
-fwrite($hell, "border-bottom: 1px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_gruppen_oeffentlich_art {\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "width: 16px;\n");
-fwrite($hell, "height: 16px;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "right: 5px;\n");
-fwrite($hell, "top: 5px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_oe, .cms_in {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "width: 16px;\n");
-fwrite($hell, "height: 16px;\n");
-fwrite($hell, "padding: 0px;\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "border-radius: 8px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_oe {background: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";}\n");
-fwrite($hell, ".cms_in {background: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
-
-fwrite($hell, ".cms_beschluss {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss h4, .cms_beschluss p {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_pro {\n");
-fwrite($hell, "border-left: 3px solid ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_contra {\n");
-fwrite($hell, "border-left: 3px solid ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_enthaltung {\n");
-fwrite($hell, "border-left: 3px solid ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_stimmen {\n");
-fwrite($hell, "font-size: 80%;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_stimmen_pro {background: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";}\n");
-fwrite($hell, ".cms_beschluss_stimmen_contra {background: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";}\n");
-fwrite($hell, ".cms_beschluss_stimmen_enthaltung {background: ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
-
-fwrite($hell, ".cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "padding: 2px 7px;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "min-width: 25px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_stimmen_pro {\n");
-fwrite($hell, "border-top-left-radius: 7px;\n");
-fwrite($hell, "border-bottom-left-radius: 7px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_stimmen_contra {\n");
-fwrite($hell, "border-top-right-radius: 7px;\n");
-fwrite($hell, "border-bottom-right-radius: 7px;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschluss_langfristig {\n");
-fwrite($hell, "margin-left: 10px;\n");
-fwrite($hell, "border-radius: 7px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschlussuebersicht_jahr {\n");
-fwrite($hell, "display: flex;\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, ".cms_beschlussuebersicht_jahr .cms_beschluss {\n");
-fwrite($hell, "display: flex;\n");
-fwrite($hell, "flex-wrap: wrap;\n");
-fwrite($hell, "width: 25%;\n");
-fwrite($hell, "border-right: 10px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten {");
-fwrite($hell, "	width: 100%;");
-fwrite($hell, "	padding: 5px 20px;");
-fwrite($hell, "	max-height: 500px;");
-fwrite($hell, "	overflow-y: auto");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_datum {");
-fwrite($hell, "	text-align: center;");
-fwrite($hell, "	margin-bottom: 10px");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen {");
-fwrite($hell, "	width: 100%;");
-fwrite($hell, "	margin-bottom: 15px;");
-fwrite($hell, "	float: left");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {");
-fwrite($hell, "	position: relative;");
-fwrite($hell, "	min-width: 40%;");
-fwrite($hell, "	max-width: 60%;");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_chat_gegenueber'].";");
-fwrite($hell, "	border-radius: ".$_POST['cms_style_haupt_radiusmittel'].";");
-fwrite($hell, "	float: left;");
-fwrite($hell, "	padding: 5px");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion {");
-fwrite($hell, "	position: absolute;");
-fwrite($hell, "	top: 0;");
-fwrite($hell, "	right: 0;");
-fwrite($hell, "	padding: inherit");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=sendend] {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {");
-fwrite($hell, "	cursor: pointer");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbepositiv']." !important;");
-fwrite($hell, "background: ".$_POST['cms_style_h_hinweis_hintergrund'].";");
-fwrite($hell, "	padding: 0 5px 0 5px;");
-fwrite($hell, "	position: absolute;");
-fwrite($hell, "	font-family: 'robl';");
-fwrite($hell, "	font-weight: normal !important;");
-fwrite($hell, "	display: none;");
-fwrite($hell, "	border-radius: ".$_POST['cms_style_hinweis_radius'].";");
-fwrite($hell, "	z-index: 50;");
-fwrite($hell, "	width: 150px;");
-fwrite($hell, "	overflow: visible;");
-fwrite($hell, "	left: 0;");
-fwrite($hell, "	bottom: 25px;");
-fwrite($hell, "	overflow: hidden;");
-fwrite($hell, "	text-align: left;");
-fwrite($hell, "	z-index: 5");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion p {");
-fwrite($hell, "	padding: 5px");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion img {");
-fwrite($hell, "	height: 16px;");
-fwrite($hell, "	width: 16px");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_id {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_autor {");
-fwrite($hell, "	font-size: 90%");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_nachricht {");
-fwrite($hell, "	padding-left: 5px;");
-fwrite($hell, "	font-size: 110%;");
-fwrite($hell, "	white-space: pre-wrap;");
-fwrite($hell, "	word-break: break-word");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_zeit {");
-fwrite($hell, "	float: right");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen {");
-fwrite($hell, "	float: right;");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_chat_eigen']."");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {");
-fwrite($hell, "	text-align: right;");
-fwrite($hell, "	left: unset;");
-fwrite($hell, "	right: 0");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend {");
-fwrite($hell, "	opacity: .8");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=sendend] {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet {");
-fwrite($hell, "	opacity: .8");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen {");
-fwrite($hell, "	background-color: ".$_POST['cms_style_h_haupt_meldungfehlerhinter']."");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] [data-mehr=melden] {");
-fwrite($hell, "	opacity: .7;");
-fwrite($hell, "	cursor: default");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht {");
-fwrite($hell, "	opacity: .7");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht .cms_chat_nachricht_innen .cms_chat_nachricht_aktion {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht .cms_chat_nachricht_innen .cms_chat_nachricht_nachricht {");
-fwrite($hell, "	font-style: italic;");
-fwrite($hell, "	font-size: 90%");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen {");
-fwrite($hell, "	width: 100%");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen label {");
-fwrite($hell, "	cursor: pointer");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen textarea {");
-fwrite($hell, "	width: 90%;");
-fwrite($hell, "	width: calc(100% - 26px)");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen .cms_meldung_fehler {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen div:not(.cms_meldung_fehler) {");
-fwrite($hell, "	display: inline-block;");
-fwrite($hell, "	float: right;");
-fwrite($hell, "	width: auto");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_nachricht_verfassen div:not(.cms_meldung_fehler) img {");
-fwrite($hell, "	padding: 5px;");
-fwrite($hell, "	cursor: pointer");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_mehr {");
-fwrite($hell, "	color: ".$_POST['cms_style_h_link_schrift'].";");
-fwrite($hell, "	cursor: pointer");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_status,");
-fwrite($hell, "#cms_chat #cms_chat_laden,");
-fwrite($hell, "#cms_chat #cms_chat_leer,");
-fwrite($hell, "#cms_chat #cms_chat_mehr {");
-fwrite($hell, "	text-align: center;");
-fwrite($hell, "	margin-top: 10px;");
-fwrite($hell, "	margin-bottom: 20px");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_status h3,");
-fwrite($hell, "#cms_chat #cms_chat_laden h3,");
-fwrite($hell, "#cms_chat #cms_chat_leer h3,");
-fwrite($hell, "#cms_chat #cms_chat_mehr h3 {");
-fwrite($hell, "	margin-top: 0");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat #cms_chat_status,");
-fwrite($hell, "#cms_chat #cms_chat_laden,");
-fwrite($hell, "#cms_chat #cms_chat_berechtigung,");
-fwrite($hell, "#cms_chat #cms_chat_leer,");
-fwrite($hell, "#cms_chat #cms_chat_mehr,");
-fwrite($hell, "#cms_chat #cms_chat_stumm {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_leer #cms_chat_leer {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_mehr #cms_chat_mehr {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_stumm>#cms_chat_nachricht_verfassen {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_stumm #cms_chat_stumm {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_status>* {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_status #cms_chat_status {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_laden #cms_chat_laden {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_berechtigung>* {");
-fwrite($hell, "	display: none");
-fwrite($hell, "}");
-
-fwrite($hell, "#cms_chat.cms_chat_berechtigung #cms_chat_berechtigung {");
-fwrite($hell, "	display: block");
-fwrite($hell, "}");
-
-
-// DARKMODE
-fwrite($dunkel, ".cms_uebersicht .cms_ersteller {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_blogeintrag:hover, .cms_beschlusseintrag:hover {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss_angenommen {color: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
-fwrite($dunkel, ".cms_beschluss_abgelehnt {color: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, ".cms_beschluss_vertagt {color: ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-
-fwrite($dunkel, ".cms_aktionen_uebersicht li:last-child > p {\n");
-fwrite($dunkel, "border-bottom: 1px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_oe {background: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
-fwrite($dunkel, ".cms_in {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
-
-fwrite($dunkel, ".cms_beschluss {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss_pro {\n");
-fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss_contra {\n");
-fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss_enthaltung {\n");
-fwrite($dunkel, "border-left: 3px solid ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss_stimmen_pro {background: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";}\n");
-fwrite($dunkel, ".cms_beschluss_stimmen_contra {background: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";}\n");
-fwrite($dunkel, ".cms_beschluss_stimmen_enthaltung {background: ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-
-fwrite($dunkel, ".cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschluss_langfristig {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_beschlussuebersicht_jahr .cms_beschluss {\n");
-fwrite($dunkel, "border-right: 10px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbepositiv']." !important;");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_hinweis_hintergrund']."");
-fwrite($dunkel, "}");
-
-fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_chat_eigen']."");
-fwrite($dunkel, "}");
-
-
-fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_haupt_meldungfehlerhinter']."");
-fwrite($dunkel, "}");
-
-fwrite($dunkel, "#cms_chat #cms_chat_mehr {");
-fwrite($dunkel, "	color: ".$_POST['cms_style_d_link_schrift'].";");
-fwrite($dunkel, "}");
-
-fwrite($dunkel, "#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {");
-fwrite($dunkel, "	background-color: ".$_POST['cms_style_d_chat_gegenueber']."");
-fwrite($dunkel, "}");
-
-
-?>
+// HELL;
+
+.cms_uebersicht .cms_ersteller {
+	color: @h_haupt_abstufung2;
+	display: none;
+}
+
+.cms_uebersicht .cms_blogeintrag:hover .cms_ersteller,
+.cms_uebersicht tr:hover .cms_ersteller  {
+	display: block;
+}
+
+.cms_blogeintrag, .cms_beschlusseintrag {
+	padding-left: 5px !important;
+	transition: 250ms ease-in-out;
+	position: relative;
+}
+
+.cms_beschlusseintrag {
+	padding-right: 26px !important;
+	min-height: 45px;
+}
+
+.cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
+	cursor: pointer;
+	background-color: @h_haupt_abstufung1;
+}
+
+.cms_blogliste_details:hover {
+	cursor: pointer;
+}
+
+.cms_blogeintrag p.cms_inhaltvorschau, .cms_beschlusseintrag p.cms_inhaltvorschau {
+	margin-bottom: 0px;
+}
+
+.cms_beschluss_angenommen {color: @h_haupt_meldungerfolgakzent;}
+.cms_beschluss_abgelehnt {color: @h_haupt_meldungfehlerakzent;}
+.cms_beschluss_vertagt {color: @h_haupt_abstufung2;}
+
+.cms_beschlusseintrag p.cms_beschlussicons {
+	margin: 0px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 16px;
+}
+
+.cms_beschluss_icon {
+	display: inline-block;
+	margin-bottom: 5px;
+	position: relative;
+}
+
+.cms_beschluss_icon:last-child {
+	margin-bottom: 0px;
+}
+
+.cms_aktionen_uebersicht li > p {
+	padding: 4px 5px 4px 5px;
+	margin: 0px;
+}
+
+.cms_aktionen_uebersicht li .cms_beschlusseintrag {
+	border-bottom: none !important;
+}
+
+.cms_aktionen_uebersicht li:last-child > p {
+	border-bottom: 1px solid @h_haupt_abstufung1;
+}
+
+.cms_gruppen_oeffentlich_art {
+	padding: 0px;
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	display: inline-block;
+}
+
+.cms_oe, .cms_in {
+	display: block;
+	width: 16px;
+	height: 16px;
+	padding: 0px;
+	margin: 0px;
+	border-radius: 8px;
+}
+
+.cms_oe {background: @h_haupt_meldunginfohinter;}
+.cms_in {background: @h_haupt_meldungwarnunghinter;}
+
+.cms_beschluss {
+	color: @h_haupt_schriftfarbepositiv;
+	padding: 5px;
+	margin-bottom: @haupt_absatzschulhof;
+	display: block;
+	margin-bottom: @haupt_absatzschulhof;
+}
+
+.cms_beschluss h4, .cms_beschluss p {
+	display: block;
+	width: 100%;
+}
+
+.cms_beschluss:hover {
+	color: @h_haupt_schriftfarbepositiv;
+	display: block;
+}
+
+.cms_beschluss_pro {
+	border-left: 3px solid @h_haupt_meldungerfolgakzent;
+	background: @h_haupt_meldungerfolghinter;
+}
+
+.cms_beschluss_contra {
+	border-left: 3px solid @h_haupt_meldungfehlerakzent;
+	background: @h_haupt_meldungfehlerhinter;
+}
+
+.cms_beschluss_enthaltung {
+	border-left: 3px solid @h_haupt_abstufung2;
+	background: @h_haupt_abstufung1;
+}
+
+.cms_beschluss_stimmen {
+	font-size: 80%;
+	margin-bottom: 0px;
+}
+
+.cms_beschluss_stimmen_pro {background: @h_haupt_meldungerfolgakzent;}
+.cms_beschluss_stimmen_contra {background: @h_haupt_meldungfehlerakzent;}
+.cms_beschluss_stimmen_enthaltung {background: @h_haupt_abstufung2;}
+
+.cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
+	display: inline-block;
+	padding: 2px 7px;
+	font-weight: bold;
+	color: @h_haupt_schriftfarbenegativ;
+	text-align: center;
+	min-width: 25px;
+}
+
+.cms_beschluss_stimmen_pro {
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+}
+
+.cms_beschluss_stimmen_contra {
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+}
+
+.cms_beschluss_langfristig {
+	margin-left: 10px;
+	border-radius: 7px;
+	color: @h_haupt_schriftfarbepositiv;
+	background: @h_haupt_hintergrund;
+}
+
+.cms_beschlussuebersicht_jahr {
+	display: flex;
+}
+
+.cms_beschlussuebersicht_jahr .cms_beschluss {
+	display: flex;
+	flex-wrap: wrap;
+	width: 25%;
+	border-right: 10px solid @h_haupt_hintergrund;
+}
+
+#cms_chat #cms_chat_nachrichten {
+	width: 100%;
+	padding: 5px 20px;
+	max-height: 500px;
+	overflow-y: auto
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_datum {
+	text-align: center;
+	margin-bottom: 10px
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen {
+	width: 100%;
+	margin-bottom: 15px;
+	float: left
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {
+	position: relative;
+	min-width: 40%;
+	max-width: 60%;
+	background-color: @h_chat_gegenueber;
+	border-radius: @haupt_radiusmittel;
+	float: left;
+	padding: 5px
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: inherit
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=sendend] {
+	display: none
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {
+	cursor: pointer
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {
+color: @h_haupt_schriftfarbepositiv !important;
+background: @h_hinweis_hintergrund;
+	padding: 0 5px 0 5px;
+	position: absolute;
+	font-family: 'robl';
+	font-weight: normal !important;
+	display: none;
+	border-radius: @hinweis_radius;
+	z-index: 50;
+	width: 150px;
+	overflow: visible;
+	left: 0;
+	bottom: 25px;
+	overflow: hidden;
+	text-align: left;
+	z-index: 5
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion p {
+	padding: 5px
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion img {
+	height: 16px;
+	width: 16px
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_id {
+	display: none
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_autor {
+	font-size: 90%
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_nachricht {
+	padding-left: 5px;
+	font-size: 110%;
+	white-space: pre-wrap;
+	word-break: break-word
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_zeit {
+	float: right
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen {
+	float: right;
+	background-color: @h_chat_eigen
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {
+	display: none
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {
+	text-align: right;
+	left: unset;
+	right: 0
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend {
+	opacity: .8
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=sendend] {
+	display: block
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_sendend .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] {
+	display: none
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet {
+	opacity: .8
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen {
+	background-color: @h_haupt_meldungfehlerhinter
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] [data-mehr=melden] {
+	opacity: .7;
+	cursor: default
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht {
+	opacity: .7
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht .cms_chat_nachricht_innen .cms_chat_nachricht_aktion {
+	display: none
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_geloescht .cms_chat_nachricht_innen .cms_chat_nachricht_nachricht {
+	font-style: italic;
+	font-size: 90%
+}
+
+#cms_chat #cms_chat_nachricht_verfassen {
+	width: 100%
+}
+
+#cms_chat #cms_chat_nachricht_verfassen label {
+	cursor: pointer
+}
+
+#cms_chat #cms_chat_nachricht_verfassen textarea {
+	width: 90%;
+	width: calc(100% - 26px)
+}
+
+#cms_chat #cms_chat_nachricht_verfassen .cms_meldung_fehler {
+	display: none
+}
+
+#cms_chat #cms_chat_nachricht_verfassen div:not(.cms_meldung_fehler) {
+	display: inline-block;
+	float: right;
+	width: auto
+}
+
+#cms_chat #cms_chat_nachricht_verfassen div:not(.cms_meldung_fehler) img {
+	padding: 5px;
+	cursor: pointer
+}
+
+#cms_chat #cms_chat_mehr {
+	color: @h_link_schrift;
+	cursor: pointer
+}
+
+#cms_chat #cms_chat_status,
+#cms_chat #cms_chat_laden,
+#cms_chat #cms_chat_leer,
+#cms_chat #cms_chat_mehr {
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 20px
+}
+
+#cms_chat #cms_chat_status h3,
+#cms_chat #cms_chat_laden h3,
+#cms_chat #cms_chat_leer h3,
+#cms_chat #cms_chat_mehr h3 {
+	margin-top: 0
+}
+
+#cms_chat #cms_chat_status,
+#cms_chat #cms_chat_laden,
+#cms_chat #cms_chat_berechtigung,
+#cms_chat #cms_chat_leer,
+#cms_chat #cms_chat_mehr,
+#cms_chat #cms_chat_stumm {
+	display: none
+}
+
+#cms_chat.cms_chat_leer #cms_chat_leer {
+	display: block
+}
+
+#cms_chat.cms_chat_mehr #cms_chat_mehr {
+	display: block
+}
+
+#cms_chat.cms_chat_stumm>#cms_chat_nachricht_verfassen {
+	display: none
+}
+
+#cms_chat.cms_chat_stumm #cms_chat_stumm {
+	display: block
+}
+
+#cms_chat.cms_chat_status>* {
+	display: none
+}
+
+#cms_chat.cms_chat_status #cms_chat_status {
+	display: block
+}
+
+#cms_chat.cms_chat_laden #cms_chat_laden {
+	display: block
+}
+
+#cms_chat.cms_chat_berechtigung>* {
+	display: none
+}
+
+#cms_chat.cms_chat_berechtigung #cms_chat_berechtigung {
+	display: block
+}
+
+// DUNKEL;
+
+.cms_uebersicht .cms_ersteller {
+	color: @d_haupt_abstufung2;
+}
+
+.cms_blogeintrag:hover, .cms_beschlusseintrag:hover {
+	background-color: @d_haupt_abstufung1;
+}
+
+.cms_beschluss_angenommen {color: @d_haupt_meldungerfolgakzent;}
+.cms_beschluss_abgelehnt {color: @d_haupt_meldungfehlerakzent;}
+.cms_beschluss_vertagt {color: @d_haupt_abstufung2;}
+
+.cms_aktionen_uebersicht li:last-child > p {
+	border-bottom: 1px solid @d_haupt_abstufung1;
+}
+
+.cms_oe {background: @d_haupt_meldunginfohinter;}
+.cms_in {background: @d_haupt_meldungwarnunghinter;}
+
+.cms_beschluss {
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+.cms_beschluss:hover {
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+.cms_beschluss_pro {
+	border-left: 3px solid @d_haupt_meldungerfolgakzent;
+	background: @d_haupt_meldungerfolghinter;
+}
+
+.cms_beschluss_contra {
+	border-left: 3px solid @d_haupt_meldungfehlerakzent;
+	background: @d_haupt_meldungfehlerhinter;
+}
+
+.cms_beschluss_enthaltung {
+	border-left: 3px solid @d_haupt_abstufung2;
+	background: @d_haupt_abstufung1;
+}
+
+.cms_beschluss_stimmen_pro {background: @d_haupt_meldungerfolgakzent;}
+.cms_beschluss_stimmen_contra {background: @d_haupt_meldungfehlerakzent;}
+.cms_beschluss_stimmen_enthaltung {background: @d_haupt_abstufung2;}
+
+.cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
+	color: @d_haupt_schriftfarbenegativ;
+}
+
+.cms_beschluss_langfristig {
+	color: @d_haupt_schriftfarbepositiv;
+	background: @d_haupt_hintergrund;
+}
+
+.cms_beschlussuebersicht_jahr .cms_beschluss {
+	border-right: 10px solid @d_haupt_hintergrund;
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen .cms_chat_nachricht_aktion[data-aktion=mehr] .cms_chat_aktion {
+color: @d_haupt_schriftfarbepositiv !important;
+background: @d_hinweis_hintergrund
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_eigen .cms_chat_nachricht_innen {
+	background-color: @d_chat_eigen
+}
+
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen.cms_chat_nachricht_gemeldet .cms_chat_nachricht_innen {
+	background-color: @d_haupt_meldungfehlerhinter
+}
+
+#cms_chat #cms_chat_mehr {
+	color: @d_link_schrift;
+}
+
+#cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {
+	background-color: @d_chat_gegenueber
+}

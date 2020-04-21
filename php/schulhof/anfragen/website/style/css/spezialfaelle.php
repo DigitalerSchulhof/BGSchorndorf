@@ -1,328 +1,323 @@
-<?php
-fwrite($hell, "#cms_neuerungenverlauf p + h4 {\n");
-fwrite($hell, "margin-top: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_sichtbar {\n");
-fwrite($hell, "max-height: 2500px !important;\n");
-fwrite($hell, "}\n");
+#cms_neuerungenverlauf p + h4 {
+	margin-top: @haupt_absatzschulhof;
+}
 
-fwrite($hell, "#cms_dsgvo_datenschutz {\n");
-fwrite($hell, "position:fixed;\n");
-fwrite($hell, "bottom:0px;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "padding:10px;\n");
-fwrite($hell, "z-index: 2;\n");
-fwrite($hell, "}\n");
+.cms_sichtbar {
+	max-height: 2500px !important;
+}
 
-fwrite($hell, "#cms_dsgvo_datenschutz .cms_meldung {\n");
-fwrite($hell, "margin: 0px;\n");
-fwrite($hell, "box-shadow: 0px 0px 10px ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($hell, "}\n");
+#cms_dsgvo_datenschutz {
+	position:fixed;
+	bottom:0px;
+	width: 100%;
+	left: 0px;
+	padding:10px;
+	z-index: 2;
+}
 
-fwrite($hell, "#cms_netzcheckstatus span {font-size: inherit;}\n");
+#cms_dsgvo_datenschutz .cms_meldung {
+	margin: 0px;
+	box-shadow: 0px 0px 10px @h_haupt_meldungfehlerakzent;
+}
 
-fwrite($hell, ".cms_filter_ein {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+#cms_netzcheckstatus span {font-size: inherit;}
 
-fwrite($hell, ".cms_absender {text-align: right;}\n");
-fwrite($hell, ".cms_empfaenger, .cms_anhangtitel {color: ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
+.cms_filter_ein {
+	display: none;
+}
 
-fwrite($hell, ".cms_postfach_papierkorb_aussen {\n");
-fwrite($hell, "width: 6px;\n");
-fwrite($hell, "height: 23px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "line-height: 0px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "bottom: -6px;\n");
-fwrite($hell, "margin-bottom: 2px;\n");
-fwrite($hell, "}\n");
+.cms_absender {text-align: right;}
+.cms_empfaenger, .cms_anhangtitel {color: @h_haupt_abstufung2;}
 
-fwrite($hell, ".cms_postfach_papierkorb_innen {\n");
-fwrite($hell, "width: 6px;\n");
-fwrite($hell, "height: 23px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "bottom: 0px;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "}\n");
+.cms_postfach_papierkorb_aussen {
+	width: 6px;
+	height: 23px;
+	background: @h_haupt_meldungfehlerhinter;
+	border-radius: @button_rundeecken;
+	display: inline-block;
+	line-height: 0px;
+	position: relative;
+	bottom: -6px;
+	margin-bottom: 2px;
+}
 
-fwrite($hell, ".cms_button .cms_postfach_anhang {\n");
-fwrite($hell, "margin-right: 0px !important;\n");
-fwrite($hell, "}\n");
+.cms_postfach_papierkorb_innen {
+	width: 6px;
+	height: 23px;
+	background: @h_haupt_meldungerfolghinter;
+	border-radius: @button_rundeecken;
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+}
 
-fwrite($hell, ".cms_postfach_anhang {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "margin-right: 10px;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "}\n");
+.cms_button .cms_postfach_anhang {
+	margin-right: 0px !important;
+}
 
-fwrite($hell, ".cms_postfach_anhang img {\n");
-fwrite($hell, "position: relative;\n");
-fwrite($hell, "top: 3px;\n");
-fwrite($hell, "}\n");
+.cms_postfach_anhang {
+	display: inline-block;
+	margin-right: 10px;
+	margin-bottom: 3px;
+	position: relative;
+}
 
-fwrite($hell, ".cms_postfach_anhang .cms_button_nein {\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "left: -3px;\n");
-fwrite($hell, "z-index: 1;\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+.cms_postfach_anhang img {
+	position: relative;
+	top: 3px;
+}
 
-fwrite($hell, ".cms_postfach_anhang:hover .cms_button_nein {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "}\n");
+.cms_postfach_anhang .cms_button_nein {
+	position: absolute;
+	left: -3px;
+	z-index: 1;
+	display: none;
+}
 
-fwrite($hell, ".cms_signatur, .cms_originalnachricht_meta {\n");
-fwrite($hell, "margin-top: 15px;\n");
-fwrite($hell, "padding-top:5px;\n");
-fwrite($hell, "border-top: 1px dotted ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "font-size: 80%;\n");
-fwrite($hell, "}\n");
+.cms_postfach_anhang:hover .cms_button_nein {
+	display: block;
+}
 
-fwrite($hell, ".cms_originalnachricht {\n");
-fwrite($hell, "padding-left: 5px;\n");
-fwrite($hell, "border-left: 2px solid ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+.cms_signatur, .cms_originalnachricht_meta {
+	margin-top: 15px;
+	padding-top:5px;
+	border-top: 1px dotted @h_haupt_abstufung2;
+	color: @h_haupt_abstufung2;
+	font-size: 80%;
+}
 
-fwrite($hell, ".cms_versteckt {\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+.cms_originalnachricht {
+	padding-left: 5px;
+	border-left: 2px solid @h_haupt_abstufung1;
+}
 
+.cms_versteckt {
+	display: none;
+}
 
-fwrite($hell, "#cms_debug {\n");
-fwrite($hell, "bottom: 0px;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "z-index: 1000;\n");
-fwrite($hell, "padding: 10px 10px 30px 10px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+#cms_debug {
+	bottom: 0px;
+	left: 0px;
+	z-index: 1000;
+	padding: 10px 10px 30px 10px;
+	background: @h_haupt_meldungwarnunghinter;
+	display: none;
+}
 
-fwrite($hell, ".cms_geraeteproblem_meldung {\n");
-fwrite($hell, "margin-top: 20px;\n");
-fwrite($hell, "}\n");
+.cms_geraeteproblem_meldung {
+	margin-top: 20px;
+}
 
-fwrite($hell, ".cms_geraeteproblem_meldung textarea {\n");
-fwrite($hell, "height: 50px !important;\n");
-fwrite($hell, "}\n");
+.cms_geraeteproblem_meldung textarea {
+	height: 50px !important;
+}
 
-fwrite($hell, "#cms_kurse_kursklassen .cms_notiz {\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+#cms_kurse_kursklassen .cms_notiz {
+	text-align: center;
+}
 
-fwrite($hell, ".cms_optimierung_P ul.cms_bloguebersicht a p img {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
+.cms_optimierung_P ul.cms_bloguebersicht a p img {
+	width: 100%;
+}
 
-fwrite($hell, ".cms_optimierung_H ul.cms_bloguebersicht a p img {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
+.cms_optimierung_H ul.cms_bloguebersicht a p img {
+	width: 100%;
+}
 
-fwrite($hell, "#cms_gruppe_icon_auswahl {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "position: absolute;\n");
-fwrite($hell, "top: 0px;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "z-index: 2;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "max-width: 800px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "padding: 10px;\n");
-fwrite($hell, "margin-bottom: 15px;\n");
-fwrite($hell, "border-radius: 10px;\n");
-fwrite($hell, "}\n");
+#cms_gruppe_icon_auswahl {
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 2;
+	width: 100%;
+	max-width: 800px;
+	background: @h_haupt_abstufung1;
+	padding: 10px;
+	margin-bottom: 15px;
+	border-radius: 10px;
+}
 
-fwrite($hell, ".cms_nicht_genehmigt {\n");
-fwrite($hell, "opacity: .35;\n");
-fwrite($hell, "}\n");
+.cms_nicht_genehmigt {
+	opacity: .35;
+}
 
-fwrite($hell, ".cms_genehmigungausstehend {\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "padding: 5px !important;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($hell, "}\n");
+.cms_genehmigungausstehend {
+	font-weight: bold;
+	padding: 5px !important;
+	border-radius: 5px;
+	color: @h_haupt_schriftfarbenegativ;
+	background-color: @h_haupt_meldungfehlerakzent;
+}
 
-fwrite($hell, ".cms_auftragausstehend {\n");
-fwrite($hell, "padding: 5px !important;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldungfehlerakzent'].";\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "font-size: 80%;\n");
-fwrite($hell, "}\n");
+.cms_auftragausstehend {
+	padding: 5px !important;
+	border-radius: 5px;
+	color: @h_haupt_schriftfarbenegativ;
+	background-color: @h_haupt_meldungfehlerakzent;
+	display: inline-block;
+	text-align: center;
+	font-size: 80%;
+}
 
-fwrite($hell, ".cms_auftragerledigt {\n");
-fwrite($hell, "padding: 5px !important;\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldungerfolgakzent'].";\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "font-size: 80%;\n");
-fwrite($hell, "}\n");
+.cms_auftragerledigt {
+	padding: 5px !important;
+	border-radius: 5px;
+	color: @h_haupt_schriftfarbenegativ;
+	background-color: @h_haupt_meldungerfolgakzent;
+	display: inline-block;
+	text-align: center;
+	font-size: 80%;
+}
 
-fwrite($hell, ".cms_spamschutz {\n");
-fwrite($hell, "border-radius: 5px;\n");
-fwrite($hell, "border: 1px solid ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
+.cms_spamschutz {
+	border-radius: 5px;
+	border: 1px solid @h_haupt_hintergrund;
+}
 
-fwrite($hell, ".cms_vorlaeufig {\n");
-fwrite($hell, "opacity: .5;\n");
-fwrite($hell, "}\n");
+.cms_vorlaeufig {
+	opacity: .5;
+}
 
-fwrite($hell, ".cms_vollbild {\n");
-fwrite($hell, "position: fixed;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "height: 100%;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "top: 0px;\n");
-fwrite($hell, "left: 0px;\n");
-fwrite($hell, "z-index: 10000000;\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "padding: 20px;\n");
-fwrite($hell, "font-size: 120%;\n");
-fwrite($hell, "}\n");
+.cms_vollbild {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: @h_haupt_hintergrund;
+	top: 0px;
+	left: 0px;
+	z-index: 10000000;
+	display: block;
+	padding: 20px;
+	font-size: 120%;
+}
 
-fwrite($hell, ".cms_gesichert {\n");
-fwrite($hell, "margin-top: 20px;\n");
-fwrite($hell, "margin-bottom: 20px;\n");
-fwrite($hell, "}\n");
+.cms_gesichert {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
 
-fwrite($hell, ".cms_reitermenue_i .cms_gesichert, .cms_reitermenue_i .cms_meldung_laden {\n");
-fwrite($hell, "margin-top: 0px;\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
+.cms_reitermenue_i .cms_gesichert, .cms_reitermenue_i .cms_meldung_laden {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
 
-fwrite($hell, ".cms_fortschritt_box {\n");
-fwrite($hell, "margin-top:15px;\n");
-fwrite($hell, "}\n");
+.cms_fortschritt_box {
+	margin-top:15px;
+}
 
-fwrite($hell, ".cms_legende {\n");
-fwrite($hell, "display: flex;\n");
-fwrite($hell, "flex-wrap: wrap;\n");
-fwrite($hell, "}\n");
+.cms_legende {
+	display: flex;
+	flex-wrap: wrap;
+}
 
-fwrite($hell, ".cms_legende span {\n");
-fwrite($hell, "width: 33.3333333%;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "}\n");
+.cms_legende span {
+	width: 33.3333333%;
+	display: inline-block;
+}
 
-fwrite($hell, "#cms_speicherplatz_frei {\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "height: 30px;\n");
-fwrite($hell, "margin-bottom: 3px;\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "line-height: 1;\n");
-fwrite($hell, "overflow:hidden;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_haupt_radiussehrgross'].";\n");
-fwrite($hell, "}\n");
+#cms_speicherplatz_frei {
+	width: 100%;
+	height: 30px;
+	margin-bottom: 3px;
+	background: @h_haupt_abstufung1;
+	line-height: 1;
+	overflow:hidden;
+	border-radius: @haupt_radiussehrgross;
+}
 
-fwrite($hell, "#cms_speicherplatz_system_balken, #cms_speicherplatz_website_balken,\n");
-fwrite($hell, "#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_gruppen_balken,\n");
-fwrite($hell, "#cms_speicherplatz_personen_balken {\n");
-fwrite($hell, "height: 100%;\n");
-fwrite($hell, "width: 0%;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "line-height: 1;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "}\n");
+#cms_speicherplatz_system_balken, #cms_speicherplatz_website_balken,
+#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_gruppen_balken,
+#cms_speicherplatz_personen_balken {
+	height: 100%;
+	width: 0%;
+	display: inline-block;
+	line-height: 1;
+	transition: 250ms ease-in-out;
+}
 
-fwrite($hell, "#cms_speicherplatz_system_icon, #cms_speicherplatz_website_icon,\n");
-fwrite($hell, "#cms_speicherplatz_schulhof_icon, #cms_speicherplatz_gruppen_icon,\n");
-fwrite($hell, "#cms_speicherplatz_personen_icon {\n");
-fwrite($hell, "height: 15px;\n");
-fwrite($hell, "width: 15px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "border-radius: 10px;\n");
-fwrite($hell, "}\n");
+#cms_speicherplatz_system_icon, #cms_speicherplatz_website_icon,
+#cms_speicherplatz_schulhof_icon, #cms_speicherplatz_gruppen_icon,
+#cms_speicherplatz_personen_icon {
+	height: 15px;
+	width: 15px;
+	display: inline-block;
+	border-radius: 10px;
+}
 
-fwrite($hell, "#cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: ".$_POST['cms_style_h_haupt_meldungfehlerhinter'].";}\n");
-fwrite($hell, "#cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";}\n");
-fwrite($hell, "#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";}\n");
-fwrite($hell, "#cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: ".$_POST['cms_style_h_haupt_meldungerfolghinter'].";}\n");
-fwrite($hell, "#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: ".$_POST['cms_style_h_haupt_abstufung2'].";}\n");
+#cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: @h_haupt_meldungfehlerhinter;}
+#cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: @h_haupt_meldungwarnunghinter;}
+#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @h_haupt_meldunginfohinter;}
+#cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @h_haupt_meldungerfolghinter;}
+#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @h_haupt_abstufung2;}
 
+// DUNKEL;
 
+#cms_dsgvo_datenschutz .cms_meldung {
+	box-shadow: 0px 0px 10px @d_haupt_meldungfehlerakzent;
+}
 
+.cms_empfaenger, .cms_anhangtitel {color: @d_haupt_abstufung2;}
 
+.cms_postfach_papierkorb_aussen {
+	background: @d_haupt_meldungfehlerhinter;
+}
 
+.cms_postfach_papierkorb_innen {
+	background: @d_haupt_meldungerfolghinter;
+}
 
-// DARKMODE
-fwrite($dunkel, "#cms_dsgvo_datenschutz .cms_meldung {\n");
-fwrite($dunkel, "box-shadow: 0px 0px 10px ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "}\n");
+.cms_signatur, .cms_originalnachricht_meta {
+	border-top: 1px dotted @d_haupt_abstufung2;
+	color: @d_haupt_abstufung2;
+}
 
-fwrite($dunkel, ".cms_empfaenger, .cms_anhangtitel {color: ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
+.cms_originalnachricht {
+	border-left: 2px solid @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_postfach_papierkorb_aussen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";\n");
-fwrite($dunkel, "}\n");
+#cms_debug {
+	background: @d_haupt_meldungwarnunghinter;
+}
 
-fwrite($dunkel, ".cms_postfach_papierkorb_innen {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";\n");
-fwrite($dunkel, "}\n");
+#cms_gruppe_icon_auswahl {
+	background: @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, ".cms_signatur, .cms_originalnachricht_meta {\n");
-fwrite($dunkel, "border-top: 1px dotted ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
+.cms_genehmigungausstehend {
+	color: @d_haupt_schriftfarbenegativ;
+	background-color: @d_haupt_meldungfehlerakzent;
+}
 
-fwrite($dunkel, ".cms_originalnachricht {\n");
-fwrite($dunkel, "border-left: 2px solid ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_auftragausstehend {
+	color: @d_haupt_schriftfarbenegativ;
+	background-color: @d_haupt_meldungfehlerakzent;
+}
 
-fwrite($dunkel, "#cms_debug {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
-fwrite($dunkel, "}\n");
+.cms_auftragerledigt {
+	color: @d_haupt_schriftfarbenegativ;
+	background-color: @d_haupt_meldungerfolgakzent;
+}
 
-fwrite($dunkel, "#cms_gruppe_icon_auswahl {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+.cms_spamschutz {
+	border: 1px solid @d_haupt_hintergrund;
+}
 
-fwrite($dunkel, ".cms_genehmigungausstehend {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_auftragausstehend {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungfehlerakzent'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_auftragerledigt {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungerfolgakzent'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_spamschutz {\n");
-fwrite($dunkel, "border: 1px solid ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_vollbild {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
+.cms_vollbild {
+	background: @d_haupt_hintergrund;
+}
 
 
 
-fwrite($dunkel, "#cms_speicherplatz_frei {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
+#cms_speicherplatz_frei {
+	background: @d_haupt_abstufung1;
+}
 
-fwrite($dunkel, "#cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: ".$_POST['cms_style_d_haupt_meldungfehlerhinter'].";}\n");
-fwrite($dunkel, "#cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";}\n");
-fwrite($dunkel, "#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";}\n");
-fwrite($dunkel, "#cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: ".$_POST['cms_style_d_haupt_meldungerfolghinter'].";}\n");
-fwrite($dunkel, "#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: ".$_POST['cms_style_d_haupt_abstufung2'].";}\n");
-?>
+#cms_speicherplatz_system_balken, #cms_speicherplatz_system_icon {background: @d_haupt_meldungfehlerhinter;}
+#cms_speicherplatz_website_balken, #cms_speicherplatz_website_icon {background: @d_haupt_meldungwarnunghinter;}
+#cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @d_haupt_meldunginfohinter;}
+#cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @d_haupt_meldungerfolghinter;}
+#cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @d_haupt_abstufung2;}

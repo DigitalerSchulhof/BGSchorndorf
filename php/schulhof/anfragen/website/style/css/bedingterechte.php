@@ -1,69 +1,67 @@
-<?php
-fwrite($hell, ".cms_button_bedingt_logisch {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_button_bedingt_bedingung {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldungwarnunghinter'].";\n");
-fwrite($hell, "}\n");
+.cms_button_bedingt_logisch {
+	background-color: @h_haupt_meldunginfohinter;
+}
 
-fwrite($hell, ".cms_bedingt_gui_logisch {\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_meldunginfohinter'].";\n");
-fwrite($hell, "background-repeat: no-repeat;\n");
-fwrite($hell, "background-position: 5px 5px;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_haupt_radiusgross'].";\n");
-fwrite($hell, "padding: 5px;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "}\n");
+.cms_button_bedingt_bedingung {
+	background-color: @h_haupt_meldungwarnunghinter;
+}
 
-fwrite($hell, ".cms_bedingt_gui_logisch_operation {\n");
-fwrite($hell, "margin-top: 5px;\n");
-fwrite($hell, "margin-left: 5px;\n");
-fwrite($hell, "}\n");
+.cms_bedingt_gui_logisch {
+	background-color: @h_haupt_meldunginfohinter;
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	display: inline-block;
+	border-radius: @haupt_radiusgross;
+	padding: 5px;
+	width: 100%;
+}
 
-fwrite($hell, ".cms_bedingt_gui_logisch_feld,\n");
-fwrite($hell, ".cms_bedingt_gui_logisch_hinzufuegen {\n");
-fwrite($hell, "display: block;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_haupt_radiusmittel'].";\n");
-fwrite($hell, "margin-left: 20px;\n");
-fwrite($hell, "margin-top: 20px;\n");
-fwrite($hell, "background-color: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "padding: 3px;\n");
-fwrite($hell, "}\n");
+.cms_bedingt_gui_logisch_operation {
+	margin-top: 5px;
+	margin-left: 5px;
+}
 
-fwrite($hell, ".cms_aktion_klein {\n");
-fwrite($hell, "margin-bottom: 0px;\n");
-fwrite($hell, "}\n");
+.cms_bedingt_gui_logisch_feld,
+.cms_bedingt_gui_logisch_hinzufuegen {
+	display: block;
+	border-radius: @haupt_radiusmittel;
+	margin-left: 20px;
+	margin-top: 20px;
+	background-color: @h_haupt_abstufung1;
+	padding: 3px;
+}
 
-fwrite($hell, ".cms_bedingt_gui_bedingung select,\n");
-fwrite($hell, ".cms_bedingt_gui_bedingung input {\n");
-fwrite($hell, "height: 28px;\n");
-fwrite($hell, "transition: none !important;\n");
-fwrite($hell, "}\n");
+.cms_aktion_klein {
+	margin-bottom: 0px;
+}
 
-fwrite($hell, ".cms_bedingt_bedingung {\n");
-fwrite($hell, "margin-bottom: 5px;\n");
-fwrite($hell, "}\n");
+.cms_bedingt_gui_bedingung select,
+.cms_bedingt_gui_bedingung input {
+	height: 28px;
+	transition: none !important;
+}
 
+.cms_bedingt_bedingung {
+	margin-bottom: 5px;
+}
 
+// DUNKEL;
 
+.cms_button_bedingt_logisch {
+	background-color: @d_haupt_meldunginfohinter;
+}
 
-// DARKMODE
-fwrite($dunkel, ".cms_button_bedingt_logisch {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
-fwrite($dunkel, "}\n");
+.cms_button_bedingt_bedingung {
+	background-color: @d_haupt_meldungwarnunghinter;
+}
 
-fwrite($dunkel, ".cms_button_bedingt_bedingung {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldungwarnunghinter'].";\n");
-fwrite($dunkel, "}\n");
+.cms_bedingt_gui_logisch {
+	background-color: @d_haupt_meldunginfohinter;
+}
 
-fwrite($dunkel, ".cms_bedingt_gui_logisch {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_meldunginfohinter'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_bedingt_gui_logisch_feld,\n");
-fwrite($dunkel, ".cms_bedingt_gui_logisch_hinzufuegen {\n");
-fwrite($dunkel, "background-color: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-?>
+.cms_bedingt_gui_logisch_feld,
+.cms_bedingt_gui_logisch_hinzufuegen {
+	background-color: @d_haupt_abstufung1;
+}

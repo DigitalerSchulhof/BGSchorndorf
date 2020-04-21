@@ -64,8 +64,13 @@
 			die;
 		}
 
+		if($CMS_URL[0] == "Druckansicht") {
+      include_once("php/allgemein/seiten/drucken.php");
+			die();
+		}
+
 		// Fallback bei ungültigen URLs
-		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern") && ($CMS_URL[0] != "App")) {
+    if (!in_array($CMS_URL[0], array("Website", "Schulhof", "Problembehebung", "Intern", "App"))) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
 		}

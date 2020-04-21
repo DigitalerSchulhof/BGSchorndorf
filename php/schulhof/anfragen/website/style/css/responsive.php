@@ -1,125 +1,125 @@
-<?php
-fwrite($hell, "@media (max-width: 999px) {\n");
-fwrite($hell, ".cms_optimierung_P #cms_kopfzeile_m,\n");
-fwrite($hell, ".cms_optimierung_P #cms_hauptteil_m,\n");
-fwrite($hell, ".cms_optimierung_P #cms_fusszeile_m,\n");
-fwrite($hell, ".cms_optimierung_P #cms_website_bearbeiten_m {\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "margin: 0px !important;\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_optimierung_P .cms_unternavigation_m {\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "margin: 0px !important;\n");
-fwrite($hell, "}\n");
+@media (max-width: 999px) {
+	.cms_optimierung_P #cms_kopfzeile_m,
+	.cms_optimierung_P #cms_hauptteil_m,
+	.cms_optimierung_P #cms_fusszeile_m,
+	.cms_optimierung_P #cms_website_bearbeiten_m {
+		width: 100% !important;
+		margin: 0px !important;
+	}
 
-fwrite($hell, "#cms_aktionsschicht_m {width: 100%;}\n");
-fwrite($hell, "}\n");
+	.cms_optimierung_P .cms_unternavigation_m {
+		width: 100% !important;
+		margin: 0px !important;
+	}
 
-fwrite($hell, "@media (max-width: 799px) {\n");
-fwrite($hell, ".cms_kopfnavigation {display: none !important;}\n");
-fwrite($hell, "#cms_kopfnavigation {display: none !important;}\n");
-fwrite($hell, "#cms_hauptnavigation {display: none !important;}\n");
-fwrite($hell, "#cms_mobilnavigation {display: block !important;}\n");
+	#cms_aktionsschicht_m {width: 100%;}
+}
 
-fwrite($hell, ".cms_bloguebersicht_artikel {\n");
-fwrite($hell, "display: block !important;\n");
-fwrite($hell, "}\n");
+@media (max-width: 799px) {
+	.cms_kopfnavigation {display: none !important;}
+	#cms_kopfnavigation {display: none !important;}
+	#cms_hauptnavigation {display: none !important;}
+	#cms_mobilnavigation {display: block !important;}
 
-fwrite($hell, ".cms_bloguebersicht_artikel li {\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "border-left: none !important;\n");
-fwrite($hell, "border-right: none !important;\n");
-fwrite($hell, "}\n");
+	.cms_bloguebersicht_artikel {
+		display: block !important;
+	}
 
-fwrite($hell, "@media (max-width: 599px) {\n");
-fwrite($hell, ".cms_eventuebersicht_box_a {\n");
-fwrite($hell, "float: none !important;\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "margin-bottom: 30px !important;\n");
-fwrite($hell, "}\n");
+	.cms_bloguebersicht_artikel li {
+		width: 100% !important;
+		border-left: none !important;
+		border-right: none !important;
+	}
 
-fwrite($hell, "ul.cms_uebersicht a p img {\n");
-fwrite($hell, "height: 100px !important;\n");
-fwrite($hell, "}\n");
+	@media (max-width: 599px) {
+		.cms_eventuebersicht_box_a {
+			float: none !important;
+			width: 100% !important;
+			margin-bottom: 30px !important;
+		}
 
-fwrite($hell, ".cms_neuigkeit {\n");
-fwrite($hell, "width: 50% !important;\n");
-fwrite($hell, "}\n");
+		ul.cms_uebersicht a p img {
+			height: 100px !important;
+		}
 
-fwrite($hell, ".cms_voranmeldung_navigation li {\n");
-fwrite($hell, "width: 50%;\n");
-fwrite($hell, "}\n");
+		.cms_neuigkeit {
+			width: 50% !important;
+		}
 
-fwrite($hell, ".cms_eventuebersicht_box_blog, .cms_eventuebersicht_box_termine,\n");
-fwrite($hell, ".cms_eventuebersicht_box_galerie {width: 100% !important;}\n");
+		.cms_voranmeldung_navigation li {
+			width: 50%;
+		}
 
-fwrite($hell, ".cms_eventuebersicht_box_i {padding: 0px;}\n");
+		.cms_eventuebersicht_box_blog, .cms_eventuebersicht_box_termine,
+		.cms_eventuebersicht_box_galerie {width: 100% !important;}
 
-fwrite($hell, ".cms_optimierung_P .cms_spalte_2, .cms_optimierung_P .cms_spalte_3,\n");
-fwrite($hell, ".cms_optimierung_P .cms_spalte_60, .cms_optimierung_P .cms_spalte_40,\n");
-fwrite($hell, ".cms_optimierung_P .cms_spalte_4, .cms_optimierung_P .cms_spalte_34,\n");
-fwrite($hell, ".cms_optimierung_P .cms_spalte_6, .cms_optimierung_P .cms_spalte_15,\n");
-fwrite($hell, ".cms_optimierung_P .cms_spalte_25,\n");
-fwrite($hell, ".cms_optimierung_T .cms_spalte_2, .cms_optimierung_T .cms_spalte_3,\n");
-fwrite($hell, ".cms_optimierung_T .cms_spalte_60, .cms_optimierung_T .cms_spalte_40,\n");
-fwrite($hell, ".cms_optimierung_T .cms_spalte_4, .cms_optimierung_T .cms_spalte_34,\n");
-fwrite($hell, ".cms_optimierung_T .cms_spalte_6 .cms_optimierung_T .cms_spalte_15,\n");
-fwrite($hell, ".cms_optimierung_T .cms_spalte_25 {\n");
-fwrite($hell, "float: none !important;\n");
-fwrite($hell, "width: 100%;\n");
-fwrite($hell, "padding-bottom: 40px !important;\n");
-fwrite($hell, "}\n");
+		.cms_eventuebersicht_box_i {padding: 0px;}
 
-fwrite($hell, ".cms_pinnwand_anschlag_aussen {\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "}\n");
+		.cms_optimierung_P .cms_spalte_2, .cms_optimierung_P .cms_spalte_3,
+		.cms_optimierung_P .cms_spalte_60, .cms_optimierung_P .cms_spalte_40,
+		.cms_optimierung_P .cms_spalte_4, .cms_optimierung_P .cms_spalte_34,
+		.cms_optimierung_P .cms_spalte_6, .cms_optimierung_P .cms_spalte_15,
+		.cms_optimierung_P .cms_spalte_25,
+		.cms_optimierung_T .cms_spalte_2, .cms_optimierung_T .cms_spalte_3,
+		.cms_optimierung_T .cms_spalte_60, .cms_optimierung_T .cms_spalte_40,
+		.cms_optimierung_T .cms_spalte_4, .cms_optimierung_T .cms_spalte_34,
+		.cms_optimierung_T .cms_spalte_6 .cms_optimierung_T .cms_spalte_15,
+		.cms_optimierung_T .cms_spalte_25 {
+			float: none !important;
+			width: 100%;
+			padding-bottom: 40px !important;
+		}
 
-fwrite($hell, ".cms_termindetailansicht_kalenderblaetter_o,\n");
-fwrite($hell, ".cms_termindetailansicht_details_o {\n");
-fwrite($hell, "float: none !important;\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "margin-bottom: 20px !important;\n");
-fwrite($hell, "}\n");
+		.cms_pinnwand_anschlag_aussen {
+			width: 100% !important;
+		}
 
-fwrite($hell, ".cms_termindetailansicht_kalenderblaetter_i,\n");
-fwrite($hell, ".cms_termindetailansicht_details_i {\n");
-fwrite($hell, "padding: 0px !important;\n");
-fwrite($hell, "}\n");
+		.cms_termindetailansicht_kalenderblaetter_o,
+		.cms_termindetailansicht_details_o {
+			float: none !important;
+			width: 100% !important;
+			margin-bottom: 20px !important;
+		}
 
-fwrite($hell, ".cms_fussnavigation {\n");
-fwrite($hell, "padding-right: 0px !important;\n");
-fwrite($hell, "min-height: auto !important;\n");
-fwrite($hell, "text-align: center;\n");
-fwrite($hell, "}\n");
+		.cms_termindetailansicht_kalenderblaetter_i,
+		.cms_termindetailansicht_details_i {
+			padding: 0px !important;
+		}
 
-fwrite($hell, ".cms_auszeichnung {\n");
-fwrite($hell, "position: static !important;\n");
-fwrite($hell, "top: auto !important;\n");
-fwrite($hell, "right: auto !important;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof']." !important;\n");
-fwrite($hell, "text-align: center  !important;\n");
-fwrite($hell, "}\n");
+		.cms_fussnavigation {
+			padding-right: 0px !important;
+			min-height: auto !important;
+			text-align: center;
+		}
 
-fwrite($hell, "#cms_fusszeile_i .cms_notiz {text-align: center;}\n");
+		.cms_auszeichnung {
+			position: static !important;
+			top: auto !important;
+			right: auto !important;
+			margin-bottom: @haupt_absatzschulhof !important;
+			text-align: center  !important;
+		}
 
-fwrite($hell, "#cms_blende_m {width: 100%;}\n");
+		#cms_fusszeile_i .cms_notiz {text-align: center;}
 
-fwrite($hell, ".cms_sidebar_inhalt {display: none !important;}\n");
-fwrite($hell, ".cms_hauptteil_inhalt {width: 100% !important;}\n");
-fwrite($hell, ".cms_kopfnavigation {display: none !important;}\n");
-fwrite($hell, "#cms_kopfnavigation {display: none !important;}\n");
-fwrite($hell, "#cms_hauptnavigation {display: none !important;}\n");
-fwrite($hell, "#cms_mobilnavigation {display: block !important;}\n");
+		#cms_blende_m {width: 100%;}
 
-fwrite($hell, ".cms_optimierung_P ul.cms_uebersicht a p img,\n");
-fwrite($hell, ".cms_optimierung_T ul.cms_uebersicht a p img,\n");
-fwrite($hell, ".cms_optimierung_H ul.cms_uebersicht a p img {\n");
-fwrite($hell, "width: 100% !important;\n");
-fwrite($hell, "height: auto !important;\n");
-fwrite($hell, "margin-left: 0px !important;\n");
-fwrite($hell, "float: none !important;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-fwrite($hell, "}\n");
-?>
+		.cms_sidebar_inhalt {display: none !important;}
+		.cms_hauptteil_inhalt {width: 100% !important;}
+		.cms_kopfnavigation {display: none !important;}
+		#cms_kopfnavigation {display: none !important;}
+		#cms_hauptnavigation {display: none !important;}
+		#cms_mobilnavigation {display: block !important;}
+
+		.cms_optimierung_P ul.cms_uebersicht a p img,
+		.cms_optimierung_T ul.cms_uebersicht a p img,
+		.cms_optimierung_H ul.cms_uebersicht a p img {
+			width: 100% !important;
+			height: auto !important;
+			margin-left: 0px !important;
+			float: none !important;
+		}
+	}
+}

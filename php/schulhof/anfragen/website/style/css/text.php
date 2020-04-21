@@ -1,191 +1,187 @@
-<?php
-fwrite($hell, ".cms_notiz, .cms_hochladen_fortschritt_anzeige {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_notizschrift'].";\n");
-fwrite($hell, "font-size: 70% !important;\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_notiz a, .cms_brotkrumen a {\n");
-fwrite($hell, "font-size: 100%;\n");
-fwrite($hell, "}\n");
+.cms_notiz, .cms_hochladen_fortschritt_anzeige {
+	color: @h_haupt_notizschrift;
+	font-size: 70% !important;
+}
 
-fwrite($hell, "p, ul, ol, table, li {\n");
-fwrite($hell, "margin-top: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
+.cms_notiz a, .cms_brotkrumen a {
+	font-size: 100%;
+}
 
-fwrite($hell, "h1 {\n");
-fwrite($hell, "margin-top: 40px;\n");
-fwrite($hell, "margin-bottom: 15px;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "font-size: 170%;\n");
-fwrite($hell, "overflow: visible;\n");
-fwrite($hell, "}\n");
+p, ul, ol, table, li {
+	margin-top: @haupt_absatzschulhof;
+	margin-bottom: @haupt_absatzschulhof;
+}
 
-fwrite($hell, "h2 {\n");
-fwrite($hell, "margin-top: 30px;\n");
-fwrite($hell, "margin-bottom: 10px;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "font-size: 140%;\n");
-fwrite($hell, "}\n");
+h1 {
+	margin-top: 40px;
+	margin-bottom: 15px;
+	font-weight: bold;
+	font-size: 170%;
+	overflow: visible;
+}
 
-fwrite($hell, "h3 {\n");
-fwrite($hell, "margin-top: 30px;\n");
-fwrite($hell, "margin-bottom: 10px;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "font-size: 120%;\n");
-fwrite($hell, "}\n");
+h2 {
+	margin-top: 30px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 140%;
+}
 
-fwrite($hell, "h4 {\n");
-fwrite($hell, "margin-top: 30px;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "font-size: 100%;\n");
-fwrite($hell, "}\n");
+h3 {
+	margin-top: 30px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 120%;
+}
 
-fwrite($hell, "h2+h3 {\n");
-fwrite($hell, "margin-top: 20px;\n");
-fwrite($hell, "}\n");
+h4 {
+	margin-top: 30px;
+	margin-bottom: @haupt_absatzschulhof;
+	font-weight: bold;
+	font-size: 100%;
+}
 
-fwrite($hell, "h3+h4 {\n");
-fwrite($hell, "margin-top: 10px;\n");
-fwrite($hell, "}\n");
+h2+h3 {
+	margin-top: 20px;
+}
 
-fwrite($hell, "p.cms_notiz+h1, p.cms_brotkrumen + h1 {\n");
-fwrite($hell, "margin-top: ".$_POST['cms_style_haupt_absatzbrotkrumen'].";\n");
-fwrite($hell, "}\n");
+h3+h4 {
+	margin-top: 10px;
+}
 
-fwrite($hell, ".cms_termine_jahresuebersicht + p.cms_notiz {\n");
-fwrite($hell, "margin-top: 40px;\n");
-fwrite($hell, "}\n");
+p.cms_notiz+h1, p.cms_brotkrumen + h1 {
+	margin-top: @haupt_absatzbrotkrumen;
+}
 
-fwrite($hell, "p:first-child, h1:first-child, h2:first-child, h3:first-child,\n");
-fwrite($hell, "h4:first-child, h5:first-child, h6:first-child, ul:first-child,\n");
-fwrite($hell, "ol:first-child, table:first-child {\n");
-fwrite($hell, "margin-top: 0px !important;\n");
-fwrite($hell, "}\n");
+.cms_termine_jahresuebersicht + p.cms_notiz {
+	margin-top: 40px;
+}
 
-fwrite($hell, "p:last-child, h1:last-child, h2:last-child, h3:last-child,\n");
-fwrite($hell, "h4:last-child, h5:last-child, h6:last-child, ul:last-child,\n");
-fwrite($hell, "ol:last-child, table:last-child {\n");
-fwrite($hell, "margin-bottom: 0px !important;\n");
-fwrite($hell, "}\n");
+p:first-child, h1:first-child, h2:first-child, h3:first-child,
+h4:first-child, h5:first-child, h6:first-child, ul:first-child,
+ol:first-child, table:first-child {
+	margin-top: 0px !important;
+}
 
-fwrite($hell, "ul li {\n");
-fwrite($hell, "list-style-type: square;\n");
-fwrite($hell, "margin-left: 20px;\n");
-fwrite($hell, "}\n");
+p:last-child, h1:last-child, h2:last-child, h3:last-child,
+h4:last-child, h5:last-child, h6:last-child, ul:last-child,
+ol:last-child, table:last-child {
+	margin-bottom: 0px !important;
+}
 
-fwrite($hell, "ul ul li {\n");
-fwrite($hell, "list-style-type: circle;\n");
-fwrite($hell, "margin-left: 20px;\n");
-fwrite($hell, "}\n");
+ul li {
+	list-style-type: square;
+	margin-left: 20px;
+}
 
-fwrite($hell, "ol li {\n");
-fwrite($hell, "list-style-type: decimal;\n");
-fwrite($hell, "margin-left: 20px;\n");
-fwrite($hell, "}\n");
+ul ul li {
+	list-style-type: circle;
+	margin-left: 20px;
+}
 
-fwrite($hell, "b, strong {\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "font-style: inherit;\n");
-fwrite($hell, "font-size: inherit;\n");
-fwrite($hell, "text-decoration: inherit;\n");
-fwrite($hell, "font-family: inherit;\n");
-fwrite($hell, "color: inherit;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "i, em {\n");
-fwrite($hell, "font-style: italic;\n");
-fwrite($hell, "font-weight: inherit;\n");
-fwrite($hell, "text-decoration: inherit;\n");
-fwrite($hell, "font-family: inherit;\n");
-fwrite($hell, "font-size: inherit;\n");
-fwrite($hell, "color: inherit;\n");
-fwrite($hell, "}\n");
-fwrite($hell, "u {\n");
-fwrite($hell, "font-style: inherit;\n");
-fwrite($hell, "font-weight: inherit;\n");
-fwrite($hell, "text-decoration: underline;\n");
-fwrite($hell, "font-family: inherit;\n");
-fwrite($hell, "font-size: inherit;\n");
-fwrite($hell, "color: inherit;\n");
-fwrite($hell, "}\n");
+ol li {
+	list-style-type: decimal;
+	margin-left: 20px;
+}
 
-fwrite($hell, "p span, p b, p i, p u,\n");
-fwrite($hell, "li span, li b, li i, li u,\n");
-fwrite($hell, "td span, td b, td i, td u,\n");
-fwrite($hell, "th span, th b, th i, th u {\n");
-fwrite($hell, "font-size: inherit;\n");
-fwrite($hell, "font-family: inherit;\n");
-fwrite($hell, "color: inherit;\n");
-fwrite($hell, "}\n");
+b, strong {
+	font-weight: bold;
+	font-style: inherit;
+	font-size: inherit;
+	text-decoration: inherit;
+	font-family: inherit;
+	color: inherit;
+}
+i, em {
+	font-style: italic;
+	font-weight: inherit;
+	text-decoration: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+}
+u {
+	font-style: inherit;
+	font-weight: inherit;
+	text-decoration: underline;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+}
 
-fwrite($hell, "blockquote {\n");
-fwrite($hell, "background-image: url('../res/sonstiges/zitat.png');\n");
-fwrite($hell, "background-repeat: no-repeat;\n");
-fwrite($hell, "background-position: 10px 10px;\n");
-fwrite($hell, "padding: 30px 10px 10px 80px;\n");
-fwrite($hell, "min-height: 70px;\n");
-fwrite($hell, "font-family: inherit;\n");
-fwrite($hell, "color: inherit;\n");
-fwrite($hell, "}\n");
+p span, p b, p i, p u,
+li span, li b, li i, li u,
+td span, td b, td i, td u,
+th span, th b, th i, th u {
+	font-size: inherit;
+	font-family: inherit;
+	color: inherit;
+}
 
-fwrite($hell, "pre, .cms_konsole, .cms_code {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_haupt_schriftfarbenegativ'].";\n");
-fwrite($hell, "padding: 10px;\n");
-fwrite($hell, "font-family: monospace;\n");
-fwrite($hell, "border-radius: ".$_POST['cms_style_button_rundeecken'].";\n");
-fwrite($hell, "}\n");
+blockquote {
+	background-image: url('../res/sonstiges/zitat.png');
+	background-repeat: no-repeat;
+	background-position: 10px 10px;
+	padding: 30px 10px 10px 80px;
+	min-height: 70px;
+	font-family: inherit;
+	color: inherit;
+}
 
-fwrite($hell, ".cms_zentriert {\n");
-fwrite($hell, "text-align: center !important;\n");
-fwrite($hell, "}\n");
+pre, .cms_konsole, .cms_code {
+	background: @h_haupt_abstufung2;
+	color: @h_haupt_schriftfarbenegativ;
+	padding: 10px;
+	font-family: monospace;
+	border-radius: @button_rundeecken;
+}
 
-fwrite($hell, ".cms_rechtsbuendig {\n");
-fwrite($hell, "text-align: right !important;\n");
-fwrite($hell, "}\n");
+.cms_zentriert {
+	text-align: center !important;
+}
 
-fwrite($hell, ".cms_hauptteil_inhalt * {\n");
-fwrite($hell, "line-height: 1.5em !important;\n");
-fwrite($hell, "}\n");
+.cms_rechtsbuendig {
+	text-align: right !important;
+}
 
-fwrite($hell, ".cms_hauptteil_inhalt .cms_uebersicht_kalender *,\n");
-fwrite($hell, ".cms_hauptteil_inhalt .cms_uebersicht_kalender_beginn *,\n");
-fwrite($hell, ".cms_hauptteil_inhalt .cms_uebersicht_kalender_ende * {\n");
-fwrite($hell, "line-height: 1.2em !important;\n");
-fwrite($hell, "}\n");
+.cms_hauptteil_inhalt * {
+	line-height: 1.5em !important;
+}
 
-fwrite($hell, ".cms_hauptteil_inhalt p, .cms_hauptteil_inhalt ul, .cms_hauptteil_inhalt ol,\n");
-fwrite($hell, ".cms_hauptteil_inhalt table, .cms_download_anzeige, .cms_boxen_u, .cms_boxen_n {\n");
-fwrite($hell, "margin-top: ".$_POST['cms_style_haupt_absatzwebsite'].";\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzwebsite'].";\n");
-fwrite($hell, "}\n");
+.cms_hauptteil_inhalt .cms_uebersicht_kalender *,
+.cms_hauptteil_inhalt .cms_uebersicht_kalender_beginn *,
+.cms_hauptteil_inhalt .cms_uebersicht_kalender_ende * {
+	line-height: 1.2em !important;
+}
 
-fwrite($hell, ".cms_hauptteil_inhalt h4 {\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzwebsite'].";\n");
-fwrite($hell, "}\n");
+.cms_hauptteil_inhalt p, .cms_hauptteil_inhalt ul, .cms_hauptteil_inhalt ol,
+.cms_hauptteil_inhalt table, .cms_download_anzeige, .cms_boxen_u, .cms_boxen_n {
+	margin-top: @haupt_absatzwebsite;
+	margin-bottom: @haupt_absatzwebsite;
+}
 
-fwrite($hell, ".cms_download_anzeige * {\n");
-fwrite($hell, "line-height: 1.2em;\n");
-fwrite($hell, "margin-bottom: ".$_POST['cms_style_haupt_absatzschulhof'].";\n");
-fwrite($hell, "}\n");
+.cms_hauptteil_inhalt h4 {
+	margin-bottom: @haupt_absatzwebsite;
+}
 
-fwrite($hell, ".cms_uebersicht * {\n");
-fwrite($hell, "line-height: 1.2em;\n");
-fwrite($hell, "}\n");
+.cms_download_anzeige * {
+	line-height: 1.2em;
+	margin-bottom: @haupt_absatzschulhof;
+}
 
+.cms_uebersicht * {
+	line-height: 1.2em;
+}
 
+// DUNKEL;
 
+.cms_notiz, .cms_hochladen_fortschritt_anzeige {
+	color: @d_haupt_notizschrift;
+}
 
-
-
-// DARKMODE
-fwrite($dunkel, ".cms_notiz, .cms_hochladen_fortschritt_anzeige {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_notizschrift'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, "pre, .cms_konsole, .cms_code {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_haupt_schriftfarbenegativ'].";\n");
-fwrite($dunkel, "}\n");
-?>
+pre, .cms_konsole, .cms_code {
+	background: @d_haupt_abstufung2;
+	color: @d_haupt_schriftfarbenegativ;
+}

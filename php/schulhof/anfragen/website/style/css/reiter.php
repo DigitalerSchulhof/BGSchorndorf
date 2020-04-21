@@ -1,102 +1,95 @@
-<?php
-fwrite($hell, ".cms_reitermenue, .cms_reitermenue li {\n");
-fwrite($hell, "margin-bottom: 0px !important;\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "list-style-type: none;\n");
-fwrite($hell, "margin-left: 0px;\n");
-fwrite($hell, "margin-top: 0px;\n");
-fwrite($hell, "}\n");
+// HELL;
 
-fwrite($hell, ".cms_reiter, .cms_reiter_aktiv {\n");
-fwrite($hell, "display: inline-block;\n");
-fwrite($hell, "padding: 7px 10px 4px 10px;\n");
-fwrite($hell, "transition: 250ms ease-in-out;\n");
-fwrite($hell, "font-weight: bold;\n");
-fwrite($hell, "}\n");
+.cms_reitermenue, .cms_reitermenue li {
+	margin-bottom: 0px !important;
+	display: inline-block;
+	list-style-type: none;
+	margin-left: 0px;
+	margin-top: 0px;
+}
 
-fwrite($hell, ".cms_reiter {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_reiter_farbe'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_reiter_hintergrund'].";\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_reiter_radiusoben'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_reiter_radiusoben'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_reiter_radiusunten'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_reiter_radiusunten'].";\n");
-fwrite($hell, "}\n");
+.cms_reiter, .cms_reiter_aktiv {
+	display: inline-block;
+	padding: 7px 10px 4px 10px;
+	transition: 250ms ease-in-out;
+	font-weight: bold;
+}
 
-fwrite($hell, ".cms_reiter:hover, .cms_reiter_aktiv:hover {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_reiter_farbehover'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_reiter_hintergrundhover'].";\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_reiter_radiusoben'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_reiter_radiusoben'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_reiter_radiusunten'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_reiter_radiusunten'].";\n");
-fwrite($hell, "}\n");
+.cms_reiter {
+	color: @h_reiter_farbe;
+	background: @h_reiter_hintergrund;
+	border-top-right-radius: @reiter_radiusoben;
+	border-top-left-radius: @reiter_radiusoben;
+	border-bottom-right-radius: @reiter_radiusunten;
+	border-bottom-left-radius: @reiter_radiusunten;
+}
 
-fwrite($hell, ".cms_reiter_aktiv {\n");
-fwrite($hell, "color: ".$_POST['cms_style_h_reiter_farbeaktiv'].";\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_reiter_hintergrundaktiv'].";\n");
-fwrite($hell, "cursor: pointer;\n");
-fwrite($hell, "border-top-right-radius: ".$_POST['cms_style_reiter_radiusoben'].";\n");
-fwrite($hell, "border-top-left-radius: ".$_POST['cms_style_reiter_radiusoben'].";\n");
-fwrite($hell, "border-bottom-right-radius: ".$_POST['cms_style_reiter_radiusunten'].";\n");
-fwrite($hell, "border-bottom-left-radius: ".$_POST['cms_style_reiter_radiusunten'].";\n");
-fwrite($hell, "}\n");
+.cms_reiter:hover, .cms_reiter_aktiv:hover {
+	color: @h_reiter_farbehover;
+	background: @h_reiter_hintergrundhover;
+	cursor: pointer;
+	border-top-right-radius: @reiter_radiusoben;
+	border-top-left-radius: @reiter_radiusoben;
+	border-bottom-right-radius: @reiter_radiusunten;
+	border-bottom-left-radius: @reiter_radiusunten;
+}
 
-fwrite($hell, ".cms_reitermenue_o {\n");
-fwrite($hell, "border-color: ".$_POST['cms_style_h_haupt_abstufung2'].";\n");
-fwrite($hell, "border-style: solid;\n");
-fwrite($hell, "border-width: 0px;\n");
-fwrite($hell, "border-top-width: 2px;\n");
-fwrite($hell, "border-bottom-width: 2px;\n");
-fwrite($hell, "display: none;\n");
-fwrite($hell, "}\n");
+.cms_reiter_aktiv {
+	color: @h_reiter_farbeaktiv;
+	background: @h_reiter_hintergrundaktiv;
+	cursor: pointer;
+	border-top-right-radius: @reiter_radiusoben;
+	border-top-left-radius: @reiter_radiusoben;
+	border-bottom-right-radius: @reiter_radiusunten;
+	border-bottom-left-radius: @reiter_radiusunten;
+}
 
-fwrite($hell, ".cms_reitermenue_i {\n");
-fwrite($hell, "padding: 10px 0px;\n");
-fwrite($hell, "}\n");
+.cms_reitermenue_o {
+	border-color: @h_haupt_abstufung2;
+	border-style: solid;
+	border-width: 0px;
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	display: none;
+}
 
-fwrite($hell, ".cms_unternavigation_o .cms_reitermenue_i {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_abstufung1'].";\n");
-fwrite($hell, "}\n");
+.cms_reitermenue_i {
+	padding: 10px 0px;
+}
 
-fwrite($hell, ".cms_hauptteil_o .cms_reitermenue_i {\n");
-fwrite($hell, "background: ".$_POST['cms_style_h_haupt_hintergrund'].";\n");
-fwrite($hell, "}\n");
+.cms_unternavigation_o .cms_reitermenue_i {
+	background: @h_haupt_abstufung1;
+}
 
+.cms_hauptteil_o .cms_reitermenue_i {
+	background: @h_haupt_hintergrund;
+}
 
+// DUNKEL;
 
+.cms_reiter {
+	color: @d_reiter_farbe;
+	background: @d_reiter_hintergrund;
+}
 
+.cms_reiter:hover, .cms_reiter_aktiv:hover {
+	color: @d_reiter_farbehover;
+	background: @d_reiter_hintergrundhover;
+}
 
+.cms_reiter_aktiv {
+	color: @d_reiter_farbeaktiv;
+	background: @d_reiter_hintergrundaktiv;
+}
 
+.cms_reitermenue_o {
+	border-color: @d_haupt_abstufung2;
+}
 
+.cms_unternavigation_o .cms_reitermenue_i {
+	background: @d_haupt_abstufung1;
+}
 
-
-// DARKMODE
-fwrite($dunkel, ".cms_reiter {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_reiter_farbe'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_reiter_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_reiter:hover, .cms_reiter_aktiv:hover {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_reiter_farbehover'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_reiter_hintergrundhover'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_reiter_aktiv {\n");
-fwrite($dunkel, "color: ".$_POST['cms_style_d_reiter_farbeaktiv'].";\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_reiter_hintergrundaktiv'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_reitermenue_o {\n");
-fwrite($dunkel, "border-color: ".$_POST['cms_style_d_haupt_abstufung2'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_unternavigation_o .cms_reitermenue_i {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_abstufung1'].";\n");
-fwrite($dunkel, "}\n");
-
-fwrite($dunkel, ".cms_hauptteil_o .cms_reitermenue_i {\n");
-fwrite($dunkel, "background: ".$_POST['cms_style_d_haupt_hintergrund'].";\n");
-fwrite($dunkel, "}\n");
-?>
+.cms_hauptteil_o .cms_reitermenue_i {
+	background: @d_haupt_hintergrund;
+}
