@@ -81,12 +81,12 @@ if (!$fehler) {
 			$sql->fetch();
 			$sql->close();
 
-			if($GRUPPENRECHTE["mitglied"] && $chataktiv) {
-				$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
-					$code .= "<h2>Chat</h2>";
-					$code .= cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
-				$code .= "</div></div>";
-			}
+			// if($GRUPPENRECHTE["mitglied"] && $chataktiv) {
+			// 	$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
+			// 		$code .= "<h2>Chat</h2>";
+			// 		$code .= cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
+			// 	$code .= "</div></div>";
+			// }
 			$code .= "<div class=\"cms_clear\"></div>";
 			$code .= "<div class=\"cms_spalte_i\">";
 				$code .= "<h2>Dateien</h2>";

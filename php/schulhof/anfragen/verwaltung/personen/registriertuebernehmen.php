@@ -18,9 +18,7 @@ if (!cms_check_ganzzahl($idper,0)) {echo "FEHLER"; exit;}
 if (strlen($benutzername) < 6) {echo "FEHLER"; exit;}
 $fehler = false;
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'];
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 
 	// Prüfen, ob der benutzer bereits besteht
 	$dbs = cms_verbinden('s');
