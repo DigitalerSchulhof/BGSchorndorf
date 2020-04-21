@@ -173,17 +173,16 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 		$dunkel = "";
 		$drucken = "";
 		$modus = null;
-
-		foreach(explode("\r\n", $ob) as $zeile) {
-			if($zeile === "// HELL;") {
+		foreach(explode("\n", $ob) as $zeile) {
+			if(substr($zeile, 0, strlen("// HELL;")) === "// HELL;") {
 				$modus = &$hell;
 				continue;
 			}
-			if($zeile === "// DUNKEL;") {
+			if(substr($zeile, 0, strlen("// DUNKEL;")) === "// DUNKEL;") {
 				$modus = &$dunkel;
 				continue;
 			}
-			if($zeile === "// DRUCKEN;") {
+			if(substr($zeile, 0, strlen("// DRUCKEN;")) === "// DRUCKEN;") {
 				$modus = &$drucken;
 				continue;
 			}
