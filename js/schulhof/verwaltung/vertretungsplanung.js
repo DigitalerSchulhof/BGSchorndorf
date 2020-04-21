@@ -2170,7 +2170,8 @@ function cms_vplan_drucken() {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_meldung_an('erfolg', 'Vertretungsplan drucken', '<p>Die Druckansicht wurde erstelt.</p>', '<p><a class="cms_button" onclick="cms_ausblenden(\'cms_blende_o\'); cms_link(\'Druckansicht\', true)">Druckansicht öffnen</a> <span class="cms_button_nein" onclick="cms_ausblenden(\'cms_blende_o\')">Fenster schließen</span></p>');
+				cms_laden_aus();
+				cms_drucken();
 	    }
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}

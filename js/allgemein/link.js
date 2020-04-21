@@ -63,3 +63,23 @@ function cms_mobinavi_zeigen (id) {
 		knopf.innerHTML = '&#8628;';
 	}
 }
+
+function cms_drucken(seite) {
+	seite = seite || "Drucken";
+	var iframe = document.createElement("iframe");
+	iframe.onload = function() {
+		this.contentWindow.__container__ = this;
+  	this.contentWindow.onbeforeunload = function() {document.body.removeChild(this.__container__)};
+  	this.contentWindow.onafterprint = function() {document.body.removeChild(this.__container__)};
+  	this.contentWindow.focus();
+  	this.contentWindow.print();
+	};
+	iframe.style.position = "fixed";
+	iframe.style.right = "0";
+	iframe.style.bottom = "0";
+	iframe.style.width = "0";
+	iframe.style.height = "0";
+	iframe.style.border = "0";
+	iframe.src = seite;
+	document.body.appendChild(iframe);
+}

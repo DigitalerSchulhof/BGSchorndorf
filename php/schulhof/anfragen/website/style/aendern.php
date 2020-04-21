@@ -200,7 +200,9 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 		$dunkel 	= preg_replace("/;}/", "}", $dunkel);
 		$drucken 	= preg_replace("/;}/", "}", $drucken);
 
-		$dunkel = "@media (prefers-color-scheme: dark) { $dunkel }";
+		$hell 		= "$hell";
+		$dunkel 	= "@media (prefers-color-scheme: dark) { $dunkel }";
+		$drucken 	= "@media screen {.cms_druckseite {display: none;} body::after {content: 'Moin';}} @media print { $drucken }";
 
 		file_put_contents("../../../css/hell.css", 		$hell);
 		file_put_contents("../../../css/dunkel.css", 	$dunkel);

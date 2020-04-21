@@ -704,3 +704,25 @@
 	background: @d_haupt_thema2;
 	color: @d_haupt_schriftfarbenegativ;
 }
+
+// DRUCKEN;
+
+.cms_download_anzeige {
+	padding: 5px 5px 5px 42px;
+	background-position: 5px 5px;
+	min-height: 44px;
+	background-repeat: no-repeat;
+	background-color: @h_haupt_abstufung1;
+	border: 1px solid @h_haupt_abstufung1;
+	border-left: 3px solid @h_haupt_abstufung2;
+	line-height: 1em !important;
+}
+
+.cms_download_anzeige p, .cms_download_anzeige h4 {
+	line-height: 1em !important;
+	transition: 500ms ease-in-out;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+
+.cms_download_inaktiv {opacity: .5;}

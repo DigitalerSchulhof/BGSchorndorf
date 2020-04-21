@@ -4,7 +4,11 @@ include_once("php/allgemein/funktionen/brotkrumen.php");
 $ausnahme = false;
 $CMS_MONATELINK = "(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)";
 
-if ($CMS_URL[0] == 'Website') {
+if($CMS_URL[0] == "Drucken") {
+  include_once("php/drucken/drucken.php");
+  $ausnahme = true;
+}
+else if ($CMS_URL[0] == 'Website') {
   include_once("php/website/seiten/initial.php");
   // WEBSITE
   $CMS_VERFUEGBARE_SEITEN['Website/Datenschutz']                                        = 'php/website/seiten/pflicht/datenschutz.php';
