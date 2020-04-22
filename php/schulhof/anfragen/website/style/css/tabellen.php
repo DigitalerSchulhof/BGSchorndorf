@@ -150,7 +150,7 @@ table.table td {
 	border: none !important;
 	padding: 3px;
 	border-right: 1px solid @h_haupt_hintergrund !important;
-	background-color: #dddddd;
+	background-color: @h_haupt_abstufung1;
 }
 
 table.table td:last-child {
@@ -222,6 +222,7 @@ th.cms_zwischenueberschrift *  {
 
 table.table td {
 	border-right: 1px solid @d_haupt_hintergrund !important;
+	background-color: @d_haupt_abstufung1;
 }
 
 table.table tr:nth-child(2n+1) td {
