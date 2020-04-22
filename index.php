@@ -185,9 +185,11 @@
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$CMS_VERSION\">";
+		$hellhash = md5(filemtime("css/hell.css"));
+		$dunkelhash = md5(filemtime("css/dunkel.css"));
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$hellhash\">";
 		if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
-			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$CMS_VERSION\">";
+			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$dunkelhash\">";
 		}
 
     //<!-- Einbindung der JavaScripts -->
