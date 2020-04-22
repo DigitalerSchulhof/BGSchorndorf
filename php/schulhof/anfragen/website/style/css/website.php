@@ -719,8 +719,6 @@
 }
 
 .cms_download_anzeige p, .cms_download_anzeige h4 {
-	line-height: 1em !important;
-	transition: 500ms ease-in-out;
 	overflow:hidden;
 	text-overflow: ellipsis;
 }

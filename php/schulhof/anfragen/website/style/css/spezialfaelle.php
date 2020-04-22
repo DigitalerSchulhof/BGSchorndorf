@@ -310,8 +310,6 @@
 	background: @d_haupt_hintergrund;
 }
 
-
-
 #cms_speicherplatz_frei {
 	background: @d_haupt_abstufung1;
 }
@@ -321,3 +319,14 @@
 #cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @d_haupt_meldunginfohinter;}
 #cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @d_haupt_meldungerfolghinter;}
 #cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @d_haupt_abstufung2;}
+
+// DRUCKEN;
+
+.cms_genehmigungausstehend {
+	font-weight: bold;
+	padding: 5px !important;
+	border-radius: 5px;
+	color: @h_haupt_schriftfarbenegativ;
+	background-color: @h_haupt_meldungfehlerakzent;
+	text-align: center;
+}

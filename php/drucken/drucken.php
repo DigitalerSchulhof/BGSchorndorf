@@ -57,7 +57,7 @@
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">"; ?>
-	<title>Druckansicht – <?php echo $CMS_SCHULE." ".$CMS_ORT;?></title>
+	<title>&nbsp;</title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 		// <!-- Einbindung der Stylesheets -->
@@ -105,8 +105,7 @@
 			}
 
 			if (preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)) {
-				include('php/schulhof/seiten/gruppen/blogansicht.php');
-				$druckfehler = false;
+				include('blog.php');
 			}
 		}
 

@@ -1,5 +1,7 @@
 // DRUCKEN;
+
 * {
+	-webkit-print-color-adjust: exact;
 	font-family: 'rob', sans-serif;
 	font-size: 10pt;
 	font-weight: normal;
@@ -13,7 +15,6 @@
 
 .cms_druckseite {
 	width: 210mm;
-	padding: 1cm 2cm 2cm 2cm;
 	background: #ffffff;
 	color: #000000;
 }
@@ -83,9 +84,7 @@ p:last-child {
 h1 {
 	font-size: 14pt;
 	font-weight: bold;
-	margin-top: 2.5cm;
 	margin-bottom: .25cm;
-	page-break-before: always;
 }
 
 .cms_druckkopf+h1 {
@@ -216,4 +215,4 @@ p.cms_unterschrift {
 	page-break-before: always;
 }
 
-@page {margin: 0;}
+@page {margin: 2cm;}

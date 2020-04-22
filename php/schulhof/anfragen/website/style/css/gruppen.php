@@ -494,3 +494,75 @@ background: @d_hinweis_hintergrund
 #cms_chat #cms_chat_nachrichten .cms_chat_nachricht_aussen .cms_chat_nachricht_innen {
 	background-color: @d_chat_gegenueber
 }
+
+// DRUCKEN;
+
+.cms_beschluss {
+	break-inside: avoid;
+	color: @h_haupt_schriftfarbepositiv;
+	padding: 5px;
+	margin-bottom: @haupt_absatzschulhof;
+	display: block;
+	margin-bottom: @haupt_absatzschulhof;
+}
+
+.cms_beschluss h4, .cms_beschluss p {
+	margin-top: 0;
+	display: block;
+	width: 100%;
+}
+
+.cms_beschluss:hover {
+	color: @h_haupt_schriftfarbepositiv;
+	display: block;
+}
+
+.cms_beschluss_pro {
+	border-left: 3px solid @h_haupt_meldungerfolgakzent;
+	background: @h_haupt_meldungerfolghinter;
+}
+
+.cms_beschluss_contra {
+	border-left: 3px solid @h_haupt_meldungfehlerakzent;
+	background: @h_haupt_meldungfehlerhinter;
+}
+
+.cms_beschluss_enthaltung {
+	border-left: 3px solid @h_haupt_abstufung2;
+	background: @h_haupt_abstufung1;
+}
+
+.cms_beschluss_stimmen {
+	font-size: 80%;
+	margin-bottom: 0px;
+}
+
+.cms_beschluss_stimmen_pro {background: @h_haupt_meldungerfolgakzent;}
+.cms_beschluss_stimmen_contra {background: @h_haupt_meldungfehlerakzent;}
+.cms_beschluss_stimmen_enthaltung {background: @h_haupt_abstufung2;}
+
+.cms_beschluss_stimmen_pro, .cms_beschluss_stimmen_contra, .cms_beschluss_stimmen_enthaltung, .cms_beschluss_langfristig {
+	display: inline-block;
+	padding: 2px 7px;
+	font-weight: bold;
+	color: @h_haupt_schriftfarbenegativ;
+	text-align: center;
+	min-width: 25px;
+}
+
+.cms_beschluss_stimmen_pro {
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+}
+
+.cms_beschluss_stimmen_contra {
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+}
+
+.cms_beschluss_langfristig {
+	margin-left: 10px;
+	border-radius: 7px;
+	color: @h_haupt_schriftfarbepositiv;
+	background: @h_haupt_hintergrund;
+}
