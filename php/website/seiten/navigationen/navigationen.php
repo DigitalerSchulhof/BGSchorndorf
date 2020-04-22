@@ -105,7 +105,7 @@ function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = 
 		$code .= "<li><a href=\"Website/Datenschutz\">Datenschutz</a></li>";
 		$code .= "<li><a href=\"Website/Impressum\">Impressum</a></li>";
 		if(($CMS_EINSTELLUNGEN['Feedback aktiv'] == "1" && ($CMS_EINSTELLUNGEN['Feedback Anmeldung notwendig'] == "0" || ($CMS_EINSTELLUNGEN['Feedback Anmeldung notwendig'] == "1" && $CMS_ANGEMELDET))) || ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] == "1" && ($CMS_EINSTELLUNGEN['Fehlermeldung Anmeldung notwendig'] == "0" || ($CMS_EINSTELLUNGEN['Fehlermeldung Anmeldung notwendig'] == "1" && $CMS_ANGEMELDET))))
-			$code .= "<li class=\"cms_footer_feedback\"><a href=\"Website/Feedback\">Fehler melden</a></li>";
+			$code .= "<li class=\"cms_footer_feedback\"><a href=\"Website/Feedback\">Feedback</a></li>";
 	}
 
 	if (strlen($code) > 0) {
