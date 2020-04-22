@@ -48,14 +48,14 @@ function cms_termin_link_ausgeben($dbs, $daten, $internvorlink = "") {
 		$code .= "<p><span class=\"cms_button\" href=\"$link\">Weiterlesen ...</span></p>";
 	}
 
-	$code .= cms_termin_zusatzinfo($dbs, $daten);
+	$code .= cms_termin_zusatzinfo($dbs, $daten, $internvorlink);
 	$code .= "</div></a>";
 	$code .= "</li>";
 
 	return $code;
 }
 
-function cms_termin_zusatzinfo($dbs, $daten) {
+function cms_termin_zusatzinfo($dbs, $daten, $internvorlink) {
 	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_URL;
 	$code = "";
 
@@ -66,7 +66,10 @@ function cms_termin_zusatzinfo($dbs, $daten) {
 	}*/
 
 	if ($daten['art'] == 'in') {
-		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern</span> ";
+		$gruppeninfos = explode("/", cms_linkzutext($internvorlink));
+		$gruppenartbez = $gruppeninfos[count($gruppeninfos)-2];
+		$gruppenbez = $gruppeninfos[count($gruppeninfos)-1];
+		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern – $gruppenartbez » $gruppenbez</span> ";
 	}
 
 	if ($daten['ortt'] == 1) {

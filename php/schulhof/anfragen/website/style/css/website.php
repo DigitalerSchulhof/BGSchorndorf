@@ -471,16 +471,13 @@
 	border-bottom-left-radius: @auszeichnung_radius;
 	border-bottom-right-radius: @auszeichnung_radius;
 	background: @h_auszeichnung_hintergrund;
-	color: @h_auszeichnung_schrift;
-}
-
-.cms_auszeichnung a p {
-	color: @h_auszeichnung_schrift;	
 }
 
 .cms_auszeichnung p, .cms_auszeichnung b {
 	line-height: 1.5em !important;
 	font-size: 10px !important;
+	transition: 250ms ease-in-out;
+	color: @h_auszeichnung_schrift;
 }
 
 .cms_auszeichnung img {max-height: 150px;}
@@ -685,7 +682,6 @@
 
 .cms_auszeichnung a {
 	background: @d_auszeichnung_hintergrund;
-	color: @d_auszeichnung_schrift;
 }
 
 .cms_auszeichnung a:hover {

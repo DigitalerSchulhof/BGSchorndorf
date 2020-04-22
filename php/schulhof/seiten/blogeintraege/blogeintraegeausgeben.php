@@ -48,7 +48,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
 		$code .= "<p><span class=\"cms_button\" href=\"$link\">Weiterlesen ...</span></p>";
 	}
-	$code .= cms_blogeintrag_zusatzinfo($dbs, $daten);
+	$code .= cms_blogeintrag_zusatzinfo($dbs, $daten, $internvorlink);
 	$code .= "<div class=\"cms_clear\"></div>";
 	$code .= "</div>";
 	$code .= "</a>";
@@ -59,7 +59,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	return $code;
 }
 
-function cms_blogeintrag_zusatzinfo($dbs, $daten) {
+function cms_blogeintrag_zusatzinfo($dbs, $daten, $internvorlink) {
 	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_URL;
 	$code = "";
 
@@ -70,7 +70,10 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 	}*/
 
 	if ($daten['art'] == 'in') {
-		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern</span> ";
+		$gruppeninfos = explode("/", cms_linkzutext($internvorlink));
+		$gruppenartbez = $gruppeninfos[count($gruppeninfos)-2];
+		$gruppenbez = $gruppeninfos[count($gruppeninfos)-1];
+		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern – $gruppenartbez » $gruppenbez</span> ";
 	}
 
 	if (strlen($daten['autor']) > 0) {$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/icons/oegruppen/autor.png')\">".$daten['autor']."</span> ";}
