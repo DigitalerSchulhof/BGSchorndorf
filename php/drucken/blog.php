@@ -29,6 +29,23 @@
   	return $code;
 	}
 
+	function cms_artikellink_ausgeben($l) {
+		$code = "";
+		$link = $l['link'];
+		$titel = $l['titel'];
+		$beschreibung = $l['beschreibung'];
+
+		$code .= "<a href=\"$link\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/icons/gross/link.png');\">";
+			$code .= "<h4>$titel</h4>";
+			if (strlen($beschreibung) > 0) {$code .= "<p>$beschreibung</p>";}
+			$info = $link;
+			if (strlen($info) > 0) {
+				$code .= "<p class=\"cms_notiz\">".$info."</p>";
+			}
+		$code .= "</a>";
+		return $code;
+	}
+
 	function cms_schulhof_interndownload_ausgeben($e) {
   	$code = "";
   	$pfad = implode("/", array_slice(explode("/", $e['pfad']), 1));
@@ -141,6 +158,7 @@
 	  return $code;
 	}
 
+
 	$fehler = false;
 	$gefunden = false;
 	if (($CMS_URL[0] == 'Schulhof') || ($CMS_URL[0] == 'Website')) {
@@ -152,6 +170,7 @@
 			$datum = mktime(0, 0, 0, $monat, $tag, $jahr);
 			$tabelle = "blogeintraege";
 			$tabelledownload = "blogeintragdownloads";
+			$tabellelink		 = "blogeintraglinks";
 			$gruppe = "Blogeinträge";
 			$vorschaubild = "AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL')";
 			$oeffentlichkeit = 'oeffentlichkeit';
@@ -174,6 +193,7 @@
 			$gk = cms_textzudb($gruppe);
 			$tabelle = $gk."blogeintraegeintern";
 			$tabelledownload = $gk."blogeintragdownloads";
+			$tabellelink		 = $gk."blogeintraglinks";
 			$tabellebeschluesse = $gk."blogeintragbeschluesse";
 			$vorschaubild = "''";
 			$oeffentlichkeit = "'0' AS oeffentlichkeit";
@@ -290,6 +310,24 @@
 			}
 			$sql->close();
 
+			// Links laden
+			$links = array();
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(link, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM $tabellelink WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($lid, $lbeintrag, $llink, $ltitel, $lbeschr);
+				while ($sql->fetch()) {
+					$L = array();
+					$L['id'] = $lid;
+					$L['blogeintrag'] = $lbeintrag;
+					$L['link'] = $llink;
+					$L['titel'] = $ltitel;
+					$L['beschreibung'] = $lbeschr;
+					array_push($links, $L);
+				}
+			}
+			$sql->close();
+
 			// Beschlüsse laden
 			$beschluesse = array();
 			if ($art == 'in') {
@@ -338,6 +376,12 @@
 						$code .= cms_schulhof_interndownload_ausgeben($d);
 					}
 				}
+				$code .= "</div></div>";
+			}
+			if (count($links) > 0) {
+				$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+				$code .= "<h2>Zugehörige Links</h2>";
+				foreach ($links as $l) {$code .= cms_artikellink_ausgeben($l);}
 				$code .= "</div></div>";
 			}
 			if (count($beschluesse) > 0) {

@@ -35,6 +35,7 @@ if (!$fehler) {
 	include_once('php/schulhof/seiten/gruppen/blogeintragdetails.php');
 	include_once('php/schulhof/seiten/website/editor/editor.php');
   include_once("php/schulhof/seiten/verwaltung/downloads/downloads.php");
+  include_once("php/schulhof/seiten/verwaltung/artikellinks/links.php");
   include_once("php/schulhof/seiten/verwaltung/beschluesse/beschluesse.php");
 	$code = "";
 	$code .= "<div class=\"cms_spalte_i\">";

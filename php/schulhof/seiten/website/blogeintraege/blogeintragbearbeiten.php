@@ -32,6 +32,7 @@ if ($zugriff) {
   include_once("php/schulhof/seiten/website/blogeintraege/details.php");
   include_once("php/schulhof/seiten/verwaltung/gruppen/zuordnungen.php");
   include_once("php/schulhof/seiten/verwaltung/downloads/downloads.php");
+	include_once("php/schulhof/seiten/verwaltung/artikellinks/links.php");
   include_once("php/schulhof/seiten/website/editor/editor.php");
 
   if (!isset($_SESSION["BLOGEINTRAGID"]) || !isset($_SESSION["BLOGEINTRAGZIEL"])) {

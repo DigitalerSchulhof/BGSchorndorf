@@ -145,6 +145,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$datum = mktime(0, 0, 0, $monat, $tag, $jahr);
 			$tabelle = "blogeintraege";
 			$tabelledownload = "blogeintragdownloads";
+			$tabellelink = "blogeintraglinks";
 			$gruppe = "Blogeinträge";
 			$vorschaubild = "AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL')";
 			$oeffentlichkeit = 'oeffentlichkeit';
@@ -161,6 +162,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$gk = cms_textzudb($gruppe);
 			$tabelle = $gk."blogeintraegeintern";
 			$tabelledownload = $gk."blogeintragdownloads";
+			$tabellelink = $gk."blogeintraglinks";
 			$tabellebeschluesse = $gk."blogeintragbeschluesse";
 			$vorschaubild = "''";
 			$oeffentlichkeit = "'0' AS oeffentlichkeit";
@@ -250,6 +252,24 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			}
 			$sql->close();
 
+			// Links laden
+			$links = array();
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(link, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM $tabellelink WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($lid, $lbeintrag, $llink, $ltitel, $lbeschr);
+				while ($sql->fetch()) {
+					$L = array();
+					$L['id'] = $lid;
+					$L['blogeintrag'] = $lbeintrag;
+					$L['link'] = $llink;
+					$L['titel'] = $ltitel;
+					$L['beschreibung'] = $lbeschr;
+					array_push($links, $L);
+				}
+			}
+			$sql->close();
+
 			// Beschlüsse laden
 			$beschluesse = array();
 			if ($art == 'in') {
@@ -323,7 +343,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 			$code .= "</div></div>";
 
-			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0)) {
+			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0) || (count($links) > 0)) {
 				$code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
 				if (count($downloads) > 0) {
 					$code .= "<h3>Zugehörige Downloads</h3>";
@@ -333,6 +353,12 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 							$d['gruppenid'] = $gruppenid;
 							$code .= cms_schulhof_interndownload_ausgeben($d);
 						}
+					}
+				}
+				if (count($links) > 0) {
+					$code .= "<h3>Zugehörige Links</h3>";
+					foreach ($links as $l) {
+						$code .= cms_artikellink_ausgeben($l);
 					}
 				}
 				if (count($beschluesse) > 0) {

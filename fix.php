@@ -72,7 +72,7 @@ foreach ($CMS_GRUPPEN AS $g) {
   $gk = cms_textzudb($g);
   //echo "ALTER TABLE `$gk"."termineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
   //echo "ALTER TABLE `$gk"."termineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;<br>";
-  echo "ALTER TABLE $gk ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;<br>";
+  echo "CREATE TABLE `{$gk}blogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintrag{$gk}blogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;<br>";
 }
 
 // $dbs->query("ALTER TABLE `rollen` DROP `personenart`");

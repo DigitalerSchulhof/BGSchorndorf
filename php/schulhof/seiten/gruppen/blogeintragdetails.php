@@ -91,6 +91,9 @@ function cms_internerblogeintrag_details_laden($id, $gruppe, $gruppenid) {
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'blogintern', $id, $gruppe, $gruppenid);
 
+    $code .= "<h3>Zugehörige Links</h3>";
+    $code .= cms_artikellinkelemente($dbs, 'blogintern', $id, $gruppe, $gruppenid);
+
     $code .= "<h3>Zugehörige Beschlüsse</h3>";
     $code .= cms_beschlusselemente($dbs, $id, $gruppe, $gruppenid);
 

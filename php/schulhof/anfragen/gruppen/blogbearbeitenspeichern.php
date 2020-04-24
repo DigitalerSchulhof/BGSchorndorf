@@ -23,6 +23,8 @@ if (isset($_POST['zusammenfassung']))   {$zusammenfassung = $_POST['zusammenfass
 if (isset($_POST['autor'])) 		        {$autor = $_POST['autor'];} 			                    else {echo "FEHLER";exit;}
 if (isset($_POST['downloadanzahl']))    {$downloadanzahl = $_POST['downloadanzahl'];}         else {echo "FEHLER";exit;}
 if (isset($_POST['downloadids']))       {$downloadids = $_POST['downloadids'];}               else {echo "FEHLER";exit;}
+if (isset($_POST['artikellinkanzahl'])) {$artikellinkanzahl = $_POST['artikellinkanzahl'];} else {echo "FEHLER";exit;}
+if (isset($_POST['artikellinkids']))    {$artikellinkids = $_POST['artikellinkids'];}       else {echo "FEHLER";exit;}
 if (isset($_POST['beschluesseanzahl'])) {$beschluesseanzahl = $_POST['beschluesseanzahl'];}   else {echo "FEHLER";exit;}
 if (isset($_POST['beschluesseids']))    {$beschluesseids = $_POST['beschluesseids'];}         else {echo "FEHLER";exit;}
 if (isset($_POST['inhalt'])) 					  {$text = $_POST['inhalt'];} 										      else {echo "FEHLER";exit;}
@@ -116,6 +118,25 @@ if (cms_angemeldet() && $zugriff) {
 		}
 	}
 
+	$artikellinks = array();
+	if ($artikellinkanzahl > 0) {
+		$lids = explode('|', $artikellinkids);
+		$sqlwhere = substr(implode(' OR ', $lids), 4);
+
+		for ($i=1; $i<count($lids); $i++) {
+			$ll = array();
+			if (isset($_POST["ltitel_".$lids[$i]])) {$ll['titel'] = $_POST["ltitel_".$lids[$i]];} else {echo "FEHLER"; exit;}
+			if (strlen($ll['titel']) < 1) {$fehler = true; }
+
+			if (isset($_POST["lbeschreibung_".$lids[$i]])) {$ll['beschreibung'] = $_POST["lbeschreibung_".$lids[$i]];} else {echo "FEHLER"; exit;}
+
+			if (isset($_POST["llink_".$lids[$i]])) {$ll['link'] = $_POST["llink_".$lids[$i]];} else {echo "FEHLER"; exit;}
+			if (strlen($ll['link']) < 1) {$fehler = true; }
+
+			array_push($artikellinks, $ll);
+		}
+	}
+
   $beschluesse = array();
   if ($beschluesseanzahl > 0) {
 		$bids = explode('|', $beschluesseids);
@@ -165,6 +186,22 @@ if (cms_angemeldet() && $zugriff) {
 		  $sql->execute();
 		}
 		$sql->close();
+
+		$sql = $dbs->prepare("DELETE FROM {$gk}blogeintraglinks WHERE blogeintrag = ?");
+    $sql->bind_param("i", $blogid);
+    $sql->execute();
+    $sql->close();
+
+    // LINKS EINTRAGEN
+    $sql = $dbs->prepare("UPDATE {$gk}blogeintraglinks SET blogeintrag = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+		foreach ($artikellinks as $l) {
+			$l['titel'] = cms_texttrafo_e_db($l['titel']);
+			$l['beschreibung'] = cms_texttrafo_e_db($l['beschreibung']);
+			$did = cms_generiere_kleinste_id($gk.'blogeintraglinks');
+      $sql->bind_param("isssi", $blogid, $l['link'], $l['titel'], $l['beschreibung'], $did);
+      $sql->execute();
+		}
+    $sql->close();
 
     // BESCHLÜSSE EINTRAGEN
     $sql = $dbs->prepare("DELETE FROM $gk"."blogeintragbeschluesse WHERE blogeintrag = ?;");

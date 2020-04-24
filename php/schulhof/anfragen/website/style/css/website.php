@@ -95,7 +95,14 @@
 	margin-bottom: @haupt_absatzschulhof;
 }
 
-.cms_download_anzeige {
+.cms_artikellink_anzeige {
+	display: block;
+	color: inherit;
+	width: 100%;
+}
+
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
 	padding: 5px 5px 5px 42px;
 	background-position: 5px 5px;
 	min-height: 44px;
@@ -107,19 +114,22 @@
 	line-height: 1em !important;
 }
 
-.cms_download_anzeige p, .cms_download_anzeige h4 {
+.cms_download_anzeige p, .cms_download_anzeige h4,
+.cms_artikellink_anzeige p, .cms_artikellink_anzeige h4 {
 	line-height: 1em !important;
 	transition: 500ms ease-in-out;
 	overflow:hidden;
 	text-overflow: ellipsis;
 }
 
-.cms_download_anzeige:hover {
+.cms_download_anzeige:hover,
+.cms_artikellink_anzeige:hover {
 	background-color: @h_haupt_abstufung2;
 	cursor: pointer;
 }
 
 .cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @h_haupt_schriftfarbenegativ;}
+.cms_artikellink_anzeige:hover p, .cms_artikellink_anzeige:hover h4 {color: @h_haupt_schriftfarbenegativ;}
 
 .cms_download_inaktiv {opacity: .5;}
 .cms_download_inaktiv:hover {cursor: not-allowed;}
@@ -567,17 +577,20 @@
 	background-color: @d_zeitdiagramm_balkenhover;
 }
 
-.cms_download_anzeige {
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
 	background-color: @d_haupt_abstufung1;
 	border: 1px solid @d_haupt_abstufung1;
 	border-left: 3px solid @d_haupt_abstufung2;
 }
 
-.cms_download_anzeige:hover {
+.cms_download_anzeige:hover,
+.cms_artikellink_anzeige:hover {
 	background-color: @d_haupt_abstufung2;
 }
 
 .cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @d_haupt_schriftfarbenegativ;}
+.cms_artikellink_anzeige:hover p, .cms_artikellink_anzeige:hover h4 {color: @d_haupt_schriftfarbenegativ;}
 
 .cms_website_menuepunkte_ja {
 	background: @d_haupt_meldungerfolghinter;
@@ -707,7 +720,8 @@
 
 // DRUCKEN;
 
-.cms_download_anzeige {
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
 	padding: 5px 5px 5px 42px;
 	background-position: 5px 5px;
 	min-height: 44px;
@@ -718,9 +732,16 @@
 	line-height: 1em !important;
 }
 
-.cms_download_anzeige p, .cms_download_anzeige h4 {
+.cms_download_anzeige p, .cms_download_anzeige h4,
+.cms_artikellink_anzeige p, .cms_artikellink_anzeige h4 {
 	overflow:hidden;
 	text-overflow: ellipsis;
 }
 
 .cms_download_inaktiv {opacity: .5;}
+
+.cms_artikellink_anzeige {
+	color: inherit;
+	display: block;
+	width: 100%;
+}

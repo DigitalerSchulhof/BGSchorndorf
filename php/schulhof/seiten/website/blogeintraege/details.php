@@ -124,6 +124,9 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'blogeintraege', $id);
 
+    $code .= "<h3>Zugehörige Links</h3>";
+    $code .= cms_artikellinkelemente($dbs, 'blogeintraege', $id);
+
     if (cms_r("website.dateien.hochladen")) {
       $inhalt = "<h3>Websitedateien</h3>";
       $rechte = cms_websitedateirechte_laden();
