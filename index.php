@@ -342,6 +342,11 @@
 				return v ? $(this).addClass(c) : $(this).removeClass(c);
 			}
 		});
+		if (!Array.prototype.last){
+    	Array.prototype.last = function(){
+        return this[this.length - 1];
+    	};
+		};
     </script>
 </head>
 
