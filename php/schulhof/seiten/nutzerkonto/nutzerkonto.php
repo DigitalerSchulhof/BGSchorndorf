@@ -49,6 +49,8 @@ $neuigkeiten = "";
 
 $todo = "<li class=\"cms_neuigkeit\" style=\"width: 50%\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
 $todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
+$todob = "";
+$todot = "";
 $tododa = false;
 $sql = "";
 foreach($CMS_GRUPPEN as $g) {
@@ -62,15 +64,26 @@ if ($sql->execute()) {
 	$sql->bind_result($a, $sbez, $g, $gbez, $abez, $adat);
 	while ($sql->fetch()) {
 		$tododa = true;
-		$art = $a == "b" ? "Blog" : "Termine";
 		$sbez = cms_textzulink($sbez);
 		$monatsname = cms_monatsnamekomplett(date('m', $adat));
 		$jahr = date('Y', $adat);
 		$tag = date('d', $adat);
 
-		$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/$art/$jahr/$monatsname/$tag/".cms_textzulink($abez);
 
-		$todo .= "<p><a target=\"_blank\" href=\"$link\">$abez ($g » $gbez)</a></p>";
+		if($a == "b") {
+			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+			$todob .= "<p><a target=\"_blank\" href=\"$link\">$abez ($g » $gbez)</a></p>";
+		}
+		if($a == "t") {
+			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+			$todot .= "<p><a target=\"_blank\" href=\"$link\">$abez ($g » $gbez)</a></p>";
+		}
+	}
+	if(strlen($todob)) {
+		$todo .= "<h6>Blogeinträge:</h6>$todob";
+	}
+	if(strlen($todot)) {
+		$todo .= "<h6>Termine:</h6>$todot";
 	}
 }
 $sql->close();
