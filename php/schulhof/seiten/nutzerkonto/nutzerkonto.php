@@ -46,6 +46,38 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 }
 
 $neuigkeiten = "";
+
+$todo = "<li class=\"cms_neuigkeit\" style=\"width: 50%\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
+$todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
+$tododa = false;
+$sql = "";
+foreach($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	$sql .= "(SELECT 'b', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 't', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+}
+$sql = substr($sql, 0, -6);
+$sql = $dbs->prepare($sql);
+if ($sql->execute()) {
+	$sql->bind_result($a, $sbez, $g, $gbez, $abez, $adat);
+	while ($sql->fetch()) {
+		$tododa = true;
+		$art = $a == "b" ? "Blog" : "Termine";
+		$sbez = cms_textzulink($sbez);
+		$monatsname = cms_monatsnamekomplett(date('m', $adat));
+		$jahr = date('Y', $adat);
+		$tag = date('d', $adat);
+
+		$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/$art/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+
+		$todo .= "<p><a target=\"_blank\" href=\"$link\">$abez ($g » $gbez)</a></p>";
+	}
+}
+$sql->close();
+
+$todo .= "</span></li>";
+if ($tododa) {$neuigkeiten .= $todo;}
+
 // Prüfen, ob Tagebücher zu füllen sind
 $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM (SELECT DISTINCT kurse.id FROM kurse JOIN stufen ON kurse.stufe = stufen.id JOIN unterricht ON unterricht.tkurs = kurse.id WHERE kurse.schuljahr = ? AND stufen.tagebuch = 1 AND tlehrer = ?) AS x");
 $sql->bind_param("ii", $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID);
@@ -304,7 +336,6 @@ if ($sql->execute()) {
 	}
 }
 $sql->close();
-$favoriten .= "</span></li>";
 if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
