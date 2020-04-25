@@ -10,10 +10,9 @@ session_start();
 if (isset($_POST['gruppe'])) {$gruppe = $_POST['gruppe'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen exportieren'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.exportieren")) {
 	$fehler = false;
 
 	if (($gruppe != 'alle') && ($gruppe != 'auf') && ($gruppe != 'aufohne') && ($gruppe != 'aufbili') && ($gruppe != 'abgelehnt')) {$fehler = true;}
@@ -27,172 +26,111 @@ if (cms_angemeldet() && $zugriff) {
 		else if ($gruppe == "aufbili") {$sqlwhere = " WHERE akzeptiert = AES_ENCRYPT('ja', '$CMS_SCHLUESSEL') AND kuenftigesprofil = AES_ENCRYPT('bilingual', '$CMS_SCHLUESSEL')";}
 
 		$dbs = cms_verbinden('s');
-		$export = "Klasse;Name;Vorname;Rufname;Geburtstag;Geburtsort;Geburtsland;Geschlecht;Religion;RU;Land;Land2;Strasse;Hausnr;PLZ;Ort;Teilort;Telefon1;Telefon2;Handy1;Handy2;Email1;Muttersprache;Schuleintrittam;Einschulungam;Erz1Name;Erz1Vorname;Erz1Geschlecht;Erz1strasse;Erz1Hausnr;Erz1PLZ;Erz1Ort;Erz1Teilort;Erz1Telefon;Erz1Telefon3;Erz1Handy1;Erz1Email;Erz2Name;Erz2Vorname;Erz2Geschlecht;Erz2strasse;Erz2Hausnr;Erz2PLZ;Erz2Ort;Erz2Teilort;Erz2Telefon;Erz2Telefon3;Erz2Handy1;Erz2Email;Fremdsprache1;Fremdsprache2;Fremdsprache3;Fremdsprache4;Profil1;Profil2;Asylbewerber;Aussiedler;AbgebendeSchule;Ausbildungsbetrieb;Ausbild_beruf_id;VorigeKlasse;Erz1Sorgerecht;Erz1Briefe;Erz2Sorgerecht;Erz2Briefe\n";
 
-		$sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(rufname, '$CMS_SCHLUESSEL') AS rufname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL') AS geburtsdatum, AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL') AS geburtsort, AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL') AS geburtsland, AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL') AS muttersprache, AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL') AS verkehrssprache, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(religion, '$CMS_SCHLUESSEL') AS religion, AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL') AS religionsunterricht, AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL') AS staatsangehoerigkeit, AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL') AS zstaatsangehoerigkeit, AES_DECRYPT(strasse, '$CMS_SCHLUESSEL') AS strasse, AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL') AS hausnummer, AES_DECRYPT(plz, '$CMS_SCHLUESSEL') AS plz, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(teilort, '$CMS_SCHLUESSEL') AS teilort, AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL') AS telefon1, AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL') AS telefon2, AES_DECRYPT(handy1, '$CMS_SCHLUESSEL') AS handy1, AES_DECRYPT(handy2, '$CMS_SCHLUESSEL') AS handy2, AES_DECRYPT(mail, '$CMS_SCHLUESSEL') AS mail, AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert FROM voranmeldung_schueler$sqlwhere";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$sakzeptiert = $daten['akzeptiert'];
+		$anmeldedatum = time();
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') FROM schulanmeldung WHERE wert = AES_ENCRYPT('Anmeldung persönlich bis', '$CMS_SCHLUESSEL')");
+		if ($sql->execute()) {
+			$sql->bind_result($anmeldedatum);
+			$sql->fetch();
+		}
+		$sql->close();
+
+		$export = "Klasse;Name;Vorname;Rufname;Geburtsname;Geburtstag;Geburtsort;Geburtsland;Geschlecht;Religion;RU;Land;Land2;Strasse;HausNr;PLZ;Ort;Staat;Teilort;Telefon1;Telefon2;Handy1;Handy2;email1;Muttersprache;Schuleintrittam;Anmeldung am;im Schriftverkehrverteiler;auskunftsberechtigt;Einschulungam;Erz1Name;Erz1Vorname;Erz1Geschlecht;Erz1Strasse;Erz1HausNr;Erz1PLZ;Erz1Ort;Erz1Teilort;Erz1Telefon;Erz1Telefon2;Erz1Handy;Erz1Email;Erz1Schriftverkehrverteiler;Erz1auskunftsberechtigt;Erz1Hauptansprechpartner;Erz1Art;Erz2Name;Erz2Vorname;Erz2Geschlecht;Erz2Strasse;Erz2HausNr;Erz2PLZ;Erz2Ort;Erz2Teilort;Erz2Telefon;Erz2Telefon2;Erz2Handy;Erz2Email;Erz2Schriftverkehrverteiler;Erz2auskunftsberechtigt;Erz2Hauptansprechpartner;Erz2Art;Fremdsprache1;Fremdsprache2;Fremdsprache3;Fremdsprache4;Profil1;Profil1von;Profil1bis;Profil2;Profil2von;Profil2bis;Zugangsart;AbgebendeSchule;Ausbildungsbetrieb;Ausbilder;Ausbild_beruf_id;Vorbildung\n";
+
+		$sql = $dbs->prepare("SELECT s.id, AES_DECRYPT(s.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.rufname, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.geburtsdatum, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.geburtsort, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.geburtsland, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.muttersprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.verkehrssprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.religion, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.religionsunterricht, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.staatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.zstaatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.staat, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.handy1, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.handy2, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.mail, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.einschulung, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.vorigeschule, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.vorigeklasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.kuenftigesprofil, '$CMS_SCHLUESSEL'), AES_DECRYPT(s.akzeptiert, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.nummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.sorgerecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.briefe, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.haupt, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.rolle, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.handy, '$CMS_SCHLUESSEL'), AES_DECRYPT(e1.mail, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.nummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.sorgerecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.briefe, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.haupt, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.rolle, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.handy, '$CMS_SCHLUESSEL'), AES_DECRYPT(e2.mail, '$CMS_SCHLUESSEL') FROM voranmeldung_schueler AS s LEFT JOIN voranmeldung_eltern AS e1 ON s.id = e1.schueler AND e1.nummer = AES_ENCRYPT('eins', '$CMS_SCHLUESSEL') LEFT JOIN voranmeldung_eltern AS e2 ON s.id = e2.schueler AND e2.nummer = AES_ENCRYPT('zwei', '$CMS_SCHLUESSEL') $sqlwhere");
+
+		if ($sql->execute()) {
+			$sql->bind_result($sid, $svor, $sruf, $snach, $sgebd, $sgebo, $sgebl, $smutts, $sverks, $sgeschl, $sreli, $sreliu, $sstaats, $szstaats, $sstrasse, $shausnr, $splz, $sort, $sstaat, $steilort, $stel1, $stel2, $shandy1, $shandy2, $smail, $seinsch, $svorigs, $svorigk, $skuenft, $skzept, $e1nummer, $e1vor, $e1nach, $e1geschl, $e1sorge, $e1briefe, $e1haupt, $e1rolle, $e1strasse, $e1hausnr, $e1plz, $e1ort, $e1teilort, $e1tel1, $e1tel2, $e1handy, $e1mail, $e2nummer, $e2vor, $e2nach, $e2geschl, $e2sorge, $e2briefe, $e2haupt, $e2rolle, $e2strasse, $e2hausnr, $e2plz, $e2ort, $e2teilort, $e2tel1, $e2tel2, $e2handy, $e2mail);
+			while ($sql->fetch()) {
+				$sakzeptiert = $skzept;
 				if ($sakzeptiert == 'ja') {$sakzeptiert = 1;} else {$sakzeptiert = 0;}
-				$svorname = str_replace(';', '‚', $daten['vorname']);
-				$srufname = str_replace(';', '‚', $daten['rufname']);
-				$snachname = str_replace(';', '‚', $daten['nachname']);
-				$sgeburtsdatum = str_replace(';', '‚', $daten['geburtsdatum']);
-				$sgeburtsort = str_replace(';', '‚', $daten['geburtsort']);
-				$sgeburtsland = str_replace(';', '‚', $daten['geburtsland']);
-				$smuttersprache = str_replace(';', '‚', $daten['muttersprache']);
-				$sverkehrssprache = str_replace(';', '‚', $daten['verkehrssprache']);
-				$sgeschlecht = str_replace(';', '‚', $daten['geschlecht']);
-				$sreligion = str_replace(';', '‚', $daten['religion']);
-				$sreligionsunterricht = str_replace(';', '‚', $daten['religionsunterricht']);
-				$sland1 = str_replace(';', '‚', $daten['staatsangehoerigkeit']);
-				$sland2 = str_replace(';', '‚', $daten['zstaatsangehoerigkeit']);
-				$sstrasse = str_replace(';', '‚', $daten['strasse']);
-				$shausnummer = str_replace(';', '‚', $daten['hausnummer']);
-				$splz = str_replace(';', '‚', $daten['plz']);
-				$sort = str_replace(';', '‚', $daten['ort']);
-				$steilort = str_replace(';', '‚', $daten['teilort']);
-				$stelefon1 = str_replace(';', '‚', $daten['telefon1']);
-				$stelefon2 = str_replace(';', '‚', $daten['telefon2']);
-				$shandy1 = str_replace(';', '‚', $daten['handy1']);
-				$shandy2 = str_replace(';', '‚', $daten['handy2']);
-				$smail = str_replace(';', '‚', $daten['mail']);
-				$seinschulung = str_replace(';', '‚', $daten['einschulung']);
-				$svorigeschule = str_replace(';', '‚', $daten['vorigeschule']);
-				$svorigeklasse = str_replace(';', '‚', $daten['vorigeklasse']);
-				$sprofil = str_replace(';', '‚', $daten['kuenftigesprofil']);
-
-				$ansprechpartner2 = 1;
-				$ansprechpartner['eins']['vorname'] = "";
-				$ansprechpartner['eins']['nachname'] = "";
-				$ansprechpartner['eins']['geschlecht'] = "w";
-				$ansprechpartner['eins']['sorgerecht'] = 1;
-				$ansprechpartner['eins']['briefe'] = 1;
-				$ansprechpartner['eins']['strasse'] = "";
-				$ansprechpartner['eins']['hausnummer'] = "";
-				$ansprechpartner['eins']['plz'] = "";
-				$ansprechpartner['eins']['ort'] = "";
-				$ansprechpartner['eins']['teilort'] = "";
-				$ansprechpartner['eins']['telefon1'] = "";
-				$ansprechpartner['eins']['telefon2'] = "";
-				$ansprechpartner['eins']['handy'] = "";
-				$ansprechpartner['eins']['mail'] = "";
-				$ansprechpartner['zwei']['vorname'] = "";
-				$ansprechpartner['zwei']['nachname'] = "";
-				$ansprechpartner['zwei']['geschlecht'] = "m";
-				$ansprechpartner['zwei']['sorgerecht'] = 1;
-				$ansprechpartner['zwei']['briefe'] = 1;
-				$ansprechpartner['zwei']['strasse'] = "";
-				$ansprechpartner['zwei']['hausnummer'] = "";
-				$ansprechpartner['zwei']['plz'] = "";
-				$ansprechpartner['zwei']['ort'] = "";
-				$ansprechpartner['zwei']['teilort'] = "";
-				$ansprechpartner['zwei']['telefon1'] = "";
-				$ansprechpartner['zwei']['telefon2'] = "";
-				$ansprechpartner['zwei']['handy'] = "";
-				$ansprechpartner['zwei']['mail'] = "";
-
-				$sql2 = "SELECT id, AES_DECRYPT(nummer, '$CMS_SCHLUESSEL') AS nummer, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(sorgerecht, '$CMS_SCHLUESSEL') AS sorgerecht, AES_DECRYPT(briefe, '$CMS_SCHLUESSEL') AS briefe, AES_DECRYPT(strasse, '$CMS_SCHLUESSEL') AS strasse, AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL') AS hausnummer, AES_DECRYPT(plz, '$CMS_SCHLUESSEL') AS plz, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(teilort, '$CMS_SCHLUESSEL') AS teilort, AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL') AS telefon1, AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL') AS telefon2, AES_DECRYPT(handy, '$CMS_SCHLUESSEL') AS handy, AES_DECRYPT(mail, '$CMS_SCHLUESSEL') AS mail FROM voranmeldung_eltern WHERE schueler = ".$daten['id'];
-				if ($anfrage2 = $dbs->query($sql2)) {
-					while ($daten2 = $anfrage2->fetch_assoc()) {
-						if ($daten2['nummer'] == 'zwei') {$ansprechpartner2 = 1;}
-						$ansprechpartner[$daten2['nummer']]['vorname'] = str_replace(';', '‚', $daten2['vorname']);
-						$ansprechpartner[$daten2['nummer']]['nachname'] = str_replace(';', '‚', $daten2['nachname']);
-						$ansprechpartner[$daten2['nummer']]['geschlecht'] = str_replace(';', '‚', $daten2['geschlecht']);
-						$ansprechpartner[$daten2['nummer']]['sorgerecht'] = str_replace(';', '‚', $daten2['sorgerecht']);
-						$ansprechpartner[$daten2['nummer']]['briefe'] = str_replace(';', '‚', $daten2['briefe']);
-						$ansprechpartner[$daten2['nummer']]['strasse'] = str_replace(';', '‚', $daten2['strasse']);
-						$ansprechpartner[$daten2['nummer']]['hausnummer'] = str_replace(';', '‚', $daten2['hausnummer']);
-						$ansprechpartner[$daten2['nummer']]['plz'] = str_replace(';', '‚', $daten2['plz']);
-						$ansprechpartner[$daten2['nummer']]['ort'] = str_replace(';', '‚', $daten2['ort']);
-						$ansprechpartner[$daten2['nummer']]['teilort'] = str_replace(';', '‚', $daten2['teilort']);
-						$ansprechpartner[$daten2['nummer']]['telefon1'] = str_replace(';', '‚', $daten2['telefon1']);
-						$ansprechpartner[$daten2['nummer']]['telefon2'] = str_replace(';', '‚', $daten2['telefon2']);
-						$ansprechpartner[$daten2['nummer']]['handy'] = str_replace(';', '‚', $daten2['handy']);
-						$ansprechpartner[$daten2['nummer']]['mail'] = str_replace(';', '‚', $daten2['mail']);
-					}
-					$anfrage2->free();
-				}
+				$sverkehrssprache = str_replace(';', '‚', $sverks);
 
 				$export .= $klasse.';';
-				$export .= $snachname.';';
-				$export .= $svorname.';';
-				$export .= $srufname.';';
-				$export .= date('d.m.Y',$sgeburtsdatum).';';
-				$export .= $sgeburtsort.';';
-				$export .= $sgeburtsland.';';
-				$export .= $sgeschlecht.';';
-				$export .= $sreligion.';';
-				$export .= $sreligionsunterricht.';';
-				$export .= $sland1.';';
-				$export .= $sland2.';';
-				$export .= $sstrasse.';';
-				$export .= $shausnummer.';';
-				$export .= $splz.';';
-				$export .= $sort.';';
-				$export .= $steilort.';';
-				$export .= $stelefon1.';';
-				$export .= $stelefon2.';';
-				$export .= $shandy1.';';
-				$export .= $shandy2.';';
-				$export .= $smail.';';
-				$export .= $smuttersprache.';';
+				$export .= str_replace(';', '‚', $snach).';';
+				$export .= str_replace(';', '‚', $svor).';';
+				$export .= str_replace(';', '‚', $sruf).';;'; // Kein Geburtsname
+				$export .= date('d.m.Y',str_replace(';', '‚', $sgebd)).';';
+				$export .= str_replace(';', '‚', $sgebo).';';
+				$export .= str_replace(';', '‚', $sgebl).';';
+				$export .= str_replace(';', '‚', $sgeschl).';';
+				$export .= str_replace(';', '‚', $sreli).';';
+				$export .= str_replace(';', '‚', $sreliu).';';
+				$export .= str_replace(';', '‚', $sstaats).';';
+				$export .= str_replace(';', '‚', $szstaats).';';
+				$export .= str_replace(';', '‚', $sstrasse).';';
+				$export .= str_replace(';', '‚', $shausnr).';';
+				$export .= str_replace(';', '‚', $splz).';';
+				$export .= str_replace(';', '‚', $sort).';';
+				$export .= str_replace(';', '‚', $sstaat).';';
+				$export .= str_replace(';', '‚', $steilort).';';
+				$export .= str_replace(';', '‚', $stel1).';';
+				$export .= str_replace(';', '‚', $stel2).';';
+				$export .= str_replace(';', '‚', $shandy1).';';
+				$export .= str_replace(';', '‚', $shandy2).';';
+				$export .= str_replace(';', '‚', $smail).';';
+				$export .= str_replace(';', '‚', $smutts).';';
 				$export .= date('d.m.Y').';'; // Schuleintritt
-				$export .= date('d.m.Y', $seinschulung).';';
-				$export .= $ansprechpartner['eins']['nachname'].';';
-				$export .= $ansprechpartner['eins']['vorname'].';';
-				$export .= $ansprechpartner['eins']['geschlecht'].';';
-				$export .= $ansprechpartner['eins']['strasse'].';';
-				$export .= $ansprechpartner['eins']['hausnummer'].';';
-				$export .= $ansprechpartner['eins']['plz'].';';
-				$export .= $ansprechpartner['eins']['ort'].';';
-				$export .= $ansprechpartner['eins']['teilort'].';';
-				$export .= $ansprechpartner['eins']['telefon1'].';';
-				$export .= $ansprechpartner['eins']['telefon2'].';';
-				$export .= $ansprechpartner['eins']['handy'].';';
-				$export .= $ansprechpartner['eins']['mail'].';';
-				if ($ansprechpartner2 == 1) {
-					$export .= $ansprechpartner['zwei']['nachname'].';';
-					$export .= $ansprechpartner['zwei']['vorname'].';';
-					$export .= $ansprechpartner['zwei']['geschlecht'].';';
-					$export .= $ansprechpartner['zwei']['strasse'].';';
-					$export .= $ansprechpartner['zwei']['hausnummer'].';';
-					$export .= $ansprechpartner['zwei']['plz'].';';
-					$export .= $ansprechpartner['zwei']['ort'].';';
-					$export .= $ansprechpartner['zwei']['teilort'].';';
-					$export .= $ansprechpartner['zwei']['telefon1'].';';
-					$export .= $ansprechpartner['zwei']['telefon2'].';';
-					$export .= $ansprechpartner['zwei']['handy'].';';
-					$export .= $ansprechpartner['zwei']['mail'].';';
+				$export .= date('d.m.Y', str_replace(';', '‚', $seinsch)).';';
+				$export .= date('d.m.Y', $anmeldedatum).';'; // Anmeldedatum
+				$export .= '0;0;'; // Briefe / Sorgerecht Schüler
+				$export .= str_replace(';', '‚', $e1nach).';';
+				$export .= str_replace(';', '‚', $e1vor).';';
+				$export .= str_replace(';', '‚', $e1geschl).';';
+				$export .= str_replace(';', '‚', $e1strasse).';';
+				$export .= str_replace(';', '‚', $e1hausnr).';';
+				$export .= str_replace(';', '‚', $e1plz).';';
+				$export .= str_replace(';', '‚', $e1ort).';';
+				$export .= str_replace(';', '‚', $e1teilort).';';
+				$export .= str_replace(';', '‚', $e1tel1).';';
+				$export .= str_replace(';', '‚', $e1tel2).';';
+				$export .= str_replace(';', '‚', $e1handy).';';
+				$export .= str_replace(';', '‚', $e1mail).';';
+				$export .= str_replace(';', '‚', $e1briefe).';';
+				$export .= str_replace(';', '‚', $e1sorge).';';
+				$export .= str_replace(';', '‚', $e1haupt).';';
+				$export .= str_replace(';', '‚', $e1rolle).';';
+				if ($e2nummer !== null) {
+					$export .= str_replace(';', '‚', $e2nach).';';
+					$export .= str_replace(';', '‚', $e2vor).';';
+					$export .= str_replace(';', '‚', $e2geschl).';';
+					$export .= str_replace(';', '‚', $e2strasse).';';
+					$export .= str_replace(';', '‚', $e2hausnr).';';
+					$export .= str_replace(';', '‚', $e2plz).';';
+					$export .= str_replace(';', '‚', $e2ort).';';
+					$export .= str_replace(';', '‚', $e2teilort).';';
+					$export .= str_replace(';', '‚', $e2tel1).';';
+					$export .= str_replace(';', '‚', $e2tel2).';';
+					$export .= str_replace(';', '‚', $e2handy).';';
+					$export .= str_replace(';', '‚', $e2mail).';';
+					$export .= str_replace(';', '‚', $e2briefe).';';
+					$export .= str_replace(';', '‚', $e2sorge).';';
+					$export .= str_replace(';', '‚', $e2haupt).';';
+					$export .= str_replace(';', '‚', $e2rolle).';';
 				}
 				else {
-					$export .= ';;;;;;;;;;;;';
+					$export .= ';;;;;;;;;;;;;;;;';
 				}
 				$export .= ';'; // Fremdsprache 1
 				$export .= ';'; // Fremdsprache 2
 				$export .= ';'; // Fremdsprache 3
 				$export .= ';'; // Fremdsprache 4
-				$export .= $sprofil.';';
-				$export .= ';'; // Profil 2
-				$export .= ';'; // Asylbewerber
-				$export .= ';'; // Aussiedler
-				$export .= $svorigeschule.';';
+				$export .= str_replace(';', '‚', $skuenft).';';
+				$export .= ';'; // Profil1von
+				$export .= ';'; // Profil1bis
+				$export .= ';'; // Profil2
+				$export .= ';'; // Profil2von
+				$export .= ';'; // Profil2bis
+				$export .= ';'; // Zugangsart
+				$export .= str_replace(';', '‚', $svorigs).' - '.str_replace(';', '‚', $svorigk).';';
 				$export .= ';'; // Ausbildungsbetrieb
-				$export .= ';'; // Ausbild_beruf_id
-				$export .= $svorigeklasse.';';
-				$export .= $ansprechpartner['eins']['sorgerecht'].';';
-				$export .= $ansprechpartner['eins']['briefe'].';';
-				if ($ansprechpartner2 == 1) {
-					$export .= $ansprechpartner['zwei']['sorgerecht'].';';
-					$export .= $ansprechpartner['zwei']['briefe'];
-				}
-				else {
-					$export .= ';';
-				}
+				$export .= ';'; // Ausbilder
+				$export .= ';'; // Ausbilder_beruf_id
+				$export .= ';'; // Vorbildung
 				$export .= "\n";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		echo $export;
 		cms_trennen($dbs);
 	}

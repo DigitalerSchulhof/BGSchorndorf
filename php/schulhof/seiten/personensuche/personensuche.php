@@ -1,14 +1,14 @@
 <?php
 function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gewaehlt, $gewaehlt2 = "", $namek = "") {
-  global $CMS_GRUPPENMITGLIEDER, $CMS_SCHLUESSEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
   $aktiv = 0;
   $namek = cms_textzudb($gruppe);
   $artg = cms_vornegross($art);
-  $eltern = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Eltern'];
-  $schueler = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Schüler'];
-  $lehrer = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Lehrer'];
-  $verwaltung = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Verwaltung'];
-  $extern = $CMS_GRUPPENMITGLIEDER[$gruppe][$artg]['Extern'];
+  $eltern = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Eltern'];
+  $schueler = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Schüler'];
+  $lehrer = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Lehrer'];
+  $verwaltung = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Verwaltungsangestellte'];
+  $extern = $CMS_EINSTELLUNGEN[$artg.' '.$gruppe.' Externe'];
 
   $code = "";
 
@@ -24,34 +24,38 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
     $vorsitzarray = explode('|', substr($gewaehlt2,1));
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
-      $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x JOIN $namek"."mitglieder ON x.id = $namek"."mitglieder.person WHERE gruppe = $gruppenid ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          $code .= "<tr id=\"$id"."_personensuche_mitglieder_".$daten['id']."\">";
-          if ($daten['art'] == 'l') {$icon = 'lehrer.png';}
-          else if ($daten['art'] == 'e') {$icon = 'elter.png';}
-          else if ($daten['art'] == 'v') {$icon = 'verwaltung.png';}
-          else if ($daten['art'] == 'x') {$icon = 'extern.png';}
-          else {$icon = 'schueler.png';}
-          $pname = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-          $code .= "<td><span class=\"cms_tabellenicon\"><img src=\"res/icons/klein/$icon\"></span></td>";
-          $code .= "<td>".$pname."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_upload_'.$daten['id'], $daten['dateiupload'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_download_'.$daten['id'], $daten['dateidownload'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_loeschen_'.$daten['id'],  $daten['dateiloeschen'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_umbenennen_'.$daten['id'],  $daten['dateiumbenennen'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_termine_'.$daten['id'],  $daten['termine'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_blogeintraege_'.$daten['id'],  $daten['blogeintraege'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chatten_'.$daten['id'],  $daten['chatten'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chat_loeschen_'.$daten['id'],  $daten['nachrichtloeschen'])."</td>";
-          $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chat_bannen_'.$daten['id'],  $daten['nutzerstummschalten'])."</td>";
-          $code .= "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('$id', '".$daten['id']."', '".$gruppe."')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
-          $code .= "</tr>";
-          $vorsitzwert = 0;
-          if (in_array($daten['id'], $vorsitzarray)) {$vorsitzwert = 1;}
-          $vorsitzcode .= cms_togglebutton_generieren($id."_personensuche_vorsitz_".$daten['id'], $pname, $vorsitzwert, "cms_personensuche_vorsitz_aktualisieren('$id')")." ";
+      if (cms_check_idliste($sqlwhere)) {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x JOIN $namek"."mitglieder ON x.id = $namek"."mitglieder.person WHERE gruppe = ? ORDER BY nachname ASC, vorname ASC");
+        $sql->bind_param("i", $gruppenid);
+        if ($sql->execute()) {
+          $sql->bind_result($pid, $part, $pvor, $pnach, $ptit, $pgruppe, $pperson, $pdateiupload, $pdateidownload, $pdateiloeschen, $pdateiumbenennen, $ptermine, $pblogeintraege, $pchatten, $pnachrichtloeschen, $pnutzerstumm, $pchatbannb, $pchatbannv);
+          while ($sql->fetch()) {
+            $code .= "<tr id=\"$id"."_personensuche_mitglieder_$pid\">";
+            if ($part == 'l') {$icon = 'lehrer.png';}
+            else if ($part == 'e') {$icon = 'elter.png';}
+            else if ($part == 'v') {$icon = 'verwaltung.png';}
+            else if ($part == 'x') {$icon = 'extern.png';}
+            else {$icon = 'schueler.png';}
+            $pname = cms_generiere_anzeigename($pvor, $pnach, $ptit);
+            $code .= "<td><span class=\"cms_tabellenicon\"><img src=\"res/icons/klein/$icon\"></span></td>";
+            $code .= "<td>".$pname."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_upload_'.$pid, $pdateiupload)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_download_'.$pid, $pdateidownload)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_loeschen_'.$pid,  $pdateiloeschen)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_umbenennen_'.$pid,  $pdateiumbenennen)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_termine_'.$pid,  $ptermine)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_blogeintraege_'.$pid,  $pblogeintraege)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chatten_'.$pid,  $pchatten)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chat_loeschen_'.$pid,  $pnachrichtloeschen)."</td>";
+            $code .= "<td>".cms_schieber_generieren($id.'_personensuche_mitglieder_chat_bannen_'.$pid,  $pnutzerstumm)."</td>";
+            $code .= "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('$id', '$pid', '".$gruppe."')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
+            $code .= "</tr>";
+            $vorsitzwert = 0;
+            if (in_array($pid."", $vorsitzarray)) {$vorsitzwert = 1;}
+            $vorsitzcode .= cms_togglebutton_generieren($id."_personensuche_vorsitz_".$pid, $pname, $vorsitzwert, "cms_personensuche_vorsitz_aktualisieren('$id')")." ";
+          }
         }
-        $anfrage->free();
+        $sql->close();
       }
     }
     $code .= "</tbody>";
@@ -67,12 +71,15 @@ function cms_personensuche_generieren($dbs, $id, $gruppe, $gruppenid, $art, $gew
     $code .= "<p id=\"$id"."_F\">";
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
-      $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x JOIN $namek"."aufsicht ON x.id = $namek"."aufsicht.person WHERE gruppe = $gruppenid ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          $code .= cms_togglebutton_generieren($id."_personensuche_aufsicht_".$daten['id'], cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']), 1, "cms_personensuche_entfernen_aufsicht('$id', '".$daten['id']."', '$gruppe')")." ";
+      if (cms_check_idliste($sqlwhere)) {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x JOIN $namek"."aufsicht ON x.id = $namek"."aufsicht.person WHERE gruppe = $gruppenid ORDER BY nachname ASC, vorname ASC");
+        if ($sql->execute()) {
+          $sql->bind_result($aid, $aart, $avor, $anach, $atit, $agruppe, $aperson);
+          while ($sql->fetch()) {
+            $code .= cms_togglebutton_generieren($id."_personensuche_aufsicht_".$aid, cms_generiere_anzeigename($avor, $anach, $atit), 1, "cms_personensuche_entfernen_aufsicht('$id', '$aid', '$gruppe')")." ";
+          }
         }
-        $anfrage->free();
+        $sql->close();
       }
     }
     $code .= "</p>";
@@ -119,21 +126,24 @@ function cms_personensuche_mail_generieren($dbs, $id, $pool, $gewaehlt) {
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
       $sqlpool = "(".implode(',', $pool).")";
-      $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere AND id IN $sqlpool) AS x ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          $anzeige = "<img src=\"\">";
-          if ($daten['art'] == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
-          else if ($daten['art'] == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
-          else if ($daten['art'] == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
-          else if ($daten['art'] == 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
-          else if ($daten['art'] == 'x') {$icon = 'extern'; $hinweis = 'Externe';}
-          else {$icon = ''; $hinweis = '';}
-          $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
-          $anzeige .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-          $code .= cms_togglebutton_generieren($id."_personensuche_mail_".$daten['id'], $anzeige, 1, "cms_personensuche_entfernen_mail('$id', '".$daten['id']."')")." ";
+      if (cms_check_idliste($sqlwhere) && (cms_check_idliste($sqlpool))) {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere AND id IN $sqlpool) AS x ORDER BY nachname ASC, vorname ASC");
+        if ($sql->execute()) {
+          $sql->bind_result($pid, $part, $pvor, $pnach, $ptit);
+          while ($sql->fetch()) {
+            $anzeige = "<img src=\"\">";
+            if ($part == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
+            else if ($part == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
+            else if ($part == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
+            else if ($part == 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
+            else if ($part == 'x') {$icon = 'extern'; $hinweis = 'Externe';}
+            else {$icon = ''; $hinweis = '';}
+            $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
+            $anzeige .= cms_generiere_anzeigename($pvor, $pnach, $ptit);
+            $code .= cms_togglebutton_generieren($id."_personensuche_mail_$pid", $anzeige, 1, "cms_personensuche_entfernen_mail('$id', '$pid')")." ";
+          }
         }
-        $anfrage->free();
+        $sql->close();
       }
     }
     $code .= "</p>";
@@ -185,22 +195,25 @@ function cms_personensuche_personhinzu_generieren($dbs, $id, $erlaubt, $gewaehlt
     if (strlen($gewaehlt) > 0) {
       $sqlwhere = "(".substr(str_replace('|', ',', $gewaehlt),1).")";
       $gewaehlt = "";
-      $sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x WHERE art IN $sqlart ORDER BY nachname ASC, vorname ASC";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          $anzeige = "<img src=\"\">";
-          $gewaehlt .= '|'.$daten['id'];
-          if ($daten['art'] == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
-          else if ($daten['art'] == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
-          else if ($daten['art'] == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
-          else if ($daten['art'] == 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
-          else if ($daten['art'] == 'x') {$icon = 'extern'; $hinweis = 'Externe';}
-          else {$icon = ''; $hinweis = '';}
-          $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
-          $anzeige .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-          $code .= cms_togglebutton_generieren($id."_personensuche_schuljahr_".$daten['id'], $anzeige, 1, "cms_personensuche_personhinzu_entfernen('$id', '".$daten['id']."')")." ";
+      if (cms_check_idliste($sqlwhere)) {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id IN $sqlwhere) AS x WHERE art IN $sqlart ORDER BY nachname ASC, vorname ASC");
+        if ($sql->execute()) {
+          $sql->bind_result($pid, $part, $pvor, $pnach, $ptit);
+          while ($sql->fetch()) {
+            $anzeige = "<img src=\"\">";
+            $gewaehlt .= '|'.$pid;
+            if ($part == 'l') {$icon = 'lehrer'; $hinweis = 'Lehrer';}
+            else if ($part == 's') {$icon = 'schueler'; $hinweis = 'Schüler';}
+            else if ($part == 'e') {$icon = 'eltern'; $hinweis = 'Eltern';}
+            else if ($part == 'v') {$icon = 'verwaltung'; $hinweis = 'Verwaltungsangestellte';}
+            else if ($part == 'x') {$icon = 'extern'; $hinweis = 'Externe';}
+            else {$icon = ''; $hinweis = '';}
+            $anzeige = "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$hinweis</span><img src=\"res/icons/klein/$icon.png\"></span>";
+            $anzeige .= cms_generiere_anzeigename($pvor, $pnach, $ptit);
+            $code .= cms_togglebutton_generieren($id."_personensuche_schuljahr_$pid", $anzeige, 1, "cms_personensuche_personhinzu_entfernen('$id', '$pid')")." ";
+          }
         }
-        $anfrage->free();
+        $sql->close();
       }
     }
     $code .= "</p>";

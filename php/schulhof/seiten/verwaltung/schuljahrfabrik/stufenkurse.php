@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
-
 $code = "";
-if ($zugriff) {
+if (cms_r("schulhof.planung.schuljahre.fabrik")) {
 
   $code .= "<h1>Schuljahre aus bestehenden Schuljahren erzeugen</h1>";
 
@@ -144,9 +142,7 @@ if ($zugriff) {
       echo "<h3>Kurse aus Stufen übertragen</h2>";
       $code = cms_meldung('info', '<h4>Übernahme von Kursen in neue Stufen</h4><p>Bei der Übernahme der Kurse in neue Stufen bleiben alle Personen wie bisher zugeordnet. Die Bezeichnung des Kurses wird je nach neuer Stufe neu angepasst. Wenn ein Fach im Zielschuljahr nicht mehr besteht, dem aber ein Kurs im Stammschuljahr zugeordnet war, dann wird dieser Kurs nicht übernommen.</p>');
       $code .= "<table class=\"cms_liste\">";
-      $code .= "<tr><th></th><th colspan=\"".count($STUFEN)."\">Stufen im Zielschuljahr</th></tr>";
       $anzahl = 0;
-      $code .= "<tr><th rowspan=\"".count($ALTESTUFEN)."\"><span class=\"cms_senkrecht\">Stufen im Stammschuljahr</span></th>";
       foreach ($ALTESTUFEN as $a) {
         if ($anzahl != 0) {$code .= "<tr>";}
         foreach ($STUFEN as $s) {$code .= "<th>".cms_togglebutton_generieren ('cms_sjfabrik_kurse_stufenuebertragen_'.$a['id'].'_'.$s['id'], $a['bez']." » ".$s['bez'], 0)."</th>";}

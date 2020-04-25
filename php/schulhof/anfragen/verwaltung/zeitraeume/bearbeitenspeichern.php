@@ -29,10 +29,9 @@ if (isset($_POST['schulstundenids'])) {$schulstundenids = $_POST['schulstundenid
 if (isset($_SESSION['ZEITRAUMBEARBEITEN'])) {$zeitraumid = $_SESSION['ZEITRAUMBEARBEITEN'];} else {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -218,7 +217,45 @@ if (cms_angemeldet() && $zugriff) {
 		  $sql->close();
 		}
 
-		cms_trennen($dbs);
+		// Regelunterricht an falschen Tagen löschen
+		$sql = $dbs->prepare("DELETE FROM regelunterricht WHERE schulstunde IN (SELECT id FROM schulstunden WHERE zeitraum = ?) AND tag = ?");
+		if ($mo == 0) {
+			$tag = 1;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		if ($di == 0) {
+			$tag = 2;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		if ($mi == 0) {
+			$tag = 3;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		if ($do == 0) {
+			$tag = 4;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		if ($fr == 0) {
+			$tag = 5;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		if ($sa == 0) {
+			$tag = 6;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		if ($so == 0) {
+			$tag = 7;
+			$sql->bind_param("ii", $zeitraumid, $tag);
+			$sql->execute();
+		}
+		$sql->close();
+
 		echo "ERFOLG";
 	}
 	else {

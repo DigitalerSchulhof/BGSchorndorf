@@ -1,12 +1,12 @@
 <?php
 function cms_galerie_details_laden($id, $ziel) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Website']['Galerien anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Galerien bearbeiten'] && ($id != '-'))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("artikel.galerien.anlegen")) || (($id != '-') && cms_r("artikel.galerien.bearbeiten"))) {$zugriff = true;}
 
   $bezeichnung = '';
   $vorschaubild = "";
@@ -26,39 +26,35 @@ function cms_galerie_details_laden($id, $ziel) {
   // Falls eine bestehende Galerie geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, notifikationen, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$bezeichnung = $daten['bezeichnung'];
-  			$datum = $daten['datum'];
-      	$genehmigt = $daten['genehmigt'];
-        $aktiv = $daten['aktiv'];
-        $notifikationen = $daten['notifikationen'];
-        $beschreibung = $daten['beschreibung'];
-        $vorschaubild = $daten['vorschaubild'];
-        $autor = $daten['autor'];
-			}
-			$anfrage->free();
+	  $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, datum, genehmigt, aktiv, notifikationen, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor FROM galerien WHERE id = ?");
+    $sql->bind_param("i", $id);
+		if ($sql->execute()) {
+      $sql->bind_result($bezeichnung, $datum, $genehmigt, $aktiv, $notifikationen, $beschreibung, $vorschaubild, $autor);
+			if (!$sql->fetch()) {$fehler = true;}
 		}
+    $sql->close();
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."galerien JOIN $gk ON ".$gk."galerien.gruppe = $gk.id WHERE galerie = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) {
-  			while ($daten = $anfrage->fetch_assoc()) {
-  				array_push($daten, $zugeordnet[$g]);
-          $zgruppenids[$g] .= "|".$daten['id'];
+      $sql = $dbs->prepare("SELECT * FROM (SELECT gruppe AS id FROM ".$gk."galerien JOIN $gk ON ".$gk."galerien.gruppe = $gk.id WHERE galerie = ?) AS x");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($grid);
+  			while ($sql->fetch()) {
+          $zgruppenids[$g] .= "|".$grid;
   			}
-  			$anfrage->free();
   		}
+      $sql->close();
     }
 
-    $sql = "SELECT AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') as pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') as beschreibung FROM galerienbilder WHERE galerie='$id' ORDER BY id";
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push($bilder, array("pfad" => $daten["pfad"], "beschreibung" => $daten["beschreibung"]));
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') as pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') as beschreibung FROM galerienbilder WHERE galerie = ? ORDER BY id");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $sql->bind_result($gbpfad, $gbschr);
+      while ($sql->fetch()) {
+        array_push($bilder, array("pfad" => $gbpfad, "beschreibung" => $gbschr));
       }
-    $anfrage->free();
     }else {$fehler = true;}
+    $sql->close();
   }
 
 	if ($fehler) {$zugriff = false;}
@@ -67,7 +63,7 @@ function cms_galerie_details_laden($id, $ziel) {
 
 	if ($angemeldet && $zugriff) {
     $genehmigung = false;
-    if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {$genehmigung = true; $genehmigt = 1;}
+    if (cms_r("artikel.genehmigen.galerien")) {$genehmigung = true; $genehmigt = 1;}
 
     if (!$genehmigung) {
       $code .= cms_meldung ('info', "<h4>Genehmigung erforderlich</h4><p>Bis die Genehmigung erteilt wird, handelt es sich um eine vorläufige Galerie.</p>");
@@ -110,8 +106,7 @@ function cms_galerie_details_laden($id, $ziel) {
 
     $code .= "<h3>Bilder auswählen</h3>";
 
-    $rechte = cms_websitedateirechte_laden();
-    $code .= cms_dateiwaehler_generieren('website', 'website', 'cms_galerien_dateien', 's', 'website', '-');
+    $code .= cms_dateiwaehler_generieren('website', 'website', 'cms_galerien_dateien', 's', 'website', '-', 'bilder');
 
     $code .= "<div id=\"cms_bilder\">";
 

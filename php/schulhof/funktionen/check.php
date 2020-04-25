@@ -7,7 +7,21 @@ function cms_check_mail($mail) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}^', $mail) != 1) {
+	if (preg_match('/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/', $mail) != 1) {
+		return false;
+	}
+	else return true;
+}
+
+function cms_check_uhrzeit($uhrzeit) {
+	if(is_array($uhrzeit)) {
+		$r = true;
+		foreach ($uhrzeit as $i => $u)
+			if(!cms_check_uhrzeit($u))
+				$r = false;
+		return $r;
+	}
+	if (preg_match('/^[0-9]{1,2}:[0-9-]{1,2}$/', $uhrzeit) != 1) {
 		return false;
 	}
 	else return true;
@@ -21,13 +35,20 @@ function cms_check_titel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]+$/", $titel) != 1) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]*[\-a-zA-Z0-9äöüßÄÖÜ]+$/", $titel) != 1) {
 		return false;
 	}
 	else if (($titel == '.') || ($titel == '..')) {
 		return false;
 	}
 	else return true;
+}
+
+function cms_check_url($url) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ\/_ ]+$/", $url) != 1) {
+		return false;
+	}
+	return true;
 }
 
 function cms_check_dateiname($datei) {
@@ -45,7 +66,7 @@ function cms_check_nametitel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
+	if (preg_match("/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/", $titel) != 1) {
 		return false;
 	}
 	else return true;
@@ -121,6 +142,11 @@ function cms_check_idfeld($text) {
 // Prüft, ob der Nutzer, der in der Session steht, angemeldet ist
 function cms_angemeldet () {
 	$angemeldet = false;
+
+	$sessionfehler = !cms_check_sessionvars();
+
+	if ($sessionfehler) {return false;}
+
   if (isset($_SESSION['BENUTZERNAME'])) {
     $jetzt = time();
 
@@ -157,119 +183,22 @@ function cms_angemeldet () {
   return $angemeldet;
 }
 
+include_once(dirname(__FILE__)."/../../allgemein/funktionen/rechte/rechte.php");
+$geladen = false;
+function cms_rechte_laden($aktiverbenutzer = '-', $dynamisch = true) {
+	global $CMS_SCHLUESSEL, $geladen;
+	if(!$geladen) {
+		cms_allerechte_laden();
 
-function cms_rechte_laden($aktiverbenutzer = '-') {
-	global $CMS_SCHLUESSEL;
-
-	// Verbindung zur Datenbank herstellen
-	$BENUTZERIDTEST = "-";
-	$BENUTZERARTTEST = "-";
-	if (isset($_SESSION['BENUTZERID'])) {$BENUTZERIDTEST = $_SESSION['BENUTZERID'];}
-	if ($aktiverbenutzer == '-') {$aktiverbenutzer = $BENUTZERIDTEST;}
-
-	$dbs = cms_verbinden('s');
-
-	$sql = $dbs->prepare("SELECT person AS wert, AES_DECRYPT(kategorie, '$CMS_SCHLUESSEL') AS kategorie, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM rechte LEFT JOIN (SELECT person, recht FROM rechtzuordnung WHERE person = ? UNION SELECT DISTINCT rolle*0+? AS person, recht FROM rollenrechte WHERE rolle IN (SELECT rolle FROM rollenzuordnung WHERE person = ?)) AS rechtzuordnung ON rechte.id = rechtzuordnung.recht");
-  $sql->bind_param("iii", $aktiverbenutzer, $aktiverbenutzer, $aktiverbenutzer);
-  if ($sql->execute()) {
-    $sql->bind_result($wert, $kategorie, $bezeichnung);
-    while($sql->fetch()) {
-			if ($wert == $aktiverbenutzer) {$CMS_RECHTE[$kategorie][$bezeichnung] = true;}
-			else {$CMS_RECHTE[$kategorie][$bezeichnung] = false;}
-    }
-  }
-  $sql->close();
-
-	$CMS_BENUTZERART = "";
-
-	if (isset($_SESSION['BENUTZERART'])) {$BENUTZERARTTEST = $_SESSION['BENUTZERART'];}
-
-	// Benutzerart des gewählten Benutzers laden - falls eigene
-	if ($aktiverbenutzer == $BENUTZERIDTEST) {
-		$CMS_BENUTZERART = $BENUTZERARTTEST;
+		cms_rechte_laden_nutzer($aktiverbenutzer);
+		cms_rechte_laden_rollen($aktiverbenutzer);
+		if($dynamisch) {
+			cms_rechte_laden_bedingte_rechte();
+			cms_rechte_laden_bedingte_rollen();
+		}
+		$geladen = true;
 	}
-	// Benutzerart des gewählten Benutzers laden - falls fremde
-	else {
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?;");
-	  $sql->bind_param("i", $aktiverbenutzer);
-	  if ($sql->execute()) {
-	    $sql->bind_result($CMS_BENUTZERART);
-	    $sql->fetch();
-	  }
-	  $sql->close();
-	}
-
-	// Rechte nach Benutzerart ändern
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-	if ($CMS_BENUTZERART != "") {
-		if ($CMS_BENUTZERART == 's') {
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Schüler dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-		}
-		else if ($CMS_BENUTZERART == 'e') {
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Eltern dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-		}
-		else if ($CMS_BENUTZERART == 'l') {
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Lehrer dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen sehen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
-			$CMS_RECHTE['Personen']['Personen sehen'] = true;
-			$CMS_RECHTE['Zugriffe']['Lehrernetz'] = true;
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Räume sehen'] = true;
-			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
-		}
-		else if ($CMS_BENUTZERART == 'v') {
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-			$CMS_RECHTE['Technik']['Geräte-Probleme melden'] = true;
-			$CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen sehen'] = true;
-			$CMS_RECHTE['Planung']['Buchungen vornehmen'] = true;
-			$CMS_RECHTE['Personen']['Personen sehen'] = true;
-			$CMS_RECHTE['Planung']['Klassenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Lehrerstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Stufenstundenpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Räume sehen'] = true;
-			$CMS_RECHTE['Planung']['Raumpläne sehen'] = true;
-			$CMS_RECHTE['Planung']['Leihgeräte sehen'] = true;
-		}
-		else if ($CMS_BENUTZERART == 'x') {
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Termine vorschlagen']) {$CMS_RECHTE['Website']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Blogeinträge vorschlagen']) {$CMS_RECHTE['Website']['Blogeinträge anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen Galerien vorschlagen']) {$CMS_RECHTE['Website']['Galerien anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Termine anlegen']) {$CMS_RECHTE['Persönlich']['Termine anlegen'] = true;}
-			if ($CMS_EINSTELLUNGEN['Externe dürfen persönliche Notizen anlegen']) {$CMS_RECHTE['Persönlich']['Notizen anlegen'] = true;}
-		}
-	}
-
-	// Rechte nach Einstellungen überschreiben
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-
-	cms_trennen($dbs);
-
-	return $CMS_RECHTE;
 }
-
 
 function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
@@ -293,67 +222,86 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		$benutzerart = $CMS_BENUTZERART;
 	}
 
-	$CMS_RECHTE['dateiupload'] = false;
-	$CMS_RECHTE['dateidownload'] = false;
-	$CMS_RECHTE['dateiloeschen'] = false;
-	$CMS_RECHTE['dateiumbenennen'] = false;
-	$CMS_RECHTE['termine'] = false;
-	$CMS_RECHTE['blogeintraege'] = false;
-	$CMS_RECHTE['chatten'] = false;
-	$CMS_RECHTE['nachrichtloeschen'] = false;
-	$CMS_RECHTE['nutzerstummschalten'] = false;
-	$CMS_RECHTE['mitglied'] = false;
-	$CMS_RECHTE['sichtbar'] = false;
-	$CMS_RECHTE['bearbeiten'] = false;
-	$CMS_RECHTE['abonniert'] = 0;
+	$cms_gruppenrechte['gruppenart'] = $gruppe;
+	$cms_gruppenrechte['dateiupload'] = false;
+	$cms_gruppenrechte['dateidownload'] = false;
+	$cms_gruppenrechte['dateiloeschen'] = false;
+	$cms_gruppenrechte['dateiumbenennen'] = false;
+	$cms_gruppenrechte['termine'] = false;
+	$cms_gruppenrechte['blogeintraege'] = false;
+	$cms_gruppenrechte['chatten'] = false;
+	$cms_gruppenrechte['nachrichtloeschen'] = false;
+	$cms_gruppenrechte['nutzerstummschalten'] = false;
+	$cms_gruppenrechte['mitglied'] = false;
+	$cms_gruppenrechte['sichtbar'] = false;
+	$cms_gruppenrechte['bearbeiten'] = false;
+	$cms_gruppenrechte['abonniert'] = 0;
+	$cms_gruppenrechte['aufsicht'] = false;
 
 	if (!cms_valide_gruppe($gruppe) && !cms_valide_kgruppe($gruppe)) {$fehler = true;}
 
 	if (!$fehler) {
 		$gk = cms_textzudb($gruppe);
-		// Vorsitz / Aufsicht prüfen
-		$sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM $gk"."vorsitz WHERE gruppe = ? AND person = ?) UNION (SELECT COUNT(*) AS anzahl FROM $gk"."aufsicht WHERE gruppe = ? AND person = ?)) AS x");
-	  $sql->bind_param("iiii", $gruppenid, $benutzer, $gruppenid, $benutzer);
+		// Vorsitz
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk"."vorsitz WHERE gruppe = ? AND person = ?");
+	  $sql->bind_param("ii", $gruppenid, $benutzer);
 	  if ($sql->execute()) {
 	    $sql->bind_result($anzahl);
 	    if ($sql->fetch()) {
 				if ($anzahl > 0) {
-					$CMS_RECHTE['dateiupload'] = true;
-					$CMS_RECHTE['dateidownload'] = true;
-					$CMS_RECHTE['dateiloeschen'] = true;
-					$CMS_RECHTE['dateiumbenennen'] = true;
-					$CMS_RECHTE['termine'] = true;
-					$CMS_RECHTE['blogeintraege'] = true;
-					$CMS_RECHTE['chatten'] = true;
-					$CMS_RECHTE['nachrichtloeschen'] = true;
-					$CMS_RECHTE['nutzerstummschalten'] = true;
-					$CMS_RECHTE['mitglied'] = true;
-					$CMS_RECHTE['sichtbar'] = true;
-					$CMS_RECHTE['bearbeiten'] = true;
+					$cms_gruppenrechte['dateiupload'] = true;
+					$cms_gruppenrechte['dateidownload'] = true;
+					$cms_gruppenrechte['dateiloeschen'] = true;
+					$cms_gruppenrechte['dateiumbenennen'] = true;
+					$cms_gruppenrechte['termine'] = true;
+					$cms_gruppenrechte['blogeintraege'] = true;
+					$cms_gruppenrechte['chatten'] = true;
+					$cms_gruppenrechte['nachrichtloeschen'] = true;
+					$cms_gruppenrechte['nutzerstummschalten'] = true;
+					$cms_gruppenrechte['mitglied'] = true;
+					$cms_gruppenrechte['sichtbar'] = true;
+					$cms_gruppenrechte['bearbeiten'] = true;
 				}
 			}
 	  }
 	  $sql->close();
 
 		// Falls kein Vorsitz oder keine Aufsicht vorliegt, prüfe weiter
-		if (!$CMS_RECHTE['bearbeiten']) {
+		if (!$cms_gruppenrechte['bearbeiten']) {
 			// Mitgliedschaft prüfen
 			$sql = $dbs->prepare("SELECT dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten FROM $gk"."mitglieder WHERE gruppe = ? AND person = ?");
 			$sql->bind_param("ii", $gruppenid, $benutzer);
 			if ($sql->execute()) {
 		    $sql->bind_result($dateiupload, $dateidownload, $dateiloeschen, $dateiumbenennen, $termine, $blogeintraege, $chatten, $nachrichtloeschen, $nutzerstummschalten);
 		    if ($sql->fetch()) {
-					if ($dateiupload == '1') {$CMS_RECHTE['dateiupload'] = true;}
-					if ($dateidownload == '1') {$CMS_RECHTE['dateidownload'] = true;}
-					if ($dateiloeschen == '1') {$CMS_RECHTE['dateiloeschen'] = true;}
-					if ($dateiumbenennen == '1') {$CMS_RECHTE['dateiumbenennen'] = true;}
-					if ($termine == '1') {$CMS_RECHTE['termine'] = true;}
-					if ($blogeintraege == '1') {$CMS_RECHTE['blogeintraege'] = true;}
-					if ($chatten == '1') {$CMS_RECHTE['chatten'] = true;}
-					if ($nachrichtloeschen == '1') {$CMS_RECHTE['nachrichtloeschen'] = true;}
-					if ($nutzerstummschalten == '1') {$CMS_RECHTE['nutzerstummschalten'] = true;}
-					$CMS_RECHTE['mitglied'] = true;
-					$CMS_RECHTE['sichtbar'] = true;
+					if ($dateiupload == '1') {$cms_gruppenrechte['dateiupload'] = true;}
+					if ($dateidownload == '1') {$cms_gruppenrechte['dateidownload'] = true;}
+					if ($dateiloeschen == '1') {$cms_gruppenrechte['dateiloeschen'] = true;}
+					if ($dateiumbenennen == '1') {$cms_gruppenrechte['dateiumbenennen'] = true;}
+					if ($termine == '1') {$cms_gruppenrechte['termine'] = true;}
+					if ($blogeintraege == '1') {$cms_gruppenrechte['blogeintraege'] = true;}
+					if ($chatten == '1') {$cms_gruppenrechte['chatten'] = true;}
+					if ($nachrichtloeschen == '1') {$cms_gruppenrechte['nachrichtloeschen'] = true;}
+					if ($nutzerstummschalten == '1') {$cms_gruppenrechte['nutzerstummschalten'] = true;}
+					$cms_gruppenrechte['mitglied'] = true;
+					$cms_gruppenrechte['sichtbar'] = true;
+				}
+		  }
+		  $sql->close();
+		}
+
+		if (!$cms_gruppenrechte['mitglied']) {
+			// Aufsicht prüfen
+			$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk"."aufsicht WHERE gruppe = ? AND person = ?");
+		  $sql->bind_param("ii", $gruppenid, $benutzer);
+		  if ($sql->execute()) {
+		    $sql->bind_result($anzahl);
+		    if ($sql->fetch()) {
+					if ($anzahl > 0) {
+						$cms_gruppenrechte['mitglied'] = true;
+						$cms_gruppenrechte['aufsicht'] = true;
+						$cms_gruppenrechte['sichtbar'] = true;
+					}
 				}
 		  }
 		  $sql->close();
@@ -365,57 +313,49 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 	  if ($sql->execute()) {
 	    $sql->bind_result($sichtbar, $chataktiv);
 	    if ($sql->fetch()) {
-				if (($sichtbar == 1) && ($benutzerart == 'l')) {$CMS_RECHTE['sichtbar'] = true;}
-				else if (($sichtbar == 2) && (($benutzerart == 'l') || ($benutzerart == 'v'))) {$CMS_RECHTE['sichtbar'] = true;}
-				else if ($sichtbar == 3) {$CMS_RECHTE['sichtbar'] = true;}
+				if (($sichtbar == 1) && ($benutzerart == 'l')) {$cms_gruppenrechte['sichtbar'] = true;}
+				else if (($sichtbar == 2) && (($benutzerart == 'l') || ($benutzerart == 'v'))) {$cms_gruppenrechte['sichtbar'] = true;}
+				else if ($sichtbar == 3) {$cms_gruppenrechte['sichtbar'] = true;}
 				if ($chataktiv == 0) {
-					$CMS_RECHTE['chatten'] = false;
-					$CMS_RECHTE['nachrichtloeschen'] = false;
-					$CMS_RECHTE['nutzerstummschalten'] = false;
+					$cms_gruppenrechte['chatten'] = false;
+					$cms_gruppenrechte['nachrichtloeschen'] = false;
+					$cms_gruppenrechte['nutzerstummschalten'] = false;
 				}
 			}
 	  }
 	  $sql->close();
 
 		// Mögliche Einstellungen berücksichtigen
-		if ($CMS_RECHTE['sichtbar']) {// && (!$CMS_RECHTE['mitglied'])) {
-			if ($CMS_EINSTELLUNGEN['Download aus sichtbaren Gruppen']) {$CMS_RECHTE['dateidownload'] = true;}
+		if ($cms_gruppenrechte['sichtbar']) {// && (!$cms_gruppenrechte['mitglied'])) {
+			if ($CMS_EINSTELLUNGEN['Download aus sichtbaren Gruppen']) {$cms_gruppenrechte['dateidownload'] = true;}
 		}
 
-		if ($CMS_RECHTE['mitglied']) {
+		if ($cms_gruppenrechte['mitglied']) {
 			// Abo prüfen
 			$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk"."notifikationsabo WHERE gruppe = ? AND person = ?");
 		  $sql->bind_param("ii", $gruppenid, $benutzer);
 		  if ($sql->execute()) {
 		    $sql->bind_result($anzahl);
-		    if ($sql->fetch()) {if ($anzahl == 1) {$CMS_RECHTE['abonniert'] = 1;}}
+		    if ($sql->fetch()) {if ($anzahl == 1) {$cms_gruppenrechte['abonniert'] = 1;}}
 		  }
 		  $sql->close();
 		}
 	}
-	return $CMS_RECHTE;
+	return $cms_gruppenrechte;
 }
-
 
 function cms_internterminvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
-	return $gruppenrechte['termine'] || ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] &&
-																			(($CMS_BENUTZERART == 'l' && $CMS_EINSTELLUNGEN['Lehrer dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 's' && $CMS_EINSTELLUNGEN['Schüler dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 'e' && $CMS_EINSTELLUNGEN['Eltern dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 'v' && $CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen intern Termine vorschlagen'])
-																	 || ($CMS_BENUTZERART == 'x' && $CMS_EINSTELLUNGEN['Externe dürfen intern Termine vorschlagen'])));
+	$gruppenart = cms_textzudb($gruppenrechte['gruppenart']);
+	return $gruppenrechte['termine'] ||
+	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && !$gruppenrechte['aufsicht'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.termine.anlegen"));
 }
-
 
 function cms_internblogvorschlag($gruppenrechte) {
 	global $CMS_BENUTZERART, $CMS_EINSTELLUNGEN;
-	return $gruppenrechte['blogeintraege'] || ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] &&
-																						(($CMS_BENUTZERART == 'l' && $CMS_EINSTELLUNGEN['Lehrer dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 's' && $CMS_EINSTELLUNGEN['Schüler dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 'e' && $CMS_EINSTELLUNGEN['Eltern dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 'v' && $CMS_EINSTELLUNGEN['Verwaltungsangestellte dürfen intern Blogeinträge vorschlagen'])
-																				 || ($CMS_BENUTZERART == 'x' && $CMS_EINSTELLUNGEN['Externe dürfen intern Blogeinträge vorschlagen'])));
+	$gruppenart = cms_textzudb($gruppenrechte['gruppenart']);
+	return $gruppenrechte['blogeintraege'] ||
+	       ($gruppenrechte['sichtbar'] && $gruppenrechte['mitglied'] && !$gruppenrechte['aufsicht'] && cms_r("schulhof.verwaltung.gruppen.$gruppenart.artikel.blogeinträge.anlegen"));
 }
 
 function cms_timeout_verlaengern() {
@@ -517,7 +457,6 @@ function cms_anzahl_monate($beginn, $ende) {
 	return $monate;
 }
 
-
 function cms_istmobil() {
 	$browser = $_SERVER['HTTP_USER_AGENT'];
 	if (preg_match('/android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $browser)) {
@@ -556,13 +495,14 @@ function cms_einstellungen_laden() {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
-	$sql = "SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen";
-	if ($anfrage=$dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$einstellungen[$daten['inhalt']] = $daten['wert'];
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen");
+	if ($sql->execute()) {
+		$sql->bind_result($einhalt, $ewert);
+		while ($sql->fetch()) {
+			$einstellungen[$einhalt] = $ewert;
 		}
-		$anfrage->free();
 	}
+	$dbs->close();
 	cms_trennen($dbs);
   return $einstellungen;
 }
@@ -571,30 +511,29 @@ function cms_schulanmeldung_einstellungen_laden() {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
 	$dbs = cms_verbinden('s');
-	$sql = "SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM schulanmeldung";
-	if ($anfrage=$dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$einstellungen[$daten['inhalt']] = $daten['wert'];
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM schulanmeldung");
+	if ($sql->execute()) {
+		$sql->bind_result($einhalt, $ewert);
+		while ($sql->fetch()) {
+			$einstellungen[$einhalt] = $ewert;
 		}
-		$anfrage->free();
 	}
+	$dbs->close();
 	cms_trennen($dbs);
   return $einstellungen;
 }
 
-function cms_ist_heute($datum, $tag, $monat, $jahr) {
-  $t = date('d', $datum);
-  $m = date('m', $datum);
-  $j = date('Y', $datum);
-  if (($t == $tag) && ($m == $monat) && ($j == $jahr)) {return true;}
-  else {return false;}
+function cms_ist_heute($heute, $pruefdatum) {
+  $t = date('d', $pruefdatum) == date('d', $heute);
+  $m = date('m', $pruefdatum) == date('m', $heute);
+  $j = date('Y', $pruefdatum) == date('Y', $heute);
+  return ($t && $m && $j);
 }
 
 function cms_websitedateirechte_laden() {
-	global $CMS_RECHTE;
-	$gruppenrechte['dateiupload'] = $CMS_RECHTE['Website']['Dateien hochladen'];
-	$gruppenrechte['dateiumbenennen'] = $CMS_RECHTE['Website']['Dateien umbenennen'];
-	$gruppenrechte['dateiloeschen'] = $CMS_RECHTE['Website']['Dateien löschen'];
+	$gruppenrechte['dateiupload'] 		= cms_r("website.dateien.hochladen");
+	$gruppenrechte['dateiumbenennen'] = cms_r("website.dateien.umbenennen");
+	$gruppenrechte['dateiloeschen'] 	= cms_r("website.dateien.löschen");
 	$gruppenrechte['dateidownload'] = true;
 	$gruppenrechte['mitglied'] = true;
 	$gruppenrechte['sichtbar'] = true;
@@ -602,16 +541,14 @@ function cms_websitedateirechte_laden() {
 }
 
 function cms_titelbilderdateirechte_laden() {
-	global $CMS_RECHTE;
-	$gruppenrechte['dateiupload'] = $CMS_RECHTE['Website']['Titelbilder hochladen'];
-	$gruppenrechte['dateiumbenennen'] = $CMS_RECHTE['Website']['Titelbilder umbenennen'];
-	$gruppenrechte['dateiloeschen'] = $CMS_RECHTE['Website']['Titelbilder löschen'];
+	$gruppenrechte['dateiupload'] 		= cms_r("website.titelbilder.hochladen");
+	$gruppenrechte['dateiumbenennen'] = cms_r("website.titelbilder.umbenennen");
+	$gruppenrechte['dateiloeschen'] 	= cms_r("website.titelbilder.löschen");
 	$gruppenrechte['dateidownload'] = true;
 	$gruppenrechte['mitglied'] = true;
 	$gruppenrechte['sichtbar'] = true;
 	return $gruppenrechte;
 }
-
 
 function cms_oeffentlich_sichtbar($dbs, $art, $daten) {
 	global $CMS_BENUTZERART, $CMS_GRUPPEN, $CMS_ANGEMELDET;
@@ -655,7 +592,6 @@ function cms_oeffentlich_sichtbar($dbs, $art, $daten) {
 	}
 }
 
-
 function cms_schreibeberechtigung($dbs, $zielperson) {
   global $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN;
   $zielpersonart = "";
@@ -680,11 +616,11 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
   if ($CMS_BENUTZERART == 'x') {$personart = "Externe";}
 
   if ((strlen($personart) > 0) && (strlen($zielpersonart) > 0)) {
-    $recht['l'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Lehrer schreiben'];
-    $recht['e'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Eltern schreiben'];
-    $recht['s'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Schüler schreiben'];
-    $recht['v'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Verwaltungsangestellte schreiben'];
-    $recht['x'] = $CMS_EINSTELLUNGEN['Postfach - '.$personart.' dürfen Externe schreiben'];
+    $recht['l'] = cms_r("schulhof.nutzerkonto.postfach.lehrer");
+    $recht['e'] = cms_r("schulhof.nutzerkonto.postfach.eltern");
+    $recht['s'] = cms_r("schulhof.nutzerkonto.postfach.schüler");
+    $recht['v'] = cms_r("schulhof.nutzerkonto.postfach.verwaltungsangestellte");
+    $recht['x'] = cms_r("schulhof.nutzerkonto.postfach.externe");
 
     if ($recht[$zielpersonart]) {return true;}
     else {
@@ -701,12 +637,23 @@ function cms_schreibeberechtigung($dbs, $zielperson) {
   return false;
 }
 
-function postLesen($feld, $nullfehler = true) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
+function postLesen(...$felder) {
+	$n = $felder[count($felder)-1];
+	if($n === true || $n === false)
+		$nullfehler = array_pop($felder);
+	else
+		$nullfehler = true;
+
+	if(is_array($felder[0]))
+		$felder = $felder[0];
+
+	if(count($felder) > 1) {
+		foreach($felder as $i => $f)
 			postLesen($f, $nullfehler);
 		return;
 	}
+
+	$feld = $felder[0];
 	global $$feld;
 
 	if(isset($_POST[$feld]))
@@ -716,12 +663,23 @@ function postLesen($feld, $nullfehler = true) {
 			die("FEHLER");
 }
 
-function getLesen($feld, $nullfehler = true) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
+function getLesen(...$felder) {
+	$n = $felder[count($felder)-1];
+	if($n === true || $n === false)
+		$nullfehler = array_pop($felder);
+	else
+		$nullfehler = true;
+
+	if(is_array($felder[0]))
+		$felder = $felder[0];
+
+	if(count($felder) > 1) {
+		foreach($felder as $i => $f)
 			getLesen($f, $nullfehler);
 		return;
 	}
+
+	$feld = $felder[0];
 	global $$feld;
 
 	if(isset($_GET[$feld]))
@@ -731,16 +689,14 @@ function getLesen($feld, $nullfehler = true) {
 			die("FEHLER");
 }
 
-function sqlLesen($row, $feld) {
-	if(is_array($feld)) {
-		foreach($feld as $i => $f)
-			sqlLesen($row, $f);
-		return;
-	}
-	global $$feld;
+function cms_check_sessionvars() {
 
-	if(isset($row[$feld]))
-		$$feld = $row[$feld];
+	if (!isset($_SESSION['BENUTZERID'])) {return false;}
+	if (!isset($_SESSION['BENUTZERART'])) {return false;}
+
+	if (!cms_check_ganzzahl($_SESSION['BENUTZERID'])) {return false;}
+	if (($_SESSION['BENUTZERSCHULJAHR'] !== null) && (!cms_check_ganzzahl($_SESSION['BENUTZERSCHULJAHR']))) {return false;}
+	if (($_SESSION['BENUTZERART'] != 's') && ($_SESSION['BENUTZERART'] != 'l') && ($_SESSION['BENUTZERART'] != 'v') && ($_SESSION['BENUTZERART'] != 'e') && ($_SESSION['BENUTZERART'] != 'x')) {return false;}
+	return true;
 }
-
 ?>

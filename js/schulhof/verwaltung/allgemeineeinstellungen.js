@@ -8,72 +8,40 @@ function cms_einstellungen_anfragennachbehandlung(rueckgabe) {
 function cms_einstellungen_rechte_aendern() {
 	cms_laden_an('Rechte-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 
-	var personen = ["lehrer", "eltern", "schueler", "verwaltungsangestellte", "externe"];
-	var fehler = false;
+	var rekpruefen = function(e, pfad, rechte) {
+		if(!e.length)
+			return;
+		e.each(function() {
+			e = $(this);
+			if(e.is(".cms_recht_rolle"))
+				rechte.push((pfad+"."+e.data("knoten")+(e.is(".cms_hat_kinder")?".*":"")).substr(2));
+			else
+				if(e.is(".cms_hat_kinder"))
+					rekpruefen(e.find(">.cms_rechtekinder>.cms_rechtebox>.cms_recht"), pfad+"."+e.data("knoten"), rechte);
+		});
+	};
+
+	var rechtelehrer = [];
+	var rechteschueler = [];
+	var rechteverwaltung = [];
+	var rechteeltern = [];
+	var rechteexterne = [];
+
+	rekpruefen($("#cms_rechtepapa_lehrer>.cms_recht"), "", rechtelehrer);
+	rekpruefen($("#cms_rechtepapa_schueler>.cms_recht"), "", rechteschueler);
+	rekpruefen($("#cms_rechtepapa_verwaltung>.cms_recht"), "", rechteverwaltung);
+	rekpruefen($("#cms_rechtepapa_eltern>.cms_recht"), "", rechteeltern);
+	rekpruefen($("#cms_rechtepapa_externe>.cms_recht"), "", rechteexterne);
+
 	var formulardaten = new FormData();
-	var wert = "";
-
-	for (var p=0; p<personen.length; p++) {
-		wert = document.getElementById('cms_persoenlichetermine_'+personen[p]).value;
-		if (!cms_check_toggle(wert)) {fehler = true;}
-		else {
-			formulardaten.append('termine'+personen[p], wert);
-		}
-		wert = document.getElementById('cms_persoenlichenotiz_'+personen[p]).value;
-		if (!cms_check_toggle(wert)) {fehler = true;}
-		else {
-			formulardaten.append('notizen'+personen[p], wert);
-		}
-	}
-
-	if (fehler) {
-		cms_meldung_an('fehler', 'Rechte-Einstellungen ändern', '<p>Die Rechte-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		cms_laden_an('Rechte-Einstellungen ändern', 'Die Änderungen werden übernommen.');
-		formulardaten.append("anfragenziel", 	'230');
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
-	}
-}
-
-function cms_einstellungen_postfach_aendern() {
-	cms_laden_an('Postfach-Einstellungen ändern', 'Die Eingaben werden überprüft.');
-
-	var adressaten = ["lehrer","verwaltungsangestellte","schueler","eltern", "externe"];
-	var gruppenvorspann = ["gruppenmitglieder", "gruppenvorsitzende", "gruppenaufsicht"];
-	var gruppen = ['gremien','fachschaften','klassen','kurse','stufen','arbeitsgemeinschaften','arbeitskreise','fahrten','wettbewerbe','ereignisse','sonstigegruppen'];
-	var personen = ["lehrer", "eltern", "schueler", "verwaltungsangestellte","externe"];
-	var fehler = false;
-	var formulardaten = new FormData();
-	var wert = "";
-
-	for (var p=0; p<personen.length; p++) {
-		for (var a=0; a<adressaten.length; a++) {
-			wert = document.getElementById('cms_postfach_'+personen[p]+'an'+adressaten[a]).value;
-			if (!cms_check_toggle(wert)) {fehler = true;}
-			else {
-				formulardaten.append(personen[p]+adressaten[a], wert);
-			}
-		}
-		for (var gv=0; gv<gruppenvorspann.length; gv++) {
-			for (var g=0; g<gruppen.length; g++) {
-				wert = document.getElementById('cms_postfach_'+personen[p]+'an'+gruppenvorspann[gv]+gruppen[g]).value;
-				if (!cms_check_toggle(wert)) {fehler = true;}
-				else {
-					formulardaten.append(personen[p]+gruppenvorspann[gv]+gruppen[g], wert);
-				}
-			}
-		}
-	}
-
-	if (fehler) {
-		cms_meldung_an('fehler', 'Postfach-Einstellungen ändern', '<p>Die Postfach-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		cms_laden_an('Postfach-Einstellungen ändern', 'Die Änderungen werden übernommen.');
-		formulardaten.append("anfragenziel", 	'70');
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
-	}
+	cms_laden_an('Rechte-Einstellungen ändern', 'Die Änderungen werden übernommen.');
+	formulardaten.append("rechtelehrer", 			rechtelehrer);
+	formulardaten.append("rechteschueler", 		rechteschueler);
+	formulardaten.append("rechteverwaltung", 	rechteverwaltung);
+	formulardaten.append("rechteeltern", 			rechteeltern);
+	formulardaten.append("rechteexterne", 		rechteexterne);
+	formulardaten.append("anfragenziel", 			'230');
+	cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
 }
 
 
@@ -126,16 +94,6 @@ function cms_einstellungen_gruppen_aendern() {
 
 	var objekte = ['termine','blog'];
 
-	for (var p=0; p<personen.length; p++) {
-		for (var o=0; o<objekte.length; o++) {
-			wert = document.getElementById('cms_'+personen[p]+objekte[o]+'internvorschlagen').value;
-			if (!cms_check_toggle(wert)) {fehler = true;}
-			else {
-				formulardaten.append(personen[p]+objekte[o]+'internvorschlagen', wert);
-			}
-		}
-	}
-
 	if (fehler) {
 		cms_meldung_an('fehler', 'Gruppen-Einstellungen ändern', '<p>Die Gruppen-Einstellungen konnten nicht geändert werden, da die Eingaben ungültig sind.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
@@ -149,10 +107,13 @@ function cms_einstellungen_gruppen_aendern() {
 function cms_einstellungen_stundenplaene_aendern() {
 	cms_laden_an('Stundenplan-Einstellungen ändern', 'Die Eingaben werden überprüft.');
 	var vplanextern = document.getElementById('cms_vertretungsplan_extern').value;
+	var vplanpersoenlich = document.getElementById('cms_vertretungsplan_persoenlich').value;
 	var vplanschueleraktuell = document.getElementById('cms_vertretungsplan_schueler_aktuell').value;
 	var vplanschuelerfolgetag = document.getElementById('cms_vertretungsplan_schueler_folgetag').value;
 	var vplanlehreraktuell = document.getElementById('cms_vertretungsplan_lehrer_aktuell').value;
 	var vplanlehrerfolgetag = document.getElementById('cms_vertretungsplan_lehrer_folgetag').value;
+	var vplanskennung = document.getElementById('cms_schulhof_intern_svplankennung').value;
+	var vplanlkennung = document.getElementById('cms_schulhof_intern_lvplankennung').value;
 	var lehrerstundenplaene = document.getElementById('cms_lehrerstundenplaene').value;
 	var klassenstundenplaene = document.getElementById('cms_klassenstundenplaene').value;
 	var raumstundenplaene = document.getElementById('cms_raumstundenplaene').value;
@@ -169,11 +130,26 @@ function cms_einstellungen_stundenplaene_aendern() {
 		fehler = true;
 	}
 
+	if ((vplanpersoenlich != 'Klassen') && (vplanpersoenlich != 'Kursen')) {
+		meldung += '<li>Die Auswahl für die Ausgabe des persönlichen Vertretungsplans ist ungültig.</li>';
+		fehler = true;
+	}
+
 	if (vplanextern == 1) {
 		if ((vplanschueleraktuell.length == 0) || (vplanschuelerfolgetag.length == 0) || (vplanlehreraktuell.length == 0) || (vplanlehrerfolgetag.length == 0)) {
 			meldung += '<li>Es müssen für den aktuellen und den Folgetag Dateien für den Vertretungsplan sowohl für Schüler, als auch für Lehrer ausgewählt werden.</li>';
 			fehler = true;
 		}
+	}
+
+	if (!cms_check_titel(vplanskennung)) {
+		meldung += '<li>die Vertretungsplankennung für den Schülervertretungsplan enthält ungültige Zeichen.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_titel(vplanlkennung)) {
+		meldung += '<li>die Vertretungsplankennung für den Lehrervertretungsplan enthält ungültige Zeichen.</li>';
+		fehler = true;
 	}
 
 	if (!cms_check_toggle(lehrerstundenplaene)) {
@@ -223,6 +199,8 @@ function cms_einstellungen_stundenplaene_aendern() {
 		formulardaten.append("vplanschuelerfolgetag", 			vplanschuelerfolgetag);
 		formulardaten.append("vplanlehreraktuell", 					vplanlehreraktuell);
 		formulardaten.append("vplanlehrerfolgetag", 				vplanlehrerfolgetag);
+		formulardaten.append("vplanskennung", 							vplanskennung);
+		formulardaten.append("vplanlkennung", 							vplanlkennung);
 		formulardaten.append("lehrerstundenplaene", 				lehrerstundenplaene);
 		formulardaten.append("klassenstundenplaene", 				klassenstundenplaene);
 		formulardaten.append("raumstundenplaene", 					raumstundenplaene);
@@ -234,8 +212,70 @@ function cms_einstellungen_stundenplaene_aendern() {
 	}
 }
 
+
+function cms_einstellungen_tagebuch_aendern() {
+	cms_laden_an('Tagebuch-Einstellungen ändern', 'Die Eingaben werden überprüft.');
+	var abwesend = document.getElementById('cms_schulhof_tagebuch_abwesend_frist').value;
+	var inhalt = document.getElementById('cms_schulhof_tagebuch_inhalt_frist').value;
+	var lobtadel = document.getElementById('cms_schulhof_tagebuch_lobtadel_frist').value;
+	var hausaufgaben = document.getElementById('cms_schulhof_tagebuch_hausaufgaben_frist').value;
+	var entschuldigungen = document.getElementById('cms_schulhof_tagebuch_entschuldigungen_frist').value;
+	var abwesenheitsmin = document.getElementById('cms_schulhof_tagebuch_abwesenheitsminimum').value;
+
+	var meldung = '<p>Die Tagebuch-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
+	var fehler = false;
+
+	if (!abwesend.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die Abwesenheiten ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!inhalt.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die inhaltlichen Einträge ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!lobtadel.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für Lob und Tadel ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!hausaufgaben.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die Eintragung von Hausaufgaben ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!entschuldigungen.match(/^([-st1234567]|14)$/)) {
+		meldung += '<li>Die Frist für die Entschuldigungen ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_ganzzahl(abwesenheitsmin,0)) {
+		meldung += '<li>Die Mindestabwesenheit für die Entschuldigungspflicht ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Tagebuch-Einstellungen ändern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_laden_an('Tagebuch-Einstellungen ändern', 'Die Änderungen werden übernommen.');
+		var formulardaten = new FormData();
+		formulardaten.append("anfragenziel", 	'153');
+		formulardaten.append("abwesenheit", 					abwesend);
+		formulardaten.append("inhalt", 								inhalt);
+		formulardaten.append("lobtadel", 							lobtadel);
+		formulardaten.append("hausaufgaben", 					hausaufgaben);
+		formulardaten.append("entschuldigungen", 			entschuldigungen);
+		formulardaten.append("mindestabwesenheit", 		abwesenheitsmin);
+		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+	}
+}
+
+
 function cms_einstellungen_website_aendern() {
 	cms_laden_an('Website-Einstellungen ändern', 'Die Eingaben werden überprüft.');
+	var darkmode = document.getElementById('cms_darkmodeverfuegbar').value;
 	var menueseitenweiterleiten = document.getElementById('cms_menueseitenweiterleiten').value;
 	var fehlermeldungaktiv = document.getElementById('cms_fehlermeldungenaktiv').value;
 	var fehlermeldungangemeldet = document.getElementById('cms_fehlermeldungenangemeldet').value;
@@ -251,20 +291,14 @@ function cms_einstellungen_website_aendern() {
 	var meldung = '<p>Die Website-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
 
-	for (var p=0; p<personen.length; p++) {
-		for (var g=0; g<gruppen.length; g++) {
-			wert = document.getElementById('cms_'+personen[p]+gruppen[g]+'vorschlagen').value;
-			if (!cms_check_toggle(wert)) {fehler = true;}
-			else {
-				formulardaten.append(personen[p]+gruppen[g]+'vorschlagen', wert);
-			}
-		}
-	}
-
 	if (fehler) {
 		meldung += '<li>Die Eingaben für die öffentlichen Termine, Blogeinträge und Galerien sind ungültig.</li>';
 	}
 
+	if (!cms_check_toggle(darkmode)) {
+		meldung += '<li>Der Darkmode kann entweder zur Vefügung stehen, oder nicht.</li>';
+		fehler = true;
+	}
 	if (!cms_check_toggle(menueseitenweiterleiten)) {
 		meldung += '<li>Menüs werden entweder weitergleitet, oder nicht.</li>';
 		fehler = true;
@@ -293,9 +327,10 @@ function cms_einstellungen_website_aendern() {
 	else {
 		cms_laden_an('Website-Einstellungen ändern', 'Die Änderungen werden übernommen.');
 		formulardaten.append("anfragenziel", 	'227');
-		formulardaten.append("menueseitenweiterleiten", 		menueseitenweiterleiten);
-		formulardaten.append("fehlermeldungaktiv", 					fehlermeldungaktiv);
-		formulardaten.append("fehlermeldungangemeldet", 		fehlermeldungangemeldet);
+		formulardaten.append("darkmode", 									darkmode);
+		formulardaten.append("menueseitenweiterleiten", 	menueseitenweiterleiten);
+		formulardaten.append("fehlermeldungaktiv", 				fehlermeldungaktiv);
+		formulardaten.append("fehlermeldungangemeldet", 	fehlermeldungangemeldet);
 		formulardaten.append("feedbackaktiv", 						feedbackaktiv);
 		formulardaten.append("feedbackangemeldet", 				feedbackangemeldet);
 		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
@@ -316,18 +351,12 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 	var extvorname2 = document.getElementById('cms_externegeraete2_vorname').value;
 	var extnachname2 = document.getElementById('cms_externegeraete2_nachname').value;
 	var extmail2 = document.getElementById('cms_schulhof_externegeraete2_mail').value;
-	var kennung = document.getElementById('cms_schulhof_intern_geraetekennung').value;
 
 	var meldung = '<p>Die Geräteverwaltung-Einstellungen konnten nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
 
 	if (!cms_check_toggle(extexistiert1)) {
 		meldung += '<li>der erste Ansprechpartner kann entweder existieren, oder nicht.</li>';
-		fehler = true;
-	}
-
-	if (!cms_check_titel(kennung)) {
-		meldung += '<li>die Kennung enthält ungültige Zeichen.</li>';
 		fehler = true;
 	}
 
@@ -409,7 +438,6 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 		formulardaten.append("extvorname2", 			extvorname2);
 		formulardaten.append("extnachname2", 			extnachname2);
 		formulardaten.append("extmail2", 					extmail2);
-		formulardaten.append("kennung", 					kennung);
 		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }

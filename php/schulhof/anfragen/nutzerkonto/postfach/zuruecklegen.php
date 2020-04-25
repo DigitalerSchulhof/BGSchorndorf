@@ -13,8 +13,6 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 
 	$fehler = false;
@@ -22,7 +20,7 @@ if (cms_angemeldet()) {
 	$dbp = cms_verbinden('p');
 	$tabelle = "post$modus"."_".$CMS_BENUTZERID;
 
-	$sql = $dbp->prepare("UPDATE $tabelle SET papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL'), papierkorbseit = '' WHERE id = ?;");
+	$sql = $dbp->prepare("UPDATE $tabelle SET papierkorb = AES_ENCRYPT('-', '$CMS_SCHLUESSEL'), papierkorbseit = NULL WHERE id = ?;");
 	$sql->bind_param("i", $id);
 	$sql->execute();
 	$sql->close();

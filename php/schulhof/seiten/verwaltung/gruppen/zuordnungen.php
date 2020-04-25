@@ -5,25 +5,32 @@ function cms_zuordnungsauswahl_generieren($zgruppenids, $gruppe, $schuljahr, $sc
   $dbs = cms_verbinden('s');
   $schuljahre[0]['id'] = '-';
   $schuljahre[0]['bezeichnung'] = 'Schuljahrübergreifend';
-  $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre ORDER BY beginn DESC";
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
-      array_push($schuljahre, $daten);
+  $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre ORDER BY beginn DESC");
+  if ($sql->execute()) {
+    $sql->bind_result($sjid, $sjbezeichnung);
+    while ($sql->fetch()) {
+      $SJ = array();
+      $SJ['id'] = $sjid;
+      $SJ['bezeichnung'] = $sjbezeichnung;
+      array_push($schuljahre, $SJ);
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   $zgruppenknoepfe = "";
   foreach ($CMS_GRUPPEN as $g) {
     if (strlen($zgruppenids[$g]) > 0) {
       $gk = cms_textzudb($g);
-      $gids = str_replace('|',',', substr($zgruppenids[$g],1));
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $gk WHERE id IN ($gids)) AS x ORDER BY bezeichnung ASC";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          $zgruppenknoepfe .= "<span class=\"cms_toggle cms_toggle_aktiv\" id=\"cms_zugeordnet_".$gk."_".$daten['id']."\" onclick=\"cms_gruppe_abordnen('$gk', '".$daten['id']."')\">$g » ".$daten['bezeichnung']."</span> ";
+      $gids = "(".str_replace('|',',', substr($zgruppenids[$g],1)).")";
+      if (cms_check_idliste($gids)) {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $gk WHERE id IN $gids) AS x ORDER BY bezeichnung ASC");
+        if ($sql->execute()) {
+          $sql->bind_result($zgid, $zgbez);
+          while ($sql->fetch()) {
+            $zgruppenknoepfe .= "<span class=\"cms_toggle cms_toggle_aktiv\" id=\"cms_zugeordnet_".$gk."_".$zgid."\" onclick=\"cms_gruppe_abordnen('$gk', '$zgid')\">$g » $zgbez</span> ";
+          }
         }
-        $anfrage->free();
+        $sql->close();
       }
     }
   }
@@ -70,21 +77,30 @@ function cms_zuordnungselemente($zgruppenids, $gruppe, $schuljahr) {
 
   $dbs = cms_verbinden('s');
   $ergebnisse = array();
-  $zugeordnet =  str_replace('|', ',', $zgruppenids);
-  if (strlen($zugeordnet) > 0) {$zugeordnet = "AND id NOT IN (".substr($zugeordnet, 1).")";}
-  if ($schuljahr == '-') {$schuljahrsql = "schuljahr IS NULL";}
-  else {$schuljahrsql = "schuljahr = $schuljahr";}
+  $zugeordnet =  "(".str_replace('|', ',', $zgruppenids).")";
+  if (cms_check_idliste($zugeordnet)) {$zugeordnet = "AND id NOT IN $zugeordnet";}
+  else {$zugeordnet = "";}
+
+  if ($schuljahr == '-') {
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $gruppek WHERE schuljahr IS NULL $zugeordnet) AS x ORDER BY bezeichnung ASC");
+  }
+  else {
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $gruppek WHERE schuljahr = ? $zugeordnet) AS x ORDER BY bezeichnung ASC");
+    $sql->bind_param("i", $schuljahr);
+  }
 
   $gruppeninfo = array();
 
-  $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $gruppek WHERE $schuljahrsql $zugeordnet";
-  $sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
-      array_push($gruppeninfo, $daten);
+  if ($sql->execute()) {
+    $sql->bind_result($zgid, $zgbez);
+    while ($sql->fetch()) {
+      $ZG = array();
+      $ZG['id'] = $zgid;
+      $ZG['bezeichnung'] = $zgbez;
+      array_push($gruppeninfo, $ZG);
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   cms_trennen($dbs);
 

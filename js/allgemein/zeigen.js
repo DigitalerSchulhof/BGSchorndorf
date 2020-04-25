@@ -5,10 +5,9 @@ function cms_einblenden(id, art) {
 
 // jQuery-Objekt möglich
 function cms_ausblenden(id) {
-	if(id.jquery)	// Truthy Version-String wenn gültiges jQuery Objekt
-		id.css("display", "none");
-	else
-		$("#"+id).css("display", "none");
+	if (document.getElementById(id)) {
+		document.getElementById(id).style.display = 'none';
+	}
 }
 
 function cms_toggle_anzeigen(id, art) {
@@ -60,25 +59,51 @@ function cms_toggle_klasse(idknopf, klasse, idfeld, eingabe) {
 	}
 }
 
-function cms_klasse_dazu (id, klasse) {
+function cms_klasse_dazu (id, klassedazu) {
 	var element = document.getElementById(id);
   var klassen = element.className.split(" ");
-  var i = klassen.indexOf(klasse);
+  var i = klassen.indexOf(klassedazu);
 
   if (i < 0) {
-		klassen.push(klasse);
+		klassen.push(klassedazu);
     element.className = klassen.join(" ");
 	}
 }
 
-function cms_klasse_weg (id, klasse) {
+function cms_klasse_dazu_wennklasse (klassenname, klassedazu) {
+	var elemente = document.getElementsByClassName(klassenname);
+	for (var j = 0; j < elemente.length; j++) {
+		var klassen = elemente[j].className.split(" ");
+	  var i = klassen.indexOf(klassedazu);
+
+	  if (i < 0) {
+			klassen.push(klassedazu);
+	    elemente[j].className = klassen.join(" ");
+		}
+	}
+}
+
+function cms_klasse_weg (id, klasseweg) {
 	var element = document.getElementById(id);
   var klassen = element.className.split(" ");
-  var i = klassen.indexOf(klasse);
+  var i = klassen.indexOf(klasseweg);
 
   if (i >= 0) {
 		klassen.splice(i, 1);
     element.className = klassen.join(" ");
+	}
+}
+
+function cms_klasse_weg_wennklasse (klassenname, klasseweg) {
+	var elemente = document.getElementsByClassName(klassenname);
+	for (var j = 0; j < elemente.length; j++) {
+		var klassen = elemente[j].className.split(" ");
+	  var i = klassen.indexOf(klasseweg);
+
+	  if (i >= 0) {
+			klassen.splice(i, 1);
+	    elemente[j].className = klassen.join(" ");
+		}
 	}
 }
 

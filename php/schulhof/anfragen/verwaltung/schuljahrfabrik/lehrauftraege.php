@@ -13,12 +13,11 @@ if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	$fehler = false;
 
 	if (!cms_check_idfeld($kurse) || !cms_check_idfeld($klassen)) {$fehler = true;}
@@ -124,23 +123,23 @@ if (cms_angemeldet() && $zugriff) {
 		}
 
 		$jetzt = time();
-		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, ?)");
+		$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0)");
 		foreach ($KURSE as $k) {
 			if (strlen($k['lehrer']) > 0) {
 				$personen = explode("|", substr($k['lehrer'], 1));
 				foreach ($personen as $p) {
-					$sql->bind_param("iii", $k['id'], $p, $jetzt);
+					$sql->bind_param("ii", $k['id'], $p);
 					$sql->execute();
 				}
 			}
 		}
 		$sql->close();
-		$sql = $dbs->prepare("INSERT INTO klassenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, ?)");
+		$sql = $dbs->prepare("INSERT INTO klassenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) VALUES (?, ?, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0)");
 		foreach ($KLASSEN as $k) {
 			if (strlen($k['lehrer']) > 0) {
 				$personen = explode("|", substr($k['lehrer'], 1));
 				foreach ($personen as $p) {
-					$sql->bind_param("iii", $k['id'], $p, $jetzt);
+					$sql->bind_param("ii", $k['id'], $p);
 					$sql->execute();
 				}
 			}
@@ -171,13 +170,13 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->close();
 
 		// Personen der Kurse in die jeweilige Stufen übernehmen
-		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, ? FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
-		$sql->bind_param("iii", $jetzt, $neuschuljahr, $neuschuljahr);
+		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 FROM kursemitglieder JOIN kurse ON kursemitglieder.gruppe = kurse.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
+		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
 		$sql->execute();
 		$sql->close();
 		// Personen der Klassen in die jeweilige Stufen übernehmen
-		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, chattenab) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, ? FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
-		$sql->bind_param("iii", $jetzt, $neuschuljahr, $neuschuljahr);
+		$sql = $dbs->prepare("INSERT INTO stufenmitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT DISTINCT stufe, person, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 FROM klassenmitglieder JOIN klassen ON klassenmitglieder.gruppe = klassen.id WHERE schuljahr = ? AND (stufe, person) NOT IN (SELECT stufe, person FROM stufenmitglieder JOIN stufen ON gruppe = stufen.id WHERE schuljahr = ?)");
+		$sql->bind_param("ii", $neuschuljahr, $neuschuljahr);
 		$sql->execute();
 		$sql->close();
 

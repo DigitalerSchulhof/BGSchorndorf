@@ -16,15 +16,17 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER"; exi
 if (isset($_POST['zusatz'])) {$zusatz = $_POST['zusatz'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $angemeldet = cms_angemeldet();
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
-else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
+if ($id == '-') {$zugriff = cms_r("website.elemente.download.anlegen");}
+else {$zugriff = cms_r("website.elemente.download.bearbeiten");}
 
-if (($zugriff) && ($angemeldet)) {
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
+
+if (cms_angemeldet() && $zugriff) {
   $fehler = false;
 
   $neu = true;
@@ -33,14 +35,16 @@ if (($zugriff) && ($angemeldet)) {
   $beschreibung = "";
   $name = 1;
   $groesse = 1;
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM downloads WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) {
-      if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM downloads WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
         if ($modus == 'Aktuell') {
           $pfad = $daten['pfadaktuell'];
           $titel = $daten['titelaktuell'];
@@ -70,6 +74,7 @@ if (($zugriff) && ($angemeldet)) {
       $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 
@@ -81,7 +86,7 @@ if (($zugriff) && ($angemeldet)) {
     if ($id == '-') {$code = "<h3>Neuer Download</h3>";}
     else {$code = "<h3>Download bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
-    if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_downloads_aktiv', $aktiv)."</td></tr>";}
+    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_downloads_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"cms_website_element_downloads_aktiv\" name=\"cms_website_element_downloads_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_downloads_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "<tr><th>Datei:</th><td>".cms_dateiwahl_knopf ('website', 'cms_website_element_downloads_datei', 's', 'website', '-', 'download', $pfad)."</td></tr>";

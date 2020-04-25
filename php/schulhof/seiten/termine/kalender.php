@@ -129,23 +129,35 @@ if (!$fehler) {
 
   if ($ansichtF == 1) {
     // FERIEN LADEN
-    $sql = "SELECT bezeichnung, art, beginn, ende, mehrtaegigt, '' AS text, '0' AS ortt, '0' AS uhrzeitbt, '0' AS uhrzeitet, '1' AS genehmigt FROM ferien WHERE (beginn BETWEEN $suchbeginn AND $suchende) OR (ende BETWEEN $suchbeginn AND $suchende) OR";
-    $sql .= " (beginn < $suchbeginn AND ende > $suchende) ORDER BY beginn ASC, ende DESC";
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT bezeichnung, art, beginn, ende, mehrtaegigt, '' AS text FROM ferien WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?) ORDER BY beginn ASC, ende DESC");
+    $sql->bind_param("iiiiii", $suchbeginn, $suchende, $suchbeginn, $suchende, $suchbeginn, $suchende);
+    if ($sql->execute()) {
+      $sql->bind_result($fbez, $fart, $fbeginn, $fende, $fmehrt, $ftext);
+      while ($sql->fetch()) {
+        $F = array();
+        $F['bezeichnung'] = $fbez;
+        $F['art'] = $fart;
+        $F['beginn'] = $fbeginn;
+        $F['ende'] = $fende;
+        $F['mehrtaegigt'] = $fmehrt;
+        $F['text'] = $ftext;
+        $F['ortt'] = '0';
+        $F['uhrzeitbt'] = '0';
+        $F['uhrzeitet'] = '0';
+        $F['genehmigt'] = '1';
         // Tag des Beginns erhalten
-        $beginntag = ceil(($daten['beginn'] + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
-        $endetag = ceil(($daten['ende'] - $monatsbeginn)/60/60/24); if ($endetag > $letztertag) {$endetag = $letztertag;}
+        $beginntag = ceil(($fbeginn + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
+        $endetag = ceil(($fende - $monatsbeginn)/60/60/24); if ($endetag > $letztertag) {$endetag = $letztertag;}
         for ($t=$beginntag; $t<=$endetag; $t++) {$uebersichtsbelegung[$t]['F'] = true;}
 
-        if (($daten['beginn'] <= $sichtbarbeginn) && ($daten['ende'] >= $sichtbarbeginn) ||
-            ($daten['ende'] >= $sichtbarende) && ($daten['beginn'] <= $sichtbarende) ||
-            ($daten['beginn'] >= $sichtbarbeginn) && ($daten['ende'] <= $sichtbarende)) {
-          array_push($termineansicht['F'], $daten);
+        if (($fbeginn <= $sichtbarbeginn) && ($fende >= $sichtbarbeginn) ||
+            ($fende >= $sichtbarende) && ($fbeginn <= $sichtbarende) ||
+            ($fbeginn >= $sichtbarbeginn) && ($fende <= $sichtbarende)) {
+          array_push($termineansicht['F'], $F);
         }
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
   $oeffentlichausschluss = "";
@@ -162,26 +174,41 @@ if (!$fehler) {
       $sqlintern .= " UNION (SELECT id, '$g' AS gruppenart, $gk"."termineintern.gruppe AS gruppe, 'in' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM $gk"."termineintern WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID UNION SELECT gruppe FROM $gk"."aufsicht WHERE person = $CMS_BENUTZERID))";
     }
     $gruppensuche = "SELECT DISTINCT termin FROM (".substr($gruppensuche, 7).") AS x";
-    $sql = "SELECT * FROM ((SELECT id, '' AS gruppenart, '' AS gruppe, 'oe' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND id IN ($gruppensuche)) $sqlintern) AS x WHERE (beginn BETWEEN $suchbeginn AND $suchende) OR (ende BETWEEN $suchbeginn AND $suchende) OR";
-    $sql .= " (beginn < $suchbeginn AND ende > $suchende) ORDER BY beginn ASC, ende DESC";
-
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM ((SELECT id, '' AS gruppenart, '' AS gruppe, 'oe' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND id IN ($gruppensuche)) $sqlintern) AS x WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn < ? AND ende > ?) ORDER BY beginn ASC, ende DESC");
+    $sql->bind_param("iiiiii", $suchbeginn, $suchende, $suchbeginn, $suchende, $suchbeginn, $suchende);
+    if ($sql->execute()) {
+      $sql->bind_result($tid, $gart, $tgruppe, $tart, $tbez, $tort, $tbeginn, $tende, $tmehrt, $tuhrzeitbt, $tuhrzeitet, $tortt, $tgenehmigt, $ttext);
+      while ($sql->fetch()) {
+        $T = array();
+        $T['id'] = $tid;
+        $T['gruppenart'] = $gart;
+        $T['gruppe'] = $tgruppe;
+        $T['art'] = $tart;
+        $T['bezeichnung'] = $tbez;
+        $T['ort'] = $tort;
+        $T['beginn'] = $tbeginn;
+        $T['ende'] = $tende;
+        $T['mehrtaegigt'] = $tmehrt;
+        $T['uhrzeitbt'] = $tuhrzeitbt;
+        $T['uhrzeitet'] = $tuhrzeitet;
+        $T['ortt'] = $tortt;
+        $T['genehmigt'] = $tgenehmigt;
+        $T['text'] = $ttext;
         // Tag des Beginns erhalten
-        $beginntag = ceil(($daten['beginn'] + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
-        $endetag = ceil(($daten['ende'] - $monatsbeginn)/60/60/24); if ($endetag > $letztertag) {$endetag = $letztertag;}
+        $beginntag = ceil(($tbeginn + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
+        $endetag = ceil(($tende - $monatsbeginn)/60/60/24); if ($endetag > $letztertag) {$endetag = $letztertag;}
         for ($t=$beginntag; $t<=$endetag; $t++) {$uebersichtsbelegung[$t]['P'] = true;}
 
-        $oeffentlichausschluss .= ",".$daten['id'];
+        $oeffentlichausschluss .= ",".$tid;
 
-        if (($daten['beginn'] <= $sichtbarbeginn) && ($daten['ende'] >= $sichtbarbeginn) ||
-            ($daten['ende'] >= $sichtbarende) && ($daten['beginn'] <= $sichtbarende) ||
-            ($daten['beginn'] >= $sichtbarbeginn) && ($daten['ende'] <= $sichtbarende)) {
-          array_push($termineansicht['P'], $daten);
+        if (($tbeginn <= $sichtbarbeginn) && ($tende >= $sichtbarbeginn) ||
+            ($tende >= $sichtbarende) && ($tbeginn <= $sichtbarende) ||
+            ($tbeginn >= $sichtbarbeginn) && ($tende <= $sichtbarende)) {
+          array_push($termineansicht['P'], $T);
         }
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
   $sichtbarkeitsausschluss = "";
@@ -192,27 +219,47 @@ if (!$fehler) {
     else if ($CMS_BENUTZERART == 'v') {$oeffentlichkeitslimit = 2;}
     else {$oeffentlichkeitslimit = 3;}
 
-    if (strlen($oeffentlichausschluss) > 0) {$oeffentlichausschluss = "AND id NOT IN (".substr($oeffentlichausschluss, 1).")";}
+    if (strlen($oeffentlichausschluss) > 0) {
+      if (cms_check_idliste("(".substr($oeffentlichausschluss, 1).")")) {
+        $oeffentlichausschluss = "AND id NOT IN (".substr($oeffentlichausschluss, 1).")";
+      }
+      else {$oeffentlichausschluss = "";}
+    }
     else {$oeffentlichausschluss = "";}
 
-    $sql = "SELECT id, 'oe' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND oeffentlichkeit >= $oeffentlichkeitslimit $oeffentlichausschluss ORDER BY beginn ASC, ende DESC";
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT id, 'oe' AS art, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text FROM termine WHERE aktiv = 1 AND oeffentlichkeit >= ? $oeffentlichausschluss ORDER BY beginn ASC, ende DESC");
+    $sql->bind_param("i", $oeffentlichkeitslimit);
+    if ($sql->execute()) {
+      $sql->bind_result($tid, $tart, $tbez, $tort, $tbeginn, $tende, $tmehrt, $tuhrzeitbt, $tuhrzeitet, $tortt, $tgenehmigt, $ttext);
+      while ($sql->fetch()) {
+        $T = array();
+        $T['id'] = $tid;
+        $T['art'] = $tart;
+        $T['bezeichnung'] = $tbez;
+        $T['ort'] = $tort;
+        $T['beginn'] = $tbeginn;
+        $T['ende'] = $tende;
+        $T['mehrtaegigt'] = $tmehrt;
+        $T['uhrzeitbt'] = $tuhrzeitbt;
+        $T['uhrzeitet'] = $tuhrzeitet;
+        $T['ortt'] = $tortt;
+        $T['genehmigt'] = $tgenehmigt;
+        $T['text'] = $ttext;
         // Tag des Beginns erhalten
-        $beginntag = ceil(($daten['beginn'] + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
-        $endetag = ceil(($daten['ende'] - $monatsbeginn)/60/60/24); if ($endetag > $letztertag) {$endetag = $letztertag;}
+        $beginntag = ceil(($tbeginn + 1 - $monatsbeginn)/60/60/24); if ($beginntag < 0) {$beginntag = 1;}
+        $endetag = ceil(($tende - $monatsbeginn)/60/60/24); if ($endetag > $letztertag) {$endetag = $letztertag;}
         for ($t=$beginntag; $t<=$endetag; $t++) {$uebersichtsbelegung[$t]['O'] = true;}
 
-        $sichtbarkeitsausschluss .= ",".$daten['id'];
+        $sichtbarkeitsausschluss .= ",".$tid;
 
-        if (($daten['beginn'] <= $sichtbarbeginn) && ($daten['ende'] >= $sichtbarbeginn) ||
-            ($daten['ende'] >= $sichtbarende) && ($daten['beginn'] <= $sichtbarende) ||
-            ($daten['beginn'] >= $sichtbarbeginn) && ($daten['ende'] <= $sichtbarende)) {
-          array_push($termineansicht['O'], $daten);
+        if (($tbeginn <= $sichtbarbeginn) && ($tende >= $sichtbarbeginn) ||
+            ($tende >= $sichtbarende) && ($tbeginn <= $sichtbarende) ||
+            ($tbeginn >= $sichtbarbeginn) && ($tende <= $sichtbarende)) {
+          array_push($termineansicht['O'], $T);
         }
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
 
@@ -248,7 +295,7 @@ if (!$fehler) {
     $code .= "</tr>";
     while ($tagzahl <= $letztertag) {
       $code .= "<tr>";
-        $code .= "<th class=\"cms_kalender_kwzahl\">$kw</th>"; $kw++;
+        $code .= "<th class=\"cms_kalender_kwzahl\">$kw</th>"; $kw++; if ($kw>52) {$kw = 1;}
         for ($i=1; $i<=7; $i++) {
           if ($tagzahl <= $letztertag) {
             $zusatzklassen = "";
@@ -284,16 +331,16 @@ if (!$fehler) {
       $g = $t['gruppenart'];
       $gk = cms_textzudb($g);
       $gid = $t['id'];
-      $sql = "SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = $gid";
-      if ($anfrage2 = $dbs->query($sql)) {
-        if ($daten2 = $anfrage2->fetch_assoc()) {
-          $schuljahrbez = $daten2['sbez'];
-          $gbez = $daten2['gbez'];
+      $sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = ?");
+      $sql->bind_param("i", $gid);
+      if ($sql->execute()) {
+        $sql->bind_result($schuljahrbez, $gbez);
+        if ($sql->fetch()) {
           if (is_null($schuljahrbez)) {$schuljahrbez = "Schuljahrübergreifend";}
           $internvorlink = "Schulhof/Gruppen/".cms_textzulink($schuljahrbez)."/".cms_textzulink($g)."/".cms_textzulink($gbez);
         }
-        $anfrage2->free();
       }
+      $sql->close();
     }
     $termincode .= cms_termin_link_ausgeben($dbs, $t, $internvorlink);
   }

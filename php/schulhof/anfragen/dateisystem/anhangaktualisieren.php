@@ -9,10 +9,7 @@ include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 session_start();
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
-
-if ($angemeldet) {
+if (cms_angemeldet()) {
   $dateien = "";
   $anhangstyle = "display: table-row;";
   // Bereits hochgeladene Anhänge verwenden

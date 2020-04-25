@@ -22,8 +22,6 @@ $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
 
 $zugriff = false;
 $fehler = false;
@@ -54,7 +52,7 @@ $zugriff = $gruppenrechte['dateiumbenennen'];
 
 
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 
 	if (strlen($namealt) < 1) {
 		$fehler = true;

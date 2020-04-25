@@ -12,8 +12,6 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	// Nachrichten löschen, die Limits überschreiten
 
@@ -99,14 +97,13 @@ $sql->execute();
 $sql->close();
 cms_trennen($dbs);
 
-$CMS_DSGVO_COOKIESAKZEPTIERT = false;
-if (isset($_SESSION['DSGVO_COOKIESAKZEPTIERT'])) {$CMS_DSGVO_COOKIESAKZEPTIERT = $_SESSION['DSGVO_COOKIESAKZEPTIERT'];}
 
 // SESSION löschen
 session_destroy();
 
 session_start();
-$_SESSION['DSGVO_COOKIESAKZEPTIERT'] = $CMS_DSGVO_COOKIESAKZEPTIERT;
+$_SESSION['DSGVO_EINWILLIGUNG_A'] = true;
+$_SESSION['DSGVO_FENSTERWEG'] = true;
 
 echo "ERFOLG";
 ?>

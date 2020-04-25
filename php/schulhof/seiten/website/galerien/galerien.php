@@ -6,9 +6,9 @@
 <?php
 include_once('php/schulhof/seiten/website/galerien/galeriesuche.php');
 
-$bearbeiten = $CMS_RECHTE['Website']['Galerien bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Galerien löschen'];
-$anlegen = $CMS_RECHTE['Website']['Galerien anlegen'];
+$bearbeiten = cms_r("artikel.galerien.bearbeiten");
+$loeschen   = cms_r("artikel.galerien.löschen");
+$anlegen    = cms_r("artikel.galerien.anlegen");
 $anzeigen = $bearbeiten || $loeschen || $anlegen;
 
 
@@ -24,17 +24,18 @@ $jahranfang = $jahrgewaehlt;
 $jahrende = $jahrgewaehlt;
 $jahre = false;
 
-$sql = "SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM galerien";
-if ($anfrage = $dbs->query($sql)) {
-  if ($daten = $anfrage->fetch_assoc()) {
-    if (!is_null($daten['anfang'])) {
-      $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);
-      $jahrende = max(date('Y', $daten['ende']), $jahrende);
+$sql = $dbs->prepare("SELECT MIN(datum) AS anfang, MAX(datum) AS ende FROM galerien");
+if ($sql->execute()) {
+  $sql->bind_result($anfang, $ende);
+  if ($sql->fetch()) {
+    if (!is_null($anfang)) {
+      $jahranfang = min(date('Y', $anfang), $jahranfang);
+      $jahrende = max(date('Y', $ende), $jahrende);
       $jahre = true;
     }
   }
-  $anfrage->free();
 }
+$sql->close();
 
 $spalten = 7;
 $aktionen = false;
@@ -63,7 +64,7 @@ $canzeigen .= '</tr>';
 $canzeigen .= '</table>';
 $canzeigen .= '<p><input type="hidden" name="cms_verwaltung_galerien_jahr_angezeigt" id="cms_verwaltung_galerien_jahr_angezeigt" value="'.$jahraktuell.'"></p>';
 
-if ($CMS_RECHTE['Website']['Galerien löschen']) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_galerien_jahr_loeschen_vorbereiten()">Alle Galerien dieses Jahres löschen</span></p>';}
+if (cms_r("artikel.galerien.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_galerien_jahr_loeschen_vorbereiten()">Alle Galerien dieses Jahres löschen</span></p>';}
 
 cms_trennen($dbs);
 

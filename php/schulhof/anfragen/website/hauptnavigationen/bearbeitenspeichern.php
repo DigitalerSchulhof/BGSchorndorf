@@ -20,10 +20,9 @@ if (isset($_POST['f_ebenenzusatze'])) {$f_ebenenzusatze = $_POST['f_ebenenzusatz
 if (isset($_POST['f_ebenenzusatzs'])) {$f_ebenenzusatzs = $_POST['f_ebenenzusatzs'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['f_tiefe'])) {$f_tiefe = $_POST['f_tiefe'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Hauptnavigationen festlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("website.navigation")) {
 	$fehler = false;
 
 	if (($h_ebene != 'd') && ($h_ebene != 'u') && ($h_ebene != 's') && ($h_ebene != 'e')) {$fehler = true;}

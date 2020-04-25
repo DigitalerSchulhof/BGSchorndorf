@@ -10,25 +10,35 @@ function cms_downloadelemente($dbs, $art, $id, $gruppe = '-', $gruppenid = '-') 
   $downloads = array();
   if ($id != '-') {
     if ($art == 'termine') {
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM terminedownloads WHERE termin = $id) AS x ORDER BY titel";
+      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM terminedownloads WHERE termin = ?) AS x ORDER BY titel";
     }
     else if ($art == 'blogeintraege') {
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM blogeintragdownloads WHERE blogeintrag = $id) AS x ORDER BY titel";
+      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM blogeintragdownloads WHERE blogeintrag = ?) AS x ORDER BY titel";
     }
     else if ($art == 'blogintern') {
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $gk"."blogeintragdownloads WHERE blogeintrag = $id) AS x ORDER BY titel";
+      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $gk"."blogeintragdownloads WHERE blogeintrag = ?) AS x ORDER BY titel";
     }
     else if ($art == 'terminintern') {
-      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $gk"."termineinterndownloads WHERE termin = $id) AS x ORDER BY titel";
+      $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $gk"."termineinterndownloads WHERE termin = ?) AS x ORDER BY titel";
     }
 
     if (strlen($sql) > 0) {
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
-          array_push($downloads, $daten);
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($did, $dpfad, $dtitel, $dbeschreibung, $ddateiname, $ddateigroesse);
+        while ($sql->fetch()) {
+          $D = array();
+          $D['id'] = $did;
+          $D['pfad'] = $dpfad;
+          $D['titel'] = $dtitel;
+          $D['beschreibung'] = $dbeschreibung;
+          $D['dateiname'] = $ddateiname;
+          $D['dateigroesse'] = $ddateigroesse;
+          array_push($downloads, $D);
         }
-        $anfrage->free();
       }
+      $sql->close();
     }
   }
 

@@ -23,13 +23,14 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['Planung']['Buchungen sehen'] || $CMS_RECHTE['Planung']['Buchungen anonymisiert sehen'];
+if($art === "r") { $rart = "räume"; }
+else if($art === "l") { $rart = "leihgeräte"; }
 
-if (cms_angemeldet() && $zugriff) {
-	if ($CMS_RECHTE['Planung']['Buchungen sehen']) {$anonymisiert = false;}
+if (cms_angemeldet() && cms_r("schulhof.organisation.buchungen.$rart.[|sehen,anonymisiert]")) {
+	if (cms_r("schulhof.organisation.buchungen.$rart.sehen")) {$anonymisiert = false;}
 	else {$anonymisiert = true;}
 	echo cms_buchungsplan_laden($art, $standort, $tag, $monat, $jahr, $ziel, $anonymisiert);
 }

@@ -12,30 +12,22 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['jahr'])) {$jahr = $_POST['jahr'];} else {$jahr = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
 
-$bearbeiten = $CMS_RECHTE['Website']['Galerien bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Galerien bearbeiten'];
-$anzeigen = $bearbeiten || $loeschen;
 
-$zugriff = $anzeigen;
 $fehler =  (!cms_check_ganzzahl($jahr,0));
 
-$spalten = 5;
-if ($bearbeiten || $loeschen) {$spalten++;}
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("artikel.galerien.*")) {
   if (!$fehler) {
   	$dbs = cms_verbinden('s');
-  	$ausgabe = cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen);
+  	$ausgabe = cms_galerieverwaltung_suche($dbs, $jahr);
   	cms_trennen($dbs);
   	echo $ausgabe;
   }
   else {
-  	echo "<tr><td class=\"cms_notiz\" colspan=\"$spalten\">- Ungültige Anfrage -</td></tr>";
+  	echo "<tr><td class=\"cms_notiz\" colspan=\"7\">- Ungültige Anfrage -</td></tr>";
   }
 }
 else {
-	echo "<tr><td class=\"cms_notiz\" colspan=\"$spalten\">- Zugriff verweigert -</td></tr>";
+	echo "<tr><td class=\"cms_notiz\" colspan=\"7\">- Zugriff verweigert -</td></tr>";
 }
 ?>

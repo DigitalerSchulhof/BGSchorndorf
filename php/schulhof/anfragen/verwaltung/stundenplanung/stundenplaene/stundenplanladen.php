@@ -16,10 +16,9 @@ if (isset($_POST['kurs'])) {$kurs = $_POST['kurs'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {$zeitraum = $_SESSION["STUNDENPLANZEITRAUM"];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stunden anlegen'] || $CMS_RECHTE['Planung']['Stunden löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 	$code = "";
 
@@ -35,35 +34,43 @@ if (cms_angemeldet() && $zugriff) {
 	}
 	else if ($art == 'k') {
 		// Prüfe, ob die Klasse in diesen Zeitraum gehört
-		$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE klassen.id = $klasse) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON klassenstufen.schuljahr = schuljahre.id JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = $zeitraum";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				if ($daten['anzahl'] != 1) {$fehler = true;}
+		$sql = "SELECT COUNT(*) AS anzahl FROM (SELECT id, klassenstufe FROM klassen WHERE klassen.id = ?) AS x JOIN klassenstufen ON x.klassenstufe = klassenstufen.id JOIN schuljahre ON klassenstufen.schuljahr = schuljahre.id JOIN zeitraeume ON zeitraeume.schuljahr = schuljahre.id WHERE zeitraeume.id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("ii", $klasse, $zeitraum);
+		if ($sql->execute()) {
+			$sql->bind_param($anzahl);
+			if ($sql->fetch()) {
+				if ($anzahl != 1) {$fehler = true;}
 			} else {$fehler = true;}
-			$anfrage->free();
+			$sql->close();
 		} else {$fehler = true;}
 
 		// Prüfen, ob der Kurs der Klasse zugeordnet ist
 		if (!$fehler) {
-			$sql = "SELECT COUNT(*) AS anzahl FROM kursklassen WHERE klasse = $klasse AND kurs = $kurs";
-			if ($anfrage = $dbs->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()) {
-					if ($daten['anzahl'] != 1) {$fehler = true;}
+			$sql = "SELECT COUNT(*) AS anzahl FROM kursklassen WHERE klasse = ? AND kurs = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("ii", $klasse, $kurs);
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				if ($sql->fetch() {
+					if ($anzahl != 1) {$fehler = true;}
 				} else {$fehler = true;}
-				$anfrage->free();
+				$sql->close();
 			} else {$fehler = true;}
 		}
 
 		// Weitere Klassen suchen, denen dieser Kurs zugeordnet ist
 		$klassen = '|'.$klasse;
 		if (!$fehler) {
-			$sql = "SELECT DISTINCT klasse FROM kursklassen WHERE kurs = $kurs AND klasse != $klasse";
-			if ($anfrage = $dbs->query($sql)) {
-				while ($daten = $anfrage->fetch_assoc()) {
-					$klassen .= '|'.$daten['klasse'];
+			$sql = prepare("SELECT DISTINCT klasse FROM kursklassen WHERE kurs = ? AND klasse != ?");
+			$sql->bind_param("ii", $kurs, $klasse);
+			if ($sql->execute()) {
+				$sql->bind_result($klasseid);
+				while ($sql->fetch()) {
+					$klassen .= '|'.$klasseid;
 				}
-				$anfrage->free();
 			} else {$fehler = true;}
+			$sql->close();
 		}
 
 		// Klassenstundenpläne erzeugen

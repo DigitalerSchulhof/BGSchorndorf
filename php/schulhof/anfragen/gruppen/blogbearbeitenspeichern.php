@@ -23,6 +23,8 @@ if (isset($_POST['zusammenfassung']))   {$zusammenfassung = $_POST['zusammenfass
 if (isset($_POST['autor'])) 		        {$autor = $_POST['autor'];} 			                    else {echo "FEHLER";exit;}
 if (isset($_POST['downloadanzahl']))    {$downloadanzahl = $_POST['downloadanzahl'];}         else {echo "FEHLER";exit;}
 if (isset($_POST['downloadids']))       {$downloadids = $_POST['downloadids'];}               else {echo "FEHLER";exit;}
+if (isset($_POST['artikellinkanzahl'])) {$artikellinkanzahl = $_POST['artikellinkanzahl'];} else {echo "FEHLER";exit;}
+if (isset($_POST['artikellinkids']))    {$artikellinkids = $_POST['artikellinkids'];}       else {echo "FEHLER";exit;}
 if (isset($_POST['beschluesseanzahl'])) {$beschluesseanzahl = $_POST['beschluesseanzahl'];}   else {echo "FEHLER";exit;}
 if (isset($_POST['beschluesseids']))    {$beschluesseids = $_POST['beschluesseids'];}         else {echo "FEHLER";exit;}
 if (isset($_POST['inhalt'])) 					  {$text = $_POST['inhalt'];} 										      else {echo "FEHLER";exit;}
@@ -38,15 +40,15 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER";exit;}
 
 $gk = cms_textzudb($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 
-$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge bearbeiten'];
+$zugriff = $CMS_GRUPPENRECHTE['blogeintraege'] || cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen");
 
-if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!$CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'])) {$genehmigt = '0';}
+if (($CMS_EINSTELLUNGEN['Genehmigungen '.$gruppe.' Blogeinträge'] == 1) && (!cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen"))) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
@@ -116,6 +118,25 @@ if (cms_angemeldet() && $zugriff) {
 		}
 	}
 
+	$artikellinks = array();
+	if ($artikellinkanzahl > 0) {
+		$lids = explode('|', $artikellinkids);
+		$sqlwhere = substr(implode(' OR ', $lids), 4);
+
+		for ($i=1; $i<count($lids); $i++) {
+			$ll = array();
+			if (isset($_POST["ltitel_".$lids[$i]])) {$ll['titel'] = $_POST["ltitel_".$lids[$i]];} else {echo "FEHLER"; exit;}
+			if (strlen($ll['titel']) < 1) {$fehler = true; }
+
+			if (isset($_POST["lbeschreibung_".$lids[$i]])) {$ll['beschreibung'] = $_POST["lbeschreibung_".$lids[$i]];} else {echo "FEHLER"; exit;}
+
+			if (isset($_POST["llink_".$lids[$i]])) {$ll['link'] = $_POST["llink_".$lids[$i]];} else {echo "FEHLER"; exit;}
+			if (strlen($ll['link']) < 1) {$fehler = true; }
+
+			array_push($artikellinks, $ll);
+		}
+	}
+
   $beschluesse = array();
   if ($beschluesseanzahl > 0) {
 		$bids = explode('|', $beschluesseids);
@@ -166,6 +187,22 @@ if (cms_angemeldet() && $zugriff) {
 		}
 		$sql->close();
 
+		$sql = $dbs->prepare("DELETE FROM {$gk}blogeintraglinks WHERE blogeintrag = ?");
+    $sql->bind_param("i", $blogid);
+    $sql->execute();
+    $sql->close();
+
+    // LINKS EINTRAGEN
+    $sql = $dbs->prepare("UPDATE {$gk}blogeintraglinks SET blogeintrag = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+		foreach ($artikellinks as $l) {
+			$l['titel'] = cms_texttrafo_e_db($l['titel']);
+			$l['beschreibung'] = cms_texttrafo_e_db($l['beschreibung']);
+			$did = cms_generiere_kleinste_id($gk.'blogeintraglinks');
+      $sql->bind_param("isssi", $blogid, $l['link'], $l['titel'], $l['beschreibung'], $did);
+      $sql->execute();
+		}
+    $sql->close();
+
     // BESCHLÜSSE EINTRAGEN
     $sql = $dbs->prepare("DELETE FROM $gk"."blogeintragbeschluesse WHERE blogeintrag = ?;");
     $sql->bind_param("i", $blogid);
@@ -192,7 +229,7 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Gruppen/$gruppensj/".cms_textzulink($gruppe)."/$gruppenbez/Blog/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-		if($notifikationen)
+		if($notifikationen && ($aktiv == 1))
     	cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";

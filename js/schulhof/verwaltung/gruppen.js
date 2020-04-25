@@ -42,7 +42,7 @@ function cms_gruppen_neu_speichern (art) {
       cms_laden_an('Neue Gruppe anlegen', 'Die Gruppe wird angelegt.');
 
       function anfragennachbehandlung(rueckgabe) {
-    		if (rueckgabe.match(/ERFOLG/)) {
+    		if (rueckgabe.match(/^ERFOLG|[0-9]+$/)) {
           if ((art == 'Fachschaften') || (art == 'Gremien')) {
             id = rueckgabe.split('|');
             cms_laden_an('Neue Gruppe anlegen', 'Die Gruppe wird im gesicherten Bereich angelegt.');
@@ -53,7 +53,6 @@ function cms_gruppen_neu_speichern (art) {
             cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
 
             function lehrerservernachbehandlung(rueckgabe) {
-              alert(rueckgabe);
               if (rueckgabe == "ERFOLG") {
                 cms_meldung_an('erfolg', 'Neue Gruppe anlegen', '<p>Die Gruppe wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Gruppen/'+art.replace(' ', '_')+'\');">Zurück zur Übersicht</span></p>');
               }
@@ -99,7 +98,6 @@ function cms_gruppen_neu_speichern (art) {
           }
 
           if (fehlersammlung) {
-            cms_fehlerbehandlung(rueckgabe);
             cms_meldung_an('fehler', 'Fehlerhafte Eingaben', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
           }
           else {
@@ -287,6 +285,7 @@ function cms_gruppen_eingabenpruefung(art) {
     formulardaten.append('mitglieder', mitglieder);
     formulardaten.append('vorsitz', vorsitz);
     formulardaten.append('aufsicht', aufsicht);
+    formulardaten.append('import', 'n');
     if (art == 'Stufen') {
       formulardaten.append('reihenfolge', reihenfolge);
       formulardaten.append('tagebuch', tagebuch);

@@ -25,18 +25,15 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 	$fehler = false;
 	$dbs = cms_verbinden('s');
 
-	$sql = "SELECT AES_DECRYPT(signatur, '$CMS_SCHLUESSEL') AS signatur FROM personen_signaturen WHERE person = $CMS_BENUTZERID";
-	$anfrage = $dbs->query($sql);
-
-	if ($anfrage) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$signatur = $daten['signatur'];
-			$anfrage->free();
-
-		}
-		else {$fehler = true;}
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(signatur, '$CMS_SCHLUESSEL') AS signatur FROM personen_signaturen WHERE person = ?");
+	$sql->bind_param("i", $CMS_BENUTZERID);
+	if ($sql->execute()) {
+		$sql->bind_result($signatur);
+		$sql->fetch();
 	}
-
+	else {$fehler = true;}
+	$sql->close();
+	
 	cms_trennen($dbs);
 
 

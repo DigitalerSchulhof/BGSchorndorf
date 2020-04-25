@@ -1,6 +1,6 @@
 <?php
 $kd = false;
-function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $gesamt = false) {
+function cms_besucherstatistik_schulhof($anzeigetyp, $start = array("jahr" => 0, "monat" => 0), $ende = array("jahr" => 0, "monat" => 0), $gesamt = false) {
   global $kd, $CMS_SCHLUESSEL;
   date_default_timezone_set("CET");
 
@@ -11,16 +11,20 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
     $start = array("jahr" => $ende["jahr"]-($ende["monat"]-11<1?1:0), "monat" => $ende["monat"]-11<1?$ende["monat"]+1:$ende["monat"]-11);
   $dbs = cms_verbinden('s');
   if($gesamt) {
-    $sql = "SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_schulhof WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_schulhof)";
-    $anfrage = $dbs->query($sql);
-    if($r = $anfrage->fetch_assoc()) {
-      $start = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
+    $sql = $dbs->prepare("SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_schulhof WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_schulhof)");
+    $sql->execute();
+    $sql->bind_result($rjahr, $rmonat);
+    if($sql->fetch()) {
+      $start = array("jahr" => $rjahr, "monat" => $rmonat);
     }
-    $sql = "SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_schulhof WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_schulhof)";
-    $anfrage = $dbs->query($sql);
-    if($r = $anfrage->fetch_assoc()) {
-      $ende = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
+    $sql->close();
+    $sql = $dbs->prepare("SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_schulhof WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_schulhof)");
+    $sql->execute();
+    $sql->bind_result($rjahr, $rmonat);
+    if($sql->fetch()) {
+      $ende = array("jahr" => $rjahr, "monat" => $rmonat);
     }
+    $sql->close();
   }
 
   // Start - Ende auswerten und ggf. meckern
@@ -28,7 +32,7 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
     return cms_meldung_fehler();
   if($start["jahr"] == $ende["jahr"] && $start["monat"] == $ende["monat"]) {
     if(!$kd)
-      echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+      echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -158,13 +162,13 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
     }
     if($r->num_rows == 0) {
       if(!$kd)
-        echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+        echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
       $kd = true;
       return;
     }
   } else {
     if(!$kd)
-      echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+      echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -330,25 +334,29 @@ function cms_besucherstatistik_schulhof($anzeigetyp, $start = 0, $ende = 0, $ges
 }
 
 function cms_besucherstatistik_schulhof_jahresplaettchen() {
-  global $kd, $CMS_RECHTE;
-  if(!$CMS_RECHTE['Website']['Besucherstatistiken - Schulhof sehen'])
-    return; // Erroa kommt später
+  global $kd;
+  if(!cms_r("statistik.besucher.schulhof.sehen"))
+    return;
   $code = "";
   $code .= "<span id='cms_besucherstatistik_zeitraum_toggle_letzte' class='cms_toggle cms_toggle_aktiv cms_besucherstatistik_toggle' onclick='cms_besucherstatistik_schulhof_zeitraum(\"letzte\", 0, 0, 0, 0)'>Letzte zwölf Monate</span>";
   $code .= " <span id='cms_besucherstatistik_zeitraum_toggle_gesamt' class='cms_toggle cms_besucherstatistik_toggle' onclick='cms_besucherstatistik_schulhof_zeitraum(\"gesamt\", 0, 0, 0, 0, \"gesamt\")'>Gesamter Zeitraum</span>";
   $minJahr;
   $jahr = date("Y");
   $dbs = cms_verbinden('s');
-  $sql = "SELECT MIN(jahr) AS jahr FROM besucherstatistik_schulhof";
-  $anfrage = $dbs->query($sql);
-  if(!$anfrage) {
+  $sql = $dbs->prepare("SELECT MIN(jahr) AS jahr FROM besucherstatistik_schulhof");
+  if($sql->execute()) {
+    $sql->bind_result($minJahr);
+    $sql->fetch();
+  }
+  else {
     echo cms_meldung_fehler();
+    $sql->close();
     return;
   }
-  $sqld = $anfrage->fetch_assoc();
-  $minJahr = intval($sqld["jahr"]);
+  $sql->close();
+
   if($minJahr == 0) {
-    echo '<div class="cms_meldung cms_meldung_warnung">Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</div>';
+    echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;
     return;
   }
@@ -373,19 +381,35 @@ function cms_erfasse_click() {
   if($CMS_URL[0] == "Schulhof") {
     if($CMS_ANGEMELDET) {
       $rolle = $CMS_BENUTZERART;
-      $sql = "SELECT aufrufe FROM besucherstatistik_schulhof WHERE jahr = '$jahr' AND monat = '$monat' AND url = '$url' AND rolle = '$rolle'";
-      $anfrage = $dbs->query($sql);
-      if ($anfrage->fetch_assoc()) {
-          $sql = "UPDATE besucherstatistik_schulhof SET aufrufe = aufrufe + 1 WHERE jahr = $jahr AND monat = $monat AND url = '$url' AND rolle = '$rolle'";
-      } else {
-        $sql = "INSERT into besucherstatistik_schulhof (jahr, monat, rolle, url, aufrufe) VALUES ($jahr, $monat, '$rolle', '$url', 1)";
+      $sql = $dbs->prepare("SELECT aufrufe FROM besucherstatistik_schulhof WHERE jahr = ? AND monat = ? AND url = ? AND rolle = ?");
+      $sql->bind_param("iiss", $jahr, $monat, $url, $rolle);
+      $sql->execute();
+      if ($sql->fetch()) {
+        $sqlneu = "UPDATE besucherstatistik_schulhof SET aufrufe = aufrufe + 1 WHERE jahr = ? AND monat = ? AND rolle = ? AND url = ?";
       }
-      $dbs->query($sql);
+      else {
+        $sqlneu = "INSERT into besucherstatistik_schulhof (jahr, monat, rolle, url, aufrufe) VALUES (?, ?, ?, ?, 1)";
+      }
+      $sql->close();
+
+      $sql = $dbs->prepare($sqlneu);
+      $sql->bind_param("iiss", $jahr, $monat, $rolle, $url);
+      $sql->execute();
     }
   }
   $tabelle = "";
-  if(!is_null($CMS_SEITENDETAILS) && $CMS_URL[0] != "Schulhof" && cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) != "-" && (strlen($CMS_SEITENDETAILS['id']) > 0)) {
-    $dbs->query("INSERT INTO urls (url) VALUES ('$CMS_URLGANZ')");
+
+
+  $website =  !is_null($CMS_SEITENDETAILS)            &&  // Seitendetails
+              (isset($CMS_SEITENDETAILS['id']))  &&  // Gültige Seite
+              (strlen($CMS_SEITENDETAILS['id']) > 0)  &&  // Gültige Seite
+              (
+                cms_pfad_aufloesen($dbs, array_slice($CMS_URL,3)) !== "-"                                                    ||  // Website
+                ($CMS_SEITENDETAILS["art"] === "t" || $CMS_SEITENDETAILS["art"] === "b" || $CMS_SEITENDETAILS["art"] === "g")      // Artikel
+              );
+
+
+  if($website) {
     $id = $CMS_SEITENDETAILS["id"];
     $tabelle = "besucherstatistik_website";
     if($CMS_SEITENDETAILS["art"] == "t") {
@@ -400,14 +424,19 @@ function cms_erfasse_click() {
       $tabelle = "besucherstatistik_galerien";
       $id = $CMS_GALERIEID;
     }
-    $sql = "SELECT aufrufe FROM $tabelle WHERE jahr = '$jahr' AND monat = '$monat' AND id = '$id'";
-    $anfrage = $dbs->query($sql);
-    if ($anfrage->fetch_assoc()) {
-        $sql = "UPDATE $tabelle SET aufrufe = aufrufe + 1 WHERE jahr = $jahr AND monat = $monat AND id = $id";
+    $sql = $dbs->prepare("SELECT aufrufe FROM $tabelle WHERE jahr = ? AND monat = ? AND id = ?");
+    $sql->bind_param("iii", $jahr, $monat, $id);
+    $sql->execute();
+    if ($sql->fetch()) {
+      $sqlneu = "UPDATE $tabelle SET aufrufe = aufrufe + 1 WHERE jahr = ? AND monat = ? AND id = ?";
     } else {
-      $sql = "INSERT into $tabelle (jahr, monat, id, aufrufe) VALUES ($jahr, $monat, $id, 1)";
+      $sqlneu = "INSERT into $tabelle (jahr, monat, id, aufrufe) VALUES (?, ?, ?, 1)";
     }
-    $anfrage = $dbs->query($sql);
+    $sql->close();
+
+    $sql = $dbs->prepare($sqlneu);
+    $sql->bind_param("iii", $jahr, $monat, $id);
+    $sql->execute();
   }
   cms_trennen($dbs);
 }

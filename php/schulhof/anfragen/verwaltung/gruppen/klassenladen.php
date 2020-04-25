@@ -13,23 +13,38 @@ if (isset($_POST['stufe'])) {$stufe = $_POST['stufe'];} else {echo "FEHLER"; exi
 if (!cms_check_ganzzahl($stufe,0) && ($stufe != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Kurse anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.anlegen")) {
 
 	// Finde Anzahl an Gruppen
 	$klassen = array();
-	if ($schuljahr == '-') {$schuljahrtest = "schuljahr IS NULL";} else {$schuljahrtest = "schuljahr = $schuljahr";}
-	if ($stufe != '-') {$stufetest = " AND stufe = $stufe";} else {$stufetest = "";}
-	$sql = "SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.$schuljahrtest"."$stufetest) AS x ORDER BY reihenfolge ASC, bez ASC";
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			array_push($klassen, $daten);
-		}
-		$anfrage->free();
+	if (($schuljahr == '-') && ($stufe == '-')) {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr IS NULL) AS x ORDER BY reihenfolge ASC, bez ASC");
 	}
+	else if (($schuljahr != '-') && ($stufe == '-')) {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ?) AS x ORDER BY reihenfolge ASC, bez ASC");
+		$sql->bind_param("i", $schuljahr);
+	}
+	else if (($schuljahr == '-') && ($stufe != '-')) {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr IS NULL AND stufe = ?) AS x ORDER BY reihenfolge ASC, bez ASC");
+		$sql->bind_param("i", $stufe);
+	}
+	else {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, reihenfolge FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ? AND stufe = ?) AS x ORDER BY reihenfolge ASC, bez ASC");
+		$sql->bind_param("ii", $schuljahr, $stufe);
+	}
+	if ($sql->execute()) {
+		$sql->bind_result($kid, $kbez, $kreihe);
+		while ($sql->fetch()) {
+			$k = array();
+			$k['id'] = $kid;
+			$k['bez'] = $kbez;
+			$k['reihenfolge'] = $kreihe;
+			array_push($klassen, $k);
+		}
+	}
+	$sql->close();
 
 	$code = "";
 	$alleklassenids = "";

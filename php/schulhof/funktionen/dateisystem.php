@@ -31,8 +31,9 @@ function cms_dateisystem_generieren ($stammverzeichnis, $pfad, $feldid, $netz, $
 			$schieberid = substr($feldid, 4);
 			$code .= "<tr><th>Dateien auswählen:</th><td><input type=\"file\" name=\"".$feldid."_aktionen_hochladen_eingabe\" id=\"".$feldid."_aktionen_hochladen_eingabe\" multiple onchange=\"cms_dateisystem_aktionen_input_nutzen('$feldid');\">";
 			// UPLOADZONE NUR FÜR PCs
-			if (!cms_istmobil() && false) {
+			if (!cms_istmobil()) {
 				$code .= "<div class=\"cms_dateisystem_uploadzone\" id=\"".$feldid."_aktionen_hochladen_zone\"><p>Dateien hier her ziehen</p></div>";
+				$code .= "<script>document.getElementById('".$feldid."_aktionen_hochladen_zone').addEventListener('drop', function() {cms_dateisystem_upload_dateiendazu('$feldid');}, false);</script>";
     	}
 			$code .= "</td></tr>";
 			$code .= "<tr><th>Dateien hochladen:</th><td><ul class=\"cms_dateisystem_hochladen_dateiliste\" id=\"".$feldid."_aktionen_hochladen_liste\"><li>Keine Dateien ausgewählt</li></ul><p class=\"cms_notiz\" id=\"".$feldid."_aktionen_hochladen_gesamtgroesse\">Gesamtgröße: 0 B • Anzahl Dateien: 0</p></td></tr>";
@@ -98,12 +99,14 @@ function cms_dateiwaehler_ordner($pfad, $netz, $bereich, $id, $feldid, $art, $ex
 	else if ($art == 'video') {$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND kategorie = AES_ENCRYPT('Multimedia', '$CMS_SCHLUESSEL')";}
 	else {$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL')";}
 	$dbs = cms_verbinden('s');
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			array_push($zulaessig, $daten['endung']);
+	$sql = $dbs->prepare($sql);
+	if ($sql->execute()) {
+		$sql->bind_result($eendung);
+		while ($sql->fetch()) {
+			array_push($zulaessig, $eendung);
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 	cms_trennen($dbs);
 
 	$anzeigepfad = $pfad;
@@ -387,7 +390,6 @@ function cms_dateisystem_ordner_kopieren($ursprung, $ziel) {
 
 
 function cms_dateicheck($pfad) {
-	$CMS_RECHTE = cms_rechte_laden();
 	$dateiteile = explode('/', $pfad);
 
 	if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
@@ -430,18 +432,18 @@ function cms_dateicheck($pfad) {
 }
 
 function cms_groesse_umrechnen($bytes) {
-    if ($bytes/1024 >= 1) {
-        $bytes = $bytes/1024;
-        if ($bytes/1024 >= 1) {
-            $bytes = $bytes/1024;
-            if ($bytes/1024 >= 1) {
-                $bytes = $bytes/1024;
-                if ($bytes/1024 >= 1) {
-                    $bytes = $bytes/1024;
-                    if ($bytes/1024 >= 1) {
-                        $bytes = $bytes/1024;
-                        if ($bytes/1024 >= 1) {
-                            $bytes = $bytes/1024;
+    if ($bytes/1000 >= 1) {
+        $bytes = $bytes/1000;
+        if ($bytes/1000 >= 1) {
+            $bytes = $bytes/1000;
+            if ($bytes/1000 >= 1) {
+                $bytes = $bytes/1000;
+                if ($bytes/1000 >= 1) {
+                    $bytes = $bytes/1000;
+                    if ($bytes/1000 >= 1) {
+                        $bytes = $bytes/1000;
+                        if ($bytes/1000 >= 1) {
+                            $bytes = $bytes/1000;
                             $bytes = str_replace('.', ',', round($bytes, 2));
                             return $bytes." EB";
                         }
@@ -693,15 +695,31 @@ function cms_db_tabellengroesse($datenbank, $tabellen) {
 	if (strlen($tabellencode) > 0) {
 		$tabellencode = '('.substr($tabellencode, 4).')';
 		$db = cms_verbinden('ü');
-		$sql = "SELECT SUM(data_length + index_length) AS groesse FROM information_schema.tables WHERE table_schema = '$datenbank' AND $tabellencode";
-		if ($anfrage = $db->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$groesse = $daten['groesse'];
-			}
-			$anfrage->free();
+		$sql = $db->prepare("SELECT SUM(data_length + index_length) AS groesse FROM information_schema.tables WHERE table_schema = ? AND $tabellencode");
+		$sql->bind_param("s", $datenbank);
+		if ($sql->execute()) {
+			$sql->bind_result($groesse);
+			$sql->fetch();
 		}
+		$sql->close();
+		cms_trennen($db);
 	}
+	if ($groesse === null) {$groesse = 0;}
+	return $groesse;
+}
+
+function cms_db_groesse($datenbank) {
+	$groesse = 0;
+	$db = cms_verbinden('ü');
+	$sql = $db->prepare("SELECT SUM(data_length + index_length) AS groesse FROM information_schema.tables WHERE table_schema = ?");
+	$sql->bind_param("s", $datenbank);
+	if ($sql->execute()) {
+		$sql->bind_result($groesse);
+		$sql->fetch();
+	}
+	$sql->close();
 	cms_trennen($db);
+	if ($groesse === null) {$groesse = 0;}
 	return $groesse;
 }
 ?>

@@ -6,7 +6,12 @@
     <?php
       include_once "php/schulhof/seiten/website/besucherstatistiken/website/auswerten.php";
       echo cms_besucherstatistik_website_jahresplaettchen('t');
-      if($CMS_RECHTE['Website']['Besucherstatistiken - Website sehen']) {
+
+      $code = "";
+      $code .= cms_besucherstatistik_website("t", "gesamtaufrufe_linie");
+      $code .= cms_besucherstatistik_website("t", "bereiche_balken");
+
+      if(strlen($code) && cms_r("statistik.besucher.website.termine")) {
         echo "<br>Balkendiagramm:";
         echo " <span id='cms_besucherstatistik_website_geloescht_toggle' class='cms_toggle' onclick='cms_besucherstatistik_website_geloescht_toggle(\"t\")'>Gelöschte Termine ausblenden</span>";
       }
@@ -15,14 +20,9 @@
 <div id="besucherstatistik">
 </div>
 <?php
-  $zugriff = $CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'];
-  if (!$zugriff) {
+  if (!cms_r("statistik.besucher.website.termine")) {
     echo cms_meldung_berechtigung();
   } else {
-    $code = "";
-    $code .= cms_besucherstatistik_website("t", "gesamtaufrufe_linie");
-    $code .= cms_besucherstatistik_website("t", "bereiche_balken");
-
     echo $code;
   }
   ?>

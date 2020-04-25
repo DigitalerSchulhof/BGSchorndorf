@@ -11,14 +11,12 @@ if (isset($_POST['kennung'])) {$url = $_POST['kennung'];} else {$fehler = true;}
 
 $dbs = cms_verbinden('s');
 
-$sql = "SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')";
-if ($anfrage = $dbs->query($sql)) {
-  if ($daten = $anfrage->fetch_assoc()) {
-    $kennung = $daten['wert'];
-    $kennungda = true;
-  }
-  $anfrage->free();
+$sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')");
+if ($sql->execute()) {
+  $sql->bind_result($kennung);
+  $sql->fetch();
 }
+$sql->close();
 
 if ($url == $kennung) {$angemeldet = true;}
 

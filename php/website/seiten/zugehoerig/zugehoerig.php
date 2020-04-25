@@ -33,7 +33,7 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
 
     // Blogeinträge laden
     $BLOGEINTRAEGE = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM blogeintraege WHERE oeffentlichkeit >= ? AND id IN (SELECT blogeintrag FROM $gruppe"."blogeintraege WHERE gruppe = ?) AND datum BETWEEN ? AND ? ORDER BY datum DESC");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM blogeintraege WHERE oeffentlichkeit >= ? AND id IN (SELECT blogeintrag FROM $gruppe"."blogeintraege WHERE gruppe = ?) AND aktiv = 1 AND datum BETWEEN ? AND ? ORDER BY datum DESC");
     $sql->bind_param("iiii", $oeffentlichkeit, $gruppenid, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
@@ -49,7 +49,7 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     // Termine laden
     $jetzt = time();
     $TERMINENEU = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende > ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?)) ORDER BY beginn ASC");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende > ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?)) AND aktiv = 1 ORDER BY beginn ASC");
     $sql->bind_param("iiiiiiiii", $oeffentlichkeit, $gruppenid, $jetzt, $jbeginn, $jende, $jbeginn, $jende, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
@@ -63,7 +63,7 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     $sql->close();
     $jetzt = time();
     $TERMINEALT = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende <= ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?)) ORDER BY beginn DESC");
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn FROM termine WHERE oeffentlichkeit > ? AND id IN (SELECT termin FROM $gruppe"."termine WHERE gruppe = ?) AND ende <= ? AND ((beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR (beginn <= ? AND ende >= ?)) AND aktiv = 1 ORDER BY beginn DESC");
     $sql->bind_param("iiiiiiiii", $oeffentlichkeit, $gruppenid, $jetzt, $jbeginn, $jende, $jbeginn, $jende, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
@@ -77,8 +77,8 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     $sql->close();
 
     $GALERIEN = array();
-    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM galerien WHERE oeffentlichkeit > ? AND id IN (SELECT galerie FROM $gruppe"."galerien WHERE gruppe = ?) AND datum BETWEEN ? AND ? ORDER BY datum DESC");
-    $sql->bind_param("iiii", $oeffentlichkeit, $gruppenid, $jbeginn, $jende);
+    $sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), datum FROM galerien WHERE id IN (SELECT galerie FROM $gruppe"."galerien WHERE gruppe = ?) AND aktiv = 1 AND datum BETWEEN ? AND ? ORDER BY datum DESC");
+    $sql->bind_param("iii", $gruppenid, $jbeginn, $jende);
     if ($sql->execute()) {
       $sql->bind_result($ebez, $edatum);
       while ($sql->fetch()) {
@@ -91,9 +91,9 @@ function cms_zugehoerig_jahr_ausgeben ($dbs, $feldid, $gruppe, $gruppenid, $jahr
     $sql->close();
 
     $code = "<h3><img id=\"cms_zugehoerig_icon\" src=\"res/gruppen/klein/$gruppenicon\"> $anzeigegruppe » $gruppenname</h3>";
-    $code .= "<table><tr><td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr-1)."', '$gruppe', '$gruppenid')\"\">«</span></td>";
+    $code .= "<table><tr><td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr-1)."', '$gruppe', '$gruppenid', '$url')\">«</span></td>";
     $code .= "<td>$jahr</td>";
-    $code .= "<td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr+1)."', '$gruppe', '$gruppenid')\"\">»</span></td></tr></table>";
+    $code .= "<td><span class=\"cms_button\" onclick=\"cms_zugehoerig_laden('$feldid', '".($jahr+1)."', '$gruppe', '$gruppenid', '$url')\">»</span></td></tr></table>";
 
     $blogcode = "";
     foreach ($BLOGEINTRAEGE as $e) {

@@ -7,21 +7,19 @@ $code .= "</p>";
 $code .= "<h1>Nutzerprofile</h1>";
 
 if (isset($_SESSION['PERSONENPROFIL'])) {
-  if ($CMS_RECHTE['Personen']['Personen sehen']) {
+  if (cms_r("schulhof.verwaltung.personen.sehen")) {
     $person = $_SESSION['PERSONENPROFIL'];
     $fehler = true;
-    $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht FROM personen WHERE id = $person";
-    if ($anfrage = $dbs->query($sql)) {
-      if ($daten = $anfrage->fetch_assoc()) {
-        $vorname = $daten['vorname'];
-        $nachname = $daten['nachname'];
-        $titel = $daten['titel'];
-        $art = $daten['art'];
-        $geschlecht = $daten['geschlecht'];
-        $anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
+    $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(art, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("i", $person);
+    if ($sql->execute()) {
+      $sql->bind_result($vorname, $nachname, $titel, $art, $geschlecht);
+      if ($sql->fetch()) {
+        $anzeigename = cms_generiere_anzeigename($vorname, $nachname, $titel);
         $fehler = false;
       }
-      $anfrage->free();
+      $sql->close();
     }
 
     if (!$fehler) {
@@ -39,10 +37,6 @@ if (isset($_SESSION['PERSONENPROFIL'])) {
         $schreiben = cms_schreibeberechtigung($dbs, $person);
         if ($schreiben) {
           $aktionscode .= "<li><a class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten('vorgabe', '', '', '$person')\">Nachricht schreiben</a></li><br>";
-        }
-        $umarmen = true;
-        if ($umarmen) {
-          $aktionscode .= "<li><a class=\"cms_button\" id=\"cms_umarmen\" onclick=\"cms_umarmen('$person')\">Umarmen ( ＾◡＾)っ ♡</a></li> ";
         }
       }
 

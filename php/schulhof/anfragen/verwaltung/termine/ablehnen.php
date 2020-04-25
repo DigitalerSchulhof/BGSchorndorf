@@ -20,10 +20,10 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 $gruppek = strtolower($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $zugriff = false;
-if ($gruppe == 'Termine') {$zugriff = $CMS_RECHTE['Organisation']['Termine genehmigen'];}
-else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = $CMS_RECHTE['Organisation']['Gruppentermine genehmigen'];}
+if ($gruppe == 'Termine') {$zugriff = cms_r("artikel.genehmigen.termine");}
+else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = cms_r("schulhof.gruppen.$gruppe.artikel.termine.genehmigen");}
 
 if (cms_angemeldet() && $zugriff) {
 	if ($gruppe == 'Termine') {
@@ -42,7 +42,7 @@ if (cms_angemeldet() && $zugriff) {
 	$sql = $dbs->prepare("SELECT beginn, $gruppenid, $oeffentlichkeit, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $tabelle WHERE id = ?");
   $sql->bind_param("i", $id);
   if ($sql->execute()) {
-    $sql->bind_result($BEGINN, $gruppenid, $bezeichnung, $oeffentlichkeit);
+    $sql->bind_result($BEGINN, $gruppenid, $oeffentlichkeit, $bezeichnung);
     if (!$sql->fetch()) {$fehler = true;}
   }
   else {$fehler = true;}

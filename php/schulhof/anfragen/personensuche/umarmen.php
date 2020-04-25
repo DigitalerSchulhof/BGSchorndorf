@@ -13,8 +13,6 @@ if (!cms_check_ganzzahl($person)) {echo "FEHLER"; exit;}
 if (isset($_POST['anonym'])) {$anonym = $_POST['anonym'];} else {echo "FEHLER"; exit;}
 $dbs = cms_verbinden('s');
 $anonym = $anonym === "true";
-$CMS_RECHTE = cms_rechte_laden();
-
 $fehler = true;
 
 $sql = $dbs->prepare("SELECT 0 FROM personen WHERE id = ?");

@@ -45,14 +45,18 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['TERMINID'])) {$terminid = $_SESSION['TERMINID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Termine bearbeiten']) {
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.termine.bearbeiten")) {
 	$zugriff = true;
 }
 
-if (!$CMS_RECHTE['Organisation']['Termine genehmigen']) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.termine")) {$genehmigt = '0';}
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
@@ -67,15 +71,16 @@ if (cms_angemeldet() && $zugriff) {
       $idsk = "(".$ids.")";
       if (cms_check_idliste($idsk)) {
         $anzahl = count(explode(',', $ids));
-        $sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $idsk";
-        if ($anfrage = $dbs->query($sql)) {
-          if ($daten = $anfrage->fetch_assoc()) {
-            if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+        $sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $idsk");
+        if ($sql->execute()) {
+          $sql->bind_result($checkanzahl);
+          if ($sql->fetch()) {
+            if ($checkanzahl != $anzahl) {$fehler = true;}
           }
           else {$fehler = true;}
-          $anfrage->free();
         }
         else {$fehler = true;}
+        $sql->close();
       }
       else {$fehler = true;}
 		}

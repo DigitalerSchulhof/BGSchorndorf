@@ -6,10 +6,8 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Galerie bearbeiten</h1>";
 
-$zugriff = $CMS_RECHTE['Website']['Galerien bearbeiten'];
-
-if ($zugriff) {
-  $code .= cms_meldung('warnung', '<h4>Öffentlich</h4><p>Der Zugriff auf die jeweiligen Texte kann zwar gemäß der Sichtbarkeitseinstellungen gewährleistet werden. Bilder und andere Dateien jedoch sind (wenn man den Link kennt) aus dem Internet öffentlich erreichbar, auch wenn der Link zu ihnen nicht angegeben wird!</p><p>Es ist zwar unwahrscheinlich, dass diese Dateien gefunden werden, aber es könnte passieren.</p><p>Diese Funktion ist nur für Inhalte gedacht, die grundsätzlich öffentlich sein sollen.</p>');
+if (cms_r("artikel.galerien.bearbeiten")) {
+  $code .= cms_meldung('warnung', '<h4>Öffentlich</h4><p>Bilder und andere Dateien sind aus dem Internet öffentlich erreichbar!</p><p>Diese Funktion ist nur für Inhalte gedacht, die grundsätzlich öffentlich sein sollen.</p>');
 
   include_once("php/schulhof/seiten/verwaltung/personen/personensuche.php");
   include_once("php/schulhof/seiten/verwaltung/gruppen/zuordnungen.php");

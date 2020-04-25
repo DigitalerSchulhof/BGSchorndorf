@@ -13,23 +13,23 @@ if (isset($_POST['termine'])) {$termine = $_POST['termine'];} else {echo "FEHLER
 if (isset($_POST['termineanzahl'])) {$termineanzahl = $_POST['termineanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['blog'])) {$blog = $_POST['blog'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['bloganzahl'])) {$bloganzahl = $_POST['bloganzahl'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['blogart'])) {$blogart = $_POST['blogart'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['galerie'])) {$galerie = $_POST['galerie'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['galerieanzahl'])) {$galerieanzahl = $_POST['galerieanzahl'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSITION'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];
 
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.eventübersicht.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
 	if (($aktiv != 0) && ($aktiv != 1)) {$fehler = true;}
 	if (($termine != 0) && ($termine != 1)) {$fehler = true;}
 	if (($blog != 0) && ($blog != 1)) {$fehler = true;}
+	if (($blogart != 'a') && ($blogart != 'd') && ($blogart != 'l')) {$fehler = true;}
 	if (($galerie != 0) && ($galerie != 1)) {$fehler = true;}
 	if (!cms_check_ganzzahl($position,0)) {$fehler = true;}
 	if (!cms_check_ganzzahl($termineanzahl,0)) {$fehler = true;}
@@ -37,7 +37,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_ganzzahl($galerieanzahl,0)) {$fehler = true;}
 
 	if ($termine == '0') {$termineanzahl = '10';}
-	if ($blog == '0') {$bloganzahl = '5';}
+	if ($blog == '0') {$bloganzahl = '5'; $blogart = 'a';}
 	if ($galerie == '0') {$galerieanzahl = '5';}
 
 	$dbs = cms_verbinden('s');
@@ -45,23 +45,18 @@ if (cms_angemeldet() && $zugriff) {
 	if ($position > $maxpos) {$fehler = true;}
 
 	if (!$fehler) {
-		// Klassenstufe EINTRAGEN
 		$dbs = cms_verbinden('s');
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
-			$sql = "UPDATE eventuebersichten SET position = $position, termineneu = '$termine', termineanzahlneu = '$termineanzahl', blogneu = '$blog', bloganzahlneu = '$bloganzahl', galerieneu = '$galerie', galerieanzahlneu = '$galerieanzahl' WHERE id = $id";
+		if (!cms_r("website.freigeben")) {
+			$sql = $dbs->prepare("UPDATE eventuebersichten SET position = ?, termineneu = ?, termineanzahlneu = ?, blogneu = ?, bloganzahlneu = ?, blogartneu = ?, galerieneu = ?, galerieanzahlneu = ? WHERE id = ?");
+			$sql->bind_param("isisissii", $position, $termine, $termineanzahl, $blog, $bloganzahl, $blogart, $galerie, $galerieanzahl, $id);
 		}
 		else {
-			$sql = "UPDATE eventuebersichten SET position = $position, aktiv = '$aktiv', ";
-			$sql .= "terminealt = termineaktuell, termineaktuell = '$termine', termineneu = '$termine', ";
-			$sql .= "termineanzahlalt = termineanzahlaktuell, termineanzahlaktuell = '$termineanzahl', termineanzahlneu = '$termineanzahl', ";
-			$sql .= "blogalt = blogaktuell, blogaktuell = '$blog', blogneu = '$blog', ";
-			$sql .= "bloganzahlalt = bloganzahlaktuell, bloganzahlaktuell = '$bloganzahl', bloganzahlneu = '$bloganzahl', ";
-			$sql .= "galeriealt = galerieaktuell, galerieaktuell = '$galerie', galerieneu = '$galerie', ";
-			$sql .= "galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = '$galerieanzahl', galerieanzahlneu = '$galerieanzahl' ";
-			$sql .= "WHERE id = $id";
+			$sql = $dbs->prepare("UPDATE eventuebersichten SET position = ?, aktiv = ?, terminealt = termineaktuell, termineaktuell = ?, termineneu = ?, termineanzahlalt = termineanzahlaktuell, termineanzahlaktuell = ?, termineanzahlneu = ?, blogalt = blogaktuell, blogaktuell = ?, blogneu = ?, bloganzahlalt = bloganzahlaktuell, bloganzahlaktuell = ?, bloganzahlneu = ?, blogartalt = blogartaktuell, blogartaktuell = ?, blogartneu = ?, galeriealt = galerieaktuell, galerieaktuell = ?, galerieneu = ?, galerieanzahlalt = galerieanzahlaktuell, galerieanzahlaktuell = ?, galerieanzahlneu = ? WHERE id = ?");
+			$sql->bind_param("isssiissiissssiii", $position, $aktiv, $termine, $termine, $termineanzahl, $termineanzahl, $blog, $blog, $bloganzahl, $bloganzahl, $blogart, $blogart, $galerie, $galerie, $galerieanzahl, $galerieanzahl, $id);
 		}
-		$anfrage = $dbs->query($sql);
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {

@@ -23,10 +23,9 @@ $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 $stundenplan = cms_texttrafo_e_db($stundenplan);
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Räume bearbeiten'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.räume.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -160,13 +159,15 @@ if (cms_angemeldet() && $zugriff) {
 		// Geräte
 		// Alle vorhandenen Geräte laden
 		$gidsvorhanden = "";
-		$sql = "SELECT id FROM raeumegeraete WHERE standort = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$gidsvorhanden .= '|'.$daten['id'];
+		$sql = $dbs->prepare("SELECT id FROM raeumegeraete WHERE standort = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($gid);
+			while ($sql->fetch()) {
+				$gidsvorhanden .= '|'.$gid;
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		$gidsvorhanden = $gidsvorhanden."|";
 
 		$gids = explode('|', $geraeteids);

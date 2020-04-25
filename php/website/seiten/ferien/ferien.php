@@ -23,16 +23,18 @@ $code = "<div class=\"cms_spalte_i\">";
 
   $freietage = array();
 
-  $sql = "SELECT beginn, ende FROM ferien WHERE (beginn BETWEEN $jahraktuella AND $jahraktuelle) OR (ende BETWEEN $jahraktuella AND $jahraktuelle)";
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT beginn, ende FROM ferien WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?)");
+  $sql->bind_param("iiii", $jahraktuella, $jahraktuelle, $jahraktuella, $jahraktuelle);
+  if ($sql->execute()) {
+    $sql->bind_result($ferbeginn, $ferende);
+    while ($sql->fetch()) {
       // 86400 Sekunden hat ein Tag
-      for ($i = $daten['beginn']; $i <= $daten['ende']; $i = $i + 86400) {
+      for ($i = $ferbeginn; $i <= $ferende; $i = $i + 86400) {
         array_push($freietage, mktime(0,0,0,date('m', $i), date('d', $i), date('Y', $i)));
       }
     }
-    $anfrage->free();
   }
+  $sql->close();
 
   $code .= "<table class=\"cms_ferienkalender\">";
   $code .= "<tr>";

@@ -1,12 +1,11 @@
 <?php
 function cms_personaldaten_ausgeben($id) {
-	global $CMS_RECHTE;
 	$zugriff = true;
 	$detailansicht = false;
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = $CMS_RECHTE['Personen']['Persönliche Daten sehen'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.daten");
 		$detailansicht = true;
 	}
 
@@ -16,28 +15,11 @@ function cms_personaldaten_ausgeben($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL') AS benutzername, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, sessiontimeout, schuljahr, letzteanmeldung, vorletzteanmeldung, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id;";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_art = $daten['art'];
-				$profildaten_benutzername = $daten['benutzername'];
-				$profildaten_titel = $daten['titel'];
-				$profildaten_vorname = $daten['vorname'];
-				$profildaten_nachname = $daten['nachname'];
-				$profildaten_geschlecht = $daten['geschlecht'];
-				$profildaten_nutzerkonto = $daten['nutzerkonto'];
-				$profildaten_email = $daten['email'];
-				$profildaten_sessiontimeout = $daten['sessiontimeout'];
-				$profildaten_schuljahr = $daten['schuljahr'];
-				$profildaten_letzteanmeldung = $daten['letzteanmeldung'];
-				$profildaten_vorletzteanmeldung = $daten['vorletzteanmeldung'];
-
-				$sql = "SELECT von, anonym FROM umarmungen WHERE an=$id";
-				$umarmungen_s = $dbs->query($sql);
-				$umarmungen = array();
-				while($daten = $umarmungen_s->fetch_assoc()) {
-					array_push($umarmungen, array("von" => $daten["von"], "anonym" => $daten["anonym"]));
-				}
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL'), AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL'), sessiontimeout, schuljahr, letzteanmeldung, vorletzteanmeldung, nutzerkonten.id AS nutzerkonto, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerkuerzel FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id LEFT JOIN lehrer ON personen.id = lehrer.id WHERE personen.id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_art, $profildaten_benutzername, $profildaten_titel, $profildaten_vorname, $profildaten_nachname, $profildaten_geschlecht, $profildaten_email, $profildaten_sessiontimeout, $profildaten_schuljahr, $profildaten_letzteanmeldung, $profildaten_vorletzteanmeldung, $profildaten_nutzerkonto, $profildaten_lehrerkuerzel);
+			if ($sql->fetch()) {
 				$anzeigename = cms_generiere_anzeigename($profildaten_vorname, $profildaten_nachname, $profildaten_titel);
 
 				if ($profildaten_letzteanmeldung > 0) {
@@ -48,25 +30,9 @@ function cms_personaldaten_ausgeben($id) {
 					$vorletzteanzeige = (date("d.m.Y", $profildaten_vorletzteanmeldung))." um ".(date("H:i", $profildaten_vorletzteanmeldung))." Uhr";
 				}
 				else {$vorletzteanzeige = "Hat noch nicht stattgefunden";}
-
-
-				if ($profildaten_art == "l") {
-					$sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS lehrerkuerzel FROM lehrer WHERE id = $id;";
-					$anfrage2 = $dbs->query($sql);
-					if ($anfrage2) {
-						if ($daten2 = $anfrage2->fetch_assoc()) {
-							$profildaten_lehrerkuerzel = $daten2['lehrerkuerzel'];
-						}
-						else {$fehler = true;}
-						$anfrage2->free();
-					}
-					else {$fehler = true;}
-				}
-
 			}
-			else {$fehler = true;}
-			$anfrage->free();
 		}
+		$sql->close();
 
 		if ($fehler) {
 			echo cms_meldung_unbekannt();
@@ -87,7 +53,7 @@ function cms_personaldaten_ausgeben($id) {
 					else if ($profildaten_art == "v") {echo "Verwaltung";}
 				echo "</td></tr>";
 
-				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Personen bearbeiten'])) {
+				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || cms_r("schulhof.verwaltung.personen.bearbeiten"))) {
 					echo "<tr><th>Benutzername:</th><td>$profildaten_benutzername</td></tr>";
 				}
 				echo "<tr><th>Titel:</th><td>$profildaten_titel</td></tr>";
@@ -98,7 +64,7 @@ function cms_personaldaten_ausgeben($id) {
 					else if ($profildaten_geschlecht == "w") {echo '&#x2640;';}
 					else if ($profildaten_geschlecht == "u") {echo '&#x26a5;';}
 				echo "</td></tr>";
-				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Personen bearbeiten'])) {
+				if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || cms_r("schulhof.verwaltung.personen.bearbeiten"))) {
 					echo "<tr><th>eMailadresse:</th><td>$profildaten_email</td></tr>";
 				}
 
@@ -115,7 +81,7 @@ function cms_personaldaten_ausgeben($id) {
 						$code .= "<tr class=\"$versteckklasse\"><th>Lehrerkürzel:</th><td>$profildaten_lehrerkuerzel</td></tr>";
 						$versteckt = true;
 					}
-					if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || $CMS_RECHTE['Personen']['Anmeldedetails sehen'])) {
+					if ((!is_null($profildaten_nutzerkonto)) && (!$detailansicht || cms_r("schulhof.verwaltung.nutzerkonten.anmeldedetails"))) {
 						$code .= "<tr class=\"$versteckklasse\"><th>Letzte Anmeldung:</th><td>$letzteanzeige</td></tr>";
 						$code .= "<tr class=\"$versteckklasse\"><th>Vorletzte Anmeldung:</th><td>$vorletzteanzeige</td></tr>";
 						$code .= "<tr class=\"$versteckklasse\"><th>Online:</th><td><img src=\"res/icons/klein/$status\"/></td></tr>";
@@ -151,44 +117,36 @@ function cms_personaldaten_ausgeben($id) {
 				$nutzerkontoaktionen = "";
 
 				if (!is_null($profildaten_nutzerkonto)) {
-					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten bearbeiten'];
-					if ($zugriff) {
+					if (cms_r("schulhof.verwaltung.nutzerkonten.bearbeiten")) {
 						$nutzerkontoaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Nutzerkonto_bearbeiten\">Benutzerkonto bearbeiten</a></li> ";
 					}
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Persönliche Einstellungen ändern'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.nutzerkonten.einstellungen.[|sehen,ändern]")) {
 					$nutzerkontoaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_personen_einstellungen($id)\">Einstellungen</span></li> ";
 				}
 				if (!is_null($profildaten_nutzerkonto)) {
-					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten löschen'];
-					if ($zugriff) {
+					if (cms_r("schulhof.verwaltung.nutzerkonten.löschen")) {
 						$nutzerkontoaktionen .= "<li><span class=\"cms_button_nein\" onclick=\"cms_schulhof_verwaltung_nutzerkonto_loeschen_anzeige('$anzeigename', $id)\">Nutzerkonto löschen</span></li>";
 					}
 				}
 				else {
-					$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'];
-					if ($zugriff) {
+					if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 						$nutzerkontoaktionen .=  "<li><span class=\"cms_button_ja\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Neues_Nutzerkonto')\">Nutzerkonto anlegen</span></li> ";
 					}
 				}
 
 
 				$personenaktionen = "";
-				$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.bearbeiten")) {
 					$personenaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Bearbeiten\">Persönliche Daten ändern</a></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
-				if (($zugriff) && ($profildaten_art == "l")) {
+				if (($profildaten_art == "l") && cms_r("schulhof.verwaltung.lehrer.kürzel")) {
 					$personenaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Lehrerkürzel_ändern\">Lehrerkürzel ändern</a></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Rechte und Rollen zuordnen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 					$personenaktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Personen/Rollen_und_Rechte\">Rollen und Rechte vergeben</a></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Personen löschen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.löschen")) {
 					$personenaktionen .= "<li><span class=\"cms_button_nein\" onclick=\"cms_schulhof_verwaltung_person_loeschen_anzeige('$anzeigename', $id)\">Person löschen</span></li> ";
 				}
 				if (strlen($personenaktionen) > 0) {
@@ -200,8 +158,7 @@ function cms_personaldaten_ausgeben($id) {
 					$code = "<ul class=\"cms_aktionen_liste\">".$nutzerkontoaktionen."</ul>";
 				}
 				$code .= $personenaktionen;
-				$zugriff =  $CMS_RECHTE['Personen']['Nutzerkonten bearbeiten'] && !is_null($profildaten_nutzerkonto);
-				if ($zugriff) {
+				if (!is_null($profildaten_nutzerkonto) && cms_r("schulhof.verwaltung.nutzerkonten.bearbeiten")) {
 					$code .= "<p class=\"cms_notiz\">Das Passwort kann nur durch die jeweilige Person selbst geändert werden.</p>";
 				}
 
@@ -210,11 +167,6 @@ function cms_personaldaten_ausgeben($id) {
 				}
 			}
 			else {
-
-				$umarmungen_c = count($umarmungen);
-
-				echo "<br><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Umarmungen\">$umarmungen_c Umarmung".($umarmungen_c != 1?"en":"").($umarmungen_c > 0?" ( ＾◡＾)っ ♡":"")."</a>";
-
 				echo "<h3>Daten ändern</h3>";
 				echo "<ul class=\"cms_aktionen_liste\">";
 					echo "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Mein_Profil/Nutzerkonto_bearbeiten\">Benutzerkonto bearbeiten</a></li> ";
@@ -225,20 +177,16 @@ function cms_personaldaten_ausgeben($id) {
 				echo "</ul>";
 
 				$personenaktionen = "";
-				$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.bearbeiten")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Bearbeiten')\">Persönliche Daten ändern</span></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
-				if (($zugriff) && ($profildaten_art == "l")) {
+				if (($profildaten_art == "l") && cms_r("schulhof.verwaltung.lehrer.kürzel")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Lehrerkürzel_ändern')\">Lehrerkürzel ändern</span></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Rechte und Rollen zuordnen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.rechte.zuordnen || schulhof.verwaltung.rechte.rollen.zuordnen")) {
 					$personenaktionen .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$anzeigename', $id, 'Rollen_und_Rechte')\">Rollen und Rechte vergeben</span></li> ";
 				}
-				$zugriff = $CMS_RECHTE['Personen']['Personen löschen'];
-				if ($zugriff) {
+				if (cms_r("schulhof.verwaltung.personen.löschen")) {
 					$personenaktionen .= "<li><span class=\"cms_button_nein\" onclick=\"cms_schulhof_verwaltung_person_loeschen_anzeige('$anzeigename', $id)\">Person löschen</span></li> ";
 				}
 				if (strlen($personenaktionen) > 0) {
@@ -257,15 +205,11 @@ function cms_personaldaten_ausgeben($id) {
 				$sjbezakt = "";
 				$sjakt = false;
 
-				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC";
-				$anfrage = $dbs->query($sql);
-
+				$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC");
 				$jetzt = time();
-
-				if ($anfrage) {
-					while ($daten = $anfrage->fetch_assoc()) {
-						$sjid = $daten['id'];
-						$sjbez = $daten['bezeichnung'];
+				if ($sql->execute()) {
+					$sql->bind_result($sjid, $sjbez, $sjbeginn, $sjende);
+					while ($sql->fetch()) {
 
 						$gewaehlt = "";
 						if ($sjid == $profildaten_schuljahr) {
@@ -274,7 +218,7 @@ function cms_personaldaten_ausgeben($id) {
 						}
 
 						// aktuelles Schuljahr ?
-						if (($daten['beginn'] <= $jetzt) && ($daten['ende'] >= $jetzt)) {
+						if (($sjbeginn <= $jetzt) && ($sjende >= $jetzt)) {
 							$sjbezakt = $sjbez;
 							if ($sjid == $profildaten_schuljahr) {
 								$sjakt = true;
@@ -290,8 +234,8 @@ function cms_personaldaten_ausgeben($id) {
 
 						$code .= "<span class=\"cms_toggle".$gewaehlt."\" onclick=\"".$einstellen."\">".$sjbez."</span> ";
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 
 
 				if (strlen($code) == 0) {
@@ -319,13 +263,13 @@ function cms_personaldaten_ausgeben($id) {
 
 
 function cms_personaldaten_ansprechpartner_ausgeben($id) {
-	global $CMS_RECHTE, $CMS_BENUTZERSCHULJAHR;
+	global $CMS_BENUTZERSCHULJAHR;
 	$zugriff = true;
 	$detailansicht = false;
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		$zugriff = $CMS_RECHTE['Personen']['Ansprechpartner sehen'];
+		$zugriff = cms_r("schulhof.verwaltung.nutzerkonten.ansprechpartner");
 		$detailansicht = true;
 	}
 
@@ -336,21 +280,18 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 		$fehler = false;
 
 		// BENUTZER LADEN
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, schuljahr FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id;";
-		$anfrage = $dbs->query($sql);
-
-		if ($anfrage) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$art = $daten['art'];
-				$schuljahr = $daten['schuljahr'];
-
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, schuljahr FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($art, $schuljahr);
+			if ($sql->fetch()) {
 				if (is_null($schuljahr)) {
 					$schuljahr = $CMS_BENUTZERSCHULJAHR;
 				}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
+		$sql->close();
 		cms_trennen($dbs);
 
 		if ($fehler) {
@@ -364,19 +305,21 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 			function cms_personaldaten_ansprechpartner_position ($dbs, $position, $schuljahr) {
 				global $CMS_SCHLUESSEL;
 				$code = "";
-				$sql = "SELECT * FROM (SELECT DISTINCT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, nutzerkonten.id AS nutzerkonto FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE schluesselposition.schuljahr = $schuljahr AND position = AES_ENCRYPT('$position', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
-				if ($anfrage = $dbs->query($sql)) {
-					while ($daten = $anfrage->fetch_assoc()) {
-						$anzeigename = cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-						if (!is_null($daten['nutzerkonto'])) {
-							$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\">$anzeigename</span></li> ";
+				$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT personen.id AS id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, nutzerkonten.id AS nutzerkonto FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE schluesselposition.schuljahr = ? AND position = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname");
+				$sql->bind_param("is", $schuljahr, $position);
+				if ($sql->execute()) {
+					$sql->bind_result($pid, $pvor, $pnach, $ptit, $pnutzerkonto);
+					while ($sql->fetch()) {
+						$anzeigename = cms_generiere_anzeigename($pvor, $pnach, $ptit);
+						if (!is_null($pnutzerkonto)) {
+							$code .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\">$anzeigename</span></li> ";
 						}
 						else {
 							$code  .= "<span class=\"cms_button_passiv\" onclick=\"cms_schulhof_kein_nutzerkonto('$anzeigename')\">$anzeigename</span> ";
 						}
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 				return $code;
 			}
 
@@ -413,17 +356,16 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 				if ($art == 's') {
 					// ELTERN
 					$eltern = "";
-					$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = $id) AS personen ORDER BY nachname, vorname";
-					if ($anfrage = $dbs->query($sql)) {
-						while ($daten = $anfrage->fetch_assoc()) {
-							$anzeigename = $daten['vorname']." ".$daten['nachname'];
-							if (strlen($daten['titel']) > 0) {
-								$anzeigename = $daten['titel']." ".$anzeigename;
-							}
-							$eltern .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\">$anzeigename</span></li> ";
+					$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.eltern WHERE schuelereltern.schueler = ?) AS personen ORDER BY nachname, vorname");
+					$sql->bind_param("i", $id);
+					if ($sql->execute()) {
+						$sql->bind_result($eid, $evor, $enach, $etit);
+						while ($sql->fetch()) {
+							$anzeigename = cms_generiere_anzeigename($evor, $enach, $etit);
+							$eltern .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $eid, 'p')\">$anzeigename</span></li> ";
 						}
-						$anfrage->free();
 					}
+					$sql->execute();
 					if (strlen($eltern) > 0) {$eltern = "<h3>Eltern</h3><ul class=\"cms_aktionen_liste\">".$eltern."</ul>";}
 					$code .= $eltern;
 					$code .= $standard;
@@ -431,17 +373,16 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 				else if ($art == 'e') {
 					// Kinder
 					$kinder = "";
-					$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = $id) AS personen ORDER BY nachname, vorname";
-					if ($anfrage = $dbs->query($sql)) {
-						while ($daten = $anfrage->fetch_assoc()) {
-							$anzeigename = $daten['vorname']." ".$daten['nachname'];
-							if (strlen($daten['titel']) > 0) {
-								$anzeigename = $daten['titel']." ".$anzeigename;
-							}
-							$kinder .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', ".$daten['id'].", 'p')\">$anzeigename</span></li> ";
+					$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = ?) AS personen ORDER BY nachname, vorname");
+					$sql->bind_param("i", $id);
+					if ($sql->execute()) {
+						$sql->bind_result($kid, $kvor, $knach, $ktit);
+						while ($sql->fetch()) {
+							$anzeigename = cms_generiere_anzeigename($kvor, $knach, $ktit);
+							$kinder .= "<li><span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vor', '', '', $kid, 'p')\">$anzeigename</span></li> ";
 						}
-						$anfrage->free();
 					}
+					$sql->close();
 					if (strlen($kinder) > 0) {$kinder = "<h3>Kinder</h3><ul class=\"cms_aktionen_liste\">".$kinder."</ul>";}
 					$code .= $kinder;
 					$code .= $standard;
@@ -492,7 +433,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 			$code .= $datenschutz;
 
 			if (strlen($code) == 0) {
-				$code .= "<p class=\"cms_notiz\">Keine Anprechpartner angelegt.</p>";
+				$code .= "<p class=\"cms_notiz\">Keine Anprechpartner angelegt</p>";
 			}
 
 
@@ -514,8 +455,7 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");
 		$verwaltung = true;
 	}
 
@@ -524,16 +464,15 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL') AS benutzername, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email FROM nutzerkonten WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "SELECT AES_DECRYPT(benutzername, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM nutzerkonten WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 
-		if ($anfrage) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_benutzername = $daten['benutzername'];
-				$profildaten_email = $daten['email'];
-			}
-			else {$fehler = true;}
-			$anfrage->free();
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_benutzername, $profildaten_email);
+			if ($sql->fetch()) {}
+				else {$fehler = true;}
+			$sql->close();
 		}
 		else {$fehler = true;}
 
@@ -587,8 +526,8 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 
 
 function cms_personaldaten_lehrerkuerzel_aendern($id) {
-	global $CMS_RECHTE, $CMS_EINSTELLUNGEN;
-	$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
+	global $CMS_EINSTELLUNGEN;
+	$zugriff = cms_r("schulhof.verwaltung.lehrer.kürzel");
 	$verwaltung = false;
 
 	// Berechtigung prüfen
@@ -602,16 +541,15 @@ function cms_personaldaten_lehrerkuerzel_aendern($id) {
 		$fehler = false;
 		$keinlehrer = false;
 
-		$sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') AS stundenplan FROM lehrer WHERE id = $id";
-		$anfrage = $dbs->query($sql);
+		$sql = "SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL'), AES_DECRYPT(stundenplan, '$CMS_SCHLUESSEL') FROM lehrer WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 
-		if ($anfrage) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_kuerzel = $daten['kuerzel'];
-				$profildaten_stundenplan = $daten['stundenplan'];
-			}
-			else {$keinlehrer = true;}
-			$anfrage->free();
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_kuerzel, $profildaten_stundenplan);
+			if ($sql->fetch()) {}
+				else {$keinlehrer = true;}
+			$sql->close();
 		}
 		else {$fehler = true;}
 
@@ -683,8 +621,7 @@ function cms_personaldaten_aendern($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = $CMS_RECHTE['Personen']['Personen bearbeiten'];
+		$zugriff = cms_r("schulhof.verwaltung.personen.bearbeiten");
 		$verwaltung = true;
 	}
 
@@ -693,18 +630,14 @@ function cms_personaldaten_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$profildaten_art = $daten['art'];
-				$profildaten_titel = $daten['titel'];
-				$profildaten_vorname = $daten['vorname'];
-				$profildaten_nachname = $daten['nachname'];
-				$profildaten_geschlecht = $daten['geschlecht'];
-				$profildaten_email = $daten['email'];
-				$anfrage->free();
-			}
-			else {$fehler = true;}
+		$sql = "SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($profildaten_art, $profildaten_titel, $profildaten_vorname, $profildaten_nachname, $profildaten_geschlecht, $profildaten_email);
+			if ($sql->fetch()) {}
+				else {$fehler = true;}
+			$sql->close();
 		}
 
 		cms_trennen($dbs);
@@ -794,6 +727,90 @@ function cms_personaldaten_aendern($id) {
 }
 
 
+
+function cms_personenids_aendern($id) {
+	$zugriff = true;
+	$verwaltung = false;
+	// Berechtigung prüfen
+	if ($id != $_SESSION["BENUTZERID"]) {
+		$zugriff = cms_r("schulhof.verwaltung.personen.ids.bearbeiten");
+		$verwaltung = true;
+	}
+
+	if ($zugriff) {
+		global $CMS_SCHLUESSEL;
+		$dbs = cms_verbinden('s');
+		$fehler = false;
+
+		$z = $d = $v = null;
+
+		$sql = $dbs->prepare("SELECT COUNT(*), zweitid, drittid, viertid, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') FROM personen WHERE personen.id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl, $z, $d, $v, $vorname, $nachname, $titel);
+			if ($sql->fetch()) {
+				if ($anzahl != 1) {$fehler = true;}
+			}
+			else {$fehler = true;}
+		}
+		else {$fehler = true;}
+		$sql->close();
+		cms_trennen($dbs);
+
+		$code = "";
+
+		if ($fehler) {
+			$code .= cms_meldung_unbekannt();
+		}
+		else {
+			$code .= "<div class=\"cms_spalte_2\">";
+			$code .= "<div class=\"cms_spalte_i\">";
+			$code .= "<h3>IDs von ".cms_generiere_anzeigename($vorname, $nachname, $titel)."</h3>";
+			$code .= "<table class=\"cms_formular\">";
+				$code .= "<tr>";
+					$code .= "<th>Schulhof-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$id\" name=\"cms_personen_shid\" id=\"cms_personen_shid\" disabled=\"disabled\"></td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>Zweit-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$z\" name=\"cms_personen_zweitid\" id=\"cms_personen_zweitid\"></td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>Dritt-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$d\" name=\"cms_personen_drittid\" id=\"cms_personen_drittid\"></td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>Viert-ID:</th>";
+					$code .= "<td><input type=\"text\" value=\"$v\" name=\"cms_personen_viertid\" id=\"cms_personen_viertid\"></td>";
+				$code .= "</tr>";
+			$code .= "</table>";
+
+			$code .= "</div>";
+			$code .= "</div>";
+
+
+			$code .= "<div class=\"cms_spalte_2\">";
+			$code .= "<div class=\"cms_spalte_i\">";
+			$code .= "</div>";
+			$code .= "</div>";
+
+			$code .= "<div class=\"cms_clear\"></div>";
+
+			$code .= "<div class=\"cms_spalte_i\">";
+			$code .= "<p><span class=\"cms_button\" onclick=\"cms_personen_ids_aendern();\">Änderungen speichern</span> ";
+			$code .= "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Personen\">Zurück</a>";
+			$code .= "</p>";
+			$code .= "</div>";
+		}
+	}
+	else {
+		$code .= cms_meldung_berechtigung();
+	}
+	echo $code;
+}
+
+
+
 // Einstellungen ändern
 function cms_personaldaten_einstellungen_aendern($id) {
 	global $CMS_EINSTELLUNGEN;
@@ -803,8 +820,7 @@ function cms_personaldaten_einstellungen_aendern($id) {
 
 	// Berechtigung prüfen
 	if ($id != $_SESSION["BENUTZERID"]) {
-		global $CMS_RECHTE;
-		$zugriff = ($CMS_RECHTE['Personen']['Persönliche Einstellungen ändern']);
+		$zugriff = cms_r("schulhof.verwaltung.nutzerkonten.einstellungen.ändern");
 		$verwaltung = true;
 	}
 
@@ -813,26 +829,15 @@ function cms_personaldaten_einstellungen_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') AS postmail, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS postalletage, AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS postpapierkorbtage, AES_DECRYPT(vertretungsmail, '$CMS_SCHLUESSEL') AS vertretungsmail, AES_DECRYPT(uebersichtsanzahl, '$CMS_SCHLUESSEL') AS uebersichtsanzahl, AES_DECRYPT(inaktivitaetszeit, '$CMS_SCHLUESSEL') AS inaktivitaetszeit, AES_DECRYPT(oeffentlichertermin, '$CMS_SCHLUESSEL') AS oeffentlichertermin, AES_DECRYPT(oeffentlicherblog, '$CMS_SCHLUESSEL') AS oeffentlicherblog, AES_DECRYPT(oeffentlichegalerie, '$CMS_SCHLUESSEL') AS oeffentlichegalerie FROM personen_einstellungen, personen WHERE personen.id = personen_einstellungen.person AND person = $id";
+		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') AS postmail, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS postalletage, AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS postpapierkorbtage, AES_DECRYPT(vertretungsmail, '$CMS_SCHLUESSEL') AS vertretungsmail, AES_DECRYPT(uebersichtsanzahl, '$CMS_SCHLUESSEL') AS uebersichtsanzahl, AES_DECRYPT(inaktivitaetszeit, '$CMS_SCHLUESSEL') AS inaktivitaetszeit, AES_DECRYPT(oeffentlichertermin, '$CMS_SCHLUESSEL') AS oeffentlichertermin, AES_DECRYPT(oeffentlicherblog, '$CMS_SCHLUESSEL') AS oeffentlicherblog, AES_DECRYPT(oeffentlichegalerie, '$CMS_SCHLUESSEL') AS oeffentlichegalerie FROM personen_einstellungen, personen WHERE personen.id = personen_einstellungen.person AND person = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$vorname = $daten['vorname'];
-				$nachname = $daten['nachname'];
-				$notifikationsmail = $daten['notifikationsmail'];
-				$postmail = $daten['postmail'];
-				$postalletage = $daten['postalletage'];
-				$postpapierkorbtage = $daten['postpapierkorbtage'];
-				$vertretungsmail = $daten['vertretungsmail'];
-				$uebersichtsanzahl = $daten['uebersichtsanzahl'];
-				$inaktivitaetszeit = $daten['inaktivitaetszeit'];
-				$oeffentlichertermin = $daten['oeffentlichertermin'];
-				$oeffentlicherblog = $daten['oeffentlicherblog'];
-				$oeffentlichegalerie = $daten['oeffentlichegalerie'];
-				$anfrage->free();
-
-			}
-			else {$fehler = true;}
+		if ($sql->execute()) {
+			$sql->bind_result($vorname, $nachname, $notifikationsmail, $postmail, $postalletage, $postpapierkorbtage, $vertretungsmail, $uebersichtsanzahl, $inaktivitaetszeit, $oeffentlichertermin, $oeffentlicherblog, $oeffentlichegalerie);
+			if ($sql->fetch()) {}
+				else {$fehler = true;}
+			$sql->close();
 		}
 
 		cms_trennen($dbs);
@@ -866,7 +871,6 @@ function cms_personaldaten_einstellungen_aendern($id) {
 					$code .= "<tr>";
 						$code .= "<th>neue Vertretungen eingehen</th>";
 						$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_vertretungsmail", $vertretungsmail)."</td>";
-						$code .= "<td><span class=\"cms_schieber_o_".$vorsilbe."aktiv\" id=\"cms_schieber_schulhof_".$idname."_einstellungen_vertretungsmail\" onclick=\"cms_schieber('schulhof_".$idname."_einstellungen_vertretungsmail')\"><span class=\"cms_schieber_i\"></span></span></td>";
 					$code .= "</tr>";
 				}
 				$code .= "<tr>";

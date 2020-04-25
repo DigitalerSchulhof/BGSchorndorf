@@ -257,7 +257,8 @@ function cms_schulanmeldung_drucken(id) {
 
   function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-      cms_meldung_an('erfolg', 'Schulanmeldung drucken', '<p>Die Druckansicht wurde erstelt.</p>', '<p><a class="cms_button" target="_blank" href="drucken.php">Druckansicht öffnen</a> <span class="cms_button_nein" onclick="cms_ausblenden(\'cms_blende_o\')">Fenster schließen</span></p>');
+      cms_laden_aus();
+      cms_drucken();
     }
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
@@ -321,10 +322,12 @@ function cms_schulanmeldung_eingabenpruefen() {
 	var religionsunterricht = document.getElementById('cms_voranmeldung_schueler_religionsunterricht').value;
 	var land1 = document.getElementById('cms_voranmeldung_schueler_land1').value;
 	var land2 = document.getElementById('cms_voranmeldung_schueler_land2').value;
+	var impfung = document.getElementById('cms_voranmeldung_schueler_impfung').value;
 	var strasse = document.getElementById('cms_voranmeldung_schueler_strasse').value;
 	var hausnummer = document.getElementById('cms_voranmeldung_schueler_hausnummer').value;
 	var plz = document.getElementById('cms_voranmeldung_schueler_postleitzahl').value;
 	var ort = document.getElementById('cms_voranmeldung_schueler_ort').value;
+	var staat = document.getElementById('cms_voranmeldung_schueler_staat').value;
 	var teilort = document.getElementById('cms_voranmeldung_schueler_teilort').value;
 	var telefon1 = document.getElementById('cms_voranmeldung_schueler_telefon1').value;
 	var telefon2 = document.getElementById('cms_voranmeldung_schueler_telefon2').value;
@@ -342,6 +345,8 @@ function cms_schulanmeldung_eingabenpruefen() {
 	var geschlecht1 = document.getElementById('cms_voranmeldung_ansprechpartner1_geschlecht').value;
 	var sorgerecht1 = document.getElementById('cms_voranmeldung_ansprechpartner1_sorgerecht').value;
 	var briefe1 = document.getElementById('cms_voranmeldung_ansprechpartner1_briefe').value;
+	var haupt1 = document.getElementById('cms_voranmeldung_ansprechpartner1_haupt').value;
+	var rolle1 = document.getElementById('cms_voranmeldung_ansprechpartner1_rolle').value;
 	var strasse1 = document.getElementById('cms_voranmeldung_ansprechpartner1_strasse').value;
 	var hausnummer1 = document.getElementById('cms_voranmeldung_ansprechpartner1_hausnummer').value;
 	var plz1 = document.getElementById('cms_voranmeldung_ansprechpartner1_postleitzahl').value;
@@ -357,6 +362,8 @@ function cms_schulanmeldung_eingabenpruefen() {
 	var geschlecht2 = document.getElementById('cms_voranmeldung_ansprechpartner2_geschlecht').value;
 	var sorgerecht2 = document.getElementById('cms_voranmeldung_ansprechpartner2_sorgerecht').value;
 	var briefe2 = document.getElementById('cms_voranmeldung_ansprechpartner2_briefe').value;
+	var haupt2 = document.getElementById('cms_voranmeldung_ansprechpartner2_haupt').value;
+	var rolle2 = document.getElementById('cms_voranmeldung_ansprechpartner2_rolle').value;
 	var strasse2 = document.getElementById('cms_voranmeldung_ansprechpartner2_strasse').value;
 	var hausnummer2 = document.getElementById('cms_voranmeldung_ansprechpartner2_hausnummer').value;
 	var plz2 = document.getElementById('cms_voranmeldung_ansprechpartner2_postleitzahl').value;
@@ -437,6 +444,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 		meldung += '<li>Die Staatsangehörigkeit ist ungültig.</li>';
 	}
 
+  if (!cms_check_toggle(impfung)) {
+		fehler = true;
+		meldung += '<li>Die Eingabe zur Masernimpfung ist ungültig.</li>';
+	}
+
 	if (strasse.length <= 0) {
 		fehler = true;
 		meldung += '<li>Die Straße ist ungültig.</li>';
@@ -455,6 +467,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 	if (ort.length <= 0) {
 		fehler = true;
 		meldung += '<li>Der Ort ist ungültig.</li>';
+	}
+
+	if (staat.length <= 0) {
+		fehler = true;
+		meldung += '<li>Der Staat ist ungültig.</li>';
 	}
 
 	if ((telefon1.length <= 0) && (telefon2.length <= 0) && (handy1.length <= 0) && (handy2.length <= 0)) {
@@ -505,6 +522,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 		meldung += '<li>Das Geschlecht des ersten Ansprechpartners ist ungültig.</li>';
 	}
 
+	if ((rolle1 != 'Mu') && (rolle1 != 'Va') && (rolle1 != 'Pf')) {
+		fehler = true;
+		meldung += '<li>Die Rolle des ersten Ansprechpartners ist ungültig.</li>';
+	}
+
 	if (!cms_check_toggle(sorgerecht1)) {
 		fehler = true;
 		meldung += '<li>Die Eingabe für das Sorgerecht des ersten Ansprechpartners ist ungültig.</li>';
@@ -513,6 +535,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 	if (!cms_check_toggle(briefe1)) {
 		fehler = true;
 		meldung += '<li>Die Eingabe für die Einbeziehung des ersten Ansprechpartners in Breife ist ungültig.</li>';
+	}
+
+	if (!cms_check_toggle(haupt2)) {
+		fehler = true;
+		meldung += '<li>Die Eingabe für den Hauptansprechpartner beim ersten Ansprechpartner ungültig.</li>';
 	}
 
 	if (strasse1.length <= 0) {
@@ -568,6 +595,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 			meldung += '<li>Das Geschlecht des zweiten Ansprechpartners ist ungültig.</li>';
 		}
 
+  	if ((rolle2 != 'Mu') && (rolle2 != 'Va') && (rolle2 != 'Pf')) {
+  		fehler = true;
+  		meldung += '<li>Die Rolle des zweiten Ansprechpartners ist ungültig.</li>';
+  	}
+
 		if (!cms_check_toggle(sorgerecht2)) {
 			fehler = true;
 			meldung += '<li>Die Eingabe für das Sorgerecht des zweiten Ansprechpartners ist ungültig.</li>';
@@ -576,6 +608,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 		if (!cms_check_toggle(briefe2)) {
 			fehler = true;
 			meldung += '<li>Die Eingabe für die Einbeziehung des zweiten Ansprechpartners in Breife ist ungültig.</li>';
+		}
+
+		if (!cms_check_toggle(haupt2)) {
+			fehler = true;
+			meldung += '<li>Die Eingabe für den Hauptansprechpartner beim zweiten Ansprechpartner ist ungültig.</li>';
 		}
 
 		if (strasse2.length <= 0) {
@@ -627,10 +664,12 @@ function cms_schulanmeldung_eingabenpruefen() {
 	formulardaten.append("religionsunterricht", religionsunterricht);
 	formulardaten.append("land1", land1);
 	formulardaten.append("land2", land2);
+	formulardaten.append("impfung", impfung);
 	formulardaten.append("strasse", strasse);
 	formulardaten.append("hausnummer", hausnummer);
 	formulardaten.append("plz", plz);
 	formulardaten.append("ort", ort);
+	formulardaten.append("staat", staat);
 	formulardaten.append("teilort", teilort);
 	formulardaten.append("telefon1", telefon1);
 	formulardaten.append("telefon2", telefon2);
@@ -648,6 +687,8 @@ function cms_schulanmeldung_eingabenpruefen() {
   formulardaten.append("geschlecht1", geschlecht1);
   formulardaten.append("sorgerecht1", sorgerecht1);
   formulardaten.append("briefe1", briefe1);
+  formulardaten.append("haupt1", haupt1);
+  formulardaten.append("rolle1", rolle1);
   formulardaten.append("strasse1", strasse1);
   formulardaten.append("hausnummer1", hausnummer1);
   formulardaten.append("plz1", plz1);
@@ -663,6 +704,8 @@ function cms_schulanmeldung_eingabenpruefen() {
   formulardaten.append("geschlecht2", geschlecht2);
   formulardaten.append("sorgerecht2", sorgerecht2);
   formulardaten.append("briefe2", briefe2);
+  formulardaten.append("haupt2", haupt2);
+  formulardaten.append("rolle2", rolle2);
   formulardaten.append("strasse2", strasse2);
   formulardaten.append("hausnummer2", hausnummer2);
   formulardaten.append("plz2", plz2);

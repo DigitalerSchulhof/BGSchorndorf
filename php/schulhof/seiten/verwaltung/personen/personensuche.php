@@ -106,7 +106,7 @@ function cms_personensuche_personrechteerzeugen ($feldid, $selbst, $id, $art, $v
 	$ausgabe .= "<tr id=\"cms_".$feldid."_person".$id."\">";
 	if ($art == 'l') {$ausgabe .= '<td><span class="cms_icon_klein_o"><span class="cms_hinweis">Lehrer</span><img src="res/icons/klein/lehrer.png"></span></td>';}
 	else if ($art == 's') {$ausgabe .= '<td><span class="cms_icon_klein_o"><span class="cms_hinweis">Schüler</span><img src="res/icons/klein/schueler.png"></span></td>';}
-	else if ($art == 'e') {$$ausgabe .= '<td><span class="cms_icon_klein_o"><span class="cms_hinweis">Eltern</span><img src="res/icons/klein/elter.png"></span></td>';}
+	else if ($art == 'e') {$ausgabe .= '<td><span class="cms_icon_klein_o"><span class="cms_hinweis">Eltern</span><img src="res/icons/klein/elter.png"></span></td>';}
 	else if ($art == 'v') {$ausgabe .= '<td><span class="cms_icon_klein_o"><span class="cms_hinweis">Verwaltung</span><img src="res/icons/klein/verwaltung.png"></span></td>';}
 
 	$anzeigename = $vorname." ".$nachname;

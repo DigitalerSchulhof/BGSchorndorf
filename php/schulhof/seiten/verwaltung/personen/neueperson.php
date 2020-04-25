@@ -4,7 +4,7 @@
 <h1>Neue Person anlegen</h1>
 
 <?php
-if ($CMS_RECHTE['Personen']['Personen anlegen']) {
+if (cms_r("schulhof.verwaltung.personen.anlegen")) {
 ?>
 
 
@@ -46,7 +46,7 @@ if ($CMS_RECHTE['Personen']['Personen anlegen']) {
 </div>
 
 
-<p><span class="cms_button" onclick="cms_schulhof_verwaltung_personen_neu_speichern();">Speichern</span> <a class="cms_button_nein" href="Schulhof/Verwaltung/Personen/">Abbrechen</a></p>
+<p><span class="cms_button" onclick="cms_schulhof_verwaltung_personen_neu_speichern();">Speichern</span> <a class="cms_button_nein" href="Schulhof/Verwaltung/Personen">Abbrechen</a></p>
 </div>
 <?php
 }

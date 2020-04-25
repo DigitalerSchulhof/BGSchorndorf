@@ -1,11 +1,7 @@
 <?php
 $ordnergroesse = cms_dateisystem_ordner_info("dateien/schulhof/personen/$CMS_BENUTZERID/postfach");
 
-if ($CMS_BENUTZERART == 's') {$POSTLIMIT = 100*1024*1024;}
-else if ($CMS_BENUTZERART == 'l') {$POSTLIMIT = 1024*1024*1024;}
-else if ($CMS_BENUTZERART == 'v') {$POSTLIMIT = 1024*1024*1024;}
-else if ($CMS_BENUTZERART == 'e') {$POSTLIMIT = 10*1024*1024;}
-else {$POSTLIMIT = 0;}
+include_once("php/schulhof/seiten/nutzerkonto/postfach/postlimit.php");
 
 $tabellen[0] = "posteingang_$CMS_BENUTZERID";
 $tabellen[1] = "postausgang_$CMS_BENUTZERID";
@@ -16,8 +12,6 @@ $tabellen[5] = "postgetaggedentwurf_$CMS_BENUTZERID";
 $tabellen[6] = "posttags_$CMS_BENUTZERID";
 
 $dbgroesse = cms_db_tabellengroesse($CMS_DBP_DB, $tabellen);
-
-
 $POSTBELEGT = $ordnergroesse['groesse'] + $dbgroesse;
 
 $POSTPROZENT = min($POSTBELEGT / $POSTLIMIT*100, 100);
@@ -46,26 +40,21 @@ else {
 			// Zählen wie viele Nachrichten vorhanden
 			$dbp = cms_verbinden('p');
 
-			$sql = "SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;";
-
-			//echo $sql;
-
+			$sql = $dbp->prepare("SELECT AES_DECRYPT(gelesen, '$CMS_SCHLUESSEL') AS gelesen, COUNT(gelesen) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-' GROUP BY gelesen;");
 			$anzahl['-'] = 0;
 			$anzahl[1] = 0;
-
-			if ($anfrage = $dbp->query($sql)) {
-				while ($daten = $anfrage->fetch_assoc()) {
-					$anzahl[$daten['gelesen']] = $daten['anzahl'];
+			if ($sql->execute()) {
+				$sql->bind_result($pngelesen, $pnganzahl);
+				while ($sql->fetch()) {
+					$anzahl[$pngelesen] = $pnganzahl;
 				}
-				$anfrage -> free();
 			}
+			$sql->close();
 
 			$gesamt = $anzahl['-'] + $anzahl[1];
 
-			$text = "Nachrichten";
-			if ($gesamt == 1) {
-				$text = "Nachricht";
-			}
+			if ($gesamt == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p><b>".$anzahl['-']." neue</b> von $gesamt $text</p>";
 			?>
@@ -76,21 +65,16 @@ else {
 			<h3>Entwürfe</h3>
 			<?php
 
-			$sql = "SELECT COUNT(*) AS anzahl FROM postentwurf_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'";
-
+			$sql = $dbp->prepare("SELECT COUNT(*) AS anzahl FROM postentwurf_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'");
 			$anzahl = 0;
-
-			if ($anfrage = $dbp->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()){
-					$anzahl = $daten['anzahl'];
-				}
-				$anfrage -> free();
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				$sql->fetch();
 			}
+			$sql->close();
 
-			$text = "Nachrichten";
-			if ($anzahl == 1) {
-				$text = "Nachricht";
-			}
+			if ($anzahl == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p>$anzahl $text</p>";
 			?>
@@ -101,21 +85,16 @@ else {
 			<h3>Postausgang</h3>
 			<?php
 
-			$sql = "SELECT COUNT(*) AS anzahl FROM postausgang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'";
-
+			$sql = $dbp->prepare("SELECT COUNT(*) AS anzahl FROM postausgang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '-'");
 			$anzahl = 0;
-
-			if ($anfrage = $dbp->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()){
-					$anzahl = $daten['anzahl'];
-				}
-				$anfrage -> free();
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				$sql->fetch();
 			}
+			$sql->close();
 
-			$text = "Nachrichten";
-			if ($anzahl == 1) {
-				$text = "Nachricht";
-			}
+			if ($anzahl == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p>$anzahl $text</p>";
 			?>
@@ -129,20 +108,16 @@ else {
 
 			$sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM posteingang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '1') UNION ALL (SELECT COUNT(*) AS anzahl FROM postentwurf_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '1') UNION ALL ";
 			$sql.= "(SELECT COUNT(*) AS anzahl FROM postausgang_$CMS_BENUTZERID WHERE AES_DECRYPT(papierkorb, '$CMS_SCHLUESSEL') = '1')) AS nachrichtenpapierkorb";
-
+			$sql = $dbp->prepare($sql);
 			$anzahl = 0;
-
-			if ($anfrage = $dbp->query($sql)) {
-				if ($daten = $anfrage->fetch_assoc()){
-					$anzahl = $daten['anzahl'];
-				}
-				$anfrage -> free();
+			if ($sql->execute()) {
+				$sql->bind_result($anzahl);
+				$sql->fetch();
 			}
+			$sql->close();
 
-			$text = "Nachrichten";
-			if ($anzahl == 1) {
-				$text = "Nachricht";
-			}
+			if ($anzahl == 1) {$text = "Nachricht";}
+			else {$text = "Nachrichten";}
 
 			echo "<p>$anzahl $text</p>";
 

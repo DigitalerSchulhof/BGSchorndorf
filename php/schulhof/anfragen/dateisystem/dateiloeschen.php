@@ -16,9 +16,6 @@ if (isset($_POST['datei'])) {$datei = $_POST['datei'];} else {$datei = '';}
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
-
 $zugriff = false;
 $fehler = false;
 $existiert = false;
@@ -49,7 +46,7 @@ else {$fehler = true;}
 $zugriff = $gruppenrechte['dateiloeschen'];
 
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 
 	if (strlen($datei) < 1) {
 		$fehler = true;

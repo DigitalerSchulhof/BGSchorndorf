@@ -50,6 +50,8 @@ function cms_blogeintraege_eingabenpruefen() {
 	var autor = document.getElementById('cms_blogeintrag_autor').value;
 	var downloadanzahl = document.getElementById('cms_downloads_anzahl').value;
 	var downloadids = document.getElementById('cms_downloads_ids').value;
+	var artikellinkanzahl = document.getElementById('cms_artikellinks_anzahl').value;
+	var artikellinkids = document.getElementById('cms_artikellinks_ids').value;
 
 	var formulardaten = new FormData();
 	for (var i=0; i<CMS_GRUPPEN.length; i++) {
@@ -133,6 +135,38 @@ function cms_blogeintraege_eingabenpruefen() {
 		fehler = true;
 	}
 
+	// Links
+	var ltitelf = false;
+	var llinkf = false;
+	var lfehler = false;
+	if (artikellinkanzahl > 0) {
+		ids = artikellinkids.split('|');
+		for (i=1; i<ids.length; i++) {
+			var lid = ids[i];
+
+			var ltitel = document.getElementById('cms_artikellink_titel_'+lid);
+			var lbeschreibung = document.getElementById('cms_artikellink_beschreibung_'+lid);
+			var llink = document.getElementById('cms_artikellink_link_'+lid);
+
+			if (ltitel) {if ((ltitel.value).length > 0) {formulardaten.append("ltitel_"+lid,  ltitel.value);} else {ltitelf = true;}} else {lfehler = true;}
+			if (lbeschreibung) {formulardaten.append("lbeschreibung_"+lid,  lbeschreibung.value);} else {lfehler = true;}
+			if (llink) {if ((llink.value).length > 0) {formulardaten.append("llink_"+lid,  llink.value);} else {llinkf = true;}} else {lfehler = true;}
+		}
+	}
+
+	if (lfehler) {
+		meldung += '<li>bei der Erstellung der zugehörigen Links ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
+		fehler = true;
+	}
+	if (ltitelf) {
+		meldung += '<li>bei mindestens einem Link ist der Titel nicht angegeben.</li>';
+		fehler = true;
+	}
+	if (llinkf) {
+		meldung += '<li>bei mindestens einem Link wurde keine Adresse angegeben.</li>';
+		fehler = true;
+	}
+
 	if (!fehler) {
 		formulardaten.append("oeffentlichkeit", oeffentlichkeit);
 		formulardaten.append("notifikationen", 	notifikationen);
@@ -148,6 +182,8 @@ function cms_blogeintraege_eingabenpruefen() {
 		formulardaten.append("zusammenfassung", zusammenfassung);
 		formulardaten.append("downloadanzahl",  downloadanzahl);
 		formulardaten.append("downloadids", 		downloadids);
+		formulardaten.append("artikellinkanzahl",	artikellinkanzahl);
+		formulardaten.append("artikellinkids", 		artikellinkids);
 	}
 
 	var rueckgabe = [meldung, fehler, formulardaten];
@@ -351,4 +387,41 @@ function cms_blog_ablehnen(gruppe, id, ziel) {
 		}
 	}
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_neuer_artikellink() {
+  var box = document.getElementById('cms_artikellinks');
+	var anzahl = document.getElementById('cms_artikellinks_anzahl');
+	var nr = document.getElementById('cms_artikellinks_nr');
+	var ids = document.getElementById('cms_artikellinks_ids');
+	var anzahlneu = parseInt(anzahl.value)+1;
+	var nrneu = parseInt(nr.value)+1;
+	var neueid = 'temp'+nrneu;
+
+	var code = "";
+	code += "<tr><th>Linkziel:</th><td colspan=\"4\"><input type=\"text\" name=\"cms_artikellink_link_"+neueid+"\" id=\"cms_artikellink_link_"+neueid+"\" placeholder=\"https://seite.de/Link/Zum/Ziel\" value=\"\"></td></tr>";
+	code += "<tr><th>Titel:</th><td colspan=\"4\"><input type=\"text\" name=\"cms_artikellink_titel_"+neueid+"\" id=\"cms_artikellink_titel_"+neueid+"\" value=\"\"></td></tr>";
+	code += "<tr><th>Beschreibung:</th><td colspan=\"4\"><textarea name=\"cms_artikellink_beschreibung_"+neueid+"\" id=\"cms_artikellink_beschreibung_"+neueid+"\"></textarea></td></tr>";
+	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_artikellink_entfernen('"+neueid+"');\">Link löschen</span></td></tr>";
+	var knoten = document.createElement("TABLE");
+	knoten.className = 'cms_formular';
+	knoten.setAttribute('id', 'cms_artikellink_'+neueid);
+	knoten.innerHTML = code;
+	box.appendChild(knoten);
+	anzahl.value = anzahlneu;
+	nr.value = nrneu;
+	ids.value = ids.value+'|'+neueid;
+}
+
+function cms_artikellink_entfernen(id) {
+	var box = document.getElementById('cms_artikellinks');
+	var anzahl = document.getElementById('cms_artikellinks_anzahl');
+	var ids = document.getElementById('cms_artikellinks_ids');
+	var artikellink = document.getElementById('cms_artikellink_'+id);
+
+	box.removeChild(artikellink);
+	anzahl.value = anzahl.value-1;
+	var neueids = (ids.value+'|').replace('|'+id+'|', '|');
+	neueids = neueids.substr(0, neueids.length-1);
+	ids.value = neueids;
 }

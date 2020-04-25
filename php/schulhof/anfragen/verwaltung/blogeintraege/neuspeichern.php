@@ -26,6 +26,8 @@ if (isset($_POST['zusammenfassung'])) {$zusammenfassung = $_POST['zusammenfassun
 if (isset($_POST['autor'])) 		      {$autor = $_POST['autor'];} 			              else {echo "FEHLER";exit;}
 if (isset($_POST['downloadanzahl']))  {$downloadanzahl = $_POST['downloadanzahl'];}   else {echo "FEHLER";exit;}
 if (isset($_POST['downloadids']))     {$downloadids = $_POST['downloadids'];}         else {echo "FEHLER";exit;}
+if (isset($_POST['artikellinkanzahl'])) {$artikellinkanzahl = $_POST['artikellinkanzahl'];} else {echo "FEHLER";exit;}
+if (isset($_POST['artikellinkids']))    {$artikellinkids = $_POST['artikellinkids'];}       else {echo "FEHLER";exit;}
 if (isset($_POST['inhalt'])) 					{$text = $_POST['inhalt'];} 										else {echo "FEHLER";exit;}
 
 foreach($CMS_GRUPPEN as $g) {
@@ -37,14 +39,18 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Blogeinträge anlegen']) {
+if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
+  die("FEHLER");
+}
+
+if (cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) {
 	$zugriff = true;
 }
 
-if (!$CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.blogeinträge")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {
@@ -59,15 +65,16 @@ if (cms_angemeldet() && $zugriff) {
       $ids = "(".substr($ids, 1).")";
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
-  			$sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN ($ids)";
-  			if ($anfrage = $dbs->query($sql)) {
-  				if ($daten = $anfrage->fetch_assoc()) {
-  					if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids");
+  			if ($sql->execute()) {
+          $sql->bind_result($checkanzahl);
+  				if ($sql->fetch()) {
+  					if ($checkanzahl != $anzahl) {$fehler = true;}
   				}
   				else {$fehler = true;}
-  				$anfrage->free();
   			}
   			else {$fehler = true;}
+        $sql->close();
       }
 			else {$fehler = true;}
 		}
@@ -123,6 +130,24 @@ if (cms_angemeldet() && $zugriff) {
 		}
 	}
 
+  $artikellinks = array();
+  if ($artikellinkanzahl > 0) {
+		$lids = explode('|', $artikellinkids);
+		$sqlwhere = substr(implode(' OR ', $lids), 4);
+
+		for ($i=1; $i<count($lids); $i++) {
+      $ll = array();
+			if (isset($_POST["ltitel_".$lids[$i]])) {$ll['titel'] = $_POST["ltitel_".$lids[$i]];} else {echo "FEHLER"; exit;}
+			if (strlen($ll['titel']) < 1) {$fehler = true; }
+
+			if (isset($_POST["lbeschreibung_".$lids[$i]])) {$ll['beschreibung'] = $_POST["lbeschreibung_".$lids[$i]];} else {echo "FEHLER"; exit;}
+
+			if (isset($_POST["llink_".$lids[$i]])) {$ll['link'] = $_POST["llink_".$lids[$i]];} else {echo "FEHLER"; exit;}
+      if (strlen($ll['link']) < 1) {$fehler = true; }
+
+      array_push($artikellinks, $ll);
+		}
+	}
 
 
 	if (!$fehler) {
@@ -163,6 +188,17 @@ if (cms_angemeldet() && $zugriff) {
 		}
     $sql->close();
 
+    // LINKS EINTRAGEN
+    $sql = $dbs->prepare("UPDATE blogeintraglinks SET blogeintrag = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+		foreach ($artikellinks as $l) {
+			$l['titel'] = cms_texttrafo_e_db($l['titel']);
+			$l['beschreibung'] = cms_texttrafo_e_db($l['beschreibung']);
+			$did = cms_generiere_kleinste_id('blogeintraglinks');
+      $sql->bind_param("isssi", $blogid, $l['link'], $l['titel'], $l['beschreibung'], $did);
+      $sql->execute();
+		}
+    $sql->close();
+
     $monatsname = cms_monatsnamekomplett(date('m', $datum));
     $jahr = date('Y', $datum);
     $tag = date('d', $datum);
@@ -174,7 +210,8 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Blog/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    if($notifikationen)
+
+    if (($notifikationen) && ($aktiv))
       cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";

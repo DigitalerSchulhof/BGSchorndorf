@@ -22,21 +22,30 @@ else {
 
 if (cms_valide_gruppe($g)) {
   $sql = "";
-  if ($CMS_RECHTE['Gruppen'][$g." Listen sehen"]) {
-    $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $sjsuche) AS x ORDER BY gbez ASC");
+  if (cms_r("schulhof.information.listen.gruppen.$g")) {
+    if (($g == "Klassen") || ($g == "Stufen") || ($g == "Kurse")) {
+      $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, reihenfolge FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id LEFT JOIN stufen ON stufe = stufen.id WHERE $sjsuche) AS x ORDER BY reihenfolge, gbez ASC");
+    }
+    else if ($g == "Stufen") {
+      $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, reihenfolge FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $sjsuche) AS x ORDER BY reihenfolge, gbez ASC");
+    }
+    else {
+      $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, 0 AS reihenfolge FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $sjsuche) AS x ORDER BY gbez ASC");
+    }
+
   }
-  else if ($CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {
+  if(cms_r("schulhof.information.listen.gruppen.$g.sehenwenn")) {
     $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk JOIN $gk"."mitglieder ON $gk"."mitglieder.gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $sjsuche AND $gk"."mitglieder.person = $CMS_BENUTZERID) AS x ORDER BY sbez ASC, gbez ASC");
   }
 
   $gruppenliste = "";
 
-  if ($CMS_RECHTE['Gruppen'][$g." Listen sehen"] || $CMS_RECHTE['Gruppen'][$g." Listen sehen wenn Mitglied"]) {
+  if(cms_r("schulhof.information.listen.gruppen.$g.[|sehen,sehenwenn]")) {
     if ($sj != 'Schuljahrübergreifend') {
       $sql->bind_param("s", $sj);
     }
     if ($sql->execute()) {
-      $sql->bind_result($id, $gbez);
+      $sql->bind_result($id, $gbez, $greihe);
       while ($sql->fetch()) {
         $gruppenliste .= "<a class=\"cms_button\" href=\"Schulhof/Listen/Gruppen/".cms_textzulink($g)."/".cms_textzulink($sj)."/".cms_textzulink($gbez)."\">".$gbez."</a> ";
       }

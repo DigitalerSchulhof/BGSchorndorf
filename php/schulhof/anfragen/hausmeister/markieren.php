@@ -15,22 +15,20 @@ if (isset($_POST['id'])) 	{$id = $_POST['id'];} 		else {echo "FEHLER";exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} 	else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} 	                    else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren'];
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if (($art != 'n') && ($art != 'e')) {echo "FEHLER";exit;}
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
 	$fehler = false;
 
 	$dbs = cms_verbinden('s');
 
-	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM hausmeisterauftraege WHERE id = ?");
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), raumgeraet, leihgeraet AS titel FROM hausmeisterauftraege WHERE id = ?");
 	$sql->bind_param("i", $id);
 	if ($sql->execute()) {
-	  $sql->bind_result($anzahl, $titel);
+	  $sql->bind_result($anzahl, $titel, $raumgeraet, $leihgeraet);
 	  if ($sql->fetch()) {
 			if ($anzahl != 1) {
 				$fehler = true;
@@ -46,6 +44,23 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->bind_param("siii", $art, $jetzt, $CMS_BENUTZERID, $id);
 	  $sql->execute();
 	  $sql->close();
+
+		// Möglichen Gerätestatus ändern
+		if (($raumgeraet !== null) || ($leihgeraet !== null)) {
+			if ($raumgeraet !== null) {
+				$gid = $raumgeraet;
+				$sql = $dbs->prepare("UPDATE raeumegeraete SET statusnr = ? WHERE id = ?");
+			}
+			if ($leihgeraet !== null) {
+				$gid = $leihgeraet;
+				$sql = $dbs->prepare("UPDATE leihengeraete SET statusnr = ? WHERE id = ?");
+			}
+			if ($art == "e") {$statusnr = 5;}
+			else {$statusnr = 2;}
+			$sql->bind_param("ii", $statusnr, $gid);
+			$sql->execute();
+			$sql->close();
+		}
 
 		// Notifikation verschicken
 		if ($art == "e") {$status = "e";} else {$status = "w";}

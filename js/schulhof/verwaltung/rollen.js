@@ -1,9 +1,7 @@
 /* ROLLE WIRD GESPEICHERT */
 function cms_schulhof_rolle_neu_speichern() {
 	cms_laden_an('Neue Rolle anlegen', 'Die Eingaben werden überprüft.');
-	var art = document.getElementById('cms_schulhof_rolle_art').value;
 	var bezeichnung = document.getElementById('cms_schulhof_rolle_bezeichnung').value;
-	var max = document.getElementById('cms_schulhof_rolle_rechtmax').value;
 
 	var meldung = '<p>Die Rolle konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -13,23 +11,25 @@ function cms_schulhof_rolle_neu_speichern() {
 		meldung += '<li>es wurde keine Bezeichnung eingegeben.</li>';
 		fehler = true;
 	}
-	if ((art != 's') && (art != 'l') && (art != 'e') && (art != 'v')) {
-		meldung += '<li>es wurde keine korrekte Personengruppe ausgewählt.</li>';
-		fehler = true;
-	}
+	var rechte = [];
+	var rekpruefen = function(e, pfad) {
+		if(!e.length)
+			return;
+		e.each(function() {
+			e = $(this);
+			if(e.is(".cms_recht_rolle"))
+				rechte.push((pfad+"."+e.data("knoten")+(e.is(".cms_hat_kinder")?".*":"")).substr(2));
+			else
+				if(e.is(".cms_hat_kinder"))
+					rekpruefen(e.find(">.cms_rechtekinder>.cms_rechtebox>.cms_recht"), pfad+"."+e.data("knoten"));
+		});
+	};
+	rekpruefen($("#cms_rechtepapa>.cms_recht"), "");
 
-	rechte = "";
-	// Rechte laden
-	for (i=0; i <= max; i++) {
-		if (feld = document.getElementById('cms_schulhof_rolle_recht'+i)) {
-			if (feld.value == 1) {rechte += '|'+i;}
-		}
-	}
 	if (rechte.length == 0) {
 		meldung += '<li>es wurden keine Rechte ausgewählt.</li>';
 		fehler = true;
 	}
-
 
 	if (fehler) {
 		cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -38,14 +38,17 @@ function cms_schulhof_rolle_neu_speichern() {
 		cms_laden_an('Neue Rolle anlegen', 'Es wird geprüft, ob bereits eine Rolle mit der Bezeichnung <i>'+bezeichnung+'</i> existiert.');
 
 		var formulardaten = new FormData();
-		formulardaten.append("art",   			art);
-		formulardaten.append("bezeichnung",     bezeichnung);
+		formulardaten.append("bezeichnung", bezeichnung);
 		formulardaten.append("rechte", 			rechte);
 		formulardaten.append("anfragenziel", 	'141');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "DOPPELTFEHLER") {
 				meldung += '<li>es gibt bereits eine Rolle mit dieser Bezeichnung.</li>';
+				cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
+			else if (rueckgabe == "BEZEICHNUNG") {
+				meldung += '<li>die Bezeichnung enthält ungültige Zeichen.</li>';
 				cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
@@ -56,7 +59,6 @@ function cms_schulhof_rolle_neu_speichern() {
 		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
 }
-
 
 /* ROLLE WIRD ZUM BEARBEITEN VORBEREITET */
 function cms_schulhof_rolle_bearbeiten_vorbereiten (id) {
@@ -116,9 +118,7 @@ function cms_schulhof_rolle_loeschen(anzeigename, id) {
 /* BEARBEITETE ROLLE WIRD GESPEICHERT */
 function cms_schulhof_rolle_bearbeiten_speichern() {
 	cms_laden_an('Rolle bearbeiten', 'Die Eingaben werden überprüft.');
-	var art = document.getElementById('cms_schulhof_rolle_art').value;
 	var bezeichnung = document.getElementById('cms_schulhof_rolle_bezeichnung').value;
-	var max = document.getElementById('cms_schulhof_rolle_rechtmax').value;
 
 	var meldung = '<p>Die Rolle konnte nicht bearbeitet werden, denn ...</p><ul>';
 	var fehler = false;
@@ -128,18 +128,22 @@ function cms_schulhof_rolle_bearbeiten_speichern() {
 		meldung += '<li>es wurde keine Bezeichnung eingegeben.</li>';
 		fehler = true;
 	}
-	if ((art != 's') && (art != 'l') && (art != 'e') && (art != 'v')) {
-		meldung += '<li>es wurde keine korrekte Personengruppe ausgewählt.</li>';
-		fehler = true;
-	}
 
-	rechte = "";
-	// Rechte laden
-	for (i=0; i <= max; i++) {
-		if (feld = document.getElementById('cms_schulhof_rolle_recht'+i)) {
-			if (feld.value == 1) {rechte += '|'+i;}
-		}
-	}
+	var rechte = [];
+  var rekpruefen = function(e, pfad) {
+    if(!e.length)
+      return;
+    e.each(function() {
+      e = $(this);
+      if(e.is(".cms_recht_rolle"))
+        rechte.push((pfad+"."+e.data("knoten")+(e.is(".cms_hat_kinder")?".*":"")).substr(2));
+      else
+        if(e.is(".cms_hat_kinder"))
+          rekpruefen(e.find(">.cms_rechtekinder>.cms_rechtebox>.cms_recht"), pfad+"."+e.data("knoten"));
+    });
+  };
+  rekpruefen($("#cms_rechtepapa>.cms_recht"), "");
+
 	if (rechte.length == 0) {
 		meldung += '<li>es wurden keine Rechte ausgewählt.</li>';
 		fehler = true;
@@ -153,8 +157,7 @@ function cms_schulhof_rolle_bearbeiten_speichern() {
 		cms_laden_an('Rolle bearbeiten', 'Es wird geprüft, ob bereits eine Rolle mit der Bezeichnung <i>'+bezeichnung+'</i> existiert.');
 
 		var formulardaten = new FormData();
-		formulardaten.append("art",   			art);
-		formulardaten.append("bezeichnung",     bezeichnung);
+		formulardaten.append("bezeichnung", bezeichnung);
 		formulardaten.append("rechte", 			rechte);
 		formulardaten.append("anfragenziel", 	'144');
 
@@ -162,6 +165,10 @@ function cms_schulhof_rolle_bearbeiten_speichern() {
 			if (rueckgabe == "DOPPELTFEHLER") {
 				meldung += '<li>es gibt bereits eine Rolle mit dieser Bezeichnung.</li>';
 				cms_meldung_an('fehler', 'Rolle bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			}
+			else if (rueckgabe == "BEZEICHNUNG") {
+				meldung += '<li>die Bezeichnung enthält ungültige Zeichen.</li>';
+				cms_meldung_an('fehler', 'Neue Rolle anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "BERECHTIGUNG") {
 				cms_meldung_berechtigung();

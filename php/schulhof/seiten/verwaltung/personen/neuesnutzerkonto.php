@@ -6,26 +6,27 @@
 <?php
 $fehler = false;
 
-if (($CMS_RECHTE['Personen']['Nutzerkonten anlegen'])) {
+if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 
 	if (isset($_SESSION['PERSONENDETAILS'])) {
 		$fehler = false;
 		$dbs = cms_verbinden('s');
 		$personenid = $_SESSION['PERSONENDETAILS'];
-		$sql = "SELECT AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = $personenid";
 
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$art = $daten['art'];
-				$vorname = $daten['vorname'];
-				$nachname = $daten['nachname'];
-				$titel = $daten['titel'];
-				$nutzerkonto = $daten['nutzerkonto'];
+		if(!cms_check_ganzzahl($personenid, 0)) {
+			$fehler = true;
+		} else {
+			$sql = $dbs->prepare("SELECT AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = ?");
+			$sql->bind_param("i", $personenid);
+
+			if ($sql->execute()) {
+				$sql->bind_result($titel, $vorname, $nachname, $art, $nutzerkonto);
+				$sql->fetch();
+				if ($titel === null) {$fehler = true;}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
+			$sql->close();
 		}
-		else {$fehler = true;}
 		cms_trennen($dbs);
 
 		$artkuerzel = '';

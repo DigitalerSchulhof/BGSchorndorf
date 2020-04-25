@@ -16,9 +16,7 @@ echo cms_stundenplanung_navigation();
 <?php
 include_once('php/schulhof/seiten/verwaltung/stundenplanung/zeitraeume/ausgeben.php');
 
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen'] || $CMS_RECHTE['Planung']['Stundenpläne anlegen'] || $CMS_RECHTE['Planung']['Stundenpläne bearbeiten'] || $CMS_RECHTE['Planung']['Stundenpläne löschen'];
-
-if ($zugriff) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,löschen]")) {
   $code = "";
 
   $schuljahrcode = "";
@@ -30,27 +28,28 @@ if ($zugriff) {
   $schuljahre = array();
   $spalten = 3;
   $aktionen = false;
-  if ($CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'] || $CMS_RECHTE['Planung']['Stundenplanzeiträume löschen'] ||
-      $CMS_RECHTE['Planung']['Stundenpläne anlegen'] || $CMS_RECHTE['Planung']['Stundenpläne bearbeiten'] || $CMS_RECHTE['Planung']['Stundenpläne löschen']) {
+  if(cms_r("schulhof.planung.schuljahre.planungszeiträume.[|bearbeiten,löschen] || schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
     $aktionen = true;
     $spalten++;
   }
 
   // SQL für die gesuchten Schuljahre zusammenbauen
-  $sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC";
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC");
+  if ($sql->execute()) {
+    $sql->bind_result($sjid, $sjbez, $sjbeginn, $sjende);
+    while ($sql->fetch()) {
       array_push($schuljahre, $daten);
-      $alleids .= "|".$daten['id'];
-      if (($jetzt < $daten['ende']) && ($jetzt > $daten['beginn'])) {
+      $alleids .= "|".$sjid;
+      if (($jetzt < $sjende) && ($jetzt > $sjbeginn)) {
         $zklasse = '_aktiv';
-        $jahrescode = cms_stundenplanung_zeitraeume_ausgeben($dbs, $daten['id']);
+        $jahrescode = cms_stundenplanung_zeitraeume_ausgeben($dbs, $sjid);
       }
       else {$zklasse = "";}
-      $schuljahrcode .= "<span id=\"cms_zeitraum_".$daten['id']."\" class=\"cms_toggle$zklasse\" onclick=\"cms_zeitraum_jahr_laden('".$daten['id']."', '$spalten')\">".$daten['bezeichnung']."</span> ";
+      $schuljahrcode .= "<span id=\"cms_zeitraum_".$sjid."\" class=\"cms_toggle$zklasse\" onclick=\"cms_zeitraum_jahr_laden('".$sjid."', '$spalten')\">".$sjbez."</span> ";
     }
     $anfrage->free();
   }
+  $sql->close();
   cms_trennen($dbs);
 
   if (strlen($schuljahrcode) > 0) {$schuljahrcode = "<p>".$schuljahrcode;}
@@ -66,7 +65,7 @@ if ($zugriff) {
     $code .= "</tbody></table>";
   }
 
-  if ($CMS_RECHTE['Planung']['Stundenplanzeiträume anlegen']) {
+  if (cms_r("schulhof.planung.schuljahre.planungszeiträume.anlegen")) {
     $code .= "<p><a href=\"Schulhof/Verwaltung/Stundenplanung/Neuer_Zeitraum\" class=\"cms_button_ja\">+ Neuen Zeitraum anlegen</a></p>";
   }
 

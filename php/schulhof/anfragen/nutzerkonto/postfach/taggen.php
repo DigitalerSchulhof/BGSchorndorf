@@ -15,8 +15,6 @@ if (isset($_SESSION["POSTLESENMODUS"])) {$modus = $_SESSION["POSTLESENMODUS"];} 
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	$fehler = false;
 

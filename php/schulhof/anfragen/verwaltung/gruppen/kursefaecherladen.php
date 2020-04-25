@@ -11,22 +11,29 @@ if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "
 if ((!cms_check_ganzzahl($schuljahr,0)) && ($schuljahr != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Kurse anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.anlegen")) {
 
 	// Finde Anzahl an Gruppen
 	$faecher = array();
-	if ($schuljahr == '-') {$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr IS NULL) AS x ORDER BY bez";}
-	else {$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr = $schuljahr) AS x ORDER BY bez";}
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			array_push($faecher, $daten);
-		}
-		$anfrage->free();
+	if ($schuljahr == '-') {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr IS NULL) AS x ORDER BY bez");
 	}
+	else {
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM faecher WHERE schuljahr = ?) AS x ORDER BY bez");
+		$sql->bind_param("i", $schuljahr);
+	}
+	if ($sql->execute()) {
+		$sql->bind_result($fid, $fbez);
+		while ($sql->fetch()) {
+			$f = array();
+			$f['id'] = $fid;
+			$f['bez'] = $fbez;
+			array_push($faecher, $f);
+		}
+	}
+	$sql->close();
 
 	$code = "";
 	foreach ($faecher AS $f) {

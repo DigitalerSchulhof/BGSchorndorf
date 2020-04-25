@@ -36,14 +36,14 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['GALERIEID'])) {$galerieid = $_SESSION['GALERIEID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Galerien bearbeiten']) {
+if (cms_r("artikel.galerien.bearbeiten")) {
 	$zugriff = true;
 }
 
-if (!$CMS_RECHTE['Organisation']['Galerien genehmigen']) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.galerien")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {
@@ -58,15 +58,16 @@ if (cms_angemeldet() && $zugriff) {
       $ids = "(".substr($ids, 1).")";
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
-  			$sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids";
-  			if ($anfrage = $dbs->query($sql)) {
-  				if ($daten = $anfrage->fetch_assoc()) {
-  					if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids");
+  			if ($sql->execute()) {
+          $sql->bind_result($checkanzahl);
+  				if ($sql->fetch()) {
+  					if ($checkanzahl != $anzahl) {$fehler = true;}
   				}
   				else {$fehler = true;}
-  				$anfrage->free();
   			}
   			else {$fehler = true;}
+        $sql->close();
       }
 			else {$fehler = true;}
 		}

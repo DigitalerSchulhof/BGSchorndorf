@@ -19,17 +19,20 @@ if (isset($_POST['buchungsbeginnS'])) {$buchungsbeginnS = $_POST['buchungsbeginn
 if (isset($_POST['buchungsbeginnM'])) {$buchungsbeginnM = $_POST['buchungsbeginnM'];} else {echo "FEHLER";exit;}
 if (isset($_POST['buchungsendeS'])) {$buchungsendeS = $_POST['buchungsendeS'];} else {echo "FEHLER";exit;}
 if (isset($_POST['buchungsendeM'])) {$buchungsendeM = $_POST['buchungsendeM'];} else {echo "FEHLER";exit;}
+if (isset($_POST['vplanskennung'])) {$vplanskennung = $_POST['vplanskennung'];} else {echo "FEHLER";exit;}
+if (isset($_POST['vplanlkennung'])) {$vplanlkennung = $_POST['vplanlkennung'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
 	if (!cms_check_toggle($vplanextern)) {$fehler = true;}
 	if (!cms_check_toggle($lehrerstundenplaene)) {$fehler = true;}
 	if (!cms_check_toggle($klassenstundenplaene)) {$fehler = true;}
 	if (!cms_check_toggle($raumstundenplaene)) {$fehler = true;}
+	if (!cms_check_titel($vplanskennung)) {$fehler = true;}
+	if (!cms_check_titel($vplanlkennung)) {$fehler = true;}
 
 	if (!cms_check_ganzzahl($buchungsbeginnS,0,23)) {$fehler = true;}
 	if (!cms_check_ganzzahl($buchungsbeginnM,0,59)) {$fehler = true;}
@@ -76,6 +79,14 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->bind_param("ss", $lehrerstundenplaene, $einstellungsname);
 		$sql->execute();
 
+		$einstellungsname = "Stundenplan Raum extern";
+		$sql->bind_param("ss", $raumstundenplaene, $einstellungsname);
+		$sql->execute();
+
+		$einstellungsname = "Stundenplan Klassen extern";
+		$sql->bind_param("ss", $klassenstundenplaene, $einstellungsname);
+		$sql->execute();
+
 		$einstellungsname = "Stundenplan Buchungsbeginn Stunde";
 		$sql->bind_param("ss", $buchungsbeginnS, $einstellungsname);
 		$sql->execute();
@@ -91,7 +102,15 @@ if (cms_angemeldet() && $zugriff) {
 		$einstellungsname = "Stundenplan Buchungsende Minute";
 		$sql->bind_param("ss", $buchungsendeM, $einstellungsname);
 		$sql->execute();
+	  $sql->close();
 
+		$sql = $dbs->prepare("UPDATE internedienste SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
+		$kennungsbez = "VPlanS";
+	  $sql->bind_param("ss", $vplanskennung, $kennungsbez);
+	  $sql->execute();
+		$kennungsbez = "VPlanL";
+	  $sql->bind_param("ss", $vplanlkennung, $kennungsbez);
+	  $sql->execute();
 	  $sql->close();
 
 		cms_trennen($dbs);

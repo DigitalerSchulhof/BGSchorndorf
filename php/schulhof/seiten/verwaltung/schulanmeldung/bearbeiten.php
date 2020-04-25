@@ -4,9 +4,7 @@
 <h1>Anmeldung bearbeiten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen bearbeiten'];
-
-if ($zugriff) {
+if (cms_r("schulhof.organisation.schulanmeldung.bearbeiten")) {
 	if (isset($_SESSION['ANMELDUNG BEARBEITEN'])) {
 		include_once('php/schulhof/seiten/verwaltung/schulanmeldung/details.php');
 		include_once('php/website/seiten/schulanmeldung/navigation.php');

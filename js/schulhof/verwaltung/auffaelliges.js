@@ -59,3 +59,24 @@ function cms_auffaelliges_notizen_speichern(id) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
+function cms_auffaelliges_alle_loeschen_vorbereiten() {
+  cms_meldung_an('warnung', 'Auffälliges löschen', '<p>Sollen <b>alle</b> Meldungen ohne Notizen gelöscht werden?<br></p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_auffaelliges_alle_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_auffaelliges_alle_loeschen() {
+  cms_laden_an("Auffälliges löschen", "Meldungen werden gelöscht...");
+  var formulardaten = new FormData();
+
+  formulardaten.append("anfragenziel", 	'269');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_link("Schulhof/Aufgaben/Auffälliges");
+    }else {
+      cms_fehlerbehandlung(rueckgabe);
+    }
+  }
+
+  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}

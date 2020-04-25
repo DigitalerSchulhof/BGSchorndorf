@@ -1,4 +1,5 @@
 function cms_uhrzeit_eingabe (id, stunde, minute, zusatzaktion) {
+  var zusatzaktion = zusatzaktion || "";
   var jetzt = new Date();
   var stunde = stunde || jetzt.getHours();
   var minute = minute || jetzt.getMinutes();
@@ -12,6 +13,7 @@ function cms_uhrzeit_eingabe (id, stunde, minute, zusatzaktion) {
 }
 
 function cms_datum_eingabe (id, tag, monat, jahr, zusatzaktion) {
+  var zusatzaktion = zusatzaktion || "";
   var jetzt = new Date();
   var tag = tag || jetzt.getDate();
   var monat = monat || jetzt.getMonth()+1;
@@ -82,6 +84,22 @@ function cms_monatsnamekomplett(zahl) {
   else {return false;}
 }
 
+function cms_monatsname(zahl) {
+  if (zahl == 1) {return 'JAN';}
+  else if (zahl == 2) {return 'FEB';}
+  else if (zahl == 3) {return 'MÄR';}
+  else if (zahl == 4) {return 'APR';}
+  else if (zahl == 5) {return 'MAI';}
+  else if (zahl == 6) {return 'JUN';}
+  else if (zahl == 7) {return 'JUL';}
+  else if (zahl == 8) {return 'AUG';}
+  else if (zahl == 9) {return 'SEP';}
+  else if (zahl == 10) {return 'OKT';}
+  else if (zahl == 11) {return 'NOV';}
+  else if (zahl == 12) {return 'DEZ';}
+  else {return false;}
+}
+
 function cms_id_entfernen(feldid, id) {
   var feld = document.getElementById(feldid);
   var bisher = feld.value+'|';
@@ -98,7 +116,7 @@ function cms_textzudb(wert) {
 } 
 
 function cms_textzulink(wert) {
-  return wert.replace(' ', '_');
+  return wert.replace(/ /g, '_');
 } 
 
 function cms_datumzweistellig(zahl) {
@@ -115,12 +133,10 @@ function cms_uebernehmen(idvon, idzu) {
 }
 
 function cms_farbbeispiel_waehlen(nr, id) {
-	if (isNaN(nr)) {nr = 0;}
-	if (nr % 1 != 0) {nr = 0;}
-	if (nr > 47) {nr = 0;}
+  if (!cms_check_ganzzahl(nr,0,63)) {nr = 0;}
 
 	// Alle deaktivieren
-	for (var i=0; i<48; i++) {
+	for (var i=0; i<64; i++) {
 		feld = document.getElementById('cms_farbbeispiel_'+i);
 		feld.className = "cms_farbbeispiel cms_farbbeispiel_"+i;
 	}
@@ -152,4 +168,13 @@ function cms_neue_captcha(uid) {
   }
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+var cms_stopschreiben_timeouts = {};
+function cms_stopschreiben(element, callback) {
+  var feld = $(element);
+  if(cms_stopschreiben_timeouts[feld]) {
+    clearTimeout(cms_stopschreiben_timeouts[feld]);
+  }
+  if(feld.val())
+    cms_stopschreiben_timeouts[feld] = setTimeout(callback, 1000);
 }

@@ -1,27 +1,29 @@
 <?php
 function cms_schulhof_stufen_links_anzeigen () {
-  global $CMS_RECHTE, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERSCHULJAHR;
   $ausgabe = "";
 
-  if ($CMS_RECHTE['Gruppen']['Stufen Listen sehen']) {
+  if (cms_r("schulhof.information.pläne.stundenpläne.stufen")) {
 
     $dbs = cms_verbinden('s');
-    $sql = "SELECT id, stufe, reihenfolge FROM (SELECT id, AES_DECRYPT(klassenstufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM klassenstufen WHERE schuljahr = $CMS_BENUTZERSCHULJAHR) AS x ORDER BY reihenfolge ASC";
-    if ($anfrage = $dbs->query($sql)) {
-      while ($daten = $anfrage->fetch_assoc()) {
-        $anzeigename = $daten['stufe'];
+    $sql = $dbs->prepare("SELECT id, stufe, reihenfolge FROM (SELECT id, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL') AS stufe, reihenfolge FROM stufen WHERE schuljahr = ?) AS x ORDER BY reihenfolge ASC");
+    $sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+    if ($sql->execute()) {
+      $sql->bind_result($sid, $sbez, $sreihe);
+      while ($sql->fetch()) {
+        $anzeigename = $sbez;
         $anzeigenamelink = cms_textzulink($anzeigename);
-        $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Stufen/$anzeigenamelink\">".$anzeigename."</span></li> ";
+        $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pläne/Stufen/$anzeigenamelink\">".$anzeigename."</a></li> ";
       }
-      $anfrage->free();
     }
+    $sql->close();
     cms_trennen($dbs);
 
     if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
     else {$ausgabe = '<p class="cms_notiz">Keine Klassenstufen angelegt</p>';}
   }
   else {
-    $ausgabe = cms_meldung_berechtigung();
+    $ausgabe = "<p class=\"cms_notiz\">Keine Stufenpläne verfügbar.</p>";
   }
   return $ausgabe;
 }

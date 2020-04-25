@@ -27,10 +27,32 @@ function cms_eventuebersichten_anzeigen (id, spalte, position, modus, zusatz) {
 }
 
 function cms_eventuebersichten_aendern(was) {
-  var blog = document.getElementById('cms_website_element_eventuebersicht_'+was).value;
-  var zeile = document.getElementById('cms_website_element_eventuebersicht_'+was+'_zeile');
-  if (blog == '1') {zeile.style.display = 'table-row';}
-  else {zeile.style.display = 'none';}
+  if (was == 'blog') {
+    var blog = document.getElementById('cms_website_element_eventuebersicht_blog').value;
+    var zeile1 = document.getElementById('cms_website_element_eventuebersicht_blog_zeile1');
+    var zeile2 = document.getElementById('cms_website_element_eventuebersicht_blog_zeile2');
+    if (blog == '1') {
+      zeile1.style.display = 'table-row';
+      zeile2.style.display = 'table-row';
+    }
+    else {
+      zeile1.style.display = 'none';
+      zeile2.style.display = 'none';
+    }
+  }
+  else if (was == 'galerien') {
+    var galerie = document.getElementById('cms_website_element_eventuebersicht_galerien').value;
+    var zeile = document.getElementById('cms_website_element_eventuebersicht_galerien_zeile');
+    if (galerie == '1') {zeile.style.display = 'table-row';}
+    else {zeile.style.display = 'none';}
+  }
+  else if (was == 'termine') {
+    var termine = document.getElementById('cms_website_element_eventuebersicht_termine').value;
+    var zeile = document.getElementById('cms_website_element_eventuebersicht_termine_zeile');
+    if (termine == '1') {zeile.style.display = 'table-row';}
+    else {zeile.style.display = 'none';}
+  }
+
 }
 
 function cms_eventuebersichten_neu_speichern(zusatz) {
@@ -41,6 +63,7 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
   var termineanzahl = document.getElementById('cms_website_element_eventuebersicht_termineanzahl').value;
   var blog = document.getElementById('cms_website_element_eventuebersicht_blog').value;
   var bloganzahl = document.getElementById('cms_website_element_eventuebersicht_bloganzahl').value;
+  var blogart = document.getElementById('cms_website_element_eventuebersicht_blogart').value;
   var galerie = document.getElementById('cms_website_element_eventuebersicht_galerien').value;
   var galerieanzahl = document.getElementById('cms_website_element_eventuebersicht_galerienanzahl').value;
 
@@ -70,15 +93,7 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
 		fehler = true;
   }
 
-  var terminfehler = false;
-	if (!Number.isInteger(parseInt(termineanzahl))) {
-		terminfehler = true;
-	}
-	else if (termineanzahl < 0) {
-		terminfehler = true;
-	}
-
-	if (terminfehler) {
+	if (!cms_check_ganzzahl(termineanzahl,0)) {
 		meldung += '<li>es wurde eine ungültige Terminanzahl angegeben.</li>';
 		fehler = true;
 	}
@@ -88,15 +103,12 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
 		fehler = true;
   }
 
-  var blogfehler = false;
-	if (!Number.isInteger(parseInt(bloganzahl))) {
-		blogfehler = true;
-	}
-	else if (bloganzahl < 0) {
-		blogfehler = true;
-	}
+  if ((blogart != 'a') && (blogart != 'l') && (blogart != 'd')) {
+    meldung += '<li>die Blogart ist ungültig.</li>';
+		fehler = true;
+  }
 
-	if (blogfehler) {
+	if (!cms_check_ganzzahl(bloganzahl, 0)) {
 		meldung += '<li>es wurde eine ungültige Bloganzahl angegeben.</li>';
 		fehler = true;
 	}
@@ -106,15 +118,7 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
 		fehler = true;
   }
 
-  var galeriefehler = false;
-	if (!Number.isInteger(parseInt(galerieanzahl))) {
-		galeriefehler = true;
-	}
-	else if (galerieanzahl < 0) {
-		galeriefehler = true;
-	}
-
-	if (galeriefehler) {
+	if (!cms_check_ganzzahl(galerieanzahl, 0)) {
 		meldung += '<li>es wurde eine ungültige Galerienanzahl angegeben.</li>';
 		fehler = true;
 	}
@@ -132,6 +136,7 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
 		formulardaten.append("termineanzahl", termineanzahl);
 		formulardaten.append("blog", blog);
 		formulardaten.append("bloganzahl", bloganzahl);
+    formulardaten.append("blogart", blogart);
 		formulardaten.append("galerie", galerie);
 		formulardaten.append("galerieanzahl", galerieanzahl);
 		formulardaten.append("anfragenziel", 	'42');
@@ -157,6 +162,7 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
   var termineanzahl = document.getElementById('cms_website_element_eventuebersicht_termineanzahl').value;
   var blog = document.getElementById('cms_website_element_eventuebersicht_blog').value;
   var bloganzahl = document.getElementById('cms_website_element_eventuebersicht_bloganzahl').value;
+  var blogart = document.getElementById('cms_website_element_eventuebersicht_blogart').value;
   var galerie = document.getElementById('cms_website_element_eventuebersicht_galerien').value;
   var galerieanzahl = document.getElementById('cms_website_element_eventuebersicht_galerienanzahl').value;
 
@@ -186,15 +192,7 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
 		fehler = true;
   }
 
-  var terminfehler = false;
-	if (!Number.isInteger(parseInt(termineanzahl))) {
-		terminfehler = true;
-	}
-	else if (termineanzahl < 0) {
-		terminfehler = true;
-	}
-
-	if (terminfehler) {
+	if (!cms_check_ganzzahl(termineanzahl, 0)) {
 		meldung += '<li>es wurde eine ungültige Terminanzahl angegeben.</li>';
 		fehler = true;
 	}
@@ -204,33 +202,22 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
 		fehler = true;
   }
 
-  var blogfehler = false;
-	if (!Number.isInteger(parseInt(bloganzahl))) {
-		blogfehler = true;
-	}
-	else if (bloganzahl < 0) {
-		blogfehler = true;
-	}
-
-	if (blogfehler) {
+	if (!cms_check_ganzzahl(bloganzahl, 0)) {
 		meldung += '<li>es wurde eine ungültige Bloganzahl angegeben.</li>';
 		fehler = true;
 	}
+
+  if ((blogart != 'a') && (blogart != 'l') && (blogart != 'd')) {
+    meldung += '<li>die Blogart ist ungültig.</li>';
+		fehler = true;
+  }
 
   if ((galerie != 0) && (galerie != 1)) {
     meldung += '<li>die Galerieauswahl ist ungültig.</li>';
 		fehler = true;
   }
 
-  var galeriefehler = false;
-	if (!Number.isInteger(parseInt(galerieanzahl))) {
-		galeriefehler = true;
-	}
-	else if (galerieanzahl < 0) {
-		galeriefehler = true;
-	}
-
-	if (galeriefehler) {
+	if (!cms_check_ganzzahl(galerieanzahl, 0)) {
 		meldung += '<li>es wurde eine ungültige Galerienanzahl angegeben.</li>';
 		fehler = true;
 	}
@@ -248,6 +235,7 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
 		formulardaten.append("termineanzahl", termineanzahl);
 		formulardaten.append("blog", blog);
 		formulardaten.append("bloganzahl", bloganzahl);
+		formulardaten.append("blogart", blogart);
 		formulardaten.append("galerie", galerie);
 		formulardaten.append("galerieanzahl", galerieanzahl);
 		formulardaten.append("anfragenziel", 	'43');

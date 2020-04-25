@@ -1,6 +1,6 @@
 <?php
 function cms_ferienverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loeschen) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_BENUTZERID;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID;
 
   if ($bearbeiten || $loeschen) {$aktionen = true;}
 
@@ -11,40 +11,37 @@ function cms_ferienverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loesch
 
   $jahraktuellb = mktime(0,0,0,1,1,$jahr);
   $jahraktuelle = mktime(0,0,0,1,1,$jahr+1)-1;
-  $sql = "SELECT * FROM ferien WHERE (beginn BETWEEN $jahraktuellb AND $jahraktuelle OR ende BETWEEN $jahraktuellb AND $jahraktuellb) ORDER BY beginn DESC, ende DESC";
+  $sql = $dbs->prepare("SELECT * FROM ferien WHERE (beginn BETWEEN $jahraktuellb AND $jahraktuelle OR ende BETWEEN $jahraktuellb AND $jahraktuellb) ORDER BY beginn DESC, ende DESC");
 
-  if ($anfrage = $dbs->query($sql)) {
-    while ($daten = $anfrage->fetch_assoc()) {
-      if ($daten['art'] == 'f') {$icon = "ferien.png";}
-      else if ($daten['art'] == 'b') {$icon = "beweglicherferientag.png";}
-      else if ($daten['art'] == 't') {$icon = "feiertag.png";}
-      else {$icon = "sonderereignis.png";}
-      $ferien .= '<tr><td><img src="res/icons/oegruppen/'.$icon.'"></td><td>'.$daten['bezeichnung'].'</td>';
-      if ($daten['art'] == 'f') {$art = "Ferien";}
-      else if ($daten['art'] == 'b') {$art = "Beweglicher Ferientag";}
-      else if ($daten['art'] == 't') {$art = "Feiertag";}
-      else {$art = "Sonderereignis";}
+  if ($sql->execute()) {
+    $sql->bind_result($fid, $fbezeichnung, $fart, $fbeginn, $fende, $fmehrtaegigt, $fidvon, $fidzeit);
+    while ($sql->fetch()) {
+      if ($fart == 'f') {$icon = "ferien.png";$art = "Ferien";}
+      else if ($fart == 'b') {$icon = "beweglicherferientag.png";$art = "Beweglicher Ferientag";}
+      else if ($fart == 't') {$icon = "feiertag.png";$art = "Feiertag";}
+      else {$icon = "sonderereignis.png";$art = "Sonderereignis";}
+      $ferien .= '<tr><td><img src="res/icons/oegruppen/'.$icon.'"></td><td>'.$fbezeichnung.'</td>';
       $ferien .= "<td>$art</td>";
-      $ferien .= "<td>".cms_tagnamekomplett(date('w', $daten['beginn'])).", ".date('d.m.Y', $daten['beginn'])."</td>";
-      $ferien .= "<td>".cms_tagnamekomplett(date('w', $daten['ende'])).", ".date('d.m.Y', $daten['ende'])."</td>";
+      $ferien .= "<td>".cms_tagnamekomplett(date('w', $fbeginn)).", ".date('d.m.Y', $fbeginn)."</td>";
+      $ferien .= "<td>".cms_tagnamekomplett(date('w', $fende)).", ".date('d.m.Y', $fende)."</td>";
       if ($aktionen) {
         $ferien .= "<td>";
         if ($bearbeiten) {
-          $ferien .= "<span class=\"cms_aktion_klein\" onclick=\"cms_ferien_bearbeiten_vorbereiten('".$daten['id']."')\"><span class=\"cms_hinweis\">Ferien bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+          $ferien .= "<span class=\"cms_aktion_klein\" onclick=\"cms_ferien_bearbeiten_vorbereiten('$fid')\"><span class=\"cms_hinweis\">Ferien bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
         }
         if ($loeschen) {
-          $ferien .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_ferien_loeschen_vorbereiten('".$daten['id']."', '".$daten['bezeichnung']."')\"><span class=\"cms_hinweis\">Ferien löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+          $ferien .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_ferien_loeschen_vorbereiten('$fid', '$fbezeichnung')\"><span class=\"cms_hinweis\">Ferien löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
         }
         $ferien .= '</td>';
         $ferien .= '</tr>';
       }
     }
-    $anfrage->free();
     if (strlen($ferien) == 0) {
       $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Termine vorhanden --</td></tr>";
     }
     else {$code .= $ferien;}
   }
+  $sql->close();
 
   return $code;
 }

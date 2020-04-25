@@ -16,11 +16,11 @@ if (!cms_check_titel($pinnwand))          {echo "FEHLER"; exit;}
 
 // Pinnwand laden
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+
 
 // Prüfen, ob der Anschlag zur ausführenden Person gehört
 $zugehoerig = false;
-if ($CMS_RECHTE['Organisation']['Pinnwandanschläge löschen']) {$zugehoerig = true;}
+if (cms_r("schulhof.information.pinnwände.anschläge.löschen")) {$zugehoerig = true;}
 else {
 	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM pinnwandanschlag JOIN pinnwaende ON pinnwandanschlag.pinnwand = pinnwaende.id WHERE pinnwandanschlag.id = ? AND pinnwaende.bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND pinnwandanschlag.idvon = ?");
 	$sql->bind_param("isi", $id, $pinnwand, $CMS_BENUTZERID);
@@ -31,7 +31,7 @@ else {
 	$sql->close();
 }
 
-$zugriff = $CMS_RECHTE['Organisation']['Pinnwandanschläge löschen'] || $zugehoerig;
+$zugriff = cms_r("schulhof.information.pinnwände.anschläge.löschen") || $zugehoerig;
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;

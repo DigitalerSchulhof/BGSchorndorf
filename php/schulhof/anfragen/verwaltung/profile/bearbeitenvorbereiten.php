@@ -9,10 +9,9 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {$id = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanzeiträume bearbeiten'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.profile.bearbeiten")) {
 	$_SESSION["PROFILBEARBEITEN"] = $id;
 	echo "ERFOLG";
 }

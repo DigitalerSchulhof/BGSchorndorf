@@ -24,8 +24,6 @@ $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
 
 $zugriff = false;
 $fehler = false;
@@ -64,7 +62,7 @@ else {$fehler = true; $gruppenrechte['dateiupload'] = false;}
 
 $zugriff = $gruppenrechte['dateiupload'];
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 
 	$fehlercode = "";
 
@@ -93,13 +91,15 @@ if ($angemeldet && $zugriff) {
 
 		// Dateiendungen laden und prüfen
 		$erlaubteendungen = array();
-		$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				array_push($erlaubteendungen, $daten['endung']);
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');");
+		if ($sql->execute()) {
+			$sql->bind_result($endung);
+			while ($sql->fetch()) {
+				array_push($erlaubteendungen, $endung);
 			}
 		}
 		else {$fehler = false;}
+		$sql->close();
 
 		if (!in_array($endung, $erlaubteendungen)) {$fehlercode .= "ENDUNG"; $fehler = true;}
 

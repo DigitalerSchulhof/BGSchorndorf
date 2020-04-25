@@ -25,10 +25,12 @@ if (isset($_POST['religion'])) {$religion = $_POST['religion'];} else {echo "FEH
 if (isset($_POST['religionsunterricht'])) {$religionsunterricht = $_POST['religionsunterricht'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['land1'])) {$land1 = $_POST['land1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['land2'])) {$land2 = $_POST['land2'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['impfung'])) {$impfung = $_POST['impfung'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['strasse'])) {$strasse = $_POST['strasse'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['hausnummer'])) {$hausnummer = $_POST['hausnummer'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['plz'])) {$plz = $_POST['plz'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['ort'])) {$ort = $_POST['ort'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['staat'])) {$staat = $_POST['staat'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['teilort'])) {$teilort = $_POST['teilort'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['telefon1'])) {$telefon1 = $_POST['telefon1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['telefon2'])) {$telefon2 = $_POST['telefon2'];} else {echo "FEHLER"; exit;}
@@ -63,10 +65,12 @@ if (($geschlecht != 'm') && ($geschlecht != 'w') && ($geschlecht != 'd')) {$fehl
 if (strlen($religion) <= 0) {$fehler = true;}
 if (strlen($religionsunterricht) <= 0) {$fehler = true;}
 if (strlen($land1) <= 0) {$fehler = true;}
+if (!cms_check_toggle($impfung)) {$fehler = true;}
 if (strlen($strasse) <= 0) {$fehler = true;}
 if (strlen($hausnummer) <= 0) {$fehler = true;}
 if (strlen($plz) <= 0) {$fehler = true;}
 if (strlen($ort) <= 0) {$fehler = true;}
+if (strlen($staat) <= 0) {$fehler = true;}
 if ((strlen($telefon1) <= 0) && (strlen($telefon2) <= 0) && (strlen($handy1) <= 0) && (strlen($handy2) <= 0)) {$fehler = true;}
 if (strlen($mail)) {if (!cms_check_mail($mail)) {$fehler = true;}}
 if ($einschulung >= $jetzt) {$fehler = true;}
@@ -89,10 +93,12 @@ if (!$fehler) {
 	$_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'] = $religionsunterricht;
 	$_SESSION['VORANMELDUNG_S_LAND1'] = $land1;
 	$_SESSION['VORANMELDUNG_S_LAND2'] = $land2;
+	$_SESSION['VORANMELDUNG_S_IMPFUNG'] = $impfung;
 	$_SESSION['VORANMELDUNG_S_STRASSE'] = $strasse;
 	$_SESSION['VORANMELDUNG_S_HAUSNUMMER'] = $hausnummer;
 	$_SESSION['VORANMELDUNG_S_PLZ'] = $plz;
 	$_SESSION['VORANMELDUNG_S_ORT'] = $ort;
+	$_SESSION['VORANMELDUNG_S_STAAT'] = $staat;
 	$_SESSION['VORANMELDUNG_S_TEILORT'] = $teilort;
 	$_SESSION['VORANMELDUNG_S_TELEFON1'] = $telefon1;
 	$_SESSION['VORANMELDUNG_S_TELEFON2'] = $telefon2;

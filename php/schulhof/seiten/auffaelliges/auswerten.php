@@ -1,47 +1,51 @@
 <?php
-  function cms_auffaellig_liste() {
-    global $CMS_SCHLUESSEL, $CMS_RECHTE;
+  include_once(dirname(__FILE__)."/../../../schulhof/funktionen/generieren.php");
 
-    $ausgabe = "<h2>Auffälliges Verhalten</h2><table class=\"cms_liste\">";
+  function cms_auffaellig_liste() {
+    global $CMS_SCHLUESSEL;
+
+    $ausgabe = "<h2>Auffälliges Verhalten</h2>".
+               "<span class=\"cms_button cms_button_nein\" onclick=\"cms_auffaelliges_alle_loeschen_vorbereiten()\">Alle Meldungen löschen</span>";
+    $ausgabe .= "<table class=\"cms_liste\">";
       $ausgabe .= "<thead>";
         $ausgabe .= "<tr><th></th><th>Benutzer</th><th>Typ</th><th>Aktion</th><th>Datum</th><th>Aktionen</th></tr>";
       $ausgabe .= "</thead>";
       $ausgabe .= "<tbody>";
 
       $dbs = cms_verbinden('s');
-      $sql = "SELECT id, ursacher, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL') AS aktion, zeitstempel FROM auffaelliges WHERE status = 0 ORDER BY zeitstempel DESC";
+      $sql = $dbs->prepare("SELECT auffaelliges.id, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL'), zeitstempel, nutzerkonten.id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), erstellt FROM auffaelliges LEFT JOIN personen ON ursacher = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE status = 0 ORDER BY zeitstempel DESC");
       $liste = "";
-      if ($anfrage = $dbs->query($sql)) {
-        while ($daten = $anfrage->fetch_assoc()) {
+      if ($sql->execute()) {
+        $sql->bind_result($aufid, $auftyp, $aufaktion, $aufzeit, $aufnutzer, $aufvor, $aufnach, $auftitel, $auferstellt);
+        while ($sql->fetch()) {
           $liste .= '<tr>';
           $liste .= '<td><img src="res/icons/klein/auffaellig.png"></td>';
-          $nameSql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id=".intval($daten["ursacher"].";");
-          $name = "Gelöschte Person";
-          if ($a = $dbs->query($nameSql))
-          	if($d = $a->fetch_assoc())
-              $name = cms_generiere_anzeigename($d["vorname"], $d["nachname"], $d["titel"]);
-          $liste .= "<td alt=\"$name\">$name</td>";
-          $liste .= "<td alt=\"".cms_auffaellig_typzutext($daten["typ"])."\">".cms_auffaellig_typzutext($daten["typ"])."</td>";
-          $liste .= "<td>".cms_auffaellig_dateizuaktion($daten["aktion"])."</td>";
+          if (($aufzeit >= $auferstellt) && ($aufnutzer !== null)) {
+            $name = cms_generiere_anzeigename($aufvor, $aufnach, $auftitel);
+          }
+          else {
+            $name = "Gelöschte Person";
+          }
+          $liste .= "<td>$name</td>";
+          $liste .= "<td>".cms_auffaellig_typzutext($auftyp)."</td>";
+          $liste .= "<td>".cms_auffaellig_dateizuaktion($aufaktion)."</td>";
           date_default_timezone_set("Europe/Berlin");
-          $liste .= "<td>".date("d.m.Y", $daten["zeitstempel"])."</td>";
+          $liste .= "<td>".date("d.m.Y H:i", $aufzeit)."</td>";
 
           $liste .= '<td>';
-            if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
-              $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_loeschen('".$daten['id']."');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/auffaelliges_loeschen.png\"></span> ";
+            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_details('$aufid');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/auffaelliges_information.png\"></span> ";
+            if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+              $liste .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_auffaelliges_loeschen('$aufid');\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
             }
-            $liste .= "<span class=\"cms_aktion_klein\" onclick=\"cms_auffaelliges_details('".$daten['id']."');\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/auffaelliges_information.png\"></span> ";
           $liste .= '</td>';
           $liste .= '</tr>';
         }
-
-        $anfrage->free();
         if (strlen($liste) == 0) {
           $liste .= "<tr><td colspan=\"6\" class=\"cms_notiz\">-- kein auffälliges Verhalten aufgenommen --</td></tr>";
         }
         $ausgabe .= $liste;
       }
-
+      $sql->close();
     $ausgabe .= "</tbody>";
     $ausgabe .= "</table>";
     return $ausgabe;
@@ -60,131 +64,125 @@
   }
 
   function cms_auffaellig_dateizuaktion($file) {
-    $aktion = $file;
-    if(endsWith($file, "php/schulhof/anfragen/gruppen/blogbearbeitenspeichern.php"))
-      $aktion = "Interner Blogeintrag bearbeitet";
-    else if(endsWith($file, "php/schulhof/anfragen/gruppen/blogneuspeichern.php"))
-      $aktion = "Interner Blogeintrag erstellt";
-    else if(endsWith($file, "php/schulhof/anfragen/gruppen/terminbearbeitenspeichern.php"))
-      $aktion = "Interner Termin erstellt";
-    else if(endsWith($file, "php/schulhof/anfragen/gruppen/terminneuspeichern.php"))
-      $aktion = "Interner Termin bearbeitet";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenspeichern.php"))
-      $aktion = "Dauerbrenner bearbeitet";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/dauerbrenner/neuspeichern.php"))
-      $aktion = "Dauerbrenner erstellt";
-    else if(endsWith($file, "php/schulhof/anfragen/hausmeister/neuspeichern.php"))
-      $aktion = "Hausmeisterauftrag eingerichtet";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/blogeintraege/bearbeitenspeichern.php"))
-      $aktion = "Blogeintrag bearbeitet";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/blogeintraege/neuspeichern.php"))
-      $aktion = "Blogeintrag erstellt";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/termine/bearbeitenspeichern.php"))
-      $aktion = "Termin bearbeitet";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/termine/neuspeichern.php"))
-      $aktion = "Termin erstellt";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/galerien/bearbeitenspeichern.php"))
-      $aktion = "Galerie bearbeitet";
-    else if(endsWith($file, "php/schulhof/anfragen/verwaltung/galerien/neuspeichern.php"))
-      $aktion = "Galerie erstellt";
+    $aktionen = array(
+      "php/schulhof/anfragen/gruppen/blogbearbeitenspeichern.php"               => "Internen Blogeintrag bearbeitet",
+      "php/schulhof/anfragen/gruppen/blogneuspeichern.php"                      => "Internen Blogeintrag erstellt",
+      "php/schulhof/anfragen/verwaltung/blogeintraege/bearbeitenspeichern.php"  => "Öffentlichen Blogeintrag bearbeitet",
+      "php/schulhof/anfragen/verwaltung/blogeintraege/neuspeichern.php"         => "Öffentlichen Blogeintrag erstellt",
+      "php/schulhof/anfragen/gruppen/terminbearbeitenspeichern.php"             => "Internen Termin bearbeitet",
+      "php/schulhof/anfragen/gruppen/terminneuspeichern.php"                    => "Internen Termin erstellt",
+      "php/schulhof/anfragen/verwaltung/termine/bearbeitenspeichern.php"        => "Öffentlichen Termin bearbeitet",
+      "php/schulhof/anfragen/verwaltung/termine/neuspeichern.php"               => "Öffentlichen Termin erstellt",
+      "php/schulhof/anfragen/verwaltung/galerien/bearbeitenspeichern.php"       => "Galerie bearbeitet",
+      "php/schulhof/anfragen/verwaltung/galerien/neuspeichern.php"              => "Galerie erstellt",
+      "php/schulhof/anfragen/verwaltung/dauerbrenner/bearbeitenspeichern.php"   => "Dauerbrenner bearbeitet",
+      "php/schulhof/anfragen/verwaltung/dauerbrenner/neuspeichern.php"          => "Dauerbrenner erstellt",
+      "php/schulhof/anfragen/hausmeister/neuspeichern.php"                      => "Hausmeisterauftrag erteilt",
+      "php/schulhof/anfragen/nutzerkonto/postfach/versenden.php"                => "Nachricht versenden",
+      "php/allgemein/anfragen/seitensuche.php"                                  => "Seitensuche"
+    );
 
-    return $aktion;
+    foreach($aktionen as $d => $n) {
+      if(endsWith($file, $d))
+        return $n;
+    }
+    return $file;
   }
 
   function cms_auffaelliges_details($id) {
-    global $CMS_SCHLUESSEL, $CMS_RECHTE;
+    global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden("s");
-    $sql = $dbs->prepare("SELECT id, ursacher, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL') AS aktion, AES_DECRYPT(eingaben, '$CMS_SCHLUESSEL') AS eingaben, AES_DECRYPT(details, '$CMS_SCHLUESSEL') AS details, AES_DECRYPT(notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel FROM auffaelliges WHERE id = ?");
+    $sql = $dbs->prepare("SELECT auffaelliges.id, typ, AES_DECRYPT(aktion, '$CMS_SCHLUESSEL'), AES_DECRYPT(eingaben, '$CMS_SCHLUESSEL') AS eingaben, AES_DECRYPT(details, '$CMS_SCHLUESSEL') AS details, AES_DECRYPT(auffaelliges.notizen, '$CMS_SCHLUESSEL') AS notizen, zeitstempel, ursacher, nutzerkonten.id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), erstellt FROM auffaelliges LEFT JOIN personen ON ursacher = personen.id LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE auffaelliges.id = ?");
+
     $sql->bind_param("i", $id);
     if ($sql->execute()) {
-      if(is_null($sqld = $sql->get_result()->fetch_assoc()))
-        return cms_meldung_bastler();
+      $sql->bind_result($aufid, $auftyp, $aufaktion, $aufeingaben, $aufdetails, $aufnotizen, $aufzeit, $aufursacher, $aufnutzer, $aufvorname, $aufnachname, $auftitel, $auferstellt);
+      if($sql->fetch()) {
+        if($aufursacher === null)
+          $aufursacher = "Nicht angemeldet";
+        else {
+          $aufursacher = cms_generiere_anzeigename($aufvorname, $aufnachname, $auftitel);
+        }
+        if($aufeingaben == "") {$aufeingaben = "Keine Eingaben aufgezeichnet";}
+        if($aufdetails == "") {$aufdetails = "Keine Details aufgezeichnet";}
+
+        $code = "";
+        $code .= "<div class=\"cms_spalte_40\">";
+          $code .= "<div class=\"cms_spalte_i\">";
+            $code .= "<h4>Allgemeine Details</h4>";
+            $code .= "<table class=\"cms_formular\">";
+              $code .= "<tbody>";
+                $code .= "<tr>";
+                  $code .= "<th>Ursacher:</th>";
+                  $code .= "<td><input disabled value=\"$aufursacher\"></td>";
+                $code .= "</tr>";
+                $code .= "<tr>";
+                  $code .= "<th>Typ:</th>";
+                  $code .= "<td><input type=\"text\" disabled=\"disabled=\" value=\"".cms_auffaellig_typzutext($auftyp)."\"></td>";
+                $code .= "</tr>";
+                $code .= "<tr>";
+                  $code .= "<th>Aktion:</th>";
+                  $code .= "<td><input type=\"text\" disabled=\"disabled=\" value=\"".cms_auffaellig_dateizuaktion($aufaktion)."\"></td>";
+                $code .= "</tr>";
+                $code .= "<tr>";
+                  $code .= "<th>Zeitpunkt:</th>";
+                  date_default_timezone_set("Europe/Berlin");
+                  $code .= "<td><input type=\"text\" disabled=\"disabled=\" value=\"".date("d.m.Y H:i:s", $aufzeit)."\"></td>";
+                $code .= "</tr>";
+              $code .= "</tbody>";
+            $code .= "</table>";
+          $code .= "</div>";
+          $code .= "<div class=\"cms_spalte_i\">";
+            $code .= "<h4>Notizen</h4>";
+            $code .= "<div class=\"cms_formular\" style=\"padding: 5px;\">";
+              $code .= "<textarea id=\"cms_auffaelliges_notizen\" rows=\"".textarearows($aufnotizen, 25)."\" style=\"resize: vertical; transition: none\">$aufnotizen</textarea><br><br>";
+              $code .= "<span class=\"cms_button_ja\" onclick=\"cms_auffaelliges_notizen_speichern($aufid)\">Änderungen Speichern</span>";
+            $code .= "</div>";
+          $code .= "</div>";
+        $code .= "</div>";
+        $code .= "<div class=\"cms_spalte_60\">";
+          $code .= "<div class=\"cms_spalte_i\">";
+            $code .= "<h4>Details</h4>";
+            $code .= "<table class=\"cms_formular\">";
+              $code .= "<tbody>";
+                $code .= "<tr>";
+                  $code .= "<th>Eingaben:</th>";
+                  $code .= "<td><textarea rows=\"".textarearows($aufeingaben, 25)."\" style=\"resize: none\" disabled=\"disabled=\">$aufeingaben</textarea></td>";
+                $code .= "</tr>";
+    /*            $code .= "<tr>";
+                  $code .= "<th>Details:</th>";
+                  $code .= "<td><textarea rows=\"".textarearows($aufdetails, 25)."\" style=\"resize: none\" disabled=\"disabled=\">$aufdetails</textarea></td>";
+                $code .= "</tr>";*/
+              $code .= "</tbody>";
+            $code .= "</table>";
+          $code .= "</div>";
+        $code .= "<div class=\"cms_spalte_i\">";
+      }
+      else {return cms_meldung_bastler();}
     } else {return cms_meldung_bastler();}
     $sql->close();
-
-    if($sqld["ursacher"] == -1)
-      $sqld["ursacher"] = "Nicht angemeldet";
-    else {
-      $nameSql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') as vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') as nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') as titel FROM personen WHERE id=".intval($sqld["ursacher"].";");
-      if ($a = $dbs->query($nameSql))
-        if($d = $a->fetch_assoc())
-          $sqld["ursacher"] = cms_generiere_anzeigename($d["vorname"], $d["nachname"], $d["titel"]);
-      }
-    if($sqld["eingaben"] == "")
-      $sqld["eingaben"] = "Keine Eingaben aufgezeichnet";
-    if($sqld["details"] == "")
-      $sqld["details"] = "Keine Details aufgezeichnet";
-
-    $code = "";
-    $code .= "<div class=\"cms_spalte_40\">";
-      $code .= "<div class=\"cms_spalte_i\">";
-        $code .= "<h4>Allgemeine Details</h4>";
-        $code .= "<table class=\"cms_formular\">";
-          $code .= "<tbody>";
-            $code .= "<tr>";
-              $code .= "<th>Ursacher:</th>";
-              $code .= "<td><input disabled value=\"".$sqld["ursacher"]."\"></td>";
-            $code .= "</tr>";
-            $code .= "<tr>";
-              $code .= "<th>Typ:</th>";
-              $code .= "<td><input title=\"".$sqld["typ"]."\" disabled value=\"".cms_auffaellig_typzutext($sqld["typ"])."\"></td>";
-            $code .= "</tr>";
-            $code .= "<tr>";
-              $code .= "<th>Aktion:</th>";
-              $code .= "<td><input title=\"".$sqld["aktion"]."\" disabled value=\"".cms_auffaellig_dateizuaktion($sqld["aktion"])."\"></td>";
-            $code .= "</tr>";
-            $code .= "<tr>";
-              $code .= "<th>Zeitpunkt:</th>";
-              date_default_timezone_set("Europe/Berlin");
-              $code .= "<td><input title=\"".$sqld["zeitstempel"]."\" disabled value=\"".date("d.m.Y H:i:s", $sqld["zeitstempel"])."\"></td>";
-            $code .= "</tr>";
-          $code .= "</tbody>";
-        $code .= "</table>";
-      $code .= "</div>";
-      $code .= "<div class=\"cms_spalte_i\">";
-        $code .= "<h4>Notizen</h4>";
-        $code .= "<div class=\"cms_formular\" style=\"padding: 5px;\">";
-          $code .= "<textarea id=\"cms_auffaelliges_notizen\" rows=\"".textarearows($sqld["notizen"], 25)."\" style=\"resize: vertical; transition: none\">".$sqld["notizen"]."</textarea><br><br>";
-          $code .= "<span class=\"cms_button_ja\" onclick=\"cms_auffaelliges_notizen_speichern(".$sqld["id"].")\">Änderungen Speichern</span>";
-        $code .= "</div>";
-      $code .= "</div>";
-    $code .= "</div>";
-    $code .= "<div class=\"cms_spalte_60\">";
-      $code .= "<div class=\"cms_spalte_i\">";
-        $code .= "<h4>Details</h4>";
-        $code .= "<table class=\"cms_formular\">";
-          $code .= "<tbody>";
-            $code .= "<tr>";
-              $code .= "<th>Eingaben:</th>";
-              $code .= "<td><textarea rows=\"".textarearows($sqld["eingaben"], 25)."\" style=\"resize: none\" disabled>".$sqld["eingaben"]."</textarea></td>";
-            $code .= "</tr>";
-            $code .= "<tr>";
-              $code .= "<th>Details:</th>";
-              $code .= "<td><textarea rows=\"".textarearows($sqld["details"], 25)."\" style=\"resize: none\" disabled>".$sqld["details"]."</textarea></td>";
-            $code .= "</tr>";
-          $code .= "</tbody>";
-        $code .= "</table>";
-      $code .= "</div>";
-    $code .= "<div class=\"cms_spalte_i\">";
 
     return $code;
   }
 
-  function cms_auffaelliges_speichern($typ) {
+  function cms_auffaelliges_speichern($typ, $infos = array()) {
     global $CMS_SCHLUESSEL;
     $dbs = cms_verbinden('s');
 
     $id = cms_generiere_kleinste_id('auffaelliges');
 
-    $CMS_BENUTZERID = $_SESSION["BENUTZERID"] ?? -1;
-
+    $CMS_BENUTZERID = $_SESSION["BENUTZERID"] ?? null;
     $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-    $file = str_replace("\\", "/", $trace[1]["file"]);
-
-
+    for($i = 1; $i < count($trace); $i++) {
+      if(!endsWith(($file = str_replace("\\", "/", $trace[$i]["file"])), "php/schulhof/funktionen/texttrafo.php") && !endsWith($file, "php/schulhof/funktionen/meldungen.php"))
+        break;
+    }
     $aktion = $file;
+    if($typ === 0) {
+      $aktion = $infos["pfad"] ?? "Fehler";
+    }
     $eingaben = cms_array_leserlich($_POST, "\n");
-    $details = "";   // TODO
+    $details = "";
     $zeitstempel = time();
     $status = 0;
 

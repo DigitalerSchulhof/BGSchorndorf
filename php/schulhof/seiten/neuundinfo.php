@@ -6,7 +6,11 @@
 		$code .= '<li><img src="res/icons/gross/cookies.png"><br>Cookies aktiv?</li>';
 		$code .= '<li><img src="res/icons/gross/javascript.png"><br>JavaScript aktiv?</li>';
 		$code .= '<li><img src="res/icons/gross/multinutzer.png"><br>Nur ein Nutzer pro Browser zur selben Zeit!</li>';
+		$code .= '<li></li>';
+		$code .= '<li id="cms_browsertest"><img src="res/icons/gross/warnung.png"><br>Der Browser untestützt womöglich nicht alle Funktionen.</li>';
 	$code .= '</ul>';
+
+	$code .= "<script>cms_check_browserunterstuetzung();</script>";
 	echo $code;
 	?>
 </div>
@@ -22,6 +26,7 @@
 	$code .= '<p><a href="http://www.mitte.mensa-pro.de" class="cms_button" target="_blank">Buchungssystem der Mensa Mitte</a></p>';
 	$code .= "<h3>Lehrer</h3>";
 	$code .= '<p><a href="https://webmail.all-inkl.com/index.php" class="cms_button" target="_blank">Webmail-Portal für Lehrer<span class="cms_hinweis">Demnächst auch im Schulhof!<br> Ziel: Osterferien</span></a></p>';
+	$code .= '<p><a href="https://neo.kultus-bw.de" class="cms_button" target="_blank">NEO</a></p>';
 	echo $code;
 	?>
 </div>

@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
-
 $code = "";
-if ($zugriff) {
+if (cms_r("schulhof.planung.schuljahre.fabrik")) {
 
   $code .= "<h1>Schuljahre aus bestehenden Schuljahren erzeugen</h1>";
 
@@ -148,6 +146,9 @@ if ($zugriff) {
       $teilids = "";
       if ($SJFG == "Stufen") {
         $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $kSJFG WHERE schuljahr = ? ORDER BY reihenfolge) AS s");
+      }
+      else if ($SJFG == "Klassen") {
+        $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $kSJFG JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ? ORDER BY reihenfolge) AS s");
       }
       else {
         $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM $kSJFG WHERE schuljahr = ?) AS s ORDER BY bezeichnung");

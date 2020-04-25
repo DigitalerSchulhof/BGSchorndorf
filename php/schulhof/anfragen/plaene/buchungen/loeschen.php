@@ -17,19 +17,19 @@ if (!cms_check_ganzzahl($id,0)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 if (cms_angemeldet()) {
 	$fehler = false;
 
-	if ($art == 'r') {$buchungstabelle = 'raeumebuchen';}
-	else if ($art == 'l') {$buchungstabelle = 'leihenbuchen';}
+	if ($art == 'r') {$buchungstabelle = 'raeumebuchen'; $rart = "räume";}
+	else if ($art == 'l') {$buchungstabelle = 'leihenbuchen'; $rart = "leihgeräte";}
 
 	$dbs = cms_verbinden('s');
 
 	if (!$fehler) {
-		if ($CMS_RECHTE['Organisation']['Buchungen löschen']) {
+		if (cms_r("schulhof.organisation.buchungen.$rart.löschen")) {
 			$sql = $dbs->prepare("DELETE FROM $buchungstabelle WHERE id = ? AND standort = ?");
 			$sql->bind_param("ii", $id, $standort);
 		  $sql->execute();

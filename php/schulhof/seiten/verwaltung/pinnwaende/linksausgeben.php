@@ -11,15 +11,15 @@ function cms_pinnwaende_links_anzeigen () {
   else {$sqlwhere = "sichtbarx = '2'";}
 
 	$dbs = cms_verbinden('s');
-  $sql = "SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM pinnwaende WHERE $sqlwhere) AS x ORDER BY bezeichnung";
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-      $anzeigename = $daten['bezeichnung'];
+  $sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM pinnwaende WHERE $sqlwhere) AS x ORDER BY bezeichnung");
+	if ($sql->execute()) {
+    $sql->bind_result($anzeigename);
+		while ($sql->fetch()) {
       $anzeigenamelink = cms_textzulink($anzeigename);
       $ausgabe .= "<li><a class=\"cms_button\" href=\"Schulhof/Pinnwände/$anzeigenamelink\">".$anzeigename."</a></li> ";
 		}
-    $anfrage->free();
 	}
+  $sql->close();
   cms_trennen($dbs);
   if (strlen($ausgabe) > 0) {$ausgabe = "<ul>".$ausgabe."</ul>";}
   else {$ausgabe = '<p class="cms_notiz">Keine Pinnwände angelegt</p>';}

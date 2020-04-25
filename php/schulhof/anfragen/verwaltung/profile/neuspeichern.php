@@ -15,10 +15,9 @@ if (isset($_POST['faecherids'])) {$faecherids = $_POST['faecherids'];} else {ech
 if (isset($_SESSION['PROFILSCHULJAHR'])) {$SCHULJAHR = $_SESSION['PROFILSCHULJAHR'];} else {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Profile anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.profile.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

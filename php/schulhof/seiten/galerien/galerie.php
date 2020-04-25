@@ -18,15 +18,13 @@ $code .= "<div class=\"cms_spalte_i\">";
 
 	$galerielink = implode('/', array_slice($CMS_URL,0,2)).'/';
 
-	$code .= "<p>";
-		$code .= "<a class=\"cms_button\" href=\"$galerielink".($jahr-1)."\">".($jahr-1)."</a> ";
-		for ($i = 1; $i<=12; $i++) {
-			$monatsname = cms_monatsnamekomplett($i);
-			if ($i == $monat) {$zusatz = "_ja";} else {$zusatz = "";}
-			$code .= "<a class=\"cms_button$zusatz\" href=\"$galerielink"."$jahr/".$monatsname."\">".$monatsname."</a> ";
-		}
-		$code .= "<a class=\"cms_button\" href=\"$galerielink".($jahr+1)."\">".($jahr+1)."</a> ";
-	$code .= "</p>";
+	$code .= "<table class=\"cms_zeitwahl\"><tr><td><a class=\"cms_button\" href=\"$galerielink".($jahr-1)."\">".($jahr-1)."</a></td><td>";
+	for ($i = 1; $i<=12; $i++) {
+		$monatsname = cms_monatsnamekomplett($i);
+		if ($i == $monat) {$zusatz = "_ja";} else {$zusatz = "";}
+		$code .= "<a class=\"cms_button$zusatz\" href=\"$galerielink"."$jahr/".$monatsname."\">".$monatsname."</a> ";
+	}
+	$code .= "</td><td><a class=\"cms_button\" href=\"$galerielink".($jahr+1)."\">".($jahr+1)."</a></td></tr></table>";
 
 	$zwischenurl = implode('/', array_slice($CMS_URL,0,1));
 	$galeriecode = cms_galerien_monat_ausgeben($dbs, 'artikel', $zwischenurl, $monat, $jahr);
@@ -44,13 +42,25 @@ function cms_galerien_monat_ausgeben($dbs, $art, $CMS_URLGANZ, $monat, $jahr) {
     $beginn = mktime (0, 0, 0, $monat, 1, $jahr);
     $ende = mktime(0,0,0,$monat+1,1,$jahr)-1;
 
-		$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE (datum BETWEEN $beginn AND $ende)";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= cms_galerie_link_ausgeben($dbs, $daten, $art, $CMS_URLGANZ);
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(autor, '$CMS_SCHLUESSEL'), datum, genehmigt, aktiv, oeffentlichkeit, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild FROM galerien WHERE (datum BETWEEN ? AND ?) AND aktiv = 1 ORDER BY datum ASC");
+		$sql->bind_param("ii", $beginn, $ende);
+		if ($sql->execute()) {
+			$sql->bind_result($gid, $gbez, $gautor, $gdatum, $ggenehmigt, $gaktiv, $goeffentlichkeit, $gbeschreibung, $vorschaubild);
+			while ($sql->fetch()) {
+				$G = array();
+				$G['id'] = $gid;
+				$G['bezeichnung'] = $gbez;
+				$G['autor'] = $gautor;
+				$G['datum'] = $gdatum;
+				$G['genehmigt'] = $ggenehmigt;
+				$G['aktiv'] = $gaktiv;
+				$G['oeffentlichkeit'] = $goeffentlichkeit;
+				$G['beschreibung'] = $gbeschreibung;
+				$G['vorschaubild'] = $vorschaubild;
+				$code .= cms_galerie_link_ausgeben($dbs, $G, $art, $CMS_URLGANZ);
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 	}
 
 	return $code;

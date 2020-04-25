@@ -20,17 +20,14 @@ if (isset($_POST['exttitel2'])) 						{$exttitel2 = $_POST['exttitel2'];} 						
 if (isset($_POST['extvorname2'])) 					{$extvorname2 = $_POST['extvorname2'];} 											else {echo "FEHLER";exit;}
 if (isset($_POST['extnachname2'])) 					{$extnachname2 = $_POST['extnachname2'];} 										else {echo "FEHLER";exit;}
 if (isset($_POST['extmail2'])) 							{$extmail2 = $_POST['extmail2'];} 														else {echo "FEHLER";exit;}
-if (isset($_POST['kennung'])) 							{$kennung = $_POST['kennung'];} 															else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.einstellungen")) {
 	$fehler = false;
 
 	if (!cms_check_toggle($extexistiert1)) {$fehler = true;}
 	if (!cms_check_toggle($extexistiert2)) {$fehler = true;}
-	if (!cms_check_titel($kennung)) {$fehler = true;}
 
 	if ($extexistiert1 == 1) {
 		if (($extgeschlecht1 != 'm') && ($extgeschlecht1 != 'w') && ($extgeschlecht1 != 'u')) {$fehler = true;}
@@ -121,11 +118,6 @@ if (cms_angemeldet() && $zugriff) {
 
 		$sql = $dbs->prepare("UPDATE allgemeineeinstellungen SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT('Externe Geräteverwaltung2 Mail', '$CMS_SCHLUESSEL')");
 	  $sql->bind_param("s", $extmail2);
-	  $sql->execute();
-	  $sql->close();
-
-		$sql = $dbs->prepare("UPDATE internedienste SET wert = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')");
-	  $sql->bind_param("s", $kennung);
 	  $sql->execute();
 	  $sql->close();
 

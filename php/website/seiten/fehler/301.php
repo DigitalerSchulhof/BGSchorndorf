@@ -6,7 +6,7 @@
 <?php
 $code = "";
 $code .= cms_meldung('info', '<h4>Permanenter Umzug</h4><p>Die angeforderte Website steht unter dieser Adresse nicht mehr zur Verfügung.</p>');
-$code .= '<p><a class="cms_button" href="Website/Start">zur Website</a></p>';
+$code .= '<p><a class="cms_button" href="">zur Website</a></p>';
 echo $code;
 ?>
 

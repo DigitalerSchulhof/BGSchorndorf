@@ -12,23 +12,21 @@ if (!isset($_SESSION['PERSONENDETAILS'])) {
 else {
 	include_once("php/schulhof/seiten/personensuche/personensuche.php");
 	$id = $_SESSION['PERSONENDETAILS'];
-	$zugriff = $CMS_RECHTE['Personen']['Schüler und Eltern verknüpfen'];
-	if ($zugriff) {
+	if (cms_r("schulhof.verwaltung.personen.schülereltern")) {
 		// Person laden, für die die Rechte geändert werden sollen
 		$dbs = cms_verbinden('s');
-		$sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = $id";
-
+		$sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen WHERE id = ?";
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
 		$fehler = false;
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-				$id = $daten['id'];
-				$art = $daten['art'];
-
-				$anzeigename = $daten['vorname']." ".$daten['nachname'];
-				if (strlen($daten['titel']) > 0) {$anzeigename = $daten['titel']." ".$anzeigename;}
+		if ($sql->execute()) {
+			$sql->bind_result($id, $vorname, $nachname, $titel, $art);
+			if ($sql->fetch()) {
+				$anzeigename = "$vorname $nachname";
+				if (strlen($titel) > 0) {$anzeigename = "$titel $anzeigename";}
 			}
 			else {$fehler = false;}
-			$anfrage->free();
+			$sql->close();
 		}
 		else {$fehler = false;}
 
@@ -56,13 +54,13 @@ else {
 			$auswahl = "<tr><th>Schüler:</th><td>$anzeigename";
 			$zugeordnet = "<tr><th>Eltern:</th>";
 			$join = "schuelereltern.eltern";
-			$where = "schueler = $id";
+			$where = "schueler = ?";
 		}
 		else {
 			$auswahl = "<tr><th>Eltern:</th><td>$anzeigename";
 			$zugeordnet = "<tr><th>Schüler:</th>";
 			$join = "schuelereltern.schueler";
-			$where = "eltern = $id";
+			$where = "eltern = ?";
 		}
 
 		$auswahl .= "</td>";
@@ -70,11 +68,14 @@ else {
 		// Zugeordnete Personen suchen
 		$zugeordnethidden = "";
 		$sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen JOIN schuelereltern ON personen.id = $join WHERE $where";
-		if ($anfrage = $dbs->query($sql)) {
-			while ($daten = $anfrage->fetch_assoc()) {
-				$zugeordnethidden .= "|".$daten['id'];
+		$sql = $dbs->prepare($sql);
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($zid);
+			while ($sql->fetch()) {
+				$zugeordnethidden .= "|$zid";
 			}
-			$anfrage->free();
+			$sql->close();
 		}
 
 		$zugeordnet.= "<td>";

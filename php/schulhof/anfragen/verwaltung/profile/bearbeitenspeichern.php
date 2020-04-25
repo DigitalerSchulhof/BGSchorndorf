@@ -15,10 +15,9 @@ if (isset($_POST['faecherids'])) {$faecherids = $_POST['faecherids'];} else {ech
 if (isset($_SESSION['PROFILBEARBEITEN'])) {$pid = $_SESSION['PROFILBEARBEITEN'];} else {echo "FEHLER";exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Profile bearbeiten'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.profile.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -96,8 +95,9 @@ if (cms_angemeldet() && $zugriff) {
 	  $sql->execute();
 	  $sql->close();
 
-		$sql = "DELETE FROM profilfaecher WHERE profil = $pid";
-		$dbs->query($sql);
+		$sql = $dbs->prepare("DELETE FROM profilfaecher WHERE profil = ?");
+		$sql->bind_param("i", $pid);
+		$sql->execute();
 
 		$sql = $dbs->prepare("INSERT INTO profilfaecher (profil, fach) VALUES (?, ?)");
 		foreach ($wahlfaecher as $w) {

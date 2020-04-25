@@ -1,5 +1,6 @@
 function cms_schuljahrfabrik_vorbereiten(id, ziel, zielschuljahr) {
   var ziel = ziel || 'Grundlagen';
+  var id = id || '-';
   var zielschuljahr = zielschuljahr || null;
   cms_laden_an('Schuljahrfabrik vorbereiten', 'Die Schuljahresfabrik des Schuljahres werden vorbereitet ...');
 
@@ -11,6 +12,9 @@ function cms_schuljahrfabrik_vorbereiten(id, ziel, zielschuljahr) {
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {
       cms_link('Schulhof/Verwaltung/Planung/Schuljahrfabrik/'+ziel);
+    }
+    else if (rueckgabe == "KEIN") {
+      cms_meldung_an('info', 'Kein Schuljahr aktiv', '<p>Für dieses Benutzerkonto ist im Moment kein Schuljahr aktiv.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
     }
     else {cms_fehlerbehandlung(rueckgabe);}
   }
@@ -440,15 +444,17 @@ function cms_schuljahrfabrik_klassenkurse() {
 
   var formulardaten = new FormData();
   var klassenfehler = false;
+
   for (var s=0; s<sid.length; s++) {
-    sinfo[0] = new Array();
-    sinfo[0][0] = sid[s];
+
+    sinfo[s] = new Array();
+    sinfo[s][0] = sid[s];
     if (sid[s].length > 0) {
       var klassenids = document.getElementById('cms_sjfabrik_stufen_'+sid[s]+'_klassen');
       if (klassenids) {
         if (!cms_check_idfeld(klassenids.value)) {klassenfehler = true;}
         else {
-          sinfo[0][1] = ((klassenids.value).substr(1)).split('|');
+          sinfo[s][1] = ((klassenids.value).substr(1)).split('|');
           formulardaten.append('stufenklassen_'+sid[s], klassenids.value);
         }
       }
@@ -468,7 +474,7 @@ function cms_schuljahrfabrik_klassenkurse() {
     formulardaten.append("anfragenziel", 	'274');
 
     // Senden vorbereiten - Fächer pro Klasse
-    var faecherproklassefehler = false;
+    faecherproklassefehler = false;
     for (var s=0; s<sinfo.length; s++) {
       for (var k=0; k<sinfo[s][1].length; k++) {
         if (sinfo[s][1][k].length > 0) {
@@ -564,6 +570,7 @@ function cms_schuljahrfabrik_stufenkurse() {
   }
 
   var sid = (stufen.substr(1)).split('|');
+  if ((sid.length == 1) && (sid[0].length == 0)) {sid = new Array();}
   var sinfo = new Array();
   var sinfonr = 0;
   var asid = (altestufen.substr(1)).split('|');
@@ -572,14 +579,32 @@ function cms_schuljahrfabrik_stufenkurse() {
   var formulardaten = new FormData();
 
   if (!fehler) {
-    formulardaten.append("stufen", stufen);
-    formulardaten.append("altestufen", altestufen);
-    formulardaten.append("faecher", faecher);
-    formulardaten.append("anfragenziel", 	'347');
+    var anzstufen = sid.length;
+    var stufennr = 0;
 
-    // Senden vorbereiten: Kurse nach Stufen
-    var faecherprostufe = false;
-    for (var s=0; s<sid.length; s++) {
+    if (sid.length > 0) {
+      var feld = document.getElementById('cms_blende_i');
+      var neuemeldung = '<div class="cms_spalte_i">';
+      neuemeldung += '<h2 id="cms_laden_ueberschrift">Schuljahrfabrik – Kurse für Stufen anlegen</h2>';
+      neuemeldung += '<p id="cms_laden_meldung_vorher">Bitte warten ...</p>';
+      neuemeldung += '<h4>Fortschritt</h4>';
+      neuemeldung += '<div class="cms_fortschritt_o">';
+        neuemeldung += '<div class="cms_fortschritt_i" id="cms_hochladen_balken_gesamt" style="width: 0%;"></div>';
+      neuemeldung += '</div>';
+      neuemeldung += '<p class="cms_hochladen_fortschritt_anzeige">Stufen: <span id="cms_stundnerezeugen_ztaktuell">0</span>/'+anzstufen+' abgeschlossen</p>';
+      neuemeldung += '</div>';
+      feld.innerHTML = neuemeldung;
+
+      var formulardaten = new FormData();
+      formulardaten.append("stufe", sid[stufennr]);
+      formulardaten.append("altestufen", altestufen);
+      formulardaten.append("faecher", faecher);
+      formulardaten.append("erster", 'j');
+      formulardaten.append("anfragenziel", 	'347');
+
+      // Senden vorbereiten: Kurse nach Stufen
+      var faecherprostufe = false;
+      var s = stufennr;
       if (sid[s].length > 0) {
         for (var f=0; f<fid.length; f++) {
           if (fid[f].length > 0) {
@@ -606,18 +631,17 @@ function cms_schuljahrfabrik_stufenkurse() {
           }
         }
       }
-    }
 
-    if (faecherprostufe) {
-      meldung += '<li>bei der Erstellung von Kursen nach Stufen ist ein Fehler aufgetreten.</li>';
-      fehler = true;
-    }
+      if (faecherprostufe) {
+        meldung += '<li>bei der Erstellung von Kursen nach Stufen ist ein Fehler aufgetreten.</li>';
+        fehler = true;
+      }
 
-    // Senden vorbereiten: Stufen übertragen
-    var stufenuebertragenfehler = false;
-    for (var i=0; i<asid.length; i++) {
-      if (asid[i].length > 0) {
-        for (var j=0; j<sid.length; j++) {
+      // Senden vorbereiten: Stufen übertragen
+      var stufenuebertragenfehler = false;
+      var j = stufennr;
+      for (var i=0; i<asid.length; i++) {
+        if (asid[i].length > 0) {
           if (sid[j].length > 0) {
             var feld = document.getElementById('cms_sjfabrik_kurse_stufenuebertragen_'+asid[i]+'_'+sid[j]);
             if (feld) {
@@ -630,38 +654,113 @@ function cms_schuljahrfabrik_stufenkurse() {
           }
         }
       }
-    }
 
-    if (stufenuebertragenfehler) {
-      meldung += '<li>bei der Übertragung der Stufen ist ein Fehler aufgetreten.</li>';
-      fehler = true;
-    }
+      if (stufenuebertragenfehler) {
+        meldung += '<li>bei der Übertragung der Stufen ist ein Fehler aufgetreten.</li>';
+        fehler = true;
+      }
 
+      if (fehler) {
+    		cms_meldung_an('fehler', 'Schuljahrfabrik – Kurse für Stufen anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+    	}
+    	else {
+    		function anfragennachbehandlung(rueckgabe) {
+          var nachfehler = false;
+
+          if (rueckgabe.match(/FAECHER/)) {
+            nachfehler = true;
+            meldung += '<li>es wurden Fächer ungültig zugeordnet.</li>';
+          }
+
+          if (rueckgabe.match(/^ERFOLG/)) {
+            // Abgeschlossene ids erhöhen:
+            stufennr++;
+            if (stufennr == anzstufen) {
+              cms_meldung_an('erfolg', 'Schuljahrfabrik – Kurse für Stufen anlegen', '<p>Die Kurse der Stufen wurden erzeugt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung\');">Zurück zur Übersicht</span> <span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Schuljahrfabrik/Personen_in_Kursen\');">Weiter zu »Personen in Kursen«</span></p>');
+            }
+            else {
+              // Nächste Stufe/Zeitraum starten
+              var formulardaten = new FormData();
+              formulardaten.append("stufe", sid[stufennr]);
+              formulardaten.append("altestufen", altestufen);
+              formulardaten.append("faecher", faecher);
+              formulardaten.append("erster", 'n');
+              formulardaten.append("anfragenziel", 	'347');
+
+              // Senden vorbereiten: Kurse nach Stufen
+              var faecherprostufe = false;
+              var s = stufennr;
+              if (sid[s].length > 0) {
+                for (var f=0; f<fid.length; f++) {
+                  if (fid[f].length > 0) {
+                    var anzahl1 = document.getElementById('cms_sjfabrik_kurse_stufen_'+sid[s]+'_'+fid[f]+'_anzahl1');
+                    var anzahl2 = document.getElementById('cms_sjfabrik_kurse_stufen_'+sid[s]+'_'+fid[f]+'_anzahl2');
+                    var anzahl3 = document.getElementById('cms_sjfabrik_kurse_stufen_'+sid[s]+'_'+fid[f]+'_anzahl3');
+                    var zusatz1 = document.getElementById('cms_sjfabrik_kurse_stufen_'+sid[s]+'_'+fid[f]+'_zusatz1');
+                    var zusatz2 = document.getElementById('cms_sjfabrik_kurse_stufen_'+sid[s]+'_'+fid[f]+'_zusatz2');
+                    var zusatz3 = document.getElementById('cms_sjfabrik_kurse_stufen_'+sid[s]+'_'+fid[f]+'_zusatz3');
+                    if (anzahl1 && anzahl2 && anzahl3 && zusatz1 && zusatz2 && zusatz3) {
+                      if (cms_check_ganzzahl(anzahl1.value,0) && (anzahl1.value == '0' || cms_check_buchstaben(zusatz1.value)) &&
+                          cms_check_ganzzahl(anzahl2.value,0) && (anzahl2.value == '0' || cms_check_buchstaben(zusatz2.value)) &&
+                          cms_check_ganzzahl(anzahl3.value,0) && (anzahl3.value == '0' || cms_check_buchstaben(zusatz3.value))) {
+                        formulardaten.append('kursenachstufen_'+sid[s]+'_'+fid[f]+'_anzahl1', anzahl1.value);
+                        formulardaten.append('kursenachstufen_'+sid[s]+'_'+fid[f]+'_zusatz1', zusatz1.value);
+                        formulardaten.append('kursenachstufen_'+sid[s]+'_'+fid[f]+'_anzahl2', anzahl2.value);
+                        formulardaten.append('kursenachstufen_'+sid[s]+'_'+fid[f]+'_zusatz2', zusatz2.value);
+                        formulardaten.append('kursenachstufen_'+sid[s]+'_'+fid[f]+'_anzahl3', anzahl3.value);
+                        formulardaten.append('kursenachstufen_'+sid[s]+'_'+fid[f]+'_zusatz3', zusatz3.value);
+                      }
+                      else {faecherprostufe = true;}
+                    }
+                    else {faecherprostufe = true;}
+                  }
+                }
+              }
+
+              if (faecherprostufe) {
+                meldung += '<li>bei der Erstellung von Kursen nach Stufen ist ein Fehler aufgetreten.</li>';
+                fehler = true;
+              }
+
+              // Senden vorbereiten: Stufen übertragen
+              var stufenuebertragenfehler = false;
+              var j = stufennr;
+              for (var i=0; i<asid.length; i++) {
+                if (asid[i].length > 0) {
+                  if (sid[j].length > 0) {
+                    var feld = document.getElementById('cms_sjfabrik_kurse_stufenuebertragen_'+asid[i]+'_'+sid[j]);
+                    if (feld) {
+                      if (!cms_check_toggle(feld.value)) {stufenuebertragenfehler = true;}
+                      else {
+                        formulardaten.append('kurseuebertragen_'+asid[i]+'_'+sid[j], feld.value);
+                      }
+                    }
+                    else {stufenuebertragenfehler = true;}
+                  }
+                }
+              }
+
+              if (stufenuebertragenfehler) {
+                meldung += '<li>bei der Übertragung der Stufen ist ein Fehler aufgetreten.</li>';
+                fehler = true;
+              }
+
+              cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+            }
+    			}
+          else if (nachfehler) {
+            cms_meldung_an('fehler', 'Schuljahrfabrik – Kurse für Stufen anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+          }
+    			else {cms_fehlerbehandlung(rueckgabe);}
+    		}
+    	}
+
+      cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    }
+    else {
+      cms_meldung_an('erfolg', 'Schuljahrfabrik – Kurse für Stufen anlegen', '<p>Es war nichts zu erzeugen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung\');">Zurück zur Übersicht</span> <span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Schuljahrfabrik/Personen_in_Kursen\');">Weiter zu »Personen in Kursen«</span></p>');
+    }
   }
-
-	if (fehler) {
-		cms_meldung_an('fehler', 'Schuljahrfabrik – Kurse für Stufen anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		function anfragennachbehandlung(rueckgabe) {
-      var nachfehler = false;
-
-      if (rueckgabe.match(/FAECHER/)) {
-        nachfehler = true;
-        meldung += '<li>es wurden Fächer ungültig zugeordnet.</li>';
-      }
-
-      if (rueckgabe.match(/^ERFOLG/)) {
-				cms_meldung_an('erfolg', 'Schuljahrfabrik – Kurse für Stufen anlegen', '<p>Die Kurse wurden angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung\');">Zurück zur Übersicht</span> <span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Schuljahrfabrik/Personen_in_Kursen\');">Weiter zu »Personen in Kursen«</span></p>');
-			}
-      else if (nachfehler) {
-        cms_meldung_an('fehler', 'Schuljahrfabrik – Kurse für Stufen anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-      }
-			else {cms_fehlerbehandlung(rueckgabe);}
-		}
-
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
-	}
 }
 
 

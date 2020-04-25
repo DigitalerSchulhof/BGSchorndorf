@@ -15,10 +15,9 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Personen löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.löschen")) {
 	$dbs = cms_verbinden('s');
 	$dbp = cms_verbinden('p');
 	echo cms_verwaltung_personloeschen ($dbs, $dbp, $id);

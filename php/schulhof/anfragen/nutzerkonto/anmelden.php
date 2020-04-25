@@ -8,18 +8,14 @@ include_once("../../schulhof/funktionen/dateisystem.php");
 include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['benutzername'])) {$benutzername = cms_texttrafo_e_db($_POST['benutzername']);} else {$benutzername = '';}
-if (isset($_POST['passwort'])) {$passwort = $_POST['passwort'];} else {$passwort = '';}
+if (isset($_POST['benutzername'])) {$benutzername = cms_texttrafo_e_db($_POST['benutzername']);} else {echo "FEHLER"; exit;}
+if (isset($_POST['passwort'])) {$passwort = $_POST['passwort'];} else {echo "FEHLER"; exit;}
 
 $fehler = false;
 
 // Pflichteingaben prüfen
-if (strlen($benutzername) < 6) {
-	$fehler = true;
-}
-if (strlen($passwort) == 0) {
-	$fehler = true;
-}
+if (strlen($benutzername) < 6) {echo "FEHLER"; exit;}
+if (strlen($passwort) == 0) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
 // Prüfen, ob das Passwort noch gilt, und ob Benutzername und Passwort zusammen passen
@@ -60,7 +56,7 @@ cms_trennen($dbs);
 if (!$fehler) {
 	// SESSIONID GENERIEREN
 	$sessionid = cms_generiere_sessionid();
-	// 30 Minuten in Sekunden später wird der Nutzer automatisch abgemeldet
+	// Inaktivitätszeit von Minuten in Sekunden später wird der Nutzer automatisch abgemeldet
 	$jetzt = time();
 	$sessiontimeout = $jetzt + $inaktivitaetszeit*60;
 
@@ -92,7 +88,8 @@ if (!$fehler) {
 	$_SESSION['LETZTENLOGINANZEIGEN'] = $letzteanmeldung;
 	$_SESSION['PASSWORTTIMEOUT'] = $passworttimeout;
 
-	$_SESSION['DSGVO_COOKIESAKZEPTIERT'] = true;
+	$_SESSION['DSGVO_FENSTERWEG'] = true;
+	$_SESSION['DSGVO_EINWILLIGUNG_A'] = true;
 
 	$_SESSION['BENUTZERUEBERSICHTANZAHL'] = $uebersichtsanzahl;
 
@@ -111,7 +108,7 @@ if (!$fehler) {
 
 	cms_trennen($dbs);
 
-	echo "ERFOLG";
+	echo "ERFOLG".strtoupper($art).$CMS_LN_DA;
 }
 else {
 	echo "FEHLER";

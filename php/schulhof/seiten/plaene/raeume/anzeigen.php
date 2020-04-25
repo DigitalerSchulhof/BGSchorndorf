@@ -19,12 +19,7 @@ if ($sql->execute()) {
 else {$fehler = true;}
 $sql->close();
 
-$zugriff = $CMS_RECHTE['Planung']['Räume sehen'];
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.organisation.räume.sehen")) {
 
 	$geraete = array();
 	$anzahl = 0;
@@ -51,38 +46,51 @@ if ($angemeldet && $zugriff) {
 	  $sql->close();
 
 		$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
-		include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
+		include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
 
-		if ($CMS_RECHTE['Planung']['Raumpläne sehen']) {
-			$code .= "<h3>Regulärer Raumplan</h3>";
+		if (cms_r("schulhof.information.pläne.stundenpläne.räume")) {
 			if ($CMS_EINSTELLUNGEN['Stundenplan Raum extern'] == '1') {
-
+				$code .= "<h3>Regulärer Raumplan</h3>";
 				if (strlen($stundenplan) == 0) {$code .= cms_meldung("info", "<h4>Kein Raumplan verfügbar</h4><p>Für diesen Raum wurde kein Raumplan hinterlegt.</p>");}
 				else {
-					include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generierenausdatei.php');
+					include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdatei.php');
 					$code .= cms_raumplan_aus_datei($stundenplan);
 				}
 			}
 			else {
-				include_once('php/schulhof/seiten/verwaltung/stundenplanung/stundenplaene/generieren.php');
-				if ($zeitraum != '-') {
-					$code .= cms_stundenplan_erzeugen($dbs, $zeitraum, 'r', $id, false);
+				include_once('php/schulhof/seiten/verwaltung/stundenplanung/planausdb.php');
+				if (isset($_SESSION['RAUMSTUNDENPLANZEITRAUM'])) {$zeitraum = $_SESSION['RAUMSTUNDENPLANZEITRAUM'];}
+				else {$zeitraum = '-';}
+
+				$zeitraumwahl = "";
+				// Alle aktiven Zeiträume dieses Schuljahres laden
+				$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') FROM zeitraeume WHERE schuljahr = ? AND aktiv = 1 ORDER BY beginn DESC";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+				if ($sql->execute()) {
+					$sql->bind_result($zid, $zbez);
+					while ($sql->fetch()) {
+						if ($zeitraum == '-') {$zeitraum = $zid;}
+						if ($zeitraum == $zid) {$wert = 1;} else {$wert = 0;}
+						$zeitraumwahl .= cms_togglebutton_generieren ('cms_zeitraumwahl_'.$zid, $zbez, $wert, "cms_stundenplan_vorbereiten('r', '$raumid', '$zid')")." ";
+					}
 				}
-				else {
-					$code .= cms_meldung('info', '<h4>Aktuell unbekannt</h4><p>Zur Zeit ist kein Stundenplan verfügbar.</p>');
-				}
+				$sql->close();
+				if (strlen($zeitraumwahl) == 0) {"<p class=\"cms_notiz\">Keine Zeiträume gefunden</p>";}
+					else {$zeitraumwahl = "<p>".$zeitraumwahl."</p>";}
+				$code .= $zeitraumwahl;
+				$code .= cms_raumregelplan_aus_db($dbs, $raumid, $zeitraum);
 			}
 		}
 		else {
-			$code .= cms_meldung('info', '<h4>Raumplan nicht verfügbar</h4><p>Auf den Raumplan ist kein Zugriff möglich.</p>');
 		}
 
 		$jetzt = time();
 
 		if ($buchbar == 1) {
-			if ($CMS_RECHTE['Planung']['Buchungen anonymisiert sehen'] || $CMS_RECHTE['Planung']['Buchungen sehen']) {
+			if (cms_r("schulhof.organisation.buchungen.räume.[|anonymisiert,sehen]")) {
 				include_once('php/schulhof/seiten/plaene/buchungen/ausgabe.php');
-				if ($CMS_RECHTE['Planung']['Buchungen sehen']) {$anonymisiert = false;}
+				if (cms_r("schulhof.organisation.buchungen.räume.sehen")) {$anonymisiert = false;}
 				else {$anonymisiert = true;}
 				$code .= cms_buchungen_ausgeben('r', $raumid, date("d"), date("m"), date("Y"), $anonymisiert);
 			}
@@ -103,7 +111,7 @@ if ($angemeldet && $zugriff) {
 			}
 			$code .= "</table>";
 
-			if ($CMS_RECHTE['Technik']['Geräte-Probleme melden']) {
+			if (cms_r("schulhof.technik.geräte.probleme")) {
 				$code .= "<p><span id=\"cms_gerateproblemknopf\" class=\"cms_button\" onclick=\"cms_togglebutton_anzeigen('cms_geraeteproblem', 'cms_gerateproblemknopf', 'Problem melden', 'Problemmeldung abbrechen')\">Problem melden</span></p>";
 
 				$code .= "<div id=\"cms_geraeteproblem\" class=\"cms_versteckt\" style=\"display: none;\">";

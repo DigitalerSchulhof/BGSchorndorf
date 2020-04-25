@@ -35,14 +35,14 @@ if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Galerien anlegen']) {
+if (cms_r("artikel.galerien.anlegen")) {
 	$zugriff = true;
 }
 
-if (!$CMS_RECHTE['Organisation']['Galerien genehmigen']) {$genehmigt = '0';}
+if (!cms_r("artikel.genehmigen.galerien")) {$genehmigt = '0';}
 
 
 if (cms_angemeldet() && $zugriff) {
@@ -57,15 +57,16 @@ if (cms_angemeldet() && $zugriff) {
       $ids = "(".substr($ids, 1).")";
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
-  			$sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids";
-  			if ($anfrage = $dbs->query($sql)) {
-  				if ($daten = $anfrage->fetch_assoc()) {
-  					if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids");
+  			if ($sql->execute()) {
+          $sql->bind_result($checkanzahl);
+  				if ($sql->fetch()) {
+  					if ($checkanzahl != $anzahl) {$fehler = true;}
   				}
   				else {$fehler = true;}
-  				$anfrage->free();
   			}
   			else {$fehler = true;}
+        $sql->close();
       }
 			else {$fehler = true;}
 		}
@@ -96,14 +97,13 @@ if (cms_angemeldet() && $zugriff) {
   $bilder = array();
   if ($bildanzahl > 0) {
 		$bids = explode('|', $bildids);
-		$sqlwhere = substr(implode(' OR ',$bids), 4);
 
 		for ($i=1; $i<count($bids); $i++) {
       $dd = array();
 			if (isset($_POST["bbeschreibung_".$bids[$i]])) {$dd['beschreibung'] = $_POST["bbeschreibung_".$bids[$i]];} else {echo "FEHLER"; exit;}
 
 			if (isset($_POST["bpfad_".$bids[$i]])) {$dd['pfad'] = $_POST["bpfad_".$bids[$i]];} else {echo "FEHLER"; exit;}
-			if (!is_file('../../../'.$dd['pfad'])) {$fehler = true; }
+			if (!is_file('../../../'.$dd['pfad'])) {$fehler = true;}
 
       array_push($bilder, $dd);
 		}
@@ -156,7 +156,7 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Galerien/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    if($notifikationen)
+    if (($notifikationen) && ($aktiv))
       cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
 		echo "ERFOLG";

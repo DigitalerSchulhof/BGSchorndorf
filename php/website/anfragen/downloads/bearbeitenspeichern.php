@@ -18,11 +18,9 @@ if (isset($_SESSION['ELEMENTPOSITION'])) {$altposition = $_SESSION['ELEMENTPOSIT
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTID'])) {$id = $_SESSION['ELEMENTID'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];
 
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.download.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -48,11 +46,16 @@ if (cms_angemeldet() && $zugriff) {
 		cms_elemente_verschieben_aendern($dbs, $spalte, $altposition, $position);
 		$titel = cms_texttrafo_e_db($titel);
 		$beschreibung = cms_texttrafo_e_db($beschreibung);
-		if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {
-			$sql = "UPDATE downloads SET position = $position, pfadneu = '$pfad', titelneu = '$titel', beschreibungneu = '$beschreibung', dateinameneu = '$dateiname', dateigroesseneu = '$dateigroesse' WHERE id = $id";
+		if (!cms_r("website.freigeben")) {
+			$sql = $dbs->prepare("UPDATE downloads SET position = ?, pfadneu = ?, titelneu = ?, beschreibungneu = ?, dateinameneu = ?, dateigroesseneu = ? WHERE id = ?");
+			$sql->bind_param("isssssi", $position, $pfad, $titel, $beschreibung, $dateiname, $dateigroesse, $id);
 		}
-		else {$sql = "UPDATE downloads SET position = $position, aktiv = '$aktiv', pfadalt = pfadaktuell, pfadaktuell = '$pfad', pfadneu = '$pfad', titelalt = titelaktuell, titelaktuell = '$titel', titelneu = '$titel', beschreibungalt = beschreibungaktuell, beschreibungaktuell = '$beschreibung', beschreibungneu = '$beschreibung', dateinamealt = dateinameaktuell, dateinameaktuell = '$dateiname', dateinameneu = '$dateiname', dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = '$dateigroesse', dateigroesseneu = '$dateigroesse' WHERE id = $id";}
-		$anfrage = $dbs->query($sql);
+		else {
+			$sql = $dbs->prepare("UPDATE downloads SET position = ?, aktiv = ?, pfadalt = pfadaktuell, pfadaktuell = ?, pfadneu = ?, titelalt = titelaktuell, titelaktuell = ?, titelneu = ?, beschreibungalt = beschreibungaktuell, beschreibungaktuell = ?, beschreibungneu = ?, dateinamealt = dateinameaktuell, dateinameaktuell = ?, dateinameneu = ?, dateigroessealt = dateigroesseaktuell, dateigroesseaktuell = ?, dateigroesseneu = ? WHERE id = ?");
+			$sql->bind_param("isssssssssssi", $position, $aktiv, $pfad, $pfad, $titel, $titel, $beschreibung, $beschreibung, $dateiname, $dateiname, $dateigroesse, $dateigroesse, $id);
+		}
+		$sql->execute();
+		$sql->close();
 		echo "ERFOLG";
 	}
 	else {

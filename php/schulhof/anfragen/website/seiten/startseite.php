@@ -11,17 +11,17 @@ if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Startseite festlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("website.seiten.startseite")) {
 
 	$fehler = false;
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
-		$sql = "UPDATE seiten SET status = 'a' WHERE status = 's'";
-		$anfrage = $dbs->query($sql);
+		$sql = $dbs->prepare("UPDATE seiten SET status = 'a' WHERE status = 's'");
+		$sql->execute();
+	  $sql->close();
 		$sql = $dbs->prepare("UPDATE seiten SET status = 's' WHERE id = ?");
 	  $sql->bind_param("i", $id);
 	  $sql->execute();

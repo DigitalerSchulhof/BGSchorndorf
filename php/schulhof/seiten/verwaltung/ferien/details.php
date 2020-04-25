@@ -1,12 +1,12 @@
 <?php
 function cms_ferien_details_laden($id) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE;
+  global $CMS_SCHLUESSEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
 
-  if (($CMS_RECHTE['Organisation']['Ferien anlegen'] && ($id == '-')) || ($CMS_RECHTE['Organisation']['Ferien bearbeiten'] && ($id != '-'))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("schulhof.organisation.ferien.anlegen")) || (($id != '-') && cms_r("schulhof.organisation.ferien.bearbeiten"))) {$zugriff = true;}
 
   $bez = '';
   $art = '';
@@ -16,16 +16,13 @@ function cms_ferien_details_laden($id) {
   // Falls ein bestehender Ferientermin geladen werden soll
   $dbs = cms_verbinden('s');
   if ($id != "-") {
-	  $sql = "SELECT * FROM ferien WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {
-			if ($daten = $anfrage->fetch_assoc()) {
-        $bez = $daten['bezeichnung'];
-        $art = $daten['art'];
-        $beginn = $daten['beginn'];
-        $ende = $daten['ende'];
-			}
-			$anfrage->free();
+	  $sql = $dbs->prepare("SELECT * FROM ferien WHERE id = ?");
+    $sql->bind_param("i", $id);
+		if ($sql->execute()) {
+      $sql->bind_result($id, $bez, $art, $beginn, $ende, $mehrtaegigt, $idvon, $idzeit);
+			$sql->fetch();
 		}
+    $sql->close();
   }
 
 	if ($fehler) {$zugriff = false;}

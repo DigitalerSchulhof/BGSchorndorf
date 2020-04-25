@@ -13,6 +13,7 @@ function cms_geraete_problembericht_aktiv() {
 
 
 function cms_geraete_problembericht(standort, art, ziel) {
+	var app = app || 'nein';
 	cms_laden_an('Probleme melden', 'Der Problembericht wird zusammengestellt.');
 	var geraeteids = document.getElementById('cms_geraete_meldung_ids').value;
 
@@ -73,8 +74,8 @@ function cms_geraete_problembericht(standort, art, ziel) {
 
 
 function cms_geraete_problembericht_loeschen_anzeigen (standort, art, bezeichnung) {
-	if (art == 'raum') {var ort = 'Raum';}
-	if (art == 'leihgeraet') {var ort = 'Leihgeräte';}
+	if (art == 'r') {var ort = 'Raum';}
+	if (art == 'l') {var ort = 'Leihgeräte';}
 	cms_meldung_an('warnung', 'Problembericht löschen', '<p>Sollen die Meldungen über Mängel für <b>'+ort+' » '+bezeichnung+'</b> wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_geraete_problembericht_loeschen(\''+standort+'\', \''+art+'\', \''+bezeichnung+'\')">Löschung durchführen</span></p>');
 }
 
@@ -209,6 +210,46 @@ function cms_geraete_problembericht_extern (id, ansprechpartner) {
 		}
 		else if (rueckgabe == "ERFOLG") {
 			cms_link('Schulhof/Aufgaben/Geräte_verwalten/Problembericht_bearbeiten');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_geraete_problembericht_hausmeister (id) {
+	cms_laden_an('Gerätestatus ändern', 'Der Gerätestatus wird geändert.');
+	var fehler = false;
+	var meldung = '<p>Der Gerätestatus konnte nicht geändert werden, denn ...</p><ul>';
+
+	var status = document.getElementById('cms_geraete_status_'+id);
+	if (status) {status = status.value;} else {
+		fehler = true;
+		meldung += '<li>Es wurde kein gültiger Status angegeben.</li>';
+	}
+
+	if ((status != 1) && (status != 2) && (status != 3) && (status != 4)) {
+		fehler = true;
+		meldung += '<li>Es wurde kein gültiger Status ausgewählt.</li>';
+	}
+
+	var kommentar = document.getElementById('cms_geraete_kommentar_'+id);
+	if (kommentar) {kommentar = kommentar.value;} else {
+		fehler = true;
+		meldung += '<li>Es wurde kein gültiger Kommentar angegeben.</li>';
+	}
+
+	if (!cms_check_ganzzahl(id, 0)) {fehler = true;}
+
+	var formulardaten = new FormData();
+	formulardaten.append("id", id);
+	formulardaten.append("kommentar", kommentar);
+	formulardaten.append("status", status);
+	formulardaten.append("anfragenziel", 	'378');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Hausmeister');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}

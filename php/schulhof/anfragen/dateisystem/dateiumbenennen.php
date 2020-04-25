@@ -17,9 +17,6 @@ if (isset($_POST['nameneu'])) {$nameneu = $_POST['nameneu'];} else {$nameneu = '
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
-$angemeldet = cms_angemeldet();
-$CMS_RECHTE = cms_rechte_laden();
-
 $zugriff = false;
 $fehler = false;
 $existiert = false;
@@ -50,7 +47,7 @@ else {$fehler = true;}
 $zugriff = $gruppenrechte['dateiumbenennen'];
 
 
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && $zugriff) {
 
 	if (strlen($namealt) < 1) {
 		$fehler = true;
@@ -67,13 +64,15 @@ if ($angemeldet && $zugriff) {
 	$dbs = cms_verbinden('s');
 	// Dateiendungen laden und prüfen
 	$erlaubteendungen = array();
-	$sql = "SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');";
-	if ($anfrage = $dbs->query($sql)) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			array_push($erlaubteendungen, $daten['endung']);
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(endung, '$CMS_SCHLUESSEL') AS endung FROM zulaessigedateien WHERE zulaessig = AES_ENCRYPT('1', '$CMS_SCHLUESSEL');");
+	if ($sql->execute()) {
+		$sql->bind_result($endung);
+		while ($sql->fetch()) {
+			array_push($erlaubteendungen, $endung);
 		}
 	}
 	else {$fehler = false;}
+	$sql->close();
 	cms_trennen($dbs);
 
 	//Neue Endung

@@ -19,8 +19,6 @@ if (!cms_check_toggle($ansichtP)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($ansichtO)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($ansichtF)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 
   $ansichtT = 0;

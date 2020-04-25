@@ -1,8 +1,7 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-  $zugriff = $CMS_RECHTE['Website']['Auffälliges sehen'] || $CMS_RECHTE['Website']['Auffälliges verwalten'];
-  if (!$zugriff) {
+  if (!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
     echo cms_meldung_berechtigung();
   } else {
     $code = "";

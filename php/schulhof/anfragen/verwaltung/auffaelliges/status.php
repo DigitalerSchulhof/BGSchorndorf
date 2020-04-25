@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (isset($_POST['status'])) {$status = $_POST['status'];} else {$status = 0;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 	$fehler = false;
@@ -21,15 +21,21 @@ if (cms_angemeldet()) {
 	if(!cms_check_ganzzahl($status, -1))
 		$fehler = true;
 	if (!$fehler) {
-		if(!$CMS_RECHTE['Website']['Auffälliges verwalten']) {
+		if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 			echo "BERECHTIGUNG";
 			die();
 		}
 		$weilreference0 = 0;
 		$dbs = cms_verbinden('s');
-		$sql = $dbs->prepare("UPDATE auffaelliges SET status = ? WHERE id = ?;");
-		$sql->bind_param("ii", $status, $id);
-	  $sql->execute();
+		if ($status == -1) {
+			$sql = $dbs->prepare("DELETE FROM auffaelliges WHERE id = ?;");
+			$sql->bind_param("i", $id);
+		}
+		else {
+			$sql = $dbs->prepare("UPDATE auffaelliges SET status = ? WHERE id = ?;");
+			$sql->bind_param("ii", $status, $id);
+		}
+		$sql->execute();
 		$sql->close();
 
 		echo "ERFOLG";

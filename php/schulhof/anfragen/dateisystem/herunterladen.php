@@ -19,6 +19,7 @@ $name = $pfadteile[count($pfadteile)-1];
 $dateiteile = explode(".", $name);
 $endung = ".".implode('.', array_slice($dateiteile, 1));
 $sessionid = cms_generiere_sessionid();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $erlaubt = cms_dateicheck('../../../'.$pfad);
 

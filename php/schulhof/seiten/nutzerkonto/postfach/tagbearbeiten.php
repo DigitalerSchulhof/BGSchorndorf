@@ -18,23 +18,21 @@ if (isset($_SESSION["TAGBEARBEITEN"])) {
 }
 else $fehler = true;
 
+if(!cms_check_ganzzahl($tagid, 0)) {$fehler = true;}
+
 // TAGADTEN laden
 if (!$fehler) {
 	$dbp = cms_verbinden('p');
-	$sql = "SELECT farbe, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id = $tagid";
-	if ($anfrage = $dbp->query($sql)) {
-		if ($daten = $anfrage->fetch_assoc()) {
-			$farbe = $daten['farbe'];
-			$titel = $daten['titel'];
-		}
-		else {
-			$fehler = true;
-		}
-		$anfrage->free();
+	$sql = $dbp->prepare("SELECT farbe, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id = ?");
+	$sql->bind_param("i", $tagid);
+	if ($sql->execute()) {
+		$sql->bind_result($farbe, $titel);
+		$sql->fetch();
 	}
 	else {
 		$fehler = true;
 	}
+	$sql->close();
 	cms_trennen($dbp);
 }
 ?>
@@ -53,8 +51,8 @@ if (!$fehler) {
 			echo "<tr><th>Titel:</th><td><input type=\"text\" name=\"cms_postach_tag_titel\" id=\"cms_postach_tag_titel\" value=\"$titel\"></td></tr>";
 			echo "<tr><th>Farbe:</th><td>";
 					$pause = 0;
-					for ($i=0; $i<48; $i++) {
-						if ($pause == 12) {
+					for ($i=0; $i<16*4; $i++) {
+						if ($pause == 16) {
 							echo "<br>";
 							$pause = 0;
 						}

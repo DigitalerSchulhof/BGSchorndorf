@@ -12,16 +12,11 @@ if (isset($_POST['titel'])) {$titel = $_POST['titel'];} else {echo "FEHLER";exit
 if (isset($_POST['farbe'])) {$farbe = $_POST['farbe'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
-
-$CMS_RECHTE = cms_rechte_laden();
+if (!cms_check_ganzzahl($farbe,0,63)) {echo "FEHLER"; exit;}
 
 if (cms_angemeldet()) {
 	$fehler = false;
 	$person = $CMS_BENUTZERID;
-
-	if ((is_nan($farbe)) || ($farbe % 1 != 0) || ($farbe > 47)) {
-		$fehler = true;
-	}
 
 	if (strlen($titel) < 1) {
 		$fehler = true;

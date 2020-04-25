@@ -11,10 +11,9 @@ if (isset($_POST['vollbild'])) {$vollbild = $_POST['vollbild'];} else {echo "FEH
 
 if (!cms_check_toggle($vollbild)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$_SESSION['STUNDENPLANUNGVOLLBILD'] = $vollbild;
 	echo "ERFOLG";
 }

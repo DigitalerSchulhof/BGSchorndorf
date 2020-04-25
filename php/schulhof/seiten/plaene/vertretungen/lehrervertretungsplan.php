@@ -6,14 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Lehrervertretungsplan</h1>";
 
-
-$zugriff = $CMS_RECHTE['Planung']['Lehrervertretungsplan sehen'];
-$fehler = false;
-
-if ($fehler) {$zugriff = false;}
-$angemeldet = cms_angemeldet();
-
-if ($angemeldet && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.information.pläne.stundenpläne.vertretungen.lehrer")) {
 
 	if ($CMS_EINSTELLUNGEN['Vertretungsplan extern'] == '1') {
 		include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplanexternausgeben.php');
@@ -21,9 +14,9 @@ if ($angemeldet && $zugriff) {
 		$code .= cms_vertretungsplan_komplettansicht_aus_datei('l', $CMS_EINSTELLUNGEN['Vertretungsplan Lehrer Folgetag']);
 	}
 	else {
-		include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplanansichtausgeben.php');
-		$code .= cms_vertretungsplan_komplettansicht_heute('l');
-		$code .= cms_vertretungsplan_komplettansicht_naechsterschultag('l');
+		include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
+		$code .= cms_vertretungsplan_komplettansicht_heute($dbs, 'l', 'a');
+		$code .= cms_vertretungsplan_komplettansicht_naechsterschultag($dbs, 'l', 'a');
 	}
 }
 else {

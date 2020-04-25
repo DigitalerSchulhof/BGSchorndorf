@@ -11,10 +11,9 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Ferien löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.löschen")) {
 	$dbs = cms_verbinden('s');
 
 	$sql = $dbs->prepare("DELETE FROM ferien WHERE id = ?");

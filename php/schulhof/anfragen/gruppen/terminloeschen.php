@@ -13,20 +13,19 @@ session_start();
 // Variablen einlesen, falls übergeben
 $zugeordnet = array();
 
-if (isset($_POST['id'])) 			  		 {$terminid = $_POST['id'];} 						      	else {echo "FEHLER1";exit;}
-if (isset($_POST['gruppe'])) 				 {$gruppe = $_POST['gruppe'];} 									else {echo "FEHLER2";exit;}
-if (isset($_POST['gruppenid'])) 		 {$gruppenid = $_POST['gruppenid'];} 						else {echo "FEHLER3";exit;}
-if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER4";exit;}
-if (isset($_SESSION['BENUTZERID']))  {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} 	else {echo "FEHLER5";exit;}
-if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER6";exit;}
-if (!cms_check_ganzzahl($terminid,0)) 			{echo "FEHLER7";exit;}
-if (!cms_valide_gruppe($gruppe)) 						{echo "FEHLER8";exit;}
-if (!cms_check_ganzzahl($gruppenid,0)) 			{echo "FEHLER9";exit;}
+if (isset($_POST['id'])) 			  		 {$terminid = $_POST['id'];} 						      	else {echo "FEHLER";exit;}
+if (isset($_POST['gruppe'])) 				 {$gruppe = $_POST['gruppe'];} 									else {echo "FEHLER";exit;}
+if (isset($_POST['gruppenid'])) 		 {$gruppenid = $_POST['gruppenid'];} 						else {echo "FEHLER";exit;}
+if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER";exit;}
+if (isset($_SESSION['BENUTZERID']))  {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} 	else {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($terminid,0)) 			{echo "FEHLER";exit;}
+if (!cms_valide_gruppe($gruppe)) 						{echo "FEHLER";exit;}
+if (!cms_check_ganzzahl($gruppenid,0)) 			{echo "FEHLER";exit;}
 
 
 $gk = cms_textzudb($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
@@ -41,9 +40,9 @@ if (cms_angemeldet() && $zugriff) {
   $sql->bind_param("i", $terminid);
   if ($sql->execute()) {
     $sql->bind_result($datum, $bezeichnung);
-    if (!$sql->fetch()) {$fehler = true; echo 1;}
+    if (!$sql->fetch()) {$fehler = true;}
   }
-  else {$fehler = true; echo 2;}
+  else {$fehler = true;}
   $sql->close();
 
 	if (!$fehler) {

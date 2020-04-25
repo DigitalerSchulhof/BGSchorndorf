@@ -42,6 +42,7 @@ if (!$fehler) {
 
     include_once('php/schulhof/seiten/blogeintraege/blogeintraegeausgeben.php');
     include_once('php/schulhof/seiten/downloads/downloads.php');
+		include_once('php/schulhof/seiten/verwaltung/artikellinks/links.php');
 		include_once('php/schulhof/seiten/verwaltung/beschluesse/beschluesse.php');
 
     $code .= cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid);
