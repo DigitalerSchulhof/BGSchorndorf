@@ -4,6 +4,7 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../schulhof/funktionen/check.php");
+include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 
 set_time_limit(0);
 
@@ -18,15 +19,18 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   $base_verzeichnis = dirname(__FILE__)."/../../../../..";
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
+  $version = trim(file_get_contents("$base_verzeichnis/version/version"));
+
+  if($version == "") {
+    die("FEHLER");
+  }
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
   mkdir($backup_verzeichnis, null, true);
 
-  cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
-  rename("$backup_verzeichnis/.htaccess", "$base_verzeichnis/.htaccess");
-  rename("$backup_verzeichnis/aktualisiert.php", "$base_verzeichnis/aktualisiert.php");
   file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^(.*)$ aktualisiert.php");
+  cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
 
   // Versionen prüfen und Daten laden
   $curl = curl_init();
@@ -48,28 +52,6 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
 
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
-
-  // $neueSQL = "-- Fehler";
-  // foreach($assets as $a) {
-  //   if($a["name"] == "neueSQL.sql") {
-  //     $assetID = $a["id"];
-  //
-  //     $curl = curl_init();
-  //     $curlConfig = array(
-  //       CURLOPT_URL             => "$GitHub_base_at/releases/assets/$assetID",
-  //       CURLOPT_RETURNTRANSFER  => true,
-  //       CURLOPT_FOLLOWLOCATION  => true,
-  //       CURLOPT_HTTPHEADER      => array(
-  //         "Authorization: token $GITHUB_OAUTH",
-  //         "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
-  //         "Accept: application/octet-stream",
-  //       )
-  //     );
-  //     curl_setopt_array($curl, $curlConfig);
-  //     $neueSQL = curl_exec($curl);
-  //     curl_close($curl);
-  //   }
-  // }
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
@@ -111,9 +93,11 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
 
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
   rename("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
-  unlink("$base_verzeichnis/aktualisiert.php");
-  
+
   cms_v_loeschen($update_verzeichnis);
+
+  include("$base_verzeichnis/version/updatedb.php");
+  unlink("$base_verzeichnis/version/updatedb.php");
 
   echo "ERFOLG";
 }
@@ -157,7 +141,7 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
     if(is_file($ddd)) {
       if(!is_dir("$nach$pfad"))
         @mkdir("$nach$pfad", null, true);
-      rename($ddd, "$nach$pfad/$datei");
+      while(!rename($ddd, "$nach$pfad/$datei")) {sleep(1);};
     } else
       cms_v_verschieben($von, $nach, "$pfad/$datei");
   }

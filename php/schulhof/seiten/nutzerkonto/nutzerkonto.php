@@ -5,10 +5,10 @@ if(cms_r("technik.server.update")) {
 	$GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
 	$basis_verzeichnis = dirname(__FILE__)."/../../../..";
 
-	if(!file_exists("$basis_verzeichnis/version")) {
+	if(!file_exists("$basis_verzeichnis/version/version")) {
 		echo cms_meldung("fehler", "<h4>Ungültige Version</h4><p>Bitte den Administrator benachrichtigen!</p>");
 	} else {
-		$version = trim(file_get_contents("$basis_verzeichnis/version"));
+		$version = trim(file_get_contents("$basis_verzeichnis/version/version"));
 
 		// Versionsverlauf von GitHub holen
 		$curl = curl_init();
@@ -30,13 +30,10 @@ if(cms_r("technik.server.update")) {
 			echo cms_meldung_fehler();
 		else {
 			$neusteversion = $neuste["name"];
-			$neusteversiondatum = $neuste["created_at"];
-			$neusteversionid = $neuste["id"];
-			$assets = $neuste["assets"];
 
 			if(version_compare($neusteversion, $version, "gt")) {
-				echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version für den Digitalen Schulhof verfügbar: <b>".$neusteversion."</b><br>Wir empfehlen, bald­mög­lichst zu aktualisieren</p>");
-				echo "<span class=\"cms_button_wichtig\" onclick=\"cms_link('Schulhof/Verwaltung/Schulhof_aktualisieren')\">Schulhof aktualisieren</span> ";
+				echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version für den Digitalen Schulhof verfügbar: <b>".$neusteversion."</b></p>");
+				echo "<span class=\"cms_button_wichtig\" onclick=\"cms_link('Schulhof/Verwaltung/Update')\">Schulhof aktualisieren</span> ";
 			} else {
 				echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version!</p>");
 			}

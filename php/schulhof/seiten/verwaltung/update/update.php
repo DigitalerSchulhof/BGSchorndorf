@@ -3,6 +3,8 @@
 <h1>Schulhof aktualisieren</h1>
 
 <?php
+  echo cms_meldung("fehler", "<h4>Aktualisieren</h4><p>Der Programmcode sowie die Datenbanken des Digitalen Schulhofs werden aktualisiert. Ist der Vorgang gestartet, wird die gesamte Website für einen Moment nicht erreichbar sein.</p><p>Sollte die Website nach dem Update fehlerhaft funktionieren, ist der Administrator <b>umgehend</b> zu benachrichtigen.");
+
   include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
   use Async\Yaml;
 
@@ -36,7 +38,7 @@
       // Neuerungsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/contents/versionen.yml?ref=updater",
+        CURLOPT_URL             => "$GitHub_base/contents/version/versionen.yml",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
@@ -57,13 +59,17 @@
       $versionen = @Yaml::loadString($versionen);
       $fehler |= is_null($versionen);
       $fehler |= is_null(@$versionen["version"]);
-      $fehler |= !count(@$versionen["version"]);
+      $fehler |= !@count(@$versionen["version"]);
 
       if($fehler) {
         echo cms_meldung_fehler();
       } else {
-        echo cms_meldung("fehler", "<h4>Aktualisieren</h4><p>Der Programmcode sowie die Datenbanken des Digitalen Schulhofs werden aktualisiert. Ist der Vorgang gestartet, wird die gesamte Website für einen Moment nicht erreichbar sein.</p><p>Sollte die Website nach dem Update fehlerhaft funktionieren, ist der Administrator <b>umgehend</b> zu benachrichtigen.");
-        if(version_compare($release["name"], $version, "gt")) {
+        if(version_compare($release["name"], $version, "lt")) {
+          echo cms_meldung_fehler();
+          echo "<div class=\"cms_spalte_2\">";
+            echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
+          echo "</div>";
+        } else if(version_compare($release["name"], $version, "gt")) {
           echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version verfügbar: <b>{$release['name']}</b><br>Die aktuelle Version ist: <b>$version</b></p>");
 
           echo "<div class=\"cms_spalte_2\">";
