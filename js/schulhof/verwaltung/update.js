@@ -6,7 +6,7 @@ function cms_schulhof_aktualisieren() {
   cms_laden_an("Schulhof aktualisieren", "Der Digitale Schulhof wird aktualisiert.<br>Dies kann einige Minuten dauern...");
 
   var formulardaten = new FormData();
-  formulardaten.append("anfragenziel", 	'281' );
+  formulardaten.append("anfragenziel", 	'387' );
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {
       cms_meldung_an('erfolg', 'Schulhof aktualisieren', '<p>Der Digitale Schulhof wurde aktualisiert!</p>', '<p><span class="cms_button" onclick="location.reload()">OK</span></p>');

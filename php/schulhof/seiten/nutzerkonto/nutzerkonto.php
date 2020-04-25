@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 <?php
 // Nach Updates prüfen
-if($CMS_RECHTE["Administration"]["Schulhof aktualisieren"]) {
+if(cms_r("technik.server.update")) {
 	$GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
 	$basis_verzeichnis = dirname(__FILE__)."/../../../..";
 

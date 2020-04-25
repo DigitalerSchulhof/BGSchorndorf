@@ -524,14 +524,13 @@ if (cms_r("schulhof.verwaltung.schule.adressen || schulhof.verwaltung.schule.mai
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if ($CMS_RECHTE['Administration']['Schulhof aktualisieren']) {
+if (cms_r("technik.server.update")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_update\" href=\"Schulhof/Verwaltung/Schulhof_aktualisieren\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_update\" href=\"Schulhof/Verwaltung/Update\">";
 			$code .=  "<h3>Schulhof aktualisieren</h3>";
 			$code .=  "<p>Nach Updates prüfen und aktualisieren.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
-	$tabzahl++;
 }
 
 if (cms_r("statistik.speicherplatz")) {
@@ -571,12 +570,6 @@ if($ausgabe) {
 		<a class="cms_uebersicht_verwaltung_hinweise" href="Schulhof/Verwaltung/Hinweise/">
 			<h3>Hinweise</h3>
 			<p>Hinweise verwalten, sowie Personen zuordnen, die Hinweise schreiben dürfen. Hinweise werden vor der Anmeldung zum Schulhof angezeigt.</p>
-		</a>
-	</li>
-	<li>
-		<a class="cms_uebersicht_verwaltung_speicherplatz" href="Schulhof/Verwaltung/Speicherplatz/">
-			<h3>Speicherplatz</h3>
-			<p>Statistiken über die Verwendung des Online-Speichers, sowie Einstellungen von Speicherlimits.</p>
 		</a>
 	</li>
 	<li>

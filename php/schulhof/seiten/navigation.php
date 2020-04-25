@@ -604,6 +604,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("schulhof.verwaltung.schule.[|adressen,mail]")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuldetails\">Schuldetails</a></li> ";
 	}
+	if (cms_r("technik.server.update")) {
+		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Update\">Schulhof aktualisieren</a></li> ";
+	}
 	if (cms_r("statistik.speicherplatz")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Speicherplatz/Statistik\">Speicherplatzstatistik</a></li> ";
 	}

@@ -9,16 +9,24 @@ set_time_limit(0);
 
 session_start();
 
-$CMS_RECHTE = cms_rechte_laden();
 $dbs = cms_verbinden("s");
 
-if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"]) {
+if (cms_angemeldet() && cms_r("technik.server.update")) {
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
 
   $base_verzeichnis = dirname(__FILE__)."/../../../../..";
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
+
+  // Backup machen
+  cms_v_loeschen($backup_verzeichnis);
+  mkdir($backup_verzeichnis, null, true);
+
+  cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
+  rename("$backup_verzeichnis/.htaccess", "$base_verzeichnis/.htaccess");
+  rename("$backup_verzeichnis/aktualisiert.php", "$base_verzeichnis/aktualisiert.php");
+  file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^(.*)$ aktualisiert.php");
 
   // Versionen prüfen und Daten laden
   $curl = curl_init();
@@ -41,32 +49,27 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
 
-  $neueSQL = "-- Fehler";
-  foreach($assets as $a) {
-    if($a["name"] == "neueSQL.sql") {
-      $assetID = $a["id"];
-
-      $curl = curl_init();
-      $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base_at/releases/assets/$assetID",
-        CURLOPT_RETURNTRANSFER  => true,
-        CURLOPT_FOLLOWLOCATION  => true,
-        CURLOPT_HTTPHEADER      => array(
-          "Authorization: token $GITHUB_OAUTH",
-          "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
-          "Accept: application/octet-stream",
-        )
-      );
-      curl_setopt_array($curl, $curlConfig);
-      $neueSQL = curl_exec($curl);
-      curl_close($curl);
-    }
-  }
-
-  // Backup machen
-  cms_v_loeschen($backup_verzeichnis);
-  mkdir($backup_verzeichnis, null, true);
-  cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
+  // $neueSQL = "-- Fehler";
+  // foreach($assets as $a) {
+  //   if($a["name"] == "neueSQL.sql") {
+  //     $assetID = $a["id"];
+  //
+  //     $curl = curl_init();
+  //     $curlConfig = array(
+  //       CURLOPT_URL             => "$GitHub_base_at/releases/assets/$assetID",
+  //       CURLOPT_RETURNTRANSFER  => true,
+  //       CURLOPT_FOLLOWLOCATION  => true,
+  //       CURLOPT_HTTPHEADER      => array(
+  //         "Authorization: token $GITHUB_OAUTH",
+  //         "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
+  //         "Accept: application/octet-stream",
+  //       )
+  //     );
+  //     curl_setopt_array($curl, $curlConfig);
+  //     $neueSQL = curl_exec($curl);
+  //     curl_close($curl);
+  //   }
+  // }
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
@@ -106,25 +109,12 @@ if (cms_angemeldet() && $CMS_RECHTE["Administration"]["Schulhof aktualisieren"])
   rename("$update_verzeichnis/".$d[2], "$update_verzeichnis/release");
   sleep(1);
 
-  // Dev löschen
-  cms_v_loeschen("$update_verzeichnis/release/datenbanken");
-  cms_v_loeschen("$update_verzeichnis/release/less");
-  @unlink("$update_verzeichnis/release/.gitignore");
-  @unlink("$update_verzeichnis/release/cms_schulhof.sql");
-  @unlink("$update_verzeichnis/release/cms_personen.sql");
-  @unlink("$update_verzeichnis/release/encrypt.php");
-  @unlink("$update_verzeichnis/release/prepared.php");
-
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
+  rename("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
+  unlink("$base_verzeichnis/aktualisiert.php");
+  
   cms_v_loeschen($update_verzeichnis);
 
-  $neueSQL = str_replace('$CMS_SCHLUESSEL', "$CMS_SCHLUESSEL", $neueSQL);
-  $neueSQL = explode("\n", $neueSQL);
-  foreach($neueSQL as $s) {
-    $sql = @$dbs->prepare($s);
-    if($sql !== false)
-      @$sql->execute();
-  }
   echo "ERFOLG";
 }
 else {
@@ -148,8 +138,8 @@ function cms_v_loeschen($pfad) {
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "") {
-  $pfadblacklist = array("/.git/", "/lehrerdateien/", "/backup/", "/update/", "/dateien/", "/css/", "/php/phpmailer/");
-  $dateiblacklist = array("/php/schulhof/funktionen/config.php");
+  $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/", "/css/", "/php/phpmailer/");
+  $dateiblacklist = array("/php/schulhof/funktionen/config.php", "/aktualisiert.php", "/.htaccess");
   foreach($pfadblacklist as $b)
     if(strpos($pfad, rtrim($b, "/")) === 0)
 	   return;

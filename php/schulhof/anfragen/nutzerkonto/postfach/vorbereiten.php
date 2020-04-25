@@ -1,7 +1,7 @@
 <?php
 
 function cms_postfach_empfaengerpool_generieren($dbs) {
-  global $CMS_RECHTE, $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
+  global $CMS_BENUTZERID, $CMS_BENUTZERART, $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERSCHULJAHR;
 
   $empfaengerpool = array();
   if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {return $empfaengerpool;}

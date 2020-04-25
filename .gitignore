@@ -14,8 +14,10 @@
 /res/logos/bglogo.png
 /res/logos/bglogodruck.png
 /res/logos/gfiilogo.png
-/dateien/*
+/dateien
 /prepared.php
+/install.php
+/fix.php
 /encrypt.php
 /cms_lehrerzimmer.sql
 /cms_schulhof.sql
