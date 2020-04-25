@@ -42,7 +42,7 @@
 		use Async\Yaml;
 
 		$aeltere = "";
-		$versionen = Yaml::loader(dirname(__FILE__)."/../../../versionen.yml")["version"];
+		$versionen = Yaml::loader(dirname(__FILE__)."/../../../version/versionen.yml")["version"];
 
 		$version = function ($v, $version, $sichtbar = 0) {
 			$code = "<h4>".$version["version"]." - ".$version["tag"]."</h4>";
