@@ -1,0 +1,215 @@
+# Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
+version:
+  0_5_4:
+    version: 0.5.4
+    tag: Freitag, den 06. September 2019
+    neuerungen:
+      - Behebung diverser kleiner Fehler und Inkompatibilitäten.
+  0_5_3:
+    version: 0.5.3
+    tag: Freitag, den 06. September 2019
+    neuerungen:
+      - Die Dateiverschlüsselung wurde erheblich verbessert.
+      - Der Benutzertyp »extern« wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister).
+      - Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.
+      - Das Hausmeister-Auftragsbuch bietet die Möglichkeit, online Mängel und Wünsche an die Hausmeister zu richten.
+      - An Pinnwänden können Zettel auf bestimmte Zeit angepinnt werden.
+      - "Dauerbrenner wurden eingeführt. Dabei handelt es sich um Seiten, die allgemeine Informationen enthalten, die ständig wiederkehren. Beispiele: Sicherheitshinweise, Abläufe für neue Kollegen etc."
+      - Interne Termine und intere Blogeinträge können nun im Genehmigungscenter genehemigt werden.
+      - Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für »intern«).
+      - In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat ein Nutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button).
+      - Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können.
+  0_5_2:
+    version: 0.5.2
+    tag: Dienstag, den 12. März 2019
+    neuerungen:
+      - Raumbuchungen sind möglich. Räume können zentral blockiert werden.
+      - Die Buchung von Leihgeräten ist möglich. Leihgeräte können zentral blockiert werden.
+      - Das Meldesystem für defekte Geräte wurde überarbeitet und eine Übersicht für Infomonitore wurde ergänzt.
+      - Es kann für jede einzelne Gruppe entschieden werden, ob sich die Mitglieder schreiben dürfen.
+      - Es können Blogeinträge und Termine auch innerhalb von Gruppen angelegt werden, die nicht der Veröffentlichung dienen. Verknüpfte Dateien sind nicht über das Internet frei zugänglich. Ein Nutzerkonto ist nötig.
+      - Der Terminkalender wurde überarbeitet.
+      - Die Sicherheit des Systems wurde verbessert.
+      - Zugriffsstatistiken der Website können eingesehen werden.
+  0_5_1:
+    version: 0.5.1
+    tag: Sonntag, den 17. Februar 2019
+    neuerungen:
+      - Das Postfach wurde dahingehend überarbeitet, dass über die Einstellungen des Schulhofs gesteuert werden kann, welche Benutzergruppe welcher Benutzergruppe schreiben darf.
+      - Downloads sind auch bei Terminen möglich.
+      - Im Postfach können nur noch bis zu einer bestimmten Grenze an Speicher Daten abgelegt werden.
+      - Kleinere Bugs wurden behoben und die Darstellung wurde an einigen Stellen überarbeitet.
+  0_5_0:
+    version: 0.5.0
+    tag: Sonntag, den 10. Februar 2019
+    neuerungen:
+      - Gruppen wurden vereinheitlicht und damit die Stabilität des Schulhofs erhöht.
+      - Termine wurden umgestaltet, sodass nun mehrere Kategorien einem Termin zugewisesen werden können. Außerdem können nun von ganzen Personengruppen Termine unter Vorbehalt erstellt werden.
+      - Blogeinträge wurden umgestaltet, sodass nun mehrere Kategorien einem Blogeintrag zugewisesen werden können. Außerdem können nun von ganzen Personengruppen Blogeinträge unter Vorbehalt erstellt werden.
+      - Termine können sich wiederholen.
+      - Innerhalb eines Tages dürfen keine zwei Termine/Blogeinträge mit gleicher Bezeichnung existieren. (Bisher innerhalb eines Monats.)
+      - Welcher Text bei Blogeinträgen in der Vorschau angezeigt wird, ist ab sofort einstellbar.
+      - Autoren von Blogeinträgen können veröffentlicht werden.
+      - Wenn Termine weitere Informationen als nur das Datum enthalten, wird dies nun durch »Mehr erfahren« angedeutet.
+      - Ferientermine werden nicht mehr als normale Termine dargesetllt, sondern in einem eigenen Ferienplaner.
+      - Auf der Startseite des Nutzerkontos können schnell Notizen gespeichert werden.
+      - Identitäsdiebstähle können direkt gemeldet werden, wenn bemerkt wird, dass die letzte Anmeldung nicht durch die eigene Person erfolgt ist.
+      - Notifikationen wurden überarbeitet und mit Links zum betroffenen Inhalt versehen. <b>Alte Notifikationen wurden gelöscht.</b>
+      - Es kann eingesetllt werden, nach welcher Zeitspanne der Inaktivität sich das System automatisch abmeldet.
+  0_4_4:
+    version: 0.4.4
+    tag: Sonntag, den 02. Dezember 2018
+    neuerungen:
+      - Die Sicherheit des Systems wurde weiter verbessert.
+      - In Postfächern sind Anhänge möglich.
+  0_4_3:
+    version: 0.4.3
+    tag: Sonntag, den 25. November 2018
+    neuerungen:
+      - Auch die Kurrsstufe kann nun online ihren Vertretungsplan einsehen. (Testphase mit limitierter Schülerzahl)<br><b>Der Online-Vertretungsplan ist in der Testphase! Die ausgehängten Vertretungspläne haben Gültigkeit!!</b>
+      - Lehrer können in Gremien und Fachschaften auch ohne VPN Material tauschen, sofern es keine Relevanz für die Verwaltung hat und keine personenbezogenen Daten enthält.
+      - Für Klassen und Kurse stehen Räume zum Datentausch bereit. Damit ist das »Moodle«-Modul nun auch im Schulhof enthalten. Blogeinträge und Chats folgen so bald wie möglich.
+      - Lehrkräfte sowie die Verwaltung haben Einsicht in die Stundenpläne aller Klassen, Lehrkräfte und Räume.
+  0_4_2:
+    version: 0.4.2
+    tag: Sonntag, den 18. November 2018
+    neuerungen:
+      - <b>Willkommen liebe Schüler im digitalen Schulhof!! Ein Traum wird wahr ... :)</b>
+      - Für die Schüler steht der Vertretungsplan online zur Verfügung.<br><b>Der Online-Vertretungsplan ist in der Testphase! Die ausgehängten Vertretungspläne haben Gültigkeit!!</b>
+  0_4_1:
+    version: 0.4.1
+    tag: Sonntag, den 11. November 2018
+    neuerungen:
+      - Für die Lehrer und das Sekretariat stehen die Vertretungspläne online zur Verfügung.
+  0_4_0:
+    version: 0.4.0
+    tag: Sonntag, den 04. November 2018
+    neuerungen:
+      - Klassen und Kurse können angelegt, bearbeitet und gelöscht werden.
+      - Zur Stundenplanung können Zeiträume mit jeweiliger Unterrichtsstundengestaltung angelegt werden.
+      - Die Stundenplanung kann über den Schulhof erfolgen.
+      - Raumpläne können von Lehrern und der Verwaltung eingesehen werden.
+      - Stundenpläne der Lehrer können von Lehrern und der Verwaltung eingesehen werden.
+      - Die Vertretungsplanung kann über den Schulhof erfolgen und wird zunächst erprobt. <b>Die ausgehängten Versionen haben Gültigkeit!!</b>
+  0_3_5:
+    version: 0.3.5
+    tag: Sonntag, den 23. September 2018
+    neuerungen:
+      - Ein kleiner Fehler in der Funktion »Allen Antworten« im Postfach wurde behoben, sodass nun wirklich alle vorigen Empfänger und der Absender als neue Empfänger angegeben werden.
+      - Bei der Veränderung des Monats oder des Jahres im Kalender verändert sich nun automatisch auch die Anzeige unten, in der die zugehörigen Termine angezeigt werden.
+      - Nach dem Auswählen einer Person aus der Personensuche werden die Eingaben aus der Personensuche zurückgesetzt.
+  0_3_4:
+    version: 0.3.4
+    tag: Montag, 03. September 2018
+    neuerungen:
+      - In Gremien und Fachschaften können an Blogeinträge Downloads angehängt werden.
+  0_3_3:
+    version: 0.3.3
+    tag: Samstag, den 01. September 2018
+    neuerungen:
+      - Die Website wird abhängig vom benutzten Gerät verschieden angezeigt. Diese Einstellung kann auch manuell geändert werden.
+  0_3_2:
+    version: 0.3.2
+    tag: Sonntag, den 26. August 2018
+    neuerungen:
+      - Das neue Element »Eventübersicht« ist für die Website verfügbar.
+  0_3_1:
+    version: 0.3.1
+    tag: Freitag, den 24. August 2018
+    neuerungen:
+      - Termine können Texte enthalten.
+      - Auf der Website ist das neue Element »Boxen« verfügbar.
+  0_3_0:
+    version: 0.3.0
+    tag: Samstag, den 21. August 2018
+    neuerungen:
+      - DSGVO-konform wird der Benutzer der Seite nun darüber informiert, dass Cookies gespeichert werden. Das war bisher nicht notwendig, da das bisher nur im Schulhof der Fall war und die Benutzer des Schulhofs diese Information beim Beantragen des Nutzerkontos in Papierform unterschrieben hatten.
+      - Es können öffentliche Seiten für die Website auf beliebig vielen verschienden Ebenen angelegt werden.
+      - Die Navigationen auf der Website in Kopfzeile und Sidebar, sowie in der Fußzeile können festgelegt werden.
+      - Öffentliche Termine werden aus dem Schulhof generiert und auf der Website angezeigt.
+      - Der Texteditor Summernote wurde abgewandelt und in den digitalen Schulhof integriert.
+      - Blogeinträge in Gremien und Fachschaften können mit einem Texteditor, ähnlich wie Word (Pages, OOOWriter), bearbeitet werden.
+      - Auf Websites können Seiten mit dem Texteditor gestaltet werden.
+      - Auf Websites können Downloads erstellt werden.
+      - Der Webmaster kann in allen Gruppen Termine erstellen und hat auf alle Termine Zugriff.
+      - Gruppen, in denen man Mitglied ist, werden auf der Starseite des Schulhofs angezeigt.
+      - Beim Hochladen von Dateien können Bilder unter Angabe der maximalen Seitenlänge automatisch skaliert werden. Das Seitenverhältnis bleibt dabei erhalten.
+      - Der Websiteblog ist bereit zur Verwendung.
+      - Der Websiteblog wird auf der Website angezeigt.
+      - Blogs und Termine gleicher Kategorien verweisen aufeinander.
+      - In allgemeinen Einstellungen kann der Download aus sichtbaren Gremien und Fachschaften für alle Lehrer und das Verwaltungspersonal freigegeben werden.
+      - Der Titel zur Verwaltung von technsichen Defekten in der Ausrüstung wurde von »Raumgeräte« auf »Geräte« verallgemeinert.
+      - Die Sicherheitsstufe für gesicherte Dateien wurde beim Zugriff und beim Download erhöht.
+  0_2_9:
+    version: 0.2.9
+    tag: Donnerstag, den 02. August 2018
+    neuerungen:
+      - Ein Problem mit nicht angezeigten Terminen in diversen Kalendern wurde behoben.
+      - Ein Problem mit fäschlicherweise angezeigten Symbolen zum Bearbeiten von Terminen in den Kalendern »Sonstige« wurde behoben.
+  0_2_8:
+    version: 0.2.8
+    tag: Sonntag, den 29. Juli 2018
+    neuerungen:
+      - Leihgeräte können angelegt werden.
+      - In Fachschaften können Fachabteilungsleiter hinterlegt werden.
+      - Termine aller sichtbaren Gremien und Fachschaften können in Kalendern zur Abstimmung von Terminüberschneidungen angezeigt werden. Zudem wurde die Zugriffszeit auf Termine verbessert. Dies wird allerdings jetzt kaum spürbar sein, da sich diese erst mit zunehmender Terminanazhl im Schulhof bemerkbar machen wird.
+      - Ein Problem mit Notifikationen wurde behoben, sodass nun nicht mehr zu viele Schulhofnutzer Notifikationen erhalten.
+      - Ein Problem mit fehlenden Verweisen auf Fachschaften und Gremien im Nutzerprofil wurde behoben.
+      - Ein Problem beim Bearbeiten und Erstellen von Schuljahren wurde behoben.
+  0_2_7:
+    version: 0.2.7
+    tag: Mittwoch, den 11. Juli 2018
+    neuerungen:
+      - Als öffentlich markierte Termine werden bei allen Nutzern des Schulhofs als »Ereignis« angezeigt. Außerdem werden nun auch Notifikationen an alle verschickt, sofern diese Termine genehmigt sind.
+  0_2_6:
+    version: 0.2.6
+    tag: Montag, den 09. Juli 2018
+    neuerungen:
+      - Für jeden Raum sind nun beliebig viele Geräte anlegbar. Die Problemmeldung ist auch weiterhin möglich. Die interne Geräteverwaltung kann nun Hinweise zum aktuellen Gerätestatus geben. Außerdem können automatisch generierte Mails mit Tickets an die externe Geräteverwaltung geschickt werden. Diese kann die Geräte per Link wieder freigeben.
+      - Ein Problem beim Schreiben an alle in Gruppen, die auch Mitglieder ohne Benutzerkonto enthält, wurde behoben.
+  0_2_5:
+    version: 0.2.5
+    tag: Dienstag, den 03. Juli 2018
+    neuerungen:
+      - Durch ein geringfügiges Face-Lifting wurde die Bedienbarkeit des digitalen Schulhofs verbessert. (Navigationen verschwinden mit Verzögerungen, ...)
+      - Zur besseren Identifikation einzelner Gruppen, kann jeder Gruppe nun ein Icon zugeteilt werden.
+      - Durch gezielte Notifikationen werden die Nutzer des Schulhofs darüber informiert, was sich seit dem letzten Besuch verändert hat.
+      - Schulweite Termine können erstellt werden.
+      - Termine aus Gremien bedürfen der Genehmigung durch dazu berechtigte Personen. Aufgrund der nötigen Datenstrukturänderung wurden alte Termine gelöscht.
+  0_2_4:
+    version: 0.2.4
+    tag: Dienstag, den 19. Juni 2018
+    neuerungen:
+      - Personen können unabhängig von Nutzerkonten eingerichtet werden. Dabei werden von diesen Personen nur Daten gespeichert, die auf einer rechtlichen Grundlage beruhen.
+  0_2_3:
+    version: 0.2.3
+    tag: Montag, den 04. Juni 2018
+    neuerungen:
+      - "Anpassung an die EU-DSGVO: Die Vorschriften der EU-DSGVO wurden umgesetzt. Entsprechende Informationsseiten wurden erstellt, die über die Rechte der Nutzer aufklären. Außerdem kann jeder Nutzer alle über ihn/sie hinterlegten Daten per Mausklick einsehen. Die Möglichkeit das Benutzerkonto selbstständig zu löschen, bestand von Beginn an. (Einzige Ausnahme ist der Administrator, der auch weiterhin nicht gelöscht werden kann, da er/sie für die Einhaltung u.A. der EU-DSGVO   verantwortlich ist.)"
+      - Klassenstufen können angelegt, verwaltet und gelöscht werden.
+      - Fächer können angelegt, verwaltet und gelöscht werden.
+      - Listen von Lehrern und Verwaltungspersonal können von Lehrern und Verwaltungspersonal zum schnellen Kontakt eingesehen werden.
+      - Menüpunkte erscheinen nur noch, wenn sich dahinter für die jeweiligen Nutzer auch Funktionen verbergen. Unnötige Menüpunkte werden ausgeblendet.
+      - Es wird nicht mehr auf künftige Funktionsumfangserweiterungen hingewiesen. Diese sind diesem Neuerungenlogbuch zu entnehmen.
+      - In Gremien können jetzt auch Dateien hoch- und heruntergeladen werden. Der Download von ganzen Verzeichnissen ist ebenfalls möglich.
+      - Fachschaften stehen jetzt zur Verfügung.
+      - Bei Änderungen in Fachschaften und Gremien werden Notifikationen und - je nach Einstellung - auch Benachrichtigungen per E-Mail versendet.
+      - Ferientermine können im Schulhof hinterlegt werden.
+      - Der persönliche Kalender steht zur Verfügung. Dabei kann zwischen verschiedenen Ansichten (Tag, Woche, Monat, Jahr) gewählt werden. Einzelne Terminkategorien können ein- oder ausgeblendet werden.
+  0_2_2:
+    version: 0.2.2
+    tag: Sonntag, den 08. April 2018
+    neuerungen:
+      - "Mehr Datenschutz: Onlinezeiten können nur von explizit dazu berechtigten Personen eingesehen werden. Benutzername und E-Mail-Adresse kann nur von den Personen eingesehen werden, die sie auch bearbeiten können."
+      - "Postfach: Probleme mit Nachrichten an mehr als eine Person behoben."
+      - Der gesicherte Lehrerbereich ist jetzt erreichbar.
+      - In Gremien können Blogeinträge und Beschlüsse erstellt werden und diese nach Schuljahr und Datum sortiert gesucht werden.
+  0_2_1:
+    version: 0.2.1
+    tag: Mittwoch, den 04. April 2018
+    neuerungen:
+      - Die Anmeldung und das Anfordern eines neuen Passworts ist auch mit der Eingabetaste möglich.
+      - Die Suche nach Personen und Nachrichten ist unabhängig von Groß- und Kleinschreibung.
+      - Auch gesendete Nachrichten können nach Empfänger durchsucht werden.
+      - Die Menüführung wird auch für Tablets und hochauflösende Smartphones unterstützt.
+      - Kleinere Änderungen an der Darstellung zur besseren Sichtbarkeit von Symbolen und Texten wurden durchgeführt.,

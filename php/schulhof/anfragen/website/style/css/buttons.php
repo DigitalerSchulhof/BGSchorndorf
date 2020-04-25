@@ -293,10 +293,6 @@ td>.cms_aktion_klein {
 	font-weight: bold;
 }
 
-.cms_toggleeinblenden {
-	margin-top: 30px;
-}
-
 h1+.cms_toggleeinblenden,
 h2+.cms_toggleeinblenden,
 h3+.cms_toggleeinblenden,
