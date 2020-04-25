@@ -34,8 +34,6 @@ if(cms_r("technik.server.update")) {
 			if(version_compare($neusteversion, $version, "gt")) {
 				echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version für den Digitalen Schulhof verfügbar: <b>".$neusteversion."</b></p>");
 				echo "<span class=\"cms_button_wichtig\" onclick=\"cms_link('Schulhof/Verwaltung/Update')\">Schulhof aktualisieren</span> ";
-			} else {
-				echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version!</p>");
 			}
 		}
 	}
