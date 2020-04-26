@@ -20,7 +20,7 @@ if (isset($_POST['feld'])) {$feld = $_POST['feld'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['gruppe'])) {$gruppe= $_POST['gruppe'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 $zugriff = true;
 
@@ -96,16 +96,15 @@ if (cms_angemeldet() && $zugriff) {
 		$sqlwhere = "WHERE ".$sqlwhere;
 	}
 
-	$sql = "SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, nutzerkonten.id AS nutzerkonto FROM personen LEFT JOIN nutzerkonten ON nutzerkonten.id = personen.id) AS personen $sqlwhere ORDER BY nachname ASC, vorname ASC";
+	$sql = $dbs->prepare("SELECT * FROM (SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname FROM personen) AS personen $sqlwhere ORDER BY nachname ASC, vorname ASC");
 
-	$anfrage = $dbs->query($sql);	// Safe weil ID Check
-
-	if ($anfrage) {
-		while ($daten = $anfrage->fetch_assoc()) {
-			$ausgabe .= $daten['id'].",".$daten['art'].",".cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']).";";
+	if ($sql->execute()) {
+		$sql->bind_result($pid, $part, $ptitel, $pnachname, $pvorname);
+		while ($sql->fetch()) {
+			$ausgabe .= "$pid,$part,".cms_generiere_anzeigename($pvorname, $pnachname, $ptitel).";";
 		}
-		$anfrage->free();
 	}
+	$sql->close();
 	cms_trennen($dbs);
 
 	echo $ausgabe;

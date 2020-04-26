@@ -15,9 +15,9 @@ $code .= "<h2>Schülerdaten</h2>";
 $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibweise des Namens muss der auf der Geburtsurkunde entsprechen.</p>";
 
   // Werte laden
-  if (isset($_SESSION['VORANMELDUNG_S_NACHNAME'])) {$nachname = $_SESSION['VORANMELDUNG_S_NACHNAME'];} else {$nachname = "";}
   if (isset($_SESSION['VORANMELDUNG_S_VORNAME'])) {$vorname = $_SESSION['VORANMELDUNG_S_VORNAME'];} else {$vorname = "";}
   if (isset($_SESSION['VORANMELDUNG_S_RUFNAME'])) {$rufname = $_SESSION['VORANMELDUNG_S_RUFNAME'];} else {$rufname = "";}
+  if (isset($_SESSION['VORANMELDUNG_S_NACHNAME'])) {$nachname = $_SESSION['VORANMELDUNG_S_NACHNAME'];} else {$nachname = "";}
   if (isset($_SESSION['VORANMELDUNG_S_GEBURTSDATUM'])) {$geburtsdatum = $_SESSION['VORANMELDUNG_S_GEBURTSDATUM']; $geburtsdatumgeladen = true;}
   else {$geburtsdatum = time(); $geburtsdatumgeladen = false;}
   if (isset($_SESSION['VORANMELDUNG_S_GEBURTSORT'])) {$geburtsort = $_SESSION['VORANMELDUNG_S_GEBURTSORT'];} else {$geburtsort = "";}
@@ -29,10 +29,12 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
   if (isset($_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'])) {$religionsunterricht = $_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'];} else {$religionsunterricht = "";}
   if (isset($_SESSION['VORANMELDUNG_S_LAND1'])) {$land1 = $_SESSION['VORANMELDUNG_S_LAND1'];} else {$land1 = "";}
   if (isset($_SESSION['VORANMELDUNG_S_LAND2'])) {$land2 = $_SESSION['VORANMELDUNG_S_LAND2'];} else {$land2 = "";}
+  if (isset($_SESSION['VORANMELDUNG_S_IMPFUNG'])) {$impfung = $_SESSION['VORANMELDUNG_S_IMPFUNG'];} else {$impfung = 0;}
   if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$strasse = $_SESSION['VORANMELDUNG_S_STRASSE'];} else {$strasse = "";}
   if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$hausnummer = $_SESSION['VORANMELDUNG_S_HAUSNUMMER'];} else {$hausnummer = "";}
   if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$plz = $_SESSION['VORANMELDUNG_S_PLZ'];} else {$plz = "";}
   if (isset($_SESSION['VORANMELDUNG_S_ORT'])) {$ort = $_SESSION['VORANMELDUNG_S_ORT'];} else {$ort = "";}
+  if (isset($_SESSION['VORANMELDUNG_S_STAAT'])) {$staat = $_SESSION['VORANMELDUNG_S_STAAT'];} else {$staat = "";}
   if (isset($_SESSION['VORANMELDUNG_S_TEILORT'])) {$teilort = $_SESSION['VORANMELDUNG_S_TEILORT'];} else {$teilort = "";}
   if (isset($_SESSION['VORANMELDUNG_S_TELEFON1'])) {$telefon1 = $_SESSION['VORANMELDUNG_S_TELEFON1'];} else {$telefon1 = "";}
   if (isset($_SESSION['VORANMELDUNG_S_TELEFON2'])) {$telefon2 = $_SESSION['VORANMELDUNG_S_TELEFON2'];} else {$telefon2 = "";}
@@ -115,6 +117,7 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
       $code .= "<option value=\"".$l['wert']."\"$zusatz>".$l['bezeichnung']."</option>";
     }
     $code .= "</td></tr>";
+    $code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_schieber_generieren('voranmeldung_schueler_impfung', $impfung)."</td></tr>";
   $code .= "</table>";
   $code .= "</div>";
   $code .= "</div>";
@@ -125,6 +128,12 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
   $code .= "<tr><th>Straße und Hausnummer:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_strasse\" id=\"cms_voranmeldung_schueler_strasse\" class=\"cms_gross\" value=\"$strasse\"> <input type=\"text\" name=\"cms_voranmeldung_schueler_hausnummer\" id=\"cms_voranmeldung_schueler_hausnummer\" class=\"cms_klein\" value=\"$hausnummer\"></td></tr>";
   $code .= "<tr><th>Postleitzahl und Ort:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_postleitzahl\" id=\"cms_voranmeldung_schueler_postleitzahl\" class=\"cms_klein\" value=\"$plz\"> <input type=\"text\" name=\"cms_voranmeldung_schueler_ort\" id=\"cms_voranmeldung_schueler_ort\" class=\"cms_gross\" value=\"$ort\"></td></tr>";
   $code .= "<tr><th>Teilort:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_teilort\" id=\"cms_voranmeldung_schueler_teilort\" value=\"$teilort\"></td></tr>";
+  $code .= "<tr><th>Staat:</th><td><select name=\"cms_voranmeldung_schueler_staat\" id=\"cms_voranmeldung_schueler_staat\">";
+  foreach ($laender as $l) {
+    if ($l['wert'] == $staat) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+    $code .= "<option value=\"".$l['wert']."\"$zusatz>".$l['bezeichnung']."</option>";
+  }
+  $code .= "</td></tr>";
   $code .= "<tr><th>Telefonnummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_telefon1\" id=\"cms_voranmeldung_schueler_telefon1\" value=\"$telefon1\"></td></tr>";
   $code .= "<tr><th>Telefonnummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_telefon2\" id=\"cms_voranmeldung_schueler_telefon2\" value=\"$telefon2\"></td></tr>";
   $code .= "<tr><th>Handynummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_handy1\" id=\"cms_voranmeldung_schueler_handy1\" value=\"$handy1\"></td></tr>";

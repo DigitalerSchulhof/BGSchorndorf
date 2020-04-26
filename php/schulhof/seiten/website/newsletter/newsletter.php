@@ -5,10 +5,10 @@
 
 <?php
 
-$bearbeiten = $CMS_RECHTE['Website']['Newsletter bearbeiten'];
-$loeschen = $CMS_RECHTE['Website']['Newsletter löschen'];
-$anlegen = $CMS_RECHTE['Website']['Newsletter anlegen'];
-$sehen = $CMS_RECHTE["Website"]["Newsletter Empfängerliste sehen"];
+$anlegen    = cms_r("schulhof.information.newsletter.anlegen");
+$bearbeiten = cms_r("schulhof.information.newsletter.bearbeiten");
+$loeschen   = cms_r("schulhof.information.newsletter.löschen");
+$sehen      = cms_r("schulhof.information.newsletter.empfänger.sehen");
 $anzeigen = $bearbeiten || $loeschen || $anlegen || $sehen;
 
 $canzeigen = "";
@@ -20,22 +20,36 @@ $canzeigen .= '<thead>';
 $canzeigen .= '<tr><th></th><th>Bezeichnung</th><th></th><th>Aktionen</th>';
 $canzeigen .= "</thead>";
 $canzeigen .= '<tbody id="cms_verwaltung_newsletter">';
-$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM newslettertypen";
 $newsletter = "";
 
-$anfrage = $dbs->query($sql);
-while ($daten = $anfrage->fetch_assoc()) {
+$NEWSLETTER = array();
+$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM newslettertypen");
+if ($sql->execute()) {
+  $sql->bind_result($nid, $nbez);
+  while ($sql->fetch()) {
+    $N = array();
+    $N['id'] = $nid;
+    $N['bezeichnung'] = $nbez;
+    array_push($NEWSLETTER, $N);
+  }
+}
+$sql->close();
+
+
+foreach ($NEWSLETTER AS $daten) {
   $newsletter .= '<tr><td><img src="res/icons/klein/newsletter.png"></td><td>'.$daten['bezeichnung'].'</td>';
   $zuordnungen = "";
   foreach ($CMS_GRUPPEN as $g) {
     $gk = cms_textzudb($g);
-    $sql = "SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = ".$daten['id'].") AS x ORDER BY bezeichnung ASC";
-    if ($anfrage2 = $dbs->query($sql)) {
-      while ($z = $anfrage2->fetch_assoc()) {
-        $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">".$g." » ".$z['bezeichnung']."</span><img src=\"res/gruppen/klein/".$z['icon']."\"></span> "; ;
+    $sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk"."newsletter JOIN $gk ON gruppe = id WHERE newsletter = ?) AS x ORDER BY bezeichnung ASC");
+    $sql->bind_param("i", $daten['id']);
+    if ($sql->execute()) {
+      $sql->bind_result($zbez, $zicon);
+      while ($sql->fetch()) {
+        $zuordnungen .= "<span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">$g » $zbez</span><img src=\"res/gruppen/klein/$zicon\"></span> ";
       }
-      $anfrage2->free();
     }
+    $sql->close();
   }
   $newsletter .= "<td>$zuordnungen</td>";
   $newsletter .= "<td>";
@@ -51,7 +65,7 @@ while ($daten = $anfrage->fetch_assoc()) {
   $newsletter .= '</td>';
   $newsletter .= '</tr>';
 }
-$anfrage->free();
+
 if (strlen($newsletter) == 0)
   $canzeigen .= "<tr><td colspan=\"4\" class=\"cms_notiz\">-- keine Newsletter vorhanden --</td></tr>";
 else
@@ -62,7 +76,7 @@ $canzeigen .= '</tbody>';
 $canzeigen .= '</tr>';
 $canzeigen .= '</table>';
 
-if ($CMS_RECHTE['Website']['Newsletter löschen']) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen_vorbereiten()">Alle Newsletter löschen</span></p>';}
+if (cms_r("schulhof.information.newsletter.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen_vorbereiten()">Alle Newsletter löschen</span></p>';}
 
 cms_trennen($dbs);
 

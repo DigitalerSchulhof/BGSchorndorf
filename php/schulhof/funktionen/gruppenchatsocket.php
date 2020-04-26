@@ -9,8 +9,8 @@ include_once("php/schulhof/funktionen/generieren.php");
 include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 include_once("php/allgemein/funktionen/sql.php");
 
-define('HOST_NAME', $CMS_DOMAIN);
-define('PORT', "12345");
+define('HOST_NAME', $CMS_SOCKET_IP);
+define('PORT', 			$CMS_SOCKET_PORT);
 $null = NULL;
 
 $debug = false;
@@ -59,15 +59,8 @@ $clientSockets = array($socket);
 $unbekannt = array();
 echo "Starte Socket auf ".HOST_NAME.":".PORT."\n\n";
 while (true) {
-	foreach($unbekannt as $k => $v) {
-		if(time() > $v["verbunden"] + 60) {	// 60 Sekunden für Authentifikation
-			clientSchmeissen($v["socket"]);
-			unset($unbekannt[$k]);
-		}
-	}
-
 	$updatePruefenSockets = $clientSockets;
-	socket_select($updatePruefenSockets, $null, $null, 0, 10);
+	@socket_select($updatePruefenSockets, $null, $null, 0, 10);
 
 	if (in_array($socket, $updatePruefenSockets)) {
 		$neuerClient = socket_accept($socket);
@@ -83,13 +76,13 @@ while (true) {
 		// Hax
 		$index = array_search($socket, $updatePruefenSockets);
 		unset($updatePruefenSockets[$index]);
-		if($debug)
-			debug("Neuer Client verbunden");
+		debug("Neuer Client verbunden");
 	}
 
 	foreach ($updatePruefenSockets as $clientSocket) {
 		while(socket_recv($clientSocket, $socketData, 1024, 0) >= 1){
 			$socketMessage = $socketHandler->unseal($socketData);
+			debug("Neue Nachricht: »{$socketMessage}«");
 			$nachricht = json_decode($socketMessage, true);
 
 			if($nachricht == null || !isset($nachricht["status"]))
@@ -123,13 +116,21 @@ while (true) {
 			$kickClientIndex = array_search($clientSocket, $clientSockets);
 			if(isset($socketInfos[intval($clientSocket)])) {
 				$infos = $socketInfos[intval($clientSocket)];
-				isset($infos["id"]) ? debug("Nutzer ".$infos["id"]." getrennt") : debug("Client getrennt");
+				isset($infos["id"]) ? debug("Nutzer »".$infos["id"]."« getrennt") : debug("Client getrennt");
 				if(($index = array_search($clientSocket, $verbunden[$infos["g"]][$infos["gid"]][$infos["id"]])) !== false)
 					unset($verbunden[$infos["g"]][$infos["gid"]][$infos["id"]][$index]);
 				unset($verbunden[$infos["g"]][$infos["gid"]][$infos["id"]]);
 				unset($socketInfos[intval($clientSocket)]);
 			}
 			unset($clientSockets[$kickClientIndex]);
+		}
+	}
+
+	foreach($unbekannt as $k => $v) {
+		if(time() > $v["verbunden"] + 60) {	// 60 Sekunden für Authentifikation
+			debug("Timeout bei Authentifikation");
+			clientSchmeissen($v["socket"]);
+			unset($unbekannt[$k]);
 		}
 	}
 }
@@ -195,7 +196,7 @@ class SocketHandler {
 		"Upgrade: websocket\r\n" .
 		"Connection: Upgrade\r\n" .
 		"WebSocket-Origin: $host_name\r\n" .
-		"WebSocket-Location: ws://$host_name:$port/schulhof/gruppenchat/socket.php\r\n".
+		"WebSocket-Location: wss://$host_name:$port/schulhof/gruppenchat/socket.php\r\n".
 		"Sec-WebSocket-Accept:$secAccept\r\n\r\n";
 
 		socket_write($client_socket_resource,$buffer,strlen($buffer));
@@ -223,7 +224,7 @@ function senden($socket, $status, $daten) {
 
 function clientDaten($clientSocket) {
 	global $socketInfos;
-	$infos = $socketInfos[intval($clientSocket)];
+	$infos = $socketInfos[intval($clientSocket)] ?? false;
 	if($infos)
 		return array("g" => $infos["g"], "gid" => $infos["gid"], "id" => $infos["id"]);
 	return null;
@@ -231,22 +232,28 @@ function clientDaten($clientSocket) {
 
 function clientSchmeissen($clientSocket) {
 	global $clientSockets, $verbunden;
-	debug("Client geschmissen");
 	$index = array_search($clientSocket, $clientSockets);
-	socket_close($clientSocket);
 	unset($clientSockets[$index]);
-	if(($daten = clientDaten($clientSocket)) !== null)
+
+	@socket_close($clientSocket);
+
+	if(($daten = clientDaten($clientSocket)) !== null) {
 		unset($verbunden[$infos["g"]][$infos["gid"]][$infos["id"]]);
+		debug("War g: »{$infos['g']}« - gid: »{$infos['gid']}« - id: »{$infos['id']}«");
+	} else {
+		debug("War nicht authentifiziert");
+	}
+	debug("Client geschmissen");
 }
 
 function anGruppeSenden($g, $gid, $d, $i, $id, $name, $nid, $cid) {
 	global $verbunden;
 	if(!isset($verbunden[$g][$gid]))
 		return;
-	debug("Sende Nachricht an $g#$gid\n");
+	debug("Sende Nachricht an »$g#{$gid}«");
 	foreach($verbunden[$g][$gid] as $nuid => $sockets) {
 		foreach($sockets as $k => $s) {
-			debug("Nachricht an Nutzer $nuid#$k gesandt");
+			debug("Nachricht an Nutzer »$nuid#${k}« gesandt");
 			$n = array(
 				"id" => $nid,
 				"person" => $id,
@@ -260,13 +267,12 @@ function anGruppeSenden($g, $gid, $d, $i, $id, $name, $nid, $cid) {
 			senden($s, "3", $n);
 		}
 	}
-	debug("\n");
 }
 
 function debug($string) {
 	global $debug;
 	if($debug)
-		echo $string."\n";
+		echo date("H:i:s")." - ".$string."\n";
 }
 
 function anGruppeSendenR($g, $gid, $status, $daten) {
@@ -288,7 +294,7 @@ function authentifizieren($nachricht, $socket) {
 	$sessid = $nachricht["sessid"];
 
 	debug("Starte Authentifikation");
-	debug("g: $g - gid: $gid - sessid: $sessid");
+	debug("g: »{$g}« - gid: »{$gid}« - sessid: »{$sessid}«");
 
 	$angemeldet = false;
 	foreach($unbekannt as $i => $v) {
@@ -309,6 +315,7 @@ function authentifizieren($nachricht, $socket) {
 	$sql->bind_param("s", $sessid);
 	$sql->bind_result($id);
 	if(!$sql->execute() || !$sql->fetch()) {
+		debug("Authentifikation fehlgeschlagen!");
 		return false;
 	}
 	$sql->close();
@@ -360,7 +367,7 @@ function authentifizieren($nachricht, $socket) {
 	$sql->bind_param("i", $id);
 	$sql->bind_result($nid, $p, $d, $i, $m, $ls, $v, $n, $t, $sm);
 	$sql->execute();
-	while($sql->fetch())
+	while($sql->fetch()) {
 		$daten["nachrichten"][] = array(
 			"id" => $nid,
 			"person" => $p,
@@ -371,16 +378,20 @@ function authentifizieren($nachricht, $socket) {
 			"name" => cms_generiere_anzeigename($v, $n, $t),
 			"geloescht" => !!$ls,	// (bool)
 			"eigen" => $p == $id);
+	}
 	$daten["loeschen"] = $rechte["nachrichtloeschen"];
 	$daten["stummschalten"] = $rechte["nutzerstummschalten"];
 	$daten["stumm"] = $bannbis;
 	$daten["leer"] = !count($daten["nachrichten"]);
-	$daten["mehr"] = count($daten["nachrichten"]) > $limit;
-	array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+	$daten["mehr"] = false;
+	if(count($daten["nachrichten"]) > $limit) {
+		$daten["mehr"] = true;
+		array_pop($daten["nachrichten"]);	// Es wird Eine zu viel in der SQL geladen, um zu prüfen, ob noch Nachrichten nachzuladen sind (Anzahl an Nachrchten > $limit)
+	}
 	$daten["nachrichten"] = array_reverse($daten["nachrichten"]);
 	senden($socket, "2", $daten);
 
-	debug("Authentifikation für Nutzer $id erfolgreich\n");
+	debug("Authentifikation für Nutzer »{$id}« erfolgreich");
 
 	return true;
 }
@@ -398,7 +409,7 @@ function nachrichtSenden($nachricht, $socket) {
 	$gid = $daten["gid"];
 
 	debug("Eingehende Nachricht");
-	debug("g: $g - gid: $gid - id: $id");
+	debug("g: »{$g}« - gid: »{$gid}« - id: »{$id}«");
 
 	$inhalt = htmlentities($inhalt);
 
@@ -409,7 +420,7 @@ function nachrichtSenden($nachricht, $socket) {
 
 	$gebannt = 1;
 	// Stummschaltung prüfen
-	$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND chatbannbis < ".time();
+	$sql = "SELECT COUNT(*) FROM $gk"."mitglieder WHERE person = ? AND gruppe = ? AND (chatbannbis < ".time()." OR chatbannbis IS NULL)";
 	$sql = $dbs->prepare($sql);
 	$sql->bind_param("ii", $id, $gid);
 	$sql->bind_result($gebannt);
@@ -459,7 +470,7 @@ function nachrichtSenden($nachricht, $socket) {
 	$sql->close();
 
 	anGruppeSenden($g, $gid, $jetzt, $inhalt, $id, cms_generiere_anzeigename($v, $n, $t), $nid, $nachricht["cid"]);
-	debug("Eingehende Nachricht ok\n");
+	debug("Eingehende Nachricht ok");
 	return true;
 }
 
@@ -480,7 +491,7 @@ function nachrichtenNachladen($nachricht, $socket) {
 	$gid = $daten["gid"];
 
 	debug("Nachrichten Nachladen");
-	debug("g: $g - gid: $gid - id: $id - lid: $lid");
+	debug("g: »{$g}« - gid: »{$gid}« - id: »{$id}« - lid: »{$lid}«");
 
 	// Rechtecheck
 	$rechte = cms_gruppenrechte_laden($dbs, $g, $gid, $id);
@@ -545,7 +556,7 @@ function nachrichtLoeschen($nachricht, $socket) {
 	$gid = $daten["gid"];
 
 	debug("Nachricht löschen");
-	debug("g: $g - gid: $gid - id: $id - lid: $lid");
+	debug("g: »{$g}« - gid: »{$gid}« - id: »{$id}« - lid: »{$lid}«");
 
 	// Rechtecheck
 	$rechte = cms_gruppenrechte_laden($dbs, $g, $gid, $id);
@@ -567,7 +578,7 @@ function nachrichtLoeschen($nachricht, $socket) {
 	$sql->execute();
 
 	anGruppeSendenR($g, $gid, "4", array("inhalt" => "<img src=\"res/icons/klein/geloescht.png\" height=\"10\"> Vom Administrator gelöscht", "lid" => $lid));
-	debug("Nachricht gelöscht\n");
+	debug("Nachricht gelöscht");
 	return true;
 }
 
@@ -596,7 +607,7 @@ function chatterBannen($nachricht, $socket) {
 	$gid = $daten["gid"];
 
 	debug("Nutzer stummschalten");
-	debug("g: $g - gid: $gid - id: $id - nid: $nid - bannbis: $bannbis");
+	debug("g: »{$g}« - gid: »{$gid}« - id: »{$id}« - nid: »{$nid}« - bannbis: »{$bannbis}«");
 
 	// Rechtecheck
 	$rechte = cms_gruppenrechte_laden($dbs, $g, $gid, $id);
@@ -631,7 +642,7 @@ function chatterBannen($nachricht, $socket) {
 			senden($v, "5", array("stumm" => $bannbis));
 		}
 
-	debug("Nutzer stummgeschalten\n");
+	debug("Nutzer stummgeschalten");
 
 	return true;
 }

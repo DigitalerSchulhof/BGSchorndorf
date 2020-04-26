@@ -22,10 +22,9 @@ if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; 
 if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {$SCHULJAHR = $_SESSION['ZEITRAUMSCHULJAHR'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITRAUMSTUNDENPLANIMPORT'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 
 	if (strlen($csv) == 0) {$fehler = true;}
@@ -149,6 +148,7 @@ if (cms_angemeldet() && $zugriff) {
 			$text = preg_replace("/^IMP I$/", 'IMP', $text);
 			$text = preg_replace("/^IMP M$/", 'IMP', $text);
 			$text = preg_replace("/^VKB Vorbereitungskurs Bili$/", 'VKB', $text);
+			$text = preg_replace("/^EB$/", 'VKB', $text);
 			return $text;
 		}
 

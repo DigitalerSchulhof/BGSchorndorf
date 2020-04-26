@@ -6,14 +6,12 @@ include_once("../../schulhof/funktionen/check.php");
 
 session_start();
 
-$CMS_RECHTE = cms_rechte_laden();
+
 if (isset($_POST['zuordnen'])) {$zuordnen = $_POST['zuordnen'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITRAUMSTUNDENPLANIMPORT'];} else {echo "FEHLER"; exit;}
 if (!cms_check_toggle($zuordnen)) {echo "FEHLER"; exit;}
 
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 	$dbs = cms_verbinden("s");
 	// Doppelte Schienen bereinigen

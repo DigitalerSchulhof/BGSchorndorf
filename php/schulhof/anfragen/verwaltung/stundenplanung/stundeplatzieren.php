@@ -27,11 +27,10 @@ if (!cms_check_ganzzahl($raum,0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($rythmus,0,26)) {echo "FEHLER";exit;}
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
+
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 
 	// Prüfen: Zeitraum im richtigen Schuljahr

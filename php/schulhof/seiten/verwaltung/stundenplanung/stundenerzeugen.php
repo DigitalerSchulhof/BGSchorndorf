@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Stunden und Tagebücher erzeugen'];
-
 $code = "";
-if ($zugriff) {
+if (cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
 
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;
@@ -75,7 +73,7 @@ if ($zugriff) {
     // Zeiträume laden
     foreach($ZEITRAEUME AS $z) {
       $tabellencode .= "<tr><td>".$z['bez']."</td><td>".cms_tagname(date('N', $z['beginn']))." ".date('d.m.Y', $z['beginn'])."</td><td>";
-      $tabellencode .= cms_tagname(date('N', $z['ende']))." ".date('d.m.Y', $z['ende'])."</td><td>".cms_schieber_generieren('zeitraum_erzeugen_'.$zid, 0)."</td></tr>";
+      $tabellencode .= cms_tagname(date('N', $z['ende']))." ".date('d.m.Y', $z['ende'])."</td><td>".cms_schieber_generieren('zeitraum_erzeugen_'.$z['id'], 0)."</td></tr>";
     }
     if (strlen($tabellencode) > 0) {$code .= $tabellencode;}
     else {$code .= "<tr><td class=\"cms_notiz\" colspan=\"4\">Keine aktiven zukünftigen Zeiträume gefunden.</td></tr>";}
@@ -90,7 +88,10 @@ if ($zugriff) {
     $code .= cms_meldung("warnung", '<h4>Alte Stunden werden gelöscht</h4><p>Alle noch ausstehenden Stunden bereits erzeugter Zeiträume, inklusive aller zur Vertretung vorgemerkten Stunden, die nach dem Änderungsdatum liegen, werden gelöscht und neu angelegt! <b>Vertretungen müssen also neu eingegeben werden!</b></p>');
 
     $code .= "<p>";
-    if (strlen($zeitraumids) > 0) {$code .= "<span class=\"cms_button\" onclick=\"cms_stundenerzeugen_speichern();\">Stunden und Tagebücher erzeugen</span> ";}
+    if (strlen($zeitraumids) > 0) {
+      if ($CMS_IMLN) {$code .= "<span class=\"cms_button\" onclick=\"cms_stundenerzeugen_speichern();\">Stunden und Tagebücher erzeugen</span> ";}
+      else {$code .= "<span class=\"cms_button_gesichert\">Stunden und Tagebücher erzeugen</span> ";}
+    }
     $code .= "<a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Planung\">Abbrechen</a></p>";
   }
   else {$code .= "<h1>Stundenplanung</h1>".cms_meldung_bastler();}

@@ -13,22 +13,29 @@ if (isset($_POST['gewaehlt'])) {$gewaehlt = $_POST['gewaehlt'];} else {echo "FEH
 if ((!cms_check_ganzzahl($gewaehlt,0)) && ($gewaehlt != '-')) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Gruppen']['Klassen anlegen'] || $CMS_RECHTE['Gruppen']['Kurse anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.gruppen.[|klassen,kurse].anlegen")) {
 
 	// Finde Anzahl an Gruppen
 	$stufen = array();
-	if ($schuljahr == '-') {$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr IS NULL ORDER BY reihenfolge";}
-	else {$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr = $schuljahr ORDER BY reihenfolge";}
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
-		while ($daten = $anfrage->fetch_assoc()) {
-			array_push($stufen, $daten);
-		}
-		$anfrage->free();
+	if ($schuljahr == '-') {
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr IS NULL ORDER BY reihenfolge");
 	}
+	else {
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM stufen WHERE schuljahr = ? ORDER BY reihenfolge");
+		$sql->bind_param("i", $schuljahr);
+	}
+	if ($sql->execute()) {
+		$sql->bind_result($sid, $sbez);
+		while ($sql->fetch()) {
+			$s = array();
+			$s['id'] = $sid;
+			$s['bez'] = $sbez;
+			array_push($stufen, $s);
+		}
+	}
+	$sql->close();
 
 	$code = "";
 	foreach ($stufen AS $s) {

@@ -11,8 +11,8 @@ include_once('php/schulhof/anfragen/verwaltung/gruppen/initial.php');
 
 $gruppen = "";
 foreach ($CMS_GRUPPEN as $gruppe)
-  if($CMS_RECHTE['Gruppen'][$gruppe.' anlegen'] || $CMS_RECHTE['Gruppen'][$gruppe.' bearbeiten'] || $CMS_RECHTE['Gruppen'][$gruppe.' löschen'])
-    $gruppen .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/".cms_textzulink($gruppe).".png');\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($gruppe)."\">$gruppe</a> ";
+  if(cms_r("schulhof.gruppen.$gruppe.[|anlegen,bearbeiten,löschen]"))
+    $gruppen .= "<a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/".strtolower(cms_textzulink($gruppe)).".png');\" href=\"Schulhof/Verwaltung/Gruppen/".cms_textzulink($gruppe)."\">$gruppe</a> ";
 
 if (strlen($gruppen) > 0)
 	$code .= "<p>".$gruppen."</p>";

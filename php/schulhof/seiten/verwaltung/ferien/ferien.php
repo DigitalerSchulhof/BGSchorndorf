@@ -6,9 +6,9 @@
 <?php
 include_once('php/schulhof/seiten/verwaltung/ferien/feriensuche.php');
 
-$bearbeiten = $CMS_RECHTE['Organisation']['Ferien bearbeiten'];
-$loeschen = $CMS_RECHTE['Organisation']['Ferien löschen'];
-$anlegen = $CMS_RECHTE['Organisation']['Ferien anlegen'];
+$bearbeiten = cms_r("schulhof.organisation.ferien.bearbeiten");
+$loeschen   = cms_r("schulhof.organisation.ferien.löschen");
+$anlegen    = cms_r("schulhof.organisation.ferien.anlegen");
 $anzeigen = $bearbeiten || $loeschen || $anlegen;
 
 
@@ -24,17 +24,18 @@ $jahranfang = $jahrgewaehlt;
 $jahrende = $jahrgewaehlt;
 $jahre = false;
 
-$sql = "SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM ferien";
-if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-  if ($daten = $anfrage->fetch_assoc()) {
-    if (!is_null($daten['anfang'])) {
-      $jahranfang = min(date('Y', $daten['anfang']), $jahranfang);
-      $jahrende = max(date('Y', $daten['ende']), $jahrende);
+$sql = $dbs->prepare("SELECT MIN(beginn) AS anfang, MAX(ende) AS ende FROM ferien");
+if ($sql->execute()) {
+  $sql->bind_result($fbeginn, $fende);
+  if ($sql->fetch()) {
+    if (!is_null($fbeginn)) {
+      $jahranfang = min(date('Y', $fbeginn), $jahranfang);
+      $jahrende = max(date('Y', $fende), $jahrende);
       $jahre = true;
     }
   }
-  $anfrage->free();
 }
+$sql->close();
 
 $spalten = 7;
 $aktionen = false;
@@ -63,7 +64,7 @@ $canzeigen .= '</tr>';
 $canzeigen .= '</table>';
 $canzeigen .= '<p><input type="hidden" name="cms_verwaltung_ferien_jahr_angezeigt" id="cms_verwaltung_ferien_jahr_angezeigt" value="'.$jahraktuell.'"></p>';
 
-if ($CMS_RECHTE['Organisation']['Ferien löschen']) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_ferien_jahr_loeschen_vorbereiten()">Alle Ferien dieses Jahres löschen</span></p>';}
+if (cms_r("schulhof.organisation.ferien.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_ferien_jahr_loeschen_vorbereiten()">Alle Ferien dieses Jahres löschen</span></p>';}
 
 cms_trennen($dbs);
 

@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <h1>Vertretungsplanung</h1>
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
-
 $code = "";
-if ($zugriff) {
+if (cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
   if (!$CMS_IMLN) {
     $code .= cms_meldung_firewall();
   }
@@ -377,6 +375,7 @@ if ($zugriff) {
           $code .= "<option value=\"ex\">auf Exkursion</option><option value=\"sh\">im Schullandheim</option><option value=\"p\">bei Prüfung</option><option value=\"bv\">bei Berufsorientierung</option><option value=\"k\">krank</option><option value=\"s\">sonstiges</option>";
         $code .= "</select></td></tr>";
         $code .= "<tr><th>Zusatztext:</th><td colspan=\"2\"><input id=\"cms_ausplanen_zusatz\" name=\"cms_ausplanen_zusatz\" type=\"text\"></td></tr>";
+        $code .= "<tr><th>Betroffene Stunden:</th><td colspan=\"2\"><select id=\"cms_ausplanen_folge\" name=\"cms_ausplanen_folge\"><option value=\"k\">als Konflikt anzeigen</option><option value=\"e\">als Entfall vormerken</option><option value=\"u\">als unsichtbaren Entfall vormerken</option></select></td></tr>";
         $code .= "</table>";
         $code .= "<p><span class=\"cms_button\" onclick=\"cms_ausplanung_speichern();\">Speichern</span></p>";
         $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_l', '');

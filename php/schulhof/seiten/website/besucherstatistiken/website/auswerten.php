@@ -1,7 +1,7 @@
 <?php
 // Keine Daten
 $kd = false;
-function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $ende = 0, $gesamt = false, $geloescht = true, $startseite = true) {
+function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = array("jahr" => 0, "monat" => 0), $ende = array("jahr" => 0, "monat" => 0), $gesamt = false, $geloescht = true, $startseite = true) {
   global $kd, $CMS_SCHLUESSEL;
   date_default_timezone_set("CET");
   // Typ auswerten
@@ -29,16 +29,21 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
     $start = array("jahr" => $ende["jahr"]-($ende["monat"]-11<1?1:0), "monat" => $ende["monat"]-11<1?$ende["monat"]+1:$ende["monat"]-11);
   $dbs = cms_verbinden('s');
   if($gesamt) {
-    $sql = "SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_$tabelle)";
-    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
-    if($r = $anfrage->fetch_assoc()) {
-      $start = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
+    $sql = $dbs->prepare("SELECT MIN(jahr) AS jahr, MIN(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MIN(jahr) FROM besucherstatistik_$tabelle)");
+    $sql->execute();
+    $sql->bind_result($rjahr, $rmonat);
+    if($sql->fetch()) {
+      $start = array("jahr" => $rjahr, "monat" => $rmonat);
     }
-    $sql = "SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_$tabelle)";
-    $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
-    if($r = $anfrage->fetch_assoc()) {
-      $ende = array("jahr" => $r["jahr"], "monat" => $r["monat"]);
+    $sql->close();
+
+    $sql = $dbs->prepare("SELECT MAX(jahr) AS jahr, MAX(monat) AS monat FROM besucherstatistik_$tabelle WHERE jahr = (SELECT MAX(jahr) FROM besucherstatistik_$tabelle)");
+    $sql->execute();
+    $sql->bind_result($rjahr, $rmonat);
+    if($sql->fetch()) {
+      $ende = array("jahr" => $rjahr, "monat" => $rmonat);
     }
+    $sql->close();
   }
 
   // Start - Ende auswerten und ggf. meckern
@@ -131,19 +136,19 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
         $sql = "kommt noch";
         if($seitenTyp == "t") {
           $bereich = "Gelöschter Termin";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM termine WHERE id = $id";
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM termine WHERE id = ?";
         }
         if($seitenTyp == "g") {
           $bereich = "Gelöschte Galerie";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM galerien WHERE id = $id";
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM galerien WHERE id = ?";
         }
         if($seitenTyp == "b") {
           $bereich = "Gelöschter Blogeintrag";
-          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM blogeintraege WHERE id = $id";
+          $sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS titel FROM blogeintraege WHERE id = ?";
         }
         if($seitenTyp == "w") {
           $bereich = "Gelöschte Seite";
-          $sql = "SELECT bezeichnung AS titel FROM seiten WHERE id = $id";
+          $sql = "SELECT bezeichnung AS titel FROM seiten WHERE id = ?";
         }
 
         // Titel laden falls vorhanden
@@ -152,9 +157,12 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
           $sql->bind_param("i", $id);
           $sql->bind_result($bereich);
           $sql->execute();
-          if(!$sql->fetch())
-            if($geloescht === "false")
+          if(!$sql->fetch()) {
+            if ($geloescht === "false") {
               continue;
+            }
+          }
+          $sql->close();
         }
 
         $datenHBar[$bereich] = (isset($datenHBar[$bereich])?$datenHBar[$bereich]:0)+$sqld["sum"];
@@ -197,9 +205,11 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
 
     // Startseite holen
     if($startseite === "false") {
-      $sql = "SELECT bezeichnung FROM seiten WHERE status = 's'";
-      $sql = $dbs->query($sql); // Safe weil keine Eingabe
-      $startseite = $sql->fetch_assoc()["bezeichnung"];
+      $sql = $dbs->prepare("SELECT bezeichnung FROM seiten WHERE status = 's'");
+      $sql->execute();
+      $sql->bind_result($startseite);
+      $sql->fetch();
+      $sql->close();
       unset($datenHBar[$startseite]);
     }
     arsort($datenHBar);
@@ -283,8 +293,6 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
   $js .= "var c = new Chart(ctx, ".json_encode($config).");";
   if($anzeigetyp == "bereiche_balken")
     $js .= "c.canvas.parentNode.style.height = '".(34+count($datenAufrufe)*50)."px';";
-  // if($anzeigetyp == "gesamtaufrufe_linie")
-    // $js .= "var gradient = ctx.createLinearGradient(0, 0, 0, 400); gradient.addColorStop(1, 'rgba($startR,$startG,$startB, $startA)'); gradient.addColorStop(0.5, 'rgba($endeR,$endeG,$endeB, $endeA)'); c.data.datasets[0].backgroundColor = gradient; c.update();";
   $js .= "Chart.defaults.global.defaultFontFamily = 'rob, sans-serif';";
   $code .= "<script>".$js."</script>";
 
@@ -292,27 +300,32 @@ function cms_besucherstatistik_website($seitenTyp, $anzeigetyp, $start = 0, $end
 }
 
 function cms_besucherstatistik_website_jahresplaettchen($typ) {
-  global $kd, $CMS_RECHTE;
-  if(!$CMS_RECHTE['Website']['Besucherstatistiken - Website sehen'])
-    return; // Erroa kommt später
+  global $kd;
   $code = "";
 
   $tabelle = "";
   switch($typ) {
     case "t":
       $tabelle = "termine";
+      $rart = "termine";
       break;
     case "g":
       $tabelle = "galerien";
+      $rart = "galerien";
       break;
     case "b":
       $tabelle = "blog";
+      $rart = "blogeinträge";
       break;
     case "w":
       $tabelle = "website";
+      $rart = "seiten";
       break;
     default:
       return cms_meldung_fehler();
+  }
+  if(!cms_r("statistik.besucher.website.$rart")) {
+    return;
   }
 
   $code .= "<span id='cms_besucherstatistik_zeitraum_toggle_letzte' class='cms_toggle cms_toggle_aktiv cms_besucherstatistik_toggle' onclick='cms_besucherstatistik_website_zeitraum(\"$typ\", \"letzte\", 0, 0, 0, 0)'>Letzte zwölf Monate</span>";
@@ -320,14 +333,16 @@ function cms_besucherstatistik_website_jahresplaettchen($typ) {
   $minJahr;
   $jahr = date("Y");
   $dbs = cms_verbinden('s');
-  $sql = "SELECT MIN(jahr) AS jahr FROM besucherstatistik_$tabelle";
-  $anfrage = $dbs->query($sql); // Safe weil keine Eingabe
-  if(!$anfrage) {
+  $sql = $dbs->prepare("SELECT MIN(jahr) AS jahr FROM besucherstatistik_$tabelle");
+  $sql->execute();
+  $sql->bind_result($minJahr);
+  if (!$sql->fetch()) {
     echo cms_meldung_fehler();
+    $sql->close();
     return;
   }
-  $sqld = $anfrage->fetch_assoc();
-  $minJahr = intval($sqld["jahr"]);
+  $sql->close();
+
   if($minJahr == 0) {
     echo '<div class="cms_meldung cms_meldung_warnung"><h4>Ungenügend Daten</h4><p>Für eine ordentliche Darstellung sind nicht genügend Daten vorhanden.</p></div>';
     $kd = true;

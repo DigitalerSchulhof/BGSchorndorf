@@ -1,12 +1,10 @@
 <?php
 function cms_blogeintrag_details_laden($id, $ziel) {
-  global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
+  global $CMS_SCHLUESSEL, $CMS_EINSTELLUNGEN, $CMS_BENUTZERART, $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID, $CMS_GRUPPEN, $CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL;
   $code = "";
 
 	$zugriff = false;
 	$fehler = false;
-
-  if (($CMS_RECHTE['Website']['Blogeinträge anlegen'] && ($id == '-')) || ($CMS_RECHTE['Website']['Blogeinträge bearbeiten'] && ($id != '-'))) {$zugriff = true;}
 
   $bez = '';
   $vorschaubild = "";
@@ -17,7 +15,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
   $notifikationen = 1;
   $text = '';
   $zgruppen = "";
-  $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME,$CMS_BENUTZERNACHNAME,$CMS_BENUTZERTITEL);
+  $autor = cms_generiere_anzeigename($CMS_BENUTZERVORNAME, $CMS_BENUTZERNACHNAME, $CMS_BENUTZERTITEL);
   $zus = "";
   foreach ($CMS_GRUPPEN as $g) {
     // Speichert die Gruppeninformationen
@@ -41,16 +39,23 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql = "SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."blogeintraege JOIN $gk ON ".$gk."blogeintraege.gruppe = $gk.id WHERE blogeintrag = $id) AS x ORDER BY bezeichnung";
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-  			while ($daten = $anfrage->fetch_assoc()) {
-  				array_push($daten, $zugeordnet[$g]);
-          $zgruppenids[$g] .= "|".$daten['id'];
+      $sql = $dbs->prepare("SELECT * FROM (SELECT gruppe AS id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM ".$gk."blogeintraege JOIN $gk ON ".$gk."blogeintraege.gruppe = $gk.id WHERE blogeintrag = ?) AS x ORDER BY bezeichnung");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($gid, $gbez);
+  			while ($sql->fetch()) {
+          $D = array();
+          $D['id'] = $gid;
+          $D['bezeichnung'] = $gbez;
+  				array_push($D, $zugeordnet[$g]);
+          $zgruppenids[$g] .= "|".$gid;
   			}
-  			$anfrage->free();
   		}
+      $sql->close();
     }
   }
+
+  if ((($id == '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten"))) {$zugriff = true;}
 
 	if ($fehler) {$zugriff = false;}
 	$angemeldet = cms_angemeldet();
@@ -58,7 +63,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 
 	if ($angemeldet && $zugriff) {
     $genehmigung = false;
-    if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$genehmigung = true; $genehmigt = 1;}
+    if (cms_r("artikel.genehmigen.blogeinträge")) {$genehmigung = true; $genehmigt = 1;}
 
     if (!$genehmigung) {
       $code .= cms_meldung ('info', "<h4>Genehmigung erforderlich</h4><p>Bis die Genehmigung erteilt wird, handelt es sich um einen vorläufigen Blogeintrag.</p>");
@@ -119,7 +124,10 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'blogeintraege', $id);
 
-    if ($CMS_RECHTE['Website']['Dateien hochladen']) {
+    $code .= "<h3>Zugehörige Links</h3>";
+    $code .= cms_artikellinkelemente($dbs, 'blogeintraege', $id);
+
+    if (cms_r("website.dateien.hochladen")) {
       $inhalt = "<h3>Websitedateien</h3>";
       $rechte = cms_websitedateirechte_laden();
       $inhalt .= cms_dateisystem_generieren ('website', 'website', 'cms_website_dateien', 's', 'website', '-', $rechte);

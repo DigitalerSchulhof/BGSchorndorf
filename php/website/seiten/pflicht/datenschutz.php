@@ -5,7 +5,7 @@
 </div>
 
 <div class="cms_spalte_2"><div class="cms_spalte_i">
-  <h3>Verwantwortliche Personen</h3>
+  <h3>Verantwortliche Personen</h3>
   <h4>Herausgeber</h4>
   <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
   <?php
@@ -75,7 +75,7 @@ else {$einwilligungB = "<span id=\"cms_datenschutz_einwilligungB\" class=\"cms_d
       <p>Personenbezogene Daten sind alle Daten, die auf Sie persönlich bezeihbar sind, z.B. Name, Adresse, eMail-Adressen oder ihr Nutzerverhalten.</p>
 
       <h4>Dienstleister</h4>
-      <p>Diese Website kann nur durch Server eines Dienstleisters (<?php echo $CMS_HOSTINGPARTNEREX;?>) zur Verfügung gestellt werden. Alle eingeebenen Daten werde auf diesen Servern gespeichert oder verarbeitet.</p>
+      <p>Diese Website kann nur durch Server eines Dienstleisters (<?php echo $CMS_HOSTINGPARTNEREX;?>) zur Verfügung gestellt werden. Alle eingegebenen Daten werde auf diesen Servern gespeichert oder verarbeitet.</p>
 
       <h4>Kontaktformular</h4>
       <p>Alle im Kontaktformular angegeben Daten werden nicht über die Nachricht selbst hinaus zwischengespeichert, sondern per eMail an den gewünschten Empfänger und auf Wunsch an Sie selbst geschickt. Es verbleibt keine Kopie auf den Servern der Website. Die eingegebenen Informationen werden nicht an Dritte weitergeben. Um diesen Dienst nutzen zu können ist <b>Einwilligung A</b> notwendig. Hier werden Cookies erzeugt, die sicherstellen, dass keine Spamnachrichten generiert werden. Diese Cookies werden nach dem Schließen des Browsers gelöscht und enthalten keine personenbezogenen Daten.</p>
@@ -111,7 +111,7 @@ else {$einwilligungB = "<span id=\"cms_datenschutz_einwilligungB\" class=\"cms_d
       <p>Durch diese Daten können keine eindeutigen Rückschlüsse auf Sie als Person gezogen werden. Grundlage der Datenverarbeitung bildet Art. 6 Abs. 1 lit. b DSGVO, der die Verarbeitung von Daten zur Erfüllung eines Vertrags oder vorvertraglicher Maßnahmen gestattet, weshalb keine gesonderte Einwilligung notwendig ist.</p>
 
       <h4>Verkürzung der Ladezeit</h4>
-      <p>Um die Anzeige dieser Website für Ihr Gerät zu optimieren, muss ermittelt werden, ob es sich um einen Desktop-Computer, ein Tablet oder ein Smartphone handelt. Um die Ladezeit dieser Seite zu verkürzen kann diese Information in einem Cookie zwischengespeichert werden. Diese Informationen werden nach dem Schließen des Browsers gelöscht. Um diesen Dienst zur Verfügung zu stellen, ist <b>Einwilligung A</b> nötig. Bei der Nutzung von Smartphones ist es von Vorteil bereits geladene Teile der Navigation zwischenzuspeichern, um Ladezeit zu speichern. Diese Informationen werden nach dem Schließen des Browsers gelöscht. Um diesen Dienst zur Verfügung zu stellen, ist <b>Einwilligung A</b> nötig.</p>
+      <p>Um die Anzeige dieser Website für Ihr Gerät zu optimieren, muss ermittelt werden, ob es sich um einen Desktop-Computer, ein Tablet oder ein Smartphone handelt. Um die Ladezeit dieser Seite zu verkürzen kann diese Information in einem Cookie zwischengespeichert werden. Diese Informationen werden nach dem Schließen des Browsers gelöscht. Um diesen Dienst zur Verfügung zu stellen, ist <b>Einwilligung A</b> nötig. Bei der Nutzung von Smartphones ist es von Vorteil bereits geladene Teile der Navigation zwischenzuspeichern, um Ladezeit zu sparen. Diese Informationen werden nach dem Schließen des Browsers gelöscht. Um diesen Dienst zur Verfügung zu stellen, ist <b>Einwilligung A</b> nötig.</p>
 
       <h3>Ihre Rechte</h3>
       <h4>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h4>

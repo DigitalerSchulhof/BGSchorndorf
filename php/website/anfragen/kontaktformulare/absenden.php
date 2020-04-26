@@ -30,7 +30,7 @@
 
   $anhaenge = $anhang; // Wird noch überschrieben werden
 
-  if(!cms_check_ganzzahl(array($id, $empfaenger), 0))
+  if(!cms_check_ganzzahl($empfaenger, 0))
     die("FEHLER");
   if(!cms_check_nametitel($absender))
     die("FEHLER");
@@ -46,26 +46,34 @@
 
   $dbs = cms_verbinden("s");
 
-  $sql = "SELECT aktiv, betreffaktuell as betreff, kopieaktuell as kopie, anhangaktuell as anhang FROM kontaktformulare WHERE id = $id";
-  $sql = $dbs->query($sql); // Safe weil ID Check
-  if(!$sql)
-    die("FEHLER");
-  if(!$sqld = $sql->fetch_assoc())
-    die("FEHLER");
+  $sql = $dbs->prepare("SELECT aktiv, betreffaktuell as betreff, kopieaktuell as kopie, anhangaktuell as anhang FROM kontaktformulare WHERE id = ?");
+  $sql->bind_param("i", $id);
+  if ($sql->execute()) {
+    $sql->bind_result($aktiv, $betreff, $kopie, $anhang);
+    if (!$sql->fetch()) {
+      $sql->close();
+      echo "FEHLER"; exit;
+    }
+  }
+  else {echo "FEHLER"; exit;}
+  $sql->close();
 
-  sqlLesen($sqld, array("aktiv", "betreff", "kopie", "anhang"));
 
-  $sql = "SELECT nameaktuell as name, mailaktuell as e_mail FROM kontaktformulareempfaenger WHERE id = $empfaenger AND kontaktformular = $id";
-  $sql = $dbs->query($sql); // Safe weil ID Check
-  if(!$sql)
-    die("FEHLER");
-  if(!$sqld = $sql->fetch_assoc())
-    die("FEHLER");
-
-  sqlLesen($sqld, array("name", "e_mail"));
+  $sql = $dbs->prepare("SELECT name, mail as email FROM kontaktformulareempfaenger WHERE id = ? AND kontaktformular = ?");
+  $sql->bind_param("ii", $empfaenger, $id);
+  if ($sql->execute()) {
+    $sql->bind_result($name, $email);
+    if (!$sql->fetch()) {
+      $sql->close();
+      echo "FEHLER"; exit;
+    }
+  }
+  else {echo "FEHLER"; exit;}
+  $sql->close();
 
   if(!$aktiv)
     die("FEHLER");
+
   // Magic lol
   if($kopie == 2)
     $kopie = $k;
@@ -84,7 +92,7 @@
   $mailer->FromName       = $CMS_SCHULE." ".$CMS_ORT;
 
   $mailer->AddReplyTo($CMS_WEBMASTER, "Webmaster Schulhof ".$CMS_SCHULE." ".$CMS_ORT);
-	$mailer->AddAddress($e_mail, $name);
+	$mailer->AddAddress($email, $name);
 
   $mailer->IsHTML(true);
 

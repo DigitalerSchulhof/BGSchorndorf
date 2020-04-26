@@ -10,10 +10,9 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Seiten bearbeiten'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("website.seiten.bearbeiten")) {
 	$fehler = false;
 	$zuordnung = '';
 	$dbs = cms_verbinden('s');

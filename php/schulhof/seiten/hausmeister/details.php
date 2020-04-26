@@ -2,7 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
 
-if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.sehen")) {
   if (isset($_SESSION['HAUSMEISTERAUFTRAGID'])) {
     $spalten = 2;
     $fehler = false;
@@ -22,7 +22,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
   	$sql->close();
 
     if (!$fehler) {
-      if ($CMS_RECHTE['Technik']['Hausmeisteraufträge löschen'] || $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+      if (cms_r("schulhof.technik.hausmeisteraufträge.[|markieren,löschen]")) {
         $spalten ++;
       }
 
@@ -97,7 +97,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
         $code .= "</div>";
         $code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
         $code .= "<h2>Aktionen</h2><p>";
-        if ($CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+        if (cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
           if ($status == 'e') {
             $code .= "<span class=\"cms_button_wichtig\" onclick=\"cms_hausmeisterauftrag_markieren('n', '$id')\">Auftrag als ausstehend markieren</span></span> ";
           }
@@ -105,7 +105,7 @@ if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
             $code .= "<span class=\"cms_button_ja\" onclick=\"cms_hausmeisterauftrag_markieren('e', '$id')\">Auftrag als erledigt markieren</span> ";
           }
         }
-        if ($CMS_RECHTE['Technik']['Hausmeisteraufträge löschen']) {
+        if (cms_r("schulhof.technik.hausmeisteraufträge.löschen")) {
           $code .= "<span class=\"cms_button_nein\" onclick=\"cms_hausmeisterauftrag_loeschen_anzeigen('$id')\">Auftrag löschen</span> ";
         }
         $code .= "</p>";

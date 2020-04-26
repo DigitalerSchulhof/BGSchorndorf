@@ -13,18 +13,16 @@ postLesen(array("id", "spalte", "position", "modus", "zusatz"));
 
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$angemeldet = cms_angemeldet();
 
-if(!cms_check_ganzzahl($id))
-  die("FEHLER");
+
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
-else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
+if ($id == '-') {$zugriff = cms_r("website.elemente.kontaktformular.anlegen");}
+else {$zugriff = cms_r("website.elemente.kontaktformular.bearbeiten");}
 
-if (($zugriff) && ($angemeldet)) {
+if (cms_angemeldet() && $zugriff) {
   $fehler = false;
 
   $neu = true;
@@ -33,35 +31,50 @@ if (($zugriff) && ($angemeldet)) {
   $anhang = '1';
   $ids = array();
   $namen = array();
+  $ansicht = "m";
   $mails = array();
   $beschreibungen = array();
 
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
     $dbs = cms_verbinden('s');
     $modusk = strtolower($modus);
-    $sql = "SELECT * FROM kontaktformulare WHERE id = $id";
-    if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
-      if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-        if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM kontaktformulare WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
+        if (($modus == 'Aktuell') || ($modus == 'Alt') || ($modus == 'Neu')) {
           $betreff = $daten['betreff'.$modusk];
           $kopie = $daten['kopie'.$modusk];
           $anhang = $daten['anhang'.$modusk];
+          $ansicht = $daten['ansicht'.$modusk];
           $aktiv = $daten['aktiv'];
         }
         else {$fehler = true;}
-        $anfrage->free();
-      } else $fehler = true;
-      $sql = "SELECT id, name$modusk as name, beschreibung$modus as beschreibung, mail$modusk as mail FROM kontaktformulareempfaenger WHERE kontaktformular = $id";
-      if($sql = $dbs->query($sql))  // TODO: Irgendwie safe machen
-        while($sqld = $sql->fetch_assoc()) {
-          array_push($ids, $sqld["id"]);
-          array_push($namen, $sqld["name"]);
-          array_push($mails, $sqld["mail"]);
-          array_push($beschreibungen, $sqld["beschreibung"]);
+      } else {
+        $fehler = true;
+      }
+    }
+    else {$fehler = true;}
+    $sql->close();
+
+    if (!$fehler) {
+      $sql = "SELECT id, name, beschreibung, mail FROM kontaktformulareempfaenger WHERE kontaktformular = ?";
+      $sql = $dbs->prepare($sql);
+      $sql->bind_param("i", $id);
+      $sql->bind_result($eid, $ename, $ebes, $email);
+      if ($sql->execute()) {
+        while ($sql->fetch()) {
+          array_push($ids, $eid);
+          array_push($namen, $ename);
+          array_push($mails, $email);
+          array_push($beschreibungen, $ebes);
         }
+      }
+      $sql->close();
     }
     else {$fehler = true;}
     cms_trennen($dbs);
@@ -79,7 +92,7 @@ if (($zugriff) && ($angemeldet)) {
 
     $code .= "<table class=\"cms_formular\">";
 
-      if ($CMS_RECHTE['Website']['Inhalte freigeben'])
+      if (cms_r("website.freigeben"))
         $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_kontaktformular_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_kontaktformular_aktiv\" name=\"website_element_kontaktformular_aktiv\" value=\"0\"></td></tr>";
@@ -88,13 +101,18 @@ if (($zugriff) && ($angemeldet)) {
       $code .= "<tr><th>Betreff:</th><td><input type=\"text\" id=\"cms_website_element_kontaktformular_betreff\" name=\"cms_website_element_kontaktformular_betreff\" value=\"$betreff\"></td></tr>";
       $code .= "<tr><th>Kopie an Absender senden:</th><td>".cms_select_generieren('cms_website_element_kontaktformular_kopie', '', array(1 => "Immer", 2 => "Selbst wählbar", 0 => "Nie"), $kopie, true)."</td></tr>";
       $code .= "<tr><th>Anhänge erlauben:</th><td>".cms_schieber_generieren('website_element_kontaktformular_anhang', $anhang)."</td></tr>";
+      $code .= "<tr><th>Ansicht:</th><td>";
+        $code .= "<select name=\"cms_website_element_kontaktformular_ansicht\" id=\"cms_website_element_kontaktformular_ansicht\">";
+          $ansichtoptionen = "<option value=\"m\">Menü</option><option value=\"v\">Visitenkarten</option>";
+          $code .= str_replace("value=\"$ansicht\"", "value=\"$ansicht\" selected=\"selected\"", $ansichtoptionen);
+        $code .= "</select>";
+      $code .= "</td></tr>";
     $code .= "</table>";
 
     $code .= "<h3>Zugehörige Emfänger</h3>";
     $code .= "<div id=\"cms_kontaktformular_empfaenger\">";
       for ($i=0; $i < count($namen); $i++) {
         $code .= "<table class=\"cms_formular\">";
-          $code .= "<tr style=\"display:none\"><th><input type=\"hidden\" class=\"cms_kontaktformular_empfaenger_id\" value=\"".$ids[$i]."\"></th></tr>";
           $code .= "<tr><th>Name: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_name\" value=\"".$namen[$i]."\"></td></tr>";
           $code .= "<tr><th>eMailadresse: </th><td><input type=\"text\" class=\"cms_kontaktformular_empfaenger_mail\" value=\"".$mails[$i]."\"></td></tr>";
           $code .= "<tr><th>Beschreibung: </th><td><textarea class=\"cms_kontaktformular_empfaenger_beschreibung\">".$beschreibungen[$i]."</textarea></td></tr>";

@@ -4,8 +4,7 @@
 <h1>Seite bearbeiten</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Website']['Seiten bearbeiten'];
-if ($zugriff) {
+if (cms_r("website.seiten.bearbeiten")) {
 	if ((isset($_SESSION['SEITENBEARBEITENID'])) && ((isset($_SESSION['SEITENBEARBEITENZUORDNUNG']) || (is_null($_SESSION['SEITENBEARBEITENZUORDNUNG']))))) {
 		include_once('php/schulhof/seiten/website/seiten/seitendetails.php');
 		echo cms_website_seiten_ausgeben($_SESSION['SEITENBEARBEITENID'], $_SESSION['SEITENBEARBEITENZUORDNUNG']);

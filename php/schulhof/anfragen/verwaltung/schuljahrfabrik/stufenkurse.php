@@ -15,13 +15,12 @@ if (isset($_POST['erster'])) {$erster = $_POST['erster'];} else {echo "FEHLER";e
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+
 
 if (!cms_check_ganzzahl($stufe,0) || !cms_check_idfeld($altestufen) || !cms_check_idfeld($faecher) || (($erster != 'n') && ($erster != 'j'))) {echo "FEHLER";exit;}
 
 $dbs = cms_verbinden('s');
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	$fehler = false;
 
 	$FAECHERINFO = array();

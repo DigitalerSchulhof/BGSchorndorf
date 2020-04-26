@@ -9,13 +9,13 @@ if ($listenart != 'Eltern') {$genitiv = 'n';}
 $code .= "<h1>Liste der $listenart</h1>";
 
 $zugriff = false;
-if ($listenart == 'Lehrer') {$zugriff = $CMS_RECHTE['Personen']['Lehrerliste sehen']; $art = 'l';}
-if ($listenart == 'Schüler') {$zugriff = $CMS_RECHTE['Personen']['Schülerliste sehen']; $art = 's';}
-if ($listenart == 'Eltern') {$zugriff = $CMS_RECHTE['Personen']['Elternliste sehen']; $art = 'e';}
-if ($listenart == 'Verwaltung') {$zugriff = $CMS_RECHTE['Personen']['Verwaltungsliste sehen']; $art = 'v';}
-if ($listenart == 'Externe') {$zugriff = $CMS_RECHTE['Personen']['Externenliste sehen']; $art = 'x';}
-if ($listenart == 'Elternvertreter') {$zugriff = $CMS_RECHTE['Personen']['Elternvertreter sehen']; $art = 'ev';}
-if ($listenart == 'Schülervertreter') {$zugriff = $CMS_RECHTE['Personen']['Schülervertreter sehen']; $art = 'sv';}
+if ($listenart == 'Lehrer') {           $zugriff = cms_r("schulhof.information.listen.lehrer"); $art = 'l';}
+if ($listenart == 'Schüler') {          $zugriff = cms_r("schulhof.information.listen.schüler"); $art = 's';}
+if ($listenart == 'Eltern') {           $zugriff = cms_r("schulhof.information.listen.eltern"); $art = 'e';}
+if ($listenart == 'Verwaltung') {       $zugriff = cms_r("schulhof.information.listen.verwaltungsangestellte"); $art = 'v';}
+if ($listenart == 'Externe') {          $zugriff = cms_r("schulhof.information.listen.externe"); $art = 'x';}
+if ($listenart == 'Elternvertreter') {  $zugriff = cms_r("schulhof.information.listen.elternvertreter"); $art = 'ev';}
+if ($listenart == 'Schülervertreter') { $zugriff = cms_r("schulhof.information.listen.schülervertreter"); $art = 'sv';}
 
 if ($zugriff) {
   include_once('php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');
@@ -55,13 +55,13 @@ if ($zugriff) {
       }
     }
     else {
-      $code .= "<span class=\"cms_button_eingeschraenkt\">Adresse</span> ";
-      $code .= "<span class=\"cms_button_eingeschraenkt\">Kontaktdaten</span> ";
+      $code .= "<span class=\"cms_button_gesichert\">Adresse</span> ";
+      $code .= "<span class=\"cms_button_gesichert\">Kontaktdaten</span> ";
       if ($listenart == 'Schüler' || $listenart == 'Schülervertreter') {
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Geburtsdatum</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Religionsunterricht</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Profile</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Konfession</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Geburtsdatum</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Religionsunterricht</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Profile</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Konfession</span> ";
       }
     }
     $code .= "</p>";

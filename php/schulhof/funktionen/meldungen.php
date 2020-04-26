@@ -28,7 +28,7 @@ function cms_meldung_bastler () {
 	return $code;
 }
 
-function cms_meldung_berechtigung () {
+function cms_meldung_berechtigung ($auffaellig = true) {
 	global $CMS_URLGANZ;
 	if (isset($_SESSION['BENUTZERART'])) {$art = $_SESSION['BENUTZERART'];}
 	else {$art = "";}
@@ -40,7 +40,9 @@ function cms_meldung_berechtigung () {
 		$inhalt = '<p>Sie sind nicht berechtigt, diese Seite zu sehen!</p>';
 	}
 	include_once dirname(__FILE__)."/../../../php/schulhof/seiten/auffaelliges/auswerten.php";
-	cms_auffaelliges_speichern(0, array("pfad" => $CMS_URLGANZ));
+	if($auffaellig) {
+		cms_auffaelliges_speichern(0, array("pfad" => $CMS_URLGANZ));
+	}
 	return cms_meldung ("fehler", "<h4>Zugriff verweigert</h4>".$inhalt);
 }
 
@@ -79,10 +81,10 @@ function cms_meldung_geschuetzer_inhalt () {
 }
 
 function cms_meldung_einwilligungA () {
-	return cms_meldung("info", "<h4>Datenschutzhinweis - Einwilligung A</h4><p>Für die Verwendung dieses Inhalts muss Einwilligung A erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a></p>");
+	return cms_meldung("info", "<h4 class=\"cms_himweis_dsgvo_a\">Datenschutzhinweis - Einwilligung A</h4><p>Für die Verwendung dieses Inhalts muss Einwilligung A erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a> <span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'j', 'n');\">Einwilligung A erteilen</span></p>");
 }
 
 function cms_meldung_einwilligungB () {
-	return cms_meldung("info", "<h4>Datenschutzhinweis - Einwilligung B</h4><p>Für die Verwendung von Inhalten Dritter muss Einwilligung B erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a></p>");
+	return cms_meldung("info", "<h4 class=\"cms_himweis_dsgvo_b\">Datenschutzhinweis - Einwilligung B</h4><p>Für die Verwendung von Inhalten Dritter muss Einwilligung B erteilt werden.</p><p><a href=\"Website/Datenschutz\" class=\"cms_button\">Datenschutzeinstellungen ändern</a> <span class=\"cms_button_ja\" onclick=\"cms_dsgvo_datenschutz('j', 'n', 'j');\">Einwilligung B erteilen</span></p>");
 }
 ?>

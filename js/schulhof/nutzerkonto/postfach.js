@@ -1,8 +1,10 @@
-function cms_postfach_senden() {
+function cms_postfach_senden(app) {
+	var app = app || 'nein'
 	cms_laden_an('Nachricht versenden', 'Die Nachricht wird versendet');
 
 	var empfaenger = document.getElementById('cms_postfach_empfaenger_personensuche_gewaehlt').value;
 	var betreff = document.getElementById('cms_postfach_betreff').value;
+	var offen = document.getElementById('cms_postfach_offensenden').value;
 	var nachricht = document.getElementsByClassName('note-editable');
 	nachricht = nachricht[0].innerHTML;
 
@@ -19,6 +21,11 @@ function cms_postfach_senden() {
 		fehler = true;
 	}
 
+	if (!cms_check_toggle(offen)) {
+		meldung += '<li>die Eingabe zum Anzeigen oder Verbergen der Empfänger ist ungültig.</li>';
+		fehler = true;
+	}
+
 	if (fehler) {
 		cms_meldung_an('fehler', 'Nachricht versenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
@@ -27,6 +34,7 @@ function cms_postfach_senden() {
 		formulardaten.append("empfaenger",  empfaenger);
 		formulardaten.append("betreff",     betreff);
 		formulardaten.append("nachricht",   nachricht);
+		formulardaten.append("offen",   offen);
 		formulardaten.append("anfragenziel", 	'50');
 
 		function anfragennachbehandlung(rueckgabe) {
@@ -35,7 +43,12 @@ function cms_postfach_senden() {
 				cms_meldung_an('fehler', 'Nachricht versenden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Nachricht versenden', '<p>Die Nachricht wurde versendet.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Posteingang\');">OK</span></p>');
+				if (app != 'app') {
+					cms_meldung_an('erfolg', 'Nachricht versenden', '<p>Die Nachricht wurde versendet.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Posteingang\');">OK</span></p>');
+				}
+				else {
+					cms_meldung_an('erfolg', 'Nachricht versenden', '<p>Die Nachricht wurde versendet.</p>', '<p><span class="cms_button" onclick="cms_link(\'App/Postfach/Posteingang\');">OK</span></p>');
+				}
 			}
 			else if (rueckgabe.match(/POOL/)) {
 				meldung += '<li>Mindestens einem Empfänger darf nicht geschrieben werden.</li>';
@@ -49,7 +62,8 @@ function cms_postfach_senden() {
 	}
 }
 
-function cms_postfach_entwurfspeichern() {
+function cms_postfach_entwurfspeichern(app) {
+	var app = app || 'nein';
 	cms_laden_an('Nachricht speichern', 'Die Nachricht wird als Entwurf gespeichert');
 
 	var empfaenger = document.getElementById('cms_postfach_empfaenger_personensuche_gewaehlt').value;
@@ -65,7 +79,12 @@ function cms_postfach_entwurfspeichern() {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Nachricht als Entwurf speichern', '<p>Die Nachricht wurde als Entwurf gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Posteingang\');">OK</span></p>');
+			if (app != 'app') {
+				cms_meldung_an('erfolg', 'Nachricht als Entwurf speichern', '<p>Die Nachricht wurde als Entwurf gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Posteingang\');">OK</span></p>');
+			}
+			else {
+				cms_meldung_an('erfolg', 'Nachricht als Entwurf speichern', '<p>Die Nachricht wurde als Entwurf gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'App/Postfach/Posteingang\');">OK</span></p>');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -76,7 +95,7 @@ function cms_postfach_entwurfspeichern() {
 
 
 /* NACHRICHTENANSICHT WIRD FÜR DAS LESEN DER NACHRICHT VORBEREITET UND ANSCHLIESSEND GEÖFFNET */
-function cms_postfach_nachricht_lesen (modus, anzeigename, betreff, datum, uhrzeit, id) {
+function cms_postfach_nachricht_lesen (modus, anzeigename, betreff, datum, uhrzeit, id, app) {
 	cms_laden_an('Nachricht lesen', 'Die Nachricht <br><b>'+anzeigename+'</b> – <b>'+betreff+'</b><br> vom '+datum+' um '+uhrzeit+'<br> wird vorbereitet.');
 
 	var formulardaten = new FormData();
@@ -86,7 +105,12 @@ function cms_postfach_nachricht_lesen (modus, anzeigename, betreff, datum, uhrze
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_link('Schulhof/Nutzerkonto/Postfach/Nachricht_lesen');
+			if (app != 'app') {
+				cms_link('Schulhof/Nutzerkonto/Postfach/Nachricht_lesen');
+			}
+			else {
+				cms_link('App/Postfach/Nachricht_lesen');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -97,12 +121,14 @@ function cms_postfach_nachricht_lesen (modus, anzeigename, betreff, datum, uhrze
 
 
 
-function cms_schulhof_postfach_nachricht_papierkorb_anzeige (modus, betreff, datum, id) {
-	cms_meldung_an('warnung', 'Nachricht in den Papierkorb legen', '<p>Soll die Nachricht <br><b>'+betreff+'</b> vom '+datum+'<br>wirklich in den Papierkorb gelegt werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_postfach_nachricht_papierkorb(\''+modus+'\',\''+betreff+'\',\''+datum+'\','+id+')">In den Papierkorb legen</span></p>');
+function cms_schulhof_postfach_nachricht_papierkorb_anzeige (modus, betreff, datum, id, app) {
+	var app = app || 'nein';
+	cms_meldung_an('warnung', 'Nachricht in den Papierkorb legen', '<p>Soll die Nachricht <br><b>'+betreff+'</b> vom '+datum+'<br>wirklich in den Papierkorb gelegt werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_postfach_nachricht_papierkorb(\''+modus+'\',\''+betreff+'\',\''+datum+'\','+id+',\''+app+'\')">In den Papierkorb legen</span></p>');
 }
 
 
-function cms_schulhof_postfach_nachricht_papierkorb (modus, betreff, datum, id) {
+function cms_schulhof_postfach_nachricht_papierkorb (modus, betreff, datum, id, app) {
+	var app = app || 'nein';
 	cms_laden_an('Nachricht in den Papierkorb legen', 'Die Nachricht <br><b>'+betreff+'</b> vom '+datum+'<br>wird in den Papierkorb gelegt.');
 
 	var formulardaten = new FormData();
@@ -116,7 +142,12 @@ function cms_schulhof_postfach_nachricht_papierkorb (modus, betreff, datum, id) 
 			if (modus == 'eingang') {ziel = 'Posteingang';}
 			if (modus == 'entwurf') {ziel = 'Entwürfe';}
 			if (modus == 'ausgang') {ziel = 'Postausgang';}
-			cms_link('Schulhof/Nutzerkonto/Postfach/'+ziel);
+			if (app != 'app') {
+				cms_link('Schulhof/Nutzerkonto/Postfach/'+ziel);
+			}
+			else {
+				cms_link('App/Postfach/'+ziel);
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -127,12 +158,14 @@ function cms_schulhof_postfach_nachricht_papierkorb (modus, betreff, datum, id) 
 
 
 
-function cms_schulhof_postfach_nachricht_loeschen_anzeige (modus, betreff, datum, id) {
-	cms_meldung_an('warnung', 'Nachricht endgültig löschen', '<p>Soll die Nachricht <br><b><b>'+betreff+'</b><br> vom '+datum+'<br>wirklich in endgültig gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_postfach_nachricht_loeschen(\''+modus+'\',\''+betreff+'\',\''+datum+'\','+id+')">Endgültig löschen</span></p>');
+function cms_schulhof_postfach_nachricht_loeschen_anzeige (modus, betreff, datum, id, app) {
+	var app = app || 'nein';
+	cms_meldung_an('warnung', 'Nachricht endgültig löschen', '<p>Soll die Nachricht <br><b><b>'+betreff+'</b><br> vom '+datum+'<br>wirklich in endgültig gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_postfach_nachricht_loeschen(\''+modus+'\',\''+betreff+'\',\''+datum+'\','+id+',\''+app+'\')">Endgültig löschen</span></p>');
 }
 
 
-function cms_schulhof_postfach_nachricht_loeschen (modus, betreff, datum, id) {
+function cms_schulhof_postfach_nachricht_loeschen (modus, betreff, datum, id, app) {
+	var app = app || 'nein';
 	cms_laden_an('Nachricht endgültig löschen', 'Die Nachricht von <br><b><b>'+betreff+'</b> vom '+datum+'<br>wird endgültig gelöscht.');
 
 	var formulardaten = new FormData();
@@ -142,7 +175,12 @@ function cms_schulhof_postfach_nachricht_loeschen (modus, betreff, datum, id) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_link('Schulhof/Nutzerkonto/Postfach/Papierkorb');
+			if (app != 'app') {
+				cms_link('Schulhof/Nutzerkonto/Postfach/Papierkorb');
+			} 
+			else {
+				cms_link('App/Postfach/Papierkorb');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -152,7 +190,8 @@ function cms_schulhof_postfach_nachricht_loeschen (modus, betreff, datum, id) {
 }
 
 
-function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id) {
+function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id, app) {
+	var app = app || 'nein';
 	cms_laden_an('Nachricht zurücklegen', 'Die Nachricht <br><b>'+betreff+'</b> vom '+datum+'<br>wird aus dem Papierkorb zurückgelegt.');
 
 	var formulardaten = new FormData();
@@ -166,7 +205,12 @@ function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id
 			if (modus == 'eingang') {ziel = 'Posteingang';}
 			if (modus == 'entwurf') {ziel = 'Entwürfe';}
 			if (modus == 'ausgang') {ziel = 'Postausgang';}
-			cms_meldung_an('erfolg', 'Nachricht zurücklegen', '<p>Die Nachricht wurde zurückgelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/'+ziel+'\');">OK</span></p>');
+			if (app != 'app') {
+				cms_meldung_an('erfolg', 'Nachricht zurücklegen', '<p>Die Nachricht wurde zurückgelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/'+ziel+'\');">OK</span></p>');
+			}
+			else {
+				cms_meldung_an('erfolg', 'Nachricht zurücklegen', '<p>Die Nachricht wurde zurückgelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'App/Postfach/'+ziel+'\');">OK</span></p>');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -177,9 +221,10 @@ function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id
 
 
 /* Nachrichtenansicht wird für Benutzung vorbereitet */
-function cms_schulhof_postfach_nachricht_vorbereiten (aktion, id, modus, empfaenger, gruppe, gruppenid) {
+function cms_schulhof_postfach_nachricht_vorbereiten (aktion, id, modus, empfaenger, gruppe, gruppenid, app) {
 	var gruppe = gruppe || '-';
 	var gruppenid = gruppenid || '-';
+	var app = app || 'nein';
 	cms_laden_an('Nachricht schreiben', 'Die neue Nachricht wird vorbereitet');
 
 	var formulardaten = new FormData();
@@ -193,7 +238,12 @@ function cms_schulhof_postfach_nachricht_vorbereiten (aktion, id, modus, empfaen
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_link('Schulhof/Nutzerkonto/Postfach/Neue_Nachricht');
+			if (app != 'app') {
+				cms_link('Schulhof/Nutzerkonto/Postfach/Neue_Nachricht');
+			}
+			else {
+				cms_link('App/Postfach/Neue_Nachricht');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -230,7 +280,7 @@ function cms_postfach_neuertag() {
 	var meldung = '<p>Der neue Tag konnte nicht angelegt werden, denn ...</p><ul>';
 	var fehler = false;
 
-	if ((isNaN(farbe)) || (farbe % 1 != 0) || (farbe > 47)) {
+	if (!cms_check_ganzzahl(farbe,0,63)) {
 		meldung += '<li>es wurde keine Farbe ausgewählt.</li>';
 		fehler = true;
 	}
@@ -312,7 +362,7 @@ function cms_postfach_tag_bearbeiten() {
 	var meldung = '<p>Der Tag konnte nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
 
-	if ((isNaN(farbe)) || (farbe % 1 != 0) || (farbe > 47)) {
+	if (!cms_check_ganzzahl(farbe,0,63)) {
 		meldung += '<li>es wurde keine Farbe ausgewählt.</li>';
 		fehler = true;
 	}
@@ -343,7 +393,8 @@ function cms_postfach_tag_bearbeiten() {
 	}
 }
 
-function cms_postfach_nachricht_taggen(anschalten, tagid) {
+function cms_postfach_nachricht_taggen(anschalten, tagid, app) {
+	var app = app || 'nein';
 	if (anschalten == 1) {
 		cms_laden_an('Nachricht taggen', 'Der Tag wird der Nachricht zugewiesen.');
 	}
@@ -359,7 +410,12 @@ function cms_postfach_nachricht_taggen(anschalten, tagid) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_link('Schulhof/Nutzerkonto/Postfach/Nachricht_lesen');
+			if (app != 'app') {
+				cms_link('Schulhof/Nutzerkonto/Postfach/Nachricht_lesen');
+			}
+			else {
+				cms_link('App/Postfach/Nachricht_lesen');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -369,7 +425,8 @@ function cms_postfach_nachricht_taggen(anschalten, tagid) {
 }
 
 
-function cms_postfach_nachrichten_laden(modus, papierkorb, id) {
+function cms_postfach_nachrichten_laden(modus, papierkorb, id, app) {
+	var app = app || "nein";
 	var tabbody = document.getElementById('cms_postfach_'+modus+'_liste');
 	tabbody.innerHTML = '<tr><td class=\"cms_notiz\" colspan=\"6\">'+cms_ladeicon()+'<br>Die Suche wird verarbeitet. Je nach Verbindung und Schulgröße kann dies etwas dauern.</td></tr>';
 
@@ -400,6 +457,7 @@ function cms_postfach_nachrichten_laden(modus, papierkorb, id) {
 	formulardaten.append("bisJ",  		bisJ);
 	formulardaten.append("nummer",  	nummer);
 	formulardaten.append("limit",  		limit);
+	formulardaten.append("app",  			app);
 	formulardaten.append("anfragenziel", 	'63');
 
 	// alle Tagfelder auslesen
@@ -426,16 +484,18 @@ function cms_postfach_nachrichten_laden(modus, papierkorb, id) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-function cms_postfach_papierkorb_leeren_anzeigen (modus) {
+function cms_postfach_papierkorb_leeren_anzeigen (modus, app) {
+	var app = app || 'nein';
 	var anzeigename = '';
 	if (modus == 'eingang') {anzeigename = 'Posteingang';}
 	else if (modus == 'entwurf') {anzeigename = 'Entwürfe';}
 	else if (modus == 'ausgang') {anzeigename = 'Postausgang';}
-	cms_meldung_an('warnung', 'Papierkorb leeren', '<p>Soll der gesamte Papierkorb <b>'+anzeigename+'</b> wirklich geleert werden?</p><p>Es wird der gesamte Papierkorb geleert! Wenn Filter ausgewählt sind, werden möglicherweise mehr Nachrichten gelöscht, als momentan sichtbar sind!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_postfach_papierkorb_leeren(\''+modus+'\')">Löschen</span></p>');
+	cms_meldung_an('warnung', 'Papierkorb leeren', '<p>Soll der gesamte Papierkorb <b>'+anzeigename+'</b> wirklich geleert werden?</p><p>Es wird der gesamte Papierkorb geleert! Wenn Filter ausgewählt sind, werden möglicherweise mehr Nachrichten gelöscht, als momentan sichtbar sind!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_postfach_papierkorb_leeren(\''+modus+'\', \''+app+'\')">Löschen</span></p>');
 }
 
 
-function cms_postfach_papierkorb_leeren (modus) {
+function cms_postfach_papierkorb_leeren (modus, app) {
+	var app = app || 'nein';
 	var anzeigename = '';
 	if (modus == 'eingang') {anzeigename = 'Posteingang';}
 	else if (modus == 'entwurf') {anzeigename = 'Entwürfe';}
@@ -448,7 +508,12 @@ function cms_postfach_papierkorb_leeren (modus) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Papierkorb leeren', '<p>Der Papierkorb wurde geleert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Papierkorb\');">OK</span></p>');
+			if (app != 'app') {
+				cms_meldung_an('erfolg', 'Papierkorb leeren', '<p>Der Papierkorb wurde geleert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Postfach/Papierkorb\');">OK</span></p>');
+			}
+			else {
+				cms_meldung_an('erfolg', 'Papierkorb leeren', '<p>Der Papierkorb wurde geleert.</p>', '<p><span class="cms_button" onclick="cms_link(\'App/Postfach/Papierkorb\');">OK</span></p>');
+			}
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
@@ -461,8 +526,9 @@ function cms_postfach_eigennachricht() {
 	cms_meldung_an('info', 'Nachricht an sich selbst', '<p>Es ist nicht möglich eine Nachricht an sich selbst zu verschicken.</p>', '<p><span class="cms_button" onclick="cms_laden_aus();">OK</span></p>');
 }
 
-function cms_postfach_nachrichten_seite(id, nr, modus, papierkorb) {
+function cms_postfach_nachrichten_seite(id, nr, modus, papierkorb, app) {
+	var app = app || 'nein';
 	var limit = document.getElementById('cms_postfach_filter_limit'+id).value;
 	document.getElementById('cms_postfach_filter_nummer'+id).value = (nr-1)*limit;
-	cms_postfach_nachrichten_laden(modus, papierkorb, id);
+	cms_postfach_nachrichten_laden(modus, papierkorb, id, app);
 }

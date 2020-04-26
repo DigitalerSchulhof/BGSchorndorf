@@ -15,16 +15,15 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER"; exi
 if (isset($_POST['zusatz'])) {$zusatz = $_POST['zusatz'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTMAXPOS'])) {$maxpos = $_SESSION['ELEMENTMAXPOS'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $angemeldet = cms_angemeldet();
 
-if(!cms_check_ganzzahl($id))
-  die("FEHLER");
+if(!cms_check_ganzzahl($id) && ($id != '-')) {die("FEHLER");}
 
 $zugriff = false;
 
-if ($id == '-') {$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];}
-else {$zugriff = $CMS_RECHTE['Website']['Inhalte bearbeiten'];}
+if ($id == '-') {$zugriff = cms_r("website.elemente.editor.anlegen");}
+else {$zugriff = cms_r("website.elemente.editor.bearbeiten");}
 
 if (($zugriff) && ($angemeldet)) {
   $fehler = false;
@@ -32,25 +31,26 @@ if (($zugriff) && ($angemeldet)) {
   $neu = true;
   $inhalt = "";
   $aktiv = 0;
-  if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 1;}
+  if (cms_r("website.freigeben")) {$aktiv = 1;}
 
   if ($id != '-') {
     $neu = false;
     $dbs = cms_verbinden('s');
-    $sql = "SELECT * FROM editoren WHERE id = $id";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil ID Check
-      if ($daten = $anfrage->fetch_assoc()) {
+    $sql = $dbs->prepare("SELECT * FROM editoren WHERE id = ?");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
         if ($modus == 'Aktuell') {$inhalt = $daten['aktuell'];}
         else if ($modus == 'Neu') {$inhalt = $daten['neu'];}
         else if ($modus == 'Alt') {$inhalt = $daten['alt'];}
         else {$fehler = true;}
-
         $aktiv = $daten['aktiv'];
       }
       else {$fehler = true;}
-      $anfrage->free();
     }
     else {$fehler = true;}
+    $sql->close();
     cms_trennen($dbs);
   }
 
@@ -62,7 +62,7 @@ if (($zugriff) && ($angemeldet)) {
     if ($id == '-') {$code = "<h3>Neuer Editor</h3>";}
     else {$code = "<h3>Editor bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
-    if ($CMS_RECHTE['Website']['Inhalte freigeben']) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_editoren_aktiv', $aktiv)."</td></tr>";}
+    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_editoren_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"cms_website_element_editoren_aktiv\" name=\"cms_website_element_editoren_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_editoren_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "</table>";

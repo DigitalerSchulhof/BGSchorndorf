@@ -8,13 +8,12 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 
 session_start();
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schulanmeldungen löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.löschen")) {
 	$dbs = cms_verbinden('s');
-	$sql = "DELETE FROM voranmeldung_schueler";
-	$dbs->query($sql);	// Safe weil keine Einfgabe
+	$sql = $dbs->prepare("DELETE FROM voranmeldung_schueler");
+	$sql->execute();
 	cms_trennen($dbs);
 	echo "ERFOLG";
 }

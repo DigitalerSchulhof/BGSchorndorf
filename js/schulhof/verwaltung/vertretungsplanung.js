@@ -309,6 +309,7 @@ function cms_ausplanen_sausgeplant() {
 
 function cms_ausplanung_art_aendern() {
 	var art = document.getElementById('cms_ausplanen_art').value;
+	var folge = document.getElementById('cms_ausplanen_folge');
 
 	if (art == 'l') {
 		cms_ausblenden('cms_ausplanung_art_r');
@@ -319,6 +320,7 @@ function cms_ausplanung_art_aendern() {
 		cms_ausblenden('cms_ausplanung_grund_s');
 		cms_einblenden('cms_ausplanung_art_l', 'table-row');
 		cms_einblenden('cms_ausplanung_grund_l', 'table-row');
+		folge.selectedIndex = "0";
 	}
 	if (art == 'r') {
 		cms_ausblenden('cms_ausplanung_art_l');
@@ -329,6 +331,7 @@ function cms_ausplanung_art_aendern() {
 		cms_ausblenden('cms_ausplanung_grund_s');
 		cms_einblenden('cms_ausplanung_art_r', 'table-row');
 		cms_einblenden('cms_ausplanung_grund_r', 'table-row');
+		folge.selectedIndex = "0";
 	}
 	if (art == 'k') {
 		cms_ausblenden('cms_ausplanung_art_r');
@@ -339,6 +342,7 @@ function cms_ausplanung_art_aendern() {
 		cms_ausblenden('cms_ausplanung_grund_s');
 		cms_einblenden('cms_ausplanung_art_k', 'table-row');
 		cms_einblenden('cms_ausplanung_grund_k', 'table-row');
+		folge.selectedIndex = "2";
 	}
 	if (art == 's') {
 		cms_ausblenden('cms_ausplanung_art_r');
@@ -349,6 +353,7 @@ function cms_ausplanung_art_aendern() {
 		cms_ausblenden('cms_ausplanung_grund_k');
 		cms_einblenden('cms_ausplanung_art_s', 'table-row');
 		cms_einblenden('cms_ausplanung_grund_s', 'table-row');
+		folge.selectedIndex = "2";
 	}
 }
 
@@ -367,6 +372,7 @@ function cms_ausplanung_speichern() {
 	var bisM = document.getElementById('cms_ausplanung_datum_bis_M').value;
 	var bisJ = document.getElementById('cms_ausplanung_datum_bis_J').value;
 	var ort = document.getElementById('cms_ausplanungen_ort').value;
+	var folge = document.getElementById('cms_ausplanen_folge').value;
 
 	var meldung = '<p>Die Ausplanung konnte nicht gespeichert werden, denn die Eingaben sind ungültig.</p>';
 	var fehler = false;
@@ -381,6 +387,7 @@ function cms_ausplanung_speichern() {
 	if (!cms_check_ganzzahl(vonS,0) || !cms_check_ganzzahl(bisS,0)) {fehler = true;}
 	if (!cms_check_ganzzahl(ziel, 0)) {fehler = true;}
 
+	if ((folge != 'k') && (folge != 'e') && (folge != 'u')) {fehler = true;}
 	if ((art != 'l') && (art != 'r') && (art != 'k') && (art != 's')) {fehler = true;}
 	if ((art == 'l') && (grund != 'dv') && (grund != 'k') && (grund != 'kk') && (grund != 'p') && (grund != 'b') && (grund != 'ex') && (grund != 's')) {fehler = true;}
 	else if ((art == 'r') && (grund != 'b') && (grund != 'p') && (grund != 'k') && (grund != 's')) {fehler = true;}
@@ -398,6 +405,7 @@ function cms_ausplanung_speichern() {
 		formulardaten.append("ziel", ziel);
     formulardaten.append("grund", grund);
     formulardaten.append("zusatz", zusatz);
+    formulardaten.append("folge", folge);
     formulardaten.append("vonS", vonS);
     formulardaten.append("vonT", vonT);
     formulardaten.append("vonM", vonM);
@@ -1225,7 +1233,6 @@ function cms_vplan_wochenplan_l(details) {
 			if (rueckgabe.match(/^<div class/) || rueckgabe.match(/^<p class/)) {
 				lehrerwochenplan.innerHTML = rueckgabe;
 				cms_vplan_stunde_markieren();
-
 			}
 			else {
 				lehrerwochenplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Lehrerplans ist ein Fehler aufgetreten.</p>';
@@ -2163,7 +2170,8 @@ function cms_vplan_drucken() {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_meldung_an('erfolg', 'Vertretungsplan drucken', '<p>Die Druckansicht wurde erstelt.</p>', '<p><a class="cms_button" target="_blank" href="drucken.php">Druckansicht öffnen</a> <span class="cms_button_nein" onclick="cms_ausblenden(\'cms_blende_o\')">Fenster schließen</span></p>');
+				cms_laden_aus();
+				cms_drucken();
 	    }
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
@@ -2370,7 +2378,7 @@ function cms_vplan_schnellmenue (art, status, zeile) {
 				if (zeile) {
 					zeile = document.getElementById('cms_vplan_konflikteliste_zeile_'+zeile);
 					menue.style.top = zeile.offsetTop+'px';
-					menue.style.left = zeile.offsetLeft+'px';
+					menue.style.left = (zeile.offsetLeft+30)+'px';
 				}
 			}
 			else {menue.style.opacity = 0;}

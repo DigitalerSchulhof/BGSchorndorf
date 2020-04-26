@@ -28,22 +28,21 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postnavigation.php");
 
 		<?php
 		$dbp = cms_verbinden('p');
-		$sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, farbe FROM posttags_$CMS_BENUTZERID) AS tags ORDER BY titel";
-		$anfrage = $dbp->query($sql);	// Safe weil keine Eingabe
-
+		$sql = $dbp->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, farbe FROM posttags_$CMS_BENUTZERID) AS tags ORDER BY titel");
 		$code = "";
-		if ($anfrage) {
-			while ($daten = $anfrage->fetch_assoc()) {
+		if ($sql->execute()) {
+			$sql->bind_result($tid, $ttit, $tfarbe);
+			while ($sql->fetch()) {
 				$code .= "<tr>";
-				$code .= "<td><span class=\"cms_tag_gross cms_farbbeispiel_".$daten['farbe']."\"></span></td>";
-				$code .= "<td>".$daten['titel']."</td>";
+				$code .= "<td><span class=\"cms_tag_gross cms_farbbeispiel_$tfarbe\"></span></td>";
+				$code .= "<td>$ttit</td>";
 				$code .= "<td>";
-				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_postfach_tag_bearbeiten_vorbereiten('".$daten['id']."', '".$daten['titel']."')\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
-				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_postfach_tag_loeschen_anzeigen('".$daten['id']."', '".$daten['titel']."')\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
+				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_postfach_tag_bearbeiten_vorbereiten('$tid', '$ttit')\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> ";
+				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_postfach_tag_loeschen_anzeigen('$tid', '$ttit')\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
 				$code .= "</td><tr>";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 
 		echo $code;
 		cms_trennen($dbp);

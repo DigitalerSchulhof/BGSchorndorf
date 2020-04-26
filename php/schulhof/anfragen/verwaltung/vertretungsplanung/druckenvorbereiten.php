@@ -15,10 +15,9 @@ if (!cms_check_ganzzahl($tag,1,31)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Vertretungsplanung durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
 	$_SESSION['DRUCKANSICHT'] = 'Vertretungsplan';
 	$_SESSION['DRUCKVPLANDATUMV'] = mktime(0,0,0,$monat, $tag, $jahr);
 	$_SESSION['DRUCKVPLANDATUMB'] = mktime(0,0,0,$monat, $tag+1, $jahr)-1;

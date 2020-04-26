@@ -11,8 +11,6 @@ if (isset($_POST['id'])) {$tagid = $_POST['id'];} else {$tagid = '';}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 if (cms_angemeldet()) {
 	$person = $CMS_BENUTZERID;
 	$fehler = false;

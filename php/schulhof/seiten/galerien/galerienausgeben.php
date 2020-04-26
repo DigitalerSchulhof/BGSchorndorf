@@ -48,13 +48,13 @@ function cms_galerie_zusatzinfo($dbs, $daten) {
 	$sql = "";
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
-		$sqlsolo =
 		$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ".$daten['id'].")";
 	}
 	$sql = substr($sql, 7);
+	$dbs = cms_verbinden("s");
 	$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
 	if ($sql->execute()) {
-		$sql->bind_result($icon, $bez);
+		$sql->bind_result($bez, $icon);
 		while ($sql->fetch()) {
 			$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$icon')\">$bez</span> ";
 		}
@@ -96,7 +96,7 @@ function cms_galerie_zeiten($daten) {
 }
 
 function cms_galeriedetailansicht_ausgeben($dbs) {
-	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_RECHTE, $CMS_BLOGID;
+	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BLOGID;
 	$code = "";
 	$gefunden = false;
 	$fehler = false;
@@ -160,14 +160,17 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 			$kalender = "<div class=\"cms_termin_detialkalenderblatt\">".cms_galerie_kalenderblatterzeugen($galerie, $zeiten)."</div>";
 			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_galeriedetailansicht_galerieinfos($dbs, $galerie, $zeiten)."</div>";
 
-			$bilder = array();
+			$inhalte = array();
 
 			$sql = "SELECT id, galerie, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung FROM galerienbilder WHERE galerie = ?";
 			$sql = $dbs->prepare($sql);
 			$sql->bind_param("i", $galerie['id']);
 			if ($sql->execute()) {
-				foreach ($sql->get_result() as $daten) {
-					array_push($bilder, $daten);
+				$sql->bind_result($gbid, $gbgal, $gbpfad, $gbbesch);
+				while ($sql->fetch()) {
+					$icode = "<img src=\"$gbpfad\">";
+					if (strlen($gbbesch) > 0) {$icode .= "<p class=\"cms_wechselbilder_galerie_unterschrift\">$gbbesch</p>";}
+					array_push($inhalte, $icode);
 				}
 				$sql->close();
 			}
@@ -176,33 +179,17 @@ function cms_galeriedetailansicht_ausgeben($dbs) {
 
 			$code .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
 			$code .= "<h1>".$galerie['bezeichnung']."</h1>";
-			if($galerie["vorschaubild"] != "") {
-				$code .= "<img src=\"".$galerie["vorschaubild"]."\">";
-			}
 			$code .= "<p>".$galerie['beschreibung']."</p>";
+
+			$code .= cms_wechselbilder_generieren($inhalte);
+
+			// Bilder Ende
+			$CMS_GALERIEID = $galerie["id"];
+
 			$code .= "</div></div>";
 			$code .= "<div class=\"cms_clear\"></div>";
 
-			$code .= "<div id=\"cms_galerie_bilder\">";
-				foreach($bilder as $bild) {
-					$code .= "<div class=\"cms_galerie_bild\">";
-						$code .= "<img src=\"".$bild["pfad"]."\">";
-						$code .= "<div class=\"cms_galerie_beschreibung\">".$bild["beschreibung"]."</div>";
-					$code .= "</div>";
-				}
-				$code .= "<div id=\"cms_galerie_laden\">".cms_ladeicon()."<h3>Die Galerie wird geladen...</h3></div>";
-				$code .= "<div id=\"cms_galerie_dots\">";
-					for($i = 0; $i < count($bilder); $i++)
-						$code .= "<div class=\"cms_galerie_dot\" onclick=\"galerie.zeigen($i)\"></div>";
-				$code .= "</div>";
-				$code .= "<div onclick=\"galerie.vor()\" id=\"cms_galerie_vor\">&#10094;</div>";
-				$code .= "<div onclick=\"galerie.next()\" id=\"cms_galerie_next\">&#10095;</div>";
-			$code .= "</div>";
 
-			// Bilder Ende
-			$code .= "".cms_artikel_reaktionen("g", $galerie["id"], "-");
-
-			$CMS_GALERIEID = $galerie["id"];
 			$code .= "<div class=\"cms_clear\"></div>";
 		}
 		else {
@@ -235,6 +222,7 @@ function cms_galeriedetailansicht_galerieinfos($dbs, $daten, $zeiten) {
 	$verknuepfung = "";
 	// Bei öffentlichen Terminen zugehörige Kategorien suchen
 	$sql = "";
+	$zugehoerigladen = "";
 	foreach ($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
 		$sql .= " UNION (SELECT id, '$gk' AS gruppe, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."galerien ON $gk.id = $gk"."galerien.gruppe WHERE galerie = ?)";

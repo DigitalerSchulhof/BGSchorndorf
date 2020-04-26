@@ -4,8 +4,10 @@
 <h1>Allgemeine Einstellungen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Administration']['Allgemeine Einstellungen vornehmen'];
-if ($zugriff) {
+include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
+use Async\YAML;
+
+if (cms_r("schulhof.verwaltung.einstellungen")) {
 	$code = "";
 
 	$personen = array("Lehrer", "Schüler", "Verwaltungsangestellte", "Eltern", "Externe");
@@ -16,42 +18,131 @@ if ($zugriff) {
 
 	$code .= "<ul class=\"cms_reitermenue\">";
 		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 0, 5, true)\">Rechte</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1, 5, true)\">Postfach</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2, 5, true)\">Gruppen</span></li> ";
-		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3, 5, true)\">Stundenpläne</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_1\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 1, 5, true)\">Gruppen</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_2\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 2, 5, true)\">Stundenpläne</span></li> ";
+		$code .= "<li><span id=\"cms_reiter_einstellungen_3\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 3, 5, true)\">Tagebücher</span></li> ";
 		$code .= "<li><span id=\"cms_reiter_einstellungen_4\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 4, 5, true)\">Website</span></li> ";
 		$code .= "<li><span id=\"cms_reiter_einstellungen_5\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 5, 5, true)\">Geräteverwaltung</span></li> ";
 	$code .= "</ul>";
 
+	$rechte = YAML::loader(dirname(__FILE__)."/../../../../allgemein/funktionen/rechte/rechte.yml");
+
+
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_0\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
-		$code .= "<div class=\"cms_spalte_i\"><h2>Rechte</h2></div>";
+		$code .= "<div class=\"cms_spalte_i\"><h2>Rechte</h2>";
+
+		$lehrerrechte = array();
+		$schülerrechte = array();
+		$verwaltungrechte = array();
+		$elternrechte = array();
+		$externerechte = array();
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 1", $lehrerrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 2", $schülerrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 3", $verwaltungrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 4", $elternrechte, '');
+		cms_rechte_laden_sql("SELECT AES_DECRYPT(recht, '$CMS_SCHLUESSEL') FROM rollenrechte WHERE rolle = 5", $externerechte, '');
+
+		$recht_machen = function($pfad, $recht, $rechte, $kinder = null, $unterstes = false) use (&$recht_machen) {
+			$code = "";
+			$knoten = $recht;
+			// Alternativer Knotenname
+			if(!is_null($kinder) && !is_array($kinder))
+				$recht = $kinder;
+			if(is_array($kinder) && isset($kinder["knotenname"])) {
+				$recht = $kinder["knotenname"];
+				unset($kinder["knotenname"]);
+			}
+
+			// Hat die Rolle das Recht?
+			$rechtecheck = function($r, $pf) {
+				foreach(explode(".", $pf) as $p) {
+					if($r === true)
+						return true;
+					else {
+						if(isset($r[$p])) {
+							if(($r = $r[$p]) === true)
+								return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			};
+			$rollehatrecht = false;
+			if(substr("$pfad.$knoten", 2) !== false && ($pf = explode(".", substr("$pfad.$knoten", 2))) !== null) {
+				$rollehatrecht = $rechtecheck($rechte, substr("$pfad.$knoten", 2));
+			}
+			$code .= "<div class=\"cms_recht".(is_array($kinder)?" cms_hat_kinder":"").($unterstes?" cms_recht_unterstes":"").($rollehatrecht?" cms_recht_rolle":"")."\" data-knoten=\"$knoten\"><i class=\"".($pfad?"icon ":"")."cms_recht_eingeklappt\"></i><span class=\"cms_recht_beschreibung\"><span class=\"cms_recht_beschreibung_i\" onclick=\"cms_recht_vergeben_rolle(this)\">".mb_ucfirst($recht)."</span></span>";
+			// Kinder ausgeben
+			$c = 0;
+			if(is_array($kinder)) {
+				$code .= "<div class=\"cms_rechtekinder\"".($recht?"style=\"display: none;\"":"").">";
+				foreach($kinder as $n => $i)
+					$code .= "<div class=\"cms_rechtebox".(!is_null($i) && !is_array($i)?" cms_recht_wert":"").(++$c==count($kinder)?" cms_recht_unterstes":"")."\">".$recht_machen("$pfad.$knoten", $n, $rechte, $i, $c == count($kinder))."</div>";
+				$code .= "</div>";
+			}
+			$code .= "</div>";
+			return $code;
+		};
 
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-		$code .= "<h3>Persönliche Termine anlegen</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p:</th>";
-			$code .= "<td>".cms_schieber_generieren('persoenlichetermine_'.cms_textzudb($p),$einstellungen[$p.' dürfen persönliche Termine anlegen'])."</td>";
-			$code .= "</tr>";
-		}
-		$code .= "</table>";
+			$code .= "<h3><img src=\"res/icons/gross/lehrer.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_lehrer\">".$recht_machen("", "", $lehrerrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_lehrer')\">Alle ausklappen</span>";
+			$code .= "</div>";
 		$code .= "</div></div>";
 
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-		$code .= "<h3>Persönliche Notizen anlegen</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p:</th>";
-			$code .= "<td>".cms_schieber_generieren('persoenlichenotiz_'.cms_textzudb($p),$einstellungen[$p.' dürfen persönliche Notizen anlegen'])."</td>";
-			$code .= "</tr>";
-		}
-		$code .= "</table>";
+			$code .= "<h3><img src=\"res/icons/gross/schueler.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_schueler\" class=\"cms_spalte_i\">".$recht_machen("", "", $schülerrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_schueler')\">Alle ausklappen</span>";
+			$code .= "</div>";
 		$code .= "</div></div>";
 
-		$code .= "<div class=\"cms_spalte_i cms_clear\">";
+		$code .= "<div class=\"cms_clear\"></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/verwaltung.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_verwaltung\">".$recht_machen("", "", $verwaltungrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_verwaltung')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/eltern.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_eltern\">".$recht_machen("", "", $elternrechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_eltern')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_clear\"></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3><img src=\"res/icons/gross/externe.png\"></h3>";
+			$code .= "<div class=\"cms_rechtepapa\" id=\"cms_rechtepapa_externe\">".$recht_machen("", "", $externerechte, $rechte, true)."</div>";
+			$code .= "<div class=\"cms_spalte_2\">";
+				$code .= "<p class=\"cms_notiz\">Das Vergeben eines Rechts vergibt alle untergeordneten Rechte.</p>";
+				$code .= "<span class=\"cms_button\" onclick=\"cms_alle_rechte_ausklappen(this, '#cms_rechtepapa_externe')\">Alle ausklappen</span>";
+			$code .= "</div>";
+		$code .= "</div></div>";
+
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+			$code .= "<h3>Legende</h3>";
+			$code .= "<span class=\"cms_demorecht\">Nicht vergebenes Recht</span><br>";
+			$code .= "<span class=\"cms_demorecht cms_demorecht_rolle\">Vergebenes Recht</span> ";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_clear\"></div>";
 		$code .= "<p><span class=\"cms_button\" onclick=\"cms_einstellungen_rechte_aendern()\">Speichern</span> ";
 		$code .= "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Allgemeine_Einstellungen');\">Abbrechen</span></p>";
 		$code .= "</div>";
@@ -60,84 +151,6 @@ if ($zugriff) {
 
 
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_1\" style=\"display: none;\">";
-		$code .= "<div class=\"cms_reitermenue_i\">";
-		$code .= "<div class=\"cms_spalte_i\"><h2>Postfach</h2></div>";
-		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-		$personenspalte1 = array("Lehrer", "Verwaltungsangestellte", "Externe");
-		$personenspalte2 = array("Schüler", "Eltern");
-		foreach ($personenspalte1 as $ps) {
-			$code .= "<h3>$ps schreiben an ...</h3>";
-			$code .= "<table class=\"cms_formular\">";
-			foreach ($personen as $p) {
-				$code .= "<tr>";
-				$code .= "<th>$p:</th>";
-				$code .= "<td>".cms_schieber_generieren('postfach_'.cms_textzudb($ps).'an'.cms_textzudb($p),$einstellungen['Postfach - '.$ps.' dürfen '.$p.' schreiben'])."</td>";
-				$code .= "</tr>";
-				$code .= "<tr>";
-			}
-			$code .= "</table>";
-			$code .= "<h4>Außerdem gilt für $ps für Gruppen zusätzlich:</h4>";
-			$code .= "<table class=\"cms_formular\">";
-			$code .= "<tr>";
-			$code .= "<th></th>";
-			foreach ($raenge as $r) {
-				$code .= "<th>$r</td>";
-			}
-			$code .= "</tr>";
-			foreach ($gruppen as $g) {
-				$gk = cms_textzudb($g);
-				$code .= "<tr>";
-				$code .= "<th>$g:</th>";
-				foreach ($raenge as $r) {
-					$code .= "<td>".cms_schieber_generieren('postfach_'.cms_textzudb($ps).'angruppen'.cms_textzudb($r).$gk,$einstellungen["Postfach - $ps dürfen $g $r schreiben"])."</td>";
-				}
-				$code .= "</tr>";
-			}
-			$code .= "</table>";
-		}
-		$code .= "</div></div>";
-
-		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-		foreach ($personenspalte2 as $ps) {
-			$code .= "<h3>$ps schreiben an ...</h3>";
-			$code .= "<table class=\"cms_formular\">";
-			foreach ($personen as $p) {
-				$code .= "<tr>";
-				$code .= "<th>$p:</th>";
-				$code .= "<td>".cms_schieber_generieren('postfach_'.cms_textzudb($ps).'an'.cms_textzudb($p),$einstellungen['Postfach - '.$ps.' dürfen '.$p.' schreiben'])."</td>";
-				$code .= "</tr>";
-				$code .= "<tr>";
-			}
-			$code .= "</table>";
-			$code .= "<h4>Außerdem gilt für $ps für Gruppen zusätzlich:</h4>";
-			$code .= "<table class=\"cms_formular\">";
-			$code .= "<tr>";
-			$code .= "<th></th>";
-			foreach ($raenge as $r) {
-				$code .= "<th>$r</td>";
-			}
-			$code .= "</tr>";
-			foreach ($gruppen as $g) {
-				$gk = cms_textzudb($g);
-				$code .= "<tr>";
-				$code .= "<th>$g:</th>";
-				foreach ($raenge as $r) {
-					$code .= "<td>".cms_schieber_generieren('postfach_'.cms_textzudb($ps).'angruppen'.cms_textzudb($r).$gk,$einstellungen["Postfach - $ps dürfen $g $r schreiben"])."</td>";
-				}
-				$code .= "</tr>";
-			}
-			$code .= "</table>";
-		}
-		$code .= "</div></div>";
-		$code .= "<div class=\"cms_spalte_i cms_clear\">";
-		$code .= "<p><span class=\"cms_button\" onclick=\"cms_einstellungen_postfach_aendern()\">Speichern</span> ";
-		$code .= "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Allgemeine_Einstellungen');\">Abbrechen</span></p>";
-		$code .= "</div>";
-		$code .= "</div>";
-	$code .= "</div>";
-
-
-	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_2\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Gruppen</h2></div>";
 
@@ -154,16 +167,6 @@ if ($zugriff) {
 					}
 				$code .= "</tr>";
 			}
-		$code .= "</table>";
-
-		$code .= "<h3>Interne Termine</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p dürfen Termine vorschlagen:</th>";
-			$code .= "<td>".cms_schieber_generieren(cms_textzudb($p).'termineinternvorschlagen',$einstellungen[$p.' dürfen intern Termine vorschlagen'])."</td>";
-			$code .= "</tr>";
-		}
 		$code .= "</table>";
 
 		$code .= "<h3>Genehmigungsnotwendigkeit für Termine und Blogeinträge</h3>";
@@ -193,16 +196,6 @@ if ($zugriff) {
 					}
 				$code .= "</tr>";
 			}
-		$code .= "</table>";
-
-		$code .= "<h3>Interne Blogeinträge</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p dürfen Blogeinträge vorschlagen:</th>";
-			$code .= "<td>".cms_schieber_generieren(cms_textzudb($p).'bloginternvorschlagen',$einstellungen[$p.' dürfen intern Blogeinträge vorschlagen'])."</td>";
-			$code .= "</tr>";
-		}
 		$code .= "</table>";
 
 		$code .= "<h3>Sichtbare Gruppen</h3>";
@@ -243,7 +236,7 @@ if ($zugriff) {
 	}
 	$sql->close();
 
-	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_3\" style=\"display: none;\">";
+	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_2\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Stundenpläne</h2></div>";
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
@@ -332,30 +325,84 @@ if ($zugriff) {
 	$code .= "</div>";
 
 
+	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_3\" style=\"display: none;\">";
+		$code .= "<div class=\"cms_reitermenue_i\">";
+		$code .= "<div class=\"cms_spalte_i\"><h2>Tagebücher</h2></div>";
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+		$code .= "<table class=\"cms_formular\">";
+		$code .= "<tr>";
+
+		$fristen = "<option value=\"s\">In der Stunde</option>";
+		$fristen .= "<option value=\"t\">Am selben Tag</option>";
+		$fristen .= "<option value=\"1\">Am nächsten Tag</option>";
+		$fristen .= "<option value=\"2\">2 Tage danach</option>";
+		$fristen .= "<option value=\"3\">3 Tage danach</option>";
+		$fristen .= "<option value=\"4\">4 Tage danach</option>";
+		$fristen .= "<option value=\"5\">5 Tage danach</option>";
+		$fristen .= "<option value=\"6\">6 Tage danach</option>";
+		$fristen .= "<option value=\"7\">eine Woche danach</option>";
+		$fristen .= "<option value=\"14\">zwei Wochen danach</option>";
+		$fristen .= "<option value=\"-\">keine</option>";
+
+		$code .= "<th>Frist für Abwesenheiten:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_abwesend_frist\" id=\"cms_schulhof_tagebuch_abwesend_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Abwesenheit"]."\"", "value=\"".$einstellungen["Tagebuch Frist Abwesenheit"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für inhaltliche Einträge:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_inhalt_frist\" id=\"cms_schulhof_tagebuch_inhalt_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Inhalt"]."\"", "value=\"".$einstellungen["Tagebuch Frist Inhalt"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für Lob und Tadel:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_lobtadel_frist\" id=\"cms_schulhof_tagebuch_lobtadel_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Lob und Tadel"]."\"", "value=\"".$einstellungen["Tagebuch Frist Lob und Tadel"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für Hausaufgaben:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_hausaufgaben_frist\" id=\"cms_schulhof_tagebuch_hausaufgaben_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Hausaufgaben"]."\"", "value=\"".$einstellungen["Tagebuch Frist Hausaufgaben"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Frist für Entschuldigungen:</th>";
+		$code .= "<td><select name=\"cms_schulhof_tagebuch_entschuldigungen_frist\" id=\"cms_schulhof_tagebuch_entschuldigungen_frist\">";
+			$code .= str_replace("value=\"".$einstellungen["Tagebuch Frist Entschuldigungen"]."\"", "value=\"".$einstellungen["Tagebuch Frist Entschuldigungen"]."\" selected=\"selected\"", $fristen);
+		$code .= "</select></td>";
+		$code .= "</tr>";
+		$code .= "<tr>";
+		$code .= "<th>Mindestabwesenheit für Entschuldigungspflicht:</th>";
+		$code .= "<td><input class=\"cms_klein\" name=\"cms_schulhof_tagebuch_abwesenheitsminimum\" id=\"cms_schulhof_tagebuch_abwesenheitsminimum\" type=\"number\" value=\"".$einstellungen['Tagebuch Mindestabwesenheit']."\"> min</td>";
+		$code .= "</tr>";
+		$code .= "</table>";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+		$code .= "</div></div>";
+
+		$code .= "<div class=\"cms_spalte_i cms_clear\">";
+		$code .= "<p><span class=\"cms_button\" onclick=\"cms_einstellungen_tagebuch_aendern()\">Speichern</span> ";
+		$code .= "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung/Allgemeine_Einstellungen');\">Abbrechen</span></p>";
+		$code .= "</div>";
+		$code .= "</div>";
+	$code .= "</div>";
+
+
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_4\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
 		$code .= "<div class=\"cms_spalte_i\"><h2>Website</h2></div>";
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-		$code .= "<h3>Öffentliche Termine</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p dürfen Termine vorschlagen:</th>";
-			$code .= "<td>".cms_schieber_generieren(cms_textzudb($p).'terminevorschlagen',$einstellungen[$p.' dürfen Termine vorschlagen'])."</td>";
-			$code .= "</tr>";
-		}
-		$code .= "</table>";
 
-		$code .= "<h3>Öffentliche Galerien</h3>";
+		$code .= "<h3>Darstellung der Website</h3>";
 		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p dürfen Galerien vorschlagen:</th>";
-			$code .= "<td>".cms_schieber_generieren(cms_textzudb($p).'galerienvorschlagen',$einstellungen[$p.' dürfen Galerien vorschlagen'])."</td>";
-			$code .= "</tr>";
-		}
+		$code .= "<tr>";
+		$code .= "<th>Darkmode verfügbar:</th>";
+		$code .= "<td>".cms_schieber_generieren('darkmodeverfuegbar',$einstellungen['Website Darkmode'])."</td>";
+		$code .= "</tr>";
 		$code .= "</table>";
-
 		$code .= "<h3>Verhalten bei Menüseiten</h3>";
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
@@ -366,15 +413,6 @@ if ($zugriff) {
 		$code .= "</div></div>";
 
 		$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-		$code .= "<h3>Öffentliche Blogeinträge</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		foreach ($personen as $p) {
-			$code .= "<tr>";
-			$code .= "<th>$p dürfen Blogeinträge vorschlagen:</th>";
-			$code .= "<td>".cms_schieber_generieren(cms_textzudb($p).'blogvorschlagen',$einstellungen[$p.' dürfen Blogeinträge vorschlagen'])."</td>";
-			$code .= "</tr>";
-		}
-		$code .= "</table>";
 
 		$code .= "<h3>Nutzerfeedback</h3>";
 		$code .= "<table class=\"cms_formular\">";
@@ -407,15 +445,6 @@ if ($zugriff) {
 
 		$code .= "</div>";
 	$code .= "</div>";
-
-	$kennung = "";
-	$sql = "SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('Gerätekennung', '$CMS_SCHLUESSEL')";
-	if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-	  if ($daten = $anfrage->fetch_assoc()) {
-	    $kennung = $daten['wert'];
-	  }
-	  $anfrage->free();
-	}
 
 	$code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_einstellungen_5\" style=\"display: none;\">";
 		$code .= "<div class=\"cms_reitermenue_i\">";
@@ -458,15 +487,6 @@ if ($zugriff) {
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung1_mailF\" style=\"$style\">";
 		$code .= "<th>eMailadresse:</th>";
 		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete1_mail\" id=\"cms_schulhof_externegeraete1_mail\" value=\"".$einstellungen['Externe Geräteverwaltung1 Mail']."\" onkeyup=\"cms_check_mail_wechsel('externegeraete1_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete1_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
-		$code .= "</tr>";
-		$code .= "</table>";
-
-		$code .= "<h3>Kennung für die internen Dienste</h3>";
-		$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr>";
-		$code .= "<th>Kennung:</th>";
-		$code .= "<td><input name=\"cms_schulhof_intern_geraetekennung\" id=\"cms_schulhof_intern_geraetekennung\" value=\"$kennung\"></td>";
-		$code .= "<td><span class=\"cms_button\" onclick=\"cms_kennung_generieren('cms_schulhof_intern_geraetekennung')\">Generieren</span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";

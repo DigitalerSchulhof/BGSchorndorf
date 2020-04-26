@@ -11,10 +11,9 @@ if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER";exit
 
 if (($modus != 'L') && ($modus != 'P')) {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$_SESSION['STUNDENPLANUNGMODUS'] = $modus;
 	echo "ERFOLG";
 }

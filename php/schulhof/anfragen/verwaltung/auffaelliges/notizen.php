@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (isset($_POST['notizen'])) {$notizen = cms_texttrafo_e_event($_POST['notizen']);} else {$notizen = '';}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 
 if (cms_angemeldet()) {
 	$fehler = false;
@@ -19,7 +19,7 @@ if (cms_angemeldet()) {
 	if(!cms_check_ganzzahl($id, 0))
 		$fehler = true;
 	if (!$fehler) {
-		if(!$CMS_RECHTE['Website']['Auffälliges verwalten']) {
+		if(!cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 			echo "BERECHTIGUNG";
 			die();
 		}

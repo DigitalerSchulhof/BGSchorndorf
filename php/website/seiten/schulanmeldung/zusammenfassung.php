@@ -24,10 +24,12 @@ if (isset($_SESSION['VORANMELDUNG_S_RELIGION'])) {$sreligion = $_SESSION['VORANM
 if (isset($_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'])) {$sreligionsunterricht = $_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_LAND1'])) {$sland1 = $_SESSION['VORANMELDUNG_S_LAND1'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_LAND2'])) {$sland2 = $_SESSION['VORANMELDUNG_S_LAND2'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_S_IMPFUNG'])) {$simpfung = $_SESSION['VORANMELDUNG_S_IMPFUNG'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$sstrasse = $_SESSION['VORANMELDUNG_S_STRASSE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$shausnummer = $_SESSION['VORANMELDUNG_S_HAUSNUMMER'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$splz = $_SESSION['VORANMELDUNG_S_PLZ'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_ORT'])) {$sort = $_SESSION['VORANMELDUNG_S_ORT'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_S_STAAT'])) {$sstaat = $_SESSION['VORANMELDUNG_S_STAAT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_TEILORT'])) {$steilort = $_SESSION['VORANMELDUNG_S_TEILORT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_TELEFON1'])) {$stelefon1 = $_SESSION['VORANMELDUNG_S_TELEFON1'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_TELEFON2'])) {$stelefon2 = $_SESSION['VORANMELDUNG_S_TELEFON2'];} else {$fehler = true;}
@@ -46,6 +48,8 @@ if (isset($_SESSION['VORANMELDUNG_A1_VORNAME'])) {$avorname1 = $_SESSION['VORANM
 if (isset($_SESSION['VORANMELDUNG_A1_GESCHLECHT'])) {$ageschlecht1 = $_SESSION['VORANMELDUNG_A1_GESCHLECHT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A1_SORGERECHT'])) {$asorgerecht1 = $_SESSION['VORANMELDUNG_A1_SORGERECHT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A1_BRIEFE'])) {$abriefe1 = $_SESSION['VORANMELDUNG_A1_BRIEFE'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_A1_HAUPT'])) {$ahaupt1 = $_SESSION['VORANMELDUNG_A1_HAUPT'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_A1_ROLLE'])) {$arolle1 = $_SESSION['VORANMELDUNG_A1_ROLLE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A1_STRASSE'])) {$astrasse1 = $_SESSION['VORANMELDUNG_A1_STRASSE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A1_HAUSNUMMER'])) {$ahausnummer1 = $_SESSION['VORANMELDUNG_A1_HAUSNUMMER'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A1_PLZ'])) {$aplz1 = $_SESSION['VORANMELDUNG_A1_PLZ'];} else {$fehler = true;}
@@ -61,6 +65,8 @@ if (isset($_SESSION['VORANMELDUNG_A2_VORNAME'])) {$avorname2 = $_SESSION['VORANM
 if (isset($_SESSION['VORANMELDUNG_A2_GESCHLECHT'])) {$ageschlecht2 = $_SESSION['VORANMELDUNG_A2_GESCHLECHT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A2_SORGERECHT'])) {$asorgerecht2 = $_SESSION['VORANMELDUNG_A2_SORGERECHT'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A2_BRIEFE'])) {$abriefe2 = $_SESSION['VORANMELDUNG_A2_BRIEFE'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_A2_HAUPT'])) {$ahaupt2 = $_SESSION['VORANMELDUNG_A2_HAUPT'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_A2_ROLLE'])) {$arolle2 = $_SESSION['VORANMELDUNG_A2_ROLLE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A2_STRASSE'])) {$astrasse2 = $_SESSION['VORANMELDUNG_A2_STRASSE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A2_HAUSNUMMER'])) {$ahausnummer2 = $_SESSION['VORANMELDUNG_A2_HAUSNUMMER'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_A2_PLZ'])) {$aplz2 = $_SESSION['VORANMELDUNG_A2_PLZ'];} else {$fehler = true;}
@@ -88,7 +94,8 @@ if (!$fehler) {
     $code .= "</td></tr>";
     $code .= "<tr><th>Religion</th><td>".cms_bezeichnung_finden($sreligion, 'religionen')."</td></tr>";
     $code .= "<tr><th>Adresse</th><td>$sstrasse $shausnummer<br>$splz $sort";
-    if (strlen($steilort) > 0) {$code .= "<br>$steilort";}
+    if (strlen($steilort) > 0) {$code .= " - $steilort";}
+    $code .= "<br>".cms_bezeichnung_finden($sstaat, 'laender');
     $code .= "</td></tr>";
     $code .= "<tr><th>Kontaktmöglichkeiten</th><td>";
     $kontakt = "";
@@ -98,6 +105,10 @@ if (!$fehler) {
     if (strlen($shandy2) > 0) {$kontakt .= "<br>Handy: $shandy2";}
     if (strlen($smail) > 0) {$kontakt .= "<br>eMail: $smail";}
     $code .= substr($kontakt, 4)."</td></tr>";
+    $code .= "<tr><th>Vollständige Masernimpfung</th><td>";
+    if ($simpfung == 1) {$code .= "ja";}
+    else {$code .= "nein";}
+    $code .= "</td></tr>";
     $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Alte Schule</th></tr>";
     $code .= "<tr><th>Name</th><td>$svorigeschule</td></tr>";
     $code .= "<tr><th>Klasse</th><td>$sklasse</td></tr>";
@@ -115,8 +126,9 @@ if (!$fehler) {
     $code .= "<tr><th>Name</th><td>$avorname1 $anachname1</td></tr>";
     $code .= "<tr><th>Geschlecht</th><td>".cms_bezeichnung_finden($ageschlecht1, 'geschlechter')."</td></tr>";
     $code .= "<tr><th>Adresse</th><td>$astrasse1 $ahausnummer1<br>$aplz1 $aort1";
-    if (strlen($ateilort1) > 0) {$code .= "<br>$ateilort1";}
+    if (strlen($ateilort1) > 0) {$code .= " - $ateilort1";}
     $code .= "</td></tr>";
+    $code .= "<tr><th>Rolle</th><td>".cms_bezeichnung_finden($arolle1, 'rollen')."</td></tr>";
     $code .= "<tr><th>Kontaktmöglichkeiten</th><td>";
     $kontakt = "";
     if (strlen($atelefon11) > 0) {$kontakt .= "<br>Telefon: $atelefon11";}
@@ -133,6 +145,10 @@ if (!$fehler) {
       if ($abriefe1 == 1) {$code .= "ja";}
       else {$code .= "<b><i>nein</i></b>";}
     $code .= "</td></tr>";
+    $code .= "<tr><th>Hauptansprechpartner</th><td>";
+      if ($ahaupt1 == 1) {$code .= "ja";}
+      else {$code .= "<b><i>nein</i></b>";}
+    $code .= "</td></tr>";
   $code .= "</table>";
 
   $code .= "<h2>Zweiter Ansprechpartner</h2>";
@@ -142,8 +158,9 @@ if (!$fehler) {
       $code .= "<tr><th>Name</th><td>$avorname2 $anachname2</td></tr>";
       $code .= "<tr><th>Geschlecht</th><td>".cms_bezeichnung_finden($ageschlecht2, 'geschlechter')."</td></tr>";
       $code .= "<tr><th>Adresse</th><td>$astrasse2 $ahausnummer2<br>$aplz2 $aort2";
-      if (strlen($ateilort2) > 0) {$code .= "<br>$ateilort2";}
+      if (strlen($ateilort2) > 0) {$code .= " - $ateilort2";}
       $code .= "</td></tr>";
+      $code .= "<tr><th>Rolle</th><td>".cms_bezeichnung_finden($arolle2, 'rollen')."</td></tr>";
       $code .= "<tr><th>Kontaktmöglichkeiten</th><td>";
       $kontakt = "";
       if (strlen($atelefon12) > 0) {$kontakt .= "<br>Telefon: $atelefon12";}
@@ -158,6 +175,10 @@ if (!$fehler) {
       $code .= "</td></tr>";
       $code .= "<tr><th>In Briefen einbezogen</th><td>";
         if ($abriefe2 == 1) {$code .= "ja";}
+        else {$code .= "<b><i>nein</i></b>";}
+      $code .= "</td></tr>";
+      $code .= "<tr><th>Hauptansprechpartner</th><td>";
+        if ($ahaupt2 == 1) {$code .= "ja";}
         else {$code .= "<b><i>nein</i></b>";}
       $code .= "</td></tr>";
     $code .= "</table>";

@@ -21,10 +21,9 @@ if (!cms_check_ganzzahl($id, 0)) {echo "FEHLER"; exit;}
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Leihgeräte bearbeiten'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.organisation.leihgeräte.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -158,13 +157,15 @@ if (cms_angemeldet() && $zugriff) {
 		// Geräte
 		// Alle vorhandenen Geräte laden
 		$gidsvorhanden = "";
-		$sql = "SELECT id FROM leihengeraete WHERE standort = $id";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-			while ($daten = $anfrage->fetch_assoc()) {
-				$gidsvorhanden .= '|'.$daten['id'];
+		$sql = $dbs->prepare("SELECT id FROM leihengeraete WHERE standort = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+			$sql->bind_result($lid);
+			while ($sql->fetch()) {
+				$gidsvorhanden .= '|'.$lid;
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 		$gidsvorhanden = $gidsvorhanden."|";
 
 		$gids = explode('|', $geraeteids);

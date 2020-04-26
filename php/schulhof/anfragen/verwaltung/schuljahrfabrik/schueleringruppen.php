@@ -22,12 +22,11 @@ if (isset($_POST['loeschen'])) {$loeschen = $_POST['loeschen'];} else {echo "FEH
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'])) {$neuschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHRNEU'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	$fehler = false;
 
 	$gruppenids[0]['name']    = 'klassen';

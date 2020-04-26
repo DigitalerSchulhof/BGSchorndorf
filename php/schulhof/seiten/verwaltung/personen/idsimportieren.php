@@ -2,9 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Personen']['Personenids importieren'];
 $code = "";
-if ($zugriff) {
+if (cms_r("schulhof.verwaltung.personen.ids.importieren")) {
   $code .= "<h1>Personen-IDs importieren</h1>";
   $code .= "<table class=\"cms_formular\">";
   $code .= "<tr><th>Personenart:</th><td>";

@@ -42,12 +42,11 @@ if (isset($_POST['sonstigegruppengewaehlt'])) {$sonstigegruppengewaehlt = $_POST
 if (isset($_SESSION['SCHULJAHRFABRIKSCHULJAHR'])) {$altschuljahr = $_SESSION['SCHULJAHRFABRIKSCHULJAHR'];} else {echo "FEHLER";exit;}
 
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Schuljahrfabrik'];
+
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fabrik")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -108,18 +107,18 @@ if (cms_angemeldet() && $zugriff) {
 			if (strlen($ids) > 2) {
 				$ids = "(".substr($ids, 1).")";
 				if (cms_check_idliste($ids)) {
-					$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$ids." AND art != AES_ENCRYPT('".$art."', '$CMS_SCHLUESSEL');";
-					$anfrage = $dbs->query($sql);	// Safe weil ID Check
-					if ($anfrage) {
-						if ($daten = $anfrage->fetch_assoc()) {
-							if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$ids." AND art != AES_ENCRYPT('".$art."', '$CMS_SCHLUESSEL');");
+					if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+						if ($sql->fetch()) {
+							if ($checkanzahl != 0) {
 								$personenfehler = true;
 							}
 						}
 						else {$fehler = true;}
-						$anfrage->free();
 					}
 					else {$fehler = true;}
+					$sql->close();
 				}
 				else {$fehler = true;}
 			}
@@ -378,47 +377,6 @@ if (cms_angemeldet() && $zugriff) {
 	  $sql->bind_param("siii", $bezeichnung, $beginnd, $ended, $id);
 	  $sql->execute();
 	  $sql->close();
-
-		// Tagebuch für dieses Schuljahr generieren
-		/*$sql = "CREATE TABLE tagebuch_$id (
-			id bigint(255) UNSIGNED NOT NULL,
-			lehrkraft bigint(255) UNSIGNED NULL,
-			raum bigint(255) UNSIGNED NULL,
-			kurs bigint(255) UNSIGNED NULL,
-			zeitraum bigint(255) UNSIGNED NULL,
-			tag int(5) UNSIGNED NULL,
-			stunde bigint(255) UNSIGNED NULL,
-			lehrkraftarchiv varbinary(3000) NOT NULL,
-			raumarchiv varbinary(3000) NOT NULL,
-			kursarchiv varbinary(3000) NOT NULL,
-			beginn bigint(255) UNSIGNED NULL,
-			ende bigint(255) UNSIGNED NULL,
-			tbeginn bigint(255) UNSIGNED NULL,
-			tende bigint(255) UNSIGNED NULL,
-			tlehrkraft bigint(255) UNSIGNED DEFAULT NULL,
-			traum bigint(255) UNSIGNED DEFAULT NULL,
-			tstunde bigint(255) UNSIGNED DEFAULT NULL,
-			entfall int(1) UNSIGNED NOT NULL DEFAULT '0',
-			zusatzstunde int(1) UNSIGNED NOT NULL DEFAULT '0',
-			vertretungsplan int(1) UNSIGNED NOT NULL DEFAULT '0',
-			vertretungstext varbinary(3000) NOT NULL,
-			idvon bigint(255) UNSIGNED DEFAULT NULL,
-			idzeit bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD PRIMARY KEY (id)";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."lehrer FOREIGN KEY (lehrkraft) REFERENCES personen(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."raeume FOREIGN KEY (raum) REFERENCES raeume(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."kurse FOREIGN KEY (kurs) REFERENCES kurse(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."zeitraeume FOREIGN KEY (zeitraum) REFERENCES zeitraeume(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."tlehrer FOREIGN KEY (tlehrkraft) REFERENCES personen(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);	// Kommentar
-		$sql = "ALTER TABLE tagebuch_$id ADD CONSTRAINT tagebuch".$id."traeume FOREIGN KEY (traum) REFERENCES raeume(id) ON DELETE CASCADE ON UPDATE CASCADE;";
-		$anfrage = $dbs->query($sql);*/	// Kommentar
 
 		// Schlüsselpositionen hinzufügen
 		$personen[0]['id'] = explode("|", $schulleitung);

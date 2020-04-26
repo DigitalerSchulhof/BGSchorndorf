@@ -14,16 +14,14 @@ if (isset($_SESSION['BENUTZERID'])) {$id = $_SESSION['BENUTZERID'];} else {echo 
 if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 if (($modus != '1') && ($modus != 0)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
 
-$zugriff = $CMS_RECHTE['Personen']['Lehrerkürzel ändern'];
 
 if ($modus == "1") {
 	if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 	if (!cms_check_ganzzahl($id)) {echo "FEHLER"; exit;}
 }
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.lehrer.kürzel")) {
 	$fehler = false;
 
 	if (!$fehler) {

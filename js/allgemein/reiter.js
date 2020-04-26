@@ -5,13 +5,14 @@ function cms_reiter(id, nummer, maximum, hashSetzen) {
 		// Alle Reiterfenster deaktivieren
 		document.getElementById('cms_reiterfenster_'+id+'_'+i).style.display = 'none';
 		// Alle Reitertitel deaktivieren
-		$(document.getElementById('cms_reiter_'+id+'_'+i)).removeClass("cms_reiter_aktiv").addClass("cms_reiter");
+		cms_klasse_dazu('cms_reiter_'+id+'_'+i, "cms_reiter");
+		cms_klasse_weg('cms_reiter_'+id+'_'+i, "cms_reiter_aktiv");
 	}
 	// Aktivieren des Fensters mit der Nummer nummer
 	document.getElementById('cms_reiterfenster_'+id+'_'+nummer).style.display = 'block';
 
 	// Aktivieren des Reitertitels mit der Nummer nummer
-	$(document.getElementById('cms_reiter_'+id+'_'+nummer)).addClass('cms_reiter_aktiv');
+	cms_klasse_dazu('cms_reiter_'+id+'_'+nummer, "cms_reiter_aktiv");
 
 	// Reiter als Hash speichern
 	if(hashSetzen)

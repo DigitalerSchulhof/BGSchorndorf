@@ -10,15 +10,13 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id, 0)) {$fehler = true;}
 if (isset($_POST['ziel'])) {$ziel = $_POST['ziel'];} else {echo "FEHLER";exit;}
-$CMS_RECHTE = cms_rechte_laden();
+
 
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 $fehler = false;
 
-$zugriff = $CMS_RECHTE['Website']['Newsletter bearbeiten'] || $CMS_RECHTE["Website"]["Newsletter Empfängerliste sehen"];
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten || schulhof.information.newsletter.empfänger.sehen")) {
 	$_SESSION["NEWSLETTERID"] = $id;
   $_SESSION["NEWSLETTERZIEL"] = $ziel;
 	echo "ERFOLG";

@@ -187,7 +187,7 @@ function cms_pinnwandanschlaege_eingabencheck(pinnwand) {
 	var meldung = '';
 	var fehler = false;
 
-	if (!cms_check_name(titel)) {
+	if (!cms_check_nametitel(titel)) {
 		meldung += '<li>Der Titel enthält ungültige Zeichen.</li>';
 		fehler = true;
 	}

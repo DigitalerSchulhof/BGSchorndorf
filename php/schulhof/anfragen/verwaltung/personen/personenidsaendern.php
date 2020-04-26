@@ -18,11 +18,9 @@ if (!cms_check_ganzzahl($dritt,0) && ($dritt != '')) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($viert,0) && ($viert != '')) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Personenids bearbeiten'];
 
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.ids.bearbeiten")) {
 
 	// PROFILDATEN UPDATEN
 	$dbs = cms_verbinden('s');

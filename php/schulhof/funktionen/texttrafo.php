@@ -50,15 +50,20 @@ function cms_array_leserlich($arr, $sep = "<br>", $l = 0) {
 }
 
 function cms_boesartig($string) {
-	$regex = array(
-		"/ [oO][nN][a-zA-Z]* *=[^\\\\]*/",																																																																// onevent=
-		"/(.[^ ])*[jJ](&.*;)*[aA](&.*;)*[vV](&.*;)*[aA](&.*;)*[sS](&.*;)*[cC](&.*;)*[rR](&.*;)*[iI](&.*;)*[pP](&.*;)*[tT](&.*;)*(:|;[cC][oO][lL][oO][nN])/",							// javascript:
-		"/<[sS][cC][rR][iI][pP][tT].*>/",																																																																	// <script>
-		"/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg\+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/",	// data:x/y
-	);
-	foreach($regex as $r)
-		if(preg_match($r, $string))
-			return true;
+	// onevent
+	if (preg_match("/ [oO][nN][a-zA-Z]* *=[^\\\\]*/", $string)) {return true;}
+	// <script>
+	if (preg_match("/<[sS][cC][rR][iI][pP][tT].*>/", $string)) {return true;}
+	// data:
+	if (preg_match("/=['\"]?data:(application\\/(javascript|octet-stream|zip|x-shockwave-flash)|image\\/(svg\+xml)|text\\/(javascript|x-scriptlet|html)|data\\/(javascript))[;,]/", $string)) {
+		return true;
+	}
+	preg_match_all("/(.[^ ])*[jJ](&.*;)*[aA](&.*;)*[vV](&.*;)*[aA](&.*;)*[sS](&.*;)*[cC](&.*;)*[rR](&.*;)*[iI](&.*;)*[pP](&.*;)*[tT](&.*;)*(:|;[cC][oO][lL][oO][nN])/", $string, $matchjs);
+	preg_match_all("/javascript:cms_download\('([-a-zA-Z0-9]+\/)*[\-\_a-zA-Z0-9]{1,244}\.((tar\.gz)|([a-zA-Z0-9]{2,10}))'\)/", $string, $matchdown);
+
+	if (count($matchjs[0]) != count($matchdown[0])) {
+		return true;
+	}
 	return false;
 }
 ?>

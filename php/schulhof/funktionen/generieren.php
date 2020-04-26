@@ -35,16 +35,18 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     else if ($netz == "p") {$db = cms_verbinden('p');}
     $jetzt = time();
     // Neue ID bestimmten und eintragen
-    $sql = "SET FOREIGN_KEY_CHECKS = 0";
-    $anfrage = $db->query($sql);  // Safe weil keine Eingabe
+    $sql = $db->prepare("SET FOREIGN_KEY_CHECKS = 0;");
+    $sql->execute();
+    $sql->close();
 
     $sql = $db->prepare("INSERT INTO $tabelle (id, idvon, idzeit) SELECT id, idvon, idzeit FROM (SELECT IFNULL(id*0,0)+? AS idvon, IFNULL(id*0,0)+? AS idzeit, IFNULL(MIN(id)+1,1) AS id FROM $tabelle WHERE id+1 NOT IN (SELECT id FROM $tabelle)) AS vorherigeid");
   	$sql->bind_param("ii", $benutzer, $jetzt);
   	$sql->execute();
   	$sql->close();
 
-		$sql = "SET FOREIGN_KEY_CHECKS = 1";
-    $anfrage = $db->query($sql);  // Safe weil keine Eingabe
+		$sql = $db->prepare("SET FOREIGN_KEY_CHECKS = 1;");
+    $sql->execute();
+    $sql->close();
 
     // ID zurückgewinnen
     $id = null;
@@ -227,13 +229,14 @@ function cms_kategorieicons_generieren($id, $art, $icon = 'standard.png') {
   }
   if (strlen($sql) > 0) {
     $sql = substr($sql, 7);
-    $sql = "SELECT DISTINCT icon FROM ($sql) AS x";
-    if ($anfrage = $dbs->query($sql)) { // TODO: Irgendwie safe machen
-      while ($daten = $anfrage->fetch_assoc()) {
-        array_push ($verwendet, $daten['icon']);
+    $sql = $dbs->prepare("SELECT DISTINCT icon FROM ($sql) AS x");
+    if ($sql->execute()) {
+      $sql->bind_result($kicon);
+      while ($sql->fetch()) {
+        array_push ($verwendet, $kicon);
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
 
   cms_trennen($dbs);
@@ -271,20 +274,18 @@ function cms_geraeteverwalten_knopf($dbs) {
   $anzahldefekt = 0;
   $anzahlneu = 0;
   $anzahl = "";
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahldefekt = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr > 0) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr > 0)) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahldefekt);
+    $sql->fetch();
   }
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahlneu = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql->close();
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ((SELECT COUNT(*) AS anzahl FROM leihengeraete WHERE statusnr = 1 OR statusnr = 5) UNION ALL (SELECT COUNT(*) AS anzahl FROM raeumegeraete WHERE statusnr = 1 OR statusnr = 5)) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlneu);
+    $sql->fetch();
   }
+  $sql->close();
   $zusatz = '';
   if ($anzahlneu > 0) {
     $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahldefekt</span>";
@@ -295,99 +296,121 @@ function cms_geraeteverwalten_knopf($dbs) {
   return "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Geräte_verwalten\">Geräte verwalten".$anzahl."</a>";
 }
 
+function cms_registrierungen_knopf($dbs) {
+  $zusatz = "";
+  $sqlwhere = "";
+  $anzahlneu = 0;
+  $anzahl = "";
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM nutzerregistrierung");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlneu);
+    $sql->fetch();
+  }
+  $sql->close();
+  $zusatz = '';
+  if ($anzahlneu > 0) {
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</span>";
+  }
+  return "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Registrierungen\">Registrierungen übernehmen $anzahl</a>";
+}
+
 function cms_terminegenehmigen_knopf($dbs) {
-  global $CMS_RECHTE, $CMS_GRUPPEN;
+  global $CMS_GRUPPEN;
   $zusatz = "";
   $sql = "";
   $code = "";
-  if ($CMS_RECHTE['Organisation']['Termine genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
-  if ($CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+  if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+  if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
     }
   }
   $sql = substr($sql, 7);
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Termine_genehmigen\">Termine genehmigen".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
 function cms_blogeintraegegenehmigen_knopf($dbs) {
-  global $CMS_RECHTE, $CMS_GRUPPEN;
+  global $CMS_GRUPPEN;
   $code = "";
   $zusatz = "";
   $sql = "";
-  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen']) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
-  if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+  if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+  if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
       $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
     }
   }
   $sql = substr($sql, 7);
-  $sql = "SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Blogeinträge_genehmigen\">Blogeinträge genehmigen".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
 function cms_galeriengenehmigen_knopf($dbs) {
   $code = "";
   $zusatz = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM galerien WHERE genehmigt = 0");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Galerien_genehmigen\">Galerien genehmigen".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
 function cms_identitaetsdiebstaehle_knopf($dbs) {
   $code = "";
   $zusatz = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM identitaetsdiebstahl");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\">Identitätsdiebstähle behandeln".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
@@ -396,46 +419,45 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   $anzahlauftraege = 0;
   $anzahlneu = 0;
   $anzahl = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahlauftraege = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlauftraege);
+    $sql->fetch();
   }
-  $sql = "SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
-      $anzahlneu = $daten['anzahl'];
-    }
-    $anfrage->free();
+  $sql->close();
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM hausmeisterauftraege WHERE status != 'e'");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahlneu);
+    $sql->fetch();
   }
+  $sql->close();
   $zusatz = '';
   if ($anzahlneu > 0) {
-    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span>";
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span> ";
   }
   else if ($anzahlauftraege > 0) {
     $anzahl = " <span class=\"cms_meldezahl\">$anzahlauftraege</span>";
   }
-  return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a>";
+  return "<a class=\"cms_button\" href=\"Schulhof/Hausmeister/Aufträge\">Hausmeisterbuch".$anzahl."</a> ";
 }
 
 function cms_auffaelliges_knopf($dbs) {
   $code = "";
   $zusatz = "";
-  $sql = "SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status=0";
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    if ($daten = $anfrage->fetch_assoc()) {
+  $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM auffaelliges WHERE status=0");
+  if ($sql->execute()) {
+    $sql->bind_result($danzahl);
+    if ($sql->fetch()) {
       $zusatz = "";
       $anzahl = "";
-      if ($daten['anzahl'] > 0) {
+      if ($danzahl > 0) {
         $zusatz = "cms_meldezahl_wichtig";
-        $anzahl = "<span class=\"cms_meldezahl $zusatz\">".$daten['anzahl']."</span>";
+        $anzahl = "<span class=\"cms_meldezahl $zusatz\">$danzahl</span>";
       }
       $code .= "<a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Neues auffälliges Verhalten ".$anzahl."</a>";
     }
-    $anfrage->free();
   }
+  $sql->close();
   return $code;
 }
 
@@ -446,16 +468,15 @@ function cms_chatmeldungen_knopf($dbs) {
   $sql = "";
   foreach($CMS_GRUPPEN as $i => $g) {
     $gk = cms_textzudb($g);
-    $sql .= " SELECT '$g' as gruppe, COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
+    $sql .= " SELECT COUNT(*) AS anzahl FROM $gk"."chatmeldungen UNION";
   }
   $sql = substr($sql, 0, -5);
-  $anzahl = 0;
-  if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-    while ($daten = $anfrage->fetch_assoc()) {
-      $anzahl += $daten["anzahl"];
-    }
-    $anfrage->free();
+  $sql = $dbs->prepare("SELECT SUM(anzahl) AS anzahl FROM ($sql) AS x");
+  if ($sql->execute()) {
+    $sql->bind_result($anzahl);
+    $sql->fetch();
   }
+  $sql->close();
   $zusatz = "";
   if ($anzahl > 0) {
     $zusatz = "cms_meldezahl_wichtig";
@@ -468,35 +489,43 @@ function cms_chatmeldungen_knopf($dbs) {
 }
 
 function cms_sonderrollen_generieren() {
-	global $CMS_SCHLUESSEL, $CMS_RECHTE, $CMS_GRUPPEN, $CMS_BENUTZERART;
+	global $CMS_SCHLUESSEL, $CMS_GRUPPEN, $CMS_BENUTZERART;
 	$code = "";
 	$dbs = cms_verbinden('s');
   if ($CMS_BENUTZERART == 'l') {
-    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
-
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Tagebuch\">Tagebucheinträge vornehmen</a></li> ";
   }
-	if ($CMS_RECHTE['Technik']['Geräte verwalten']) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
+    $code .= "<li>".cms_registrierungen_knopf($dbs)."</li> ";
+  }
+  if (cms_r("schulhof.technik.geräte.probleme")) {
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
+  }
+  if (cms_r("schulhof.technik.hausmeisteraufträge.erstellen")) {
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li> ";
+  }
+	if (cms_r("schulhof.technik.geräte.verwalten")) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
   }
-	if ($CMS_RECHTE['Organisation']['Termine genehmigen'] || $CMS_RECHTE['Organisation']['Gruppentermine genehmigen']) {
+	if (cms_r("artikel.genehmigen.termine || schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     $code .= "<li>".cms_terminegenehmigen_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] || $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen']) {
+  if (cms_r("artikel.genehmigen.blogeinträge || schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     $code .= "<li>".cms_blogeintraegegenehmigen_knopf($dbs)."</li> ";
 	}
-	if ($CMS_RECHTE['Organisation']['Galerien genehmigen']) {
+  if (cms_r("artikel.genehmigen.galerien")) {
     $code .= "<li>".cms_galeriengenehmigen_knopf($dbs)."</li> ";
 	}
-	if ($CMS_RECHTE['Administration']['Identitätsdiebstähle behandeln']) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 		$code .= "<li>".cms_identitaetsdiebstaehle_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen'] && $CMS_RECHTE['Technik']['Hausmeisteraufträge markieren']) {
+  if (cms_r("schulhof.technik.hausmeisteraufträge.[|sehen,markieren]")) {
 		$code .= "<li>".cms_hausmeisterauftraege_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Website']['Auffälliges verwalten']) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
 		$code .= "<li>".cms_auffaelliges_knopf($dbs)."</li> ";
 	}
-  if ($CMS_RECHTE['Gruppen']['Chatmeldungen sehen'] || $CMS_RECHTE['Gruppen']['Chatmeldungen verwalten']) {
+  if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.chatmeldungen")) {
 		$code .= "<li>".cms_chatmeldungen_knopf($dbs)."</li> ";
 	}
 	cms_trennen($dbs);
@@ -540,20 +569,21 @@ function cms_generiere_bilddaten($pfad) {
   return 'data:image/'.$typ.';base64,'.base64_encode($daten);
 }
 
-function cms_gruppeninfos_generieren ($dbs) { // QUESTION: Wofür ist das? »$gruppen« ist leer?
+function cms_gruppeninfos_generieren ($dbs) {
   global $CMS_SCHLUESSEL, $CMS_GRUPPEN;
   $gruppen = array();
-  foreach ($gruppen as $a) {
+  foreach ($CMS_GRUPPEN as $a) {
     $a = cms_textzudb($a);
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $a) AS x ORDER BY bezeichnung";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      while ($daten = $anfrage->fetch_assoc()) {
-        $gruppen[$a][$daten['id']]['bezeichnung'] = $daten['bezeichnung'];
-        $gruppen[$a][$daten['id']]['icon'] = $daten['icon'];
-        $gruppen[$a][$daten['id']]['id'] = $daten['id'];
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $a) AS x ORDER BY bezeichnung");
+    if ($sql->execute()) {
+      $sql->bind_result($gid, $gbez, $gicon);
+      while ($sql->fetch()) {
+        $gruppen[$a][$gid]['bezeichnung'] = $gbez;
+        $gruppen[$a][$gid]['icon'] = $gicon;
+        $gruppen[$a][$gid]['id'] = $gid;
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
   return $gruppen;
 }
@@ -660,13 +690,14 @@ function cms_amtstraeger ($dbs, $id, $amt) {
       }
     }
     $sql = substr($sql,7);
-    $sql = "SELECT DISTINCT COUNT(*) AS anzahl FROM ($sql) AS x";
-    if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-      if ($daten = $anfrage->fetch_assoc()) {
-        if ($daten['anzahl'] > 0) {$amtstraeger = true;}
+    $sql = $dbs->prepare("SELECT DISTINCT COUNT(*) AS anzahl FROM ($sql) AS x");
+    if ($sql->execute()) {
+      $sql->bind_result($checkanzahl);
+      if ($sql->fetch()) {
+        if ($checkanzahl > 0) {$amtstraeger = true;}
       }
-      $anfrage->free();
     }
+    $sql->close();
   }
   return $amtstraeger;
 }
@@ -710,75 +741,6 @@ function cms_generiere_idlisteanzahl($idliste) {
 
 function cms_ladeicon() {return "<div class=\"cms_ladeicon\"><div></div><div></div><div></div><div></div></div>";}
 
-/**
-* Gültige SQL-Query braucht $tabelle, sonst kommt nur der select Teil
-**/
-function cms_sql_mit_aes($felder, $tabelle = "", $bedingung = "") {
-  global $CMS_SCHLUESSEL;
-  $sql = "";
-  if(strlen($tabelle))
-    $sql .= "SELECT ";
-
-  foreach($felder as $f)
-    $sql .= "AES_DECRYPT($f, '$CMS_SCHLUESSEL') as $f, ";
-
-  $sql = substr($sql, 0, -2);
-  if(strlen($tabelle)) {
-    $sql .= " FROM $tabelle";
-    if(strlen($bedingung))
-      $sql .= " WHERE $bedingung";
-  }
-  return $sql;
-}
-
-// Alt - Aktuell - Neu
-function cms_sql_aan($wert, $aes = false) {
-  global $CMS_SCHLUESSEL;
-  $r = "";
-  if(is_array($wert))
-    foreach($wert as $i => $w)
-      $r .= cms_sql_aan($w, $aes);
-  else {
-    if($aes)
-      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    else
-      $f = "?";
-    $r = $wert."alt = $f, ".$wert."aktuell = $f, ".$wert."neu = $f,";
-  }
-  return $r;
-}
-//  Aktuell - Neu
-function cms_sql_an($wert, $aes = false) {
-  global $CMS_SCHLUESSEL;
-  $r = "";
-  if(is_array($wert))
-    foreach($wert as $i => $w)
-      $r .= cms_sql_an($w, $aes);
-  else {
-    if($aes)
-      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    else
-      $f = "?";
-    $r = $wert."aktuell = $f, ".$wert."neu = $f,";
-  }
-  return $r;
-}
-
-function cms_sql_set_fragezeichen($wert, $aes = false) {
-  global $CMS_SCHLUESSEL;
-  $r = "";
-  if(is_array($wert))
-    foreach($wert as $i => $w)
-      $r .= cms_sql_set_fragezeichen($w, $aes);
-  else {
-    if($aes)
-      $f = "AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-    else
-      $f = "?";
-    $r = $wert." = $f, ";
-  }
-  return $r;
-}
 
 function cms_generiere_nachladen($id, $script) {
   return "<div id=\"$id\" class=\"cms_gesichert\"><div class=\"cms_meldung_laden\">".cms_ladeicon()."<p>Inhalte werden geladen...<script>$script</script></p></div></div>";
@@ -805,5 +767,94 @@ function cms_ausgabe_editor($text) {
   else {
     return $text;
   }
+}
+if (!function_exists('mb_ucfirst')) {
+	function mb_ucfirst($str, $encoding = "UTF-8", $lower_str_end = false) {
+		$first_letter = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding);
+		$str_end = "";
+		if ($lower_str_end) {
+			$str_end = mb_strtolower(mb_substr($str, 1, mb_strlen($str, $encoding), $encoding), $encoding);
+		}
+		else {
+			$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
+		}
+		$str = $first_letter . $str_end;
+		return $str;
+	}
+}
+
+function cms_wechselbilder_generieren($inhalte, $id = "") {
+  global $CMS_WECHSELBILDER;
+  $code = "";
+  if (!is_array($inhalte)) {return "";}
+  if (count($inhalte) == 0) {return "";}
+  if (strlen($id) == 0) {$id = "cms_wechselbilder_".$CMS_WECHSELBILDER."_";}
+
+  $knoepfe = "";
+  $icode = "";
+
+  $icode .= "<li style=\"opacity: 1; z-index: 2;\" class=\"cms_wechselbilder_bild\" id=\"cms_wechselbilder_bild_".$CMS_WECHSELBILDER."_0\">".$inhalte[0]."</li>";
+  $knoepfe .= "<span id=\"cms_wechselbilder_knopf_".$CMS_WECHSELBILDER."_0\" class=\"cms_wechselbilder_knopf_aktiv\" onclick=\"cms_wechselbild_zeigen('$CMS_WECHSELBILDER', '0')\"></span> ";
+
+  for ($i=1; $i<count($inhalte); $i++) {
+    $icode .= "<li style=\"opacity: 0;\" class=\"cms_wechselbilder_bild\" id=\"cms_wechselbilder_bild_".$CMS_WECHSELBILDER."_$i\">".$inhalte[$i]."</li>";
+    $knoepfe .= "<span id=\"cms_wechselbilder_knopf_".$CMS_WECHSELBILDER."_$i\" class=\"cms_wechselbilder_knopf\" onclick=\"cms_wechselbild_zeigen('$CMS_WECHSELBILDER', '$i')\"></span> ";
+  }
+
+  $code .= "<div class=\"cms_wechselbilder_o\" id=\"$id"."_o\">";
+    $code .= "<ul class=\"cms_wechselbilder_m\" id=\"$id"."_m\">";
+    $code .= $icode;
+    $code .= "</ul><div class=\"cms_clear\"></div>";
+    $code .= "<input type=\"hidden\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_anzahl\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_anzahl\" value=\"".(count($inhalte))."\">";
+    $code .= "<input type=\"hidden\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_angezeigt\" id=\"cms_wechselbilder_".$CMS_WECHSELBILDER."_angezeigt\" value=\"0\">";
+    $code .= '<span class="cms_wechselbild_voriges" onclick="cms_wechselbild_voriges('.$CMS_WECHSELBILDER.')"></span><span class="cms_wechselbild_naechstes" onclick="cms_wechselbild_naechstes('.$CMS_WECHSELBILDER.')"></span>';
+    $code .= "<p class=\"cms_wechselbilder_wahl\">$knoepfe</p>";
+    $code .= "</ul>";
+    $code .= "<script>cms_wechselbilder_starten($CMS_WECHSELBILDER);</script>";
+  $code .= "</div>";
+
+  $CMS_WECHSELBILDER ++;
+  return $code;
+}
+
+function cms_generiere_stylefarbwahl($id, $wert) {
+  if (!isset($wert[$id])) {return "";}
+  $rgba = explode(",", substr($wert[$id]['wert'], 5, -1));
+  $r = dechex($rgba[0]);
+  $g = dechex($rgba[1]);
+  $b = dechex($rgba[2]);
+  if (strlen($r) < 2) {$r = "0".$r;}
+  if (strlen($g) < 2) {$g = "0".$g;}
+  if (strlen($b) < 2) {$b = "0".$b;}
+  $hex = "#".$r.$g.$b;
+  $alpha = $rgba[3]*100;
+  return "<input class=\"cms_farbwahl_rgb\" type=\"color\" name=\"$id"."_rgb\" id=\"$id"."_rgb\" value=\"$hex\"> <input class=\"cms_farbwahl_alpha\" type=\"number\" name=\"$id"."_alpha\" id=\"$id"."_alpha\" min=\"0\" max=\"100\" step=\"1\" value=\"$alpha\"> %";
+}
+
+function cms_generiere_styleinput($id, $wert, $typ="text") {
+  if (!isset($wert[$id])) {return "";}
+  return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"".$wert[$id]['wert']."\">";
+}
+
+function cms_generiere_styleselect($id, $optionen, $wert, $vergleich = 'alias') {
+  $wertid = str_replace("_alias", "", $id);
+  if (!isset($wert[$wertid])) {return "";}
+  $optionen = str_replace("value=\"".$wert[$wertid][$vergleich]."\"", "value=\"".$wert[$wertid][$vergleich]."\" selected=\"selected\"", $optionen);
+  if ($vergleich == 'alias') {
+    $event = " onchange=\"cms_alias_auswerten('$wertid')\"";
+  }
+  else {
+    $event = "";
+  }
+  return "<select name=\"$id\" id=\"$id\"$event>$optionen</select>";
+}
+
+function cms_generiere_input($id, $wert="", $typ="text") {
+  return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"$wert\">";
+}
+
+function cms_generiere_select($id, $optionen, $wert="") {
+  $optionen = str_replace("value=\"$wert\"", "value=\"$wert\" selected=\"selected\"", $optionen);
+  return "<select name=\"$id\" id=\"$id\">$optionen</select>";
 }
 ?>

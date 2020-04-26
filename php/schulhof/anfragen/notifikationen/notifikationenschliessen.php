@@ -9,8 +9,6 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 $fehler = false;

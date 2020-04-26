@@ -4,15 +4,14 @@
 <h1>Schuldetails</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten'] || $CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten'];
-if ($zugriff) {
+if (cms_r("schulhof.verwaltung.schule.[|adressen,mail]")) {
 	$code = "</div>";
 
 	$adressen = "";
 	$mail = "";
 
 	$adressen = "";
-	if ($CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten']) {
+	if (cms_r("schulhof.verwaltung.schule.adressen")) {
 		$adressen  = "<table class=\"cms_formular\">";
 		$adressen .= "<tr><th>Name der Schule:</th><td><input type=\"text\" name=\"cms_schulhof_adressen_schule\" id=\"cms_schulhof_adressen_schule\" value=\"$CMS_SCHULE\"></td></tr>";
 		$adressen .= "<tr><th>Genitiv des Namens der Schule:</th><td><input type=\"text\" name=\"cms_schulhof_adressen_schulegenitiv\" id=\"cms_schulhof_adressen_schulegenitiv\" value=\"$CMS_SCHULE_GENITIV\"></td></tr>";
@@ -24,7 +23,7 @@ if ($zugriff) {
 		$adressen .= "</table>";
 		$adressen .= "<p><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_adressen();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung\">Abbrechen</a></p>";
 	}
-	if ($CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten']) {
+	if (cms_r("schulhof.verwaltung.schule.mail")) {
 		$mail .= "<table class=\"cms_formular\">";
 		$mail .= "<tr><th>Adresse des Absenders:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_absender\" id=\"cms_schulhof_schulmail_absender\" value=\"$CMS_MAILABSENDER\"></td></tr>";
 		$mail .= "<tr><th>Host der eMailadresse:</th><td><input type=\"text\" name=\"cms_schulhof_schulmail_host\" id=\"cms_schulhof_schulmail_host\" value=\"$CMS_MAILHOST\"></td></tr>";
@@ -55,12 +54,12 @@ if ($zugriff) {
 
 	$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 	$code .= "<h2>Adressen</h2>";
-	if ($CMS_RECHTE['Administration']['Adressen des Schulhofs verwalten']) {$code .= $adressen;}
+	if (cms_r("schulhof.verwaltung.schule.adressen")) {$code .= $adressen;}
 	else {$code .= cms_meldung('info', '<h4>Keine Berechtigung</h4><p>Keine Berechtigung zur Änderung der Adressen der Schule.</p>');}
 	$code .= "</div></div>";
 	$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
 	$code .= "<h2>Mailadresse des Schulhofs</h2>";
-	if ($CMS_RECHTE['Administration']['Mailadresse des Schulhofs verwalten']) {$code .= $mail;}
+	if (cms_r("schulhof.verwaltung.schule.mail")) {$code .= $mail;}
 	else {$code .= cms_meldung('info', '<h4>Keine Berechtigung</h4><p>Keine Berechtigung zur Änderung der eMailadresse des Schulhofs.</p>');}
 	$code .= "</div></div>";
 	$code .= "<div class=\"cms_clear\"></div>";

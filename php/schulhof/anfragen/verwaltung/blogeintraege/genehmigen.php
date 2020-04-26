@@ -20,10 +20,10 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 $gk = cms_textzudb($gruppe);
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $zugriff = false;
-if ($gruppe == 'Blogeinträge') {$zugriff = $CMS_RECHTE['Organisation']['Blogeinträge genehmigen'];}
-else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = $CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'];}
+if ($gruppe == 'Blogeinträge') {$zugriff = cms_r("artikel.genehmigen.blogeinträge");}
+else if (in_array($gruppe, $CMS_GRUPPEN)) {$zugriff = cms_r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen");}
 
 if (cms_angemeldet() && $zugriff) {
 	$dbs = cms_verbinden('s');
@@ -39,8 +39,8 @@ if (cms_angemeldet() && $zugriff) {
 		$gruppenid = "gruppe";
 
 		// Gruppe laden
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') as grbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = ?");
-		$sql->bind_param("i", $gruppenid);
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') as grbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id IN (SELECT gruppe FROM $tabelle WHERE id = ?)");
+		$sql->bind_param("i", $id);
 		$gruppensj = "Schuljahrübergreifend";
 		$gruppenbez = "";
 		if ($sql->execute()) {

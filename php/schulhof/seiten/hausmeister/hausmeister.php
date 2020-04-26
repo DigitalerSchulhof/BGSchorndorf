@@ -6,10 +6,10 @@
 $spalten = 1;
 $aktionen = "";
 $auftraege = "";
-if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
   $spalten = 2;
   $auftraege .= "<div class=\"cms_spalte_34\"><div class=\"cms_spalte_i\">";
-    if ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen']) {
+    if (cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
       $beschreibung = "";
       $titel = "";
       $auftraegezugehoerigkeit = "<input type=\"hidden\" name=\"cms_hausmeisterauftrag_zugehoerig\" id=\"cms_hausmeisterauftrag_zugehoerig\" value=\"\">";
@@ -67,30 +67,33 @@ if ($spalten == 2) {
   $code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
 }
 
-$code .= "<h2>Kontakt</h2>";
-include_once('php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');
+if ($CMS_BENUTZERSCHULJAHR != '-') {
+  $code .= "<h2>Kontakt</h2>";
+  include_once('php/schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');
 
-$CMS_EMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
-// Hausmeister
-$hausmeisterkontakt = "";
-$sql = "SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM";
-$sql .= " schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = $CMS_BENUTZERSCHULJAHR AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname";
-if ($anfrage = $dbs->query($sql)) { // Safe weil keine Eingabe
-  while ($daten = $anfrage->fetch_assoc()) {
-    if (in_array($daten['id'], $CMS_EMPFAENGERPOOL)) {
-      $hausmeisterkontakt .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', ".$daten['id'].")\">";
+  $CMS_EMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
+  // Hausmeister
+  $hausmeisterkontakt = "";
+  $sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schluesselposition JOIN personen ON personen.id = schluesselposition.person WHERE schluesselposition.schuljahr = ? AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL')) AS personen ORDER BY nachname, vorname");
+  $sql->bind_param("i", $CMS_BENUTZERSCHULJAHR);
+  if ($sql->execute()) {
+    $sql->bind_result($pid, $pvor, $pnach, $ptit);
+    while ($sql->fetch()) {
+      if (in_array($pid, $CMS_EMPFAENGERPOOL)) {
+        $hausmeisterkontakt .= "<span class=\"cms_button\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\">";
+      }
+      else {$hausmeisterkontakt .= "<span class=\"cms_button_passiv\">";}
+      $hausmeisterkontakt .= cms_generiere_anzeigename($pvor, $pnach, $ptit);
+      $hausmeisterkontakt .= "</span> ";
     }
-    else {$hausmeisterkontakt .= "<span class=\"cms_button_passiv\">";}
-    $hausmeisterkontakt .= cms_generiere_anzeigename($daten['vorname'], $daten['nachname'], $daten['titel']);
-    $hausmeisterkontakt .= "</span> ";
   }
-  $anfrage->free();
+  $sql->close();
+
+  if (strlen($hausmeisterkontakt) > 0) {$code .= $hausmeisterkontakt;}
+  else {$code .= "<p class=\"cms_notiz\">Keine Hausmeister hinterlegt.</p>";}
 }
 
-if (strlen($hausmeisterkontakt) > 0) {$code .= $hausmeisterkontakt;}
-else {$code .= "<p class=\"cms_notiz\">Keine Hausmeister hinterlegt.</p>";}
-
-if ($CMS_RECHTE['Technik']['Hausmeisteraufträge sehen']) {
+if (cms_r("schulhof.technik.hausmeisteraufträge.sehen")) {
   $aktionen .= cms_hausmeisterauftraege_knopf($dbs);
 }
 

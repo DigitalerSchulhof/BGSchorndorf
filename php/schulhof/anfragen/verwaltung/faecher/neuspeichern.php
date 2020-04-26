@@ -15,16 +15,15 @@ if (isset($_POST['icon'])) {$icon = $_POST['icon'];} else {echo "FEHLER";exit;}
 if (isset($_POST['kollegen'])) {$kollegen = $_POST['kollegen'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION['FÄCHERSCHULJAHR'])) {$SCHULJAHR = $_SESSION['FÄCHERSCHULJAHR'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Fächer anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.fächer.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 	if (!cms_check_titel($kuerzel)) {$fehler = true;}
-	if (!cms_check_ganzzahl($farbe,0,47)) {$fehler = true;}
+	if (!cms_check_ganzzahl($farbe,0,63)) {$fehler = true;}
 	if (!cms_check_dateiname($icon)) {$fehler = true;}
 
 	if (!$fehler) {
@@ -66,17 +65,18 @@ if (cms_angemeldet() && $zugriff) {
 			$pids = str_replace("|", ",", $kollegen);
 			$pids = "(".substr($pids, 1).")";
 			if (cms_check_idliste($pids)) {
-				$sql = "SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$pids." AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL');";
-				if ($anfrage = $dbs->query($sql)) {	// Safe weil ID Check
-					if ($daten = $anfrage->fetch_assoc()) {
-						if ($daten['anzahl'] != 0) {
+				$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM personen WHERE id IN ".$pids." AND art != AES_ENCRYPT('l', '$CMS_SCHLUESSEL');");
+				if ($sql->execute()) {
+					$sql->bind_result($anzahl);
+					if ($sql->fetch()) {
+						if ($anzahl != 0) {
 							$fehler = true;
 						}
 					}
 					else {$fehler = true;}
-					$anfrage->free();
 				}
 				else {$fehler = true;}
+				$sql->close();
 			}
 			else {$fehler = true;}
 		}

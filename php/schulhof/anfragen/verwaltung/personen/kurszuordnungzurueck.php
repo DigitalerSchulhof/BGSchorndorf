@@ -11,8 +11,8 @@ if (isset($_POST['sj'])) {$sj = $_POST['sj'];} else {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($sj,0)) {echo "FEHLER"; exit;}
 
 $zugriff = false;
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Personen den Kursen zuordnen'];
+
+$zugriff = cms_r("schulhof.verwaltung.personen.zuordnen.kurse");
 
 
 if (cms_angemeldet() && $zugriff) {

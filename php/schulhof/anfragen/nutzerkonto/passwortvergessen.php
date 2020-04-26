@@ -20,7 +20,6 @@ $dbs = cms_verbinden('s');
 $jetzt = time();
 $benutzername_db = cms_texttrafo_e_db($benutzername);
 
-
 $sql = $dbs->prepare("SELECT personen.id AS id, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(salt, '$CMS_SCHLUESSEL') AS salt FROM personen JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE benutzername = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND email = AES_ENCRYPT(?, '$CMS_SCHLUESSEL');");
 $sql->bind_param("ss", $benutzername_db, $mail);
 if ($sql->execute()) {

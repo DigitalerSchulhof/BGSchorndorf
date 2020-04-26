@@ -2,7 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Personen']['Personen den Kursen zuordnen'];
+$zugriff = cms_r("schulhof.verwaltung.personen.zuordnen.kurse");
 $code = "";
 if ($zugriff) {
   $SCHULJAHRE = "";

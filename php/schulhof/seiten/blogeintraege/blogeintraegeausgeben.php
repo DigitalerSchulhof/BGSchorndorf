@@ -9,7 +9,9 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 
 	$zeiten = cms_blogeintrag_zeiten($daten);
 
-	$code .= "<li>";
+	if ($art != 'diashow') {
+		$code .= "<li>";
+	}
 	$link = "";
 	if ($CMS_URL[0] == 'Website') {$link = "Website/Blog/";}
 	else if ($CMS_URL[0] == 'Schulhof') {
@@ -28,34 +30,36 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 		if ($daten['art'] == 'oe') {$code .= "<img class=\"cms_bloglink_vorschaubild\" src=\"".$daten['vorschaubild']."\">";}
 			else {$code .= "<img class=\"cms_bloglink_vorschaubild\" src=\"".cms_generiere_bilddaten($daten['vorschaubild'])."\">";}
 	}
-	if ($art == 'liste') {$code .= "<h3>".$daten['bezeichnung']."</h3>";}
+	if (($art == 'liste') || ($art == 'diashow')) {$code .= "<h3>".$daten['bezeichnung']."</h3>";}
 	$code .= "<p>".$daten['vorschau']."</p>";
 
 	// Prüfen, ob Downloads vorliegen
 	$downloadanzahl = 0;
 	if ($daten['art'] == 'oe') {
-		$sql = "SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ".$daten['id'];
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-			if ($downloads = $anfrage->fetch_assoc()) {
-				$downloadanzahl = $downloads['anzahl'];
-			}
-			$anfrage->free();
+		$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM blogeintragdownloads WHERE blogeintrag = ?");
+		$sql->bind_param("i", $daten['id']);
+		if ($sql->execute()) {
+			$sql->bind_result($downloadanzahl);
+			$sql->fetch();
 		}
+		$sql->close();
 	}
 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
 		$code .= "<p><span class=\"cms_button\" href=\"$link\">Weiterlesen ...</span></p>";
 	}
-	$code .= cms_blogeintrag_zusatzinfo($dbs, $daten);
+	$code .= cms_blogeintrag_zusatzinfo($dbs, $daten, $internvorlink);
 	$code .= "<div class=\"cms_clear\"></div>";
 	$code .= "</div>";
 	$code .= "</a>";
-	$code .= "</li>";
+	if ($art != 'diashow') {
+		$code .= "</li>";
+	}
 
 	return $code;
 }
 
-function cms_blogeintrag_zusatzinfo($dbs, $daten) {
+function cms_blogeintrag_zusatzinfo($dbs, $daten, $internvorlink) {
 	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_URL;
 	$code = "";
 
@@ -66,7 +70,10 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 	}*/
 
 	if ($daten['art'] == 'in') {
-		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern</span> ";
+		$gruppeninfos = explode("/", cms_linkzutext($internvorlink));
+		$gruppenartbez = $gruppeninfos[count($gruppeninfos)-2];
+		$gruppenbez = $gruppeninfos[count($gruppeninfos)-1];
+		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern – $gruppenartbez » $gruppenbez</span> ";
 	}
 
 	if (strlen($daten['autor']) > 0) {$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/icons/oegruppen/autor.png')\">".$daten['autor']."</span> ";}
@@ -80,13 +87,14 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 			$sql .= " UNION (SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM $gk JOIN $gk"."blogeintraege ON $gk.id = $gk"."blogeintraege.gruppe WHERE blogeintrag = ".$daten['id'].")";
 		}
 		$sql = substr($sql, 7);
-		$sql = "SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC";
-		if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-			while ($daten = $anfrage->fetch_assoc()) {
-				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/".$daten['icon']."')\">".$daten['bezeichnung']."</span> ";
+		$sql = $dbs->prepare("SELECT * FROM ($sql) AS x ORDER BY bezeichnung ASC");
+		if ($sql->execute()) {
+			$sql->bind_result($kbez, $kicon);
+			while ($sql->fetch()) {
+				$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/gruppen/klein/$kicon')\">$kbez</span> ";
 			}
-			$anfrage->free();
 		}
+		$sql->close();
 	}
 	if (strlen($code > 0)) {$code = "<p>".$code."</p>";}
 	return $code;
@@ -123,7 +131,7 @@ function cms_blogeintrag_zeiten($daten) {
 }
 
 function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
-	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_RECHTE, $CMS_BLOGID;
+	global $CMS_URL, $CMS_URLGANZ, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BLOGID;
 	$code = "";
 	$gefunden = false;
 	$fehler = false;
@@ -137,6 +145,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$datum = mktime(0, 0, 0, $monat, $tag, $jahr);
 			$tabelle = "blogeintraege";
 			$tabelledownload = "blogeintragdownloads";
+			$tabellelink = "blogeintraglinks";
 			$gruppe = "Blogeinträge";
 			$vorschaubild = "AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL')";
 			$oeffentlichkeit = 'oeffentlichkeit';
@@ -153,6 +162,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$gk = cms_textzudb($gruppe);
 			$tabelle = $gk."blogeintraegeintern";
 			$tabelledownload = $gk."blogeintragdownloads";
+			$tabellelink = $gk."blogeintraglinks";
 			$tabellebeschluesse = $gk."blogeintragbeschluesse";
 			$vorschaubild = "''";
 			$oeffentlichkeit = "'0' AS oeffentlichkeit";
@@ -200,8 +210,6 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			}
 		}
 
-		$gefunden = $gefunden && isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"];
-
 		if($gefunden) {
 			if ($jahr != date('Y', $blogeintrag['datum'])) {$gefunden = false;}
 			if ($monat != date('m', $blogeintrag['datum'])) {$gefunden = false;}
@@ -209,7 +217,12 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		}
 
 		if (($gefunden) && ($art == 'oe')) {
+			$gefunden = $gefunden && (isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]);
 			$gefunden = cms_oeffentlich_sichtbar($dbs, 'blogeintraege', $blogeintrag);
+		}
+		else if ($gefunden) {
+			$gruppenrecht = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
+			$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ((isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]) || $gruppenrecht['blogeintraege']);
 		}
 
 		if ($gefunden) {
@@ -217,28 +230,67 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$zeiten = cms_blogeintrag_zeiten($blogeintrag);
 			// Schnellinfos
 			$kalender = "<div class=\"cms_termin_detialkalenderblatt\">".cms_blogeintrag_kalenderblatterzeugen($blogeintrag, $zeiten)."</div>";
-			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten)."</div>";
+			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten)."<br>".$blogeintrag["vorschau"]."</div>";
 
 			$downloads = array();
 			// Downloads suchen
-			$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL') AS pfad, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-				while ($daten = $anfrage->fetch_assoc()) {
-					array_push($downloads, $daten);
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(pfad, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), dateiname, dateigroesse FROM $tabelledownload WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($did, $dbeintrag, $dpfad, $dtitel, $dbeschr, $ddateiname, $ddateigroesse);
+				while ($sql->fetch()) {
+					$D = array();
+					$D['id'] = $did;
+					$D['blogeintrag'] = $dbeintrag;
+					$D['pfad'] = $dpfad;
+					$D['titel'] = $dtitel;
+					$D['beschreibung'] = $dbeschr;
+					$D['dateiname'] = $ddateiname;
+					$D['dateigroesse'] = $ddateigroesse;
+					array_push($downloads, $D);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
+
+			// Links laden
+			$links = array();
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(link, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM $tabellelink WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($lid, $lbeintrag, $llink, $ltitel, $lbeschr);
+				while ($sql->fetch()) {
+					$L = array();
+					$L['id'] = $lid;
+					$L['blogeintrag'] = $lbeintrag;
+					$L['link'] = $llink;
+					$L['titel'] = $ltitel;
+					$L['beschreibung'] = $lbeschr;
+					array_push($links, $L);
+				}
+			}
+			$sql->close();
 
 			// Beschlüsse laden
 			$beschluesse = array();
 			if ($art == 'in') {
-				$sql = "SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ".$blogeintrag['id'].") AS x ORDER BY titel ASC";
-				if ($anfrage = $dbs->query($sql)) {	// Safe weil interne ID
-					while ($daten = $anfrage->fetch_assoc()) {
-						array_push($beschluesse, $daten);
+				$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL'), pro, contra, enthaltung FROM $tabellebeschluesse WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+				$sql->bind_param("i", $blogeintrag['id']);
+				if ($sql->execute()) {
+					$sql->bind_result($bid, $bbeintrag, $btitel, $blangfristig, $bbeschreibung, $bpro, $bcontra, $benthaltung);
+					while ($sql->fetch()) {
+						$B = array();
+						$B['id'] = $bid;
+						$B['blogeintrag'] = $bbeintrag;
+						$B['titel'] = $btitel;
+						$B['langfristig'] = $blangfristig;
+						$B['beschreibung'] = $bbeschreibung;
+						$B['pro'] = $bpro;
+						$B['contra'] = $bcontra;
+						$B['enthaltung'] = $benthaltung;
+						array_push($beschluesse, $B);
 					}
-					$anfrage->free();
 				}
+				$sql->close();
 			}
 
 			// Aktionen ermitteln, falls im Schulhof
@@ -247,14 +299,14 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				if ($blogeintrag['art'] == 'oe') {
 					$link = $CMS_URLGANZ;
 					$linkl = implode('/', array_slice($CMS_URL,0,2));
-					if ($CMS_RECHTE['Website']['Blogeinträge bearbeiten']) {
+					if (cms_r("artikel.{$blogeintrag['oeffentlichkeit']}.blogeinträge.bearbeiten")) {
 						$aktionen .= "<span class=\"cms_button\" onclick=\"cms_blogeintraege_bearbeiten_vorbereiten('".$blogeintrag['id']."', '$linkl')\">Blogeintrag bearbeiten</span> ";
 					}
-					if ($CMS_RECHTE['Organisation']['Blogeinträge genehmigen'] && ($blogeintrag['genehmigt'] == 0)) {
+					if (cms_r("artikel.genehmigen.blogeinträge") && ($blogeintrag['genehmigt'] == 0)) {
 						$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_blog_genehmigen('Blogeinträge', '".$blogeintrag['id']."', '$link')\">Blogeintrag genehmigen</span> ";
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blog_ablehnen('Blogeinträge', '".$blogeintrag['id']."', '$linkl')\">Blogeintrag ablehnen</span> ";
 					}
-					if ($CMS_RECHTE['Website']['Blogeinträge löschen']) {
+					if (cms_r("artikel.{$blogeintrag['oeffentlichkeit']}.blogeinträge.löschen")) {
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blogeintraege_loeschen_vorbereiten('".$blogeintrag['id']."', '".$blogeintrag['bezeichnung']."', '$linkl')\">Blogeintrag löschen</span> ";
 					}
 				}
@@ -265,7 +317,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					if ($gruppenrechte['blogeintraege'] == '1') {
 						$aktionen .= "<span class=\"cms_button\" onclick=\"cms_blogeintraegeintern_bearbeiten_vorbereiten('".$blogeintrag['id']."', '$linkl')\">Blogeintrag bearbeiten</span> ";
 					}
-					if ($CMS_RECHTE['Organisation']['Gruppenblogeinträge genehmigen'] && ($blogeintrag['genehmigt'] == 0)) {
+					if (($blogeintrag['genehmigt'] == 0) && cms_r("schulhof.gruppen.$gruppe.artikel.blogeinträge.genehmigen")) {
 						$aktionen .= "<span class=\"cms_button_ja\" onclick=\"cms_blog_genehmigen('$gruppe', '".$blogeintrag['id']."', '$link')\">Blogeintrag genehmigen</span> ";
 						$aktionen .= "<span class=\"cms_button_nein\" onclick=\"cms_blog_ablehnen('$gruppe', '".$blogeintrag['id']."', '$linkl')\">Blogeintrag ablehnen</span> ";
 					}
@@ -288,11 +340,10 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				else {$code .= "<p><img src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
 			}
 			$code .= cms_ausgabe_editor($blogeintrag['text']);
-			$code .= cms_artikel_reaktionen("b", $blogeintrag["id"], $gruppenid);
 
 			$code .= "</div></div>";
 
-			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0)) {
+			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0) || (count($links) > 0)) {
 				$code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
 				if (count($downloads) > 0) {
 					$code .= "<h3>Zugehörige Downloads</h3>";
@@ -302,6 +353,12 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 							$d['gruppenid'] = $gruppenid;
 							$code .= cms_schulhof_interndownload_ausgeben($d);
 						}
+					}
+				}
+				if (count($links) > 0) {
+					$code .= "<h3>Zugehörige Links</h3>";
+					foreach ($links as $l) {
+						$code .= cms_artikellink_ausgeben($l);
 					}
 				}
 				if (count($beschluesse) > 0) {
@@ -373,6 +430,80 @@ function cms_blogeintragdetailansicht_blogeintraginfos($dbs, $daten, $zeiten) {
 			$code .= "<h3>Zugehörige Gruppen</h3><ul class=\"cms_termindetails\">$verknuepfung</ul>";
 			$code .= "<div class=\"cms_zugehoerig\" id=\"cms_zugehoerig_".$daten['id']."\"></div>";
 			$code .= "<script>$zugehoerigladen</script>";
+		}
+	}
+
+	return $code;
+}
+
+
+
+function cms_letzte_blogeintraege_ausgeben($anzahl, $dbs, $art, $CMS_URLGANZ) {
+	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_BENUTZERART;
+	if (!cms_check_ganzzahl($anzahl, 0)) {return "";}
+
+	$code = "";
+	$jetzt = time();
+
+	$mitgliedschaftenblogs = array();
+
+	$sqlm = "";
+	foreach ($CMS_GRUPPEN as $g) {
+		$gk = cms_textzudb($g);
+		$sqlm .= " UNION (SELECT DISTINCT blogeintrag AS id FROM $gk"."blogeintraege WHERE gruppe IN (SELECT DISTINCT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID))";
+	}
+	$sqlm = substr($sqlm, 7);
+	$sqlm = "SELECT DISTINCT id FROM ($sqlm) AS x";
+
+	// Öffentliche Termine
+	if ($CMS_BENUTZERART == 'l') {$oelimit = 1;}
+	else if ($CMS_BENUTZERART == 'v') {$oelimit = 2;}
+	else if (($CMS_BENUTZERART == 's') || ($CMS_BENUTZERART == 'e')) {$oelimit = 3;}
+	else {$oelimit = 4;}
+
+	$sqloe = "(SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL') AS vorschaubild, 'oe' AS art, '' AS schuljahr, '' AS sjbez, '' AS gbez, '' AS gart FROM blogeintraege WHERE (id IN ($sqlm) OR oeffentlichkeit >= $oelimit) AND (datum < $jetzt) AND aktiv = 1 ORDER BY datum DESC LIMIT $anzahl)";
+
+	$sqlin = "";
+	foreach ($CMS_GRUPPEN as $g) {
+		$gk = cms_textzudb($g);
+		$sqlin .= " UNION (SELECT $gk"."blogeintraegeintern.id, AES_DECRYPT($gk"."blogeintraegeintern.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(autor, '$CMS_SCHLUESSEL') AS autor, datum, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, AES_DECRYPT(vorschau, '$CMS_SCHLUESSEL') AS vorschau, NULL AS vorschaubild, 'in' AS art, schuljahr, AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez, '$g' AS gart FROM $gk"."blogeintraegeintern JOIN $gk ON gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE gruppe IN (SELECT gruppe FROM $gk"."mitglieder WHERE person = $CMS_BENUTZERID) AND (datum < $jetzt) AND aktiv = 1 ORDER BY datum DESC LIMIT $anzahl)";
+	}
+
+
+	$BLOGS = array();
+	$sql = $dbs->prepare("SELECT * FROM ($sqloe $sqlin) AS x ORDER BY datum DESC, bezeichnung ASC LIMIT $anzahl");
+	// Blogausgabe erzeugen
+	if ($sql->execute()) {
+		$sql->bind_result($bid, $bbez, $bautor, $bdatum, $bgenehmigt, $baktiv, $btext, $bvorschau, $bvorschaubild, $bart, $bschuljahr, $bsjbez, $bgbez, $bgart);
+		while ($sql->fetch()) {
+			$B = array();
+			$B['id'] = $bid;
+			$B['bezeichnung'] = $bbez;
+			$B['autor'] = $bautor;
+			$B['datum'] = $bdatum;
+			$B['genehmigt'] = $bgenehmigt;
+			$B['aktiv'] = $baktiv;
+			$B['text'] = $btext;
+			$B['vorschau'] = $bvorschau;
+			$B['vorschaubild'] = $bvorschaubild;
+			$B['art'] = $bart;
+			$B['schuljahr'] = $bschuljahr;
+			$B['sjbez'] = $bsjbez;
+			$B['gbez'] = $bgbez;
+			$B['gart'] = $bgart;
+			array_push($BLOGS, $B);
+		}
+	}
+	$sql->close();
+
+	foreach ($BLOGS AS $B) {
+		if ($B['art'] == 'oe') {
+			$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $CMS_URLGANZ);
+		}
+		else if ($B['art'] == 'in') {
+			if (is_null($B['sjbez'])) {$B['sjbez'] = "Schuljahrübergreifend";}
+			$vorlink = "Schulhof/Gruppen/".cms_textzulink($B['sjbez'])."/".cms_textzulink($B['gart'])."/".cms_textzulink($B['gbez']);
+			$code .= cms_blogeintrag_link_ausgeben($dbs, $B, $art, $vorlink);
 		}
 	}
 

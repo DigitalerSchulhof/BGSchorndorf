@@ -30,12 +30,11 @@ if (isset($_POST['datenschutz'])) {$datenschutz = $_POST['datenschutz'];} else {
 if (isset($_POST['hausmeister'])) {$hausmeister = $_POST['hausmeister'];} else {echo "FEHLER";exit;}
 if (isset($_SESSION["SCHULJAHREBEARBEITEN"])) {$id = $_SESSION["SCHULJAHREBEARBEITEN"];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Schuljahre bearbeiten'];
+
 
 $dbs = cms_verbinden('s');
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.bearbeiten")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -150,9 +149,9 @@ if (cms_angemeldet() && $zugriff) {
 				}
 				if ($zeitraumfehler) {$fehler = true; echo "ZEITRAUM";}
 			}
-			$anfrage->free();
 		}
 		else {$fehler = true;}
+		$sql->close();
 	}
 
 	if (!$fehler) {

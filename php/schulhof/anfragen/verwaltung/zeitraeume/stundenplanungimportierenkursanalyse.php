@@ -12,10 +12,9 @@ if (isset($_POST['kurse'])) {$kurse = $_POST['kurse'];} else {echo "FEHLER"; exi
 if (isset($_SESSION['ZEITRAUMSCHULJAHR'])) {$SCHULJAHR = $_SESSION['ZEITRAUMSCHULJAHR'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITRAUMSTUNDENPLANIMPORT'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 
 	if (strlen($trennung) == 0) {$fehler = true;}
@@ -57,7 +56,7 @@ if (cms_angemeldet() && $zugriff) {
 		$ek['fach'] = $einkurs[3];
 		$ek['icon'] = $einkurs[4];
 		$ek['klassen'] = $einkurs[5];
-		$ek['schienen'] = $einkurs[6];
+		$ek['schiene'] = $einkurs[6];
 		array_push($K, $ek);
 	}
 
@@ -74,8 +73,8 @@ if (cms_angemeldet() && $zugriff) {
 					array_push($NK, $ek);
 				}
 				else {
-					if (strlen($ek['schienen']) > 0) {
-						$eschienen = explode("|", substr($ek['schienen'], 1));
+					if (strlen($ek['schiene']) > 0) {
+						$eschienen = explode("|", substr($ek['schiene'], 1));
 						foreach ($eschienen AS $es) {
 							$schienenzuordnung = array();
 							$schienenzuordnung['schiene'] = $es;

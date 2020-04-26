@@ -15,10 +15,9 @@ if (isset($_POST['boxenanzahl'])) {$boxenanzahl = $_POST['boxenanzahl'];} else {
 if (isset($_POST['boxenids'])) {$boxenids = $_POST['boxenids'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['ELEMENTSPALTE'])) {$spalte = $_SESSION['ELEMENTSPALTE'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("website.elemente.boxen.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen
@@ -27,7 +26,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (($ausrichtung != 'u') && ($ausrichtung != 'n')) {$fehler = true;}
 	if (!cms_check_ganzzahl($breite,0)) {$fehler = true;}
 
-	if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$aktiv = 0;}
+	if (!cms_r("website.freigeben")) {$aktiv = 0;}
 
 	$dbs = cms_verbinden('s');
 	$maxpos = cms_maxpos_spalte($dbs, $spalte);
@@ -47,9 +46,9 @@ if (cms_angemeldet() && $zugriff) {
 				}
 			}
 			else {$fehler = true;}
-			$anfrage->free();
 		}
 		else {$fehler = true;}
+		$sql->close();
 	}
 
 	// Boxen überprüfen
@@ -60,7 +59,7 @@ if (cms_angemeldet() && $zugriff) {
 		for ($i=1; $i<count($bids); $i++) {
 			if (isset($_POST["baktiv_".$bids[$i]])) {$boxen[$i]['aktiv'] = $_POST["baktiv_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['aktiv'] != '0') && ($boxen[$i]['aktiv'] != '1')) {$fehler = true; }
-			if (!$CMS_RECHTE['Website']['Inhalte freigeben']) {$boxen[$i]['aktiv'] = 0;}
+			if (!cms_r("website.freigeben")) {$boxen[$i]['aktiv'] = 0;}
 
 			if (isset($_POST["bstyle_".$bids[$i]])) {$boxen[$i]['style'] = $_POST["bstyle_".$bids[$i]];} else {echo "FEHLER"; exit;}
 			if (($boxen[$i]['style'] != '1') && ($boxen[$i]['style'] != '2') && ($boxen[$i]['style'] != '3') && ($boxen[$i]['style'] != '4') &&
@@ -91,12 +90,10 @@ if (cms_angemeldet() && $zugriff) {
 			$boxen[$i]['titel'] = cms_texttrafo_e_db($boxen[$i]['titel']);
 			$boxen[$i]['inhalt'] = cms_texttrafo_e_db($boxen[$i]['inhalt']);
 			$bid = cms_generiere_kleinste_id('boxen');
-			$sql = "UPDATE boxen SET boxaussen = $id, position = $position, aktiv = '".$boxen[$i]['aktiv']."', ";
-			$sql .= "titelalt = '".$boxen[$i]['titel']."', titelaktuell = '".$boxen[$i]['titel']."', titelneu = '".$boxen[$i]['titel']."', ";
-			$sql .= "inhaltalt = '".$boxen[$i]['inhalt']."', inhaltaktuell = '".$boxen[$i]['inhalt']."', inhaltneu = '".$boxen[$i]['inhalt']."', ";
-			$sql .= "stylealt = '".$boxen[$i]['style']."', styleaktuell = '".$boxen[$i]['style']."', styleneu = '".$boxen[$i]['style']."' ";
-			$sql .= "WHERE id = $bid";
-			$dbs->query($sql);	// TODO: Irgendwie safe machen
+			$sql = $dbs->prepare("UPDATE boxen SET boxaussen = ?, position = ?, aktiv = ?, titelalt = ?, titelaktuell = ?, titelneu = ?, inhaltalt = ?, inhaltaktuell = ?, inhaltneu = ?, stylealt = ?, styleaktuell = ?, styleneu = ? WHERE id = ?");
+			$sql->bind_param("iissssssssssi", $id, $position, $boxen[$i]['aktiv'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['titel'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['inhalt'], $boxen[$i]['style'], $boxen[$i]['style'], $boxen[$i]['style'], $bid);
+			$sql->execute();
+			$sql->close();
 			$position++;
 		}
 		echo "ERFOLG";

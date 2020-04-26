@@ -12,6 +12,8 @@ $sj = cms_linkzutext($schuljahr);
 $gruppenname = $CMS_URL[count($CMS_URL)-1];
 $gn = cms_linkzutext($gruppenname);
 
+$zugriff = false;
+
 if ($sj == 'Schuljahrübergreifend') {
   $code .= "<h1>Listen von $gn</h1>";
 }
@@ -20,10 +22,11 @@ else {
 }
 
 if (cms_valide_gruppe($g)) {
-  $zugriff = $CMS_RECHTE['Gruppen'][$g." Listen sehen"];
-
   // Prüfen, ob Mitglied in dieser Gruppe
-  if (!$zugriff) {
+  if (cms_r("schulhof.information.listen.gruppen.$gk.sehen")) {
+    $zugriff = true;
+  }
+  else if (cms_r("schulhof.information.listen.gruppen.$gk.sehenwenn")) {
     if ($schuljahr == 'Schuljahrübergreifend') {
       $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk JOIN $gk"."mitglieder ON $gk.id = $gk"."mitglieder.gruppe WHERE $gk"."mitglieder.person = $CMS_BENUTZERID AND $gk.bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
       $sql->bind_param("s", $gn);
@@ -101,12 +104,12 @@ if (cms_valide_gruppe($g)) {
         $code .= cms_togglebutton_generieren ('cms_gruppenliste_konfession', 'Konfession', 0, "cms_listen_gruppenliste_laden('$g', '$gruppenid')");
       }
       else {
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Adresse</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Kontaktdaten</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Geburtsdatum</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Religionsunterricht</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Profile</span> ";
-        $code .= "<span class=\"cms_button_eingeschraenkt\">Konfession</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Adresse</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Kontaktdaten</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Geburtsdatum</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Religionsunterricht</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Profile</span> ";
+        $code .= "<span class=\"cms_button_gesichert\">Konfession</span> ";
       }
       $code .= "</p>";
       if (!$CMS_IMLN) {

@@ -24,7 +24,6 @@ include_once("php/schulhof/seiten/nutzerkonto/postfach/postfilter.php");
 
 	<?php
 	$heutet = mktime(23,59,59,date("m"), date("d"), date("Y"));
-	//$letztenMonatt = mktime(0,0,0,date("m")-1, date("d"), date("Y"));
 	$letztenMonatt = mktime(0,0,0,0, 0, 2000);
 	echo cms_postfach_filter_ausgeben('entwurf', $letztenMonatt, $heutet, '-', '');
 	?>

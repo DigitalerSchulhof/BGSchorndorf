@@ -18,26 +18,21 @@ if (isset($_SESSION["TAGBEARBEITEN"])) {
 }
 else $fehler = true;
 
-if(!cms_check_ganzzahl($tagid, 0))
-	$fehler = true;
+if(!cms_check_ganzzahl($tagid, 0)) {$fehler = true;}
 
 // TAGADTEN laden
 if (!$fehler) {
 	$dbp = cms_verbinden('p');
-	$sql = "SELECT farbe, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id = $tagid";
-	if ($anfrage = $dbp->query($sql)) {	// Safe weil ID Check
-		if ($daten = $anfrage->fetch_assoc()) {
-			$farbe = $daten['farbe'];
-			$titel = $daten['titel'];
-		}
-		else {
-			$fehler = true;
-		}
-		$anfrage->free();
+	$sql = $dbp->prepare("SELECT farbe, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM posttags_$CMS_BENUTZERID WHERE id = ?");
+	$sql->bind_param("i", $tagid);
+	if ($sql->execute()) {
+		$sql->bind_result($farbe, $titel);
+		$sql->fetch();
 	}
 	else {
 		$fehler = true;
 	}
+	$sql->close();
 	cms_trennen($dbp);
 }
 ?>

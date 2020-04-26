@@ -35,6 +35,25 @@ function cms_meldung_an (art, titel, text, nachher) {
 
 }
 
+function cms_meldung_notfall (art, titel, text, nachher) {
+	var blende = '<div class="cms_spalte_i">';
+		blende += '<div class="cms_neuigkeit_notfall">';
+			blende += '<span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/alarm.png\"></span>';
+			blende += '<span class=\"cms_neuigkeit_inhalt\"><h4>'+titel+'</h4>';
+			blende += text;
+		blende += '</span></div>';
+		blende += nachher;
+	blende += '</div>';
+
+	document.getElementById('cms_blende_i').innerHTML = blende;
+	cms_einblenden('cms_blende_o');
+
+	if ((art == 'erfolg') && (nachher.match(/onclick=\"cms_meldung_aus/))) {
+		var aus = setTimeout(function() {cms_meldung_aus ();}, 3000);
+	}
+
+}
+
 function cms_meldung_code (art, titel, text) {
 	var code = '<div class="cms_meldung cms_meldung_'+art+'">';
 			code += '<h4>'+titel+'</h4>';
@@ -176,8 +195,9 @@ function cms_dsgvo_datenschutz(fenster, eA, eB) {
 			}
 		}
 
-		var kontaktformulare = document.getElementsByClassName('cms_kontaktformular');
-		if (kontaktformulare.length > 0) {location.reload();}
+		var dsgvo_a = document.getElementsByClassName('cms_himweis_dsgvo_a').length;
+		var dsgvo_b = document.getElementsByClassName('cms_himweis_dsgvo_b').length;
+		if ((dsgvo_a && eA == 'j') ||(dsgvo_b && eB == 'j')) {location.reload();}
 	}
 }
 
@@ -190,4 +210,25 @@ function cms_vollbild(id) {
 			else {cms_klasse_weg(id+'_F', 'cms_vollbild');}
 		}
 	}
+}
+
+function cms_aktionsschicht_ein(kid) {
+	cms_aktionsschicht_aus();
+	var feld = document.getElementById(kid);
+	if (feld) {
+		// Sichtbar machen
+		feld.style.display = 'block';
+		document.getElementById('cms_aktionsschicht_o').style.display = 'block';
+	}
+}
+
+function cms_aktionsschicht_aus() {
+	var aschichten = document.getElementById('cms_aktionsschicht_ids').value;
+	if (aschichten.length > 0) {
+		aschichten = aschichten.substr(1).split(',');
+		for (var i=0; i<aschichten.length; i++) {
+			document.getElementById(aschichten[i]).style.display = 'none';
+		}
+	}
+	document.getElementById('cms_aktionsschicht_o').style.display = 'none';
 }

@@ -49,6 +49,8 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 	var autor = document.getElementById('cms_blogeintrag_autor').value;
 	var downloadanzahl = document.getElementById('cms_downloads_anzahl').value;
 	var downloadids = document.getElementById('cms_downloads_ids').value;
+  var artikellinkanzahl = document.getElementById('cms_artikellinks_anzahl').value;
+	var artikellinkids = document.getElementById('cms_artikellinks_ids').value;
 	var beschluesseanzahl = document.getElementById('cms_beschluesse_anzahl').value;
 	var beschluesseids = document.getElementById('cms_beschluesse_ids').value;
 
@@ -124,6 +126,38 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 		fehler = true;
 	}
 
+  // Links
+	var ltitelf = false;
+	var llinkf = false;
+	var lfehler = false;
+	if (artikellinkanzahl > 0) {
+		ids = artikellinkids.split('|');
+		for (i=1; i<ids.length; i++) {
+			var lid = ids[i];
+
+			var ltitel = document.getElementById('cms_artikellink_titel_'+lid);
+			var lbeschreibung = document.getElementById('cms_artikellink_beschreibung_'+lid);
+			var llink = document.getElementById('cms_artikellink_link_'+lid);
+
+			if (ltitel) {if ((ltitel.value).length > 0) {formulardaten.append("ltitel_"+lid,  ltitel.value);} else {ltitelf = true;}} else {lfehler = true;}
+			if (lbeschreibung) {formulardaten.append("lbeschreibung_"+lid,  lbeschreibung.value);} else {lfehler = true;}
+			if (llink) {if ((llink.value).length > 0) {formulardaten.append("llink_"+lid,  llink.value);} else {llinkf = true;}} else {lfehler = true;}
+		}
+	}
+
+	if (lfehler) {
+		meldung += '<li>bei der Erstellung der zugehörigen Links ist ein unbekannter Fehler aufgetreten. Bitte den <a href="Website/Feedback">Administrator informieren</a>.</li>';
+		fehler = true;
+	}
+	if (ltitelf) {
+		meldung += '<li>bei mindestens einem Link ist der Titel nicht angegeben.</li>';
+		fehler = true;
+	}
+	if (llinkf) {
+		meldung += '<li>bei mindestens einem Link wurde keine Adresse angegeben.</li>';
+		fehler = true;
+	}
+
   // Beschluesse
 	var btitelf = false;
 	var bstimmenf = false;
@@ -180,6 +214,8 @@ function cms_blogeintraegeintern_eingabenpruefen() {
 		formulardaten.append("zusammenfassung",   zusammenfassung);
 		formulardaten.append("downloadanzahl",    downloadanzahl);
 		formulardaten.append("downloadids", 		  downloadids);
+    formulardaten.append("artikellinkanzahl",	artikellinkanzahl);
+		formulardaten.append("artikellinkids", 		artikellinkids);
 		formulardaten.append("beschluesseanzahl", beschluesseanzahl);
 		formulardaten.append("beschluesseids", 		beschluesseids);
 	}
@@ -593,6 +629,31 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
+function cms_gruppe_pinnwand_speichern(gruppe, gruppenid, ziel) {
+  cms_laden_an('Pinnwand ändern', 'Der Inhalt der Pinnwand wird geändert.');
+  var pinnwand = document.getElementById('cms_gruppenpinnwand').value;
+
+	var formulardaten = new FormData();
+	formulardaten.append("gruppe", gruppe);
+	formulardaten.append("gruppenid", gruppenid);
+	formulardaten.append("pinnwand", pinnwand);
+	formulardaten.append("anfragenziel", 	'294');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Pinnwand ändern', '<p>Der Inhalt der Pinnwand wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\''+ziel+'\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+
+
 /*
   0: Init
   1: Verbinden
@@ -616,6 +677,10 @@ var socketChat = {
   rechte: {
     loeschen: false,
     stummschalten: false
+  },
+  server: {
+    ip: null,
+    port: null
   },
   stummTimeout: null,
   statusSetzen: function(nachricht, laden) {
@@ -648,7 +713,7 @@ var socketChat = {
     socketChat.status = 1;
     if(socketChat.verbindenInterval)
       clearInterval(socketChat.verbindenInterval)
-    socketChat.socket = new WebSocket("ws://localhost:12345");
+    socketChat.socket = new WebSocket("wss://"+socketChat.server.ip+":"+socketChat.server.port);
     socketChat.eventsSetzten();
   },
   senden: function(nachricht) {
@@ -790,6 +855,16 @@ var socketChat = {
       daten["banndauer"] = banndauer;
     socketChat.senden(daten);
   },
+  stummschalten: function(dauer) {
+    if(dauer) {
+      socketChat.stummTimeout = setTimeout(function() {
+        socketChat.chat.removeClass("cms_chat_stumm");
+        socketChat.stummTimeout = null;
+      }, dauer*1000-new Date().getTime());
+    }
+    if(socketChat.stummTimeout != null)
+      socketChat.chat.addClass("cms_chat_stumm");
+  },
   events: {
     close: function(e) {
       socketChat.neuVerbinden();
@@ -826,10 +901,7 @@ var socketChat = {
           socketChat.rechte.loeschen = daten.loeschen;
           socketChat.rechte.stummschalten = daten.stummschalten;
           if(daten.stumm) {
-            socketChat.chat.addClass("cms_chat_stumm");
-            socketChat.stummTimeout = setTimeout(function() {
-              socketChat.chat.removeClass("cms_chat_stumm");
-            }, daten.stumm*1000-new Date().getTime());
+            socketChat.stummschalten(daten.stumm);
           }
           socketChat.nachrichten.html("");
 
@@ -848,14 +920,12 @@ var socketChat = {
           socketChat.chat.removeClass("cms_chat_status cms_chat_laden");
           var lid = daten["lid"];
           socketChat.nachrichten.find("#cms_chat_nachricht_"+lid).removeClass("cms_chat_nachricht_gemeldet").addClass("cms_chat_nachricht_geloescht").find(".cms_chat_nachricht_nachricht").html(daten["inhalt"]);
+          socketChat.stummschalten();
           break;
         case "5":
-          if(daten.stumm) {
-            socketChat.chat.addClass("cms_chat_stumm");
-            socketChat.stummTimeout = setTimeout(function() {
-              socketChat.chat.removeClass("cms_chat_stumm");
-            }, daten.stumm*1000-new Date().getTime());
-          } else
+          if(daten.stumm)
+            socketChat.stummschalten(daten.stumm)
+          else
             cms_meldung_fehler();
           break;
         case "6":
@@ -863,6 +933,7 @@ var socketChat = {
           socketChat.chat.setClass("cms_chat_mehr", daten.mehr);
 
           $.each(daten.nachrichten, function(k, v) { socketChat.nachrichtAnzeigen(v, true); });
+          socketChat.stummschalten();
 
           break;
         case "7":

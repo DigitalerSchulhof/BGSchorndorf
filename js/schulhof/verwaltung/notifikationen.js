@@ -16,7 +16,7 @@ function cms_neuigkeit_schliessen(id) {
 	formulardaten.append("anfragenziel", 	'118');
 	formulardaten.append("id", 	id);
 
-	function anfragennachbehandlung(rueckgabe) {if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Nutzerkonto');}
+	function anfragennachbehandlung(rueckgabe) {if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Nutzerkonto/Neuigkeiten');}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);

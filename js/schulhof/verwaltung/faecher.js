@@ -37,7 +37,7 @@ function cms_faecher_neu_speichern() {
 		fehler = true;
 	}
 
-	if (!cms_check_ganzzahl(farbe,0,47)) {
+	if (!cms_check_ganzzahl(farbe,0,63)) {
 		meldung += '<li>die gewählte Farbe ist ungültig.</li>';
 		fehler = true;
 	}
@@ -288,7 +288,7 @@ function cms_schulhof_faecher_bearbeiten () {
 		fehler = true;
 	}
 
-	if (!cms_check_ganzzahl(farbe,0,47)) {
+	if (!cms_check_ganzzahl(farbe,0,63)) {
 		meldung += '<li>die gewählte Farbe ist ungültig.</li>';
 		fehler = true;
 	}

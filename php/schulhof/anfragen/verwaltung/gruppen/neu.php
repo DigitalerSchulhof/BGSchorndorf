@@ -41,23 +41,23 @@ if ($art == 'Kurse') {
 	if (isset($_POST['fach'])) {$fach = $_POST['fach'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['klassen'])) {$klassen = $_POST['klassen'];} else {echo "FEHLER"; exit;}
 	if (isset($_POST['kursbezextern'])) {$kursbezextern = $_POST['kursbezextern'];} else {echo "FEHLER"; exit;}
-	if ($import != 'j') {
-		if (isset($_POST['schienen'])) {$kursschienen = $_POST['schienen'];} else {echo "FEHLER"; exit;}
+	if ($import == 'j') {
+		if (isset($_POST['schiene'])) {$kursschienen = $_POST['schiene'];} else {echo "FEHLER"; exit;}
 		if (!cms_check_idfeld($kursschienen)) {echo "FEHLER"; exit;}
 		else {
 			$SCHIENEN = array();
-			$kursschienen = substr(str_replace("|null|", "|", $kursschienen."|"), -1);
-			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", substr($kursschienen, 1));}
+			$kursschienen = str_replace("|null|", "|", $kursschienen."|");
+			$kursschienen = substr($kursschienen, 1, -1);
+			if (strlen($kursschienen) > 0) {$SCHIENEN = explode("|", $kursschienen);}
 		}
 	}
 }
 
 $dbs = cms_verbinden('s');
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if (isset($CMS_RECHTE['Gruppen'][$art.' anlegen'])) {$zugriff = isset($CMS_RECHTE['Gruppen'][$art.' anlegen']);}
-else {$zugriff = false;}
+$zugriff = cms_r("schulhof.gruppen.$art.anlegen");
 
 $artk = cms_textzudb($art);
 $artg = cms_vornegross($art);
@@ -124,14 +124,20 @@ if (cms_angemeldet() && $zugriff) {
 				$faechertext = "(".implode(',', $faecher).")";
 				if (cms_check_idliste($faechertext)) {
 					$faecher = array();
-					$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest";
-		  		if ($anfrage = $dbs->query($sql)) {
-		  			while ($daten = $anfrage->fetch_assoc()) {
-		  				array_push($faecher, $daten);
+					$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') AS kuerzel, AES_DECRYPT(icon, '$CMS_SCHLUESSEL') AS icon FROM faecher WHERE id IN $faechertext AND $schuljahrtest");
+		  		if ($sql->execute()) {
+						$sql->bind_result($fid, $fbez, $fkurz, $ficon);
+		  			while ($sql->fetch()) {
+							$f = array();
+							$f['id'] = $fid;
+							$f['bezeichnung'] = $fbez;
+							$f['kuerzel'] = $fkurz;
+							$f['icon'] = $ficon;
+		  				array_push($faecher, $f);
 		  			}
-		  			$anfrage->free();
 		  		}
 		      else {$fehler = true;}
+					$sql->close();
 				}
 				else {$fehler = true;}
 			}
@@ -162,35 +168,38 @@ if (cms_angemeldet() && $zugriff) {
 			if (count($klassen) != 0) {
 				$klassentext = "(".implode(',', $klassen).")";
 				if (cms_check_idliste($klassentext)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext";
-		      $anfrage = $dbs->query($sql);	// Safe weil ID Check
-		  		if ($anfrage) {
-		  			if ($daten = $anfrage->fetch_assoc()) {
-		  				if ($daten['anzahl'] != count($klassen)) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM klassen WHERE id IN $klassentext");
+		  		if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+		  			if ($sql->fetch()) {
+		  				if ($checkanzahl != count($klassen)) {
 		  					$fehler = true;
 		  					echo "KLASSEN";
 		  				}
 		  			}
 		  			else {$fehler = true;}
-		  			$anfrage->free();
 		  		}
 		      else {$fehler = true;}
+					$sql->close();
 				}
 	      else {$fehler = true;}
 	    }
 
 			if ($import == 'j') {
-				$schienenmuster = "(".implode(',', $SCHIENEN).")";
-				$sql = $dbs->prepare("SELECT COUNT(*) FROM schienen WHERE id IN $schienenmuster");
-				if ($sql->execute()) {
-					$sql->bind_result($checkanzahl);
-					if ($sql->fetch()) {
-						if ($checkanzahl != count($SCHIENEN)) {$fehler = true;}
+				print_r($SCHIENEN);
+				if (count($SCHIENEN) > 0) {
+					$schienenmuster = "(".implode(',', $SCHIENEN).")";
+					$sql = $dbs->prepare("SELECT COUNT(*) FROM schienen WHERE id IN $schienenmuster");
+					if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+						if ($sql->fetch()) {
+							if ($checkanzahl != count($SCHIENEN)) {$fehler = true;}
+						}
+						else {$fehler = true;}
 					}
 					else {$fehler = true;}
+					$sql->close();
 				}
-				else {$fehler = true;}
-				$sql->close();
 			}
 		}
 
@@ -229,19 +238,19 @@ if (cms_angemeldet() && $zugriff) {
         $pruefids = "(".substr(str_replace('|', ',', $mitglieder),1).")";
 
 				if (cms_check_idliste($pruefids)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem";
-	        $anfrage = $dbs->query($sql);	// Safe weil ID Check
-	        if ($anfrage) {
-	          if ($daten = $anfrage->fetch_assoc()) {
-	            if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherem");
+	        if ($sql->execute()) {
+						$sql->bind_result($checkanzahl);
+	          if ($sql->fetch()) {
+	            if ($checkanzahl != 0) {
 	              $fehler = true;
 	              echo "MITGLIEDER";
 	            }
 	          }
 	          else {$fehler = true;}
-	          $anfrage->free();
 	        }
 	        else {$fehler = true;}
+					$sql->close();
 				}
         else {$fehler = true;}
       }
@@ -268,19 +277,19 @@ if (cms_angemeldet() && $zugriff) {
       else {
         $pruefids = "(".substr(str_replace('|', ',', $aufsicht),1).")";
 				if (cms_check_idliste($pruefids)) {
-					$sql = "SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea";
-	        $anfrage = $dbs->query($sql);	// Safe weil ID Check
-	        if ($anfrage) {
-	          if ($daten = $anfrage->fetch_assoc()) {
-	            if ($daten['anzahl'] != 0) {
+					$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM personen WHERE id IN $pruefids $sqlwherea");
+	        if ($sql->execute()) {
+						$sql->bind_param($checkanzahl);
+	          if ($sql->fetch()) {
+	            if ($checkanzahl != 0) {
 	              $fehler = true;
 	              echo "AUFSICHT";
 	            }
 	          }
 	          else {$fehler = true;}
-	          $anfrage->free();
 	        }
 	        else {$fehler = true;}
+					$sql->close();
 				}
       }
     }

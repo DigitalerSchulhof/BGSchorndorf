@@ -4,9 +4,7 @@
 <h1>Hauptnavigationen</h1>
 
 <?php
-$zugriff = $CMS_RECHTE['Website']['Hauptnavigationen festlegen'];
-
-if ($zugriff) {
+if (cms_r("website.navigation")) {
 	$code = "</div>";
 
 	include_once('php/schulhof/seiten/website/navigationen/navigationendetails.php');

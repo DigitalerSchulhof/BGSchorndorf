@@ -1,6 +1,4 @@
 -- Änderungen sind in GitHub nachverfolgbar
---
-<<<<<<< ours
 -- Format:
 CREATE TABLE `favoritseiten` (
   `id` bigint(255) UNSIGNED NOT NULL,
@@ -77,7 +75,6 @@ ALTER TABLE `unterricht`
   ADD CONSTRAINT `unterrichtkonfliktlehrer` FOREIGN KEY (`tlehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `unterrichtkonfliktraum` FOREIGN KEY (`traum`) REFERENCES `raeume` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- <>
 CREATE TABLE `vplantext` (
   `zeit` bigint(255) UNSIGNED NOT NULL,
   `art` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
@@ -267,7 +264,7 @@ CREATE TABLE `newsletterempfaenger` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `newsletterempfaenger`
-  ADD PRIMARY KEY (`ìd`),
+  ADD PRIMARY KEY (`id`),
   ADD KEY `newsletterempfaengernewsletter` (`newsletter`);
 
 ALTER TABLE `newsletterempfaenger`
@@ -373,37 +370,248 @@ CREATE TABLE `sonstigegruppennewsletter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-
-
-
-
-
-
-
-
-
--- LEHRERDATENBANK
-
-CREATE TABLE `ausplanungstufen` (
-  `id` bigint(20) NOT NULL,
-  `stufe` bigint(20) DEFAULT NULL,
-  `grund` varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `von` bigint(20) DEFAULT NULL,
-  `bis` bigint(20) DEFAULT NULL,
-  `idvon` bigint(20) DEFAULT NULL,
-  `idzeit` bigint(20) DEFAULT NULL
+CREATE TABLE `auszeichnungen` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `bild` varchar(3000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bezeichnung` varchar(5000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link` varchar(3000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ziel` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reihenfolge` bigint(255) UNSIGNED DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `ausplanungstufen`
+ALTER TABLE `auszeichnungen` ADD `aktiv` TINYINT(1) UNSIGNED DEFAULT NULL AFTER `reihenfolge`;
+
+ALTER TABLE `auszeichnungen`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `ausplanungklassen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
-ALTER TABLE `ausplanungstufen` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
-ALTER TABLE `ausplanungraeume` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
-ALTER TABLE `ausplanunglehrer` ADD `zusatz` VARBINARY(2000) NULL DEFAULT NULL AFTER `bis`;
-=======
--- Commit lässt sich mit GitHub "History" herausfinden
--- <SQL Änderungen>
+ALTER TABLE `galerienbilder` CHANGE `id` `id` BIGINT(255) UNSIGNED NOT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+
+ALTER TABLE `galerien` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+ALTER TABLE `voranmeldung_eltern` CHANGE `idvon` `idvon` BIGINT(255) NULL, CHANGE `idzeit` `idzeit` BIGINT(255) NULL;
+
+ALTER TABLE `auffaelliges` CHANGE `id` `id` BIGINT(11) UNSIGNED NOT NULL, CHANGE `typ` `typ` INT(1) UNSIGNED NULL DEFAULT NULL, CHANGE `aktion` `aktion` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `eingaben` `eingaben` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `details` `details` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `notizen` `notizen` VARBINARY(5000) NULL DEFAULT NULL, CHANGE `zeitstempel` `zeitstempel` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `status` `status` INT(11) UNSIGNED NULL DEFAULT NULL, CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+ALTER TABLE `auffaelliges` CHANGE `ursacher` `ursacher` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+
+
+
+
+
+DROP TABLE emoticons;
+DROP TABLE umarmungen;
+
+CREATE TABLE `gfs` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `person` bigint(255) UNSIGNED DEFAULT NULL,
+  `kurs` bigint(255) UNSIGNED DEFAULT NULL,
+  `status` tinyint(1) UNSIGNED DEFAULT NULL,
+  `gehalten` bigint(255) UNSIGNED NOT NULL,
+  `idvon` bigint(255) UNSIGNED NOT NULL,
+  `idzeit` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `gfs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `gfspersonpersonen` (`person`),
+  ADD KEY `gfskurskurse` (`kurs`);
+
+ALTER TABLE `gfs`
+  ADD CONSTRAINT `gfskurskurse` FOREIGN KEY (`kurs`) REFERENCES `kurse` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gfspersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `notifikationen` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL;
+
+CREATE TABLE `notfallzustand` (
+  `lehrer` bigint(255) UNSIGNED NOT NULL,
+  `schueler` bigint(255) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `notfallzustand`
+  ADD PRIMARY KEY (`lehrer`,`schueler`),
+  ADD KEY `notfallzustandschueler` (`schueler`);
+
+ALTER TABLE `notfallzustand`
+  ADD CONSTRAINT `notfallzustandlehrer` FOREIGN KEY (`lehrer`) REFERENCES `lehrer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notfallzustandschueler` FOREIGN KEY (`schueler`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `kontaktformulare` ADD `ansichtalt` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `anhangneu`, ADD `ansichtaktuell` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtalt`, ADD `ansichtneu` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `ansichtaktuell`;
+
+ALTER TABLE `voranmeldung_schueler` ADD `geimpft` TINYINT(1) UNSIGNED NULL AFTER `kuenftigesprofil`;
+ALTER TABLE `voranmeldung_schueler` CHANGE `geimpft` `geimpft` VARBINARY(50) NULL DEFAULT NULL;
+
+ALTER TABLE `gremienblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kurseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreiseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbeblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignisseblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppenblogeintraegeintern` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `gremienchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissechat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppenchat` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `gremientermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `gremientermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fachschaftentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `klassentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `kursetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `stufentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitsgemeinschaftentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `arbeitskreisetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `fahrtentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `wettbewerbetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissetermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ereignissetermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppentermineintern` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `sonstigegruppentermineintern` CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `blogeintraege` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `termine` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `ferien` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `galerien` CHANGE `datum` `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `leihenbuchen` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `raeumebuchen` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `notifikationen` CHANGE `zeit` `zeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `pinnwandanschlag` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `schuljahre` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `zeitraeume` CHANGE `beginn` `beginn` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `ende` `ende` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `kontaktformulareempfaenger` DROP `namealt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `nameneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `beschreibungneu`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailalt`;
+ALTER TABLE `kontaktformulareempfaenger` DROP `mailneu`;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `nameaktuell` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `beschreibungaktuell` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `mailaktuell` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
+CREATE TABLE `diashows` ( `id` BIGINT(255) UNSIGNED NOT NULL , `spalte` BIGINT(255) UNSIGNED NOT NULL , `position` BIGINT(255) UNSIGNED NOT NULL , `aktiv` VARCHAR(1) NOT NULL , `titelalt` VARCHAR(5000) NOT NULL , `titelaktuell` VARCHAR(5000) NOT NULL , `titelneu` VARCHAR(5000) NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `diashows` CHANGE `spalte` `spalte` BIGINT(255) UNSIGNED NULL, CHANGE `position` `position` BIGINT(255) UNSIGNED NULL, CHANGE `aktiv` `aktiv` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelalt` `titelalt` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelaktuell` `titelaktuell` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelneu` `titelneu` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
+CREATE TABLE `diashowbilder` ( `id` BIGINT(255) UNSIGNED NOT NULL , `diashow` BIGINT(255) UNSIGNED NOT NULL , `pfadalt` TEXT NOT NULL , `pfadaktuell` TEXT NOT NULL , `pfadneu` TEXT NOT NULL , `beschreibungalt` TEXT NOT NULL , `beschreibungaktuell` TEXT NOT NULL , `beschreibungneu` TEXT NOT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `diashows` ADD CONSTRAINT `diashowsspalten` FOREIGN KEY (`spalte`) REFERENCES `spalten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `diashowbilder` ADD CONSTRAINT `diashowbilderdiashow` FOREIGN KEY (`diashow`) REFERENCES `diashows`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `diashows` CHANGE `spalte` `spalte` BIGINT(255) UNSIGNED NULL, CHANGE `position` `position` BIGINT(255) UNSIGNED NULL, CHANGE `aktiv` `aktiv` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelalt` `titelalt` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelaktuell` `titelaktuell` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `titelneu` `titelneu` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
+
+ALTER TABLE `diashowbilder` CHANGE `diashow` `diashow` BIGINT(255) UNSIGNED NULL, CHANGE `pfadalt` `pfadalt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `pfadaktuell` `pfadaktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `pfadneu` `pfadneu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungalt` `beschreibungalt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungaktuell` `beschreibungaktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `beschreibungneu` `beschreibungneu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL;
+
+ALTER TABLE `kontaktformulareempfaenger` CHANGE `name` `name` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `beschreibung` `beschreibung` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `mail` `mail` VARCHAR(2000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+
 
 ALTER TABLE `gremienchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `fachschaftenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `klassenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `kursechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `stufenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `arbeitsgemeinschaftenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `arbeitskreisechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `fahrtenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `wettbewerbechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `ereignissechat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;ALTER TABLE `sonstigegruppenchat` ADD `fertig` INT(1) NOT NULL AFTER `loeschstatus`;
->>>>>>> theirs
+
+DROP TABLE `rechtzuordnung`;
+DROP TABLE `rollenrechte`;
+DROP TABLE `rechte`;
+
+CREATE TABLE `rechtezuordnung` ( `person` BIGINT(255) UNSIGNED NOT NULL , `recht` VARBINARY(5000) NOT NULL) ENGINE = InnoDB;
+ALTER TABLE `rechtezuordnung` ADD CONSTRAINT `rechtezuordnungperson` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `rollenrechte` ( `rolle` BIGINT(255) UNSIGNED NOT NULL , `recht` VARBINARY(5000) NOT NULL) ENGINE = InnoDB;
+ALTER TABLE `rollenrechte` ADD CONSTRAINT `rollerechterolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `rollen` DROP `personenart`;
+
+CREATE TABLE `bedingterechte` ( `recht` VARBINARY(5000) NOT NULL , `bedingung` VARBINARY(5000) NOT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `bedingterollen` ( `rolle` BIGINT(255) UNSIGNED NOT NULL, `bedingung` VARBINARY(5000) NOT NULL ) ENGINE = InnoDB;
+ALTER TABLE `bedingterollen` ADD CONSTRAINT `bedingterollenrolle` FOREIGN KEY (`rolle`) REFERENCES `rollen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+ALTER TABLE `voranmeldung_schueler` ADD `staat` VARBINARY(2000) NULL DEFAULT NULL AFTER `ort`;
+ALTER TABLE `voranmeldung_eltern` ADD `haupt` VARBINARY(50) NULL DEFAULT NULL AFTER `briefe`, ADD `rolle` VARBINARY(50) NULL DEFAULT NULL AFTER `haupt`;
+
+
+CREATE TABLE `nutzerregistrierung` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `titel` varbinary(3000) DEFAULT NULL,
+  `vorname` varbinary(3000) DEFAULT NULL,
+  `nachname` varbinary(3000) DEFAULT NULL,
+  `klasse` varbinary(3000) DEFAULT NULL,
+  `email` varbinary(3000) DEFAULT NULL,
+  `salt` varbinary(100) DEFAULT NULL,
+  `passwort` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
+  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `nutzerregistrierung`
+  ADD PRIMARY KEY (`id`);
+
+CREATE TABLE `weiterleiten` ( `id` BIGINT(255) UNSIGNED NOT NULL , `von` VARBINARY(5000) NULL DEFAULT NULL , `zu` VARBINARY(5000) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `weiterleiten` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zu`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;
+
+CREATE TABLE `style` (
+  `name` VARCHAR(95) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+  `wert` VARCHAR(95) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+  `alias` VARCHAR(95) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ,
+  PRIMARY KEY (`name`)
+) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;
+
+ALTER TABLE `style` ADD CONSTRAINT `stylealiasname` FOREIGN KEY (`alias`) REFERENCES `style`(`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE gremien ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE fachschaften ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE klassen ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE kurse ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE stufen ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE arbeitsgemeinschaften ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE arbeitskreise ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE fahrten ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE wettbewerbe ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE ereignisse ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+ALTER TABLE sonstigegruppen ADD `pinnwand` LONGBLOB NULL AFTER `chataktiv`;
+
+CREATE TABLE `blogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `gremienblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintraggremienblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `fachschaftenblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragfachschaftenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `klassenblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragklassenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `kurseblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragkurseblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `stufenblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragstufenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `arbeitsgemeinschaftenblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragarbeitsgemeinschaftenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `arbeitskreiseblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragarbeitskreiseblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `fahrtenblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragfahrtenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `wettbewerbeblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragwettbewerbeblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `ereignisseblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragereignisseblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `sonstigegruppenblogeintraglinks` ( `id` bigint(255) unsigned NOT NULL, `blogeintrag` bigint(255) unsigned DEFAULT NULL, `link` varbinary(5000) DEFAULT NULL, `titel` varbinary(5000) DEFAULT NULL, `beschreibung` longblob DEFAULT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `blogeintraglinksblogeintraege` (`blogeintrag`), CONSTRAINT `blogeintragsonstigegruppenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintraege` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+ALTER TABLE `favoritseiten` CHANGE `idvon` `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL, CHANGE `idzeit` `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL;
+UPDATE favoritseiten SET idvon = NULL, idzeit = NULL WHERE idvon = 0 AND idzeit = 0;
+
+CREATE TABLE `gremientodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `gremientodoartikel` ADD UNIQUE `gremientodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `gremientodoartikel` ADD CONSTRAINT `gremientodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `gremienblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `gremientodoartikel` ADD CONSTRAINT `gremientodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `gremientermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `fachschaftentodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `fachschaftentodoartikel` ADD UNIQUE `fachschaftentodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `fachschaftentodoartikel` ADD CONSTRAINT `fachschaftentodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `fachschaftenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `fachschaftentodoartikel` ADD CONSTRAINT `fachschaftentodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `fachschaftentermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `klassentodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `klassentodoartikel` ADD UNIQUE `klassentodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `klassentodoartikel` ADD CONSTRAINT `klassentodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `klassenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `klassentodoartikel` ADD CONSTRAINT `klassentodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `klassentermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `kursetodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `kursetodoartikel` ADD UNIQUE `kursetodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `kursetodoartikel` ADD CONSTRAINT `kursetodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `kurseblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `kursetodoartikel` ADD CONSTRAINT `kursetodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `kursetermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `stufentodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `stufentodoartikel` ADD UNIQUE `stufentodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `stufentodoartikel` ADD CONSTRAINT `stufentodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `stufenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `stufentodoartikel` ADD CONSTRAINT `stufentodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `stufentermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `arbeitsgemeinschaftentodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `arbeitsgemeinschaftentodoartikel` ADD UNIQUE `arbeitsgemeinschaftentodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `arbeitsgemeinschaftentodoartikel` ADD CONSTRAINT `arbeitsgemeinschaftentodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `arbeitsgemeinschaftenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `arbeitsgemeinschaftentodoartikel` ADD CONSTRAINT `arbeitsgemeinschaftentodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `arbeitsgemeinschaftentermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `arbeitskreisetodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `arbeitskreisetodoartikel` ADD UNIQUE `arbeitskreisetodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `arbeitskreisetodoartikel` ADD CONSTRAINT `arbeitskreisetodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `arbeitskreiseblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `arbeitskreisetodoartikel` ADD CONSTRAINT `arbeitskreisetodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `arbeitskreisetermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `fahrtentodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `fahrtentodoartikel` ADD UNIQUE `fahrtentodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `fahrtentodoartikel` ADD CONSTRAINT `fahrtentodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `fahrtenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `fahrtentodoartikel` ADD CONSTRAINT `fahrtentodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `fahrtentermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `wettbewerbetodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `wettbewerbetodoartikel` ADD UNIQUE `wettbewerbetodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `wettbewerbetodoartikel` ADD CONSTRAINT `wettbewerbetodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `wettbewerbeblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `wettbewerbetodoartikel` ADD CONSTRAINT `wettbewerbetodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `wettbewerbetermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `ereignissetodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `ereignissetodoartikel` ADD UNIQUE `ereignissetodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `ereignissetodoartikel` ADD CONSTRAINT `ereignissetodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `ereignisseblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `ereignissetodoartikel` ADD CONSTRAINT `ereignissetodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `ereignissetermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `sonstigegruppentodoartikel` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `blogeintrag` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `termin` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB; ALTER TABLE `sonstigegruppentodoartikel` ADD UNIQUE `sonstigegruppentodoartikelindex` (`person`, `blogeintrag`, `termin`); ALTER TABLE `sonstigegruppentodoartikel` ADD CONSTRAINT `sonstigegruppentodoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `sonstigegruppenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `sonstigegruppentodoartikel` ADD CONSTRAINT `sonstigegruppentodoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `sonstigegruppentermineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

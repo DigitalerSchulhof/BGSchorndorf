@@ -8,24 +8,6 @@ function cms_lehrerdatenbankzugangsdaten_schicken(formulardaten) {
 	return formulardaten;
 }
 
-function cms_lehrerzimmer_laden(id, datei, entitaet) {
-	var entitaet = entitaet || '-';
-	var feld = document.getElementById(id);
-
-	var formulardaten = new FormData();
-	cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-	formulardaten.append("id", entitaet);
-
-	function anfragennachbehandlung(rueckgabe) {
-		if (rueckgabe != "BERECHTIGUNG") {
-			cms_gesichertedaten_inhalte(feld, rueckgabe);
-		}
-		else {cms_fehlerbehandlung(rueckgabe);}
-	}
-
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
-}
-
 function cms_netzcheck(zeigen) {
 	var zeigen = zeigen || 'j';
 	var anfrage = new XMLHttpRequest();
@@ -41,7 +23,7 @@ function cms_netzcheck(zeigen) {
 			if (anfrage.readyState==4 && anfrage.status==200) {
 				if (zeigen == 'j') {
 					lzfeld.innerHTML = ", Lehrerzimmer";
-					feld.style.backgroundColor = "#ffd95a";
+					feld.className = "cms_netzcheckstatus_lehrer";
 				}
 				CMS_IMLN = true;
 				var formulardaten = new FormData();
@@ -52,7 +34,7 @@ function cms_netzcheck(zeigen) {
 			else if (anfrage.readyState==4) {
 				if (zeigen == 'j') {
 					lzfeld.innerHTML = "";
-					feld.style.backgroundColor = "#94d1ff";
+					feld.className = "";
 				}
 				CMS_IMLN = false;
 				var formulardaten = new FormData();

@@ -17,10 +17,9 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($zusatz)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
   $dbs = cms_verbinden('s');
   $heute = mktime(0,0,0,$monat, $tag, $jahr);
   $SCHULSTUNDEN = array();

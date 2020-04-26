@@ -11,11 +11,12 @@ session_start();
 // Variablen einlesen, falls übergeben
 if (isset($_POST['name'])) {$art = $_POST['name'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "FEHLER"; exit;}
+if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
 
-if (isset($CMS_RECHTE['Gruppen'][$art.' löschen'])) {$loeschen = isset($CMS_RECHTE['Gruppen'][$art.' löschen']);} else {$loeschen = false;}
-if (isset($CMS_RECHTE['Gruppen'][$art.' bearbeiten'])) {$bearbeiten = isset($CMS_RECHTE['Gruppen'][$art.' bearbeiten']);} else {$bearbeiten = flase;}
+
+$loeschen 	= cms_r("schulhof.gruppen.$art.löschen");
+$bearbeiten = cms_r("schulhof.gruppen.$art.bearbeiten");
 $zugriff = $bearbeiten || $loeschen;
 
 $CMS_IMLN = false;

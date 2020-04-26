@@ -2,9 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-
-$zugriff = $CMS_RECHTE['Zugriffe']['Lehrernetz'];
-
+$zugriff = cms_r("lehrerzimmer.zugriff");
 if (!$zugriff) {
 	echo cms_meldung_berechtigung();
 }
@@ -29,15 +27,14 @@ $vpninfo = array();
 $vpninfo['adresse'] = "";
 $vpninfo['benutzer'] = "";
 $vpninfo['passwort'] = "";
-$dbs = cms_verbinden('s');
-$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt FROM vpn";
-if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-	while ($daten = $anfrage->fetch_assoc()) {
-		$vpninfo[$daten['bezeichnung']] = $daten['inhalt'];
+$sql = $dbs->prepare("SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt FROM vpn");
+if ($sql->execute()) {
+	$sql->bind_result($vpnbez, $vpnwert);
+	while ($sql->fetch()) {
+		$vpninfo[$vpnbez] = $vpnwert;
 	}
-	$anfrage->free();
 }
-cms_trennen($dbs);
+$sql->close();
 
 $os = cms_welches_betriebssystem();
 
@@ -181,7 +178,7 @@ $code .= "<li><p>In der oberen Menüzeile klicken Sie bitte auf <br>Fernzugriff<
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/vpnauswahl.png');
 $code .= "<li><p>Zunächst wird eine App benötigt, mit der der Fernzugriff erfolgen kann. Um eine geeignete App zu installieren, wählen Sie bitte im <b>vierten Eintrag</b> den Link <b>Google Play</b> und installieren Sie die App, zu der Sie geführt werden (OpenVPN für Android).</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/android/installieren.png');
-$code .= "<p class=\"cms_bild\"><img src=\"$daten\"></p></li>";
+$code .= "<p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $bilderdaten = cms_generiere_bilddaten('dateien/schulhof/vpn/bilder/android/konfigimportieren.png');
 $code .= "<li><p>Anschließend wählen Sie bitte im vierten Eintrag im Online-Portal der $CMS_HOSTINGPARTNERIN <b>Intallieren</b>. Nun wird eine Konfigurationsdatei heruntergeladen. Diese Datei öffnen Sie direkt nach dem Download und ein etwas kryptisches Fenster erscheint, das Sie dennoch einfach mit dem Haken oben rechts bestätigen können. Damit wird die Konfigurationsdatei hinzugefügt.</p><p class=\"cms_bild\"><img src=\"$bilderdaten\"></p></li>";
 $code .= "<li>Die VPN-Verbindung wurde eingerichtet. Um die Verbindung herzustellen lesen Sie bitte bei Schritt II weiter.</li>";

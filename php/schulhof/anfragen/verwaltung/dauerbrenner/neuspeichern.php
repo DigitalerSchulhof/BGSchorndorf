@@ -18,10 +18,9 @@ if (isset($_POST['sichtbarx'])) {$sichtbarx = $_POST['sichtbarx'];} else {echo "
 $bezeichnung = cms_texttrafo_e_db($bezeichnung);
 $inhalt = cms_texttrafo_e_db($inhalt);
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Organisation']['Dauerbrenner anlegen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("schulhof.information.dauerbrenner.anlegen")) {
 	$fehler = false;
 
 	// Pflichteingaben prüfen

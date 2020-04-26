@@ -10,7 +10,8 @@ function cms_hausmeisterauftrag_abbrechen() {
 	cms_datumcheck('cms_hausmeisteraufrag_zieldatum');
 }
 
-function cms_hausmeisterauftrag_neu_speichern() {
+function cms_hausmeisterauftrag_neu_speichern(app) {
+	var app = app || 'nein';
 	cms_laden_an('Hausmeisterauftrag einreichen', 'Der Auftrag wird zusammengestellt.');
 	var auftragstitel = document.getElementById('cms_hausmeisterauftrag_titel').value;
 	var auftragsbeschreibung = document.getElementById('cms_hausmeisterauftrag_beschreibung').value;
@@ -68,7 +69,12 @@ function cms_hausmeisterauftrag_neu_speichern() {
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Hausmeisterauftrag einreichen', '<p>Der Hausmeistereintrag wurde eingereicht. Sie erhalten eine Notifikation, wenn er bearbeitet wurde.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister\');">Zurück zur Hausmeisterseite</span></p>');
+				if (app != 'app') {
+					cms_meldung_an('erfolg', 'Hausmeisterauftrag einreichen', '<p>Der Hausmeistereintrag wurde eingereicht. Sie erhalten eine Notifikation, wenn er bearbeitet wurde.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister\');">Zurück zur Hausmeisterseite</span></p>');
+				}
+				else {
+					cms_meldung_an('erfolg', 'Hausmeisterauftrag einreichen', '<p>Der Hausmeistereintrag wurde eingereicht. Sie erhalten eine Notifikation, wenn er bearbeitet wurde.</p>', '<p><span class="cms_button" onclick="cms_link(\'App\');">Zurück zum Hauptmenü</span></p>');
+				}
 			}
 			else if (rueckgabe.match(/BÖSE/)) {
 				var meldung = '<p>Der Auftrag konnte nicht erstellt werden, denn ...</p><ul>';

@@ -8,12 +8,9 @@ session_start();
 
 // Variablen einlesen, falls übergeben
 postLesen("id");
-$CMS_RECHTE = cms_rechte_laden();
 
-// Zugriffssteuerung je nach Gruppe
-$zugriff = $CMS_RECHTE['Website']['Newsletter Empfänger löschen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.information.newsletter.empfänger.löschen")) {
   $dbs = cms_verbinden("s");
   $sql = "DELETE FROM newsletterempfaenger WHERE newsletter = ?";
   $sql = $dbs->prepare($sql);

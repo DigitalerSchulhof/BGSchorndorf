@@ -9,7 +9,7 @@ include_once("../../schulhof/seiten/verwaltung/gruppen/zuordnungen.php");
 session_start();
 
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 $CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 
@@ -20,7 +20,7 @@ if (isset($_POST['schuljahr'])) {$schuljahr = $_POST['schuljahr'];} else {echo "
 // Zugriffssteuerung je nach Gruppe
 $zugriff = false;
 
-if ($CMS_RECHTE['Website']['Termine anlegen'] || $CMS_RECHTE['Website']['Blogeinträge anlegen'] || $CMS_RECHTE['Website']['Galerien anlegen']) {$zugriff = true;}
+if (cms_r("artikel.galerien.anlegen || artikel.%ARTIKELSTUFEN%.[|termine,blogeinträge].anlegen")) {$zugriff = true;}
 if (!$zugriff) {
   if (($CMS_BENUTZERART == 'l') && ($CMS_EINSTELLUNGEN['Lehrer dürfen Termine vorschlagen'] ||
                                     $CMS_EINSTELLUNGEN['Lehrer dürfen Blogeinträge vorschlagen'] ||

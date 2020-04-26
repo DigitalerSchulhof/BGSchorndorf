@@ -23,14 +23,10 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['NEWSLETTERID'])) {$id = $_SESSION['NEWSLETTERID'];} else {echo "FEHLER";exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-if ($CMS_RECHTE['Website']['Newsletter bearbeiten']) {
-	$zugriff = true;
-}
-
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten")) {
 	$fehler = false;
 
 	// Prüfen, ob die zugeordneten Gruppen existieren
@@ -42,15 +38,16 @@ if (cms_angemeldet() && $zugriff) {
       $ids = "(".substr($ids, 1).")";
       if (cms_check_idliste($ids)) {
         $anzahl = count(explode(',', $ids));
-  			$sql = "SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids";
-  			if ($anfrage = $dbs->query($sql)) {
-  				if ($daten = $anfrage->fetch_assoc()) {
-  					if ($daten['anzahl'] != $anzahl) {$fehler = true;}
+  			$sql = $dbs->prepare("SELECT COUNT(id) AS anzahl FROM $gk WHERE id IN $ids");
+  			if ($sql->execute()) {
+          $sql->bind_result($checkanzahl);
+  				if ($sql->fetch()) {
+  					if ($checkanzahl != $anzahl) {$fehler = true;}
   				}
   				else {$fehler = true;}
-  				$anfrage->free();
   			}
   			else {$fehler = true;}
+        $sql->close();
       }
 			else {$fehler = true;}
 		}
@@ -97,11 +94,11 @@ if (cms_angemeldet() && $zugriff) {
     }
     echo "ERFOLG";
 
-    if($CMS_RECHTE["Website"]["Newsletter bearbeiten"] || $CMS_RECHTE["Newsletter Empfängerliste sehen"])
+    if(cms_r("website.elemente.newsletter.bearbeiten || schulhof.information.newsletter.empfänger.sehen")) {
       echo "cms_newsletter_details_vorbereiten($id, '$ziel')";
-    else
+    } else {
       echo "cms_link('$ziel')";
-
+    }
 	}
 	else {
 		echo "FEHLER";

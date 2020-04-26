@@ -250,39 +250,21 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei öffentlichen Galerien ist ungültig.</li>';
 		fehler = true;
 	}
-	if (isNaN(postalletage)) {
-		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(postalletage,1,1000)) {
+		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten ist keine Zahl oder liegt nicht innerhalb von 1 und 1000.</li>';
 		fehler = true;
 	}
-	if (isNaN(postpapierkorbtage)) {
-		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(postpapierkorbtage,1,100)) {
+		meldung += '<li>die Eingabe an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist keine Zahl oder liegt nicht innerhalb von 1 und 100.</li>';
 		fehler = true;
 	}
-	if (isNaN(uebersichtsanzahl)) {
-		meldung += '<li>die Eingabe der Anzahl von Elementen in Übersichten ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(uebersichtsanzahl,1,25)) {
+		meldung += '<li>die Eingabe der Anzahl von Elementen in Übersichten ist keine Zahl oder liegt nicht innerhalb von 1 und 25.</li>';
 		fehler = true;
 	}
-	if (isNaN(inaktivitaetszeit)) {
-		meldung += '<li>die Eingabe der zulässigen Inaktivitätszeit ist keine Zahl.</li>';
+	if (!cms_check_ganzzahl(inaktivitaetszeit,1,300)) {
+		meldung += '<li>die Eingabe der zulässigen Inaktivitätszeit ist keine Zahl oder liegt nicht innerhalb von 1 und 300.</li>';
 		fehler = true;
-	}
-	if (!fehler) {
-		if (postalletage < 1) {
-			meldung += '<li>die Zahl an Tagen zur automatischen Löschung von Nachrichten ist zu klein.</li>';
-			fehler = true;
-		}
-		if (postpapierkorbtage < 1) {
-			meldung += '<li>die Zahl an Tagen zur automatischen Löschung von Nachrichten im Papierkorb ist zu klein.</li>';
-			fehler = true;
-		}
-		if ((uebersichtsanzahl < 1) || (uebersichtsanzahl > 20)) {
-			meldung += '<li>die Zahl von Elementen in Übersichten muss zwischen 1 und 20 liegen.</li>';
-			fehler = true;
-		}
-		if (inaktivitaetszeit < 5) {
-			meldung += '<li>die minimale Inaktivitätszeit beträgt 5 Minuten.</li>';
-			fehler = true;
-		}
 	}
 
 	if (fehler) {
@@ -353,8 +335,12 @@ function cms_persoenliche_notizen_speichern() {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
+function cms_favorit_loeschen_anzeigen(fid, url) {
+	cms_meldung_an('warnung', 'Favorit löschen', '<p>Soll dieser Favorit wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_favorisieren(\''+fid+'\', \''+url+'\', \'1\')">Löschung durchführen</span></p>');
+}
+
 function cms_favorisieren(fid, url, fw) {
-	var icon = document.getElementById('cms_steite_favorit_icon');
+	var icon = document.getElementById('cms_seite_favorit_icon');
 	var favorit = document.getElementById('cms_seite_favorit');
 	var neuerwert = '0';
 
@@ -387,8 +373,40 @@ function cms_favorisieren(fid, url, fw) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
+function cms_seite_todo(gruppe, gruppenid, art, artikelid) {
+	var icon = document.getElementById('cms_seite_todo_icon');
+	var todo = document.getElementById('cms_seite_todo');
+	var neuerwert = '0';
+
+	if (todo.value == '1') {
+		cms_laden_an('ToDo erledigen', 'Die Seite wird als erledigt markiert.');
+		neuerwert = '0';
+	}
+	else {
+		cms_laden_an('ToDo hinzufügen', 'Die Seite wird als ToDo markiert.');
+		neuerwert = '1';
+	}
+
+	var formulardaten = new FormData();
+	formulardaten.append("g",  						gruppe);
+	formulardaten.append("gid",  					gruppenid);
+	formulardaten.append("a",  						art);
+	formulardaten.append("aid",						artikelid);
+	formulardaten.append("status",  			neuerwert);
+	formulardaten.append("anfragenziel", 	'386');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			location.reload();
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
 function cms_favorit_benennen(fid) {
-	cms_laden_an('Favorit umbenennen', 'Die Favorit wird umbenannt.');
+	cms_laden_an('Favorit umbenennen', 'Der Favorit wird umbenannt.');
 	var name = document.getElementById('cms_favoriten_bezeichnung_'+fid).value;
 
 	var formulardaten = new FormData();

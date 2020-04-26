@@ -2,10 +2,8 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
 <?php
-$zugriff = $CMS_RECHTE['Planung']['Stundenplanung durchführen'];
-
 $code = "";
-if ($zugriff) {
+if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 
   // Prüfen, ob Schuljahr vorhanden
   $sjfehler = true;

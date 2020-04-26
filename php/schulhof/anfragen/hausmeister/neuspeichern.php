@@ -40,12 +40,11 @@ if ($zugehoerig != '') {
 $titel = cms_texttrafo_e_db($titel);
 $beschreibung = cms_texttrafo_e_db($beschreibung);
 
-$CMS_RECHTE = cms_rechte_laden();
+
 $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
-$zugriff = $CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'];
 
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {
 	$fehler = false;
 
   $jetzt = time();

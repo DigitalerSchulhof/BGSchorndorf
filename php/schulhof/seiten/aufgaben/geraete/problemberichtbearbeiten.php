@@ -10,14 +10,7 @@ if (isset($_SESSION["GERAETESTANDORT"])) {$id = $_SESSION["GERAETESTANDORT"];} e
 if (isset($_SESSION["GERAETEART"])) {$art = $_SESSION["GERAETEART"];} else {$art = '-';}
 
 if ((cms_check_ganzzahl($id,0)) && (($art == 'r') || ($art == 'l'))) {
-	$zugriff = $CMS_RECHTE['Technik']['Geräte verwalten'];
-	$fehler = false;
-
-	if ($fehler) {$zugriff = false;}
-
-	$angemeldet = cms_angemeldet();
-
-	if ($angemeldet && $zugriff) {
+	if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
 		// Gibt es einen externen Sachverständigen
 		$EINSTELLUNGEN = cms_einstellungen_laden();
 
@@ -107,7 +100,7 @@ if ((cms_check_ganzzahl($id,0)) && (($art == 'r') || ($art == 'l'))) {
 					$anzeigename = cms_generiere_anzeigename($EINSTELLUNGEN['Externe Geräteverwaltung2 Vorname'], $EINSTELLUNGEN['Externe Geräteverwaltung2 Nachname'], $EINSTELLUNGEN['Externe Geräteverwaltung2 Titel']);
 					$zcode .= "<span class=\"cms_button_wichtig\" onclick=\"cms_geraete_problembericht_extern('$gid', '2')\">Meldung per Mail an $anzeigename schicken (externe Geräteverwaltung)</span>";
 				}
-				if (($hausmeisterzahl > 0) && ($CMS_RECHTE['Technik']['Hausmeisteraufträge erteilen'])) {
+				if (($hausmeisterzahl > 0) && (cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))) {
 					$zcode .= "<span class=\"cms_button_wichtig\" onclick=\"cms_geraete_problembericht_hausmeister('$gid')\">Meldung in Hausmeisterauftrag umwandeln</span>";
 				}
 				if (($EINSTELLUNGEN['Externe Geräteverwaltung1 existiert'] == 1) || ($EINSTELLUNGEN['Externe Geräteverwaltung2 existiert'] == 1)) {$zcode .= "</p>";}

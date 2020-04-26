@@ -11,33 +11,45 @@ session_start();
 if (isset($_POST['id'])) {$id = $_POST['id'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Website']['Inhalte löschen'];
 
-if (cms_angemeldet() && $zugriff) {
-	$fehler = false;
 
-  $elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter');
-  if (!in_array($art, $elemente)) {$fehler = true;}
+$fehler = false;
+
+$elemente = array('editoren', 'downloads', 'boxenaussen', 'eventuebersichten', 'kontaktformulare', 'wnewsletter', 'diashows');
+if (!in_array($art, $elemente)) {$fehler = true;}
+
+$rarten = array(
+	"editoren" 	=> "editor",
+	"downloads"	=> "download",
+	"boxenaussen"	=> "boxen",
+	"eventuebersichten"	=> "eventübersicht",
+	"kontaktformulare"	=> "kontaktformular",
+	"wnewsletter"	=> "newsletter",
+	"diashows" => "diashow"
+);
+
+$rart = $rarten[$art];
+
+if (cms_angemeldet() && cms_r("website.elemente.$rart.löschen")) {
 
 	if (!$fehler) {
 		$dbs = cms_verbinden('s');
 		// Element laden
-		$sql = "SELECT * FROM $art WHERE id = $id";
-		if ($anfrage = $dbs->query($sql)) {	// TODO: Irgendwie safe machen
-			if ($daten = $anfrage->fetch_assoc()) {
+		$sql = $dbs->prepare("SELECT * FROM $art WHERE id = ?");
+		$sql->bind_param("i", $id);
+		if ($sql->execute()) {
+      $ergebnis = $sql->get_result();
+      if ($daten = $ergebnis->fetch_assoc()) {
 				cms_elemente_verschieben_loeschen($dbs, $daten['spalte'], $daten['position']);
 			}
-			$anfrage->free();
 		}
-		$sql = "DELETE FROM $art WHERE id = $id";
-		$dbs->query($sql);	// Irgendwie safe machen
-		if ($art == 'boxenaussen') {
-			$sql = "DELETE FROM boxen WHERE boxaussen = ?";
-			$sql = $dbs->prepare($sql);
-			$sql->bind_param("i", $id);
-			$sql->execute();
-		}
+		$sql->close();
+
+		$sql = $dbs->prepare("DELETE FROM $art WHERE id = ?");
+		$sql->bind_param("i", $id);
+		$sql->execute();
+		$sql->close();
+
 		cms_trennen($dbs);
 		echo "ERFOLG";
 	}

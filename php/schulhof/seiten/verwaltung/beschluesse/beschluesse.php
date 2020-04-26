@@ -3,21 +3,31 @@ function cms_beschlusselemente($dbs, $id, $gruppe, $gruppenid) {
   global $CMS_SCHLUESSEL;
   $code = "";
 
+  if (!cms_valide_gruppe($gruppe)) {return "";}
+
   $gk = cms_textzudb($gruppe);
 
-  // Vorhandene Downloads laden
+  // Vorhandene Beschlüsse laden
   $sql = "";
   $beschluesse = array();
   if ($id != '-') {
-    $sql = "SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $gruppe"."blogeintragbeschluesse WHERE blogeintrag = $id) AS x ORDER BY langfristig, titel";
-    if (strlen($sql) > 0) {
-      if ($anfrage = $dbs->query($sql)) { // TODO: Eingaben der Funktion prüfen
-        while ($daten = $anfrage->fetch_assoc()) {
-          array_push($beschluesse, $daten);
-        }
-        $anfrage->free();
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(langfristig, '$CMS_SCHLUESSEL') AS langfristig, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung, pro, contra, enthaltung FROM $gk"."blogeintragbeschluesse WHERE blogeintrag = ?) AS x ORDER BY langfristig, titel");
+    $sql->bind_param("i", $id);
+    if ($sql->execute()) {
+      $sql->bind_result($bid, $btitel, $blangfristig, $beschreibung, $bpro, $bcontra, $benthaltung);
+      while ($sql->fetch()) {
+        $B = array();
+        $B['id'] = $bid;
+        $B['titel'] = $btitel;
+        $B['langfristig'] = $blangfristig;
+        $B['beschreibung'] = $beschreibung;
+        $B['pro'] = $bpro;
+        $B['contra'] = $bcontra;
+        $B['enthaltung'] = $benthaltung;
+        array_push($beschluesse, $B);
       }
     }
+    $sql->close();
   }
 
 

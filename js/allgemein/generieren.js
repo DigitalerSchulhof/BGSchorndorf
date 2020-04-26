@@ -1,4 +1,5 @@
 function cms_uhrzeit_eingabe (id, stunde, minute, zusatzaktion) {
+  var zusatzaktion = zusatzaktion || "";
   var jetzt = new Date();
   var stunde = stunde || jetzt.getHours();
   var minute = minute || jetzt.getMinutes();
@@ -12,6 +13,7 @@ function cms_uhrzeit_eingabe (id, stunde, minute, zusatzaktion) {
 }
 
 function cms_datum_eingabe (id, tag, monat, jahr, zusatzaktion) {
+  var zusatzaktion = zusatzaktion || "";
   var jetzt = new Date();
   var tag = tag || jetzt.getDate();
   var monat = monat || jetzt.getMonth()+1;
@@ -114,7 +116,7 @@ function cms_textzudb(wert) {
 } 
 
 function cms_textzulink(wert) {
-  return wert.replace(' ', '_');
+  return wert.replace(/ /g, '_');
 } 
 
 function cms_datumzweistellig(zahl) {
@@ -131,12 +133,10 @@ function cms_uebernehmen(idvon, idzu) {
 }
 
 function cms_farbbeispiel_waehlen(nr, id) {
-	if (isNaN(nr)) {nr = 0;}
-	if (nr % 1 != 0) {nr = 0;}
-	if (nr > 47) {nr = 0;}
+  if (!cms_check_ganzzahl(nr,0,63)) {nr = 0;}
 
 	// Alle deaktivieren
-	for (var i=0; i<48; i++) {
+	for (var i=0; i<64; i++) {
 		feld = document.getElementById('cms_farbbeispiel_'+i);
 		feld.className = "cms_farbbeispiel cms_farbbeispiel_"+i;
 	}
@@ -176,5 +176,5 @@ function cms_stopschreiben(element, callback) {
     clearTimeout(cms_stopschreiben_timeouts[feld]);
   }
   if(feld.val())
-    cms_stopschreiben_timeouts[feld] = setTimeout(callback, 500);
+    cms_stopschreiben_timeouts[feld] = setTimeout(callback, 1000);
 }

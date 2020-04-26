@@ -1,6 +1,8 @@
 function cms_stundenplanzeitraeume_vorbereiten(id) {
   cms_laden_an('Stundenplanzeiträume vorbereiten', 'Die Zeiträume des Schuljahres werden vorbereitet ...');
 
+  var id = id || '-';
+
   var formulardaten = new FormData();
   formulardaten.append('id', id);
   formulardaten.append("anfragenziel", 	'325');
@@ -8,6 +10,9 @@ function cms_stundenplanzeitraeume_vorbereiten(id) {
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {
       cms_link('Schulhof/Verwaltung/Planung/Zeiträume');
+    }
+    else if (rueckgabe == "KEIN") {
+      cms_meldung_an('info', 'Kein Schuljahr aktiv', '<p>Für dieses Benutzerkonto ist im Moment kein Schuljahr aktiv.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
     }
     else {cms_fehlerbehandlung(rueckgabe);}
   }
@@ -677,7 +682,7 @@ function cms_stundenplanung_import_speichern() {
         if (klassenfehler.length > 0) {meldungtext += '<li>Folgende Klassen wurden nicht gefunden: '+klassenfehler.replace(trennungex, ', ')+'</li>';}
         if (stufenfehler.length > 0) {meldungtext += '<li>Folgende Stufen wurden nicht gefunden: '+stufenfehler.replace(trennungex, ', ')+'</li>';}
         if (fachfehler.length > 0) {meldungtext += '<li>Folgende Fächer wurden nicht gefunden: '+fachfehler.replace(trennungex, ', ')+'</li>';}
-        cms_meldung_an('fehler', 'Stundenplanung importieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+        cms_meldung_an('fehler', 'Stundenplanung importieren', meldungtext+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
       }
       else if (meldung == "ERFOLG") {
         var kurse = analyseergebnis[1];
@@ -883,6 +888,8 @@ function cms_stundenplanung_import_speichern() {
               formulardaten.append('fach', kursinfo[3]);
               formulardaten.append('klassen', kursinfo[5]);
               formulardaten.append('kursbezextern', '');
+              formulardaten.append('schiene', kursinfo[6]);
+              formulardaten.append('import', 'j');
               formulardaten.append('art', 'Kurse');
               formulardaten.append('anfragenziel', '220');
               cms_ajaxanfrage (false, formulardaten, kurseanlegen);
@@ -891,12 +898,13 @@ function cms_stundenplanung_import_speichern() {
             else if (stundennr < stundenanzahl) {
               var stundeninfo = stundeneinzeln[stundennr].split(trennung);
               formulardaten = new FormData();
-              formulardaten.append('schulstunde', stundeninfo[2]);
+              formulardaten.append('nr', stundennr);
+              formulardaten.append('schulstunde', stundeninfo[3]);
               formulardaten.append('tag', stundeninfo[1]);
-              formulardaten.append('rythmus', '0');
+              formulardaten.append('rythmus', stundeninfo[2]);
               formulardaten.append('kurs', stundeninfo[0]);
-              formulardaten.append('lehrer', stundeninfo[3]);
-              formulardaten.append('raum', stundeninfo[4]);
+              formulardaten.append('lehrer', stundeninfo[4]);
+              formulardaten.append('raum', stundeninfo[5]);
               formulardaten.append('anfragenziel', '352');
               cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
             }

@@ -50,7 +50,7 @@ if($titel != "") {
     $sql->close();
 
 
-    $sql = $dbs->prepare("UPDATE fehlermeldungen SET ".cms_sql_set_fragezeichen(array("id", "ersteller"), false).cms_sql_set_fragezeichen(array("url", "titel", "beschreibung", "header", "session"), true)."zeitstempel = ?, status = 0");
+    $sql = $dbs->prepare("UPDATE fehlermeldungen SET id = ?, ersteller = ?, url = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), header = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), session = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), zeitstempel = ?, status = 0");
     $weilreferencetime = time();
     $sql->bind_param("issssssi", $idM, $ersteller, $url, $titel, $beschreibung, $header, $session, $weilreferencetime);
     $sql->execute();
@@ -130,14 +130,14 @@ function issue_body_machen() {
   $sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM personen WHERE id = ?";
   $sql = $dbs->prepare($sql);
   $sql->bind_param("i", $id);
-  if ($anfrage = $dbs->query($sql)) {
+  if ($sql->execute()) {
     $sql->bind_result($id, $vorname, $nachname, $titel);
     if ($sql->fetch()) {
       $ersteller = cms_generiere_anzeigename($vorname, $nachname, $titel);
       $fehler = false;
     }
-    $sql->close();
   }
+  $sql->close();
 
   $beschreibung = explode("\n", $beschreibung);
   foreach($beschreibung as $i => $b)

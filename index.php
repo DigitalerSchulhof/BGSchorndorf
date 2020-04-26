@@ -12,8 +12,8 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
-	include_once("php/schulhof/seiten/website/reaktionen.php");
 	include_once("php/allgemein/funktionen/captcha.php");
+	include_once("php/allgemein/funktionen/rechte/rechte.php");
 
 	session_start();
 
@@ -34,8 +34,9 @@
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
 	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.6";
-	$TITELBILDERJS = "";
+	//$CMS_VERSION = "0.5.8";
+	$CMS_WECHSELBILDER = 0;
+	$CMS_DIASHOWZEIT = 7000;
 
 	if (isset($_SESSION['GERAET'])) {$CMS_GERAET = $_SESSION['GERAET'];}
 	else {
@@ -44,14 +45,32 @@
 			if ($_SESSION['DSGVO_FENSTERWEG']) {$_SESSION['GERAET'] = $CMS_GERAET;}
 		}
 	}
+	$dbs = cms_verbinden('s');
 
 	// Welche Seite ist gesucht?
 	// Variablen laden
 	if (isset($_GET['URL'])) {
 		$CMS_URL = explode('/', $_GET['URL']);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
+
+		// Weiterleitungen
+		$sql = "SELECT AES_DECRYPT(zu, '$CMS_SCHLUESSEL') FROM weiterleiten WHERE von = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+		$sql = $dbs->prepare($sql);
+		$r = "/$CMS_URLGANZ";
+		$sql->bind_param("s", $r);
+		$sql->bind_result($ziel);
+		if($sql->execute() && $sql->fetch()) {
+			header("Location: $ziel");
+			die;
+		}
+
+		if($CMS_URL[0] == "Drucken") {
+      include_once("php/drucken/drucken.php");
+			die();
+		}
+
 		// Fallback bei ungültigen URLs
-		if (($CMS_URL[0] != "Website") && ($CMS_URL[0] != "Schulhof") && ($CMS_URL[0] != "Problembehebung") && ($CMS_URL[0] != "Intern")) {
+    if (!in_array($CMS_URL[0], array("Website", "Schulhof", "Problembehebung", "Intern", "App"))) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
 		}
@@ -66,10 +85,15 @@
 		}
 
 		// Schulhof Zugriff verhindern
-		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Schulhof") && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen")))   {
+		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Schulhof") && (($CMS_URL[1] != "Anmeldung") && ($CMS_URL[1] != "Passwort_vergessen") && ($CMS_URL[1] != "Registrieren")))   {
 			$CMS_URL = array();
 		  $CMS_URL[0] = "Schulhof";
 		  $CMS_URL[1] = "Anmeldung";
+		}
+		// App-Zugriff verhindern
+		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "App"))   {
+			$CMS_URL = array();
+		  $CMS_URL[0] = "App";
 		}
 		// Ungültige Website URL Anfänge
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {
@@ -99,7 +123,6 @@
 
 	// Prüfen, ob ein Nutzer angemeldet ist
 	if ($CMS_ANGEMELDET) {
-
 		// Nutzerdaten laden
 		$CMS_BENUTZERNAME = $_SESSION['BENUTZERNAME'];
 		$CMS_SESSIONID = $_SESSION['SESSIONID'];
@@ -112,7 +135,7 @@
 		$CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 		$CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 		$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];
-
+		$CMS_BENUTZERFEHLER = !cms_check_sessionvars();
 
 		// Timeout verlängern, da der Nutzer aktiv war
 		if ($_SESSION['SESSIONTIMEOUT'] > time()) {
@@ -120,7 +143,7 @@
 		}
 
 		// Rechte des Benutzers laden
-		$CMS_RECHTE = cms_rechte_laden();
+
 	}
 
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
@@ -162,43 +185,12 @@
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
-
-		// <!-- Einbindung der Stylesheets -->
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/fonts.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seite.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/navigationen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buttons.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/links.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/text.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/spezialfaelle.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/tabellen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/formulare.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/meldungen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/blende.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/buchung.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/reiter.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/termine.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/kalender.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/blogeintraege.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/icons.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dateisystem.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/gruppen.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hinweise.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/sitemap.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/seitenwahl.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bearbeiten.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/website.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplan.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/neuigkeiten.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/responsive.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/summernote.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/voranmeldung.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/galerien.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/pinnwaende.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ladeicon.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/emoticons.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/stundenplanung.css?v=$CMS_VERSION\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/contextmenue.css?v=$CMS_VERSION\">";
+		$hellhash = md5(filemtime("css/hell.css"));
+		$dunkelhash = md5(filemtime("css/dunkel.css"));
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$hellhash\">";
+		if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
+			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$dunkelhash\">";
+		}
 
     //<!-- Einbindung der JavaScripts -->
 		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
@@ -216,13 +208,12 @@
     echo "<script src=\"js/allgemein/contextmenue.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/schulhof/nutzerkonto/anmelden.js?v=$CMS_VERSION\"></script>";
     echo "<script src=\"js/website/zugehoerig.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/website/titelbilder.js?v=$CMS_VERSION\"></script>";
+    echo "<script src=\"js/website/wechselbilder.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
 		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
 
 		echo "<script src=\"js/website/newsletter.js?v=$CMS_VERSION\"></script>";
-		echo "<script src=\"js/website/galerien.js?v=$CMS_VERSION\"></script>";
 
 		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
@@ -262,32 +253,38 @@
 			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/emoticons.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/website/style.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/seiten.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/hauptnavigationen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/dateien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/gruppen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/beschluesse.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/listen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/lehrerzimmer/tagebuch.js?v=$CMS_VERSION\"></script>";
 
 			$code .= "<script src=\"js/website/bearbeiten.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/editor.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/boxen.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/website/eventuebersicht.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/reaktionen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/website/diashow.js?v=$CMS_VERSION\"></script>";
 
 			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/verwaltung/newsletter.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/rechtebaum.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/bedingte_rechte.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/speicherplatz.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/verwaltung/update.js?v=$CMS_VERSION\"></script>";
 			echo $code;
 			$code = "";
 		}
@@ -296,6 +293,7 @@
     <script><?php
 			$CMS_ONLOAD_EXTERN_EVENTS = "";
 			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\n";
+			echo "var CMS_DIASHOWZEIT = $CMS_DIASHOWZEIT;\n";
 	    if ($CMS_ANGEMELDET) {
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
 					echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";
@@ -324,8 +322,14 @@
         echo "var CMS_BENUTZERNACHNAME = '".$_SESSION['BENUTZERNACHNAME']."';\n";
         echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
         echo "var CMS_MAX_DATEI = ".$CMS_MAX_DATEI.";\n";
-        echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren()', 30000);\n";
-				$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren();";
+				if ($CMS_URL[0] != 'App') {
+					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(1)', 30000);\n";
+					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(1);";
+				}
+				else {
+					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(2)', 30000);\n";
+					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(2);";
+				}
         if ($CMS_IMLN) {
 					echo "CMS_IMLN = true;\n";
         }
@@ -339,17 +343,27 @@
 				return v ? $(this).addClass(c) : $(this).removeClass(c);
 			}
 		});
+		if (!Array.prototype.last){
+    	Array.prototype.last = function(){
+        return this[this.length - 1];
+    	};
+		};
     </script>
 </head>
 
 
 <?php
-	echo "<body class=\"cms_optimierung_".$CMS_GERAET."\">";
+	$seitenzusatzklasse = " cms_seite_normal";
+	if ($CMS_URL[0] == 'App') {
+		$CMS_GERAET = "H";
+		$seitenzusatzklasse = " cms_seite_app";
+	}
+
+	echo "<body class=\"cms_optimierung_".$CMS_GERAET.$seitenzusatzklasse."\">";
 ?>
 
 
 	<?php
-		$dbs = cms_verbinden('s');
 		// Startseite laden
 		if ($CMS_URLGANZ == "Website") {
 			$CMS_SEITENDETAILS = cms_startseitendetails_erzeugen($dbs);
@@ -363,18 +377,31 @@
 				if ($CMS_SEITENDETAILS) {
 					if (($CMS_SEITENDETAILS['art'] == 'm') && ($CMS_EINSTELLUNGEN['Menüseiten weiterleiten'] == 1) && ($CMS_URL[1] != "Bearbeiten")) {
 						$weitergeleitet = false;
-						$sql = "SELECT * FROM seiten WHERE zuordnung = '{$CMS_SEITENDETAILS['id']}' ORDER BY position ASC";
-						if ($anfrage = $dbs->query($sql)) {	// Safe weil systeminterne Seitenid
-							while ((!$weitergeleitet) && ($daten = $anfrage->fetch_assoc())) {
-								if ($daten['art'] != 'm') {
+						$sql = $dbs->prepare("SELECT * FROM seiten WHERE zuordnung = ? ORDER BY position ASC");
+						$sql->bind_param("s", $CMS_SEITENDETAILS['id']);
+						if ($sql->execute()) {
+							$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+							while ((!$weitergeleitet) && ($sql->fetch())) {
+								if ($sart != 'm') {
 									$weitergeleitet = true;
-									$CMS_SEITENDETAILS = $daten;
-									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
+									$CMS_SEITENDETAILS['id'] = $sid;
+									$CMS_SEITENDETAILS['art'] = $sart;
+									$CMS_SEITENDETAILS['position'] = $sposition;
+									$CMS_SEITENDETAILS['zuordnung'] = $szuordnung;
+									$CMS_SEITENDETAILS['bezeichnung'] = $sbezeichnung;
+									$CMS_SEITENDETAILS['beschreibung'] = $sbeschreibung;
+									$CMS_SEITENDETAILS['sidebar'] = $ssidebar;
+									$CMS_SEITENDETAILS['status'] = $sstatus;
+									$CMS_SEITENDETAILS['styles'] = $sstyles;
+									$CMS_SEITENDETAILS['klassen'] = $sklassen;
+									$CMS_SEITENDETAILS['idvon'] = $sidvon;
+									$CMS_SEITENDETAILS['idzeit'] = $sidzeit;
+									$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 									$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
 								}
 							}
-							$anfrage->free();
 						}
+						$sql->close();
 					}
 					else if (($CMS_SEITENDETAILS['art'] == 't') || ($CMS_SEITENDETAILS['art'] == 'b') || ($CMS_SEITENDETAILS['art'] == 'g')) {
 						$CMS_URL = array();
@@ -395,65 +422,59 @@
 			if ($CMS_URL[1] == 'Termine') {$art = 't';}
 			else if ($CMS_URL[1] == 'Blog') {$art = 'b';}
 			else if ($CMS_URL[1] == 'Galerien') {$art = 'g';}
-			$sql = "SELECT * FROM seiten WHERE art = '{$art}' ORDER BY position ASC";
-			if ($anfrage = $dbs->query($sql)) {	// Safe weil keine Eingabe
-				if ($daten = $anfrage->fetch_assoc()) {
-					$CMS_SEITENDETAILS = $daten;
-					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $daten['id']);
-					//$CMS_URL = cms_seitenerweiterung_anfuegen(cms_seitenpfadlink_erzeugen($seitenpfad));
-					//print_r($CMS_URL);
+			$sql = $dbs->prepare("SELECT * FROM seiten WHERE art = ? ORDER BY position ASC");
+			$sql->bind_param("s", $art);
+			if ($sql->execute()) {
+				$sql->bind_result($sid, $sart, $sposition, $szuordnung, $sbezeichnung, $sbeschreibung, $ssidebar, $sstatus, $sstyles, $sklassen, $sidvon, $sidzeit);
+				if ($sql->fetch()) {
+					$CMS_SEITENDETAILS['id'] = $sid;
+					$CMS_SEITENDETAILS['art'] = $sart;
+					$CMS_SEITENDETAILS['position'] = $sposition;
+					$CMS_SEITENDETAILS['zuordnung'] = $szuordnung;
+					$CMS_SEITENDETAILS['bezeichnung'] = $sbezeichnung;
+					$CMS_SEITENDETAILS['beschreibung'] = $sbeschreibung;
+					$CMS_SEITENDETAILS['sidebar'] = $ssidebar;
+					$CMS_SEITENDETAILS['status'] = $sstatus;
+					$CMS_SEITENDETAILS['styles'] = $sstyles;
+					$CMS_SEITENDETAILS['klassen'] = $sklassen;
+					$CMS_SEITENDETAILS['idvon'] = $sidvon;
+					$CMS_SEITENDETAILS['idzeit'] = $sidzeit;
+					$seitenpfad = cms_seitenpfad_id_erzeugen($dbs, $sid);
 				}
-				$anfrage->free();
 			}
+			$sql->close();
 			if (!isset($CMS_URL[2])) {$CMS_URL[2] = date('Y');}
 		}
 		$CMS_URLGANZ = implode('/', $CMS_URL);
 
 		include_once("php/allgemein/seiten/kopfzeile.php");
-		echo '<div id="cms_platzhalter_bild"></div>';
-		if ($CMS_URL[0] == "Website") {
-			$bildercode = "";
-			$code = "";
 
+		if ($CMS_URL[0] != 'App') {echo '<div id="cms_platzhalter_bild"></div>';}
+
+		if ($CMS_URL[0] == "Website") {
+			$code = "";
 			// Alle Titelbilder
 			$verzeichnis = scandir('dateien/titelbilder');
 			array_splice($verzeichnis, 0, 2);
-			$bilder = array();
+			$inhalte = array();
 			foreach ($verzeichnis as $b) {
 				if ((is_file('dateien/titelbilder/'.$b)) && (getimagesize('dateien/titelbilder/'.$b))) {
-					array_push($bilder, $b);
+					array_push($inhalte, "<img src=\"dateien/titelbilder/".$b."\">");
 				}
 			}
-			$wahlknoepfe = "";
-			if (count($bilder) > 1) {
-				$TITELBILDERJS = "cms_titelbilder_starten();";
-				$bildercode .= "<li style=\"opacity: 1;\" id=\"cms_hauptbilder_0\"><img src=\"dateien/titelbilder/".$bilder[0]."\"></li>";
-				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_0\" class=\"cms_titelbild_knopf_aktiv\" onclick=\"cms_titelbild_zeigen('0')\"></span> ";
-			}
-			for ($i=1; $i<count($bilder); $i++) {
-				$bildercode .= "<li style=\"opacity: 0;\" id=\"cms_hauptbilder_$i\"><img src=\"dateien/titelbilder/".$bilder[$i]."\"></li>";
-				$wahlknoepfe .= "<span id=\"cms_hauptbilder_knopf_$i\" class=\"cms_titelbild_knopf\" onclick=\"cms_titelbild_zeigen('$i')\"></span> ";
-			}
-			if (strlen($bildercode) > 0) {
-				$code .= '<div id="cms_hauptbild_o">';
-					$code .= '<ul id="cms_hauptbilder_m">';
-					$code .= $bildercode;
-					$code .= '</ul>';
-					$code .= "<div class=\"cms_clear\"></div>";
-					$code .= "<input type=\"hidden\" id=\"cms_titelbilder_anzahl\" id=\"cms_titelbilder_azahl\" value=\"".(count($bilder))."\">";
-					$code .= "<input type=\"hidden\" id=\"cms_titelbilder_angezeigt\" id=\"cms_titelbilder_angezeigt\" value=\"0\">";
-					$code .= '<span class="cms_hauptbilder_voriges" onclick="cms_titelbild_voriges()"></span><span class="cms_hauptbilder_naechstes" onclick="cms_titelbild_naechstes()"></span>';
-					$code .= "<p class=\"cms_titelbilder_wahl\">$wahlknoepfe</p>";
-				$code .= '</div>';
-			}
+
+			$code .= cms_wechselbilder_generieren($inhalte, "cms_hauptbild_");
 			echo $code;
 		}
 
 		if (($CMS_ANGEMELDET) && ($CMS_URL[0] == 'Website')) {
-			if ($CMS_RECHTE['Website']['Inhalte anlegen'] || $CMS_RECHTE['Website']['Inhalte bearbeiten'] || $CMS_RECHTE['Website']['Inhalte löschen']) {
+			if (cms_r("website.elemente.%ELEMENTE%.*")) {
 				include_once("php/website/seiten/bearbeiten.php");
 			}
 		}
+
+	$CMS_AKTIONSSCHICHT = "";
+	$CMS_AKTIONSSCHICHTINHALT = "";
 	?>
 
 	<div id="cms_hauptteil_o">
@@ -461,7 +482,40 @@
 		<div id="cms_hauptteil_i">
 			<div id="cms_debug"></div>
 			<?php
+			if ($CMS_ANGEMELDET) {
+				// NOTFALLZUSTAND PRÜFEN
+				if (($CMS_EINSTELLUNGEN['Tagebuch Notfallzustand']) && (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 's'))) {
+					$code = "<div class=\"cms_spalte_i\"><div class=\"cms_neuigkeit_notfall\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/alarm.png\"></span>";
+					$code .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Notfallzustand</h4><p>Bitte <b>bewahren Sie Ruhe</b> und verlassen Sie <b>umgehend</b> das Gebäude!!</p>";
+					if ($CMS_BENUTZERART == 'l') {
+						$personen = "";
+						$sql = $dbs->prepare("SELECT * FROM (SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM notfallzustand JOIN personen ON notfallzustand.schueler = personen.id WHERE notfallzustand.lehrer = ?) AS x ORDER BY nachname, vorname, titel");
+						$sql->bind_param("i", $CMS_BENUTZERID);
+						if ($sql->execute()) {
+							$sql->bind_result($vor, $nach, $tit);
+							while ($sql->fetch()) {
+								$personen .= "<li>".cms_generiere_anzeigename($vor, $nach, $tit)."</li>";
+							}
+						}
+						$sql->close();
+
+						if (strlen($personen) > 0) {
+							$code .= "<p>Bitte stellen Sie die Anwesenheit der folgenden Schülerinnen und Schüler fest!<br>Veranlassen Sie eine <b>Meldung</b> über die <b>Vollständigkeit</b> der Gruppe oder die <b>Abwesenheit</b> einzelner Schülerinnen und Schüler bei der <b>Einsatzleitung</b>:</p><ul>$personen</ul>";
+						}
+					}
+
+					$code .= "</span></div></div>";
+					echo $code;
+					$code = "";
+				}
+			}
+
 			include_once("php/allgemein/seiten/seitensteuerung.php");
+
+			if ($CMS_URL[0] == 'App') {
+				if ($CMS_ANGEMELDET) {echo "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"ja\"></p>";}
+				else {echo "<p><input type=\"hidden\" name=\"cms_appAngemeldet\" id=\"cms_appAngemeldet\" value=\"\"></p>";}
+			}
 			?>
 		</div>
 	</div>
@@ -470,6 +524,9 @@
 	<?php
 		include_once("php/allgemein/seiten/fusszeile.php");
 		include_once("php/allgemein/seiten/blende.php");
+		if ($CMS_URL[0] != 'App') {
+			include_once("php/allgemein/seiten/aktionsschicht.php");
+		}
 		cms_trennen($dbs);
 	?>
 	<div id="contextmenue"></div>
@@ -478,7 +535,7 @@
 		<?php
 		if ($CMS_ANGEMELDET) {
 			echo "<script type=\"text/javascript\">";
-				echo "window.onload = function () {".$TITELBILDERJS.$CMS_ONLOAD_EVENTS."\n";
+				echo "window.onload = function () {".$CMS_ONLOAD_EVENTS."\n";
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {echo "cms_netzcheck();\n";}
 				echo "};";
 			echo "</script>";
@@ -488,8 +545,9 @@
 				echo "window.onload = function () {".$CMS_ONLOAD_EXTERN_EVENTS."};";
 			echo "</script>";
 		}
-		cms_erfasse_click();
-
+		if ($CMS_URL[0] != 'Intern') {
+			cms_erfasse_click();
+		}
 		?>
 	</div>
 

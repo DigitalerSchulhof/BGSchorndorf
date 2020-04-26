@@ -14,22 +14,34 @@ function cms_seitenwahl_generieren($dbs, $id) {
 
 function cms_seitenwahl_seiten ($dbs, $id, $oberseite, $sichtbar = false) {
 	$code = "";
-	if ($oberseite == '-') {$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung IS NULL ORDER BY position";}
-	else {$sql = "SELECT id, bezeichnung FROM seiten WHERE zuordnung = '$oberseite' ORDER BY position";}
-	if ($anfrage = $dbs->query($sql)) {	// TODO: Eingaben der Funktion prüfen
-		if (!$sichtbar) {$style = " style=\"display: none;\"";} else {$style = "";}
-		$code .= "<ul$style class=\"$id"."_wahl_gruppe_".$oberseite."\">";
-		$anzahl = 0;
-		while ($daten = $anfrage->fetch_assoc()) {
-			$anzahl ++;
-			$code .= "<li><span id=\"$id"."_wahl_knopf_".$daten['id']."\"><span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_ausklappen ('$id"."_wahl_knopf_".$daten['id']."', '$id"."_wahl_gruppe_".$daten['id']."')\"><img src=\"res/icons/klein/ausklappen.png\"><span class=\"cms_hinweis\">ausklappen</span></span></span> <span class=\"cms_button\" onclick=\"cms_seitenwahl_auswahl('$id', '".$daten['bezeichnung']."', '".$daten['id']."')\">".$daten['bezeichnung']."</span>";
-			$code .= cms_seitenwahl_seiten ($dbs, $id, $daten['id']);
-			$code .= "</li>";
-		}
-		if ($anzahl == 0) {$code .= "<li class=\"cms_notiz\">Keine Seiten</li>";}
-		$code .= "</ul>";
-		$anfrage->free();
+	if ($oberseite === '-') {
+		$sql = $dbs->prepare("SELECT id, bezeichnung FROM seiten WHERE zuordnung IS NULL ORDER BY position");
 	}
+	else {
+		$sql = $dbs->prepare("SELECT id, bezeichnung FROM seiten WHERE zuordnung = ? ORDER BY position");
+		$sql->bind_param('s', $oberseite);
+	}
+	$SEITEN = array();
+	if ($sql->execute()) {
+		$sql->bind_result($sid, $sbez);
+		while ($sql->fetch()) {
+			$S = array();
+			$S['id'] = $sid;
+			$S['bezeichnung'] = $sbez;
+			array_push($SEITEN, $S);
+		}
+	}
+	$sql->close();
+
+	if (!$sichtbar) {$style = " style=\"display: none;\"";} else {$style = "";}
+	$code .= "<ul$style class=\"$id"."_wahl_gruppe_".$oberseite."\">";
+	foreach ($SEITEN as $daten) {
+		$code .= "<li><span id=\"$id"."_wahl_knopf_".$daten['id']."\"><span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_ausklappen ('$id"."_wahl_knopf_".$daten['id']."', '$id"."_wahl_gruppe_".$daten['id']."')\"><img src=\"res/icons/klein/ausklappen.png\"><span class=\"cms_hinweis\">ausklappen</span></span></span> <span class=\"cms_button\" onclick=\"cms_seitenwahl_auswahl('$id', '".$daten['bezeichnung']."', '".$daten['id']."')\">".$daten['bezeichnung']."</span>";
+		$code .= cms_seitenwahl_seiten ($dbs, $id, $daten['id']);
+		$code .= "</li>";
+	}
+	if (count($SEITEN) == 0) {$code .= "<li class=\"cms_notiz\">Keine Seiten</li>";}
+	$code .= "</ul>";
 	return $code;
 }
 ?>

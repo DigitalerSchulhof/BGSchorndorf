@@ -8,10 +8,9 @@ $code .= "<h1>Schülervertretungsplan</h1>";
 
 $angemeldet = false;
 $kennung = null;
-if (!$angemeldet) {
-  $code .= "<script>var CMS_LN_DA = '$CMS_LN_DA';</script>";
-}
+$code .= "<script>var CMS_LN_DA = '$CMS_LN_DA';</script>";
 $code .= "<script src=\"js/lehrerzimmer/intern.js?v=$CMS_VERSION\"></script>";
+
 $sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanS', '$CMS_SCHLUESSEL')");
 if ($sql->execute()) {
   $sql->bind_result($kennung);

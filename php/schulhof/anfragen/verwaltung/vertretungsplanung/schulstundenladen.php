@@ -18,10 +18,9 @@ if (!cms_check_ganzzahl($monat,1,12)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($jahr,0)) {echo "FEHLER"; exit;}
 if (($art != 'von') && ($art != 'bis')) {echo "FEHLER"; exit;}
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Planung']['Ausplanungen durchführen'];
 
-if (cms_angemeldet() && $zugriff) {
+
+if (cms_angemeldet() && cms_r("lehrerzimmer.vertretungsplan.ausplanungen")) {
   $dbs = cms_verbinden('s');
   $heute = mktime(0,0,0,$monat, $tag, $jahr);
   $SCHULSTUNDEN = array();

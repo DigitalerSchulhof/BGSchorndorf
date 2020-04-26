@@ -18,7 +18,7 @@ function cms_besucherstatistik_schulhof_zeitraum(jahr, jahrS, monatS, jahrE, mon
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
-var cms_aktuell = {start: 0, ende: 0, typ: 0, modus: "letzte", geloescht: true, startseite: true};
+var cms_aktuell = {start: {jahr: 0, monat: 0}, ende: {jahr: 0, monat: 0}, typ: 0, modus: "letzte", geloescht: true, startseite: true};
 function cms_besucherstatistik_website_zeitraum(typ, jahr, jahrS, monatS, jahrE, monatE, modus) {
   $(".cms_besucherstatistik_toggle").removeClass("cms_toggle_aktiv");
   $("#cms_besucherstatistik_zeitraum_toggle_"+jahr).addClass("cms_toggle_aktiv");

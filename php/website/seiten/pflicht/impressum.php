@@ -3,12 +3,12 @@
 
 <h1>Impressum</h1>
 
-<h2>Verwantwortliche Personen</h2>
+<h2>Verantwortliche Personen</h2>
 </div>
 
 <div class="cms_spalte_2"><div class="cms_spalte_i">
   <h3>Herausgeber</h3>
-  <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
+  <p>Verantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
   <?php
     echo "<p>$CMS_NAMESCHULLEITER<br>$CMS_SCHULE<br>";
     echo "$CMS_STRASSE<br>";
