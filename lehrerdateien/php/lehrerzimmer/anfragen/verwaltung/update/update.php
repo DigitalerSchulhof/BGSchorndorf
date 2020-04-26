@@ -1,18 +1,27 @@
 <?php
-include_once("../../schulhof/funktionen/config.php");
-include_once("../../schulhof/funktionen/texttrafo.php");
-include_once("../../allgemein/funktionen/sql.php");
-include_once("../../schulhof/funktionen/generieren.php");
-include_once("../../schulhof/funktionen/check.php");
-include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 
 set_time_limit(0);
 
-session_start();
+include_once("../../lehrerzimmer/funktionen/config.php");
+include_once("../../lehrerzimmer/funktionen/texttrafo.php");
+include_once("../../lehrerzimmer/funktionen/check.php");
+
+// Variablen einlesen, falls übergeben
+if (isset($_POST['nutzerid'])) 		{$nutzerid = $_POST['nutzerid'];} 			        else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['sessionid'])) 	{$sessionid = $_POST['sessionid'];} 		        else {cms_anfrage_beenden(); exit;}
+
+// REIHENFOLGE WICHTIG!! NICHT ÄNDERN -->
+include_once("../../lehrerzimmer/funktionen/entschluesseln.php");
+include_once("../../lehrerzimmer/funktionen/sql.php");
+include_once("../../lehrerzimmer/funktionen/meldungen.php");
+include_once("../../lehrerzimmer/funktionen/generieren.php");
+$angemeldet = cms_angemeldet();
+
+// <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
 $dbs = cms_verbinden("s");
 
-if (cms_angemeldet() && cms_r("technik.server.update")) {
+if ($angemeldet && cms_r("technik.server.update")) {
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
 
@@ -22,14 +31,13 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   $version = trim(file_get_contents("$base_verzeichnis/version/version"));
 
   if($version == "") {
-    die("FEHLER");
+    cms_anfrage_beenden(); exit;
   }
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
   mkdir($backup_verzeichnis, null, true);
 
-  file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^(.*)$ aktualisiert.php");
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
 
   // Versionen prüfen und Daten laden
@@ -47,8 +55,9 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   curl_setopt_array($curl, $curlConfig);
   $antwort = curl_exec($curl);
   curl_close($curl);
-  if(!($antwort = json_decode($antwort, true)))
-    die("FEHLER");
+  if(!($antwort = json_decode($antwort, true))) {
+    cms_anfrage_beenden(); exit;
+	}
 
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
@@ -91,11 +100,10 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   cms_v_verschieben("$update_verzeichnis/".$d[2], "$update_verzeichnis/release", "", false);
   sleep(1);
 
-  cms_v_loeschen("$update_verzeichnis/release/lehrerdateien");
-  cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
+  cms_v_verschieben("$update_verzeichnis/release/lehrerdateien", $base_verzeichnis);
 
   $dbs = cms_verbinden("s");
-  $dbp = cms_verbinden("p");
+  $dbl = cms_verbinden("l");
 
   ob_start();
   include("$base_verzeichnis/version/updatedb.php");
@@ -123,36 +131,12 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
     }
   }
 
-  $dbs = cms_verbinden("s");
-  $dbs->multi_query($sql);
-  $dbs->close();
+  $dbl = cms_verbinden("s");
+  $dbl->multi_query($sql);
+  $dbl->close();
 
-  $dbs = cms_verbinden("s");
-  $sql = "SELECT name, wert, alias FROM style";
-  $sql = $dbs->prepare($sql);
-
-  $sql->execute();
-  $sql->bind_result($name, $wert, $alias);
-  while($sql->fetch()) {
-    $_POST[$name]             = $wert;
-    $matches = array();
-    if(preg_match("/rgba\\(([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3}),(1|0\.[0-9]+)\\)/", $wert, $matches) === 1) {
-      $_POST[$name."_rgb"]    = sprintf("#%02x%02x%02x", $matches[1], $matches[2], $matches[3]);
-      $_POST[$name."_alpha"]  = intval(floatval($matches[4])*100);
-    }
-    $_POST[$name."_alias"]    = $alias;
-    if(is_null($alias)) {
-      $_POST[$name."_alias"]  = "-";
-    }
-  }
-  $sql->close();
-  ob_start();
-  include("$base_verzeichnis/php/schulhof/anfragen/website/style/aendern.php");
-  ob_end_clean();
   unlink("$base_verzeichnis/version/updatedb.php");
 
-  copy("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
-  copy("$update_verzeichnis/release/aktualisiert.php", "$base_verzeichnis/aktualisiert.php");
   cms_v_loeschen($update_verzeichnis);
 
   echo "ERFOLG";
@@ -176,13 +160,12 @@ function cms_v_loeschen($pfad) {
   }
   @rmdir($pfad);
 }
-
 function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
   $pfadblacklist = array();
   $dateiblacklist = array();
   if($blacklist) {
-    $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/", "/lehrerdateien/", "/php/phpmailer/");
-    $dateiblacklist = array("/php/schulhof/funktionen/config.php", "/aktualisiert.php", "/.htaccess");
+    $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/");
+    $dateiblacklist = array("/php/lehrerzimmer/funktionen/config.php");
   }
   foreach($pfadblacklist as $b)
     if(strpos($pfad, rtrim($b, "/")) === 0)
@@ -202,7 +185,7 @@ function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
         if(!is_dir("$nach$pfad"))
           @mkdir("$nach$pfad", null, true);
         while(!copy($ddd, "$nach$pfad/$datei")) {sleep(1);};
-        @unlink($ddd);
+        unlink($ddd);
       } else
         cms_v_verschieben($von, $nach, "$pfad/$datei");
     }
