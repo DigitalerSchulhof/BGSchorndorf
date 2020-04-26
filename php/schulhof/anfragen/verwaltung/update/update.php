@@ -93,14 +93,40 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
 
   cms_v_loeschen("$update_verzeichnis/release/lehrerdateien");
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
-  rename("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
 
-  cms_v_loeschen($update_verzeichnis);
-
+  ob_start();
   include("$base_verzeichnis/version/updatedb.php");
+  $ob = ob_get_contents();
+  ob_end_clean();
+  $ob = str_replace("{cms_schluessel}", "'$CMS_SCHLUESSEL'", $ob);
 
+  $sql = "";
+  $verreicht = false;
+
+  foreach(explode("\n", $ob) as $zeile) {
+    if($verreicht) {
+      if(preg_match("/^\\s*--/", $zeile) === 1) {
+        // Kommentar
+        continue;
+      }
+      $sql .= $zeile;
+    } else {
+      if(preg_match("/^\\s*--\\s*((?:[0-9]+)(?:\\.[0-9]+)*)\\s*$/", $zeile, $matches) === 1) {
+        if(version_compare($matches[1], $version) === 0) {
+          $verreicht = true;
+        }
+        continue;
+      }
+    }
+  }
+
+  $dbs->multi_query($sql);
+  $dbs->close();
+
+  $dbs = cms_verbinden("s");
   $sql = "SELECT name, wert, alias FROM style";
   $sql = $dbs->prepare($sql);
+
   $sql->execute();
   $sql->bind_result($name, $wert, $alias);
   while($sql->fetch()) {
@@ -115,10 +141,14 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
       $_POST[$name."_alias"]  = "-";
     }
   }
+  $sql->close();
   ob_start();
   include("$base_verzeichnis/php/schulhof/anfragen/website/style/aendern.php");
   ob_end_clean();
   unlink("$base_verzeichnis/version/updatedb.php");
+
+  rename("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
+  cms_v_loeschen($update_verzeichnis);
 
   echo "ERFOLG";
 }

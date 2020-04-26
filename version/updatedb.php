@@ -1,30 +1,9 @@
-<?php
-	$versionen = array(
-		
-		);
+DELETE FROM rollen WHERE id = 7;
 
-	// Version	Tab		function($dbs, $dbp, $dbl)
-	// "1.0"	=> function($dbs, $dbp, $dbl) { }
+-- 0.6
 
-	$dbs = cms_verbinden("s");
-	$dbp = cms_verbinden("p");
-	$dbl = cms_verbinden("l");
-	foreach($versionen as $v => $update) {
-		if(version_compare($version, $v, "lt")) {
-			$update($dbs, $dbp, $dbl);
-		}
-	}
+DELETE FROM rollen WHERE id = 7;
 
-	function query($db, $sql) {
-		$sql = $db->prepare($sql);
-		$sql->execute();
-		$sql->close();
-	}
-	function querygk($db, $sql) {
-		global $CMS_GRUPPEN;
-		foreach($CMS_GRUPPEN as $g) {
-			$gk = cms_textzudb($g);
-			query($db, str_replace("{gk}", $gk, $sql));
-		}
-	}
-?>
+-- 0.7
+
+DELETE FROM rollen WHERE AES_DECRYPT(bezeichnung, {cms_schluessel}) = 'c';
