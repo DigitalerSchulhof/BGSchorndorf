@@ -3,6 +3,9 @@
 <h1>Schulhof aktualisieren</h1>
 
 <?php
+  if(!$CMS_IMLN) {
+    echo cms_meldung("firewall", "<h4>Nur eingeschränkte Nutzung möglich</h4><p>In diesem Netz wird nur der Digitale Schulhof aktualisiert. Dateien im Lehrernetz bleiben unverändert.".($CMS_LN_ZB_VPN ? "<br>Um diese zu aktualisieren, ist ein Fernzugriff (per VPN) auf ein anderes Netz erforderlich.</p><p><a class=\"cms_button\" href=\"Schulhof/Hilfe/VPN\">VPN Verbindung einrichten</a>" : "")."</p><p><h4>Ob ein Update der Lehrerdateien notwendig ist, kann dem Neuerungsverlauf entnommen werden.</h4></p>");
+  }
   echo cms_meldung("fehler", "<h4>Aktualisieren</h4><p>Der Programmcode sowie die Datenbanken des Digitalen Schulhofs werden aktualisiert. Ist der Vorgang gestartet, wird die gesamte Website für einen Moment nicht erreichbar sein.</p><p>Sollte die Website nach dem Update fehlerhaft funktionieren, ist der Administrator <b>umgehend</b> zu benachrichtigen.");
 
   include_once(dirname(__FILE__)."/../../../../allgemein/funktionen/yaml.php");
