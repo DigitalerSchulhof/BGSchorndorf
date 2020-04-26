@@ -5,7 +5,9 @@ include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
 include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../schulhof/anfragen/website/style/check.php");
-session_start();
+if(session_status() == PHP_SESSION_NONE) {
+	session_start();
+}
 
 // Eingaben prüfen
 $aliashkandidaten = array('-', 'cms_style_h_haupt_schriftfarbepositiv', 'cms_style_h_haupt_schriftfarbenegativ', 'cms_style_h_haupt_hintergrund', 'cms_style_h_haupt_koerperhintergrund', 'cms_style_h_haupt_abstufung1', 'cms_style_h_haupt_abstufung2', 'cms_style_h_haupt_thema1', 'cms_style_h_haupt_thema2', 'cms_style_h_haupt_thema3', 'cms_style_h_haupt_meldungerfolghinter', 'cms_style_h_haupt_meldungerfolgakzent', 'cms_style_h_haupt_meldungwarnunghinter', 'cms_style_h_haupt_meldungwarnungakzent', 'cms_style_h_haupt_meldungfehlerhinter', 'cms_style_h_haupt_meldungfehlerakzent', 'cms_style_h_haupt_meldunginfohinter', 'cms_style_h_haupt_meldunginfoakzent', 'cms_style_h_haupt_notizschrift', 'cms_style_h_haupt_schriftfarbepositiv', 'cms_style_h_haupt_schriftfarbenegativ', 'cms_style_h_haupt_hintergrund', 'cms_style_h_haupt_koerperhintergrund', 'cms_style_h_haupt_abstufung1', 'cms_style_h_haupt_abstufung2', 'cms_style_h_haupt_thema1', 'cms_style_h_haupt_thema2', 'cms_style_h_haupt_thema3', 'cms_style_h_haupt_meldungerfolghinter', 'cms_style_h_haupt_meldungerfolgakzent', 'cms_style_h_haupt_meldungwarnunghinter', 'cms_style_h_haupt_meldungwarnungakzent', 'cms_style_h_haupt_meldungfehlerhinter', 'cms_style_h_haupt_meldungfehlerakzent', 'cms_style_h_haupt_meldunginfohinter', 'cms_style_h_haupt_meldunginfoakzent', 'cms_style_h_haupt_notizschrift');
@@ -204,6 +206,7 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 		$dunkel 	= "@media (prefers-color-scheme: dark) { $dunkel }";
 		$drucken 	= "@media screen {.cms_druckseite {display: none;}} @media print { $drucken }";
 
+		@mkdir("../../../css");
 		file_put_contents("../../../css/hell.css", 		$hell);
 		file_put_contents("../../../css/dunkel.css", 	$dunkel);
 		file_put_contents("../../../css/drucken.css", $drucken);

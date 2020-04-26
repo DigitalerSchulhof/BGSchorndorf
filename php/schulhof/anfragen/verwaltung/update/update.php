@@ -91,12 +91,33 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   rename("$update_verzeichnis/".$d[2], "$update_verzeichnis/release");
   sleep(1);
 
+  cms_v_loeschen("$update_verzeichnis/release/lehrerdateien");
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
   rename("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
 
   cms_v_loeschen($update_verzeichnis);
 
   include("$base_verzeichnis/version/updatedb.php");
+
+  $sql = "SELECT name, wert, alias FROM style";
+  $sql = $dbs->prepare($sql);
+  $sql->execute();
+  $sql->bind_result($name, $wert, $alias);
+  while($sql->fetch()) {
+    $_POST[$name]             = $wert;
+    $matches = array();
+    if(preg_match("/rgba\\(([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3}),(1|0\.[0-9]+)\\)/", $wert, $matches) === 1) {
+      $_POST[$name."_rgb"]    = sprintf("#%02x%02x%02x", $matches[1], $matches[2], $matches[3]);
+      $_POST[$name."_alpha"]  = intval(floatval($matches[4])*100);
+    }
+    $_POST[$name."_alias"]    = $alias;
+    if(is_null($alias)) {
+      $_POST[$name."_alias"]  = "-";
+    }
+  }
+  ob_start();
+  include("$base_verzeichnis/php/schulhof/anfragen/website/style/aendern.php");
+  ob_end_clean();
   unlink("$base_verzeichnis/version/updatedb.php");
 
   echo "ERFOLG";
@@ -122,7 +143,7 @@ function cms_v_loeschen($pfad) {
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "") {
-  $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/", "/css/", "/php/phpmailer/");
+  $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/", "/php/phpmailer/");
   $dateiblacklist = array("/php/schulhof/funktionen/config.php", "/aktualisiert.php", "/.htaccess");
   foreach($pfadblacklist as $b)
     if(strpos($pfad, rtrim($b, "/")) === 0)
@@ -141,7 +162,8 @@ function cms_v_verschieben($von, $nach, $pfad = "") {
     if(is_file($ddd)) {
       if(!is_dir("$nach$pfad"))
         @mkdir("$nach$pfad", null, true);
-      while(!rename($ddd, "$nach$pfad/$datei")) {sleep(1);};
+      while(!copy($ddd, "$nach$pfad/$datei")) {sleep(1);};
+      unlink($ddd);
     } else
       cms_v_verschieben($von, $nach, "$pfad/$datei");
   }
