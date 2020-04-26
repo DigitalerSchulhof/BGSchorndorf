@@ -42,11 +42,33 @@ if(cms_r("technik.server.update")) {
 ?><p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
+// eBedarf-Umfrage
+$ausgefuellt = false;
+$sql = $dbs->prepare("SELECT COUNT(*) FROM ebedarf WHERE id = ?");
+$sql->bind_param("i", $CMS_BENUTZERID);
+if ($sql->execute()) {
+	$sql->bind_result($test);
+	if ($sql->fetch()) {
+		if ($test != 0) {$ausgefuellt = true;}
+	}
+}
+$sql->close();
 
+if ((!$ausgefuellt) && (time() < mktime (23, 59, 59, 4, 28, 2020))) {
+	$meldung = "<h4>Bedarfsabfrage für Notebooks oder Tablets</h4>";
+	$meldung .= "<p>Das Burg-Gymnasium ist dabei eine Sammelbestellung an Notebook oder Tablets für den persönlichen Gebrauch zu organisieren, damit alle Schülerinnen und Schüler gleichberechtigt am eLearning teilnehmen können.";
+	if ($CMS_BENUTZERART == 's') {
+		$meldung .= " Damit eine solche Bestellung organisiert und der Bedarf ermittelt werden kann, brauchen wir Deine Hilfe!</p><p><b>Bitte nimm auch dann teil, wenn kein Bedarf besteht!</b></p>";
+	}
+	else {
+		$meldung .= " Damit eine solche Bestellung organisiert und der Bedarf ermittelt werden kann, brauchen wir Ihre Hilfe!</p><p><b>Bitte nehmen Sie auch dann teil, wenn kein Bedarf besteht!</b></p>";
+	}
+	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bedarfsabfrage\" class=\"cms_button\">Jetzt Teilnehmen!</a></p>";
+	echo cms_meldung("warnung", $meldung);
+}
 
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
-$dbs = cms_verbinden('s');
 $jetzt = time();
 $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= ? AND ende >= ?");
 $sql->bind_param("ii", $jetzt, $jetzt);

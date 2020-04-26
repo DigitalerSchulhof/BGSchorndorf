@@ -265,6 +265,7 @@
 			$code .= "<script src=\"js/schulhof/downloads.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/beschluesse.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/schulhof/listen.js?v=$CMS_VERSION\"></script>";
+			$code .= "<script src=\"js/schulhof/nutzerkonto/ebedarf.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
 			$code .= "<script src=\"js/lehrerzimmer/tagebuch.js?v=$CMS_VERSION\"></script>";
 
