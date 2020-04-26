@@ -94,6 +94,9 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   cms_v_loeschen("$update_verzeichnis/release/lehrerdateien");
   cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
 
+  $dbs = cms_verbinden("s");
+  $dbp = cms_verbinden("p");
+
   ob_start();
   include("$base_verzeichnis/version/updatedb.php");
   $ob = ob_get_contents();
@@ -120,6 +123,7 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
     }
   }
 
+  $dbs = cms_verbinden("s");
   $dbs->multi_query($sql);
   $dbs->close();
 

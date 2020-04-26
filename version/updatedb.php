@@ -1,9 +1,17 @@
-DELETE FROM rollen WHERE id = 7;
+/*
 
--- 0.6
+	Format der Datei:
+	Wird aktualisiert, wird jede Query unter zuvor installierten Version ausgeführt.
 
-DELETE FROM rollen WHERE id = 7;
 
--- 0.7
+	-- Version
 
-DELETE FROM rollen WHERE AES_DECRYPT(bezeichnung, {cms_schluessel}) = 'c';
+	Queries nach der Version
+
+	-- Version
+
+	Queries
+
+	-- Version
+
+*/

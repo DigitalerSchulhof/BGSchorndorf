@@ -52,7 +52,6 @@
       curl_close($curl);
 
       $fehler = false;
-
       $release = json_decode($release, true);
       $fehler |= !count($release);
       $fehler |= isset($release["documentation_url"]); // Hinweis auf API; Fehler
@@ -78,7 +77,7 @@
           echo "</div>";
 
         } else {
-          echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version!</p>");
+          echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version: <b>$version</b></p>");
           echo "<div class=\"cms_spalte_2\">";
             echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
           echo "</div>";
