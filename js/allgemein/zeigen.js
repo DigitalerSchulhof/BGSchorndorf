@@ -61,6 +61,9 @@ function cms_toggle_klasse(idknopf, klasse, idfeld, eingabe) {
 
 function cms_klasse_dazu (id, klassedazu) {
 	var element = document.getElementById(id);
+	if(!element) {
+		return;
+	}
   var klassen = element.className.split(" ");
   var i = klassen.indexOf(klassedazu);
 
@@ -85,6 +88,9 @@ function cms_klasse_dazu_wennklasse (klassenname, klassedazu) {
 
 function cms_klasse_weg (id, klasseweg) {
 	var element = document.getElementById(id);
+	if(!element) {
+		return;
+	}
   var klassen = element.className.split(" ");
   var i = klassen.indexOf(klasseweg);
 
