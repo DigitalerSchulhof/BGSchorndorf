@@ -11,8 +11,7 @@
 	include_once("php/website/funktionen/datenschutz.php");
 	include_once("php/website/funktionen/geraet.php");
 	include_once("php/schulhof/funktionen/dateisystem.php");
-	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.8";
+	$CMS_VERSION = trim(file_get_contents("version/version"));
 	$CMS_ANGEMELDET = cms_angemeldet();
 	if ($CMS_ANGEMELDET) {
 
@@ -61,7 +60,7 @@
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 		// <!-- Einbindung der Stylesheets -->
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?v=$CMS_VERSION\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?v=".substr(md5("css/drucken.css"), 0, 7)."\">";
 	?>
 </head>
 <body>
@@ -84,15 +83,17 @@
 			return $code;
 		}
 
-		$code = cms_druckkopf();
+		$code = "";
 		array_shift($CMS_URL);
 		$CMS_URLGANZ = implode('/', $CMS_URL);
 
 		if (isset($_SESSION['DRUCKANSICHT'])) {
 			if (($_SESSION['DRUCKANSICHT'] == 'Schulanmeldung') && ($CMS_ANGEMELDET) && cms_r("schulhof.organisation.schulanmeldung.akzeptieren")) {
+				$code .= cms_druckkopf();
 				include("schulanmeldung.php");
 			}
 			else if (($_SESSION['DRUCKANSICHT'] == 'Vertretungsplan') && (isset($_SESSION['DRUCKVPLANDATUMV'])) && (isset($_SESSION['DRUCKVPLANDATUMB']))) {
+				$code .= cms_druckkopf();
 				include("vertretungsplan.php");
 			}
 		}

@@ -319,11 +319,11 @@ function cms_terminegenehmigen_knopf($dbs) {
   $zusatz = "";
   $sql = "";
   $code = "";
-  if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+  if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM termine WHERE genehmigt = 0)";}
   if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
+      $sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."termineintern WHERE genehmigt = 0)";
     }
   }
   $sql = substr($sql, 7);
@@ -349,11 +349,11 @@ function cms_blogeintraegegenehmigen_knopf($dbs) {
   $code = "";
   $zusatz = "";
   $sql = "";
-  if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+  if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM blogeintraege WHERE genehmigt = 0)";}
   if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
+      $sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
     }
   }
   $sql = substr($sql, 7);

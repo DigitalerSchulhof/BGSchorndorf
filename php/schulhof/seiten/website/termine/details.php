@@ -52,8 +52,7 @@ function cms_termin_details_laden($id, $ziel) {
       $sql->close();
     }
   }
-
-  if ((($id == '-') && cms_r("artikel.$oeffentlichkeit.termine.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.termine.bearbeiten"))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("artikel.%ARTIKELSTUFEN%.termine.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.termine.bearbeiten"))) {$zugriff = true;}
 
 	if ($fehler) {$zugriff = false;}
 	$angemeldet = cms_angemeldet();

@@ -256,7 +256,7 @@
 
 .cms_termin_detailinformationen {
 	margin-top: 15px;
-	text-align: justify;
+	text-align: center;
 }
 
 .cms_termindetails {

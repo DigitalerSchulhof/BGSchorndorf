@@ -9,7 +9,7 @@ $code .= "<h1>Lehrervertretungsplan</h1>";
 $angemeldet = false;
 $kennung = null;
 $code .= "<script>var CMS_LN_DA = '$CMS_LN_DA';</script>";
-$code .= "<script src=\"js/lehrerzimmer/intern.js?v=$CMS_VERSION\"></script>";
+$code .= "<script src=\"js/lehrerzimmer/intern.js?v=".substr(md5("js/lehrerzimmer/intern.js"), 0, 7)."\"></script>";
 
 $sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL')");
 if ($sql->execute()) {
@@ -24,12 +24,12 @@ else {$CMS_IMLN = false;}
 if (isset($CMS_URL[2])) {if (($CMS_URL[2] == $kennung) && ($CMS_IMLN)) {$angemeldet = true;}}
 
 if (isset($CMS_URL[2])) {
-  $code .= "<script src=\"js/schulhof/verwaltung/scrollen.js?v=$CMS_VERSION\"></script>";
+  $code .= "<script src=\"js/schulhof/verwaltung/scrollen.js?v=".substr(md5("js/schulhof/verwaltung/scrollen.js"), 0, 7)."\"></script>";
   $CMS_ONLOAD_EXTERN_EVENTS = "CMS_IMLN = false;var CMS_INTERN_VPLANL = window.setInterval(function () {cms_intern_vplan_laden('l');}, 300000);window.setTimeout(function () {cms_intern_vplan_laden('l');}, 1000);window.setTimeout(function () {CMS_INTERN_VPLANL_SCHIEBEN_LH = window.setInterval(function () {cms_vplan_verschieben_lh()}, cms_vplanschiebengeschwindigkeit)}, cms_vplanschiebenwarten);window.setTimeout(function () {CMS_INTERN_VPLANL_SCHIEBEN_LG = window.setInterval(function () {cms_vplan_verschieben_lg()}, cms_vplanschiebengeschwindigkeit)}, cms_vplanschiebenwarten);window.setTimeout(function () {CMS_INTERN_VPLANL_SCHIEBEN_LM = window.setInterval(function () {cms_vplan_verschieben_lm()}, cms_vplanschiebengeschwindigkeit)}, cms_vplanschiebenwarten);";
   $code .= "<input type=\"hidden\" name=\"cms_lvplan_kennung\" id =\"cms_lvplan_kennung\" value=\"".$CMS_URL[2]."\">";
   $code .= "<div class=\"cms_vollbild\" id=\"cms_lvplan_vollbild\">";
 
-  $code .= "<script src=\"js/schulhof/verwaltung/vertretungsplanung.js?v=$CMS_VERSION\"></script>";
+  $code .= "<script src=\"js/schulhof/verwaltung/vertretungsplanung.js?v=".substr(md5("js/schulhof/verwaltung/vertretungsplanung.js"), 0, 7)."\"></script>";
   include_once('php/lehrerzimmer/seiten/intern/vplanladen.php');
   include_once('php/schulhof/seiten/verwaltung/vertretungsplanung/vplaninternausgeben.php');
   $code .= "<div id=\"cms_lvplan_heute\">";

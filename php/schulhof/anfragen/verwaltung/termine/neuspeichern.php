@@ -51,8 +51,8 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
   die("FEHLER");
 }
-
-if (cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) {
+$zugriff = false;
+if (cms_r("artikel.$oeffentlichkeit.termine.anlegen")) {
 	$zugriff = true;
 }
 

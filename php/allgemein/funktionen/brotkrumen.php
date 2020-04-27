@@ -75,13 +75,15 @@ function cms_brotkrumen($url, $aktionen = true) {
 				$favoritwert = 1;
 				$icon = "res/icons/klein/favorit.png";
 				$klasse = "cms_favorit";
+				$text = "Favorit entfernen";
 			}
 			else {
 				$favoritwert = 0;
 				$icon = "res/icons/klein/favorisieren.png";
 				$klasse = "";
+				$text = "Seite Favorisieren";
 			}
-			$favorisieren = "<span class=\"cms_aktionsicon\"><img id=\"cms_seite_favorit_icon\" onclick=\"cms_favorisieren('$fid', '".join('/', $url)."')\" src=\"$icon\"><input type=\"hidden\" value=\"$favoritwert\" name=\"cms_seite_favorit\" id=\"cms_seite_favorit\"></span>";
+			$favorisieren = "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">$text</span><img id=\"cms_seite_favorit_icon\" onclick=\"cms_favorisieren('$fid', '".join('/', $url)."')\" src=\"$icon\"><input type=\"hidden\" value=\"$favoritwert\" name=\"cms_seite_favorit\" id=\"cms_seite_favorit\"></span>";
 			$code .= $favorisieren;
 		}
 
@@ -169,6 +171,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 					$datumb = mktime(0, 0, 0, $monat, $tag, $jahr);
 					$datume = mktime(0, 0, 0, $monat, $tag+1, $jahr)-1;
 					$gruppe = cms_linkzutext($url[3]);
+					$aktiv = false;
+					$gefunden = false;
 
 					$sql = $dbs->prepare("SELECT id, aktiv FROM {$gk}termineintern WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND (beginn BETWEEN ? AND ?);");
 					$sql->bind_param("sii", $terminbez, $datumb, $datume);
@@ -202,27 +206,29 @@ function cms_brotkrumen($url, $aktionen = true) {
 					$todowert = 1;
 					$icon = "res/icons/klein/todo_erledigen.png";
 					$klasse = "cms_favorit";
+					$text = "ToDo entfernen";
 				}
 				else {
 					$todowert = 0;
 					$icon = "res/icons/klein/todo_neu.png";
 					$klasse = "";
+					$text = "Als ToDo markieren";
 				}
 
-				$todo = "<span class=\"cms_aktionsicon\"><img id=\"cms_seite_todo_icon\" onclick=\"cms_seite_todo('$g', '$gruppenid', '$art', '$artikelid')\" src=\"$icon\"><input type=\"hidden\" value=\"$todowert\" name=\"cms_seite_todo\" id=\"cms_seite_todo\"></span>";
+				$todo = "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">$text</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_seite_todo('$g', '$gruppenid', '$art', '$artikelid')\" src=\"$icon\"><input type=\"hidden\" value=\"$todowert\" name=\"cms_seite_todo\" id=\"cms_seite_todo\"></span>";
 				$code .= $todo;
 			}
 		}
 
 		// Weiterleitung einrichten
 		if(cms_r("website.weiterleiten")) {
-			$code .= "<span class=\"cms_aktionsicon\"><img onclick=\"cms_neue_weiterleitung('/".join('/', $url)."')\" src=\"res/icons/klein/weiterleiten.png\"></span>";
+			$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Neue Weiterleitung</span><img onclick=\"cms_neue_weiterleitung('/".join('/', $url)."')\" src=\"res/icons/klein/weiterleiten.png\"></span>";
 		}
 
 		if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ) ||
 				preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)
 			) {
-				$code .= "<span class=\"cms_aktionsicon\"><img onclick=\"cms_drucken('Drucken/".join('/', $url)."')\" src=\"res/icons/klein/drucken.png\"></span>";
+				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Seite Drucken</span><img onclick=\"cms_drucken('Drucken/".join('/', $url)."')\" src=\"res/icons/klein/drucken.png\"></span>";
 		}
 	}
 

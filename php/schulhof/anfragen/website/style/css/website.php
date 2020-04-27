@@ -96,7 +96,7 @@
 }
 
 .cms_artikellink_anzeige {
-	display: block;
+	display: block !important;
 	color: inherit;
 	width: 100%;
 }
@@ -726,8 +726,6 @@
 	background-position: 5px 5px;
 	min-height: 44px;
 	background-repeat: no-repeat;
-	background-color: @h_haupt_abstufung1;
-	border: 1px solid @h_haupt_abstufung1;
 	border-left: 3px solid @h_haupt_abstufung2;
 	line-height: 1em !important;
 }
