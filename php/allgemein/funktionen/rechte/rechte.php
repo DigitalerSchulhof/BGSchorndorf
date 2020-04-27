@@ -349,7 +349,6 @@
       $tokens = array_values($tokens);
       return $tokens;
     };
-
     $c = 0;
     while(count($tokens) > 1 && ++$c<100) {
       $tokens = $tokens_durchgehen($tokens);
@@ -412,11 +411,6 @@
         $r = array();
         foreach($werte as $w) {
           $e = $eval($w, ...$argumente);
-          // if($wert === "&") {
-          //   if($e === false) {
-          //     return false;
-          //   }
-          // }
           if($wert === "|") {
             if($e === true) {
               return true;
@@ -427,13 +421,14 @@
           }
         }
         if(!count($r)) {
-          return $wert !== "&";
+          return false;
         }
         return $r;
       }
     };
 
-    return $eval($tokens);
+    $r = $eval($tokens);
+    return $r;
   }
 
   function cms_r() {  // Alias :)

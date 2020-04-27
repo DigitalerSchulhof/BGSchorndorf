@@ -55,7 +55,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     }
   }
 
-  if ((($id == '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten"))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten"))) {$zugriff = true;}
 
 	if ($fehler) {$zugriff = false;}
 	$angemeldet = cms_angemeldet();
