@@ -41,7 +41,7 @@
       // Neuerungsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/contents/version/versionen.yml",
+        CURLOPT_URL             => "$GitHub_base/contents/version/versionen.yml?ref=develop",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
