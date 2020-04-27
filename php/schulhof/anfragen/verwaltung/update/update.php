@@ -10,6 +10,8 @@ set_time_limit(0);
 
 session_start();
 
+$DATEIMODE = 0755;
+
 $dbs = cms_verbinden("s");
 
 if (cms_angemeldet() && cms_r("technik.server.update")) {
@@ -27,7 +29,7 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
-  mkdir($backup_verzeichnis, null, true);
+  mkdir($backup_verzeichnis, $DATEIMODE, true);
 
   file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^(.*)$ aktualisiert.php");
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
@@ -55,7 +57,7 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
-  mkdir($update_verzeichnis, null, true);
+  mkdir($update_verzeichnis, $DATEIMODE, true);
 
   // Tarball herunterladen
   $tar_ziel = fopen("$update_verzeichnis/release.tar.gz", "w+");
@@ -178,38 +180,44 @@ function cms_v_loeschen($pfad) {
 }
 
 function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
+  global $DATEIMODE;
   $pfadblacklist = array();
   $dateiblacklist = array();
   if($blacklist) {
-    $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/", "/lehrerdateien/", "/php/phpmailer/");
+    $pfadblacklist = array("/.git", "/backup", "/update", "/dateien", "/lehrerdateien", "/php/phpmailer");
     $dateiblacklist = array("/php/schulhof/funktionen/config.php", "/aktualisiert.php", "/.htaccess");
   }
-  foreach($pfadblacklist as $b)
-    if(strpos($pfad, rtrim($b, "/")) === 0)
-	   return;
+  foreach($pfadblacklist as $pfadb) {
+    if(strpos($pfad, rtrim($pfadb, "/")) === 0) {
+      return;
+    }
+  }
   if(is_dir("$von$pfad")) {
     $dateien = array_diff(scandir("$von$pfad"), array(".", ".."));
+
     foreach($dateien as $datei) {
-      $ddd = "$von$pfad/$datei";
-      foreach($dateiblacklist as $b) {
-        $b = explode("/", $b);
-        $n = array_pop($b);
-        $p = join("/", $b);
-        if($pfad == $p && $datei == $n)
+      $vonpfad = "$von$pfad/$datei";
+      foreach($dateiblacklist as $dateib) {
+        $dateib = explode("/", $dateib);
+        $name = array_pop($dateib);
+        $dateibpfad = join("/", $dateib);
+        if($pfad == $dateibpfad && $datei == $name) {
           continue 2; // Datei überspringen
+
       }
-      if(is_file($ddd)) {
+      if(is_file($vonpfad)) {
         if(!is_dir("$nach$pfad"))
-          @mkdir("$nach$pfad", null, true);
-        while(!copy($ddd, "$nach$pfad/$datei")) {sleep(1);};
-        @unlink($ddd);
-      } else
+          mkdir("$nach$pfad", $DATEIMODE, true);
+        copy($vonpfad, "$nach$pfad/$datei")
+        unlink($vonpfad);
+      } else {
         cms_v_verschieben($von, $nach, "$pfad/$datei");
+      }
     }
     if(strlen($pfad))
-  	  @rmdir("$von$pfad");
+  	  @rmdir("$von$pfad"); // Kann noch blacklist drinnen sein - nicht leer
   } else {
-    while(!copy($von, "$nach")) {sleep(1);};
+    copy($von, $nach);
     unlink($von);
   }
 }
