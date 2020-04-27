@@ -23,19 +23,26 @@ if (cms_angemeldet()) {
   $fehler = false;
   $blogquery    = $status == '1' ? "NULL" : "IS NULL";
   $terminquery  = $status == '1' ? "NULL" : "IS NULL";
+  $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+  $gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gid);
 
   // Artikel prüfen
   if($a == "b") {
     $blogquery = $status == '1' ? "?" : "= ?";
+    $artikeltyp = "blogeintrag";
+
     $sql = "SELECT aktiv FROM {$gk}blogeintraegeintern WHERE id = ?";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("i", $aid);
     $sql->bind_result($aktiv);
     $fehler = !($sql->execute() && $sql->fetch());
     $sql->close();
+
+    $gefunden = $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['blogeintraege']);
   }
   if($a == "t") {
     $terminquery = $status == '1' ? "?" : "= ?";
+    $artikeltyp = "termin";
 
     $sql = "SELECT aktiv FROM {$gk}termineintern WHERE id = ?";
     $sql = $dbs->prepare($sql);
@@ -43,21 +50,18 @@ if (cms_angemeldet()) {
     $sql->bind_result($aktiv);
     $fehler = !($sql->execute() && $sql->fetch());
     $sql->close();
+
+    $gefunden = $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['termine']);
   }
+  $fehler = $fehler || !$gefunden;
   if($fehler) {
-    die("FEHLER");
-  }
-  $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
-  $gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gid);
-  $gefunden = $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['termine']);
-  if(!$gefunden) {
     die("FEHLER");
   }
 
   if ($status == '1') {
-    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) VALUES (?, $blogquery, $terminquery)";
+    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT ?, $blogquery, $terminquery WHERE NOT EXISTS(SELECT $artikeltyp FROM {$gk}todoartikel WHERE person = ? AND $artikeltyp = ?)";
     $sql = $dbs->prepare($sql);
-    $sql->bind_param("ii", $CMS_BENUTZERID, $aid);
+    $sql->bind_param("iiii", $CMS_BENUTZERID, $aid, $CMS_BENUTZERID, $aid);
     $sql->execute();
   } else {
     $sql = "DELETE FROM {$gk}todoartikel WHERE person = ? AND blogeintrag $blogquery AND termin $terminquery";

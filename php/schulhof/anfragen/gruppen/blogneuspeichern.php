@@ -219,9 +219,17 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $datum))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Gruppen/$gruppensj/".cms_textzulink($gruppe)."/$gruppenbez/Blog/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-		if($notifikationen && ($aktiv == 1))
-    	cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 
+		if($notifikationen && ($aktiv == 1)) {
+			// ToDo Eintragen
+			$sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT abo.person, ?, NULL FROM {$gk}notifikationsabo as abo WHERE abo.gruppe = ? AND abo.person != ? AND NOT EXISTS(SELECT todo.blogeintrag FROM {$gk}todoartikel as todo WHERE todo.person = abo.person AND todo.blogeintrag = ?)";
+			$sql = $dbs->prepare($sql);//";
+			$sql->bind_param("iiii", $blogid, $gruppenid, $CMS_BENUTZERID, $blogid);
+			$sql->execute();
+			$sql->close();
+
+    	cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+		}
 		echo "ERFOLG";
 	}
 	else {

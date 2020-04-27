@@ -30,6 +30,7 @@ a:hover, .cms_link:hover {
 }
 
 .cms_aktionsicon {
+	font-size: 100%;
 	display: inline-block;
 	float: right;
 	text-align: right;
