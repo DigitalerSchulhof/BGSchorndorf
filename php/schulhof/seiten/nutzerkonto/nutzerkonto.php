@@ -299,11 +299,11 @@ $genehmigungen = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"
 $genehmigungen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Genehmigungen</h4>";
 $genehmigungenda = false;
 $sql = "";
-if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM blogeintraege WHERE genehmigt = 0)";}
 foreach ($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
 	if(cms_r("schulhof.gruppen.$gk.artikel.blogeinträge.genehmigen")) {
-		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
+		$sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
 	}
 }
 if (strlen($sql) > 0) {
@@ -323,11 +323,11 @@ if (strlen($sql) > 0) {
 }
 
 $sql = "";
-if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM termine WHERE genehmigt = 0)";}
 foreach ($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
 	if(cms_r("schulhof.gruppen.$gk.artikel.termine.genehmigen")) {
-		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
+		$sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."termineintern WHERE genehmigt = 0)";
 	}
 }
 if (strlen($sql) > 0) {

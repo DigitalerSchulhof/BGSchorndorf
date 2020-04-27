@@ -8,6 +8,7 @@ version:
       - Die To-Do-Neuigkeit wurde zur besseren und übersichtlicheren Lesbarkeit verbreitert und verschoben.
       - Aktualisierte Dateien werden sofort übernommen und veraltete gecachte Dateien vernachlässigt.
       - Updates erzeugen auch automatisch eine neue Version des Designs.
+      - Blogeinträge und Termine in abonnierten Gruppen werden automatisch an die ToDo-Liste angehängt.
   0_6_0:
     version: 0.6.0
     tag: Sonntag, den 26. April 2020
