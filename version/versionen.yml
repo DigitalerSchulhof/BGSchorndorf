@@ -1,5 +1,46 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_6_1:
+    version: 0.6.1
+    tag: Montag, den 27. April 2020
+    neuerungen:
+      - Die Nutzerkonto-Startseite enthielt Bugs beim Erstellen von öffentlichen Blogeinträgen und Terminen sowie bei Nutzern, deren Aufführungen unter »Aktuelles« nicht alle Reiter enthielten.
+      - Die To-Do-Neuigkeit wurde zur besseren und übersichtlicheren Lesbarkeit verbreitert und verschoben.
+      - Aktualisierte Dateien werden sofort übernommen und veraltete gecachte Dateien vernachlässigt.
+      - Updates erzeugen auch automatisch eine neue Version des Designs.
+  0_6_0:
+    version: 0.6.0
+    tag: Sonntag, den 26. April 2020
+    neuerungen:
+      - Updates können direkt über den Schulhof eingespielt werden.
+      - Blogeinträge können ausgedruckt werden.
+      - Blogeinträge können einer ToDo-Liste hinzugefügt werden.
+  0_5_8:
+    version: 0.5.8
+    tag: Sonntag, den 19. April 2020
+    neuerungen:
+      - Links können wie Downloads direkt an Blogeinträge angehängt werden.
+      - Wer in Gruppen Blogeinträge schreiben kann, kann auch an eine Pinnwand schreiben.
+      - Die Speicherplatzauslastung kann nun direkt über den Schulhof eingesehen werden.
+      - Die Darkmode-Option wurde zu den Designmöglichkeiten ergänzt.
+  0_5_7:
+    version: 0.5.7
+    tag: Freitag, den 16. Februar 2019
+    neuerungen:
+      - Ein neues Rechtesystem wurde eingeführt, das die individuellere Vergabe von Rechten gewährleistet.
+      - Design und Layout des Schulhofs kann nun über den Schulhof direkt verändert werden.
+  0_5_6:
+    version: 0.5.6
+    tag: Samstag, den 30. November 2019
+    neuerungen:
+      - Verschiedene Vertretungsstunden können gemeinsam markiert und bearbeitet werden.
+      - Gerätemeldungen können direkt an Hausmeister weitergereicht werden.
+      - Einführung einer Ziel-Uhrzeit für Hausmeisteraufträge.
+  0_5_5:
+    version: 0.5.5
+    tag: Freitag, den 08. November 2019
+    neuerungen:
+      - Aufträge für Hausmeister können direkt gemeldet werden. Eine Bearbeitung wird direkt an den Auftraggeber rückgemeldet.
   0_5_4:
     version: 0.5.4
     tag: Freitag, den 06. September 2019
@@ -212,4 +253,4 @@ version:
       - Die Suche nach Personen und Nachrichten ist unabhängig von Groß- und Kleinschreibung.
       - Auch gesendete Nachrichten können nach Empfänger durchsucht werden.
       - Die Menüführung wird auch für Tablets und hochauflösende Smartphones unterstützt.
-      - Kleinere Änderungen an der Darstellung zur besseren Sichtbarkeit von Symbolen und Texten wurden durchgeführt.,
+      - Kleinere Änderungen an der Darstellung zur besseren Sichtbarkeit von Symbolen und Texten wurden durchgeführt.
