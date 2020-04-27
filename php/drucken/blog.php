@@ -353,8 +353,7 @@
 
 
 
-			$code .= "<div class=\"cms_spalte_3\"><div class=\"cms_spalte_i\">".$kalender."</div></div>";
-
+			$code .= "<div class=\"cms_spalte_15\"><div class=\"cms_spalte_i\">".$kalender."</div></div>";
 			$code .= "<div class=\"cms_spalte_23\"><div class=\"cms_spalte_i\">";
 				$code .= "<h1 style=\"margin-top: 0\">".$blogeintrag['bezeichnung']."</h1>";
 				$code .= cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten);

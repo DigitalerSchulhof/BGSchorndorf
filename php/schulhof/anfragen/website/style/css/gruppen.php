@@ -524,7 +524,6 @@ background: @d_hinweis_hintergrund
 
 .cms_beschluss_contra {
 	border-left: 3px solid @h_haupt_meldungfehlerakzent;
-	background: @h_haupt_meldungfehlerhinter;
 }
 
 .cms_beschluss_enthaltung {
@@ -564,5 +563,5 @@ background: @d_hinweis_hintergrund
 	margin-left: 10px;
 	border-radius: 7px;
 	color: @h_haupt_schriftfarbepositiv;
-	background: @h_haupt_hintergrund;
+	background: @h_haupt_meldungfehlerhinter;
 }
