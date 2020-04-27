@@ -103,6 +103,10 @@
 
     cms_rechte_laden();
 
+    $rechteCode = str_replace("%GRUPPEN%", "[|arbeitsgemeinschaften,arbeitskreise,ereignisse,fachschaften,fahrten,gremien,klassen,kurse,sonstigegruppen,stufen,wettbewerbe]", $rechteCode);
+    $rechteCode = str_replace("%ELEMENTE%", "[|faq,editor,download,kontaktformular,boxen,eventübersicht,newsletter]", $rechteCode);
+    $rechteCode = str_replace("%ARTIKELSTUFEN%", "[|0,1,2,3,4,5]", $rechteCode);
+
     $rc = str_split($rechteCode);
 
     $aktuellesFeld = "";
@@ -118,16 +122,12 @@
 
       if(!$machtFeld || $i == count($rc)) {
         if(strlen($aktuellesFeld)) {
+          $aktuellesFeld = mb_strtolower($aktuellesFeld);
+
           $feld = array(
             "typ" => "Feld",
             "wert" => $aktuellesFeld
           );
-
-          $aktuellesFeld = str_replace("%GRUPPEN%", "[|arbeitsgemeinschaften,arbeitskreise,ereignisse,fachschaften,fahrten,gremien,klassen,kurse,sonstigegruppen,stufen,wettbewerbe]", $aktuellesFeld);
-          $aktuellesFeld = str_replace("%ELEMENTE%", "[|faq,editor,download,kontaktformular,boxen,eventübersicht,newsletter]", $aktuellesFeld);
-          $aktuellesFeld = str_replace("%ARTIKELSTUFEN%", "[|0,1,2,3,4,5]", $aktuellesFeld);
-
-          $aktuellesFeld = mb_strtolower($aktuellesFeld);
 
           if(!$machtFeld) {
             $letzte = $tokens[count($tokens)-1];
