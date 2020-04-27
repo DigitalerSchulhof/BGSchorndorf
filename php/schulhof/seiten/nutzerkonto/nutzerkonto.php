@@ -186,50 +186,6 @@ $sql->close();
 $notifikationen .= "</span></li>";
 if ($notifikationenda) {$neuigkeiten .= $notifikationen;}
 
-$todo = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
-$todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
-$todob = "";
-$todot = "";
-$tododa = false;
-$sql = "";
-foreach($CMS_GRUPPEN as $g) {
-	$gk = cms_textzudb($g);
-	$sql .= "(SELECT 'b', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
-	$sql .= "(SELECT 't', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
-}
-$sql = substr($sql, 0, -6);
-$sql = $dbs->prepare($sql);
-if ($sql->execute()) {
-	$sql->bind_result($a, $sbez, $g, $gbez, $abez, $adat);
-	while ($sql->fetch()) {
-		$tododa = true;
-		$sbez = cms_textzulink($sbez);
-		$monatsname = cms_monatsnamekomplett(date('m', $adat));
-		$jahr = date('Y', $adat);
-		$tag = date('d', $adat);
-
-
-		if($a == "b") {
-			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todob .= "<p><a target=\"_blank\" href=\"$link\">$abez ($g » $gbez)</a></p>";
-		}
-		if($a == "t") {
-			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todot .= "<p><a target=\"_blank\" href=\"$link\">$abez ($g » $gbez)</a></p>";
-		}
-	}
-	if(strlen($todob)) {
-		$todo .= "<h6>Blogeinträge:</h6>$todob";
-	}
-	if(strlen($todot)) {
-		$todo .= "<h6>Termine:</h6>$todot";
-	}
-}
-$sql->close();
-
-$todo .= "</span></li>";
-if ($tododa) {$neuigkeiten .= $todo;}
-
 
 // Aufgaben ausgeben
 $aufgaben = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/aufgaben.png\"></span>";
@@ -426,6 +382,61 @@ $sql->close();
 if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
+
+$todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100%\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
+$todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
+$todob = "";
+$todot = "";
+$tododa = false;
+$sql = "";
+foreach($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	$sql .= "(SELECT 'b', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 't', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+}
+$sql = substr($sql, 0, -6);
+$sql = $dbs->prepare($sql);
+if ($sql->execute()) {
+	$sql->bind_result($a, $sbez, $g, $gbez, $abez, $adat);
+	while ($sql->fetch()) {
+		$tododa = true;
+		$sbez = cms_textzulink($sbez);
+		$monatsname = cms_monatsnamekomplett(date('m', $adat));
+		$jahr = date('Y', $adat);
+		$tag = date('d', $adat);
+
+
+		if($a == "b") {
+			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+			$todob .= "<p><a target=\"_blank\" href=\"$link\">($g » $gbez) $abez</a></p>";
+		}
+		if($a == "t") {
+			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+			$todot .= "<p><a target=\"_blank\" href=\"$link\">($g » $gbez) $abez</a></p>";
+		}
+	}
+	$ueberschr = strlen($todob) > 0 && strlen($todot) > 0;
+	if(strlen($todob)) {
+		if($ueberschr) {
+			$todo .= "<h6>Blogeinträge:</h6>";
+		}
+		$todo .= $todob;
+	}
+	if(strlen($todot)) {
+		if($ueberschr) {
+			$todo .= "<h6>Termine:</h6>";
+		}
+		$todo .= $todot;
+	}
+}
+$sql->close();
+
+$todo .= "</span></li></ul>";
+
+if($tododa) {
+	echo $todo;
+}
+
 ?>
 </div>
 
