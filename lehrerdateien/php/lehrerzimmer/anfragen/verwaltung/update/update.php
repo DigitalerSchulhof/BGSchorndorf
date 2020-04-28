@@ -19,13 +19,14 @@ $angemeldet = cms_angemeldet();
 
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
+$DATEIMODE = 0755;
 $dbs = cms_verbinden("s");
 
 if ($angemeldet && cms_r("technik.server.update")) {
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
 
-  $base_verzeichnis = dirname(__FILE__)."/../../../../..";
+  $base_verzeichnis = realpath(dirname(__FILE__)."/../../../../..");
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
   $version = trim(file_get_contents("$base_verzeichnis/version/version"));
@@ -36,7 +37,7 @@ if ($angemeldet && cms_r("technik.server.update")) {
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
-  mkdir($backup_verzeichnis, null, true);
+  mkdir($backup_verzeichnis, $DATEIMODE, true);
 
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
 
@@ -55,8 +56,8 @@ if ($angemeldet && cms_r("technik.server.update")) {
   curl_setopt_array($curl, $curlConfig);
   $antwort = curl_exec($curl);
   curl_close($curl);
-  if(!($antwort = json_decode($antwort, true))) {
-    cms_anfrage_beenden(); exit;
+  if(!($antwort = @json_decode($antwort, true))) {
+    cms_backup_fehler(error_get_last());
 	}
 
   $assets = $antwort["assets"];
@@ -64,8 +65,9 @@ if ($angemeldet && cms_r("technik.server.update")) {
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
-  mkdir($update_verzeichnis, null, true);
-
+  if(!@mkdir($update_verzeichnis, $DATEIMODE, true)) {
+    cms_backup_fehler(error_get_last());
+  }
   // Tarball herunterladen
   $tar_ziel = fopen("$update_verzeichnis/release.tar.gz", "w+");
 
@@ -81,63 +83,67 @@ if ($angemeldet && cms_r("technik.server.update")) {
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
     )
   );
-  curl_setopt_array($curl, $curlConfig);
-  curl_exec($curl);
-  curl_close($curl);
-  fclose($tar_ziel);
+  try {
+    curl_setopt_array($curl, $curlConfig);
+    curl_exec($curl);
+    curl_close($curl);
+    fclose($tar_ziel);
 
-  $p = new PharData("$update_verzeichnis/release.tar.gz");
-  $p->decompress();
-  sleep(1);
-  unlink("$update_verzeichnis/release.tar.gz");
-  sleep(1);
-  $p = new PharData("$update_verzeichnis/release.tar");
-  $p->extractTo($update_verzeichnis);
-  sleep(1);
-  unlink("$update_verzeichnis/release.tar");
-  sleep(1);
-  $d = array_diff(scandir($update_verzeichnis), array(".", ".."));
-  cms_v_verschieben("$update_verzeichnis/".$d[2], "$update_verzeichnis/release", "", false);
-  sleep(1);
+    $p = new PharData("$update_verzeichnis/release.tar.gz");
+    $p->decompress();
+    sleep(1);
+    unlink("$update_verzeichnis/release.tar.gz");
+    sleep(1);
+    $p = new PharData("$update_verzeichnis/release.tar");
+    $p->extractTo($update_verzeichnis);
+    sleep(1);
+    unlink("$update_verzeichnis/release.tar");
+    sleep(1);
+    $d = array_diff(scandir($update_verzeichnis), array(".", ".."));
+    cms_v_verschieben("$update_verzeichnis/".$d[2], "$update_verzeichnis/release", "", false);
+    sleep(1);
 
-  cms_v_verschieben("$update_verzeichnis/release/lehrerdateien", $base_verzeichnis);
+    cms_v_verschieben("$update_verzeichnis/release/lehrerdateien", $base_verzeichnis);
 
-  $dbs = cms_verbinden("s");
-  $dbl = cms_verbinden("l");
+    $dbs = cms_verbinden("s");
+    $dbl = cms_verbinden("l");
 
-  ob_start();
-  include("$base_verzeichnis/version/updatedb.php");
-  $ob = ob_get_contents();
-  ob_end_clean();
-  $ob = str_replace("{cms_schluessel}", "'$CMS_SCHLUESSEL'", $ob);
+    ob_start();
+    include("$base_verzeichnis/version/updatedb.php");
+    $ob = ob_get_contents();
+    ob_end_clean();
+    $ob = str_replace("{cms_schluessel}", "'$CMS_SCHLUESSEL'", $ob);
 
-  $sql = "";
-  $verreicht = false;
+    $sql = "";
+    $verreicht = false;
 
-  foreach(explode("\n", $ob) as $zeile) {
-    if($verreicht) {
-      if(preg_match("/^\\s*--/", $zeile) === 1) {
-        // Kommentar
-        continue;
-      }
-      $sql .= $zeile;
-    } else {
-      if(preg_match("/^\\s*--\\s*((?:[0-9]+)(?:\\.[0-9]+)*)\\s*$/", $zeile, $matches) === 1) {
-        if(version_compare($matches[1], $version) === 0) {
-          $verreicht = true;
+    foreach(explode("\n", $ob) as $zeile) {
+      if($verreicht) {
+        if(preg_match("/^\\s*--/", $zeile) === 1) {
+          // Kommentar
+          continue;
         }
-        continue;
+        $sql .= $zeile;
+      } else {
+        if(preg_match("/^\\s*--\\s*((?:[0-9]+)(?:\\.[0-9]+)*)\\s*$/", $zeile, $matches) === 1) {
+          if(version_compare($matches[1], $version) === 0) {
+            $verreicht = true;
+          }
+          continue;
+        }
       }
     }
+
+    $dbl = cms_verbinden("s");
+    $dbl->multi_query($sql);
+    $dbl->close();
+
+    unlink("$base_verzeichnis/version/updatedb.php");
+
+    cms_v_loeschen($update_verzeichnis);
+  } catch(Exception $e) {
+    cms_backup_fehler($e->getMessage());
   }
-
-  $dbl = cms_verbinden("s");
-  $dbl->multi_query($sql);
-  $dbl->close();
-
-  unlink("$base_verzeichnis/version/updatedb.php");
-
-  cms_v_loeschen($update_verzeichnis);
 
   echo "ERFOLG";
 }
@@ -158,42 +164,71 @@ function cms_v_loeschen($pfad) {
     else if(is_dir($datei))
       cms_v_loeschen($datei);
   }
-  @rmdir($pfad);
+  rmdir($pfad);
 }
+
 function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
+  // $von, $nach sind die Basen
+  global $DATEIMODE;
   $pfadblacklist = array();
   $dateiblacklist = array();
   if($blacklist) {
     $pfadblacklist = array("/.git/", "/backup/", "/update/", "/dateien/");
     $dateiblacklist = array("/php/lehrerzimmer/funktionen/config.php");
   }
-  foreach($pfadblacklist as $b)
-    if(strpos($pfad, rtrim($b, "/")) === 0)
-	   return;
-  if(is_dir("$von$pfad")) {
-    $dateien = array_diff(scandir("$von$pfad"), array(".", ".."));
-    foreach($dateien as $datei) {
-      $ddd = "$von$pfad/$datei";
-      foreach($dateiblacklist as $b) {
-        $b = explode("/", $b);
-        $n = array_pop($b);
-        $p = join("/", $b);
-        if($pfad == $p && $datei == $n)
-          continue 2; // Datei überspringen
-      }
-      if(is_file($ddd)) {
-        if(!is_dir("$nach$pfad"))
-          @mkdir("$nach$pfad", null, true);
-        while(!copy($ddd, "$nach$pfad/$datei")) {sleep(1);};
-        unlink($ddd);
-      } else
-        cms_v_verschieben($von, $nach, "$pfad/$datei");
+
+  foreach($pfadblacklist as $pfadb) {
+    if(strpos($pfad, rtrim($pfadb, "/")) === 0) {
+      // Blacklist
+      return;
     }
-    if(strlen($pfad))
-  	  @rmdir("$von$pfad");
-  } else {
-    while(!copy($von, "$nach")) {sleep(1);};
-    unlink($von);
   }
+  if(is_dir("$von$pfad")) {
+    $dir = opendir("$von$pfad");
+    if($dir === false) {
+      cms_backup_fehler(array("von" => $von, "nach" => $nach, "pfad" => $pfad, "blacklist" => $blacklist));
+    }
+    while(($datei = readdir($dir)) !== false) {
+      if (!in_array($datei, array(".", ".."))) {
+        foreach($dateiblacklist as $dateib) {
+          $dateib = explode("/", $dateib);
+          $name = array_pop($dateib);
+          $dateibpfad = join("/", $dateib);
+          if($pfad == $dateibpfad && $datei == $name) {
+            continue 2; // Überspringen
+          }
+        }
+        cms_v_verschieben($von, $nach, "$pfad/$datei", $blacklist);
+      }
+    }
+    closedir($dir);
+    if(strlen($pfad)) //  / nicht löschen
+      @rmdir("$von$pfad");
+  } else {
+    // Datei verschieben
+    if(!is_dir(dirname("$nach$pfad"))) {
+      if(!mkdir(dirname("$nach$pfad"), $DATEIMODE, true)) {
+        cms_backup_fehler(array("von" => $von, "nach" => $nach, "pfad" => $pfad, "blacklist" => $blacklist));
+      }
+    }
+    if( !copy("$von$pfad", "$nach$pfad") ||
+        !unlink("$von$pfad")) {
+          cms_backup_fehler(array("von" => $von, "nach" => $nach, "pfad" => $pfad, "blacklist" => $blacklist));
+    }
+  }
+}
+
+$fehler = false;
+function cms_backup_fehler(...$args) {
+  global $fehler, $base_verzeichnis, $backup_verzeichnis, $update_verzeichnis;
+  if($fehler == true) {
+    // Schon mal Fehler -> Rekursion
+    error_log(json_encode($args));
+    cms_anfrage_beenden(); exit;
+  }
+  error_log(json_encode($args));
+  $fehler = true;
+  cms_v_verschieben($backup_verzeichnis, $base_verzeichnis, "", false);
+  cms_anfrage_beenden("SICHER"); exit;
 }
 ?>

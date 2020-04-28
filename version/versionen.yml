@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_6_2:
+    version: 0.6.2
+    tag: Dienstag, den 28. April 2020
+    neuerungen:
+      - Der automatische Updater aktualisiert nun auch Dateien im Lehrernetz.
+      - Wartende Nutzer werden darauf hingewiesen, wenn das Update vorbei ist.
   0_6_1:
     version: 0.6.1
     tag: Montag, den 27. April 2020

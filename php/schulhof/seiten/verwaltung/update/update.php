@@ -3,8 +3,8 @@
 <h1>Schulhof aktualisieren</h1>
 
 <?php
-  if(!$CMS_IMLN) {
-    echo cms_meldung("firewall", "<h4>Nur eingeschränkte Nutzung möglich</h4><p>In diesem Netz wird nur der Digitale Schulhof aktualisiert. Dateien im Lehrernetz bleiben unverändert.".($CMS_LN_ZB_VPN ? "<br>Um diese zu aktualisieren, ist ein Fernzugriff (per VPN) auf ein anderes Netz erforderlich.</p><p><a class=\"cms_button\" href=\"Schulhof/Hilfe/VPN\">VPN Verbindung einrichten</a>" : "")."</p><p><h4>Ob ein Update der Lehrerdateien notwendig ist, kann dem Neuerungsverlauf entnommen werden.</h4></p>");
+  if(!$CMS_IMLN || true) {
+    echo cms_meldung_eingeschraenkt();
   }
   echo cms_meldung("fehler", "<h4>Aktualisieren</h4><p>Der Programmcode sowie die Datenbanken des Digitalen Schulhofs werden aktualisiert. Ist der Vorgang gestartet, wird die gesamte Website für einen Moment nicht erreichbar sein.</p><p>Sollte die Website nach dem Update fehlerhaft funktionieren, ist der Administrator <b>umgehend</b> zu benachrichtigen.");
 
@@ -62,30 +62,33 @@
       $fehler |= is_null($versionen);
       $fehler |= is_null(@$versionen["version"]);
       $fehler |= !@count(@$versionen["version"]);
-
       if($fehler) {
         echo cms_meldung_fehler();
       } else {
-        if(version_compare($release["name"], $version, "lt")) {
-          echo cms_meldung_fehler();
-          echo "<div class=\"cms_spalte_2\">";
-            echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
-          echo "</div>";
-        } else if(version_compare($release["name"], $version, "gt")) {
-          echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version verfügbar: <b>{$release['name']}</b><br>Die aktuelle Version ist: <b>$version</b></p>");
+        if($CMS_IMLN) {
+          if(version_compare($release["name"], $version, "lt")) {
+            echo cms_meldung_fehler();
+            echo "<div class=\"cms_spalte_2\">";
+              echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
+              echo "</div>";
+            } else if(version_compare($release["name"], $version, "gt")) {
+              echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version verfügbar: <b>{$release['name']}</b><br>Die aktuelle Version ist: <b>$version</b></p>");
 
-          echo "<div class=\"cms_spalte_2\">";
-            echo "<span class=\"cms_button_ja\" onclick=\"cms_schulhof_aktualisieren_vorbereiten();\">Schulhof aktualisieren</span> ";
-            echo "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
-          echo "</div>";
-
+              echo "<div class=\"cms_spalte_2\">";
+              echo "<span class=\"cms_button_ja\" onclick=\"cms_schulhof_aktualisieren_vorbereiten();\">Schulhof aktualisieren</span> ";
+              echo "<span class=\"cms_button_nein\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
+              echo "</div>";
+            } else {
+              echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version: <b>$version</b></p>");
+              echo "<div class=\"cms_spalte_2\">";
+                echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
+              echo "</div>";
+            }
         } else {
-          echo cms_meldung("erfolg", "<h4>Aktuelle Version</h4><p>Der Digitale Schulhof ist auf der neusten Version: <b>$version</b></p>");
           echo "<div class=\"cms_spalte_2\">";
             echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
           echo "</div>";
         }
-
         echo "<div class=\"cms_spalte_2\">";
           echo "<h2>Neuerungsverlauf</h2>";
 
