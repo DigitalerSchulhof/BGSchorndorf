@@ -49,15 +49,16 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   curl_setopt_array($curl, $curlConfig);
   $antwort = curl_exec($curl);
   curl_close($curl);
-  if(!($antwort = json_decode($antwort, true)))
-    die("FEHLER");
+  if(!($antwort = @json_decode($antwort, true))) {
+    cms_backup_fehler(error_get_last());
+  }
 
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
-  if(!mkdir($update_verzeichnis, $DATEIMODE, true)) {
+  if(!@mkdir($update_verzeichnis, $DATEIMODE, true)) {
     cms_backup_fehler(error_get_last());
   }
 
@@ -76,11 +77,11 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
     )
   );
-  curl_setopt_array($curl, $curlConfig);
-  curl_exec($curl);
-  curl_close($curl);
-  fclose($tar_ziel);
   try {
+    curl_setopt_array($curl, $curlConfig);
+    curl_exec($curl);
+    curl_close($curl);
+    fclose($tar_ziel);
     $p = new PharData("$update_verzeichnis/release.tar.gz");
     $p->decompress();
     sleep(1);
