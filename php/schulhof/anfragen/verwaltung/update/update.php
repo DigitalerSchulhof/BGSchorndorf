@@ -10,13 +10,16 @@ set_time_limit(0);
 
 session_start();
 
-$DATEIMODE = 0755;
+$DATEIMODE = 0775;
 
 $dbs = cms_verbinden("s");
 
 if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 0) == 1) {
   register_shutdown_function(function() {
-    cms_backup_fehler();
+    $f = error_get_last();
+    if($f !== NULL && $f["type"] === E_ERROR) {
+      cms_backup_fehler();
+    }
   });
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
@@ -53,7 +56,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
   $antwort = curl_exec($curl);
   curl_close($curl);
   if(!($antwort = @json_decode($antwort, true))) {
-    cms_backup_fehler(error_get_last());
+    cms_backup_fehler("decode antwort", error_get_last());
   }
 
   $assets = $antwort["assets"];
@@ -62,7 +65,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
   if(!@mkdir($update_verzeichnis, $DATEIMODE, true)) {
-    cms_backup_fehler(error_get_last());
+    cms_backup_fehler("Mkdir Update", error_get_last());
   }
 
   // Tarball herunterladen
@@ -162,10 +165,12 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     unlink("$base_verzeichnis/version/updatedb.php");
 
     copy("$update_verzeichnis/release/.htaccess", "$base_verzeichnis/.htaccess");
+    chmod("$base_verzeichnis/.htaccess", $DATEIMODE);
     copy("$update_verzeichnis/release/aktualisiert.php", "$base_verzeichnis/aktualisiert.php");
+    chmod("$base_verzeichnis/aktualisiert.php", $DATEIMODE);
     cms_v_loeschen($update_verzeichnis);
   } catch(Exception $e) {
-    cms_backup_fehler($e->getMessage());
+    cms_backup_fehler("Trycatch", $e->getMessage());
   }
 
   echo "ERFOLG";
@@ -235,7 +240,8 @@ function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
       }
     }
     if( !copy("$von$pfad", "$nach$pfad") ||
-        !unlink("$von$pfad")) {
+        !unlink("$von$pfad") ||
+        !chmod("$nach$pfad", $DATEIMODE)) {
           cms_backup_fehler(array("von" => $von, "nach" => $nach, "pfad" => $pfad, "blacklist" => $blacklist));
     }
   }
@@ -245,6 +251,7 @@ $fehler = false;
 function cms_backup_fehler(...$args) {
   global $fehler, $base_verzeichnis, $backup_verzeichnis, $update_verzeichnis;
   error_log("Fehler beim Aktualisieren!");
+  error_log(json_encode(debug_backtrace()));
   if($fehler == true) {
     // Schon mal Fehler -> Rekursion
     error_log(json_encode($args));

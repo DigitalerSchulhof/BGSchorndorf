@@ -1,11 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
-  0_6_2_1:
-    version: Test
-    tag: Test
+  0_6_3:
+    version: 0.6.3
+    tag: Dienstag, den 28. April 2020
     neuerungen:
-      - Es handelt sich hierbei um Test Updates.
-      - Nicht aktualisieren!
+      - Der Modus aktualisierter Dateien wurde falsch gesetzt.
   0_6_2:
     version: 0.6.2
     tag: Dienstag, den 28. April 2020

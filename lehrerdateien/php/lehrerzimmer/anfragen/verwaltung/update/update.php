@@ -19,12 +19,15 @@ $angemeldet = cms_angemeldet();
 
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-$DATEIMODE = 0755;
+$DATEIMODE = 0775;
 $dbs = cms_verbinden("s");
 
 if ($angemeldet && cms_r("technik.server.update")) {
   register_shutdown_function(function() {
-    cms_backup_fehler();
+    $f = error_get_last();
+    if($f !== NULL && $f["type"] === E_ERROR) {
+      cms_backup_fehler();
+    }
   });
 
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
@@ -216,7 +219,8 @@ function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
       }
     }
     if( !copy("$von$pfad", "$nach$pfad") ||
-        !unlink("$von$pfad")) {
+        !unlink("$von$pfad") ||
+        !chmod("$nach$pfad", $DATEIMODE)) {
           cms_backup_fehler(array("von" => $von, "nach" => $nach, "pfad" => $pfad, "blacklist" => $blacklist));
     }
   }
