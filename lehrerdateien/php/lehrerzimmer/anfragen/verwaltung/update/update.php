@@ -229,6 +229,6 @@ function cms_backup_fehler(...$args) {
   error_log(json_encode($args));
   $fehler = true;
   cms_v_verschieben($backup_verzeichnis, $base_verzeichnis, "", false);
-  cms_anfrage_beenden("SICHER"); exit
+  cms_anfrage_beenden("SICHER"); exit;
 }
 ?>
