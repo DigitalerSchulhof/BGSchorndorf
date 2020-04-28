@@ -28,10 +28,17 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
   $version = trim(file_get_contents("$base_verzeichnis/version/version"));
+  echo "||";
+  flush();
+  ob_flush();
 
   if($version == "") {
     die("FEHLER");
   }
+
+  echo "Backup der Dateien anlegen<br>";
+  flush();
+  ob_flush();
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
@@ -52,6 +59,9 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
       "Accept: application/vnd.github.v3+json",
     )
   );
+  echo "Update prüfen<br>";
+  flush();
+  ob_flush();
   curl_setopt_array($curl, $curlConfig);
   $antwort = curl_exec($curl);
   curl_close($curl);
@@ -61,6 +71,10 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
 
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
+
+  echo "Update herunterladen<br>";
+  flush();
+  ob_flush();
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
@@ -88,6 +102,10 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     curl_exec($curl);
     curl_close($curl);
     fclose($tar_ziel);
+    echo "Update entpacken<br>";
+    flush();
+    ob_flush();
+
     $p = new PharData("$update_verzeichnis/release.tar.gz");
     $p->decompress();
     sleep(1);
@@ -102,11 +120,19 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     cms_v_verschieben("$update_verzeichnis/".$d[2], "$update_verzeichnis/release", "", false);
     sleep(1);
 
+    echo "Update anwenden<br>";
+    flush();
+    ob_flush();
+
     cms_v_loeschen("$update_verzeichnis/release/lehrerdateien");
     cms_v_verschieben("$update_verzeichnis/release", $base_verzeichnis);
 
     $dbs = cms_verbinden("s");
     $dbp = cms_verbinden("p");
+
+    echo "Datenbanken aktualisieren<br>";
+    flush();
+    ob_flush();
 
     ob_start();
     include("$base_verzeichnis/version/updatedb.php");
@@ -138,6 +164,10 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     $dbs->multi_query($sql);
     $dbs->close();
 
+    echo "Styles neukompilieren<br>";
+    flush();
+    ob_flush();
+
     $dbs = cms_verbinden("s");
     $sql = "SELECT name, wert, alias FROM style";
     $sql = $dbs->prepare($sql);
@@ -168,6 +198,10 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     chmod("$base_verzeichnis/.htaccess", $DATEIMODE);
     copy("$update_verzeichnis/release/aktualisiert.php", "$base_verzeichnis/aktualisiert.php");
     chmod("$base_verzeichnis/aktualisiert.php", $DATEIMODE);
+    echo "Update Verzeichnis löschen<br>";
+    flush();
+    ob_flush();
+
     cms_v_loeschen($update_verzeichnis);
   } catch(Exception $e) {
     cms_backup_fehler("Trycatch", $e->getMessage());

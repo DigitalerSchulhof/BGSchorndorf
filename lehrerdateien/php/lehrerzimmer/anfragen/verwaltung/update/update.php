@@ -37,10 +37,17 @@ if ($angemeldet && cms_r("technik.server.update")) {
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
   $version = trim(file_get_contents("$base_verzeichnis/version/version"));
+  echo "||";
+  flush();
+  ob_flush();
 
   if($version == "") {
     cms_anfrage_beenden(); exit;
   }
+
+  echo "Backup der Dateien anlegen<br>";
+  flush();
+  ob_flush();
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
@@ -60,6 +67,9 @@ if ($angemeldet && cms_r("technik.server.update")) {
       "Accept: application/vnd.github.v3+json",
     )
   );
+  echo "Update prüfen<br>";
+  flush();
+  ob_flush();
   curl_setopt_array($curl, $curlConfig);
   $antwort = curl_exec($curl);
   curl_close($curl);
@@ -69,6 +79,10 @@ if ($angemeldet && cms_r("technik.server.update")) {
 
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
+
+  echo "Update herunterladen<br>";
+  flush();
+  ob_flush();
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
@@ -95,7 +109,9 @@ if ($angemeldet && cms_r("technik.server.update")) {
     curl_exec($curl);
     curl_close($curl);
     fclose($tar_ziel);
-
+    echo "Update entpacken<br>";
+    flush();
+    ob_flush();
     $p = new PharData("$update_verzeichnis/release.tar.gz");
     $p->decompress();
     sleep(1);
@@ -110,10 +126,19 @@ if ($angemeldet && cms_r("technik.server.update")) {
     cms_v_verschieben("$update_verzeichnis/".$d[2], "$update_verzeichnis/release", "", false);
     sleep(1);
 
+
+    echo "Update anwenden<br>";
+    flush();
+    ob_flush();
+
     cms_v_verschieben("$update_verzeichnis/release/lehrerdateien", $base_verzeichnis);
 
     $dbs = cms_verbinden("s");
     $dbl = cms_verbinden("l");
+
+    echo "Datenbanken aktualisieren<br>";
+    flush();
+    ob_flush();
 
     ob_start();
     include("$base_verzeichnis/version/updatedb.php");

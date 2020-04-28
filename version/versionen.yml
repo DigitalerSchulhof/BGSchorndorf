@@ -5,6 +5,8 @@ version:
     tag: Dienstag, den 28. April 2020
     neuerungen:
       - Der Modus aktualisierter Dateien wurde falsch gesetzt.
+      - Aktionsicons in der Mobilansicht vergrößert
+      - Fortschrittsanzeige
   0_6_2:
     version: 0.6.2
     tag: Dienstag, den 28. April 2020

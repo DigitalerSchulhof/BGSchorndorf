@@ -230,7 +230,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$zeiten = cms_blogeintrag_zeiten($blogeintrag);
 			// Schnellinfos
 			$kalender = "<div class=\"cms_termin_detialkalenderblatt\">".cms_blogeintrag_kalenderblatterzeugen($blogeintrag, $zeiten)."</div>";
-			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten)."<br>".$blogeintrag["vorschau"]."</div>";
+			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten)."<p>".$blogeintrag["vorschau"]."</p></div>";
 
 			$downloads = array();
 			// Downloads suchen
