@@ -186,18 +186,18 @@
 	<?php echo "<base href=\"$CMS_BASE\">";
 		$hellhash 	= substr(md5(filemtime("css/hell.css")), 0, 7);
 		$dunkelhash = substr(md5(filemtime("css/dunkel.css")), 0, 7);
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$hellhash\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?cb=$hellhash\">";
 		if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
-			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$dunkelhash\">";
+			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?cb=$dunkelhash\">";
 		}
 
 		function js($js) {
 			global $CMS_VERSION;
 			$v = $CMS_VERSION;
 			if(file_exists("$js")) {
-				$v = substr(md5(filemtime("$js")), 0, 7);
+				$cb = substr(md5(filemtime("$js")), 0, 7);
 			}
-			return "<script src=\"$js?v=$v\"></script>";
+			return "<script src=\"$js?cb=$cb\"></script>";
 		}
 
 		echo js("js/jquery.js");

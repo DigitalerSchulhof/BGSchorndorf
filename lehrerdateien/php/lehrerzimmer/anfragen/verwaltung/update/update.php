@@ -19,10 +19,17 @@ $angemeldet = cms_angemeldet();
 
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-$DATEIMODE = 0755;
+$DATEIMODE = 0775;
 $dbs = cms_verbinden("s");
 
 if ($angemeldet && cms_r("technik.server.update")) {
+  register_shutdown_function(function() {
+    $f = error_get_last();
+    if($f !== NULL && $f["type"] === E_ERROR) {
+      cms_backup_fehler();
+    }
+  });
+
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
 
@@ -30,10 +37,17 @@ if ($angemeldet && cms_r("technik.server.update")) {
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
   $version = trim(file_get_contents("$base_verzeichnis/version/version"));
+  echo "||";
+  flush();
+  ob_flush();
 
   if($version == "") {
     cms_anfrage_beenden(); exit;
   }
+
+  echo "Backup der Dateien anlegen<br>";
+  flush();
+  ob_flush();
 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
@@ -53,6 +67,9 @@ if ($angemeldet && cms_r("technik.server.update")) {
       "Accept: application/vnd.github.v3+json",
     )
   );
+  echo "Update prüfen<br>";
+  flush();
+  ob_flush();
   curl_setopt_array($curl, $curlConfig);
   $antwort = curl_exec($curl);
   curl_close($curl);
@@ -62,6 +79,10 @@ if ($angemeldet && cms_r("technik.server.update")) {
 
   $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
+
+  echo "Update herunterladen<br>";
+  flush();
+  ob_flush();
 
   // Update Verzeichnis leeren
   cms_v_loeschen($update_verzeichnis);
@@ -88,7 +109,9 @@ if ($angemeldet && cms_r("technik.server.update")) {
     curl_exec($curl);
     curl_close($curl);
     fclose($tar_ziel);
-
+    echo "Update entpacken<br>";
+    flush();
+    ob_flush();
     $p = new PharData("$update_verzeichnis/release.tar.gz");
     $p->decompress();
     sleep(1);
@@ -103,10 +126,19 @@ if ($angemeldet && cms_r("technik.server.update")) {
     cms_v_verschieben("$update_verzeichnis/".$d[2], "$update_verzeichnis/release", "", false);
     sleep(1);
 
+
+    echo "Update anwenden<br>";
+    flush();
+    ob_flush();
+
     cms_v_verschieben("$update_verzeichnis/release/lehrerdateien", $base_verzeichnis);
 
     $dbs = cms_verbinden("s");
     $dbl = cms_verbinden("l");
+
+    echo "Datenbanken aktualisieren<br>";
+    flush();
+    ob_flush();
 
     ob_start();
     include("$base_verzeichnis/version/updatedb.php");
@@ -212,7 +244,8 @@ function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
       }
     }
     if( !copy("$von$pfad", "$nach$pfad") ||
-        !unlink("$von$pfad")) {
+        !unlink("$von$pfad") ||
+        !chmod("$nach$pfad", $DATEIMODE)) {
           cms_backup_fehler(array("von" => $von, "nach" => $nach, "pfad" => $pfad, "blacklist" => $blacklist));
     }
   }
@@ -221,6 +254,7 @@ function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
 $fehler = false;
 function cms_backup_fehler(...$args) {
   global $fehler, $base_verzeichnis, $backup_verzeichnis, $update_verzeichnis;
+  error_log("Fehler beim Aktualisieren!");
   if($fehler == true) {
     // Schon mal Fehler -> Rekursion
     error_log(json_encode($args));

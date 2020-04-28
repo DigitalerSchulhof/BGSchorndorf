@@ -3,7 +3,7 @@
 <h1>Schulhof aktualisieren</h1>
 
 <?php
-  if(!$CMS_IMLN || true) {
+  if(!$CMS_IMLN) {
     echo cms_meldung_eingeschraenkt();
   }
   echo cms_meldung("fehler", "<h4>Aktualisieren</h4><p>Der Programmcode sowie die Datenbanken des Digitalen Schulhofs werden aktualisiert. Ist der Vorgang gestartet, wird die gesamte Website für einen Moment nicht erreichbar sein.</p><p>Sollte die Website nach dem Update fehlerhaft funktionieren, ist der Administrator <b>umgehend</b> zu benachrichtigen.");
