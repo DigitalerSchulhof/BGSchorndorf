@@ -42,6 +42,14 @@ a:hover, .cms_link:hover {
 	cursor: pointer;
 }
 
+.cms_optimierung_H .cms_aktionsicon {
+	width: 22px;
+	height: 22px;
+}
+.cms_optimierung_H .cms_aktionsicon>img {
+	width: 100%;
+}
+
 // DUNKEL;
 
 a, .cms_link {
