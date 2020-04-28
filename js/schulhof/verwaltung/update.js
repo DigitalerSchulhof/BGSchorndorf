@@ -3,7 +3,7 @@ function cms_schulhof_aktualisieren_vorbereiten() {
 }
 
 function cms_schulhof_aktualisieren() {
-  cms_laden_an("Digitalen Schulhof aktualisieren", "Der Digitale Schulhof wird aktualisiert.<br>Dies kann einige Minuten dauern...");
+  cms_laden_an("Digitalen Schulhof aktualisieren", "Der Digitale Schulhof wird aktualisiert. (1/2)<br>Dies kann einige Minuten dauern...");
 
   var formulardatenl = new FormData();
   cms_lehrerdatenbankzugangsdaten_schicken(formulardatenl);
@@ -21,12 +21,8 @@ function cms_schulhof_aktualisieren() {
   formulardaten.append("anfragenziel", 	'387' );
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {
-      if(CMS_IMLN) {
-        cms_laden_an("Digitalen Schulhof aktualisieren", "Die Dateien im Lehrernetz werden aktualisiert.<br>Dies kann einige Minuten dauern...");
-        cms_ajaxanfrage (false, formulardatenl, anfragennachbehandlungl, CMS_LN_DA);
-      } else {
-        cms_meldung_an('erfolg', 'Schulhof aktualisieren', '<p>Der Digitale Schulhof wurde aktualisiert!</p>', '<p><span class="cms_button" onclick="location.reload()">OK</span></p>');
-      }
+      cms_laden_an("Digitalen Schulhof aktualisieren", "Die Dateien im Lehrernetz werden aktualisiert. (2/2)<br>Dies kann einige Minuten dauern...");
+      cms_ajaxanfrage (false, formulardatenl, anfragennachbehandlungl, CMS_LN_DA);
     }
     else {
       cms_fehlerbehandlung(rueckgabe);

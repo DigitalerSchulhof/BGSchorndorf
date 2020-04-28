@@ -14,7 +14,7 @@ $DATEIMODE = 0755;
 
 $dbs = cms_verbinden("s");
 
-if (cms_angemeldet() && cms_r("technik.server.update")) {
+if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 0) == 1) {
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
 
@@ -31,7 +31,7 @@ if (cms_angemeldet() && cms_r("technik.server.update")) {
   cms_v_loeschen($backup_verzeichnis);
   mkdir($backup_verzeichnis, $DATEIMODE, true);
 
-  file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^(.*)$ aktualisiert.php");
+  file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^status$ - [R=503,L]\nRewriteRule ^(.*)$ aktualisiert.php");
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
 
   // Versionen prüfen und Daten laden
