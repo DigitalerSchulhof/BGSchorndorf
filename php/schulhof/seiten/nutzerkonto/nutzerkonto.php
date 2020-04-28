@@ -383,7 +383,7 @@ if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 
-$todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100%\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
+$todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
 $todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
 $todob = "";
 $todot = "";

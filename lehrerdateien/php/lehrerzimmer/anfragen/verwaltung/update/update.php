@@ -23,6 +23,10 @@ $DATEIMODE = 0755;
 $dbs = cms_verbinden("s");
 
 if ($angemeldet && cms_r("technik.server.update")) {
+  register_shutdown_function(function() {
+    cms_backup_fehler();
+  });
+
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
   $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
 
@@ -221,6 +225,7 @@ function cms_v_verschieben($von, $nach, $pfad = "", $blacklist = true) {
 $fehler = false;
 function cms_backup_fehler(...$args) {
   global $fehler, $base_verzeichnis, $backup_verzeichnis, $update_verzeichnis;
+  error_log("Fehler beim Aktualisieren!");
   if($fehler == true) {
     // Schon mal Fehler -> Rekursion
     error_log(json_encode($args));

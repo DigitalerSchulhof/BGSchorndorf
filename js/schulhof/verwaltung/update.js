@@ -3,31 +3,39 @@ function cms_schulhof_aktualisieren_vorbereiten() {
 }
 
 function cms_schulhof_aktualisieren() {
-  cms_laden_an("Digitalen Schulhof aktualisieren", "Der Digitale Schulhof wird aktualisiert. (1/2)<br>Dies kann einige Minuten dauern...");
 
-  var formulardatenl = new FormData();
-  cms_lehrerdatenbankzugangsdaten_schicken(formulardatenl);
-  formulardatenl.append("anfragenziel", 	'40');
-  function anfragennachbehandlungl(rueckgabe) {
-    if (rueckgabe == "ERFOLG") {
-      cms_meldung_an('erfolg', 'Digitalen Schulhof aktualisieren', '<p>Der Digitale Schulhof wurde vollständig aktualisiert!</p>', '<p><span class="cms_button" onclick="location.reload()">OK</span></p>');
+  var cms_schulhof = function() {
+    cms_laden_an("Digitalen Schulhof aktualisieren", "Der Digitale Schulhof wird aktualisiert. (1/2)<br>Dies kann einige Minuten dauern...<br>Der Digitale Schulhof ist derweil nicht errichbar.");
+    var formulardaten = new FormData();
+    formulardaten.append("anfragenziel", '387');
+    function anfragennachbehandlung(rueckgabe) {
+      if (rueckgabe == "ERFOLG") {
+        cms_lehrerdateien();
+      } else if(rueckgabe == "SICHER") {
+        cms_meldung_an('fehler', 'Digitalen Schulhof aktualisieren', '<p>Es ist ein unbekannter Fehler aufgetreten.<br>Bitte den <a href="Website/Feedback">Administrator informieren</a>.<br>Die Website wurde wiederhergestellt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus()">Zurück</span></p>');
+      }
+      else {
+        cms_fehlerbehandlung(rueckgabe);
+      }
     }
-    else {
-      cms_fehlerbehandlung(rueckgabe);
-    }
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
   }
+  var cms_lehrerdateien = function() {
+    cms_laden_an("Digitalen Schulhof aktualisieren", "Die Lehrerdateien werden aktualisiert. (2/2)<br>Dies kann einige Minuten dauern...<br>Das Lehrernetz ist derweil nicht errichbar.");
 
-  var formulardaten = new FormData();
-  formulardaten.append("anfragenziel", 	'387' );
-  function anfragennachbehandlung(rueckgabe) {
-    if (rueckgabe == "ERFOLG") {
-      cms_laden_an("Digitalen Schulhof aktualisieren", "Die Dateien im Lehrernetz werden aktualisiert. (2/2)<br>Dies kann einige Minuten dauern...");
-      cms_ajaxanfrage (false, formulardatenl, anfragennachbehandlungl, CMS_LN_DA);
+    var formulardaten = new FormData();
+    cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+    formulardaten.append("anfragenziel", 	'40' );
+    function anfragennachbehandlung(rueckgabe) {
+      if(rueckgabe == "ERFOLG") {
+        cms_meldung_an('erfolg', 'Digitalen Schulhof aktualisieren', '<p>Der Digitale Schulhof wurde vollständig aktualisiert!</p>', '<p><span class="cms_button" onclick="location.reload()">OK</span></p>');
+      } else if(rueckgabe == "SICHER") {
+        cms_meldung_an('fehler', 'Digitalen Schulhof aktualisieren', '<p>Es ist ein unbekannter Fehler aufgetreten.<br>Bitte den <a href="Website/Feedback">Administrator informieren</a>.<br>Die Dateien wurde wiederhergestellt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus()">Zurück</span></p>');
+      } else {
+        cms_fehlerbehandlung(rueckgabe);
+      }
     }
-    else {
-      cms_fehlerbehandlung(rueckgabe);
-    }
+    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
   }
-
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_schulhof();
 }
