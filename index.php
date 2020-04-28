@@ -519,7 +519,6 @@
 					$code = "";
 				}
 			}
-
 			include_once("php/allgemein/seiten/seitensteuerung.php");
 
 			if ($CMS_URL[0] == 'App') {
