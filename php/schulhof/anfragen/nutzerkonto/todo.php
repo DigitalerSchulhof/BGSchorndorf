@@ -71,7 +71,7 @@ if (cms_angemeldet()) {
   }
 
   if ($status == '1') {
-    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT ?, $blogquery, $terminquery WHERE NOT EXISTS(SELECT $artikeltyp FROM {$gk}todoartikel WHERE person = ? AND $artikeltyp = ?)";
+    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT ?, $blogquery, $terminquery FROM {$gk}todoartikel WHERE NOT EXISTS(SELECT $artikeltyp FROM {$gk}todoartikel WHERE person = ? AND $artikeltyp = ?) LIMIT 1";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiii", $CMS_BENUTZERID, $aid, $CMS_BENUTZERID, $aid);
     $sql->execute();

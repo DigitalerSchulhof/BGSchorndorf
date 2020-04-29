@@ -36,6 +36,7 @@ a:hover, .cms_link:hover {
 	text-align: right;
 	position: relative;
 	margin-left: 10px;
+	image-rendering: inherit;
 }
 
 .cms_aktionsicon img:hover {
