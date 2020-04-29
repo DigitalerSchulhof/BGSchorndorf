@@ -327,6 +327,9 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 
 		// Mögliche Einstellungen berücksichtigen
 		if ($cms_gruppenrechte['sichtbar']) {// && (!$cms_gruppenrechte['mitglied'])) {
+			if(is_null($CMS_EINSTELLUNGEN)) {
+				$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+			}
 			if ($CMS_EINSTELLUNGEN['Download aus sichtbaren Gruppen']) {$cms_gruppenrechte['dateidownload'] = true;}
 		}
 

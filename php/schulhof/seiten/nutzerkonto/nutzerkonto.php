@@ -160,7 +160,7 @@ cms_trennen($db);
 $notifikationen = "<li class=\"cms_neuigkeit cms_neuigkeit_ganz\" onclick=\"cms_link('Schulhof/Nutzerkonto/Neuigkeiten')\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/neuigkeit.png\"></span>";
 $notifikationen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Neue Inhalte</h4>";
 $notifikationenda = false;
-$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, art FROM notifikationen WHERE person = ? GROUP BY art");
+$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, IF(art ='o', 'd', art) as gart FROM notifikationen WHERE person = ? GROUP BY gart");
 $sql->bind_param("i", $CMS_BENUTZERID);
 if ($sql->execute()) {
 	$sql->bind_result($not, $art);
@@ -172,12 +172,16 @@ if ($sql->execute()) {
 				if ($art == 't') {$notifikationen .= "<p><b>$not</b> Termin</p>";}
 				if ($art == 'g') {$notifikationen .= "<p><b>$not</b> Galerie</p>";}
 				if ($art == 'a') {$notifikationen .= "<p><b>$not</b> Hausmeisterauftrag</p>";}
+				if ($art == 'd') {$notifikationen .= "<p><b>$not</b> Dateiänderung</p>";}
+				if ($art == 'o') {$notifikationen .= "<p><b>$not</b> Dateiänderung</p>";}
 			}
 			else {
 				if ($art == 'b') {$notifikationen .= "<p><b>$not</b> Blogeinträge</p>";}
 				if ($art == 't') {$notifikationen .= "<p><b>$not</b> Termine</p>";}
 				if ($art == 'g') {$notifikationen .= "<p><b>$not</b> Galerien</p>";}
 				if ($art == 'a') {$notifikationen .= "<p><b>$not</b> Hausmeisteraufträge</p>";}
+				if ($art == 'd') {$notifikationen .= "<p><b>$not</b> Dateiänderungen</p>";}
+				if ($art == 'o') {$notifikationen .= "<p><b>$not</b> Dateiänderungen</p>";}
 			}
 		}
 	}
@@ -408,11 +412,11 @@ if ($sql->execute()) {
 
 		if($a == "b") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todob .= "<p><a target=\"_blank\" href=\"$link\">($g » $gbez) $abez</a></p>";
+			$todob .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
 		}
 		if($a == "t") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todot .= "<p><a target=\"_blank\" href=\"$link\">($g » $gbez) $abez</a></p>";
+			$todot .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
 		}
 	}
 	$ueberschr = strlen($todob) > 0 && strlen($todot) > 0;

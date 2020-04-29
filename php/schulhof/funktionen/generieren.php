@@ -857,4 +857,15 @@ function cms_generiere_select($id, $optionen, $wert="") {
   $optionen = str_replace("value=\"$wert\"", "value=\"$wert\" selected=\"selected\"", $optionen);
   return "<select name=\"$id\" id=\"$id\">$optionen</select>";
 }
+
+function strposX($haystack, $needle, $number){
+    if($number == '1'){
+        return strpos($haystack, $needle);
+    }elseif($number > '1'){
+        return strpos($haystack, $needle, strposX($haystack, $needle, $number - 1) + strlen($needle));
+    }else{
+        return error_log('Error: Value for parameter $number is out of range');
+    }
+}
+
 ?>
