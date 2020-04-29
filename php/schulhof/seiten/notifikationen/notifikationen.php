@@ -55,16 +55,22 @@ function cms_notifikation_art_ermitteln($status, $art) {
     if ($art == 'b') {$rart = 'Neuer Blogeintrag';}
     else if ($art == 't') {$rart = 'Neuer Termin';}
     else if ($art == 'g') {$rart = 'Neue Galerie';}
+    else if ($art == 'd') {$rart = 'Datei hochgeladen';}
+    else if ($art == 'o') {$rart = 'Ordner angelegt';}
   }
   else if ($status == 'l') {
     if ($art == 'b') {$rart = 'Blogeintrag gelöscht';}
     else if ($art == 't') {$rart = 'Termin gelöscht';}
     else if ($art == 'g') {$rart = 'Galerie gelöscht';}
+    else if ($art == 'd') {$rart = 'Datei gelöscht';}
+    else if ($art == 'o') {$rart = 'Ordner gelöscht';}
   }
   else if ($status == 'b') {
     if ($art == 'b') {$rart = 'Blogeintrag bearbeitet';}
     else if ($art == 't') {$rart = 'Termin bearbeitet';}
     else if ($art == 'g') {$rart = 'Galerie bearbeitet';}
+    else if ($art == 'd') {$rart = 'Datei umbenannt';}
+    else if ($art == 'o') {$rart = 'Ordner umbenannt';}
   }
   else if ($status == 'g') {
     if ($art == 'b') {$rart = 'Blogeintrag genehmigt';}

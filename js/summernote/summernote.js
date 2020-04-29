@@ -813,7 +813,7 @@ $$1.extend($$1.summernote.lang, {
             shapeCircle: 'Form: Kreis',
             shapeThumbnail: 'Form: Thumbnail',
             shapeNone: 'Form: keine',
-            dragImageHere: 'Bild hier her ziehen',
+            dragImageHere: 'Bild hierher ziehen',
             dropImage: 'Bild hier loslassen',
             selectFromFiles: 'Aus Dateien auswählen',
             maximumFileSize: 'Maximale Dateigröße',

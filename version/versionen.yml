@@ -1,5 +1,18 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_7:
+    version: 0.7
+    tag: Mittwoch, den 29. April 2020
+    neuerungen:
+      - Fehler beim Anlegen von ToDo's behoben
+      - Notifikation bei Dateiänderungen abonnierter Gruppen
+      - Fehler beim Laden der Einstellungen behoben
+      - Fehler beim Speichern von Links in Blogeinträgen behoben
+  0_6_4:
+    version: 0.6.4
+    tag: Mittwoch, den 29. April 2020
+    neuerungen:
+      - Obsolete Dateien dem Updater entnommen
   0_6_3:
     version: 0.6.3
     tag: Dienstag, den 28. April 2020

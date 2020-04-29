@@ -21,14 +21,22 @@ if (cms_angemeldet()) {
   $dbs = cms_verbinden('s');
   $aktiv;
   $fehler = false;
-  $blogquery    = $status == '1' ? "NULL" : "IS NULL";
-  $terminquery  = $status == '1' ? "NULL" : "IS NULL";
+  $blogquery    = "IS NULL";
+  $terminquery  = "IS NULL";
+  if($status == '1') {
+    $blogquery = "NULL";
+    $terminquery = "NULL";
+  }
   $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
   $gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gid);
 
   // Artikel prüfen
   if($a == "b") {
-    $blogquery = $status == '1' ? "?" : "= ?";
+    if($status == '1') {
+      $blogquery = "?";
+    } else {
+      $blogquery = "= ?";
+    }
     $artikeltyp = "blogeintrag";
 
     $sql = "SELECT aktiv FROM {$gk}blogeintraegeintern WHERE id = ?";
@@ -41,7 +49,11 @@ if (cms_angemeldet()) {
     $gefunden = $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['blogeintraege']);
   }
   if($a == "t") {
-    $terminquery = $status == '1' ? "?" : "= ?";
+    if($status == '1') {
+      $terminquery = "?";
+    } else {
+      $terminquery = "= ?";
+    }
     $artikeltyp = "termin";
 
     $sql = "SELECT aktiv FROM {$gk}termineintern WHERE id = ?";
@@ -59,7 +71,7 @@ if (cms_angemeldet()) {
   }
 
   if ($status == '1') {
-    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT ?, $blogquery, $terminquery WHERE NOT EXISTS(SELECT $artikeltyp FROM {$gk}todoartikel WHERE person = ? AND $artikeltyp = ?)";
+    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT ?, $blogquery, $terminquery FROM {$gk}todoartikel WHERE NOT EXISTS(SELECT $artikeltyp FROM {$gk}todoartikel WHERE person = ? AND $artikeltyp = ?) LIMIT 1";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiii", $CMS_BENUTZERID, $aid, $CMS_BENUTZERID, $aid);
     $sql->execute();

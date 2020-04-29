@@ -255,6 +255,7 @@ $fehler = false;
 function cms_backup_fehler(...$args) {
   global $fehler, $base_verzeichnis, $backup_verzeichnis, $update_verzeichnis;
   error_log("Fehler beim Aktualisieren!");
+  error_log(json_encode(debug_backtrace()));
   if($fehler == true) {
     // Schon mal Fehler -> Rekursion
     error_log(json_encode($args));

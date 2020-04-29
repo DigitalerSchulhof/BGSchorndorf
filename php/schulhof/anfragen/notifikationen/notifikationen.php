@@ -6,9 +6,10 @@
                          -- bei Terminen, Blogeinträgen und Galerien anschließend 0 eingetragen
                          -- bei Hausmeister wird 0 übergeben
    $eintrag['zielid']    -- Ziel der Notifikation - ID des Termins, des Blogeintrags, der Galerie, des Hausmeister
-                         -- Bei Löschungen null
+                         -- Bei Löschungen/Dateien null
    $eintrag['status']    -- [n]eu, [b]earbeitet, ge[l]öscht, [g]enehmigt, [a]bgelehnt, [e]rledigt, [w]iedereröffnet
-   $eintrag['art']       -- [t]ermin, [b]log, [g]alerie, [a]uftrag
+                         -- [b] bei [d] und [o] bedeutet umbenannt
+   $eintrag['art']       -- [t]ermin, [b]log, [g]alerie, [a]uftrag, [d]atei, [o]rdner
    $eintrag['titel']     -- Angezeigter Titel in der Notifikation
    $eintrag['vorschau']  -- Angezeigte Vorschau in der Notifikation
    $eintrag['link']      -- Link der zur Volldarstellung führt
