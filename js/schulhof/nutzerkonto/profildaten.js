@@ -340,7 +340,7 @@ function cms_favorit_loeschen_anzeigen(fid, url) {
 }
 
 function cms_favorisieren(fid, url, fw) {
-	var icon = document.getElementById('cms_steite_favorit_icon');
+	var icon = document.getElementById('cms_seite_favorit_icon');
 	var favorit = document.getElementById('cms_seite_favorit');
 	var neuerwert = '0';
 
@@ -362,6 +362,38 @@ function cms_favorisieren(fid, url, fw) {
 	formulardaten.append("seite",  				url);
 	formulardaten.append("status",  			neuerwert);
 	formulardaten.append("anfragenziel", 	'366');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if (rueckgabe == "ERFOLG") {
+			location.reload();
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	}
+
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
+function cms_seite_todo(gruppe, gruppenid, art, artikelid) {
+	var icon = document.getElementById('cms_seite_todo_icon');
+	var todo = document.getElementById('cms_seite_todo');
+	var neuerwert = '0';
+
+	if (todo.value == '1') {
+		cms_laden_an('ToDo erledigen', 'Die Seite wird als erledigt markiert.');
+		neuerwert = '0';
+	}
+	else {
+		cms_laden_an('ToDo hinzufügen', 'Die Seite wird als ToDo markiert.');
+		neuerwert = '1';
+	}
+
+	var formulardaten = new FormData();
+	formulardaten.append("g",  						gruppe);
+	formulardaten.append("gid",  					gruppenid);
+	formulardaten.append("a",  						art);
+	formulardaten.append("aid",						artikelid);
+	formulardaten.append("status",  			neuerwert);
+	formulardaten.append("anfragenziel", 	'386');
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {

@@ -6,7 +6,7 @@
 <?php
 $code = "";
 $code .= cms_meldung('info', '<h4>Interner Serverfehler</h4><p>Der Server ist momentan nicht erreichbar. Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut.</p>');
-$code .= '<p><a class="cms_button" href="Website/Start">zur Website</a></p>';
+$code .= '<p><a class="cms_button" href="">zur Website</a></p>';
 echo $code;
 ?>
 

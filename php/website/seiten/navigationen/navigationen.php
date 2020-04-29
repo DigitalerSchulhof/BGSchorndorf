@@ -105,7 +105,7 @@ function cms_navigation_ausgeben_unterseite($dbs, $start, $tiefe, $pfad, $art = 
 		$code .= "<li><a href=\"Website/Datenschutz\">Datenschutz</a></li>";
 		$code .= "<li><a href=\"Website/Impressum\">Impressum</a></li>";
 		if(($CMS_EINSTELLUNGEN['Feedback aktiv'] == "1" && ($CMS_EINSTELLUNGEN['Feedback Anmeldung notwendig'] == "0" || ($CMS_EINSTELLUNGEN['Feedback Anmeldung notwendig'] == "1" && $CMS_ANGEMELDET))) || ($CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] == "1" && ($CMS_EINSTELLUNGEN['Fehlermeldung Anmeldung notwendig'] == "0" || ($CMS_EINSTELLUNGEN['Fehlermeldung Anmeldung notwendig'] == "1" && $CMS_ANGEMELDET))))
-			$code .= "<li class=\"cms_footer_feedback\"><a href=\"Website/Feedback\">Fehler melden</a></li>";
+			$code .= "<li class=\"cms_footer_feedback\"><a href=\"Website/Feedback\">Feedback</a></li>";
 	}
 
 	if (strlen($code) > 0) {
@@ -502,8 +502,8 @@ function cms_mobilnavigation($dbs) {
 	$code .= "<span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span>";
 	$code .= "</span>";
 	$code .= "<div id=\"cms_mobilmenue_a\" style=\"display:none;\"><div id=\"cms_mobilmenue_i\">";
-	$code .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button\" href=\"Website/Start\">Website</a> <a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></p>";
-	$code .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button_ja\" href=\"Website/Start\">Startseite</a> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_mobilmenue_a')\">Schließen</span></p>";
+	$code .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button\" href=\"\">Website</a> <a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></p>";
+	$code .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button_ja\" href=\"\">Startseite</a> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_mobilmenue_a')\">Schließen</span></p>";
 
 	$code .= "<div class=\"cms_websitesuche\"><input type=\"text\" placeholder=\"Suchen ...\" name=\"cms_websitesuche_mobil_suchbegriff\" id=\"cms_websitesuche_mobil_suchbegriff\" onkeyup=\"cms_websuche_suchen('cms_websitesuche_mobil_suchbegriff', 'cms_websitesuche_mobil_ergebnisse')\">";
 	$code .= "<div id=\"cms_websitesuche_mobil_ergebnisse\">";

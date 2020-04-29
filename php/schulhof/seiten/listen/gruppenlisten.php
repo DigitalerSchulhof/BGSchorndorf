@@ -12,6 +12,8 @@ $sj = cms_linkzutext($schuljahr);
 $gruppenname = $CMS_URL[count($CMS_URL)-1];
 $gn = cms_linkzutext($gruppenname);
 
+$zugriff = false;
+
 if ($sj == 'Schuljahrübergreifend') {
   $code .= "<h1>Listen von $gn</h1>";
 }
@@ -21,7 +23,10 @@ else {
 
 if (cms_valide_gruppe($g)) {
   // Prüfen, ob Mitglied in dieser Gruppe
-  if (!cms_r("schulhof.information.listen.gruppen.$g")) {
+  if (cms_r("schulhof.information.listen.gruppen.$gk.sehen")) {
+    $zugriff = true;
+  }
+  else if (cms_r("schulhof.information.listen.gruppen.$gk.sehenwenn")) {
     if ($schuljahr == 'Schuljahrübergreifend') {
       $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM $gk JOIN $gk"."mitglieder ON $gk.id = $gk"."mitglieder.gruppe WHERE $gk"."mitglieder.person = $CMS_BENUTZERID AND $gk.bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
       $sql->bind_param("s", $gn);

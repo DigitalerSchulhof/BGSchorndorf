@@ -179,7 +179,7 @@ input.cms_input_J {
 
 .cms_notizzettel {
 	background-color: @h_haupt_meldunginfohinter;
-	height: 200px;
+	min-height: 200px;
 	resize: vertical;
 }
 

@@ -29,7 +29,8 @@ a:hover, .cms_link:hover {
 	font-size: 80%;
 }
 
-.cms_favorisieren {
+.cms_aktionsicon {
+	font-size: 100%;
 	display: inline-block;
 	float: right;
 	text-align: right;
@@ -37,19 +38,16 @@ a:hover, .cms_link:hover {
 	margin-left: 10px;
 }
 
-.cms_favorisieren img:hover {
+.cms_aktionsicon img:hover {
 	cursor: pointer;
 }
 
-.cms_neue_weiterleitung {
-	display: inline-block;
-	float: right;
-	text-align: right;
-	position: relative;
+.cms_optimierung_H .cms_aktionsicon {
+	width: 22px;
+	height: 22px;
 }
-
-.cms_neue_weiterleitung img:hover {
-	cursor: pointer;
+.cms_optimierung_H .cms_aktionsicon>img {
+	width: 100%;
 }
 
 // DUNKEL;
@@ -72,4 +70,18 @@ a:hover, .cms_link:hover {
 
 .cms_brotkrumen {
 	color: @d_haupt_notizschrift;
+}
+
+// DRUCKEN;
+
+.cms_brotkrumen {
+	color: @h_haupt_notizschrift;
+	font-size: 80%;
+}
+
+a, .cms_link {
+	font-size: inherit;
+	text-decoration: none;
+	color: @h_link_schrift;
+	display: inline-block;
 }

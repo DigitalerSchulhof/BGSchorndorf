@@ -7,7 +7,6 @@
 	font-weight: normal;
 	padding: 0px;
 	margin: 0px;
-image-rendering: pixelated;
 	list-style-type: none;
 	line-height: 1.2em;
 	text-decoration: none;
@@ -341,4 +340,68 @@ body {
 
 .cms_groesseaendern:hover {
 	background-color: @d_haupt_abstufung2;
+}
+
+// DRUCKEN;
+
+.cms_spalte_i {
+	padding: 10px;
+}
+
+.cms_spalte_2, .cms_spalte_23, .cms_spalte_25, .cms_spalte_15, .cms_spalte_3, .cms_spalte_6,
+.cms_spalte_60, .cms_spalte_40, .cms_spalte_20, .cms_spalte_4, .cms_spalte_34 {
+	padding: 0;
+	position: relative;
+}
+
+.cms_spalte_2 {
+	float: left;
+	width: 50%;
+}
+.cms_spalte_23 {
+	float: left;
+	width: 66.66%;
+}
+.cms_spalte_25 {
+	float: left;
+	width: 40%;
+}
+.cms_spalte_15 {
+	float: left;
+	width: 20%;
+}
+
+.cms_spalte_3 {
+	float: left;
+	width: 33.33%;
+}
+
+.cms_spalte_6 {
+	float: left;
+	width: 66.66%;
+}
+
+.cms_spalte_60 {
+	float: left;
+	width: 60%;
+}
+
+.cms_spalte_40 {
+	float: left;
+	width: 40%;
+}
+
+.cms_spalte_20 {
+	float: left;
+	width: 20%;
+}
+
+.cms_spalte_4 {
+	float: left;
+	width: 25%;
+}
+
+.cms_spalte_34 {
+	float: left;
+	width: 75%;
 }

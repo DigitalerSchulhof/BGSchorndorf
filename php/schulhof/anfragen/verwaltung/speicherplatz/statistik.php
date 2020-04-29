@@ -46,6 +46,7 @@ if (cms_angemeldet() && cms_r("statistik.speicherplatz")) {
 		array_push($tabellengruppen, $gk."blogeintraegeintern");
 		array_push($tabellengruppen, $gk."blogeintragbeschluesse");
 		array_push($tabellengruppen, $gk."blogeintragdownloads");
+		array_push($tabellengruppen, $gk."blogeintraglinks");
 		array_push($tabellengruppen, $gk."chat");
 		array_push($tabellengruppen, $gk."chatmeldungen");
 		array_push($tabellengruppen, $gk."galerien");
@@ -56,6 +57,7 @@ if (cms_angemeldet() && cms_r("statistik.speicherplatz")) {
 		array_push($tabellengruppen, $gk."termineintern");
 		array_push($tabellengruppen, $gk."termineinterndownloads");
 		array_push($tabellengruppen, $gk."vorsitz");
+		array_push($tabellengruppen, $gk."todoartikel");
 	}
 
 	if ($bereich == "system") {
@@ -63,14 +65,17 @@ if (cms_angemeldet() && cms_r("statistik.speicherplatz")) {
 		$datgroesse += cms_dateisystem_ordner_info("../../../js")['groesse'];
 		$datgroesse += cms_dateisystem_ordner_info("../../../res")['groesse'];
 		$datgroesse += cms_dateisystem_ordner_info("../../../php")['groesse'];
+		$datgroesse += cms_dateisystem_ordner_info("../../../backup")['groesse'];
+		$datgroesse += cms_dateisystem_ordner_info("../../../update")['groesse'];
+		$datgroesse += cms_dateisystem_ordner_info("../../../version")['groesse'];
 		$datgroesse += cms_dateisystem_ordner_info("../../../.htaccess")['groesse'];
 		$datgroesse += cms_dateisystem_ordner_info("../../../index.php")['groesse'];
+		$datgroesse += cms_dateisystem_ordner_info("../../../aktualisiert.php")['groesse'];
 		$dbgroesse += cms_db_tabellengroesse($CMS_DBS_DB, $tabellensystem);
 	}
 	else if ($bereich == "website") {
 		$datgroesse += cms_dateisystem_ordner_info("../../../dateien/titelbilder")['groesse'];
 		$datgroesse += cms_dateisystem_ordner_info("../../../dateien/website")['groesse'];
-		$datgroesse += cms_dateisystem_ordner_info("../../../drucken.php")['groesse'];
 		$dbgroesse += cms_db_tabellengroesse($CMS_DBS_DB, $tabellenwebsite);
 	}
 	else if ($bereich == "schulhof") {

@@ -9,7 +9,7 @@ $code .= "<h1>Schülervertretungsplan</h1>";
 $angemeldet = false;
 $kennung = null;
 $code .= "<script>var CMS_LN_DA = '$CMS_LN_DA';</script>";
-$code .= "<script src=\"js/lehrerzimmer/intern.js?v=$CMS_VERSION\"></script>";
+$code .= "<script src=\"js/lehrerzimmer/intern.js?v=".substr(md5("js/lehrerzimmer/intern.js"), 0, 7)."\"></script>";
 
 $sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanS', '$CMS_SCHLUESSEL')");
 if ($sql->execute()) {
@@ -24,7 +24,7 @@ else {$CMS_IMLN = false;}
 if (isset($CMS_URL[2])) {if (($CMS_URL[2] == $kennung) && ($CMS_IMLN)) {$angemeldet = true;}}
 
 if (isset($CMS_URL[2])) {
-  $code .= "<script src=\"js/schulhof/verwaltung/scrollen.js?v=$CMS_VERSION\"></script>";
+  $code .= "<script src=\"js/schulhof/verwaltung/scrollen.js?v=".substr(md5("js/schulhof/verwaltung/scrollen.js"), 0, 7)."\"></script>";
   $CMS_ONLOAD_EXTERN_EVENTS = "CMS_IMLN = false;var CMS_INTERN_VPLANS = window.setInterval(function () {cms_intern_vplan_laden('s');}, 300000);window.setTimeout(function () {cms_intern_vplan_laden('s');}, 1000);window.setTimeout(function () {CMS_INTERN_VPLANL_SCHIEBEN_SH = window.setInterval(function () {cms_vplan_verschieben_sh()}, cms_vplanschiebengeschwindigkeit)}, cms_vplanschiebenwarten);window.setTimeout(function () {CMS_INTERN_VPLANL_SCHIEBEN_SM = window.setInterval(function () {cms_vplan_verschieben_sm()}, cms_vplanschiebengeschwindigkeit)}, cms_vplanschiebenwarten);";
 
   $code .= "<input type=\"hidden\" name=\"cms_svplan_kennung\" id =\"cms_svplan_kennung\" value=\"".$CMS_URL[2]."\">";

@@ -157,7 +157,7 @@ pre, .cms_konsole, .cms_code {
 }
 
 .cms_hauptteil_inhalt p, .cms_hauptteil_inhalt ul, .cms_hauptteil_inhalt ol,
-.cms_hauptteil_inhalt table, .cms_download_anzeige, .cms_boxen_u, .cms_boxen_n {
+.cms_hauptteil_inhalt table, .cms_download_anzeige, .cms_boxen_u, .cms_boxen_n, .cms_artikellink_anzeige {
 	margin-top: @haupt_absatzwebsite;
 	margin-bottom: @haupt_absatzwebsite;
 }
@@ -166,7 +166,8 @@ pre, .cms_konsole, .cms_code {
 	margin-bottom: @haupt_absatzwebsite;
 }
 
-.cms_download_anzeige * {
+.cms_download_anzeige *,
+.cms_artikellink_anzeige * {
 	line-height: 1.2em;
 	margin-bottom: @haupt_absatzschulhof;
 }
@@ -184,4 +185,34 @@ pre, .cms_konsole, .cms_code {
 pre, .cms_konsole, .cms_code {
 	background: @d_haupt_abstufung2;
 	color: @d_haupt_schriftfarbenegativ;
+}
+
+// DRUCKEN;
+
+.cms_hauptteil_inhalt p, .cms_hauptteil_inhalt ul, .cms_hauptteil_inhalt ol,
+.cms_hauptteil_inhalt table, .cms_download_anzeige, .cms_boxen_u, .cms_boxen_n, .cms_artikellink_anzeige {
+	margin-top: @haupt_absatzwebsite;
+	margin-bottom: @haupt_absatzwebsite;
+}
+
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
+	break-inside: avoid;
+}
+
+.cms_download_anzeige *,
+.cms_artikellink_anzeige * {
+	line-height: 1.2em;
+	margin-top: 0;
+	margin-bottom: @haupt_absatzschulhof;
+}
+
+ul li {
+	list-style-type: square;
+	margin-left: 20px;
+}
+
+ul ul li {
+	list-style-type: circle;
+	margin-left: 20px;
 }

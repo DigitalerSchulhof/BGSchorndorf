@@ -235,6 +235,7 @@
 .cms_uebersicht_verwaltung_technik_geraete {background-image: url('../res/icons/gross/geraete.png');}
 .cms_uebersicht_verwaltung_technik_hausmeister {background-image: url('../res/icons/gross/hausmeister.png');}
 .cms_uebersicht_verwaltung_technik_haustechnik {background-image: url('../res/icons/gross/haustechnik.png');}
+.cms_uebersicht_verwaltung_update {background-image: url("../res/icons/gross/update.png");}
 
 
 
@@ -258,6 +259,10 @@
 	position: absolute;
 	right: 10px;
 	top: 10px;
+}
+
+img[src^=res/icons/klein] {
+	image-rendering: pixelated;
 }
 
 // DUNKEL;

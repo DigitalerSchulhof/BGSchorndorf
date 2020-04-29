@@ -651,9 +651,10 @@ function cms_lehrerdb_header ($fehler = false) {
 	header("Access-Control-Allow-Headers: Origin");
 }
 
-function cms_anfrage_beenden() {
+function cms_anfrage_beenden($fehler = "") {
 	cms_lehrerdb_header(false);
 	echo "FEHLER";
+	echo $fehler;
 	exit;
 }
 ?>

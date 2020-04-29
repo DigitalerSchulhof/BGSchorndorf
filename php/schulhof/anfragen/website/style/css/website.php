@@ -95,7 +95,14 @@
 	margin-bottom: @haupt_absatzschulhof;
 }
 
-.cms_download_anzeige {
+.cms_artikellink_anzeige {
+	display: block !important;
+	color: inherit;
+	width: 100%;
+}
+
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
 	padding: 5px 5px 5px 42px;
 	background-position: 5px 5px;
 	min-height: 44px;
@@ -107,19 +114,22 @@
 	line-height: 1em !important;
 }
 
-.cms_download_anzeige p, .cms_download_anzeige h4 {
+.cms_download_anzeige p, .cms_download_anzeige h4,
+.cms_artikellink_anzeige p, .cms_artikellink_anzeige h4 {
 	line-height: 1em !important;
 	transition: 500ms ease-in-out;
 	overflow:hidden;
 	text-overflow: ellipsis;
 }
 
-.cms_download_anzeige:hover {
+.cms_download_anzeige:hover,
+.cms_artikellink_anzeige:hover {
 	background-color: @h_haupt_abstufung2;
 	cursor: pointer;
 }
 
 .cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @h_haupt_schriftfarbenegativ;}
+.cms_artikellink_anzeige:hover p, .cms_artikellink_anzeige:hover h4 {color: @h_haupt_schriftfarbenegativ;}
 
 .cms_download_inaktiv {opacity: .5;}
 .cms_download_inaktiv:hover {cursor: not-allowed;}
@@ -471,12 +481,13 @@
 	border-bottom-left-radius: @auszeichnung_radius;
 	border-bottom-right-radius: @auszeichnung_radius;
 	background: @h_auszeichnung_hintergrund;
-	color: @h_auszeichnung_schrift;
 }
 
 .cms_auszeichnung p, .cms_auszeichnung b {
 	line-height: 1.5em !important;
 	font-size: 10px !important;
+	transition: 250ms ease-in-out;
+	color: @h_auszeichnung_schrift;
 }
 
 .cms_auszeichnung img {max-height: 150px;}
@@ -566,17 +577,20 @@
 	background-color: @d_zeitdiagramm_balkenhover;
 }
 
-.cms_download_anzeige {
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
 	background-color: @d_haupt_abstufung1;
 	border: 1px solid @d_haupt_abstufung1;
 	border-left: 3px solid @d_haupt_abstufung2;
 }
 
-.cms_download_anzeige:hover {
+.cms_download_anzeige:hover,
+.cms_artikellink_anzeige:hover {
 	background-color: @d_haupt_abstufung2;
 }
 
 .cms_download_anzeige:hover p, .cms_download_anzeige:hover h4 {color: @d_haupt_schriftfarbenegativ;}
+.cms_artikellink_anzeige:hover p, .cms_artikellink_anzeige:hover h4 {color: @d_haupt_schriftfarbenegativ;}
 
 .cms_website_menuepunkte_ja {
 	background: @d_haupt_meldungerfolghinter;
@@ -681,7 +695,6 @@
 
 .cms_auszeichnung a {
 	background: @d_auszeichnung_hintergrund;
-	color: @d_auszeichnung_schrift;
 }
 
 .cms_auszeichnung a:hover {
@@ -703,4 +716,30 @@
 .cms_kontakt_visitenkarte:hover {
 	background: @d_haupt_thema2;
 	color: @d_haupt_schriftfarbenegativ;
+}
+
+// DRUCKEN;
+
+.cms_download_anzeige,
+.cms_artikellink_anzeige {
+	padding: 5px 5px 5px 42px;
+	background-position: 5px 5px;
+	min-height: 44px;
+	background-repeat: no-repeat;
+	border-left: 3px solid @h_haupt_abstufung2;
+	line-height: 1em !important;
+}
+
+.cms_download_anzeige p, .cms_download_anzeige h4,
+.cms_artikellink_anzeige p, .cms_artikellink_anzeige h4 {
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+
+.cms_download_inaktiv {opacity: .5;}
+
+.cms_artikellink_anzeige {
+	color: inherit;
+	display: block;
+	width: 100%;
 }

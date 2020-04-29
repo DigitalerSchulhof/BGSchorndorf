@@ -34,13 +34,13 @@ if (cms_valide_gruppe($g)) {
     }
 
   }
-  if(cms_r("schulhof.information.listen.gruppen.$g.sehenwenn")) {
+  else if(cms_r("schulhof.information.listen.gruppen.$gk.sehenwenn")) {
     $sql = $dbs->prepare("SELECT * FROM (SELECT $gk.id AS id, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk JOIN $gk"."mitglieder ON $gk"."mitglieder.gruppe = $gk.id LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $sjsuche AND $gk"."mitglieder.person = $CMS_BENUTZERID) AS x ORDER BY sbez ASC, gbez ASC");
   }
 
   $gruppenliste = "";
 
-  if(cms_r("schulhof.information.listen.gruppen.$g.[|sehen,sehenwenn]")) {
+  if(cms_r("schulhof.information.listen.gruppen.$gk.[|sehen,sehenwenn]")) {
     if ($sj != 'Schuljahrübergreifend') {
       $sql->bind_param("s", $sj);
     }

@@ -34,6 +34,11 @@
 	text-align: left;
 }
 
+.cms_hinweis_unten {
+	bottom: unset;
+	top: 25px;
+}
+
 .cms_layout_zeile_plus .cms_hinweis {
 	bottom: 15px;
 }
@@ -53,6 +58,7 @@
 .cms_beschluss_icon:hover > .cms_hinweis,
 .cms_hinweis_aussen:hover > .cms_hinweis,
 .cms_element_icon:hover > .cms_hinweis,
+.cms_aktionsicon:hover > .cms_hinweis,
 img:hover + .cms_hinweis{
 	max-height: 100px;
 	padding: 5px;

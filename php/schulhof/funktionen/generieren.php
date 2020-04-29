@@ -319,11 +319,11 @@ function cms_terminegenehmigen_knopf($dbs) {
   $zusatz = "";
   $sql = "";
   $code = "";
-  if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+  if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM termine WHERE genehmigt = 0)";}
   if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.termine.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
+      $sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."termineintern WHERE genehmigt = 0)";
     }
   }
   $sql = substr($sql, 7);
@@ -349,11 +349,11 @@ function cms_blogeintraegegenehmigen_knopf($dbs) {
   $code = "";
   $zusatz = "";
   $sql = "";
-  if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+  if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM blogeintraege WHERE genehmigt = 0)";}
   if (cms_r("schulhof.gruppen.%GRUPPEN%.artikel.blogeinträge.genehmigen")) {
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
-      $sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
+      $sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
     }
   }
   $sql = substr($sql, 7);
@@ -433,7 +433,7 @@ function cms_hausmeisterauftraege_knopf($dbs) {
   $sql->close();
   $zusatz = '';
   if ($anzahlneu > 0) {
-    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span>";
+    $anzahl = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>$anzahlneu</b> / $anzahlauftraege</span> ";
   }
   else if ($anzahlauftraege > 0) {
     $anzahl = " <span class=\"cms_meldezahl\">$anzahlauftraege</span>";
@@ -502,7 +502,7 @@ function cms_sonderrollen_generieren() {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
   }
   if (cms_r("schulhof.technik.hausmeisteraufträge.erstellen")) {
-    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li>";
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li> ";
   }
 	if (cms_r("schulhof.technik.geräte.verwalten")) {
     $code .= "<li>".cms_geraeteverwalten_knopf($dbs)."</li> ";
@@ -871,4 +871,15 @@ function ggt($a, $b) {
     }
     return $a;
 }
+
+function strposX($haystack, $needle, $number){
+    if($number == '1'){
+        return strpos($haystack, $needle);
+    }elseif($number > '1'){
+        return strpos($haystack, $needle, strposX($haystack, $needle, $number - 1) + strlen($needle));
+    }else{
+        return error_log('Error: Value for parameter $number is out of range');
+    }
+}
+
 ?>

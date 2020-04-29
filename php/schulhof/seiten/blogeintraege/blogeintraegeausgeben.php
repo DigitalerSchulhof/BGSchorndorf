@@ -48,7 +48,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	if ((strlen($daten['text']) > 7) || ($downloadanzahl > 0)) {
 		$code .= "<p><span class=\"cms_button\" href=\"$link\">Weiterlesen ...</span></p>";
 	}
-	$code .= cms_blogeintrag_zusatzinfo($dbs, $daten);
+	$code .= cms_blogeintrag_zusatzinfo($dbs, $daten, $internvorlink);
 	$code .= "<div class=\"cms_clear\"></div>";
 	$code .= "</div>";
 	$code .= "</a>";
@@ -59,7 +59,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 	return $code;
 }
 
-function cms_blogeintrag_zusatzinfo($dbs, $daten) {
+function cms_blogeintrag_zusatzinfo($dbs, $daten, $internvorlink) {
 	global $CMS_GRUPPEN, $CMS_SCHLUESSEL, $CMS_URL;
 	$code = "";
 
@@ -70,7 +70,10 @@ function cms_blogeintrag_zusatzinfo($dbs, $daten) {
 	}*/
 
 	if ($daten['art'] == 'in') {
-		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern</span> ";
+		$gruppeninfos = explode("/", cms_linkzutext($internvorlink));
+		$gruppenartbez = $gruppeninfos[count($gruppeninfos)-2];
+		$gruppenbez = $gruppeninfos[count($gruppeninfos)-1];
+		$code .= "<span class=\"cms_kalender_zusatzinfo cms_kalender_zusatzinfo_intern\">Intern – $gruppenartbez » $gruppenbez</span> ";
 	}
 
 	if (strlen($daten['autor']) > 0) {$code .= "<span class=\"cms_kalender_zusatzinfo\" style=\"background-image:url('res/icons/oegruppen/autor.png')\">".$daten['autor']."</span> ";}
@@ -142,6 +145,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$datum = mktime(0, 0, 0, $monat, $tag, $jahr);
 			$tabelle = "blogeintraege";
 			$tabelledownload = "blogeintragdownloads";
+			$tabellelink = "blogeintraglinks";
 			$gruppe = "Blogeinträge";
 			$vorschaubild = "AES_DECRYPT(vorschaubild, '$CMS_SCHLUESSEL')";
 			$oeffentlichkeit = 'oeffentlichkeit';
@@ -158,6 +162,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$gk = cms_textzudb($gruppe);
 			$tabelle = $gk."blogeintraegeintern";
 			$tabelledownload = $gk."blogeintragdownloads";
+			$tabellelink = $gk."blogeintraglinks";
 			$tabellebeschluesse = $gk."blogeintragbeschluesse";
 			$vorschaubild = "''";
 			$oeffentlichkeit = "'0' AS oeffentlichkeit";
@@ -225,7 +230,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$zeiten = cms_blogeintrag_zeiten($blogeintrag);
 			// Schnellinfos
 			$kalender = "<div class=\"cms_termin_detialkalenderblatt\">".cms_blogeintrag_kalenderblatterzeugen($blogeintrag, $zeiten)."</div>";
-			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten)."</div>";
+			$kalender .= "<div class=\"cms_termin_detailinformationen\">".cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten)."<p>".$blogeintrag["vorschau"]."</p></div>";
 
 			$downloads = array();
 			// Downloads suchen
@@ -243,6 +248,24 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 					$D['dateiname'] = $ddateiname;
 					$D['dateigroesse'] = $ddateigroesse;
 					array_push($downloads, $D);
+				}
+			}
+			$sql->close();
+
+			// Links laden
+			$links = array();
+			$sql = $dbs->prepare("SELECT * FROM (SELECT id, blogeintrag, AES_DECRYPT(link, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM $tabellelink WHERE blogeintrag = ?) AS x ORDER BY titel ASC");
+			$sql->bind_param("i", $blogeintrag['id']);
+			if ($sql->execute()) {
+				$sql->bind_result($lid, $lbeintrag, $llink, $ltitel, $lbeschr);
+				while ($sql->fetch()) {
+					$L = array();
+					$L['id'] = $lid;
+					$L['blogeintrag'] = $lbeintrag;
+					$L['link'] = $llink;
+					$L['titel'] = $ltitel;
+					$L['beschreibung'] = $lbeschr;
+					array_push($links, $L);
 				}
 			}
 			$sql->close();
@@ -320,7 +343,7 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 			$code .= "</div></div>";
 
-			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0)) {
+			if ((count($downloads) > 0) || (strlen($aktionen) > 0) || (count($beschluesse) > 0) || (count($links) > 0)) {
 				$code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
 				if (count($downloads) > 0) {
 					$code .= "<h3>Zugehörige Downloads</h3>";
@@ -330,6 +353,12 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 							$d['gruppenid'] = $gruppenid;
 							$code .= cms_schulhof_interndownload_ausgeben($d);
 						}
+					}
+				}
+				if (count($links) > 0) {
+					$code .= "<h3>Zugehörige Links</h3>";
+					foreach ($links as $l) {
+						$code .= cms_artikellink_ausgeben($l);
 					}
 				}
 				if (count($beschluesse) > 0) {

@@ -1,6 +1,7 @@
 // DRUCKEN;
 
 * {
+	-webkit-print-color-adjust: exact;
 	font-family: 'rob', sans-serif;
 	font-size: 10pt;
 	font-weight: normal;
@@ -12,16 +13,10 @@
 	box-sizing: border-box;
 }
 
-body {
-	background: @h_haupt_koerperhintergrund;
-}
-
 .cms_druckseite {
 	width: 210mm;
-	padding: 2cm 2cm 2cm 2cm;
 	background: #ffffff;
 	color: #000000;
-	margin: 20px auto;
 }
 
 .cms_logo {
@@ -89,9 +84,7 @@ p:last-child {
 h1 {
 	font-size: 14pt;
 	font-weight: bold;
-	margin-top: 2.5cm;
 	margin-bottom: .25cm;
-	page-break-before: always;
 }
 
 .cms_druckkopf+h1 {
@@ -145,12 +138,6 @@ b, strong {
 
 .cms_spalte_2:first-child .cms_spalte_i {padding-right: 2.5mm !important;}
 .cms_spalte_2:last-child .cms_spalte_i {padding-left: 2.5mm !important;}
-
-.cms_spalte_2 {
-	padding: 0mm;
-	width: 50%;
-	float: left;
-}
 
 table {
 	width: 100%;
@@ -219,32 +206,13 @@ span.cms_unterschrift {
 	font-size: 12pt;
 }
 
-.cms_seitenumbruch {
-	border-top: .5cm solid @h_haupt_koerperhintergrund;
-	page-break-before: always;
-}
-
 p.cms_unterschrift {
 	font-size: 8pt;
 }
 
-@media print {
-	body {
-		background: #ffffff;
-	}
-
-	.cms_seitenumbruch {
-		border-top: none;
-		page-break-before: always;
-	}
-
-	@page {margin: 0cm 2cm 2cm 2cm;}
-
-	.cms_druckseite {
-		padding: 0cm !important;
-		width: 100%;
-		background: #ffffff;
-		color: #000000;
-		margin: 0cm !important;
-	}
+.cms_seitenumbruch {
+	border-top: none;
+	page-break-before: always;
 }
+
+@page {margin: 2cm;}

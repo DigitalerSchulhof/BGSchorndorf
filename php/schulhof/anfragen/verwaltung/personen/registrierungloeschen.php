@@ -14,9 +14,7 @@ if (isset($_POST['idreg'])) {$idreg = $_POST['idreg'];} else {echo "FEHLER"; exi
 if (!cms_check_ganzzahl($idreg,0)) {echo "FEHLER"; exit;}
 $fehler = false;
 
-$CMS_RECHTE = cms_rechte_laden();
-$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'];
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 	// Prüfen, ob der benutzer bereits besteht
 	$dbs = cms_verbinden('s');
 	// Prüfen, ob der Benutzername bereits vergeben ist

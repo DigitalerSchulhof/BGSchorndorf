@@ -256,6 +256,7 @@
 
 .cms_termin_detailinformationen {
 	margin-top: 15px;
+	text-align: center;
 }
 
 .cms_termindetails {
@@ -400,3 +401,87 @@
 
 .cms_ferienkalender_we {background-color: @d_haupt_meldunginfohinter;}
 .cms_ferienkalender_frei {background-color: @d_haupt_meldungerfolghinter;}
+
+// DRUCKEN;
+
+.cms_termin_detialkalenderblatt {
+	break-inside: avoid;
+}
+
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_monat,
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr,
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
+	display: block;
+	text-align: center;
+	width: 100%;
+	line-height: 1.2em !important;
+}
+
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_monat {
+	background-color: @h_kalendergross_hintergrundmonat;
+	font-weight: @kalendergross_schriftdickemonat;
+	color: @h_kalendergross_farbemonat;
+	font-size: 20px;
+	border-top: @kalendergross_linienstaerkeobenmonat;
+	border-left: @kalendergross_linienstaerkelinksmonat;
+	border-right: @kalendergross_linienstaerkerechtsmonat;
+	border-bottom: @kalendergross_linienstaerkeuntenmonat;
+	border-bottom: none;
+	padding: 4px 0px;
+	border-top-right-radius: @kalendergross_radiusobenmonat;
+	border-top-left-radius: @kalendergross_radiusobenmonat;
+	border-bottom-right-radius: @kalendergross_radiusuntenmonat;
+	border-bottom-left-radius: @kalendergross_radiusuntenmonat;
+	border-color: @h_kalendergross_linienfarbe;
+}
+
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagnr {
+	background-color: @h_kalendergross_hintergrundtagnr;
+	font-weight: @kalendergross_schriftdicketagnr;
+	color: @h_kalendergross_farbetagnr;
+	font-size: 45px;
+	border-top: @kalendergross_linienstaerkeobentagnr;
+	border-left: @kalendergross_linienstaerkelinkstagnr;
+	border-right: @kalendergross_linienstaerkerechtstagnr;
+	border-bottom: @kalendergross_linienstaerkeuntentagnr;
+	padding: 8px 0px 4px 0px;
+	border-top-right-radius: @kalendergross_radiusobentagnr;
+	border-top-left-radius: @kalendergross_radiusobentagnr;
+	border-bottom-right-radius: @kalendergross_radiusuntentagnr;
+	border-bottom-left-radius: @kalendergross_radiusuntentagnr;
+	border-color: @h_kalendergross_linienfarbe;
+}
+
+.cms_termin_detialkalenderblatt .cms_kalenderblatt_tagbez {
+	background-color: @h_kalendergross_hintergrundtagbez;
+	font-weight: @kalendergross_schriftdicketagbez;
+	color: @h_kalendergross_farbetagbez;
+	font-size: 20px;
+	border-top: @kalendergross_linienstaerkeobentagbez;
+	border-left: @kalendergross_linienstaerkelinkstagbez;
+	border-right: @kalendergross_linienstaerkerechtstagbez;
+	border-bottom: @kalendergross_linienstaerkeuntentagbez;
+	padding: 4px 0px;
+	border-top-right-radius: @kalendergross_radiusobentagbez;
+	border-top-left-radius: @kalendergross_radiusobentagbez;
+	border-bottom-right-radius: @kalendergross_radiusuntentagbez;
+	border-bottom-left-radius: @kalendergross_radiusuntentagbez;
+	border-color: @h_kalendergross_linienfarbe;
+}
+
+.cms_termindetails_zusatzinfo {
+	display: inline-block;
+	padding: 2px 0px 2px 20px;
+	background-position: left center;
+	background-repeat: no-repeat;
+	margin-right: 0px;
+	min-height: 16px;
+}
+
+.cms_termindetails li {
+	padding: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	list-style-type: none;
+}

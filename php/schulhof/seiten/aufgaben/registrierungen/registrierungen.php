@@ -6,8 +6,7 @@ $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
 $code .= "<h1>Registrierungen aufnehmen</h1>";
 
-$zugriff = $CMS_RECHTE['Personen']['Nutzerkonten anlegen'];
-if (cms_angemeldet() && $zugriff) {
+if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 	$dbs = cms_verbinden('s');
 
 	// Offene Nutzerkonten anzeigen

@@ -4,7 +4,11 @@ include_once("php/allgemein/funktionen/brotkrumen.php");
 $ausnahme = false;
 $CMS_MONATELINK = "(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)";
 
-if ($CMS_URL[0] == 'Website') {
+if($CMS_URL[0] == "Drucken") {
+  include_once("php/drucken/drucken.php");
+  $ausnahme = true;
+}
+else if ($CMS_URL[0] == 'Website') {
   include_once("php/website/seiten/initial.php");
   // WEBSITE
   $CMS_VERFUEGBARE_SEITEN['Website/Datenschutz']                                        = 'php/website/seiten/pflicht/datenschutz.php';
@@ -88,6 +92,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
 
   // Nutzerkonto
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto']                                         = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Bedarfsabfrage']                          = 'php/schulhof/seiten/nutzerkonto/ebedarf.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil']                             = 'php/schulhof/seiten/nutzerkonto/profildaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Gespeicherte_Daten']          = 'php/schulhof/seiten/nutzerkonto/gespeichertedaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Meine_Rechte']                = 'php/schulhof/seiten/nutzerkonto/meinerechte.php';
@@ -273,6 +278,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Speicherplatz']                            = 'php/schulhof/seiten/verwaltung/speicherplatz/speicherplatz.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Speicherplatz/Statistik']                  = 'php/schulhof/seiten/verwaltung/speicherplatz/statistik.php';
 
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Update']                                   = 'php/schulhof/seiten/verwaltung/update/update.php';
   if (preg_match("/^Schulhof\/Ferien(\/[0-9]{4}){0,1}$/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/website/seiten/ferien/ferien.php';}
 

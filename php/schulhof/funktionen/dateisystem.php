@@ -32,7 +32,7 @@ function cms_dateisystem_generieren ($stammverzeichnis, $pfad, $feldid, $netz, $
 			$code .= "<tr><th>Dateien auswählen:</th><td><input type=\"file\" name=\"".$feldid."_aktionen_hochladen_eingabe\" id=\"".$feldid."_aktionen_hochladen_eingabe\" multiple onchange=\"cms_dateisystem_aktionen_input_nutzen('$feldid');\">";
 			// UPLOADZONE NUR FÜR PCs
 			if (!cms_istmobil()) {
-				$code .= "<div class=\"cms_dateisystem_uploadzone\" id=\"".$feldid."_aktionen_hochladen_zone\"><p>Dateien hier her ziehen</p></div>";
+				$code .= "<div class=\"cms_dateisystem_uploadzone\" id=\"".$feldid."_aktionen_hochladen_zone\"><p>Dateien hierher ziehen</p></div>";
 				$code .= "<script>document.getElementById('".$feldid."_aktionen_hochladen_zone').addEventListener('drop', function() {cms_dateisystem_upload_dateiendazu('$feldid');}, false);</script>";
     	}
 			$code .= "</td></tr>";
@@ -640,7 +640,7 @@ function cms_postfach_anhang_dateiupload() {
 	$code .= "<tr><th>Anhang auswählen:</th><td><input type=\"file\" name=\"".$feldid."_aktionen_hochladen_eingabe\" id=\"".$feldid."_aktionen_hochladen_eingabe\" multiple onchange=\"cms_dateisystem_aktionen_input_nutzen('$feldid');\">";
 	// UPLOADZONE NUR FÜR PCs
 	if (!cms_istmobil() && false) {
-		$code .= "<div class=\"cms_dateisystem_uploadzone\" id=\"".$feldid."_aktionen_hochladen_zone\"><p>Dateien hier her ziehen</p></div>";
+		$code .= "<div class=\"cms_dateisystem_uploadzone\" id=\"".$feldid."_aktionen_hochladen_zone\"><p>Dateien hierher ziehen</p></div>";
 	}
 	$code .= "</td></tr>";
 	$code .= "<tr><th>Anhang hochladen:</th><td><ul class=\"cms_dateisystem_hochladen_dateiliste\" id=\"".$feldid."_aktionen_hochladen_liste\"><li>Keine Dateien ausgewählt</li></ul><p class=\"cms_notiz\" id=\"".$feldid."_aktionen_hochladen_gesamtgroesse\">Gesamtgröße: 0 B • Anzahl Dateien: 0</p></td></tr>";

@@ -6,6 +6,9 @@ include_once("../../schulhof/funktionen/check.php");
 include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../schulhof/funktionen/dateisystem.php");
 include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
+include_once("../../schulhof/anfragen/notifikationen/notifikationen.php");
+include_once("../../allgemein/funktionen/mail.php");
+require_once '../../phpmailer/PHPMailerAutoload.php';
 
 session_start();
 
@@ -23,6 +26,7 @@ $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
 
 $dbs = cms_verbinden('s');
 
+$notifikation = false;
 $zugriff = false;
 $fehler = false;
 $existiert = false;
@@ -44,6 +48,7 @@ else if ($bereich == "schulhof") {
 		if ($gruppe == "Sonstigegruppen") {$gruppe = "Sonstige Gruppen";}
 		$gruppenrechte = cms_gruppenrechte_laden($dbs, $gruppe, $id);
 		if ($pfadteile[3] != $id) {$fehler = true;}
+		$notifikation = true;
 	}
 }
 else {$fehler = true;}
@@ -90,6 +95,45 @@ if (cms_angemeldet() && $zugriff) {
 			echo "EXISTIERT";
 		}
 		else {
+			if($notifikation) {
+				$g = $gruppe;
+				$gid = $id;
+				$gk = cms_textzudb($g);
+				$sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sjbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') as grbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = ?");
+				$sql->bind_param("i", $gid);
+				$gruppensj = "Schuljahrübergreifend";
+				$gruppenbez = "";
+				if ($sql->execute()) {
+					$sql->bind_result($sjbez, $grbez);
+					if ($sql->fetch()) {
+						if (!is_null($sjbez)) {$gruppensj = cms_textzulink($sjbez);}
+						$gruppenbez = cms_textzulink($grbez);
+					}
+					else {$fehler = true;}
+				}
+				else {$fehler = true;}
+				$sql->close();
+
+				$anzeigepfad = $pfad;
+				if(substr_count($anzeigepfad, "/") < 8) {
+					$anzeigepfad = "";
+				} else {
+					$anzeigepfad = substr($pfad, strposX($anzeigepfad, "/", 8));
+				}
+
+				$eintrag = array();
+				$eintrag['gruppe']    = $g;
+				$eintrag['gruppenid'] = $gid;
+				$eintrag['zielid']    = null;
+				$eintrag['status']    = "b";
+				$eintrag['art']       = "o";
+				$eintrag['titel']     = $nameneu;
+				$eintrag['vorschau']  = "$anzeigepfad/$namealt -&gt; $anzeigepfad/$nameneu";
+				$eintrag['link']      = "Schulhof/Gruppen/$gruppensj/".cms_textzulink($g)."/$gruppenbez";
+
+				cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+			}
+
 			echo "ERFOLG";
 		}
 	}

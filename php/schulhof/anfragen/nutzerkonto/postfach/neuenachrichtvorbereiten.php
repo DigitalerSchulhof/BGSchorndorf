@@ -70,8 +70,8 @@ if (cms_angemeldet()) {
 		$gk = cms_textzudb($gruppe);
 		$POSTEMPFAENGER = "";
 		// LADEN MEHRERER RESULTATE
-		$sql = $dbs->prepare("SELECT DISTINCT * FROM ((SELECT person FROM $gk"."mitglieder WHERE gruppe = ?) UNION (SELECT person FROM $gk"."aufsicht WHERE gruppe = ?)) AS x");
-		$sql->bind_param("ii", $gruppenid, $gruppenid);
+		$sql = $dbs->prepare("SELECT person FROM $gk"."mitglieder WHERE gruppe = ?");
+		$sql->bind_param("i", $gruppenid);
 		if ($sql->execute()) {
 			$sql->bind_result($sperson);
 	    while($sql->fetch()) {

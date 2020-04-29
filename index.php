@@ -33,8 +33,7 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
-	$CMS_VERSION = rand(0,1000000);
-	//$CMS_VERSION = "0.5.8";
+	$CMS_VERSION = trim(file_get_contents("version/version"));
 	$CMS_WECHSELBILDER = 0;
 	$CMS_DIASHOWZEIT = 7000;
 
@@ -64,8 +63,8 @@
 			die;
 		}
 
-		if($CMS_URL[0] == "Druckansicht") {
-      include_once("php/allgemein/seiten/drucken.php");
+		if($CMS_URL[0] == "Drucken") {
+      include_once("php/drucken/drucken.php");
 			die();
 		}
 
@@ -185,105 +184,117 @@
 	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?v=$CMS_VERSION\">";
+		$hellhash 	= substr(md5(filemtime("css/hell.css")), 0, 7);
+		$dunkelhash = substr(md5(filemtime("css/dunkel.css")), 0, 7);
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?cb=$hellhash\">";
 		if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
-			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?v=$CMS_VERSION\">";
+			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?cb=$dunkelhash\">";
 		}
 
+		function js($js) {
+			global $CMS_VERSION;
+			$v = $CMS_VERSION;
+			if(file_exists("$js")) {
+				$cb = substr(md5(filemtime("$js")), 0, 7);
+			}
+			return "<script src=\"$js?cb=$cb\"></script>";
+		}
+
+		echo js("js/jquery.js");
+
     //<!-- Einbindung der JavaScripts -->
-		echo "<script src=\"js/jquery.js?v=$CMS_VERSION\"></script>";
 
-    echo "<script src=\"js/allgemein/anfragen.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/generieren.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/reiter.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/zeigen.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/link.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/toggle.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/blende.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/check.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/download.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/suche.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/allgemein/contextmenue.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/schulhof/nutzerkonto/anmelden.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/website/zugehoerig.js?v=$CMS_VERSION\"></script>";
-    echo "<script src=\"js/website/wechselbilder.js?v=$CMS_VERSION\"></script>";
-		echo "<script src=\"js/website/voranmeldung.js?v=$CMS_VERSION\"></script>";
-		echo "<script src=\"js/website/feedback.js?v=$CMS_VERSION\"></script>";
-		echo "<script src=\"js/website/kontaktformular.js?v=$CMS_VERSION\"></script>";
+    echo js("js/allgemein/anfragen.js");
+    echo js("js/allgemein/generieren.js");
+    echo js("js/allgemein/reiter.js");
+    echo js("js/allgemein/zeigen.js");
+    echo js("js/allgemein/link.js");
+    echo js("js/allgemein/toggle.js");
+    echo js("js/allgemein/blende.js");
+    echo js("js/allgemein/check.js");
+    echo js("js/allgemein/download.js");
+    echo js("js/allgemein/suche.js");
+    echo js("js/allgemein/contextmenue.js");
+    echo js("js/schulhof/nutzerkonto/anmelden.js");
+    echo js("js/website/zugehoerig.js");
+    echo js("js/website/wechselbilder.js");
+		echo js("js/website/voranmeldung.js");
+		echo js("js/website/feedback.js");
+		echo js("js/website/kontaktformular.js");
 
-		echo "<script src=\"js/website/newsletter.js?v=$CMS_VERSION\"></script>";
+		echo js("js/website/newsletter.js");
 
 		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
 			$code = "";
-			$code .= "<script src=\"js/summernote/summernote.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/moment.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/chartJS/chart.js?v=$CMS_VERSION\"></script>";
+			$code .= js("js/summernote/summernote.js");
+			$code .= js("js/chartJS/moment.js");
+			$code .= js("js/chartJS/chart.js");
 
-			$code .= "<script src=\"js/schulhof/nutzerkonto/profildaten.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/nutzerkonto/postfach.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/kalender.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/personen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schulanmeldung.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/personensuche.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/rollen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schuljahre.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/raeume.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/leihgeraete.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/zulaessig.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schuldetails.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/faecher.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/notifikationen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/geraete.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/blockierung.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/buchung.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/allgemeineeinstellungen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schuldetails.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schulnetze.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/stundenplanung.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/vertretungsplanung.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/gruppen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/ferien.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/hausmeister.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/dauerbrenner.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/pinnwaende.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/zeitraeume.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/profile.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schienen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/schuljahrfabrik.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/import.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/style.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/zuordnung.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/termine.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/blogeintraege.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/seiten.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/hauptnavigationen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/dateien.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/gruppen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/downloads.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/beschluesse.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/listen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/lehrerzimmer/lehrernetz.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/lehrerzimmer/tagebuch.js?v=$CMS_VERSION\"></script>";
+			$code .= js("js/schulhof/nutzerkonto/profildaten.js");
+			$code .= js("js/schulhof/nutzerkonto/postfach.js");
+			$code .= js("js/schulhof/kalender.js");
+			$code .= js("js/schulhof/verwaltung/personen.js");
+			$code .= js("js/schulhof/verwaltung/schulanmeldung.js");
+			$code .= js("js/schulhof/verwaltung/personensuche.js");
+			$code .= js("js/schulhof/verwaltung/rollen.js");
+			$code .= js("js/schulhof/verwaltung/schuljahre.js");
+			$code .= js("js/schulhof/verwaltung/raeume.js");
+			$code .= js("js/schulhof/verwaltung/leihgeraete.js");
+			$code .= js("js/schulhof/verwaltung/zulaessig.js");
+			$code .= js("js/schulhof/verwaltung/schuldetails.js");
+			$code .= js("js/schulhof/verwaltung/faecher.js");
+			$code .= js("js/schulhof/verwaltung/notifikationen.js");
+			$code .= js("js/schulhof/verwaltung/geraete.js");
+			$code .= js("js/schulhof/verwaltung/blockierung.js");
+			$code .= js("js/schulhof/verwaltung/buchung.js");
+			$code .= js("js/schulhof/verwaltung/allgemeineeinstellungen.js");
+			$code .= js("js/schulhof/verwaltung/schuldetails.js");
+			$code .= js("js/schulhof/verwaltung/schulnetze.js");
+			$code .= js("js/schulhof/verwaltung/stundenplanung.js");
+			$code .= js("js/schulhof/verwaltung/vertretungsplanung.js");
+			$code .= js("js/schulhof/verwaltung/gruppen.js");
+			$code .= js("js/schulhof/verwaltung/ferien.js");
+			$code .= js("js/schulhof/verwaltung/hausmeister.js");
+			$code .= js("js/schulhof/verwaltung/dauerbrenner.js");
+			$code .= js("js/schulhof/verwaltung/pinnwaende.js");
+			$code .= js("js/schulhof/verwaltung/zeitraeume.js");
+			$code .= js("js/schulhof/verwaltung/profile.js");
+			$code .= js("js/schulhof/verwaltung/schienen.js");
+			$code .= js("js/schulhof/verwaltung/schuljahrfabrik.js");
+			$code .= js("js/schulhof/verwaltung/import.js");
+			$code .= js("js/schulhof/website/style.js");
+			$code .= js("js/schulhof/website/zuordnung.js");
+			$code .= js("js/schulhof/website/termine.js");
+			$code .= js("js/schulhof/website/blogeintraege.js");
+			$code .= js("js/schulhof/website/seiten.js");
+			$code .= js("js/schulhof/website/hauptnavigationen.js");
+			$code .= js("js/schulhof/dateien.js");
+			$code .= js("js/schulhof/gruppen.js");
+			$code .= js("js/schulhof/downloads.js");
+			$code .= js("js/schulhof/beschluesse.js");
+			$code .= js("js/schulhof/listen.js");
+			$code .= js("js/schulhof/nutzerkonto/ebedarf.js");
+			$code .= js("js/lehrerzimmer/lehrernetz.js");
+			$code .= js("js/lehrerzimmer/tagebuch.js");
 
-			$code .= "<script src=\"js/website/bearbeiten.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/editor.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/downloads.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/boxen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/eventuebersicht.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/website/diashow.js?v=$CMS_VERSION\"></script>";
+			$code .= js("js/website/bearbeiten.js");
+			$code .= js("js/website/editor.js");
+			$code .= js("js/website/downloads.js");
+			$code .= js("js/website/boxen.js");
+			$code .= js("js/website/eventuebersicht.js");
+			$code .= js("js/website/diashow.js");
 
-			$code .= "<script src=\"js/schulhof/besucherstatistik.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/feedback.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/galerien.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/auffaelliges.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/newsletter.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/website/auszeichnungen.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/rechtebaum.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/bedingte_rechte.js?v=$CMS_VERSION\"></script>";
-			$code .= "<script src=\"js/schulhof/verwaltung/speicherplatz.js?v=$CMS_VERSION\"></script>";
-
-			$code .= "<script src=\"js/schulhof/notentabelle.js?v=$CMS_VERSION\"></script>";
+			$code .= js("js/schulhof/besucherstatistik.js");
+			$code .= js("js/schulhof/feedback.js");
+			$code .= js("js/schulhof/website/galerien.js");
+			$code .= js("js/schulhof/verwaltung/auffaelliges.js");
+			$code .= js("js/schulhof/verwaltung/newsletter.js");
+			$code .= js("js/schulhof/website/auszeichnungen.js");
+			$code .= js("js/schulhof/verwaltung/rechtebaum.js");
+			$code .= js("js/schulhof/verwaltung/bedingte_rechte.js");
+			$code .= js("js/schulhof/verwaltung/speicherplatz.js");
+			$code .= js("js/schulhof/notentabelle.js");
 			echo $code;
 			$code = "";
 		}
@@ -342,6 +353,11 @@
 				return v ? $(this).addClass(c) : $(this).removeClass(c);
 			}
 		});
+		if (!Array.prototype.last){
+    	Array.prototype.last = function(){
+        return this[this.length - 1];
+    	};
+		};
     </script>
 </head>
 
@@ -503,7 +519,6 @@
 					$code = "";
 				}
 			}
-
 			include_once("php/allgemein/seiten/seitensteuerung.php");
 
 			if ($CMS_URL[0] == 'App') {

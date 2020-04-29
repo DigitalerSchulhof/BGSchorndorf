@@ -55,7 +55,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     }
   }
 
-  if ((($id == '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten"))) {$zugriff = true;}
+  if ((($id == '-') && cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) || (($id != '-') && cms_r("artikel.$oeffentlichkeit.blogeinträge.bearbeiten"))) {$zugriff = true;}
 
 	if ($fehler) {$zugriff = false;}
 	$angemeldet = cms_angemeldet();
@@ -123,6 +123,9 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 
     $code .= "<h3>Zugehörige Downloads</h3>";
     $code .= cms_downloadelemente($dbs, 'blogeintraege', $id);
+
+    $code .= "<h3>Zugehörige Links</h3>";
+    $code .= cms_artikellinkelemente($dbs, 'blogeintraege', $id);
 
     if (cms_r("website.dateien.hochladen")) {
       $inhalt = "<h3>Websitedateien</h3>";

@@ -12,7 +12,7 @@ function cms_schulhofnavigation () {
 	$mobil = "<span id=\"cms_mobilnavigation\" onclick=\"cms_einblenden('cms_mobilmenue_a')\"><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span><span class=\"cms_menuicon\"></span></span>";
 	$mobil .= "<div id=\"cms_mobilmenue_a\" style=\"display: none;\">";
 	$mobil .= "<div id=\"cms_mobilmenue_i\">";
-	$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button\" href=\"Website/Start\">Website</a> <a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></p>";
+	$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button\" href=\"\">Website</a> <a class=\"cms_button\" href=\"Schulhof/Nutzerkonto\">Schulhof</a></p>";
 	$mobil .= "<p class=\"cms_mobilmenue_knoepfe\"><a class=\"cms_button_ja\" href=\"Schulhof/Nutzerkonto\">Nutzerkonto</a> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('cms_mobilmenue_a')\">Schließen</span></p>";
 	$mobil .= "<h3>Aktivität</h3><p>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</p>";
 	$mobil .= "<div id=\"cms_maktivitaet_out\"><div id=\"cms_maktivitaet_in\"></div></div>";
@@ -605,6 +605,9 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	}
 	if (cms_r("schulhof.verwaltung.schule.[|adressen,mail]")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Schuldetails\">Schuldetails</a></li> ";
+	}
+	if (cms_r("technik.server.update")) {
+		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Update\">Schulhof aktualisieren</a></li> ";
 	}
 	if (cms_r("statistik.speicherplatz")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Speicherplatz/Statistik\">Speicherplatzstatistik</a></li> ";

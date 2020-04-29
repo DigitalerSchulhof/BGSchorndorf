@@ -1,15 +1,74 @@
 <div class="cms_spalte_i">
-<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
-
 <?php
+// Nach Updates prüfen
+if(cms_r("technik.server.update")) {
+	$GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
+	$basis_verzeichnis = dirname(__FILE__)."/../../../..";
 
+	if(!file_exists("$basis_verzeichnis/version/version")) {
+		echo cms_meldung("fehler", "<h4>Ungültige Version</h4><p>Bitte den Administrator benachrichtigen!</p>");
+	} else {
+		$version = trim(file_get_contents("$basis_verzeichnis/version/version"));
+
+		// Versionsverlauf von GitHub holen
+		$curl = curl_init();
+		$curlConfig = array(
+			CURLOPT_URL             => "$GitHub_base/releases/latest",
+			CURLOPT_RETURNTRANSFER  => true,
+			CURLOPT_HTTPHEADER      => array(
+				"Content-Type: application/json",
+				"Authorization: token $GITHUB_OAUTH",
+				"User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
+				"Accept: application/vnd.github.v3+json",
+			)
+		);
+		curl_setopt_array($curl, $curlConfig);
+		$neuste = curl_exec($curl);
+		curl_close($curl);
+
+		if(($neuste = json_decode($neuste, true)) === null || !count($neuste) || @$neuste["documentation_url"]/* Fehler mit API */)
+			echo cms_meldung_fehler();
+		else {
+			$neusteversion = $neuste["name"];
+
+			if(version_compare($neusteversion, $version, "gt")) {
+				echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version für den Digitalen Schulhof verfügbar: <b>".$neusteversion."</b></p>");
+				echo "<span class=\"cms_button_wichtig\" onclick=\"cms_link('Schulhof/Verwaltung/Update')\">Schulhof aktualisieren</span> ";
+			}
+		}
+	}
+}
+
+?><p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
+// eBedarf-Umfrage
+$ausgefuellt = false;
+$sql = $dbs->prepare("SELECT COUNT(*) FROM ebedarf WHERE id = ?");
+$sql->bind_param("i", $CMS_BENUTZERID);
+if ($sql->execute()) {
+	$sql->bind_result($test);
+	if ($sql->fetch()) {
+		if ($test != 0) {$ausgefuellt = true;}
+	}
+}
+$sql->close();
 
+if ((!$ausgefuellt) && (time() < mktime (23, 59, 59, 4, 28, 2020))) {
+	$meldung = "<h4>Bedarfsabfrage für Notebooks oder Tablets</h4>";
+	$meldung .= "<p>Das Burg-Gymnasium ist dabei eine Sammelbestellung an Notebook oder Tablets für den persönlichen Gebrauch zu organisieren, damit alle Schülerinnen und Schüler gleichberechtigt am eLearning teilnehmen können.";
+	if ($CMS_BENUTZERART == 's') {
+		$meldung .= " Damit eine solche Bestellung organisiert und der Bedarf ermittelt werden kann, brauchen wir Deine Hilfe!</p><p><b>Bitte nimm auch dann teil, wenn kein Bedarf besteht!</b></p>";
+	}
+	else {
+		$meldung .= " Damit eine solche Bestellung organisiert und der Bedarf ermittelt werden kann, brauchen wir Ihre Hilfe!</p><p><b>Bitte nehmen Sie auch dann teil, wenn kein Bedarf besteht!</b></p>";
+	}
+	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bedarfsabfrage\" class=\"cms_button\">Jetzt Teilnehmen!</a></p>";
+	echo cms_meldung("warnung", $meldung);
+}
 
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
-$dbs = cms_verbinden('s');
 $jetzt = time();
 $sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM schuljahre WHERE beginn <= ? AND ende >= ?");
 $sql->bind_param("ii", $jetzt, $jetzt);
@@ -46,6 +105,7 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 }
 
 $neuigkeiten = "";
+
 // Prüfen, ob Tagebücher zu füllen sind
 $sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM (SELECT DISTINCT kurse.id FROM kurse JOIN stufen ON kurse.stufe = stufen.id JOIN unterricht ON unterricht.tkurs = kurse.id WHERE kurse.schuljahr = ? AND stufen.tagebuch = 1 AND tlehrer = ?) AS x");
 $sql->bind_param("ii", $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID);
@@ -100,7 +160,7 @@ cms_trennen($db);
 $notifikationen = "<li class=\"cms_neuigkeit cms_neuigkeit_ganz\" onclick=\"cms_link('Schulhof/Nutzerkonto/Neuigkeiten')\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/neuigkeit.png\"></span>";
 $notifikationen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Neue Inhalte</h4>";
 $notifikationenda = false;
-$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, art FROM notifikationen WHERE person = ? GROUP BY art");
+$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl, IF(art ='o', 'd', art) as gart FROM notifikationen WHERE person = ? GROUP BY gart");
 $sql->bind_param("i", $CMS_BENUTZERID);
 if ($sql->execute()) {
 	$sql->bind_result($not, $art);
@@ -112,12 +172,16 @@ if ($sql->execute()) {
 				if ($art == 't') {$notifikationen .= "<p><b>$not</b> Termin</p>";}
 				if ($art == 'g') {$notifikationen .= "<p><b>$not</b> Galerie</p>";}
 				if ($art == 'a') {$notifikationen .= "<p><b>$not</b> Hausmeisterauftrag</p>";}
+				if ($art == 'd') {$notifikationen .= "<p><b>$not</b> Dateiänderung</p>";}
+				if ($art == 'o') {$notifikationen .= "<p><b>$not</b> Dateiänderung</p>";}
 			}
 			else {
 				if ($art == 'b') {$notifikationen .= "<p><b>$not</b> Blogeinträge</p>";}
 				if ($art == 't') {$notifikationen .= "<p><b>$not</b> Termine</p>";}
 				if ($art == 'g') {$notifikationen .= "<p><b>$not</b> Galerien</p>";}
 				if ($art == 'a') {$notifikationen .= "<p><b>$not</b> Hausmeisteraufträge</p>";}
+				if ($art == 'd') {$notifikationen .= "<p><b>$not</b> Dateiänderungen</p>";}
+				if ($art == 'o') {$notifikationen .= "<p><b>$not</b> Dateiänderungen</p>";}
 			}
 		}
 	}
@@ -125,6 +189,7 @@ if ($sql->execute()) {
 $sql->close();
 $notifikationen .= "</span></li>";
 if ($notifikationenda) {$neuigkeiten .= $notifikationen;}
+
 
 // Aufgaben ausgeben
 $aufgaben = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/aufgaben.png\"></span>";
@@ -161,6 +226,20 @@ if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.identitätsdiebstahl")) {
 				$aufgabenda = true;
 				if ($auf == 1) {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\"><b>$auf</b> Identitätsdiebstahl</a></p>";}
 				else {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Identitätsdiebstähle_behandeln\"><b>$auf</b> Identitätsdiebstähle</a></p>";}
+			}
+		}
+  }
+  $sql->close();
+}
+if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
+	$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM nutzerregistrierung");
+  if ($sql->execute()) {
+		$sql->bind_result($auf);
+		if ($sql->fetch()) {
+			if ($auf > 0) {
+				$aufgabenda = true;
+				if ($auf == 1) {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Registrierungen\"><b>$auf</b> Registrierungen</a></p>";}
+				else {$aufgaben .= "<p><a href=\"Schulhof/Aufgaben/Registrierungen\"><b>$auf</b> Registrierungen</a></p>";}
 			}
 		}
   }
@@ -224,11 +303,11 @@ $genehmigungen = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"
 $genehmigungen .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Genehmigungen</h4>";
 $genehmigungenda = false;
 $sql = "";
-if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM blogeintraege WHERE genehmigt = 0)";}
+if (cms_r("artikel.genehmigen.blogeinträge")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM blogeintraege WHERE genehmigt = 0)";}
 foreach ($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
 	if(cms_r("schulhof.gruppen.$gk.artikel.blogeinträge.genehmigen")) {
-		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
+		$sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."blogeintraegeintern WHERE genehmigt = 0)";
 	}
 }
 if (strlen($sql) > 0) {
@@ -248,11 +327,11 @@ if (strlen($sql) > 0) {
 }
 
 $sql = "";
-if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM termine WHERE genehmigt = 0)";}
+if (cms_r("artikel.genehmigen.termine")) {$sql .= " UNION (SELECT COUNT(*) AS anzahl, 'öffentlich' AS art FROM termine WHERE genehmigt = 0)";}
 foreach ($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
 	if(cms_r("schulhof.gruppen.$gk.artikel.termine.genehmigen")) {
-		$sql .= " UNION (SELECT COUNT(*) AS anzahl FROM $gk"."termineintern WHERE genehmigt = 0)";
+		$sql .= " UNION (SELECT COUNT(*) AS anzahl, '$gk' AS art FROM $gk"."termineintern WHERE genehmigt = 0)";
 	}
 }
 if (strlen($sql) > 0) {
@@ -304,10 +383,64 @@ if ($sql->execute()) {
 	}
 }
 $sql->close();
-$favoriten .= "</span></li>";
 if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
+
+$todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
+$todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
+$todob = "";
+$todot = "";
+$tododa = false;
+$sql = "";
+foreach($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	$sql .= "(SELECT 'b', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 't', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+}
+$sql = substr($sql, 0, -6);
+$sql = $dbs->prepare($sql);
+if ($sql->execute()) {
+	$sql->bind_result($a, $sbez, $g, $gbez, $abez, $adat);
+	while ($sql->fetch()) {
+		$tododa = true;
+		$sbez = cms_textzulink($sbez);
+		$monatsname = cms_monatsnamekomplett(date('m', $adat));
+		$jahr = date('Y', $adat);
+		$tag = date('d', $adat);
+
+
+		if($a == "b") {
+			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+			$todob .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
+		}
+		if($a == "t") {
+			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
+			$todot .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
+		}
+	}
+	$ueberschr = strlen($todob) > 0 && strlen($todot) > 0;
+	if(strlen($todob)) {
+		if($ueberschr) {
+			$todo .= "<h6>Blogeinträge:</h6>";
+		}
+		$todo .= $todob;
+	}
+	if(strlen($todot)) {
+		if($ueberschr) {
+			$todo .= "<h6>Termine:</h6>";
+		}
+		$todo .= $todot;
+	}
+}
+$sql->close();
+
+$todo .= "</span></li></ul>";
+
+if($tododa) {
+	echo $todo;
+}
+
 ?>
 </div>
 
@@ -347,7 +480,13 @@ else {
 	<li><span id="cms_reiter_aktuelles_0" class="cms_reiter_aktiv" onclick="cms_reiter('aktuelles', 0,4)">Termine</span></li>
 	<li><span id="cms_reiter_aktuelles_1" class="cms_reiter" onclick="cms_reiter('aktuelles', 1,4)">Blogs</span></li>
 	<li><span id="cms_reiter_aktuelles_2" class="cms_reiter" onclick="cms_reiter('aktuelles', 2,4)">Gruppen</span></li>
-	<li><span id="cms_reiter_aktuelles_3" class="cms_reiter" onclick="cms_reiter('aktuelles', 3,4)">Aufgaben</span></li>
+<?php
+	$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
+
+	if(strlen($sonderrollencodeverwaltung) > 0) {
+		echo "<li><span id=\"cms_reiter_aktuelles_3\" class=\"cms_reiter\" onclick=\"cms_reiter('aktuelles', 3,4)\">Aufgaben</span></li>";
+	}
+ ?>
 	<li><span id="cms_reiter_aktuelles_4" class="cms_reiter" onclick="cms_reiter('aktuelles', 4,4)">Notizen</span></li>
 </ul>
 
@@ -403,7 +542,6 @@ else {
 <div class="cms_reitermenue_o" id="cms_reiterfenster_aktuelles_3">
 	<div class="cms_reitermenue_i">
 		<?php
-		$sonderrollencodeverwaltung = cms_sonderrollen_generieren();
 		if (strlen($sonderrollencodeverwaltung) != 0) {
 			$sonderrollencode = "";
 			$sonderrollencode .= "<ul class=\"cms_aktionen_liste\">".$sonderrollencodeverwaltung."</ul>";
