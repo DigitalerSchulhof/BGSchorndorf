@@ -6,6 +6,7 @@ version:
     neuerungen:
       - Nach einem Update werden Neuigkeiten auf der Startseite einmalig angezeigt.
       - Notifikationen von Dateiänderungen verschwinden wenn die Gruppe geöffnet wird.
+      - Der Updater liest den Versionsverlauf nun korrekt.
   0_7:
     version: 0.7
     tag: Mittwoch, den 29. April 2020
