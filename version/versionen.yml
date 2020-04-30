@@ -4,7 +4,8 @@ version:
     version: 0.7.1
     tag: Donnerstag, den 30. April 2020
     neuerungen:
-      - Nach einem Update werden Neuigkeiten auf der Startseite einmalig angezeitg.
+      - Nach einem Update werden Neuigkeiten auf der Startseite einmalig angezeigt.
+      - Notifikationen von Dateiänderungen verschwinden wenn die Gruppe geöffnet wird.
   0_7:
     version: 0.7
     tag: Mittwoch, den 29. April 2020

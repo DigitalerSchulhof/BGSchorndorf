@@ -81,6 +81,12 @@ if (!$fehler) {
 			$sql->fetch();
 			$sql->close();
 
+			$sql = "DELETE FROM notifikationen WHERE person = ? AND art IN ('d', 'o') AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND gruppenid = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("isi", $CMS_BENUTZERID, $g, $gruppenid);
+			$sql->execute();
+			$sql->close();
+
 			// if($GRUPPENRECHTE["mitglied"] && $chataktiv) {
 			// 	$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 			// 		$code .= "<h2>Chat</h2>";

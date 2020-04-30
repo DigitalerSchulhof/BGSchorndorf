@@ -39,7 +39,7 @@ function cms_notifikationen_ausgeben($dbs, $person) {
       $neuigkeiten .= "<p class=\"cms_notiz\">".$gruppe['bezeichnung']."</p>";
       $neuigkeiten .= "</span>";
       $neuigkeiten .= "<span class=\"cms_neuigkeit_schliessen cms_button_nein\" onclick=\"cms_neuigkeit_schliessen('".$daten['id']."')\"><span class=\"cms_hinweis\">Neuigkeit schließen</span>&times;</span>";
-      if (($daten['status'] != 'l') && ($daten['status'] != 'a') && ($daten['art'] != 'a')) {
+      if (($daten['status'] != 'l' || in_array($daten['art'], array('d', 'o'))) && ($daten['status'] != 'a') && ($daten['art'] != 'a')) {
         $neuigkeiten .= "<span class=\"cms_neuigkeit_oeffnen cms_button_ja\" onclick=\"cms_link('".$daten['link']."')\"><span class=\"cms_hinweis\"> Neuigkeit öffnen</span>»</span>";
       }
     $neuigkeiten .= "</li>";

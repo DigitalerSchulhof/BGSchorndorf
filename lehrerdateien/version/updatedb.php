@@ -14,16 +14,8 @@
 
 	-- Version
 
+	Aufeinander folgende Versionen ohne Änderungen dazwischen können ausgelassen werden.
+
 */
 
--- 0.6
-
--- 0.6.1
-
--- 0.6.2
-
--- 0.6.3
-
--- 0.6.4
-
--- 0.7
+-- 0.7.1
