@@ -92,7 +92,7 @@ function cms_brotkrumen($url, $aktionen = true) {
 		(
 			preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)		||
 			preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)
-		)) {
+		) && count($url) == 10) {
 			$dbs = cms_verbinden("s");
 			$schuljahr = cms_linkzutext($url[2]);
 			$g = cms_linkzutext($url[3]);

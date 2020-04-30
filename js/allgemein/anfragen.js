@@ -6,12 +6,23 @@ function cms_ajaxanfrage (fehler, formulardaten, wennrichtig, host) {
 			if (anfrage.readyState==4 && anfrage.status==200) {
 				if (wennrichtig !== null) {wennrichtig(anfrage.responseText);}
 			}
+			if(anfrage.readyState==4 && anfrage.status!=200) {
+				cms_meldung_an('fehler', 'Unbekannter Fehler', '<p>Es ist ein unbekannter Fehler aufgetreten. Bitte den Administrator mit einem detailierten Bericht benachrichtigen, damit dieser Fehler behoben werden kann!<br>Die Anfrage wird in 5 Sekunden wiederholt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				setTimeout(function () {
+					cms_laden_an("Anfrage wiederholen", "Die Anfrage wird wiederholt");
+					cms_ajaxanfrage (fehler, formulardaten, wennrichtig, host);
+				}, 5000);
+			}
 		};
+		anfrage.onerror = function() {
+			cms_meldung_an('fehler', 'Unbekannter Fehler', '<p>Es ist ein unbekannter Fehler aufgetreten. Bitte den Administrator mit einem detailierten Bericht benachrichtigen, damit dieser Fehler behoben werden kann!<br>Die Anfrage wird in 5 Sekunden wiederholt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+			setTimeout(function () {
+				cms_laden_an("Anfrage wiederholen", "Die Anfrage wird wiederholt");
+				cms_ajaxanfrage (fehler, formulardaten, wennrichtig, host);
+			}, 5000);
+		}
 		anfrage.open("POST",host+"php/oeffentlich/anfragen/anfrage.php",true);
 		anfrage.send(formulardaten);
-	}
-	else {
-		cms_meldung_fehler();
 	}
 }
 

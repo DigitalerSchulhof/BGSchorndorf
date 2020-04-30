@@ -1,5 +1,5 @@
 <?php
-$beta = "Version $CMS_VERSION – ";
+$v = "<span><a href=\"https://github.com/DigitalerSchulhof\" style=\"color: inherit;\" target=\"_blank\">Digitaler Schulhof</a> – Version $CMS_VERSION –</span>";
 
 
 if ($CMS_ANGEMELDET) {
@@ -9,7 +9,7 @@ if ($CMS_ANGEMELDET) {
 		$lehrer = ", Lehrerzimmer";
 		$class = "cms_netzcheckstatus_lehrer";
 	}
-	echo "<div id=\"cms_netzcheckstatus\" class=\"$class\">".$beta." <span id=\"cms_netzcheckstatus_sh\">Schulhof</span><span id=\"cms_netzcheckstatus_lz\">$lehrer</span></div>";
+	echo "<div id=\"cms_netzcheckstatus\" class=\"$class\">".$v." <span id=\"cms_netzcheckstatus_sh\">Schulhof</span><span id=\"cms_netzcheckstatus_lz\">$lehrer</span></div>";
 }
 
 if ($CMS_URL[0] != 'App') {

@@ -5,7 +5,8 @@ version:
     tag: Donnerstag, den 30. April 2020
     neuerungen:
       - Ein kleiner Fehler im Lehrernetz wurde behoben.
-      - Testphase gilt als beendet.
+      - Ein interner Fehler bezüglich ToDo's wurde behoben.
+      - Testphase gilt als beendet!
   0_7_2:
     version: 0.7.2
     tag: Donnerstag, den 30. April 2020
