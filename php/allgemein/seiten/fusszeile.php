@@ -1,5 +1,5 @@
 <?php
-$beta = "&beta;-Testphase Version $CMS_VERSION – ";
+$beta = "Version $CMS_VERSION – ";
 
 
 if ($CMS_ANGEMELDET) {
