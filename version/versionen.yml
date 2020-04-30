@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_7_2:
+    version: 0.7.2
+    tag: Donnerstag, den 30. April 2020
+    neuerungen:
+      - Mehrfaches Anzeigen der Neuigkeiten behoben.
   0_7_1:
     version: 0.7.1
     tag: Donnerstag, den 30. April 2020
