@@ -14,15 +14,9 @@
 
 	-- Version
 
+	Aufeinander folgende Versionen ohne Änderungen dazwischen können ausgelassen werden.
+
 */
-
--- 0.6
-
--- 0.6.1
-
--- 0.6.2
-
--- 0.6.3
 
 -- 0.6.4
 
@@ -50,3 +44,9 @@ ALTER TABLE `sonstigegruppenblogeintraglinks` DROP FOREIGN KEY `blogeintragsonst
 ALTER TABLE `sonstigegruppenblogeintraglinks` ADD CONSTRAINT `blogeintragsonstigegruppenblogeintraglinksblogeintraege` FOREIGN KEY (`blogeintrag`) REFERENCES `sonstigegruppenblogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- 0.7
+
+CREATE TABLE `updatenews` ( `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `gesehen` TINYINT NULL DEFAULT NULL ) ENGINE = InnoDB;
+ALTER TABLE `updatenews` ADD CONSTRAINT `updatenewsperson` FOREIGN KEY (`person`) REFERENCES `nutzerkonten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `updatenews` ADD PRIMARY KEY (`person`);
+
+-- 0.7.1

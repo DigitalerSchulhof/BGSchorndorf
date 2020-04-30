@@ -173,7 +173,7 @@ body {
 
 // COMPUTER & TABLET
 .cms_spalte_2, .cms_spalte_23, .cms_spalte_25, .cms_spalte_15, .cms_spalte_3, .cms_spalte_6,
-.cms_spalte_60, .cms_spalte_40, .cms_spalte_20, .cms_spalte_4, .cms_spalte_34 {
+.cms_spalte_60, .cms_spalte_40, .cms_spalte_20, .cms_spalte_4, .cms_spalte_34, .cms_spalte_45 {
 	position: relative;
 }
 
@@ -240,6 +240,12 @@ body {
 	width: 75%;
 }
 
+.cms_optimierung_P .cms_spalte_45,
+.cms_optimierung_T .cms_spalte_45 {
+	float: left;
+	width: 80%;
+}
+
 // COMPUTER
 .cms_optimierung_P.cms_seite_normal #cms_kopfzeile_m,
 .cms_optimierung_P.cms_seite_normal #cms_hauptteil_m,
@@ -269,7 +275,8 @@ body {
 .cms_optimierung_H.cms_seite_normal .cms_spalte_60,
 .cms_optimierung_H.cms_seite_normal .cms_spalte_40,
 .cms_optimierung_H.cms_seite_normal .cms_spalte_4,
-.cms_optimierung_H.cms_seite_normal .cms_spalte_34
+.cms_optimierung_H.cms_seite_normal .cms_spalte_34,
+.cms_optimierung_H .cms_seite_normal .cms_spalte_45,
 .cms_optimierung_H.cms_seite_normal .cms_spalte_6 {
 	float: none;
 	width: 100%;

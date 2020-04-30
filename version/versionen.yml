@@ -1,5 +1,12 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_7_1:
+    version: 0.7.1
+    tag: Donnerstag, den 30. April 2020
+    neuerungen:
+      - Nach einem Update werden Neuigkeiten auf der Startseite einmalig angezeigt.
+      - Notifikationen von Dateiänderungen verschwinden wenn die Gruppe geöffnet wird.
+      - Der Updater liest den Versionsverlauf nun korrekt.
   0_7:
     version: 0.7
     tag: Mittwoch, den 29. April 2020
@@ -31,7 +38,7 @@ version:
     tag: Montag, den 27. April 2020
     neuerungen:
       - Die Nutzerkonto-Startseite enthielt Bugs beim Erstellen von öffentlichen Blogeinträgen und Terminen sowie bei Nutzern, deren Aufführungen unter »Aktuelles« nicht alle Reiter enthielten.
-      - Die To-Do-Neuigkeit wurde zur besseren und übersichtlicheren Lesbarkeit verbreitert und verschoben.
+      - Die ToDo-Neuigkeit wurde zur besseren und übersichtlicheren Lesbarkeit verbreitert und verschoben.
       - Aktualisierte Dateien werden sofort übernommen und veraltete gecachte Dateien vernachlässigt.
       - Updates erzeugen auch automatisch eine neue Version des Designs.
       - Blogeinträge und Termine in abonnierten Gruppen werden automatisch an die ToDo-Liste angehängt.
