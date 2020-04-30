@@ -61,12 +61,12 @@
 		.cms_optimierung_P .cms_spalte_60, .cms_optimierung_P .cms_spalte_40,
 		.cms_optimierung_P .cms_spalte_4, .cms_optimierung_P .cms_spalte_34,
 		.cms_optimierung_P .cms_spalte_6, .cms_optimierung_P .cms_spalte_15,
-		.cms_optimierung_P .cms_spalte_25,
+		.cms_optimierung_P .cms_spalte_25, .cms_optimierung_P .cms_spalte_45,
 		.cms_optimierung_T .cms_spalte_2, .cms_optimierung_T .cms_spalte_3,
 		.cms_optimierung_T .cms_spalte_60, .cms_optimierung_T .cms_spalte_40,
 		.cms_optimierung_T .cms_spalte_4, .cms_optimierung_T .cms_spalte_34,
 		.cms_optimierung_T .cms_spalte_6 .cms_optimierung_T .cms_spalte_15,
-		.cms_optimierung_T .cms_spalte_25 {
+		.cms_optimierung_T .cms_spalte_25, .cms_optimierung_T .cms_spalte_45 {
 			float: none !important;
 			width: 100%;
 			padding-bottom: 40px !important;

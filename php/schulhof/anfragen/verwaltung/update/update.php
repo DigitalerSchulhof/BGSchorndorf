@@ -164,11 +164,17 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     $dbs->multi_query($sql);
     $dbs->close();
 
+    $dbs = cms_verbinden("s");
+
+    $sql = "TRUNCATE `updatenews`";
+    $sql = $dbs->prepare($sql);
+    $sql->execute();
+    $sql->close();
+
     echo "Styles neukompilieren<br>";
     flush();
     ob_flush();
-
-    $dbs = cms_verbinden("s");
+    
     $sql = "SELECT name, wert, alias FROM style";
     $sql = $dbs->prepare($sql);
 

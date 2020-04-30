@@ -1,5 +1,5 @@
 <div class="cms_spalte_i">
-<?php
+<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {
 	$GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
@@ -39,7 +39,33 @@ if(cms_r("technik.server.update")) {
 	}
 }
 
-?><p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
+// Das ist neu
+
+$sql = "INSERT INTO updatenews (person, gesehen) VALUES (?, 1) ON DUPLICATE KEY UPDATE person=person";
+$sql = $dbs->prepare($sql);
+$sql->bind_param("i", $CMS_BENUTZERID);
+$sql->execute();
+$num = $sql->affected_rows;
+$sql->close();
+
+include_once(dirname(__FILE__)."/../../../allgemein/funktionen/yaml.php");
+use Async\Yaml;
+if($num > 0 || true) {
+	$aeltere = "";
+	$versionen = Yaml::loader(dirname(__FILE__)."/../../../../version/versionen.yml")["version"];
+	$version = array_values($versionen)[0];
+
+	$meldung  = "<h4>".$version["version"]."</h4>";
+	$meldung .= "<h6>Das ist neu:</h6>";
+	$meldung .= "<ul>";
+	foreach($version["neuerungen"] as $n) {
+		$meldung .= "<li>$n</li>";
+	}
+	$meldung .= "</ul>";
+	echo cms_meldung("info", $meldung);
+}
+
+?><?php
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
 // eBedarf-Umfrage
