@@ -19,7 +19,7 @@ function cms_generiere_passwort () {
     return $passwort;
 }
 
-function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
+function cms_generiere_kleinste_id ($tabelle, $netz = "l", $benutzer = '-') {
   global $CMS_BENUTZERID;
   $fehler = false;
   $id = '-';
