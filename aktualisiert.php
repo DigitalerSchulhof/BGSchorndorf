@@ -5,7 +5,7 @@
 		<title>Aktualisiert</title>
 	</head>
 	<body style="padding: 0; margin: 0; overflow: hidden">
-		<div id="status" style="top: 0;left: 0;position: fixed;z-index: 100;background: wheat;background: white;width: 100%;height: 50px;text-align: center;line-height: 50px">Der Digitale Schulhof wird aktualisiert.</div>
+		<div id="status" style="top: 0;left: 0;position: fixed;z-index: 100;background: wheat;background: white;width: 100%;height: 70px;text-align: center;line-height: 70px; font-family: sans-serif">Der Digitale Schulhof wird aktualisiert.</div>
 		<canvas style="width: 100%; height: 100%; position: fixed; top: 50px; left: 0px;"></canvas>
 		<script>
 			function random(min, max) {

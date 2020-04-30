@@ -574,6 +574,6 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 	cms_trennen($dbs);
 }
 else {
-	echo "FEHLER";
+	echo "BERECHTIGUNG";
 }
 ?>

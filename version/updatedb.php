@@ -50,3 +50,7 @@ ALTER TABLE `updatenews` ADD PRIMARY KEY (`person`);
 ALTER TABLE `updatenews` ADD CONSTRAINT `updatenewsperson` FOREIGN KEY (`person`) REFERENCES `nutzerkonten`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- 0.7.1
+
+-- 0.7.2
+
+-- 0.7.3
