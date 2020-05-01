@@ -121,5 +121,9 @@
 			margin-left: 0px !important;
 			float: none !important;
 		}
+
+		.cms_blockwahl {
+			width: 100%;
+		}
 	}
 }

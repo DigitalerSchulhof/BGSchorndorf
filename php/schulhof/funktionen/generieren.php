@@ -868,4 +868,9 @@ function strposX($haystack, $needle, $number){
     }
 }
 
+function cms_format_preis($eingabe) {
+  $eingabe = ($eingabe*1000+1)/1000;
+  return str_replace(".", ",", substr($eingabe, 0, -1));
+}
+
 ?>

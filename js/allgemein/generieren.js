@@ -169,6 +169,7 @@ function cms_neue_captcha(uid) {
 
   cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
+
 var cms_stopschreiben_timeouts = {};
 function cms_stopschreiben(element, callback) {
   var feld = $(element);
@@ -177,4 +178,9 @@ function cms_stopschreiben(element, callback) {
   }
   if(feld.val())
     cms_stopschreiben_timeouts[feld] = setTimeout(callback, 1000);
+}
+
+function cms_format_preis(wert) {
+  wert = (wert * 1000 + 1)/1000;
+  return ((wert+"").substr(0,(wert+"").length-1)).replace(".", ",");
 }

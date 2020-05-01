@@ -254,6 +254,44 @@
 #cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @h_haupt_meldungerfolghinter;}
 #cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @h_haupt_abstufung2;}
 
+.cms_blockwahl_box {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	justify-content: space-between;
+}
+
+.cms_blockwahl {
+	padding: 10px;
+	width: 50%;
+	transition: 250ms ease-in-out;
+	position: relative;
+}
+
+.cms_blockwahl:hover {
+	background: @h_haupt_abstufung1
+}
+
+.cms_blockwahl img {
+	width: 100%;
+}
+
+.cms_preis {
+	position: absolute;
+	padding: 10px;
+	right: 10px;
+	top: 50px;
+	border-top-left-radius: @haupt_radiusmittel;
+	border-bottom-left-radius: @haupt_radiusmittel;
+	font-size: 150%;
+	font-weight: bold;
+	background: @h_haupt_meldunginfohinter;
+}
+
+.cms_bestellen_box {
+	margin-top: 40px;
+}
+
 // DUNKEL;
 
 #cms_dsgvo_datenschutz .cms_meldung {
@@ -319,6 +357,14 @@
 #cms_speicherplatz_schulhof_balken, #cms_speicherplatz_schulhof_icon {background: @d_haupt_meldunginfohinter;}
 #cms_speicherplatz_gruppen_balken, #cms_speicherplatz_gruppen_icon {background: @d_haupt_meldungerfolghinter;}
 #cms_speicherplatz_personen_balken, #cms_speicherplatz_personen_icon {background: @d_haupt_abstufung2;}
+
+.cms_blockwahl:hover {
+	background: @d_haupt_abstufung1;
+}
+
+.cms_preis {
+	background: @d_haupt_meldunginfohinter;
+}
 
 // DRUCKEN;
 
