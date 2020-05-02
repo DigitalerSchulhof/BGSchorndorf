@@ -44,11 +44,13 @@
 .cms_button, .cms_iconbutton, .cms_aktion_klein, .cms_datentypwahl, .cms_toggle,
 .cms_toggle_aktiv, .cms_toggle_inaktiv {
 	background-color: @h_button_hintergrund;
+	border: 1px solid @h_haupt_hintergrund;
 	color: @h_button_schrift;
 }
 
 .cms_button:hover, .cms_iconbutton:hover, .cms_aktion_klein:hover, .cms_datentypwahl:hover {
 	background-color: @h_button_hintergrundhover;
+	border: 1px solid transparent;
 	color: @h_button_schrifthover;
 }
 
@@ -317,6 +319,7 @@ h6+.cms_toggleeinblenden {
 .cms_button, .cms_iconbutton, .cms_aktion_klein, .cms_datentypwahl, .cms_toggle,
 .cms_toggle_aktiv, .cms_toggle_inaktiv {
 	background-color: @d_button_hintergrund;
+	border: 1px solid @d_haupt_hintergrund;
 	color: @d_button_schrift;
 }
 

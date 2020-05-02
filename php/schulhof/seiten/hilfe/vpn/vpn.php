@@ -6,7 +6,6 @@ $zugriff = cms_r("lehrerzimmer.zugriff");
 if (!$zugriff) {
 	echo cms_meldung_berechtigung();
 }
-
 else {
 ?>
 

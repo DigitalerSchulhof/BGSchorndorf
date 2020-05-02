@@ -193,7 +193,7 @@ outline: 0;
 
 .note-btn-block+.note-btn-block {margin-top: 5px;}
 
-input[type=\"submit\"].note-btn-block, input[type=\"reset\"].note-btn-block, input[type=\"button\"].note-btn-block {width: 100%;}
+input[type="submit"].note-btn-block, input[type="reset"].note-btn-block, input[type="button"].note-btn-block {width: 100%;}
 
 button.close {
 	border: 0;
@@ -589,7 +589,7 @@ word-wrap: break-word;
 	background-color: @h_haupt_hintergrund;
 }
 
-.note-editor.note-frame .note-editing-area .note-editable[contenteditable=\"false\"] {background-color: @h_haupt_abstufung1;}
+.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {background-color: @h_haupt_abstufung1;}
 
 .note-editor.note-frame .note-editing-area .note-codable {
 	display: none;
