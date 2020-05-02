@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_7_4:
+    version: 0.7.4
+    tag: Samstag, den 02. Mai 2020
+    neuerungen:
+      - In der Druckansicht von Blogeinträgen sind nun Vorschaubilder enthalten.
+      - Formatierungsfehler in der Druckansicht behoben.
   0_7_3:
     version: 0.7.3
     tag: Donnerstag, den 30. April 2020
