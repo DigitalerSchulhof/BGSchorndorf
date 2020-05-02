@@ -32,7 +32,7 @@ writing-mode: vertical-rl;
 .cms_formular th {
 	padding-top: 10px !important;
 	line-height: 1.5em;
-vertical-align: top !important;
+	vertical-align: top !important;
 }
 
 .cms_formular tbody, .cms_formular thead {

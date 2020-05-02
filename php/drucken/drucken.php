@@ -101,6 +101,10 @@
 			include_once("php/allgemein/funktionen/brotkrumen.php");
 			$CMS_MONATELINK = "(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)";
 
+			if (preg_match("/^Website\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ)) {
+				include('blog.php');
+			}
+
 			if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ)) {
 				include('blog.php');
 			}

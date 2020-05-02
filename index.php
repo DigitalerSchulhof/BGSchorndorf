@@ -193,7 +193,7 @@
 
 		function js($js) {
 			global $CMS_VERSION;
-			$v = $CMS_VERSION;
+			$cb = $CMS_VERSION;
 			if(file_exists("$js")) {
 				$cb = substr(md5(filemtime("$js")), 0, 7);
 			}
