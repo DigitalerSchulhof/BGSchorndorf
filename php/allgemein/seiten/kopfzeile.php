@@ -37,7 +37,7 @@
 					echo "<a id=\"cms_logo\" href=\"".$CMS_WICHTIG['Schule Domain']."/App\">";
 				}
 
-				echo "<img id=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGO\">";
+				echo "<img id=\"cms_logo_bild\" src=\"dateien/schulspezifisch/logo.png\">";
 				echo "<span id=\"cms_logo_schrift\">";
 					echo "<span id=\"cms_logo_o\">".$CMS_WICHTIG['Schulname']."</span>";
 					echo "<span id=\"cms_logo_u\">".$CMS_WICHTIG['Schule Ort']."</span>";

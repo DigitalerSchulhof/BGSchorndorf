@@ -55,7 +55,7 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">"; ?>
+	<?php echo "<link type=\"image/png\" href=\"dateien/schulspezifisch/favicon.ico\" rel=\"shortcut icon\">"; ?>
 	<title>&nbsp;</title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
@@ -69,10 +69,10 @@
 		$dbs = cms_verbinden('s');
 		$druckfehler = true;
 		function cms_druckkopf() {
-			global $CMS_WICHTIG, $CMS_LOGODRUCK;
+			global $CMS_WICHTIG;
 			$code = "<div class=\"cms_druckkopf\">";
 				$code .= "<span class=\"cms_logo\">";
-					$code .= "<img class=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGODRUCK\">";
+					$code .= "<img class=\"cms_logo_bild\" src=\"dateien/schulspezifisch/logodruck.png\">";
 					$code .= "<span class=\"cms_logo_schrift\">";
 						$code .= "<span class=\"cms_logo_o\">".$CMS_WICHTIG['Schulname']."</span>";
 						$code .= "<span class=\"cms_logo_u\">".$CMS_WICHTIG['Schule Ort']."</span>";

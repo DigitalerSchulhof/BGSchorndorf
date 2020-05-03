@@ -109,7 +109,7 @@
 	$HTML .= "<body style=\"background: #ffffff;font-family: sans-serif;font-size: 13px;font-weight: normal;padding: 0;margin: 0;list-style-type: none;line-height: 1.2em;text-decoration: none;box-sizing: border-box;\">";
 	$HTML .= "<div style=\"width:100%;padding: 10px;margin-bottom: 10px; border-bottom: 3px solid #000000;text-align: left;box-sizing: border-box;\">";
 		$HTML .= "<a style=\"display:inline-block;text-decoration:none;font-size:inherit; text-align: left;\" href=\"".$CMS_WICHTIG['Schule Domain']."\">";
-		  $HTML .= "<img style=\"float:left;padding-right:10px; color: #000000;\" src=\"".$CMS_WICHTIG['Schule Domain']."/res/logos/$CMS_LOGO\"/>";
+		  $HTML .= "<img style=\"float:left;padding-right:10px; color: #000000;\" src=\"".$CMS_WICHTIG['Schule Domain']."/dateien/schulspezifisch/logo.png\"/>";
 	    $HTML .= "<span style=\"float:left;display:block; color: #000000;\">";
 	      $HTML .= "<span style=\"font-weight:bold;font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">".$CMS_WICHTIG['Schulname']."</span>";
 	      $HTML .= "<span style=\"font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">".$CMS_WICHTIG['Schule Ort']."</span>";
