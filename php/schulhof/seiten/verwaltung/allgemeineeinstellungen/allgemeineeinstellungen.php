@@ -486,7 +486,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "</tr>";
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung1_mailF\" style=\"$style\">";
 		$code .= "<th>eMailadresse:</th>";
-		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete1_mail\" id=\"cms_schulhof_externegeraete1_mail\" value=\"".$einstellungen['Externe Geräteverwaltung1 Mail']."\" onkeyup=\"cms_check_mail_wechsel('externegeraete1_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete1_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
+		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete1_mail\" id=\"cms_schulhof_externegeraete1_mail\" value=\"".$einstellungen['Externe Geräteverwaltung1 Mail']."\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_externegeraete1_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete1_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";
@@ -527,7 +527,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "</tr>";
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung2_mailF\" style=\"$style\">";
 		$code .= "<th>eMailadresse:</th>";
-		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete2_mail\" id=\"cms_schulhof_externegeraete2_mail\" value=\"".$einstellungen['Externe Geräteverwaltung2 Mail']."\" onkeyup=\"cms_check_mail_wechsel('externegeraete2_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete2_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
+		$code .= "<td><input type=\"text\" name=\"cms_schulhof_externegeraete2_mail\" id=\"cms_schulhof_externegeraete2_mail\" value=\"".$einstellungen['Externe Geräteverwaltung2 Mail']."\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_externegeraete2_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_externegeraete2_mail_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";

@@ -35,7 +35,7 @@ if (cms_angemeldet() && cms_r("schulhof.information.newsletter.schreiben")) {
 	if(!$sql->execute())
 		die("FEHLER");
 	while($sql->fetch())
-		cms_mailsenden($empfn, $empfm, "$CMS_SCHULE $CMS_ORT $bez", cms_textaustextfeld_anzeigen($text."\n\n\n<div style=\"font-size: 9px\">Newsletter abbestellen: <a href=\"$CMS_DOMAIN/Website/Newsletter_abbestellen/$token\">$CMS_DOMAIN/Website/Newsletter_abbestellen/$token</a></div>"), $text."\n\n\Newsletter abbestellen: $CMS_DOMAIN/Website/Newsletter_abbestellen/$token");
+		cms_mailsenden($empfn, $empfm, $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']." $bez", cms_textaustextfeld_anzeigen($text."\n\n\n<div style=\"font-size: 9px\">Newsletter abbestellen: <a href=\"".$CMS_WICHTIG['Schule Domain']."/Website/Newsletter_abbestellen/$token\">".$CMS_WICHTIG['Schule Domain']."/Website/Newsletter_abbestellen/$token</a></div>"), $text."\n\n\Newsletter abbestellen: ".$CMS_WICHTIG['Schule Domain']."/Website/Newsletter_abbestellen/$token");
 	cms_trennen($dbs);
 
 	echo "ERFOLG";

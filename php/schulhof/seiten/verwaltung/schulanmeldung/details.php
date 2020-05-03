@@ -205,8 +205,8 @@ function cms_schulanmeldung_ausgeben ($id) {
 	$code .= "<tr><th>Telefonnummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_telefon2\" id=\"cms_voranmeldung_schueler_telefon2\" value=\"$stelefon2\"></td></tr>";
 	$code .= "<tr><th>Handynummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_handy1\" id=\"cms_voranmeldung_schueler_handy1\" value=\"$shandy1\"></td></tr>";
 	$code .= "<tr><th>Handynummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_handy2\" id=\"cms_voranmeldung_schueler_handy2\" value=\"$shandy2\"></td></tr>";
-	$code .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_schueler_mail\" id=\"cms_schulhof_voranmeldung_schueler_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('voranmeldung_schueler_mail');\" value=\"$smail\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_schueler_mail_icon\"></span></td></td></tr>";
-	$CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('voranmeldung_schueler_mail');";
+	$code .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_schueler_mail\" id=\"cms_schulhof_voranmeldung_schueler_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_voranmeldung_schueler_mail');\" value=\"$smail\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_schueler_mail_icon\"></span></td></td></tr>";
+	$CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('cms_schulhof_voranmeldung_schueler_mail');";
 	$code .= "</table>";
 
 	$code .= "<h3>Schullaufbahn</h3>";
@@ -260,8 +260,8 @@ function cms_schulanmeldung_ausgeben ($id) {
 	$code .= "<tr><th>Telefonnummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_telefon1\" id=\"cms_voranmeldung_ansprechpartner1_telefon1\" value=\"".$ansprechpartner['eins']['telefon1']."\"></td></tr>";
 	$code .= "<tr><th>Telefonnummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_telefon2\" id=\"cms_voranmeldung_ansprechpartner1_telefon2\" value=\"".$ansprechpartner['eins']['telefon2']."\"></td></tr>";
 	$code .= "<tr><th>Handynummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_handy1\" id=\"cms_voranmeldung_ansprechpartner1_handy1\" value=\"".$ansprechpartner['eins']['handy']."\"></td></tr>";
-	$code .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_ansprechpartner1_mail\" id=\"cms_schulhof_voranmeldung_ansprechpartner1_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('voranmeldung_ansprechpartner1_mail');\" value=\"".$ansprechpartner['eins']['mail']."\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_ansprechpartner1_mail_icon\"></span></td></td></tr>";
-	$CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('voranmeldung_ansprechpartner1_mail');";
+	$code .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_ansprechpartner1_mail\" id=\"cms_schulhof_voranmeldung_ansprechpartner1_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_voranmeldung_ansprechpartner1_mail');\" value=\"".$ansprechpartner['eins']['mail']."\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_ansprechpartner1_mail_icon\"></span></td></td></tr>";
+	$CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('cms_schulhof_voranmeldung_ansprechpartner1_mail');";
 	$code .= "</table>";
 	$code .= "</div>";
 	$code .= "</div>";
@@ -293,8 +293,8 @@ function cms_schulanmeldung_ausgeben ($id) {
 	$inhalt .= "<tr><th>Telefonnummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_telefon1\" id=\"cms_voranmeldung_ansprechpartner2_telefon1\" value=\"".$ansprechpartner['zwei']['telefon1']."\"></td></tr>";
 	$inhalt .= "<tr><th>Telefonnummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_telefon2\" id=\"cms_voranmeldung_ansprechpartner2_telefon2\" value=\"".$ansprechpartner['zwei']['telefon2']."\"></td></tr>";
 	$inhalt .= "<tr><th>Handynummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_handy1\" id=\"cms_voranmeldung_ansprechpartner2_handy1\" value=\"".$ansprechpartner['zwei']['handy']."\"></td></tr>";
-	$inhalt .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_ansprechpartner2_mail\" id=\"cms_schulhof_voranmeldung_ansprechpartner2_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('voranmeldung_ansprechpartner2_mail');\" value=\"".$ansprechpartner['zwei']['mail']."\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_ansprechpartner2_mail_icon\"></span></td></td></tr>";
-	$CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('voranmeldung_ansprechpartner2_mail');";
+	$inhalt .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_ansprechpartner2_mail\" id=\"cms_schulhof_voranmeldung_ansprechpartner2_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_voranmeldung_ansprechpartner2_mail');\" value=\"".$ansprechpartner['zwei']['mail']."\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_ansprechpartner2_mail_icon\"></span></td></td></tr>";
+	$CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('cms_schulhof_voranmeldung_ansprechpartner2_mail');";
 	$inhalt .= "</table>";
 
 	$code .= cms_toggleeinblenden_generieren ('cms_ansprechpartner2', 'Zweiten Ansprechpartner erstellen', 'Zweiten Ansprechpartner entfernen', $inhalt, $ansprechpartner2);

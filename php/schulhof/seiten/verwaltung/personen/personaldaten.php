@@ -498,10 +498,10 @@ function cms_personaldaten_benutzerkonto_aendern($id) {
 					echo "<td><input type=\"mail\" value=\"$profildaten_email\" ";
 
 					if ($verwaltung) {
-						echo "name=\"cms_schulhof_verwaltung_personen_profildaten_email\" id=\"cms_schulhof_verwaltung_personen_profildaten_email\" onkeyup=\"cms_check_mail_wechsel('verwaltung_personen_profildaten_email');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_verwaltung_personen_profildaten_email_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
+						echo "name=\"cms_schulhof_verwaltung_personen_profildaten_email\" id=\"cms_schulhof_verwaltung_personen_profildaten_email\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_verwaltung_personen_profildaten_email');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_verwaltung_personen_profildaten_email_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
 					}
 					else {
-						echo "name=\"cms_schulhof_nutzerkonto_profildaten_email\" id=\"cms_schulhof_nutzerkonto_profildaten_email\" onkeyup=\"cms_check_mail_wechsel('nutzerkonto_profildaten_email');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_nutzerkonto_profildaten_email_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
+						echo "name=\"cms_schulhof_nutzerkonto_profildaten_email\" id=\"cms_schulhof_nutzerkonto_profildaten_email\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_nutzerkonto_profildaten_email');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_nutzerkonto_profildaten_email_icon\"><img src=\"res/icons/klein/richtig.png\"></span></td>";
 					}
 				echo "</tr>";
 			echo "</table>";

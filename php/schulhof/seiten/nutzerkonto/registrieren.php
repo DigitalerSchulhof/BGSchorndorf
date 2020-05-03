@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
-<h1>Willkommen auf dem Schulhof des <?php echo $CMS_SCHULE."s";?>!</h1>
+<h1>Willkommen auf dem Schulhof des <?php echo $CMS_WICHTIG['Schulname Genitiv'];?>!</h1>
 
 <h2>Registrieren</h2>
 
@@ -20,7 +20,7 @@ echo "<table class=\"cms_formular\">";
 	echo "<tr><th>Klasse:</th><td colspan=\"2\"><input name=\"cms_registrierung_klasse\" id=\"cms_registrierung_klasse\" type=\"text\"></td></tr>";
 	echo "<tr><th>Passwort:</th><td><input name=\"cms_schulhof_registrierung_passwort\" id=\"cms_schulhof_registrierung_passwort\" type=\"password\" onkeyup=\"cms_check_passwort_staerke('registrierung_passwort')\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_registrierung_passwort_staerke_icon\"><img src=\"res/icons/klein/falsch.png\"></span></td></tr>";
 	echo "<tr><th>Passwort wiederholen:</th><td><input name=\"cms_schulhof_registrierung_passwort_wiederholen\" id=\"cms_schulhof_registrierung_passwort_wiederholen\" type=\"password\" onkeyup=\"cms_check_passwort_gleich('registrierung_passwort')\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_registrierung_passwort_gleich_icon\"></span></td></tr>";
-	echo "<tr><th>eMailadresse:</th><td><input name=\"cms_schulhof_registrierung_mail\" id=\"cms_schulhof_registrierung_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('registrierung_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_registrierung_mail_icon\"></span></td></tr>";
+	echo "<tr><th>eMailadresse:</th><td><input name=\"cms_schulhof_registrierung_mail\" id=\"cms_schulhof_registrierung_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_registrierung_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_registrierung_mail_icon\"></span></td></tr>";
 	echo "<tr><th>Datenschutz:</th><td><p>".cms_schieber_generieren('registrierung_datenschutz', 0)." Ich bin mit den Datenschutzvorkehrungen des Digitalen Schulhofs einverstanden und erteile meine Erlaubnis zur Datenverarbeitung.</p><p><a class=\"cms_button cms_button_wichtig\" target=\"_blank\" href=\"Website/Datenschutz\">Datenschutzvereinbarung lesen</a></p></td></tr>";
 	echo "<tr><th>Entscheidungsberechtigung:</th><td>".cms_schieber_generieren('registrierung_volljaehrig', 0)." Ich bin 18 Jahre alt oder älter, oder ein Erziehungsberechtigter hat mir erlaubt, diese Registrierung durchzuführen.</td></tr>";
 	echo "<tr><th>Korrektheit:</th><td>".cms_schieber_generieren('registrierung_korrekt', 0)." Meine Angaben sind nach bestem Wissen und Gewissen korrekt.</td></tr>";

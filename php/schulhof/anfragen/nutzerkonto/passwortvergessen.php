@@ -47,7 +47,7 @@ if (!$fehler) {
 
 	// PASSWORT VERSCHICKEN
 	$empfaenger = $mail;
-	$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Passwort vergessen';
+	$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Passwort vergessen';
 
 	$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 	$text;

@@ -182,7 +182,7 @@
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">";?>
-	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
+	<title><?php echo $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']." • ".$CMS_SEITENTITEL;?></title>
 
 	<?php echo "<base href=\"$CMS_BASE\">";
 		$hellhash 	= substr(md5(filemtime("css/hell.css")), 0, 7);
@@ -303,7 +303,7 @@
 
     <script><?php
 			$CMS_ONLOAD_EXTERN_EVENTS = "";
-			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\n";
+			echo "var CMS_DOMAIN = '".$CMS_WICHTIG['Schule Domain']."';\n";
 			echo "var CMS_DIASHOWZEIT = $CMS_DIASHOWZEIT;\n";
 	    if ($CMS_ANGEMELDET) {
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {

@@ -56,7 +56,7 @@ if (cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 				$benutzername = substr($nachname,0,8).substr($vorname,0,3).'-bg';//.$artkuerzel;
 				$code .= "<tr><th>Benutzername:</th><td><input type=\"text\" name=\"cms_schulhof_verwaltung_personen_neu_benutzername\" id=\"cms_schulhof_verwaltung_personen_neu_benutzername\" value=\"$benutzername\"></td></tr>";
 				$code .= "<tr><th>Passwort:</th><td class=\"cms_notiz\">- wird automatisch generiert und an die eMailadresse verschickt -</td></tr>";
-				$code .= "<tr><th>eMailadresse:</th><td><input type=\"email\" name=\"cms_schulhof_verwaltung_personen_neu_mail\" id=\"cms_schulhof_verwaltung_personen_neu_mail\" onkeyup=\"cms_check_mail_wechsel('verwaltung_personen_neu_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_verwaltung_personen_neu_mail_icon\"><img src=\"res/icons/klein/falsch.png\"></span></td></tr>";
+				$code .= "<tr><th>eMailadresse:</th><td><input type=\"email\" name=\"cms_schulhof_verwaltung_personen_neu_mail\" id=\"cms_schulhof_verwaltung_personen_neu_mail\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_verwaltung_personen_neu_mail');\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_verwaltung_personen_neu_mail_icon\"><img src=\"res/icons/klein/falsch.png\"></span></td></tr>";
 			$code .= "</table>";
 
 			$code .= "<p><span class=\"cms_button\" onclick=\"cms_schulhof_verwaltung_nutzerkonto_neu_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung/Personen\">Abbrechen</a></p>";

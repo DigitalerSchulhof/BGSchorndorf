@@ -69,13 +69,13 @@
 		$dbs = cms_verbinden('s');
 		$druckfehler = true;
 		function cms_druckkopf() {
-			global $CMS_LOGODRUCK, $CMS_SCHULE, $CMS_ORT;
+			global $CMS_WICHTIG, $CMS_LOGODRUCK;
 			$code = "<div class=\"cms_druckkopf\">";
 				$code .= "<span class=\"cms_logo\">";
 					$code .= "<img class=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGODRUCK\">";
 					$code .= "<span class=\"cms_logo_schrift\">";
-						$code .= "<span class=\"cms_logo_o\">$CMS_SCHULE</span>";
-						$code .= "<span class=\"cms_logo_u\">$CMS_ORT</span>";
+						$code .= "<span class=\"cms_logo_o\">".$CMS_WICHTIG['Schulname']."</span>";
+						$code .= "<span class=\"cms_logo_u\">".$CMS_WICHTIG['Schule Ort']."</span>";
 					$code .= "</span><div class=\"cms_clear\">";
 					$code .= "</div>";
 				$code .= "</span>";

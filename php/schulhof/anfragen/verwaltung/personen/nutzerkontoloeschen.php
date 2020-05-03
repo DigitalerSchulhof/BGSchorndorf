@@ -79,7 +79,7 @@ if (cms_angemeldet() && $zugriff) {
 		// BENACHRICHTIGUNG VERSCHICKEN
 		if ($nutzerkonto) {
 			$empfaenger = $email;
-			$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Löschung Nutzerkonto';
+			$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Löschung Nutzerkonto';
 
 			$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 

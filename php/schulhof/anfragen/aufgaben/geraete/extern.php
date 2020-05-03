@@ -64,13 +64,13 @@ if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
 
 
 		$mail = $EINSTELLUNGEN['Externe Geräteverwaltung'.$ansprechpartner.' Mail'];
-		$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Problembericht zu einem Gerät';
+		$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Problembericht zu einem Gerät';
 
 		$anrede = cms_mail_anrede($EINSTELLUNGEN['Externe Geräteverwaltung'.$ansprechpartner.' Titel'], $EINSTELLUNGEN['Externe Geräteverwaltung'.$ansprechpartner.' Vorname'], $EINSTELLUNGEN['Externe Geräteverwaltung'.$ansprechpartner.' Nachname'], 'v', $EINSTELLUNGEN['Externe Geräteverwaltung'.$ansprechpartner.' Geschlecht']);
 		$text;
 		for ($i=0; $i<2; $i++) {
 			$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Es liegt eine neue Problemmeldung bezüglich eines Geräts am '.$CMS_SCHULE.' '.$CMS_ORT.' vor.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+			$text[$i] = $text[$i].'Es liegt eine neue Problemmeldung bezüglich eines Geräts am '.$CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' vor.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Standort: '.$standort.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Gerät: '.$geraetebezeichnung.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Fehlerbeschreibung: '.$CMS_MAILZ[$i];
@@ -78,7 +78,7 @@ if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
 			$text[$i] = $text[$i].'Kommentar der Geräteverwaltung vor Ort: '.$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].$kommentar.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Problem behoben? Dann bitte hier klicken: '.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].$CMS_DOMAIN.'/Problembehebung/Ticket_'.$ticket.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+			$text[$i] = $text[$i].$CMS_WICHTIG['Schule Domain'].'/Problembehebung/Ticket_'.$ticket.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Bitte kümmern Sie sich zeitnah um das Problem. Vielen Dank.'.$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
 		}

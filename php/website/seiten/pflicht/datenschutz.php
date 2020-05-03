@@ -9,32 +9,32 @@
   <h4>Herausgeber</h4>
   <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
   <?php
-    echo "<p>$CMS_NAMESCHULLEITER<br>$CMS_SCHULE<br>";
-    echo "$CMS_STRASSE<br>";
-    echo "$CMS_PLZORT";
-    if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
-    if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
-    if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
+    echo "<p>".$CMS_WICHTIG['Schulleiter Name']."<br>".$CMS_WICHTIG['Schulname']."<br>";
+    echo $CMS_WICHTIG['Schule Straße']."<br>";
+    echo $CMS_WICHTIG['Schule PLZOrt'];
+    if (strlen($CMS_WICHTIG['Schule Telefon']) > 0) {echo "<br>Telefon: ".$CMS_WICHTIG['Schule Telefon'];}
+    if (strlen($CMS_WICHTIG['Schule Fax']) > 0) {echo "<br>Fax: ".$CMS_WICHTIG['Schule Fax'];}
+    if (strlen($CMS_WICHTIG['Schule Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Schule Mail']."\">".$CMS_WICHTIG['Schule Mail']."</a>";}
     echo "</p>";
   ?>
   <p>Vertretungsberechtigte entscheiden, ggf. mit Rücksprache anderer, über den Zweck der Verarbeitung von personenbezogenen Daten und welche Mittel dazu eingesetzt werden.</p>
 
   <h4>Verantwortlich im Sinne des Presserechts (§55 RStV)</h4>
   <?php
-    echo "<p>$CMS_NAMEPRESSERECHT";
-    if (strlen($CMS_MAILPRESSERECHT) > 0) {echo "<br><a href=\"mailto:$CMS_MAILPRESSERECHT\">$CMS_MAILPRESSERECHT</a>";}
+    echo "<p>".$CMS_WICHTIG['Presse Name'];
+    if (strlen($CMS_WICHTIG['Presse Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Presse Mail']."\">".$CMS_WICHTIG['Presse Mail']."</a>";}
     echo "</p>";
   ?>
   <h4>Datenschutzbeauftragter</h4>
   <?php
-    echo "<p>$CMS_NAMEDATENSCHUTZ";
-    if (strlen($CMS_MAILDATENSCHUTZ) > 0) {echo "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
+    echo "<p>".$CMS_WICHTIG['Datenschutz Name'];
+    if (strlen($CMS_WICHTIG['Datenschutz Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Datenschutz Mail']."\">".$CMS_WICHTIG['Datenschutz Mail']."</a>";}
     echo "</p>";
   ?>
   <h4>Technische Administration</h4>
   <?php
-    echo "<p>$CMS_NAMEADMINISTRATION";
-    if (strlen($CMS_MAILADMINISTRATION) > 0) {echo "<br><a href=\"mailto:$CMS_MAILADMINISTRATION\">$CMS_MAILADMINISTRATION</a>";}
+    echo "<p>".$CMS_WICHTIG['Administration Name'];
+    if (strlen($CMS_WICHTIG['Administration Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Administration Mail']."\">".$CMS_WICHTIG['Administration Mail']."</a>";}
     echo "</p>";
   ?>
 </div></div>

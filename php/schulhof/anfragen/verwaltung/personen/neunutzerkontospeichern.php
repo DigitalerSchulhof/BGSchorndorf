@@ -274,7 +274,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 
 		// PASSWORT VERSCHICKEN
 		$empfaenger = $mail;
-		$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Neues Nutzerkonto';
+		$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Neues Nutzerkonto';
 
 		$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 
@@ -285,7 +285,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 			$text[$i] = $text[$i].'Benutzername: '.$benutzername.$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Passwort: '.$passwort.$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'eMailadresse: '.$mail.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Die Anmeldung kann unter '.$CMS_DOMAIN.'/Schulhof/Anmeldung vorgenommen werden.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+			$text[$i] = $text[$i].'Die Anmeldung kann unter '.$CMS_WICHTIG['Schule Domain'].'/Schulhof/Anmeldung vorgenommen werden.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].$CMS_MAILWV[$i].'Achtung!'.$CMS_MAILWH[$i].' Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur '.$CMS_MAILWV[$i].'24 Stunden'.$CMS_MAILWH[$i].' gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über '.$CMS_MAILHV[$i].'Passwort vergessen?'.$CMS_MAILHH[$i].' ein neues Passwort angefordert werden. Dazu werden die Angaben '.$CMS_MAILHV[$i].'Benutzername'.$CMS_MAILHH[$i].' und '.$CMS_MAILHV[$i].'eMailadresse'.$CMS_MAILHH[$i].' benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].$CMS_MAILWV[$i].'Kurz:'.$CMS_MAILWH[$i].' Das Passwort sollte sobald wie möglich geändert werden!!'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 			$text[$i] = $text[$i].'Viel Spaß mit dem neuen Konto!'.$CMS_MAILZ[$i];

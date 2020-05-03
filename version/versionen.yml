@@ -7,6 +7,7 @@ version:
       - In der Druckansicht von Blogeinträgen sind nun Vorschaubilder enthalten.
       - Formatierungsfehler in der Druckansicht behoben.
       - Bei Blogeinträgen und Terminen wird angezeigt, wie viele diesen noch als ToDo markiert haben.
+      - Änderungen an allen Schuldaten können nun über den Schulhof vorgenommen werden.
   0_7_3:
     version: 0.7.3
     tag: Donnerstag, den 30. April 2020

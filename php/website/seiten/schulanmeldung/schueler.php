@@ -138,8 +138,8 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
   $code .= "<tr><th>Telefonnummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_telefon2\" id=\"cms_voranmeldung_schueler_telefon2\" value=\"$telefon2\"></td></tr>";
   $code .= "<tr><th>Handynummer 1:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_handy1\" id=\"cms_voranmeldung_schueler_handy1\" value=\"$handy1\"></td></tr>";
   $code .= "<tr><th>Handynummer 2:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_schueler_handy2\" id=\"cms_voranmeldung_schueler_handy2\" value=\"$handy2\"></td></tr>";
-  $code .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_schueler_mail\" id=\"cms_schulhof_voranmeldung_schueler_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('voranmeldung_schueler_mail');\" value=\"$mail\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_schueler_mail_icon\"></span></td></td></tr>";
-  $CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('voranmeldung_schueler_mail');";
+  $code .= "<tr><th>Mailadresse:</th><td><input name=\"cms_schulhof_voranmeldung_schueler_mail\" id=\"cms_schulhof_voranmeldung_schueler_mail\" type=\"text\" onkeyup=\"cms_check_mail_wechsel('cms_schulhof_voranmeldung_schueler_mail');\" value=\"$mail\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_voranmeldung_schueler_mail_icon\"></span></td></td></tr>";
+  $CMS_ONLOAD_EXTERN_EVENTS .= "cms_check_mail_wechsel('cms_schulhof_voranmeldung_schueler_mail');";
   $code .= "</table>";
 
   $code .= "<h3>Schullaufbahn</h3>";

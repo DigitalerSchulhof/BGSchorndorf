@@ -15,7 +15,7 @@
    $eintrag['link']      -- Link der zur Volldarstellung führt
 */
 function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
-  global $CMS_SCHLUESSEL, $CMS_SCHULE, $CMS_ORT, $CMS_MAILZ, $CMS_MAILSIGNATUR, $CMS_GRUPPEN;
+  global $CMS_WICHTIG, $CMS_SCHLUESSEL, $CMS_MAILZ, $CMS_MAILSIGNATUR, $CMS_GRUPPEN;
   $gruppek = cms_textzudb($eintrag['gruppe']);
 
   // ALTE NOTIFIKATION ZU DIESEM THEMA LÖSCHEN
@@ -84,7 +84,7 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
 
       // MAILBENACHRICHTIGUNG
       if (($e['notifikationsmail'] == 1) && ($e['letzteanmeldung'] > $e['letztenotifikation'])) {
-        $betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Es gibt was Neues!';
+        $betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Es gibt was Neues!';
 
         $anrede = cms_mail_anrede($e['titel'], $e['vorname'], $e['nachname'], $e['art'], $e['geschlecht']);
         $text;

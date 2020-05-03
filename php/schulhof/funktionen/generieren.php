@@ -853,6 +853,11 @@ function cms_generiere_input($id, $wert="", $typ="text") {
   return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"$wert\">";
 }
 
+function cms_generiere_mailinput($id, $wert="") {
+  if (cms_check_mail($wert)) {$bild = "richtig.png";} else {$bild = "falsch.png";}
+  return "<input type=\"text\" name=\"$id\" id=\"$id\" value=\"$wert\" onchange=\"cms_check_mail_wechsel('$id')\" onkeyup=\"cms_check_mail_wechsel('$id')\"></td><td><span class=\"cms_eingabe_icon\" id=\"$id"."_icon\"><img src=\"res/icons/klein/$bild\"></span>";
+}
+
 function cms_generiere_select($id, $optionen, $wert="") {
   $optionen = str_replace("value=\"$wert\"", "value=\"$wert\" selected=\"selected\"", $optionen);
   return "<select name=\"$id\" id=\"$id\">$optionen</select>";

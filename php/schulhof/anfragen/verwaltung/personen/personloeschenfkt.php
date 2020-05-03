@@ -1,6 +1,6 @@
 <?php
 function cms_verwaltung_personloeschen ($dbs, $dbp, $id) {
-	global $CMS_SCHLUESSEL, $CMS_SCHULE, $CMS_ORT, $CMS_MAILZ, $CMS_MAILSIGNATUR;
+	global $CMS_SCHLUESSEL, $CMS_WICHTIG, $CMS_MAILZ, $CMS_MAILSIGNATUR;
 	if (!cms_check_ganzzahl($id, 0)) {return "FEHLER";}
 
 	$fehler = false;
@@ -62,7 +62,7 @@ function cms_verwaltung_personloeschen ($dbs, $dbp, $id) {
 
 	if ($nutzerkonto) {
 		$empfaenger = $email;
-		$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Löschung Nutzerkonto';
+		$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Löschung Nutzerkonto';
 
 		$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 

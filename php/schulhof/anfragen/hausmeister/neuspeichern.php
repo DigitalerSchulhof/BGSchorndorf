@@ -72,7 +72,7 @@ if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))
 			$sql->bind_result($vorname, $nachname, $titel, $geschlecht, $mail);
 			while ($sql->fetch()) {
 				// Mail verschicken
-				$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Hausmeisterauftrag';
+				$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Hausmeisterauftrag';
 				$anrede = cms_mail_anrede($titel, $vorname, $nachname, 'x', $geschlecht);
 				$text = array();
 				for ($i=0; $i<2; $i++) {

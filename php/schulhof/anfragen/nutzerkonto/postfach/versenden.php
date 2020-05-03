@@ -115,14 +115,14 @@ if (cms_angemeldet()) {
 						for ($i=0; $i<2; $i++) {
 							$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 							$text[$i] = $text[$i].'Im Postfach ist eine neue Nachricht eingegangen.'.$CMS_MAILZ[$i];
-							$text[$i] = $text[$i].'Das Postfach ist unter: '.$CMS_DOMAIN.'/Schulhof/Nutzerkonto/Postfach zu erreichen.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+							$text[$i] = $text[$i].'Das Postfach ist unter: '.$CMS_WICHTIG['Schule Domain'].'/Schulhof/Nutzerkonto/Postfach zu erreichen.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
 							$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
 						}
 
 						// Mail verschicken:
 						if (strlen($titel) > 0) {$empfaenger = $titel." ".$vorname." ".$nachname;}
 						else {$empfaenger = $vorname." ".$nachname;}
-						$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Neue Nachricht';
+						$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Neue Nachricht';
 						$mailerfolg = cms_mailsenden($empfaenger, $email, $betreff, $text[1], $text[0]);
 					}
 				}

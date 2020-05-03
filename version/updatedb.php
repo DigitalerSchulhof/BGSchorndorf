@@ -59,3 +59,23 @@ ALTER TABLE `ebestellung` ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERE
 
 CREATE TABLE `wichtigeeinstellungen` (`id` bigint(255) UNSIGNED NOT NULL,  `inhalt` varbinary(2000) NOT NULL,  `wert` varbinary(2000) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ALTER TABLE `wichtigeeinstellungen`  ADD PRIMARY KEY (`id`);
+
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (0, AES_ENCRYPT('Schulname', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (1, AES_ENCRYPT('Schulname Genitiv', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (2, AES_ENCRYPT('Schule Ort', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Schule Straße', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Schule PLZOrt', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Schule Telefon', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Schule Fax', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (7, AES_ENCRYPT('Schule Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (8, AES_ENCRYPT('Schule Domain', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (9, AES_ENCRYPT('Schulleitung Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (10, AES_ENCRYPT('Schulleitung Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (11, AES_ENCRYPT('Datenschutz Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (12, AES_ENCRYPT('Datenschutz Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (13, AES_ENCRYPT('Presse Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (14, AES_ENCRYPT('Presse Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (15, AES_ENCRYPT('Webmaster Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (16, AES_ENCRYPT('Webmaster Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (17, AES_ENCRYPT('Administration Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (18, AES_ENCRYPT('Administration Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));

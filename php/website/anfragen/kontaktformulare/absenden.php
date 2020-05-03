@@ -89,9 +89,9 @@
 	$mailer->Username       = $CMS_MAILUSERNAME;
 	$mailer->Password       = $CMS_MAILPASSWORT;
   $mailer->From           = $CMS_MAILABSENDER;
-  $mailer->FromName       = $CMS_SCHULE." ".$CMS_ORT;
+  $mailer->FromName       = $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort'];
 
-  $mailer->AddReplyTo($CMS_WEBMASTER, "Webmaster Schulhof ".$CMS_SCHULE." ".$CMS_ORT);
+  $mailer->AddReplyTo($CMS_WICHTIG['Webmaster Mail'], "Webmaster Schulhof ".$CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']);
 	$mailer->AddAddress($email, $name);
 
   $mailer->IsHTML(true);
@@ -108,11 +108,11 @@
   $HTML = "<html>";
 	$HTML .= "<body style=\"background: #ffffff;font-family: sans-serif;font-size: 13px;font-weight: normal;padding: 0;margin: 0;list-style-type: none;line-height: 1.2em;text-decoration: none;box-sizing: border-box;\">";
 	$HTML .= "<div style=\"width:100%;padding: 10px;margin-bottom: 10px; border-bottom: 3px solid #000000;text-align: left;box-sizing: border-box;\">";
-		$HTML .= "<a style=\"display:inline-block;text-decoration:none;font-size:inherit; text-align: left;\" href=\"$CMS_DOMAIN\">";
-		  $HTML .= "<img style=\"float:left;padding-right:10px; color: #000000;\" src=\"$CMS_DOMAIN/res/logos/$CMS_LOGO\"/>";
+		$HTML .= "<a style=\"display:inline-block;text-decoration:none;font-size:inherit; text-align: left;\" href=\"".$CMS_WICHTIG['Schule Domain']."\">";
+		  $HTML .= "<img style=\"float:left;padding-right:10px; color: #000000;\" src=\"".$CMS_WICHTIG['Schule Domain']."/res/logos/$CMS_LOGO\"/>";
 	    $HTML .= "<span style=\"float:left;display:block; color: #000000;\">";
-	      $HTML .= "<span style=\"font-weight:bold;font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">$CMS_SCHULE</span>";
-	      $HTML .= "<span style=\"font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">$CMS_ORT</span>";
+	      $HTML .= "<span style=\"font-weight:bold;font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">".$CMS_WICHTIG['Schulname']."</span>";
+	      $HTML .= "<span style=\"font-size:22px;height:28px;padding:2px 0 0 0;display:block;line-height:1\">".$CMS_WICHTIG['Schule Ort']."</span>";
 	    $HTML .= "</span>";
 			$HTML .= "<div style=\"clear:both\"></div>";
 	  $HTML .= "</a>";

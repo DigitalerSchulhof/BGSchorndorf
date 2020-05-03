@@ -45,7 +45,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail")) {
 
 
 		$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
-		$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Test des neuen Mailzugangs';
+		$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Test des neuen Mailzugangs';
 
 		// Vorübergehend Maildaten überschreiben
 		$CMS_MAILABSENDER = $absender;

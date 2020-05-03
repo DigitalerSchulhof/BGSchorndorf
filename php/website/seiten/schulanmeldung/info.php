@@ -8,7 +8,7 @@ $code .= "<h1>Voranmeldung</h1>";
 
 $rueckgabe = cms_voranmeldung_zeit();
 if ($rueckgabe['zulaessig']) {
-  $code .= "<p>Herzlich willkommen bei der Online-Voranmeldung des $CMS_SCHULE_GENITIV in $CMS_ORT. Bitte lesen sie die folgenden Informationen gewissenhaft.</p>";
+  $code .= "<p>Herzlich willkommen bei der Online-Voranmeldung des ".$CMS_WICHTIG['Schulname Genitiv']." in ".$CMS_WICHTIG['Schule Ort'].". Bitte lesen sie die folgenden Informationen gewissenhaft.</p>";
 
   if (isset($_SESSION['VORANMELDUNG_FORTSCHRITT'])) {
     $code .= cms_voranmeldung_navigation(0);
@@ -19,8 +19,8 @@ if ($rueckgabe['zulaessig']) {
 
   $code .= "<h3>Datenschutzhinweise</h3>";
   $code .= "<ul>";
-    $code .= "<li>Verantwortlich für die Erhebung der Daten ist die Schulleitung des $CMS_SCHULE_GENITIV.</li>";
-    $code .= "<li>Für Nachfragen können Sie gerne den Datenschutzbeuaftragten der Schule kontaktieren:</p><p><a class=\"cms_button\" href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_NAMEDATENSCHUTZ</a></li>";
+    $code .= "<li>Verantwortlich für die Erhebung der Daten ist die Schulleitung des ".$CMS_WICHTIG['Schulname Genitiv'].".</li>";
+    $code .= "<li>Für Nachfragen können Sie gerne den Datenschutzbeuaftragten der Schule kontaktieren:</p><p><a class=\"cms_button\" href=\"mailto:".$CMS_WICHTIG['Datenschutz Mail']."\">".$CMS_WICHTIG['Datenschutz Name']."</a></li>";
     $code .= "<li>Der Zweck für die Datenerhebung ist die schnellere Abwicklung der Aufnahme an der Schule. Nach der Aufnahme werden die Daten zu unterrichtsorganisatorischen Zwecken gemäß des Schulgesetztes verwendet. Die online erhobenen Daten werden nach Abschluss des Anmeldeprozesses online gelöscht und nur noch lokal in der Schulverwaltungssoftware der Schule auf Grundlage des Schulgesetzes verarbeitet. Vorname und Nachname sowie Geschlecht und Kurszuordnung werden des Weiteren nach der Aufnahme an der Schule online im digitalen Schulhof zu unterrichtlichen Zwecken verarbeitet.</li>";
     $code .= "<li>Die personenbezogenen Daten können von der Schulverwaltung eingesehen werden. Des Weiteren verbleiben Vorname, Nachname, Geschlecht und Kurszuordnung nach einer vollständigen Anmeldung für Lehrer im digitalen Schulhof sichtbar. Mitschüler, die dieselben Kurse besuchen haben ebenfalls Zugriff auf Vorname und Nachname.</li>";
     $code .= "<li>Keine der personenbezogenen Daten werden an Drittländer oder dritte Personen weitergegeben.</li>";

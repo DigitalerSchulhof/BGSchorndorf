@@ -516,11 +516,11 @@ if (cms_r("technik.server.dateienerlaubnis")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("schulhof.verwaltung.schule.adressen || schulhof.verwaltung.schule.mail")) {
+if (cms_r("schulhof.verwaltung.schule.adressen")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schuldetails\">";
 			$code .=  "<h3>Schuldetails</h3>";
-			$code .=  "<p>Einstellen ".aufzaehlen(array("der Adresse der Schule" => cms_r("schulhof.verwaltung.schule.adressen"), "der eMailadresse des Schulhofs" => cms_r("schulhof.verwaltung.schule.mail")))."</p>";
+			$code .=  "<p>Einstellen der Schuldetails und der verantwortlichen Personen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
