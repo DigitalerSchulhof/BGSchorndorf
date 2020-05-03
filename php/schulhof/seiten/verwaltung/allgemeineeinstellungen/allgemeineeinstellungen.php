@@ -14,7 +14,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 	$gruppen = $CMS_GRUPPEN;
 	$raenge = array("Vorsitzende", "Aufsicht", "Mitglieder");
 
-	$einstellungen = cms_einstellungen_laden();
+	$einstellungen = cms_einstellungen_laden('allgemeineeinstellungen');
 
 	$code .= "<ul class=\"cms_reitermenue\">";
 		$code .= "<li><span id=\"cms_reiter_einstellungen_0\" class=\"cms_reiter\" onclick=\"cms_reiter('einstellungen', 0, 5, true)\">Rechte</span></li> ";

@@ -448,7 +448,7 @@ function cms_welches_betriebssystem() {
   return $betriebssystem;
 }
 
-function cms_einstellungen_laden() {
+function cms_einstellungen_laden('allgemeineeinstellungen') {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
 	$dbs = cms_verbinden('s');

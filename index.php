@@ -145,7 +145,8 @@
 
 	}
 
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
+	$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
 
 	$CMS_SEITENTITEL = "";
 	if (count($CMS_URL) > 0) {

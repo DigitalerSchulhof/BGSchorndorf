@@ -9,7 +9,7 @@ session_start();
 // Variablen einlesen, falls übergeben
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.[|räume,lehrgeräte].löschen")) {
 	$fehler = false;

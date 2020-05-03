@@ -328,7 +328,7 @@ function cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid, $benutzer = "-") {
 		// Mögliche Einstellungen berücksichtigen
 		if ($cms_gruppenrechte['sichtbar']) {// && (!$cms_gruppenrechte['mitglied'])) {
 			if(is_null($CMS_EINSTELLUNGEN)) {
-				$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+				$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 			}
 			if ($CMS_EINSTELLUNGEN['Download aus sichtbaren Gruppen']) {$cms_gruppenrechte['dateidownload'] = true;}
 		}
@@ -494,9 +494,12 @@ function cms_welches_betriebssystem() {
   return $betriebssystem;
 }
 
-function cms_einstellungen_laden() {
+function cms_einstellungen_laden($tabelle) {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
+	if (($tabelle != 'allgemeineeinstellungen') && ($tabelle != 'wichtigeeinstellungen') && ($tabelle != 'maileinstellungen')) {
+		return $einstellungen;
+	}
 	$dbs = cms_verbinden('s');
 	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen");
 	if ($sql->execute()) {

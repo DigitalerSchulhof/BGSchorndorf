@@ -206,7 +206,7 @@
 	}
 	$CMS_EINSTELLUNGEN;
 	if($art == "in") {
-		$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+		$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 		// Prüfen, ob diese Gruppe existiert
 		if (in_array($g, $CMS_GRUPPEN)) {
 			if ($schuljahr == "Schuljahrübergreifend") {

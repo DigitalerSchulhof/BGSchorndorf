@@ -21,7 +21,7 @@ if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['gruppe'])) {$gruppe= $_POST['gruppe'];} else {echo "FEHLER"; exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 $zugriff = true;
 
 if (cms_angemeldet() && $zugriff) {

@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['id'])) 	{$id = $_POST['id'];} 		else {echo "FEHLER";exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.löschen")) {
 	$fehler = false;

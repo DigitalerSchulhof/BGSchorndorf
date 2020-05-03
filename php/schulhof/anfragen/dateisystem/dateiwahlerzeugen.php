@@ -39,7 +39,7 @@ else if ($bereich == "Vertretungsplan") {
 }
 else if ($bereich == "gruppe") {
 	$dbs = cms_verbinden('s');
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 	$GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
 	$zugriff = $GRUPPENRECHTE['blogeintraege'] || $GRUPPENRECHTE['termine'];
 }

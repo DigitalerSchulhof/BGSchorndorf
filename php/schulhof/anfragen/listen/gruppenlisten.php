@@ -91,7 +91,7 @@ $sql->close();
 
 if (cms_angemeldet() && $zugriff) {
 
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 	include_once('../../schulhof/anfragen/nutzerkonto/postfach/vorbereiten.php');
   $schreibenpool = cms_postfach_empfaengerpool_generieren($dbs);

@@ -12,7 +12,7 @@ if (isset($_SESSION["GERAETEART"])) {$art = $_SESSION["GERAETEART"];} else {$art
 if ((cms_check_ganzzahl($id,0)) && (($art == 'r') || ($art == 'l'))) {
 	if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
 		// Gibt es einen externen Sachverständigen
-		$EINSTELLUNGEN = cms_einstellungen_laden();
+		$EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 		// Information über den Standort laden
 		$standortbezeichnung = "";

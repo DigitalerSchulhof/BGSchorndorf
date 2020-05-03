@@ -17,7 +17,7 @@ if (isset($_POST['bezeichnung'])) 		{$bezeichnung = $_POST['bezeichnung'];} 				
 if (isset($_POST['art'])) 						{$art = $_POST['art'];} 												else {echo "FEHLER";exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if (cms_angemeldet() && cms_r("schulhof.organisation.ferien.anlegen")) {
 	$fehler = false;

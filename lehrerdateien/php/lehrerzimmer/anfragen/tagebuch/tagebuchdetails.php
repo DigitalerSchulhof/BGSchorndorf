@@ -48,7 +48,7 @@ if ($angemeldet) {
   $sql->close();
 
   if ($SCHULJAHR !== null) {
-    $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+    $CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
     $jetzt = time();
 
     // Schulstunden laden

@@ -8,7 +8,7 @@ include_once("../../schulhof/anfragen/verwaltung/gruppen/initial.php");
 include_once("../../schulhof/seiten/verwaltung/gruppen/zuordnungen.php");
 session_start();
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 $CMS_BENUTZERID = $_SESSION['BENUTZERID'];

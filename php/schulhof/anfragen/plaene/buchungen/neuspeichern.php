@@ -31,7 +31,7 @@ if (!cms_check_ganzzahl($endeM,0,59)) {echo "FEHLER"; exit;}
 if (($art != 'r') && ($art != 'l')) {echo "FEHLER"; exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if($art === "r") {$rart = "räume";}
 else if($art === "l") {$rart = "leihgeräte";}

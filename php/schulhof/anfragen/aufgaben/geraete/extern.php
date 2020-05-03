@@ -34,7 +34,7 @@ if (cms_angemeldet() && cms_r("schulhof.technik.geräte.verwalten")) {
   $sql->execute();
   $sql->close();
 
-	$EINSTELLUNGEN = cms_einstellungen_laden();
+	$EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 	if ($EINSTELLUNGEN['Externe Geräteverwaltung'.$ansprechpartner.' existiert'] != 1) {
 		echo "MAIL";
 	}

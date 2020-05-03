@@ -41,7 +41,7 @@ $titel = cms_texttrafo_e_db($titel);
 $beschreibung = cms_texttrafo_e_db($beschreibung);
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 
 if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.erteilen")) {

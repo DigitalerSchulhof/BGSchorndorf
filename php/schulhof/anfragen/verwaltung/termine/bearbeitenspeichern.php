@@ -46,7 +46,7 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (isset($_SESSION['TERMINID'])) {$terminid = $_SESSION['TERMINID'];} else {echo "FEHLER";exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
   die("FEHLER");

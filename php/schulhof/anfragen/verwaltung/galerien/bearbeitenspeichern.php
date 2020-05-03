@@ -37,7 +37,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['GALERIEID'])) {$galerieid = $_SESSION['GALERIEID'];} else {echo "FEHLER";exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if (cms_r("artikel.galerien.bearbeiten")) {
 	$zugriff = true;

@@ -42,7 +42,7 @@ else if ($bereich == "gruppe") {
 		$dbs = cms_verbinden('s');
 		$gruppe = strtoupper(substr($pfadteile[2],0,1)).substr($pfadteile[2],1);
 		if ($gruppe == "Sonstigegruppen") {$gruppe = "Sonstige Gruppen";}
-		$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+		$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 		$gruppenrechte = cms_gruppenrechte_laden($dbs, $gruppe, $id);
 		if ($pfadteile[3] != $id) {$fehler = true;}
 		cms_trennen($dbs);

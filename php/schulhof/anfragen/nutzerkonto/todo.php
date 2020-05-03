@@ -27,7 +27,7 @@ if (cms_angemeldet()) {
     $blogquery = "NULL";
     $terminquery = "NULL";
   }
-  $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+  $CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
   $gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gid);
 
   // Artikel prüfen

@@ -14,7 +14,7 @@ $gid = $gruppenid;
 if (isset($_SESSION['BENUTZERID'])) {$person = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($g)) {echo "FEHLER"; exit;}
 $dbs = cms_verbinden('s');
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $g, $gid, $person);
 $jetzt = time();
 

@@ -20,7 +20,7 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (isset($_SESSION['BENUTZERART'])) {$CMS_BENUTZERART = $_SESSION['BENUTZERART'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERSCHULJAHR'])) {$CMS_BENUTZERSCHULJAHR = $_SESSION['BENUTZERSCHULJAHR'];} else {$CMS_BENUTZERSCHULJAHR = null;}
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf') && !(($modus == '') && (($aktion == "neu") || ($aktion == "vorgabe") || ($aktion == "gruppe")))) {echo "FEHLER"; exit;}

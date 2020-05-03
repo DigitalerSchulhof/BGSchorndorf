@@ -23,7 +23,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER"; exit;}
 if (!cms_check_toggle($offen)) {echo "FEHLER"; exit;}
 if (!cms_check_ganzzahl($CMS_BENUTZERSCHULJAHR,0) && ($CMS_BENUTZERSCHULJAHR !== null)) {echo "FEHLER"; exit;}
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 $dbs = cms_verbinden('s');
 $EMPFAENGERPOOL = cms_postfach_empfaengerpool_generieren($dbs);
 cms_trennen($dbs);

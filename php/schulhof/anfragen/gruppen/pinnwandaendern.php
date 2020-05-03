@@ -21,7 +21,7 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER";exit;}
 $gk = cms_textzudb($gruppe);
 $pinnwand = cms_texttrafo_e_db($pinnwand);
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);

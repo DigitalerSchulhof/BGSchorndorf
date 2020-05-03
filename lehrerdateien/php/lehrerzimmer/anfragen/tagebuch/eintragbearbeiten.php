@@ -26,7 +26,7 @@ if ($angemeldet) {
   $dbs = cms_verbinden('s');
   $dbl = cms_verbinden('l');
 
-  $CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+  $CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
   $jetzt = time();
   $EINTRAG = array();
 
