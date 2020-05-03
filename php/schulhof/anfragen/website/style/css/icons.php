@@ -193,6 +193,7 @@
 .cms_uebersicht_verwaltung_genehmigungen_galerien {background-image: url('../res/icons/gross/galeriengenehmigt.png');}
 .cms_uebersicht_verwaltung_dauerbrenner {background-image: url('../res/icons/gross/dauerbrenner.png');}
 .cms_uebersicht_verwaltung_pinnwaende {background-image: url('../res/icons/gross/pinnwaende.png');}
+.cms_uebersicht_verwaltung_mail {background-image: url('../res/icons/gross/schulhofmailer.png');}
 
 .cms_uebersicht_verwaltung_gruppen_gremien {background-image: url('../res/icons/gross/gremien.png');}
 .cms_uebersicht_verwaltung_gruppen_fachschaften {background-image: url('../res/icons/gross/fachschaften.png');}

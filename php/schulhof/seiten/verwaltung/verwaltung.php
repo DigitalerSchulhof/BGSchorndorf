@@ -510,17 +510,25 @@ if (cms_r("technik.server.vpn")) {
 }
 if (cms_r("technik.server.dateienerlaubnis")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_zulaessig cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_zulaessig\" href=\"Schulhof/Verwaltung/Zulässige_Dateien\">";
 			$code .=  "<h3>Zulässige Dateien</h3>";
 			$code .=  "<p>Zulässige Datentypen und Dateigrößen einstellen.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("schulhof.verwaltung.schule.adressen")) {
+if (cms_r("schulhof.verwaltung.schule.details")) {
 	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schuldetails\">";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_schuldetails\" href=\"Schulhof/Verwaltung/Schuldetails\">";
 			$code .=  "<h3>Schuldetails</h3>";
 			$code .=  "<p>Einstellen der Schuldetails und der verantwortlichen Personen.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("schulhof.verwaltung.schule.mail")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_mail cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Verwaltung/Schulhofmailer\">";
+			$code .=  "<h3>Schulhofmailer</h3>";
+			$code .=  "<p>Einstellen der eMailadresse, von der der Digitaler Schulhof eMails versendet.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }

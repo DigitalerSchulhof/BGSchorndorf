@@ -262,6 +262,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Leihgeräte/Leihgeräte_bearbeiten']         = 'php/schulhof/seiten/verwaltung/leihgeraete/leihgeraetebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Allgemeine_Einstellungen']                 = 'php/schulhof/seiten/verwaltung/allgemeineeinstellungen/allgemeineeinstellungen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schulnetze']                               = 'php/schulhof/seiten/verwaltung/schulnetze/schulnetze.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schulhofmailer']                           = 'php/schulhof/seiten/verwaltung/schulhofmailer/schulhofmailer.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/VPN']                                      = 'php/schulhof/seiten/verwaltung/vpn/vpn.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Zulässige_Dateien']                        = 'php/schulhof/seiten/verwaltung/zulaessigedateien/zulaessigedateien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuldetails']                             = 'php/schulhof/seiten/verwaltung/schuldetails/schuldetails.php';

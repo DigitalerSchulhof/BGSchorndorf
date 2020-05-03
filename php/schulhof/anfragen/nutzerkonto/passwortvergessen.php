@@ -46,28 +46,25 @@ if (!$fehler) {
   $sql->close();
 
 	// PASSWORT VERSCHICKEN
-	$empfaenger = $mail;
-	$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Passwort vergessen';
+	$CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+	$CMS_MAIL = cms_einstellungen_laden("maileinstellungen");
+	$betreff = "Passwort vergessen";
 
 	$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
-	$text;
-	for ($i=0; $i<2; $i++) {
-		$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].'Es wurde ein neues Passwort generiert. Hier sind die Zugangsdaten:'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].'Benutzername: '.$benutzername.$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].'Passwort: '.$passwort.$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].'eMailadresse: '.$mail.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].$CMS_MAILWV[$i].'Achtung!'.$CMS_MAILWH[$i].' Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur '.$CMS_MAILWV[$i].'eine Stunde'.$CMS_MAILWH[$i].' gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über '.$CMS_MAILHV[$i].'Passwort vergessen?'.$CMS_MAILHH[$i].' ein neues Passwort angefordert werden. Dazu werden die Angaben '.$CMS_MAILHV[$i].'Benutzername'.$CMS_MAILHH[$i].' und '.$CMS_MAILHV[$i].'eMailadresse'.$CMS_MAILHH[$i].' benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].$CMS_MAILWV[$i].'Kurz:'.$CMS_MAILWH[$i].' Das Passwort sollte sobald wie möglich geändert werden!!'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].'Viel Spaß mit dem neuen Zugang!'.$CMS_MAILZ[$i];
-		$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
-	}
+	$text = "<p>$anrede</p>";
+	$text .= "<p>Es wurde ein neues Passwort generiert. Hier sind die Zugangsdaten:<br>";
+	$text .= "Benutzername: ".$benutzername."<br>";
+	$text .= "Passwort: ".$passwort."<br>";
+	$text .= "eMailadresse: ".$mail."</p>";
+	$text .= "<p><b>Achtung!</b> Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur <b>eine Stunde</b> gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über <i>Passwort vergessen?</i> ein neues Passwort angefordert werden. Dazu werden die Angaben <i>Benutzername</i> und <i>eMailadresse</i> benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.</p>";
+	$text .= "<p><b>Kurz:</b> Das Passwort sollte sobald wie möglich geändert werden!!</p>";
+	$text .= "<p>Viel Spaß mit dem neuen Zugang!";
 
 	require_once '../../phpmailer/PHPMailerAutoload.php';
 
 	// Mail verschicken:
 	$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
-	$mailerfolg = cms_mailsenden($anrede, $mail, $betreff, $text[1], $text[0]);
+	$mailerfolg = cms_mailsenden($empfaenger, $mail, $betreff, $text);
 
 	echo "ERFOLG";
 }

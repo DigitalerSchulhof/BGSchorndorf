@@ -66,21 +66,23 @@ if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.erteilen"))
 		$jetzt = time();
 		// Hausmeister dieses Schuljahres laden
 		require_once '../../phpmailer/PHPMailerAutoload.php';
+		$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
+		$CMS_MAIL = cms_einstellungen_laden('maileinstellungnen');
+
 		$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL') FROM personen JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id IN (SELECT person FROM schluesselposition JOIN schuljahre ON schluesselposition.schuljahr = schuljahre.id WHERE (? BETWEEN beginn AND ende) AND position = AES_ENCRYPT('Hausmeister', '$CMS_SCHLUESSEL'))");
 		$sql->bind_param("i", $jetzt);
 		if ($sql->execute()) {
 			$sql->bind_result($vorname, $nachname, $titel, $geschlecht, $mail);
 			while ($sql->fetch()) {
 				// Mail verschicken
-				$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Hausmeisterauftrag';
+				$betreff = 'Hausmeisterauftrag';
 				$anrede = cms_mail_anrede($titel, $vorname, $nachname, 'x', $geschlecht);
-				$text = array();
-				for ($i=0; $i<2; $i++) {
-					$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-					$text[$i] = $text[$i].'Im Schulhof wurde ein neuer Hausmeisterauftrag hinterlegt.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-					$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
-				}
-				cms_mailsenden($anrede, $mail, $betreff, $text[1], $text[0]);
+				$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
+
+				$text = "<p>$anrede</p>";
+				$text .= "<p>Im Schulhof wurde ein neuer Hausmeisterauftrag hinterlegt.</p>";
+
+				cms_mailsenden($empfaenger, $mail, $betreff, $text);
 			}
 		}
 		$sql->close();

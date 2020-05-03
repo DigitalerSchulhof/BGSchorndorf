@@ -266,27 +266,23 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 		cms_trennen($dbp);
 
 		// PASSWORT VERSCHICKEN
-		$empfaenger = $mail;
-		$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Neues Nutzerkonto';
+		$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
+		$betreff = 'Neues Nutzerkonto';
 
 		$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 
-		$text = array();
-		for ($i=0; $i<2; $i++) {
-			$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Es wurde ein neues Nutzerkonto erstellt. Hier sind die Zugangsdaten:'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Benutzername: '.$benutzername.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'eMailadresse: '.$mail.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Die Anmeldung kann unter '.$CMS_WICHTIG['Schule Domain'].'/Schulhof/Anmeldung vorgenommen werden.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Das Passwort ist das, das bei der Registrierung eingegeben wurde.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Viel Spaß mit dem neuen Konto!'.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
-		}
+		$text  = "<p>$anrede</p>";
+		$text .= "<p>Es wurde ein neues Nutzerkonto erstellt. Hier sind die Zugangsdaten:<br>";
+		$text .= "Benutzername: $benutzername<br>";
+		$text .= "eMailadresse: $mail</p>";
+		$text .= "<p>Die Anmeldung kann unter ".$CMS_WICHTIG['Schule Domain']."/Schulhof/Anmeldung vorgenommen werden.";
+		$text .= "<p>Das Passwort ist das, das bei der Registrierung eingegeben wurde.</p>";
+		$text .= "<p>Viel Spaß mit dem neuen Konto!</p>";
 
 		require_once '../../phpmailer/PHPMailerAutoload.php';
 
 		// Mail verschicken:
-		$mailerfolg = cms_mailsenden($anrede, $mail, $betreff, $text[1], $text[0]);
+		$mailerfolg = cms_mailsenden($empfaenger, $mail, $betreff, $text);
 
 		cms_trennen($dbs);
 		echo "ERFOLG";

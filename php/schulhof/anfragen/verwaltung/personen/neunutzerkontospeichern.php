@@ -273,29 +273,27 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 		cms_trennen($dbp);
 
 		// PASSWORT VERSCHICKEN
-		$empfaenger = $mail;
-		$betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Neues Nutzerkonto';
+		$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
+		$betreff = "Neues Nutzerkonto";
+		$CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+		$CMS_MAIL = cms_einstellungen_laden("maileinstellungen");
 
 		$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 
-		$text = array();
-		for ($i=0; $i<2; $i++) {
-			$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Es wurde ein neues Nutzerkonto erstellt. Hier sind die Zugangsdaten:'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Benutzername: '.$benutzername.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Passwort: '.$passwort.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'eMailadresse: '.$mail.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Die Anmeldung kann unter '.$CMS_WICHTIG['Schule Domain'].'/Schulhof/Anmeldung vorgenommen werden.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].$CMS_MAILWV[$i].'Achtung!'.$CMS_MAILWH[$i].' Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur '.$CMS_MAILWV[$i].'24 Stunden'.$CMS_MAILWH[$i].' gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über '.$CMS_MAILHV[$i].'Passwort vergessen?'.$CMS_MAILHH[$i].' ein neues Passwort angefordert werden. Dazu werden die Angaben '.$CMS_MAILHV[$i].'Benutzername'.$CMS_MAILHH[$i].' und '.$CMS_MAILHV[$i].'eMailadresse'.$CMS_MAILHH[$i].' benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].$CMS_MAILWV[$i].'Kurz:'.$CMS_MAILWH[$i].' Das Passwort sollte sobald wie möglich geändert werden!!'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Viel Spaß mit dem neuen Konto!'.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
-		}
+		$text  = "<p>$anrede</p>";
+		$text .= "<p>Es wurde ein neues Nutzerkonto erstellt. Hier sind die Zugangsdaten:<br>";
+		$text .= "Benutzername: $benutzername<br>";
+		$text .= "Passwort: $passwort<br>";
+		$text .= "eMailadresse: $mail</p>";
+		$text .= "<p>Die Anmeldung kann unter ".$CMS_WICHTIG['Schule Domain']."/Schulhof/Anmeldung vorgenommen werden.</p>";
+		$text .= "<p><br>Achtung!</b> Dieses Passwort ist aus Sicherheitsgründen ab jetzt nur <b>24 Stunden</b> gültig. Verstreicht diese Zeit, ohne dass eine Änderung am Passwort vorgenommen wurde, muss bei der Anmeldung über <i>Passwort vergessen?</i> ein neues Passwort angefordert werden. Dazu werden die Angaben <i>Benutzername</i> und <i>eMailadresse</i> benötigt. Das neue Passwort ist dann auch nur eine Stunde gültig.</p>";
+		$text .= "<p><b>Kurz:</b> Das Passwort sollte sobald wie möglich geändert werden!!</p>";
+		$text .= "<p>Viel Spaß mit dem neuen Konto!</p>";
 
 		require_once '../../phpmailer/PHPMailerAutoload.php';
 
 		// Mail verschicken:
-		$mailerfolg = cms_mailsenden($anrede, $mail, $betreff, $text[1], $text[0]);
+		$mailerfolg = cms_mailsenden($empfaenger, $mail, $betreff, $text);
 
 		cms_trennen($dbs);
 		echo "ERFOLG";

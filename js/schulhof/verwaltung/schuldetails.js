@@ -160,14 +160,16 @@ function cms_schuldetails_speichern() {
 }
 
 
-function cms_schulhof_verwaltung_schulmail() {
+function cms_schulmailer_speichern() {
 	cms_laden_an('Mailadresse des Schulhofs ändern', 'Die Eingaben werden überprüft.');
-	var absender = document.getElementById('cms_schulhof_schulmail_absender').value;
-	var host = document.getElementById('cms_schulhof_schulmail_host').value;
-	var benutzer = document.getElementById('cms_schulhof_schulmail_benutzer').value;
-	var passwort = document.getElementById('cms_schulhof_schulmail_passwort').value;
-	var smtpauth = document.getElementById('cms_schulhof_schulmail_smtpauth').value;
-
+	var absender = document.getElementById('cms_mailer_absender').value;
+	var host = document.getElementById('cms_mailer_smtphost').value;
+	var benutzer = document.getElementById('cms_mailer_benutzer').value;
+	var passwort = document.getElementById('cms_mailer_passwort').value;
+	var smtpauth = document.getElementById('cms_mailer_authentifizierung').value;
+	var signaturtext = document.getElementById('cms_mailer_signatur_text').value;
+	var signaturhtml = document.getElementsByClassName('note-editable');
+	signaturhtml = signaturhtml[0].innerHTML;
 
 	var meldung = '<p>Die eMailadresse des Schulhofs konnte nicht geändert werden, denn ...</p><ul>';
 	var fehler = false;
@@ -177,7 +179,12 @@ function cms_schulhof_verwaltung_schulmail() {
 		fehler = true;
 	}
 
-	if ((smtpauth != 1) && (smtpauth != 0)) {
+	if (host.length < 3) {
+		meldung += '<li>der eingegebene SMTP-Host ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(smtpauth)) {
 		meldung += '<li>die SMTP-Authentifizierung ist nicht zulässig.</li>';
 		fehler = true;
 	}
@@ -194,11 +201,13 @@ function cms_schulhof_verwaltung_schulmail() {
 		formulardaten.append("benutzer", 	benutzer);
 		formulardaten.append("passwort", 	passwort);
 		formulardaten.append("smtpauth", 	smtpauth);
+		formulardaten.append("signaturtext", 	signaturtext);
+		formulardaten.append("signaturhtml", 	signaturhtml);
 		formulardaten.append("anfragenziel", 	'146');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Mailadresse des Schulhofs ändern', '<p>Die eMailadresse des Schulhofs wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schuldetails\');">OK</span></p>');
+				cms_meldung_an('erfolg', 'Mailadresse des Schulhofs ändern', '<p>Die eMailadresse des Schulhofs wurde geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulhofmailer\');">OK</span></p>');
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
@@ -210,11 +219,11 @@ function cms_schulhof_verwaltung_schulmail() {
 
 function cms_schulhof_verwaltung_testmail() {
 	cms_laden_an('Testmail versenden', 'Die Eingaben werden überprüft.');
-	var absender = document.getElementById('cms_schulhof_schulmail_absender').value;
-	var host = document.getElementById('cms_schulhof_schulmail_host').value;
-	var benutzer = document.getElementById('cms_schulhof_schulmail_benutzer').value;
-	var passwort = document.getElementById('cms_schulhof_schulmail_passwort').value;
-	var smtpauth = document.getElementById('cms_schulhof_schulmail_smtpauth').value;
+	var absender = document.getElementById('cms_mailer_absender').value;
+	var host = document.getElementById('cms_mailer_smtphost').value;
+	var benutzer = document.getElementById('cms_mailer_benutzer').value;
+	var passwort = document.getElementById('cms_mailer_passwort').value;
+	var smtpauth = document.getElementById('cms_mailer_authentifizierung').value;
 
 
 	var meldung = '<p>Die Testmail konnte nicht versendet werden, denn ...</p><ul>';
@@ -225,7 +234,12 @@ function cms_schulhof_verwaltung_testmail() {
 		fehler = true;
 	}
 
-	if ((smtpauth != 1) && (smtpauth != 0)) {
+	if (host.length < 3) {
+		meldung += '<li>der eingegebene SMTP-Host ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (!cms_check_toggle(smtpauth)) {
 		meldung += '<li>die SMTP-Authentifizierung ist nicht zulässig.</li>';
 		fehler = true;
 	}

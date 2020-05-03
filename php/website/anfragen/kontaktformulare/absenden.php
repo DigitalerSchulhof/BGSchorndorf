@@ -78,17 +78,22 @@
   if($kopie == 2)
     $kopie = $k;
 
-  if(!cms_check_toggle($kopie))
-    die("FEHLER");
+  if(!cms_check_toggle($kopie)) {die("FEHLER");}
+
+  $CMS_MAIL = cms_einstellungen_laden("maileinstellungen");
+  $CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+
+  if (($CMS_MAIL['SMTP-Authentifizierung'] == 1) || ($CMS_MAIL['SMTP-Authentifizierung'] == 'true')) {$CMS_MAIL['SMTP-Authentifizierung'] = true;}
+	else {$CMS_MAIL['SMTP-Authentifizierung'] = false;}
 
   $mailer = new PHPMailer();
   $mailer->CharSet = 'utf-8';
   $mailer->isSMTP();
-  $mailer->Host           = $CMS_MAILHOST;
-	$mailer->SMTPAuth       = $CMS_MAILSMTPAUTH;
-	$mailer->Username       = $CMS_MAILUSERNAME;
-	$mailer->Password       = $CMS_MAILPASSWORT;
-  $mailer->From           = $CMS_MAILABSENDER;
+  $mailer->Host           = $CMS_MAIL['SMTP-Host'];
+	$mailer->SMTPAuth       = $CMS_MAIL['SMTP-Authentifizierung'];
+	$mailer->Username       = $CMS_MAIL['Benutzername'];
+	$mailer->Password       = $CMS_MAIL['Passwort'];
+  $mailer->From           = $CMS_MAIL['Absender'];
   $mailer->FromName       = $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort'];
 
   $mailer->AddReplyTo($CMS_WICHTIG['Webmaster Mail'], "Webmaster Schulhof ".$CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']);
@@ -98,12 +103,17 @@
 
   $mailer->Subject = $betreff. " ".$b;
 
-  if (count($anhaenge))
-    if($anhang)
-        foreach ($anhaenge as $i => $a)
-            $mailer->AddAttachment($a["tmp_name"], $a["name"]);
-    else
+  if (count($anhaenge)) {
+    if ($anhang) {
+      foreach ($anhaenge as $i => $a) {
+        $mailer->AddAttachment($a["tmp_name"], $a["name"]);
+      }
+    }
+    else {
       die("FEHLER");
+    }
+  }
+
 
   $HTML = "<html>";
 	$HTML .= "<body style=\"background: #ffffff;font-family: sans-serif;font-size: 13px;font-weight: normal;padding: 0;margin: 0;list-style-type: none;line-height: 1.2em;text-decoration: none;box-sizing: border-box;\">";

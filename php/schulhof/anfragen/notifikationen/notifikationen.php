@@ -15,7 +15,7 @@
    $eintrag['link']      -- Link der zur Volldarstellung führt
 */
 function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
-  global $CMS_WICHTIG, $CMS_SCHLUESSEL, $CMS_MAILZ, $CMS_MAILSIGNATUR, $CMS_GRUPPEN;
+  global $CMS_SCHLUESSEL, $CMS_GRUPPEN;
   $gruppek = cms_textzudb($eintrag['gruppe']);
 
   // ALTE NOTIFIKATION ZU DIESEM THEMA LÖSCHEN
@@ -70,6 +70,9 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
     $sqlnot = $dbs->prepare("UPDATE notifikationen SET person = ?, zeit = ?, gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), gruppenid = ?, zielid = ?, status = ?, art = ?, titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
     $sqlnut = $dbs->prepare("UPDATE nutzerkonten SET letztenotifikation = ? WHERE id = ?");
 
+		$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
+    $CMS_MAIL = cms_einstellungen_laden('maileinstellungen');
+
     foreach ($empfaenger as $e) {
       // Notifikation eintragen
       $id = cms_generiere_kleinste_id('notifikationen');
@@ -84,19 +87,15 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
 
       // MAILBENACHRICHTIGUNG
       if (($e['notifikationsmail'] == 1) && ($e['letzteanmeldung'] > $e['letztenotifikation'])) {
-        $betreff = $CMS_WICHTIG['Schulname'].' '.$CMS_WICHTIG['Schule Ort'].' Schulhof - Es gibt was Neues!';
+        $betreff = 'Es gibt was Neues!';
 
         $anrede = cms_mail_anrede($e['titel'], $e['vorname'], $e['nachname'], $e['art'], $e['geschlecht']);
-        $text;
-        for ($i=0; $i<2; $i++) {
-          $text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-          $text[$i] = $text[$i].'Im Schulhof haben sich Inhalte geändert. Wo genau, muss aus Datenschutzgründen den Neuigkeiten auf der Anmeldeseite entnommen werden.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-          $text[$i] = $text[$i].'Mails wie diese können in den Einstellungen des Nutzerkontos deaktiviert werden.'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-          $text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
-        }
+        $text = "<p>$anrede</p>";
+        $text .= "<p>Im Schulhof haben sich Inhalte geändert. Wo genau, muss aus Datenschutzgründen den Neuigkeiten auf der Anmeldeseite entnommen werden.</p>";
+        $text .= "<p>Mails wie diese können in den Einstellungen des Nutzerkontos deaktiviert werden.</p>";
 
         // Mail verschicken:
-        $mailerfolg = cms_mailsenden(cms_generiere_anzeigename($e['vorname'], $e['nachname'], $e['titel']), $e['email'], $betreff, $text[1], $text[0]);
+        $mailerfolg = cms_mailsenden(cms_generiere_anzeigename($e['vorname'], $e['nachname'], $e['titel']), $e['email'], $betreff, $text);
       }
     }
     $sqlnot->close();
