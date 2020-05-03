@@ -98,7 +98,7 @@ schulhof:
     einstellungen: Allgemeine Einstellungen vornehmen
     anmeldehinwiese: Anmeldehinweise bearbeiten
     schule:
-      adressen: Adressen der Schule verwalten
+      details: Details der Schule verwalten
       ansprechartner: Ansprechpartner der Schule verwalten
       mail: Mailadressen des Schulhofs verwalten
     sprachen:
