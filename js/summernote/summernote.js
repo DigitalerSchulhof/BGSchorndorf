@@ -6590,8 +6590,8 @@ var ImageDialog = /** @class */ (function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
         var imageLimitation = '';
         if (this.options.maximumImageFileSize) {
-            var unit = Math.floor(Math.log(this.options.maximumImageFileSize) / Math.log(1024));
-            var readableSize = (this.options.maximumImageFileSize / Math.pow(1024, unit)).toFixed(2) * 1 +
+            var unit = Math.floor(Math.log(this.options.maximumImageFileSize) / Math.log(1000));
+            var readableSize = (this.options.maximumImageFileSize / Math.pow(1000, unit)).toFixed(2) * 1 +
                 ' ' + ' KMGTP'[unit] + 'B';
             imageLimitation = "<small>" + (this.lang.image.maximumFileSize + ' : ' + readableSize) + "</small>";
         }

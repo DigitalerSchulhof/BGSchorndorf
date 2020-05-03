@@ -152,18 +152,18 @@ function cms_check_ip (ip) {
 function cms_groesse_umrechnen(bytes) {
 	if (isNaN(bytes)) {return 0;}
 
-    if (bytes/1024 > 1) {
-        bytes = bytes/1024;
-        if (bytes/1024 > 1) {
-            bytes = bytes/1024;
-            if (bytes/1024 > 1) {
-                bytes = bytes/1024;
-                if (bytes/1024 > 1) {
-                    bytes = bytes/1024;
-                    if (bytes/1024 > 1) {
-                        bytes = bytes/1024;
-                        if (bytes/1024 > 1) {
-                            bytes = bytes/1024;
+    if (bytes/1000 > 1) {
+        bytes = bytes/1000;
+        if (bytes/1000 > 1) {
+            bytes = bytes/1000;
+            if (bytes/1000 > 1) {
+                bytes = bytes/1000;
+                if (bytes/1000 > 1) {
+                    bytes = bytes/1000;
+                    if (bytes/1000 > 1) {
+                        bytes = bytes/1000;
+                        if (bytes/1000 > 1) {
+                            bytes = bytes/1000;
                             bytes = ((Math.round(bytes * 100)/100).toString()).replace(/\./, ',');
                             return bytes+" EB";
                         }
