@@ -77,7 +77,9 @@ INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (11, AES_ENCRYPT('Da
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (12, AES_ENCRYPT('Datenschutz Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILDATENSCHUTZ;?>', '{cms_schluessel}'));
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (13, AES_ENCRYPT('Presse Name', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_NAMEPRESSERECHT;?>', '{cms_schluessel}'));
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (14, AES_ENCRYPT('Presse Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILPRESSERECHT;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (15, AES_ENCRYPT('Webmaster Name', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_NAMEWEBMASTER;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (16, AES_ENCRYPT('Webmaster Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILWEBMASTER;?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (15, AES_ENCRYPT('Webmaster Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (16, AES_ENCRYPT('Webmaster Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_WEBMASTER;?>', '{cms_schluessel}'));
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (17, AES_ENCRYPT('Administration Name', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_NAMEADMINISTRATION;?>', '{cms_schluessel}'));
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (18, AES_ENCRYPT('Administration Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILADMINISTRATION;?>', '{cms_schluessel}'));
+
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (232, AES_ENCRYPT('Maximale Dateigröße', '{cms_schluessel}'), AES_ENCRYPT('20971520', '{cms_schluessel}'))
