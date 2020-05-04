@@ -6,6 +6,7 @@ version:
     neuerungen:
       - Änderungen an allen Schuldaten können nun über den Schulhof vorgenommen werden.
       - Änderungen an der vom Schulhof versendeten Mailadresse können vorgenommen werden. Die Signatur dieser Mails kann bearbeitet werden.
+      - Schulnetzte können nun direkt über die Benutzeroberfläche des Digitalen Schuhofs geändert werden.
   0_7_4:
     version: 0.7.4
     tag: Samstag, den 02. Mai 2020
