@@ -82,7 +82,7 @@ if($titel != "") {
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
-          "Authorization: token $GITHUB_OAUTH",
+          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
           "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
           "Accept: application/vnd.github.v3+json",
         ),

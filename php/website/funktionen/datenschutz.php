@@ -226,7 +226,7 @@ function cms_schulhof_datenschutz() {
 
 
 function cms_schulhof_rechte() {
-  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_HOSTINGPARTNERIN;
+  global $CMS_SCHLUESSEL, $CMS_BENUTZERID, $CMS_ANGEMELDET, $CMS_EINSTELLUNGEN;
 
   $link = "";
   $linkanzeige = "";
@@ -252,7 +252,7 @@ function cms_schulhof_rechte() {
     $code .= "<li>Es werden nicht mehr Daten gespeichert als für die Verarbeitung notwendig. Die gespeicherten Daten sind nur für die Personengruppen sichtbar, die zum Zugriff auf diese Daten berechtigt sind.</li>";
     $code .= "<li>Die hinterlegten Daten müssen sachlich korrekt und aktuell sein.</li>";
     $code .= "<li>Keine der hinterlegten Daten werden für immer gespeichert sondern sind an Fristen gebunden. Wie lange die jeweiligen Daten gespeichert werden, bzw. wann sie gelöscht werden ist unter <a href=\"$linkanzeige\">Gespeicherte Daten</a> einsehbar.</li>";
-    $code .= "<li>Es wurden Maßnahmen ergriffen, um die Sicherheit der Daten zu gewährleisten. So liegen zum Beispiel alle gespeicherten Daten auf Servern der $CMS_HOSTINGPARTNERIN. Die Verbindung zum Server ist SSL-verschlüsselt, sodass sie auch während der Übertragung nicht lesbar sind. Ferner sind die Daten in verschlüsselter Form auf den Servern der $CMS_HOSTINGPARTNERIN gespeichert. Darüberhinaus sind die persönlichen Daten in Sicherheitskategorien eingeteilt. Je nach Sicherheitskategorie sind die Daten aus dem Internet verfügbar, oder in einem abgeschlossenen Bereich gespeichert, der nicht aus Internet, sondern nur aus einem lokalen Schulnetzwerk erreichbar ist.</li>";
+    $code .= "<li>Es wurden Maßnahmen ergriffen, um die Sicherheit der Daten zu gewährleisten. So liegen zum Beispiel alle gespeicherten Daten auf Servern der ".$CMS_EINSTELLUNGEN['Hosting Lehrernetz'].". Die Verbindung zum Server ist SSL-verschlüsselt, sodass sie auch während der Übertragung nicht lesbar sind. Ferner sind die Daten in verschlüsselter Form auf den Servern der ".$CMS_EINSTELLUNGEN['Hosting Lehrernetz']." gespeichert. Darüberhinaus sind die persönlichen Daten in Sicherheitskategorien eingeteilt. Je nach Sicherheitskategorie sind die Daten aus dem Internet verfügbar, oder in einem abgeschlossenen Bereich gespeichert, der nicht aus Internet, sondern nur aus einem lokalen Schulnetzwerk erreichbar ist.</li>";
   $code .= "</ol>";
 
   $code .= "<p>Aus den genannten Grundsätzen ergeben sich die nebenstehenden Rechte.</p>";

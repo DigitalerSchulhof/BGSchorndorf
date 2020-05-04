@@ -16,6 +16,7 @@ $fehler = false;
 // Pflichteingaben prüfen
 if (strlen($benutzername) < 6) {echo "FEHLER"; exit;}
 if (strlen($passwort) == 0) {echo "FEHLER"; exit;}
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
 
 $dbs = cms_verbinden('s');
 // Prüfen, ob das Passwort noch gilt, und ob Benutzername und Passwort zusammen passen
@@ -108,7 +109,7 @@ if (!$fehler) {
 
 	cms_trennen($dbs);
 
-	echo "ERFOLG".strtoupper($art).$CMS_LN_DA;
+	echo "ERFOLG".strtoupper($art).$CMS_EINSTELLUNGEN['Netze Lehrerserver'];
 }
 else {
 	echo "FEHLER";

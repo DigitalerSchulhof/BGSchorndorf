@@ -234,4 +234,8 @@ function cms_stundefinden($beginn, $ZEITRAEUME) {
   }
   return $uhrzeit;
 }
+
+function cms_generiere_input($id, $wert="", $typ="text") {
+  return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"$wert\">";
+}
 ?>

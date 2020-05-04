@@ -94,3 +94,12 @@ INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Benutze
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Passwort', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILPASSWORT;?>', '{cms_schluessel}'));
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Signatur Text', '{cms_schluessel}'), AES_ENCRYPT('<?php echo str_replace(PHP_EOL, "\n", $CMS_MAILSIGNATUR[0]);?>', '{cms_schluessel}'));
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Signatur HTML', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILSIGNATUR[1];?>', '{cms_schluessel}'));
+
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (233, AES_ENCRYPT('Hosting Schülernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_HOSTINGPARTNEREX;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (234, AES_ENCRYPT('Hosting Lehrernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_HOSTINGPARTNERIN;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (235, AES_ENCRYPT('Netze Basisverzeichnis', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_BASE;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (236, AES_ENCRYPT('Netze Lehrerserver', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_LN_DA;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (237, AES_ENCRYPT('Netze VPN-Anleitung', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_LN_ZB_VPN;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (238, AES_ENCRYPT('Netze Socket-IP', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_SOCKET_IP;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (239, AES_ENCRYPT('Netze Socket-Port', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_SOCKET_PORT;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze GitHub', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $GITHUB_OAUTH;?>', '{cms_schluessel}'));

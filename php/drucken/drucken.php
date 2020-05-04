@@ -13,6 +13,7 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	$CMS_VERSION = trim(file_get_contents("version/version"));
 	$CMS_ANGEMELDET = cms_angemeldet();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
 	if ($CMS_ANGEMELDET) {
 
 		// Nutzerdaten laden
@@ -58,7 +59,7 @@
 	<?php echo "<link type=\"image/png\" href=\"dateien/schulspezifisch/favicon.ico\" rel=\"shortcut icon\">"; ?>
 	<title>&nbsp;</title>
 
-	<?php echo "<base href=\"$CMS_BASE\">";
+	<?php echo "<base href=\"".$CMS_EINSTELLUNGEN['Netze Basisverzeichnis']."\">";
 		// <!-- Einbindung der Stylesheets -->
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?v=".substr(md5("css/drucken.css"), 0, 7)."\">";
 	?>
