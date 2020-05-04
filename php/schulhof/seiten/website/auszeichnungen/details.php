@@ -51,7 +51,7 @@ function cms_auszeichnung_details_laden($id) {
 
 	if ($angemeldet && $zugriff) {
     $code .= "<table class=\"cms_formular\">";
-    $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('auszeichnung_aktiv', $aktiv)."</td></tr>";
+    $code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('auszeichnung_aktiv', $aktiv)."</td></tr>";
     $code .= "<tr><th>Bild:</th><td>".cms_dateiwahl_knopf('website', 'cms_auszeichnung_bild', 's', 'website', '-', 'vorschaubild', $bild)."</td></tr>";
     $code .= "<tr><th>Bezeichnung:</th><td><textarea rows=\"10\" name=\"cms_auszeichnung_bezeichnung\" id=\"cms_auszeichnung_bezeichnung\">$bez</textarea></td></tr>";
     $code .= "<tr><th>Link:</th><td><input type=\"text\" name=\"cms_auszeichnung_link\" id=\"cms_auszeichnung_link\" value=\"$link\"/></td></tr>";

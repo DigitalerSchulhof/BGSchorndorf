@@ -18,7 +18,7 @@ function cms_blockierung_neu() {
 	code += "<tr><th>Beginn:</th><td colspan=\"2\">"+cms_uhrzeit_eingabe("cms_blockierungen_beginn_"+neueid)+"</td></tr>";
 	code += "<tr><th>Ende:</th><td colspan=\"2\">"+cms_uhrzeit_eingabe("cms_blockierungen_ende_"+neueid)+"</td></tr>";
 	code += "<tr><th>Grund:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_blockierungen_grund_"+neueid+"\" id=\"cms_blockierungen_grund_"+neueid+"\" value=\"\"></td></tr>";
-	code += "<tr><th><span class=\"cms_hinweis_aussen\">Ferien:<span class=\"cms_hinweis\">Auch in den Ferien blockieren?</span></span></th><td colspan=\"2\">"+cms_schieber_generieren("blockierungen_ferien_"+neueid, 0)+"</td></tr>";
+	code += "<tr><th><span class=\"cms_hinweis_aussen\">Ferien:<span class=\"cms_hinweis\">Auch in den Ferien blockieren?</span></span></th><td colspan=\"2\">"+cms_generiere_schieber("blockierungen_ferien_"+neueid, 0)+"</td></tr>";
 
 	var knoten = document.createElement("TABLE");
 

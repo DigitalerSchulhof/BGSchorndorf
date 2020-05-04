@@ -15,7 +15,7 @@ if (cms_r("schulhof.verwaltung.schule.mail")) {
 	$code .= "<tr><th>Benutzername der eMailadresse:</th><td colspan=\"2\">".cms_generiere_input('cms_mailer_benutzer', $CMS_MAIL['Benutzername'])."</td></tr>";
 	$code .= "<tr><th>Passwort der eMailadresse:</th><td colspan=\"2\">".cms_generiere_input('cms_mailer_passwort', $CMS_MAIL['Passwort'], "password")."</td></tr>";
 	if ($CMS_MAIL['SMTP-Authentifizierung'] == 'true') {$CMS_MAIL['SMTP-Authentifizierung'] = 1;} else {$CMS_MAIL['SMTP-Authentifizierung'] = 0;}
-	$code .= "<tr><th>SMTP-Authentifizierung:</th><td colspan=\"2\">".cms_schieber_generieren('mailer_authentifizierung', $CMS_MAIL['SMTP-Authentifizierung'])."</td></tr>";
+	$code .= "<tr><th>SMTP-Authentifizierung:</th><td colspan=\"2\">".cms_generiere_schieber('mailer_authentifizierung', $CMS_MAIL['SMTP-Authentifizierung'])."</td></tr>";
 	$code .= "</table>";
 
 	$code .= "<h2>Signaturen</h2>";

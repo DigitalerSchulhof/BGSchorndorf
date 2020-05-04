@@ -58,15 +58,15 @@ function cms_internertermin_details_laden($id, $gruppe, $gruppenid) {
 		$code .= "<h3>Art des Termins</h3>";
 		$code .= "<table class=\"cms_formular\">";
     if ($genehmigung) {
-      $code .= "<tr><th>Genehmigt:</th><td>".cms_schieber_generieren('termin_genehmigt', $genehmigt)."</td></tr>";
+      $code .= "<tr><th>Genehmigt:</th><td>".cms_generiere_schieber('termin_genehmigt', $genehmigt)."</td></tr>";
     }
-    $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('termin_aktiv', $aktiv)."</td></tr>";
-		$code .= "<tr><th>Mehrtägig:</th><td>".cms_schieber_generieren('termin_mehrtaegig', $mehrtaegigt, 'cms_termine_felder();')."</td></tr>";
-		$code .= "<tr><th>Beginn Uhrzeit:</th><td>".cms_schieber_generieren('termin_uhrzeitb', $uhrzeitbt, 'cms_termine_felder();')."</td></tr>";
-		$code .= "<tr><th>Ende Uhrzeit:</th><td>".cms_schieber_generieren('termin_uhrzeite', $uhrzeitet, 'cms_termine_felder();')."</td></tr>";
-		$code .= "<tr><th>Ort:</th><td>".cms_schieber_generieren('termin_ortt', $ortt, 'cms_termine_felder();')."</td></tr>";
+    $code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('termin_aktiv', $aktiv)."</td></tr>";
+		$code .= "<tr><th>Mehrtägig:</th><td>".cms_generiere_schieber('termin_mehrtaegig', $mehrtaegigt, 'cms_termine_felder();')."</td></tr>";
+		$code .= "<tr><th>Beginn Uhrzeit:</th><td>".cms_generiere_schieber('termin_uhrzeitb', $uhrzeitbt, 'cms_termine_felder();')."</td></tr>";
+		$code .= "<tr><th>Ende Uhrzeit:</th><td>".cms_generiere_schieber('termin_uhrzeite', $uhrzeitet, 'cms_termine_felder();')."</td></tr>";
+		$code .= "<tr><th>Ort:</th><td>".cms_generiere_schieber('termin_ortt', $ortt, 'cms_termine_felder();')."</td></tr>";
     if ($id == '-') {
-		  $code .= "<tr><th>Wiederholung:</th><td>".cms_schieber_generieren('termin_wiederholung', 0, 'cms_termine_felder();')."</td></tr>";
+		  $code .= "<tr><th>Wiederholung:</th><td>".cms_generiere_schieber('termin_wiederholung', 0, 'cms_termine_felder();')."</td></tr>";
     }
 		$code .= "</table>";
     if (!$genehmigung) {
@@ -118,7 +118,7 @@ function cms_internertermin_details_laden($id, $gruppe, $gruppenid) {
 		$code .= "</table>";
     $code .= "<h3>Erweiterte Optionen</h3>";
     $code .= "<table class=\"cms_formular\">";
-    $code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('termin_notifikationen', $notifikationen)."</td></tr>";
+    $code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_generiere_schieber('termin_notifikationen', $notifikationen)."</td></tr>";
     $code .= "</table>";
 
 

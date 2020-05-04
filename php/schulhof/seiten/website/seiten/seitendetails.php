@@ -76,7 +76,7 @@ function cms_website_seiten_ausgeben ($id, $zuordnung) {
 		}
 		$code .= "</select></td></tr>";
 
-		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Sidebarnavigation:<span class=\"cms_hinweis\">Soll an der linken Seite eine Seitennavigation angezeigt werden?</span></span></th><td>".cms_schieber_generieren('website_seiten_sidebar', $sidebar)."</td></tr>";
+		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Sidebarnavigation:<span class=\"cms_hinweis\">Soll an der linken Seite eine Seitennavigation angezeigt werden?</span></span></th><td>".cms_generiere_schieber('website_seiten_sidebar', $sidebar)."</td></tr>";
 		$disabled = "disabled=\"disabled\"";
 		$startseiteeditieren = ($status != 's') || cms_r("website.seiten.startseite");
 		if ($startseiteeditieren && cms_r("website.freigeben")) {$disabled = "";}

@@ -117,7 +117,7 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
       $code .= "<option value=\"".$l['wert']."\"$zusatz>".$l['bezeichnung']."</option>";
     }
     $code .= "</td></tr>";
-    $code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_schieber_generieren('voranmeldung_schueler_impfung', $impfung)."</td></tr>";
+    $code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_generiere_schieber('voranmeldung_schueler_impfung', $impfung)."</td></tr>";
   $code .= "</table>";
   $code .= "</div>";
   $code .= "</div>";

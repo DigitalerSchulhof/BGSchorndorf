@@ -57,10 +57,10 @@ if ($rueckgabe['zulaessig']) {
 
   $code .= "<h3>Voraussetzungen</h3>";
   $code .= "<table class=\"cms_formular\">";
-    $code .= "<tr><th>Verbindlichkeit:</th><td>".cms_schieber_generieren('voranmeldung_verbindlichkeit', $verbindlichkeit)."</td><td>Mir ist bewusst, dass die Schulvoranmeldung <b>unverbindlich</b> erfolgt und dass wir zusätzlich an der Schule <b>persönlich vorstellig</b> werden müssen.</td></tr>";
-    $code .= "<tr><th>Gleichbehandlung:</th><td>".cms_schieber_generieren('voranmeldung_gleichbehandlung', $gleichbehandlung)."</td><td>Mir ist bewusst, dass vorangemeldete Kinder nicht bevorzugt behandelt werden.</td></tr>";
-    $code .= "<tr><th>Datenschutz:</th><td>".cms_schieber_generieren('voranmeldung_datenschutz', $datenschutz)."</td><td>Ich habe die Datenschutzhinweise gelesen und bin damit einverstanden.</td></tr>";
-    $code .= "<tr><th>Cookies:</th><td>".cms_schieber_generieren('voranmeldung_cookies', $cookies)."</td><td>Ich bin mit der Verwendung von Cookies einverstanden.</td></tr>";
+    $code .= "<tr><th>Verbindlichkeit:</th><td>".cms_generiere_schieber('voranmeldung_verbindlichkeit', $verbindlichkeit)."</td><td>Mir ist bewusst, dass die Schulvoranmeldung <b>unverbindlich</b> erfolgt und dass wir zusätzlich an der Schule <b>persönlich vorstellig</b> werden müssen.</td></tr>";
+    $code .= "<tr><th>Gleichbehandlung:</th><td>".cms_generiere_schieber('voranmeldung_gleichbehandlung', $gleichbehandlung)."</td><td>Mir ist bewusst, dass vorangemeldete Kinder nicht bevorzugt behandelt werden.</td></tr>";
+    $code .= "<tr><th>Datenschutz:</th><td>".cms_generiere_schieber('voranmeldung_datenschutz', $datenschutz)."</td><td>Ich habe die Datenschutzhinweise gelesen und bin damit einverstanden.</td></tr>";
+    $code .= "<tr><th>Cookies:</th><td>".cms_generiere_schieber('voranmeldung_cookies', $cookies)."</td><td>Ich bin mit der Verwendung von Cookies einverstanden.</td></tr>";
     $code .= "<tr><th></th><td></td><td><span class=\"cms_button_ja\" onclick=\"cms_voranmeldung_beginnen()\">Anmeldung beginnen</span></td></tr>";
   $code .= "</table>";
 }

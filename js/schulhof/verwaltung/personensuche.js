@@ -100,15 +100,15 @@ function cms_personensuche_wahl_mitglieder(id, personenid, personenart, personen
   tabellencode += "<tr id=\""+id+'_personensuche_mitglieder_'+personenid+"\">";
   tabellencode += "<td><span class=\"cms_tabellenicon\"><img src=\"res/icons/klein/"+icon+"\"></span></td>";
   tabellencode += "<td>"+personenname+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_upload_'+personenid,  0)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_download_'+personenid,  1)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_loeschen_'+personenid,  0)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_umbenennen_'+personenid,  0)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_termine_'+personenid,  0)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_blogeintraege_'+personenid,  0)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chatten_'+personenid,  1)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chat_loeschen_'+personenid,  0)+"</td>";
-  tabellencode += "<td>"+cms_schieber_generieren(id+'_personensuche_mitglieder_chat_bannen_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_upload_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_download_'+personenid,  1)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_loeschen_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_umbenennen_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_termine_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_blogeintraege_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_chatten_'+personenid,  1)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_chat_loeschen_'+personenid,  0)+"</td>";
+  tabellencode += "<td>"+cms_generiere_schieber(id+'_personensuche_mitglieder_chat_bannen_'+personenid,  0)+"</td>";
   tabellencode += "<td><span class=\"cms_button_nein\" onclick=\"cms_personensuche_entfernen_mitglieder('"+id+"', '"+personenid+"', '"+gruppe+"')\"><span class=\"cms_hinweis\">Person entfernen</span>–</span></td>";
   tabellencode += "</tr>";
 

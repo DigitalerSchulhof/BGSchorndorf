@@ -34,16 +34,16 @@ function cms_pinnwaende_ausgeben ($pinnwandid) {
 		$code .= "<tr><th></th><td>".cms_generiere_hinweisicon("lehrer", "Lehrer")."</td>";
 		$code .= "<td>".cms_generiere_hinweisicon("schueler", "Schüler")."</td><td>".cms_generiere_hinweisicon("elter", "Eltern")."</td>";
 		$code .= "<td>".cms_generiere_hinweisicon("verwaltung", "Verwaltungsangestellte")."</td><td>".cms_generiere_hinweisicon("extern", "Externe")."</td></tr>";
-		$code .= "<tr><th>Sichtbarkeit:</th><td>".cms_schieber_generieren('pinnwaende_sichtbarl', $sichtbarl)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_sichtbars', $sichtbars)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_sichtbare', $sichtbare)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_sichtbarv', $sichtbarv)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_sichtbarx', $sichtbarx)."</td></tr>";
-		$code .= "<tr><th>Schreibrecht:</th><td>".cms_schieber_generieren('pinnwaende_schreibenl', $schreibenl)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_schreibens', $schreibens)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_schreibene', $schreibene)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_schreibenv', $schreibenv)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('pinnwaende_schreibenx', $schreibenx)."</td></tr>";
+		$code .= "<tr><th>Sichtbarkeit:</th><td>".cms_generiere_schieber('pinnwaende_sichtbarl', $sichtbarl)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_sichtbars', $sichtbars)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_sichtbare', $sichtbare)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_sichtbarv', $sichtbarv)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_sichtbarx', $sichtbarx)."</td></tr>";
+		$code .= "<tr><th>Schreibrecht:</th><td>".cms_generiere_schieber('pinnwaende_schreibenl', $schreibenl)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_schreibens', $schreibens)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_schreibene', $schreibene)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_schreibenv', $schreibenv)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('pinnwaende_schreibenx', $schreibenx)."</td></tr>";
 	$code .= "</table>";
 
 	cms_trennen($dbs);

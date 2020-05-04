@@ -74,9 +74,9 @@ $code .= "<h2>Ansprechpartner</h2>";
     $code .= "<option value=\"".$r['wert']."\"$zusatz>".$r['bezeichnung']."</option>";
   }
   $code .= "</select></td></tr>";
-  $code .= "<tr><th>Sorgeberechtigt:</th><td colspan=\"2\">".cms_schieber_generieren('voranmeldung_ansprechpartner1_sorgerecht', $sorgerecht1)."</td></tr>";
-  $code .= "<tr><th>In Briefe integrieren:</th><td colspan=\"2\">".cms_schieber_generieren('voranmeldung_ansprechpartner1_briefe', $briefe1)."</td></tr>";
-  $code .= "<tr><th>Hauptansprechpartner:</th><td colspan=\"2\">".cms_schieber_generieren('voranmeldung_ansprechpartner1_haupt', $haupt1)."</td></tr>";
+  $code .= "<tr><th>Sorgeberechtigt:</th><td colspan=\"2\">".cms_generiere_schieber('voranmeldung_ansprechpartner1_sorgerecht', $sorgerecht1)."</td></tr>";
+  $code .= "<tr><th>In Briefe integrieren:</th><td colspan=\"2\">".cms_generiere_schieber('voranmeldung_ansprechpartner1_briefe', $briefe1)."</td></tr>";
+  $code .= "<tr><th>Hauptansprechpartner:</th><td colspan=\"2\">".cms_generiere_schieber('voranmeldung_ansprechpartner1_haupt', $haupt1)."</td></tr>";
   $code .= "<tr><th>Straße und Hausnummer:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_strasse\" id=\"cms_voranmeldung_ansprechpartner1_strasse\" class=\"cms_gross\" value=\"$strasse1\"> <input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_hausnummer\" id=\"cms_voranmeldung_ansprechpartner1_hausnummer\" class=\"cms_klein\" value=\"$hausnummer1\"></td></tr>";
   $code .= "<tr><th>Postleitzahl und Ort:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_postleitzahl\" id=\"cms_voranmeldung_ansprechpartner1_postleitzahl\" class=\"cms_klein\" value=\"$plz1\"> <input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_ort\" id=\"cms_voranmeldung_ansprechpartner1_ort\" class=\"cms_gross\" value=\"$ort1\"></td></tr>";
   $code .= "<tr><th>Teilort:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner1_teilort\" id=\"cms_voranmeldung_ansprechpartner1_teilort\" value=\"$teilort1\"></td></tr>";
@@ -107,9 +107,9 @@ $code .= "<h2>Ansprechpartner</h2>";
     $inhalt .= "<option value=\"".$r['wert']."\"$zusatz>".$r['bezeichnung']."</option>";
   }
   $inhalt .= "</select></td></tr>";
-  $inhalt .= "<tr><th>Sorgeberechtigt:</th><td colspan=\"2\">".cms_schieber_generieren('voranmeldung_ansprechpartner2_sorgerecht',$sorgerecht2)."</td></tr>";
-  $inhalt .= "<tr><th>In Briefe integrieren:</th><td colspan=\"2\">".cms_schieber_generieren('voranmeldung_ansprechpartner2_briefe',$briefe2)."</td></tr>";
-  $inhalt .= "<tr><th>Hauptansprechpartner:</th><td colspan=\"2\">".cms_schieber_generieren('voranmeldung_ansprechpartner2_haupt', $haupt2)."</td></tr>";
+  $inhalt .= "<tr><th>Sorgeberechtigt:</th><td colspan=\"2\">".cms_generiere_schieber('voranmeldung_ansprechpartner2_sorgerecht',$sorgerecht2)."</td></tr>";
+  $inhalt .= "<tr><th>In Briefe integrieren:</th><td colspan=\"2\">".cms_generiere_schieber('voranmeldung_ansprechpartner2_briefe',$briefe2)."</td></tr>";
+  $inhalt .= "<tr><th>Hauptansprechpartner:</th><td colspan=\"2\">".cms_generiere_schieber('voranmeldung_ansprechpartner2_haupt', $haupt2)."</td></tr>";
   $inhalt .= "<tr><th>Straße und Hausnummer:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_strasse\" id=\"cms_voranmeldung_ansprechpartner2_strasse\" class=\"cms_gross\" value=\"$strasse2\"> <input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_hausnummer\" id=\"cms_voranmeldung_ansprechpartner2_hausnummer\" class=\"cms_klein\" value=\"$hausnummer2\"></td></tr>";
   $inhalt .= "<tr><th>Postleitzahl und Ort:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_postleitzahl\" id=\"cms_voranmeldung_ansprechpartner2_postleitzahl\" class=\"cms_klein\" value=\"$plz2\"> <input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_ort\" id=\"cms_voranmeldung_ansprechpartner2_ort\" class=\"cms_gross\" value=\"$ort2\"></td></tr>";
   $inhalt .= "<tr><th>Teilort:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_voranmeldung_ansprechpartner2_teilort\" id=\"cms_voranmeldung_ansprechpartner2_teilort\" value=\"$teilort2\"></td></tr>";

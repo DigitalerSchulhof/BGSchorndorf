@@ -57,13 +57,13 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 		$code .= "<tr><th>Beginn:</th><td colspan=\"7\">".cms_datum_eingabe('cms_zeitraeume_beginn', date('d', $beginn), date('m', $beginn), date('Y', $beginn))."</td></tr>";
 		$code .= "<tr><th>Ende:</th><td colspan=\"7\">".cms_datum_eingabe('cms_zeitraeume_ende', date('d', $ende), date('m', $ende), date('Y', $ende))."</td></tr>";
 		$code .= "<tr><th></th><td>MO</td><td>DI</td><td>MI</td><td>DO</td><td>FR</td><td>SA</td><td>SO</td></tr>";
-		$code .= "<tr><th>Schultage:</th><td>".cms_schieber_generieren('cms_zeitraeume_mo', $mo)."</td>";
-		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_di', $di)."</td>";
-		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_mi', $mi)."</td>";
-		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_do', $do)."</td>";
-		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_fr', $fr)."</td>";
-		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_sa', $sa)."</td>";
-		$code .= "<td>".cms_schieber_generieren('cms_zeitraeume_so', $so)."</td>";
+		$code .= "<tr><th>Schultage:</th><td>".cms_generiere_schieber('cms_zeitraeume_mo', $mo)."</td>";
+		$code .= "<td>".cms_generiere_schieber('cms_zeitraeume_di', $di)."</td>";
+		$code .= "<td>".cms_generiere_schieber('cms_zeitraeume_mi', $mi)."</td>";
+		$code .= "<td>".cms_generiere_schieber('cms_zeitraeume_do', $do)."</td>";
+		$code .= "<td>".cms_generiere_schieber('cms_zeitraeume_fr', $fr)."</td>";
+		$code .= "<td>".cms_generiere_schieber('cms_zeitraeume_sa', $sa)."</td>";
+		$code .= "<td>".cms_generiere_schieber('cms_zeitraeume_so', $so)."</td>";
 		$code .= "</tr>";
 		$code .= "<tr><th>Wochenrythmen:</th><td colspan=\"7\"><select name=\"cms_zeitraeume_rythmen\" id=\"cms_zeitraeume_rythmen\">";
 			if ($rythmen == 1) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
@@ -75,7 +75,7 @@ function cms_zeitraum_ausgeben ($zeitraumid) {
 				$code .= "<option value=\"$i\"$zusatz>$buchstaben</option>";
 			}
 			$code .= "</select>";
-			$code .= "<tr><th>".cms_generiere_hinweisinformation("Aktiv", "Inaktive Zeiträume sind nicht öffentlich und werden beim Erzeugen von Tagebüchern und Stunden nicht berücksichtigt.")."</th><td colspan=\"7\">".cms_schieber_generieren('zeitraeume_aktiv', $aktiv)."</td></tr>";
+			$code .= "<tr><th>".cms_generiere_hinweisinformation("Aktiv", "Inaktive Zeiträume sind nicht öffentlich und werden beim Erzeugen von Tagebüchern und Stunden nicht berücksichtigt.")."</th><td colspan=\"7\">".cms_generiere_schieber('zeitraeume_aktiv', $aktiv)."</td></tr>";
 		$code .= "</td></tr>";
 	$code .= "</table>";
 

@@ -163,7 +163,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 					$code .= "<th>$g</th>";
 					$namek = cms_textzudb($g);
 					foreach ($personen as $p) {
-						$code .= "<td>".cms_schieber_generieren('gruppen_mitglieder_'.$namek.'_'.cms_textzudb($p), $einstellungen['Mitglieder '.$g.' '.$p])."</td>";
+						$code .= "<td>".cms_generiere_schieber('gruppen_mitglieder_'.$namek.'_'.cms_textzudb($p), $einstellungen['Mitglieder '.$g.' '.$p])."</td>";
 					}
 				$code .= "</tr>";
 			}
@@ -176,8 +176,8 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 				$code .= "<tr>";
 					$code .= "<th>$g</th>";
 					$namek = cms_textzudb($g);
-					$code .= "<td>".cms_schieber_generieren('gruppen_genehmigung_'.$namek.'_termine', $einstellungen['Genehmigungen '.$g.' Termine'])."</td>";
-					$code .= "<td>".cms_schieber_generieren('gruppen_genehmigung_'.$namek.'_blogeintraege', $einstellungen['Genehmigungen '.$g.' Blogeinträge'])."</td>";
+					$code .= "<td>".cms_generiere_schieber('gruppen_genehmigung_'.$namek.'_termine', $einstellungen['Genehmigungen '.$g.' Termine'])."</td>";
+					$code .= "<td>".cms_generiere_schieber('gruppen_genehmigung_'.$namek.'_blogeintraege', $einstellungen['Genehmigungen '.$g.' Blogeinträge'])."</td>";
 				$code .= "</tr>";
 			}
 		$code .= "</table>";
@@ -192,7 +192,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 					$code .= "<th>$g</th>";
 					$namek = cms_textzudb($g);
 					foreach ($personen as $p) {
-						$code .= "<td>".cms_schieber_generieren('gruppen_aufsicht_'.$namek.'_'.cms_textzudb($p), $einstellungen['Aufsicht '.$g.' '.$p])."</td>";
+						$code .= "<td>".cms_generiere_schieber('gruppen_aufsicht_'.$namek.'_'.cms_textzudb($p), $einstellungen['Aufsicht '.$g.' '.$p])."</td>";
 					}
 				$code .= "</tr>";
 			}
@@ -202,7 +202,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Download von Dateien gestatten:</th>";
-		$code .= "<td>".cms_schieber_generieren('sichtbardownload',$einstellungen['Download aus sichtbaren Gruppen'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('sichtbardownload',$einstellungen['Download aus sichtbaren Gruppen'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</table>";
@@ -244,7 +244,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Untis-Vertretungsplan verwenden:</th>";
-		$code .= "<td>".cms_schieber_generieren('vertretungsplan_extern',$einstellungen['Vertretungsplan extern'], 'cms_vertretungsplan_einstellungen_anzeigen()')."</td>";
+		$code .= "<td>".cms_generiere_schieber('vertretungsplan_extern',$einstellungen['Vertretungsplan extern'], 'cms_vertretungsplan_einstellungen_anzeigen()')."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Persönlicher Vertretungsplan nach ...</th><td><select id=\"cms_vertretungsplan_persoenlich\" name=\"cms_vertretungsplan_persoenlich\">";
@@ -293,15 +293,15 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Untis-Lehrerstundenpläne:</th>";
-		$code .= "<td>".cms_schieber_generieren('lehrerstundenplaene',$einstellungen['Stundenplan Lehrer extern'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('lehrerstundenplaene',$einstellungen['Stundenplan Lehrer extern'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Untis-Klassenstundenpläne:</th>";
-		$code .= "<td>".cms_schieber_generieren('klassenstundenplaene',$einstellungen['Stundenplan Klassen extern'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('klassenstundenplaene',$einstellungen['Stundenplan Klassen extern'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Untis-Raumpläne:</th>";
-		$code .= "<td>".cms_schieber_generieren('raumstundenplaene',$einstellungen['Stundenplan Raum extern'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('raumstundenplaene',$einstellungen['Stundenplan Raum extern'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 
@@ -400,14 +400,14 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Darkmode verfügbar:</th>";
-		$code .= "<td>".cms_schieber_generieren('darkmodeverfuegbar',$einstellungen['Website Darkmode'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('darkmodeverfuegbar',$einstellungen['Website Darkmode'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "<h3>Verhalten bei Menüseiten</h3>";
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th><span class=\"cms_hinweis_aussen\">Menüseiten weiterleiten:<span class=\"cms_hinweis\">Menüseiten werden auf die am niedrigsten positionierte Seite weitergeleitet.</span></span></th>";
-		$code .= "<td>".cms_schieber_generieren('menueseitenweiterleiten',$einstellungen['Menüseiten weiterleiten'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('menueseitenweiterleiten',$einstellungen['Menüseiten weiterleiten'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";
@@ -418,22 +418,22 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Fehlermeldungen sind aktiv:</th>";
-		$code .= "<td>".cms_schieber_generieren('fehlermeldungenaktiv',$einstellungen['Fehlermeldung aktiv'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('fehlermeldungenaktiv',$einstellungen['Fehlermeldung aktiv'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Fehlermeldungen benötigen Anmeldung:</th>";
-		$code .= "<td>".cms_schieber_generieren('fehlermeldungenangemeldet',$einstellungen['Fehlermeldung Anmeldung notwendig'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('fehlermeldungenangemeldet',$einstellungen['Fehlermeldung Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
 		$code .= "<th>Fehlermeldungen ans Entwicklerteam weiterleiten:<br><p class=\"cms_notiz\" style=\"font-weight: normal;\">Diese Option dient ausschließlich zur Verbesserung des Digitalen Schulhofs und kann nicht deaktiviert werden.</p></th>";
-		$code .= "<td>".cms_schieber_generieren('fehlermeldungengithub',$einstellungen['Fehlermeldung an GitHub'],'cms_schieber(\'fehlermeldungengithub\')')."</td>";
+		$code .= "<td>".cms_generiere_schieber('fehlermeldungengithub',$einstellungen['Fehlermeldung an GitHub'],'cms_schieber(\'fehlermeldungengithub\')')."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Feedback ist aktiv:</th>";
-		$code .= "<td>".cms_schieber_generieren('feedbackaktiv',$einstellungen['Feedback aktiv'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('feedbackaktiv',$einstellungen['Feedback aktiv'])."</td>";
 		$code .= "</tr>";
 		$code .= "<tr>";
 		$code .= "<th>Feedback benötigt Anmeldung:</th>";
-		$code .= "<td>".cms_schieber_generieren('feedbackangemeldet',$einstellungen['Feedback Anmeldung notwendig'])."</td>";
+		$code .= "<td>".cms_generiere_schieber('feedbackangemeldet',$einstellungen['Feedback Anmeldung notwendig'])."</td>";
 		$code .= "</tr>";
 		$code .= "</table>";
 
@@ -457,7 +457,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Existiert:</th>";
-		$code .= "<td>".cms_schieber_generieren('externegeraete1_existiert',$einstellungen['Externe Geräteverwaltung1 existiert'], "cms_allgemeineeinstellungen_externegeraeteverwaltung_anzeigen('1')")."</td>";
+		$code .= "<td>".cms_generiere_schieber('externegeraete1_existiert',$einstellungen['Externe Geräteverwaltung1 existiert'], "cms_allgemeineeinstellungen_externegeraeteverwaltung_anzeigen('1')")."</td>";
 		$code .= "</tr>";
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung1_geschlechtF\" style=\"$style\">";
 		$code .= "<th>Geschlecht:</th>";
@@ -498,7 +498,7 @@ if (cms_r("schulhof.verwaltung.einstellungen")) {
 		$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr>";
 		$code .= "<th>Existiert:</th>";
-		$code .= "<td>".cms_schieber_generieren('externegeraete2_existiert',$einstellungen['Externe Geräteverwaltung2 existiert'], "cms_allgemeineeinstellungen_externegeraeteverwaltung_anzeigen('2')")."</td>";
+		$code .= "<td>".cms_generiere_schieber('externegeraete2_existiert',$einstellungen['Externe Geräteverwaltung2 existiert'], "cms_allgemeineeinstellungen_externegeraeteverwaltung_anzeigen('2')")."</td>";
 		$code .= "</tr>";
 		$code .= "<tr id=\"cms_allgemeineeinstellungen_externegeraeteverwaltung2_geschlechtF\" style=\"$style\">";
 		$code .= "<th>Geschlecht:</th>";

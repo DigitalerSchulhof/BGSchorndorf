@@ -31,7 +31,7 @@ function cms_datum_eingabe (id, tag, monat, jahr, zusatzaktion) {
 }
 
 
-function cms_schieber_generieren(id, wert, zusatzaktion) {
+function cms_generiere_schieber(id, wert, zusatzaktion) {
 	var zusatzaktion = zusatzaktion || '';
 	var code = "";
   var vorsilbe = "in";

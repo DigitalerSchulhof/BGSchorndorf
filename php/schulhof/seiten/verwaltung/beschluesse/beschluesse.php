@@ -39,7 +39,7 @@ function cms_beschlusselemente($dbs, $id, $gruppe, $gruppenid) {
     $code .= "<table class=\"cms_formular\" id=\"cms_beschluss_$bid\">";
       $code .= "<tr><th>Titel:</th><td colspan=\"6\"><input type=\"text\" name=\"cms_beschluss_titel_".$bid."\" id=\"cms_beschluss_titel_".$bid."\" value=\"".$b['titel']."\"></td></tr>";
       $code .= "<tr><th>Beschreibung:</th><td colspan=\"6\"><textarea name=\"cms_beschluss_beschreibung_".$bid."\" id=\"cms_beschluss_beschreibung_".$bid."\">".$b['beschreibung']."</textarea></td></tr>";
-      $code .= "<tr><th>Langfristig:</th><td colspan=\"6\">".cms_schieber_generieren('cms_beschluss_langfristig_'.$bid, $b['langfristig'])."</td></tr>";
+      $code .= "<tr><th>Langfristig:</th><td colspan=\"6\">".cms_generiere_schieber('cms_beschluss_langfristig_'.$bid, $b['langfristig'])."</td></tr>";
       $code .= "<tr><th>Stimmen:</th><td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">Dafür</span><img src=\"res/icons/klein/pro.png\"></span></td>";
       $code .= "<td><input type=\"number\" min=\"0\" step=\"1\" value=\"".$b['pro']."\" name=\"cms_beschluss_pro_".$bid."\" id=\"cms_beschluss_pro_".$bid."\"></td>";
       $code .= "<td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">Enthaltung</span><img src=\"res/icons/klein/egal.png\"></span></td>";

@@ -68,7 +68,7 @@ if (cms_angemeldet() && $zugriff) {
     $typen = array();
 
     if (cms_r("website.freigeben"))
-        $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_diashow_aktiv', $aktiv)."</td></tr>";
+        $code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('website_element_diashow_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_diashow_aktiv\" name=\"website_element_diashow_aktiv\" value=\"0\"></td></tr>";
 

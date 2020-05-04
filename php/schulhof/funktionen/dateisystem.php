@@ -38,9 +38,9 @@ function cms_dateisystem_generieren ($stammverzeichnis, $pfad, $feldid, $netz, $
 			$code .= "</td></tr>";
 			$code .= "<tr><th>Dateien hochladen:</th><td><ul class=\"cms_dateisystem_hochladen_dateiliste\" id=\"".$feldid."_aktionen_hochladen_liste\"><li>Keine Dateien ausgewählt</li></ul><p class=\"cms_notiz\" id=\"".$feldid."_aktionen_hochladen_gesamtgroesse\">Gesamtgröße: 0 B • Anzahl Dateien: 0</p></td></tr>";
 
-			$code .= "<tr><th>Ich besitze das Urheberrecht:</th><td>".cms_schieber_generieren(substr($feldid,4)."_hochladen_urheberrecht", '0')."</td></tr>";
+			$code .= "<tr><th>Ich besitze das Urheberrecht:</th><td>".cms_generiere_schieber(substr($feldid,4)."_hochladen_urheberrecht", '0')."</td></tr>";
 
-			$code .= "<tr><th>Bilder verkleinern:</th><td><p>".cms_schieber_generieren(substr($feldid,4)."_bilderskalieren", '1', "cms_dateisystem_hochladen_bilderskalieren('$feldid')")."</p><p style=\"display: block;\" id=\"".$feldid."_slalieren_groesse_feld\"><input class=\"cms_klein\" type=\"number\" id=\"".$feldid."_skalieren_groesse\" name=\"".$feldid."_skalieren_groesse\" value=\"1000\"> Pixel</p></td></tr>";
+			$code .= "<tr><th>Bilder verkleinern:</th><td><p>".cms_generiere_schieber(substr($feldid,4)."_bilderskalieren", '1', "cms_dateisystem_hochladen_bilderskalieren('$feldid')")."</p><p style=\"display: block;\" id=\"".$feldid."_slalieren_groesse_feld\"><input class=\"cms_klein\" type=\"number\" id=\"".$feldid."_skalieren_groesse\" name=\"".$feldid."_skalieren_groesse\" value=\"1000\"> Pixel</p></td></tr>";
 
 
 			$code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_dateisystem_aktionen_hochladen('$netz', '$bereich', '$id', '$feldid')\">+ Dateien hochladen</span> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('".$feldid."_aktionen_hochladen')\">Abbrechen</span></td></tr>";
@@ -645,7 +645,7 @@ function cms_postfach_anhang_dateiupload() {
 	$code .= "</td></tr>";
 	$code .= "<tr><th>Anhang hochladen:</th><td><ul class=\"cms_dateisystem_hochladen_dateiliste\" id=\"".$feldid."_aktionen_hochladen_liste\"><li>Keine Dateien ausgewählt</li></ul><p class=\"cms_notiz\" id=\"".$feldid."_aktionen_hochladen_gesamtgroesse\">Gesamtgröße: 0 B • Anzahl Dateien: 0</p></td></tr>";
 
-	$code .= "<tr><th>Ich besitze das Urheberrecht:</th><td>".cms_schieber_generieren(substr($feldid,4)."_hochladen_urheberrecht", '0')."</td></tr>";
+	$code .= "<tr><th>Ich besitze das Urheberrecht:</th><td>".cms_generiere_schieber(substr($feldid,4)."_hochladen_urheberrecht", '0')."</td></tr>";
 
 	$code .= "<tr><th></th><td><span class=\"cms_button_ja\" onclick=\"cms_dateisystem_aktionen_hochladen('s', 'anhang', '-', '$feldid')\">+ Anhang hochladen</span> <span class=\"cms_button_nein\" onclick=\"cms_ausblenden('".$feldid."_aktionen_hochladen')\">Abbrechen</span>";
 	$code .= "<input id=\"".$feldid."_bilderskalieren\" name=\"".$feldid."_bilderskalieren\" type=\"hidden\" value=\"0\"><input id=\"".$feldid."_skalieren_groesse\" name=\"".$feldid."_skalieren_groesse\" type=\"hidden\" value=\"1000\"><input id=\"".$feldid."_pfad_feld\" name=\"".$feldid."_pfad_feld\" type=\"hidden\" value=\"schulhof/personen/$CMS_BENUTZERID/postfach/temp\">";

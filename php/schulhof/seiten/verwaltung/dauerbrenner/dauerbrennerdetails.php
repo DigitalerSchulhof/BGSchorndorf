@@ -31,11 +31,11 @@ function cms_dauerbrenner_ausgeben ($dauerbrennerid) {
 		$code .= "<tr><th></th><td>".cms_generiere_hinweisicon("lehrer", "Lehrer")."</td>";
 		$code .= "<td>".cms_generiere_hinweisicon("schueler", "Schüler")."</td><td>".cms_generiere_hinweisicon("elter", "Eltern")."</td>";
 		$code .= "<td>".cms_generiere_hinweisicon("verwaltung", "Verwaltungsangestellte")."</td><td>".cms_generiere_hinweisicon("extern", "Externe")."</td></tr>";
-		$code .= "<tr><th>Sichtbarkeit:</th><td>".cms_schieber_generieren('dauerbrenner_sichtbarl', $sichtbarl)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbars', $sichtbars)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbare', $sichtbare)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbarv', $sichtbarv)."</td>";
-		$code .=     "<td>".cms_schieber_generieren('dauerbrenner_sichtbarx', $sichtbarx)."</td></tr>";
+		$code .= "<tr><th>Sichtbarkeit:</th><td>".cms_generiere_schieber('dauerbrenner_sichtbarl', $sichtbarl)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('dauerbrenner_sichtbars', $sichtbars)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('dauerbrenner_sichtbare', $sichtbare)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('dauerbrenner_sichtbarv', $sichtbarv)."</td>";
+		$code .=     "<td>".cms_generiere_schieber('dauerbrenner_sichtbarx', $sichtbarx)."</td></tr>";
 	$code .= "</table>";
 	$code .= "</div></div>";
 

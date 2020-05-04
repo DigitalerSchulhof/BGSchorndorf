@@ -865,17 +865,17 @@ function cms_personaldaten_einstellungen_aendern($id) {
 			$code .= "<table class=\"cms_formular\">";
 				$code .= "<tr>";
 					$code .= "<th>neue Nachrichten eingehen</th>";
-					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_postmail", $postmail)."</td>";
+					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_postmail", $postmail)."</td>";
 				$code .= "</tr>";
 				if ($CMS_EINSTELLUNGEN['Vertretungsplan extern'] == 0) {
 					$code .= "<tr>";
 						$code .= "<th>neue Vertretungen eingehen</th>";
-						$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_vertretungsmail", $vertretungsmail)."</td>";
+						$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_vertretungsmail", $vertretungsmail)."</td>";
 					$code .= "</tr>";
 				}
 				$code .= "<tr>";
 					$code .= "<th>neue Neuigkeiten eingehen</th>";
-					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_notifikationmail", $notifikationsmail)."</td>";
+					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_notifikationmail", $notifikationsmail)."</td>";
 				$code .= "</tr>";
 			$code .= "</table>";
 
@@ -887,15 +887,15 @@ function cms_personaldaten_einstellungen_aendern($id) {
 			$code .= "<table class=\"cms_formular\">";
 				$code .= "<tr>";
 					$code .= "<th>ein öffentlicher Termin erstellt wurde</th>";
-					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_terminoeffentlich", $oeffentlichertermin)."</td>";
+					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_terminoeffentlich", $oeffentlichertermin)."</td>";
 				$code .= "</tr>";
 				$code .= "<tr>";
 					$code .= "<th>ein öffentlicher Blogeintrag erstellt wurde</th>";
-					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_blogoeffentlich", $oeffentlicherblog)."</td>";
+					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_blogoeffentlich", $oeffentlicherblog)."</td>";
 				$code .= "</tr>";
 				$code .= "<tr>";
 					$code .= "<th>eine öffentliche Galerie erstellt wurde</th>";
-					$code .= "<td>".cms_schieber_generieren("schulhof_".$idname."_einstellungen_galerieoeffentlich", $oeffentlichegalerie)."</td>";
+					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_galerieoeffentlich", $oeffentlichegalerie)."</td>";
 				$code .= "</tr>";
 			$code .= "</table>";
 

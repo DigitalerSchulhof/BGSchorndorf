@@ -190,7 +190,7 @@ if (!$fehler) {
 
   $code .= "<div class=\"cms_spalte_i\">";
   $code .= "<table class=\"cms_formular\">";
-  $code .= "<tr><th>Korrekt und Vollständig</th><td>".cms_schieber_generieren('korrekt', 0)."</td><td>Ich vesichere, dass die gemachten Angaben nach bestem Wissen und Gewissen korrekt und vollständig sind.</td></tr>";
+  $code .= "<tr><th>Korrekt und Vollständig</th><td>".cms_generiere_schieber('korrekt', 0)."</td><td>Ich vesichere, dass die gemachten Angaben nach bestem Wissen und Gewissen korrekt und vollständig sind.</td></tr>";
   $code .= "<tr><th>Sicherheitsabfrage zur Spamverhinderung:</th><td colspan=\"2\">".cms_captcha_generieren()." Bitte übertragen Sie die Buchstaben und Zahlen aus dem Bild in der korrekten Reihenfolge in das nachstehende Feld.</td></tr>";
   $code .= "<tr><th></th><td colspan=\"2\"></td></tr>";
   $code .= "<tr><th></th><td colspan=\"2\"><input type=\"text\" name=\"cms_spamverhinderung\" id=\"cms_spamverhinderung\"></td></tr>";

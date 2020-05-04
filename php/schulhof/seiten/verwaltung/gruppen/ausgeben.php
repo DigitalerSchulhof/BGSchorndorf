@@ -284,7 +284,7 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       if ($sichtbar === 3) {$selected = " selected=\"selected\"";} else {$selected = "";}
       $ausgabe .= "<option$selected value=\"3\">Für den ganzen Schulhof</option>";
     $ausgabe .= "</select></td></tr>";
-    $ausgabe .= "<tr><th>Chat aktivieren:</th><td>".cms_schieber_generieren('gruppe_chat', $chat)."</td></tr>";
+    $ausgabe .= "<tr><th>Chat aktivieren:</th><td>".cms_generiere_schieber('gruppe_chat', $chat)."</td></tr>";
 
     if ($id != '-') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" disabled=\"disabled\">";}
     else if ($namek == 'stufen') {$ausgabe .= "<tr><th>Schuljahr:</th><td><select name=\"cms_gruppe_schuljahr\" id=\"cms_gruppe_schuljahr\" onchange=\"cms_gruppe_reihenfolge_laden()\">";}
@@ -307,8 +307,8 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
       }
       if ($id == '-') {$ausgabe .= "<option value=\"$i\">$i</option>";}
       $ausgabe .= "</select></td></tr>";
-      $ausgabe .= "<tr><th>Tagebuch:</th><td>".cms_schieber_generieren('gruppe_tagebuch', $tagebuch)."</td></tr>";
-      $ausgabe .= "<tr><th>GFS-Verwaltung:</th><td>".cms_schieber_generieren('gruppe_gfs', $gfs)."</td></tr>";
+      $ausgabe .= "<tr><th>Tagebuch:</th><td>".cms_generiere_schieber('gruppe_tagebuch', $tagebuch)."</td></tr>";
+      $ausgabe .= "<tr><th>GFS-Verwaltung:</th><td>".cms_generiere_schieber('gruppe_gfs', $gfs)."</td></tr>";
     }
     if (($namek == 'klassen') || ($namek == 'kurse')) {
       if ($id == '-') {

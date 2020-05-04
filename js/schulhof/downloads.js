@@ -16,7 +16,7 @@ function cms_neuer_download() {
 		code += "<p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'website', '-', 'website', 'cms_download_datei_"+neueid+"', 'download')\">Datei auswählen</span></p>";
 		code += "<p id=\"cms_download_datei_"+neueid+"_verzeichnis\"></p>";
 	code += "</td></tr>";
-	code += "<tr><th></th><th>Dateiname anzeigen:</th><td>"+cms_schieber_generieren('cms_download_dateiname_'+neueid, '1')+"</td><th>Dateigröße anzeigen:</th><td>"+cms_schieber_generieren('cms_download_dateigroesse_'+neueid, '1')+"</td></tr>";
+	code += "<tr><th></th><th>Dateiname anzeigen:</th><td>"+cms_generiere_schieber('cms_download_dateiname_'+neueid, '1')+"</td><th>Dateigröße anzeigen:</th><td>"+cms_generiere_schieber('cms_download_dateigroesse_'+neueid, '1')+"</td></tr>";
 	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_download_entfernen('"+neueid+"');\">Download löschen</span></td></tr>";
 	var knoten = document.createElement("TABLE");
 	knoten.className = 'cms_formular';
@@ -46,7 +46,7 @@ function cms_neuer_internerdownload(gruppe, gruppenid) {
 		code += "<p><span class=\"cms_button\" onclick=\"cms_dateiwahl('s', 'gruppe', '"+gruppenid+"', 'schulhof/gruppen/"+gruppe+"/"+gruppenid+"', 'cms_download_datei_"+neueid+"', 'download', '"+gruppe+"', '"+gruppenid+"')\">Datei auswählen</span></p>";
 		code += "<p id=\"cms_download_datei_"+neueid+"_verzeichnis\"></p>";
 	code += "</td></tr>";
-	code += "<tr><th></th><th>Dateiname anzeigen:</th><td>"+cms_schieber_generieren('cms_download_dateiname_'+neueid, '1')+"</td><th>Dateigröße anzeigen:</th><td>"+cms_schieber_generieren('cms_download_dateigroesse_'+neueid, '1')+"</td></tr>";
+	code += "<tr><th></th><th>Dateiname anzeigen:</th><td>"+cms_generiere_schieber('cms_download_dateiname_'+neueid, '1')+"</td><th>Dateigröße anzeigen:</th><td>"+cms_generiere_schieber('cms_download_dateigroesse_'+neueid, '1')+"</td></tr>";
 	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_download_entfernen('"+neueid+"');\">Download löschen</span></td></tr>";
 	var knoten = document.createElement("TABLE");
 	knoten.className = 'cms_formular';

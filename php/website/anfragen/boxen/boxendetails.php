@@ -84,7 +84,7 @@ if (cms_angemeldet() && $zugriff) {
     if ($id == '-') {$code = "<h3>Neue Boxen</h3>";}
     else {$code = "<h3>Boxen bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
-    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_boxen_aktiv', $aktiv)."</td></tr>";}
+    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('website_element_boxen_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"cms_website_element_boxen_aktiv\" name=\"cms_website_element_boxen_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_boxen_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "<tr><th>Ausrichtung:</th><td><select id=\"cms_website_element_boxen_ausrichtung\" onchange=\"cms_boxen_ausrichtung_aendern();\">";
@@ -120,7 +120,7 @@ if (cms_angemeldet() && $zugriff) {
         $code .= "<table class=\"cms_formular\">";
           $code .= "<tr><th>Aktiv:</th><td>";
           if (cms_r("website.freigeben")) {
-            $code .= cms_schieber_generieren('cms_boxen_box_aktiv_'.$bid, $boxen[$i]['aktiv']);
+            $code .= cms_generiere_schieber('cms_boxen_box_aktiv_'.$bid, $boxen[$i]['aktiv']);
           }
           else {
             $code .= cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Bis dieser Eintrag freigegeben wird, bleibt er inaktiv.</p>');

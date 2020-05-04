@@ -93,14 +93,14 @@ if (cms_angemeldet() && $zugriff) {
     $code .= "<table class=\"cms_formular\">";
 
       if (cms_r("website.freigeben"))
-        $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_kontaktformular_aktiv', $aktiv)."</td></tr>";
+        $code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('website_element_kontaktformular_aktiv', $aktiv)."</td></tr>";
       else
         $code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_kontaktformular_aktiv\" name=\"website_element_kontaktformular_aktiv\" value=\"0\"></td></tr>";
 
       $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_kontaktformular_position', $position, $maxpos, $neu)."</td></tr>";
       $code .= "<tr><th>Betreff:</th><td><input type=\"text\" id=\"cms_website_element_kontaktformular_betreff\" name=\"cms_website_element_kontaktformular_betreff\" value=\"$betreff\"></td></tr>";
       $code .= "<tr><th>Kopie an Absender senden:</th><td>".cms_select_generieren('cms_website_element_kontaktformular_kopie', '', array(1 => "Immer", 2 => "Selbst wählbar", 0 => "Nie"), $kopie, true)."</td></tr>";
-      $code .= "<tr><th>Anhänge erlauben:</th><td>".cms_schieber_generieren('website_element_kontaktformular_anhang', $anhang)."</td></tr>";
+      $code .= "<tr><th>Anhänge erlauben:</th><td>".cms_generiere_schieber('website_element_kontaktformular_anhang', $anhang)."</td></tr>";
       $code .= "<tr><th>Ansicht:</th><td>";
         $code .= "<select name=\"cms_website_element_kontaktformular_ansicht\" id=\"cms_website_element_kontaktformular_ansicht\">";
           $ansichtoptionen = "<option value=\"m\">Menü</option><option value=\"v\">Visitenkarten</option>";

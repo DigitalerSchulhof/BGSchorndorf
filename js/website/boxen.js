@@ -127,7 +127,7 @@ function cms_boxen_neue_box(freigabe) {
   code += "<div class=\"cms_box_titel\" id=\"cms_box_titel_"+neueid+"\""+style+">";
   code += "<table class=\"cms_formular\">";
     code += "<tr><th>Aktiv:</th><td>";
-    if (freigabe == '1') {code += cms_schieber_generieren('cms_boxen_box_aktiv_'+neueid, '1');}
+    if (freigabe == '1') {code += cms_generiere_schieber('cms_boxen_box_aktiv_'+neueid, '1');}
     else {
       code += cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Bis dieser Eintrag freigegeben wird, bleibt er inaktiv.</p>');
       code += '<input type="hidden" name="cms_boxen_box_aktiv_'+neueid+'" id="cms_boxen_box_aktiv_'+neueid+'" value="0">';

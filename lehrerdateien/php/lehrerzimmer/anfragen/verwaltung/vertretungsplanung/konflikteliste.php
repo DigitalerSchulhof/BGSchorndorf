@@ -488,7 +488,7 @@ if ($angemeldet && $zugriff) {
             $listencode .= $SCHULSTUNDENOPTIONEN;
           }
           $listencode .= "</select></td>";
-          $listencode .= "<td><input$aenderevent $planladenevent type=\"cms_text\" name=\"cms_vtextk_$uid"."_"."$kid"."_$zeilennr\" id=\"cms_vtextk_$uid"."_"."$kid"."_$zeilennr\" value=\"$vplanbem\"></td><td>".cms_schieber_generieren("vanzk_$uid"."_".$kid."_$zeilennr", '1', $aendereventfkt)."</td></tr>";
+          $listencode .= "<td><input$aenderevent $planladenevent type=\"cms_text\" name=\"cms_vtextk_$uid"."_"."$kid"."_$zeilennr\" id=\"cms_vtextk_$uid"."_"."$kid"."_$zeilennr\" value=\"$vplanbem\"></td><td>".cms_generiere_schieber("vanzk_$uid"."_".$kid."_$zeilennr", '1', $aendereventfkt)."</td></tr>";
           $zeilennr ++;
         }
       }
@@ -583,7 +583,7 @@ if ($angemeldet && $zugriff) {
           $listencode .= $SCHULSTUNDENOPTIONEN;
         }
         $listencode .= "</select></td>";
-        $listencode .= "<td><input$aenderevent $planladenevent type=\"cms_text\" name=\"cms_vtextl_".$L['uid']."_".$L['kid']."_$zeilennr\" id=\"cms_vtextl_".$L['uid']."_".$L['kid']."_$zeilennr\" value=\"".$L['vplanbem']."\"></td><td>".cms_schieber_generieren("vanzl_".$L['uid']."_".$L['kid']."_$zeilennr", $L['vplananz'], $aendereventfkt)."</td></tr>";
+        $listencode .= "<td><input$aenderevent $planladenevent type=\"cms_text\" name=\"cms_vtextl_".$L['uid']."_".$L['kid']."_$zeilennr\" id=\"cms_vtextl_".$L['uid']."_".$L['kid']."_$zeilennr\" value=\"".$L['vplanbem']."\"></td><td>".cms_generiere_schieber("vanzl_".$L['uid']."_".$L['kid']."_$zeilennr", $L['vplananz'], $aendereventfkt)."</td></tr>";
         $zeilennr ++;
       }
 

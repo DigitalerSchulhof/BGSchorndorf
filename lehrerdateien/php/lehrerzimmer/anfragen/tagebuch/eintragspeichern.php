@@ -201,7 +201,7 @@ if ($angemeldet) {
     $code .= "<tr><th>Inhalt:</th><td><textarea name=\"cms_tagebuch_eintrag_inhalt\" id=\"cms_tagebuch_eintrag_inhalt\" rows=\"2\"$dis>".$EINTRAG['inhalt']."</textarea></td></tr>";
     $code .= "<tr><th>Hausaufgaben:</th><td><textarea name=\"cms_tagebuch_eintrag_hausi\" id=\"cms_tagebuch_eintrag_hausi\" rows=\"2\"$dis>".$EINTRAG['hausaufgabe']."</textarea></td></tr>";
     $code .= "<tr><th>Leistungsmessung:</th><td>";
-    if ($ierlaubt) {$code .= cms_schieber_generieren('cms_tagebuch_eintrag_lm', $EINTRAG['lm']);}
+    if ($ierlaubt) {$code .= cms_generiere_schieber('cms_tagebuch_eintrag_lm', $EINTRAG['lm']);}
     else {if ($EINTRAG['lm'] == 0) {$code .= "NEIN";} else {$code .= "JA";}}
     $code .= "</td></tr>";
 

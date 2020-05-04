@@ -532,7 +532,7 @@ function cms_sonderrollen_generieren() {
 	return $code;
 }
 
-function cms_schieber_generieren($id, $wert, $zusatzaktion = '') {
+function cms_generiere_schieber($id, $wert, $zusatzaktion = '') {
   $code = "";
   $vorsilbe = "in";
   if ($wert == 1) {$vorsilbe = "";}
