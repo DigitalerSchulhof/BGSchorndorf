@@ -57,9 +57,9 @@ function cms_meldung_fehler () {
 }
 
 function cms_meldung_eingeschraenkt () {
+	global $CMS_EINSTELLUNGEN;
 	$inhalt = '<h4>Nur eingeschränkte Nutzung möglich</h4><p>Einige Funktionen stehen in diesem Netz nicht zur Verfügung.';
-	global $CMS_LN_ZB_VPN;
-	if ($CMS_LN_ZB_VPN == 1) {
+	if ($CMS_EINSTELLUNGEN['Netze VPN-Anleitung'] == 1) {
 		$inhalt .= ' Um auf diese Funktionen zugreifen zu können, ist ein Fernzugriff (per VPN) auf ein anderes Netz erforderlich.</p>';
 		$inhalt .= '<p><a class="cms_button" href="Schulhof/Hilfe/VPN">VPN Verbindung einrichten</a>';
 	}

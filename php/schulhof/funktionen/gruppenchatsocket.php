@@ -9,8 +9,10 @@ include_once("php/schulhof/funktionen/generieren.php");
 include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 include_once("php/allgemein/funktionen/sql.php");
 
-define('HOST_NAME', $CMS_SOCKET_IP);
-define('PORT', 			$CMS_SOCKET_PORT);
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
+
+define('HOST_NAME', $CMS_EINSTELLUNGEN['Netze Socket-IP']);
+define('PORT', 			$CMS_EINSTELLUNGEN['Netze Socket-Port']);
 $null = NULL;
 
 $debug = false;

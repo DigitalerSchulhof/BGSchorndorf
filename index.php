@@ -184,7 +184,7 @@
 	<?php echo "<link type=\"image/png\" href=\"dateien/schulspezifisch/favicon.ico\" rel=\"shortcut icon\">";?>
 	<title><?php echo $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']." • ".$CMS_SEITENTITEL;?></title>
 
-	<?php echo "<base href=\"$CMS_BASE\">";
+	<?php echo "<base href=\"".$CMS_EINSTELLUNGEN['Netze Basisverzeichnis']."\">";
 		$hellhash 	= substr(md5(filemtime("css/hell.css")), 0, 7);
 		$dunkelhash = substr(md5(filemtime("css/dunkel.css")), 0, 7);
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?cb=$hellhash\">";
@@ -307,7 +307,7 @@
 			echo "var CMS_DIASHOWZEIT = $CMS_DIASHOWZEIT;\n";
 	    if ($CMS_ANGEMELDET) {
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
-					echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";
+					echo "var CMS_LN_DA = '".$CMS_EINSTELLUNGEN['Netze Lehrerserver']."';\n";
 					if (isset($_SESSION['IMLN'])) {
 						if ($_SESSION['IMLN'] == 1) {
 			        echo "var CMS_IMLN = true;\n";

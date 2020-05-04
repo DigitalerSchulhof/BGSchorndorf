@@ -37,26 +37,34 @@ if (cms_r("technik.server.netze")) {
 
 	$code .= "<h3>Sonstiges</h3>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>Basisverzeichnis:</th><td>".cms_generiere_input('cms_netze_basisverzeichnis_sh', $CMS_BASE)."</td></tr>";
-	$code .= "<tr><th>Lehrerserver:</th><td>".cms_generiere_input('cms_netze_lehrerverzeichnis_sh', $CMS_LN_DA)."</td></tr>";
-	$code .= "<tr><th>VPN-Anleitung anzeigen:</th><td>".cms_generiere_schieber('cms_netze_vpn', $CMS_LN_ZB_VPN)."</td></tr>";
-	$code .= "<tr><th>Hostingpartner:</th><td>".cms_generiere_input('cms_netze_hostingpartner_sh', $CMS_HOSTINGPARTNEREX)."</td></tr>";
+	$code .= "<tr><th>Basisverzeichnis:</th><td>".cms_generiere_input('cms_netze_basisverzeichnis_sh', $CMS_EINSTELLUNGEN['Netze Basisverzeichnis'])."</td></tr>";
+	$code .= "<tr><th>Lehrerserver:</th><td>".cms_generiere_input('cms_netze_lehrerverzeichnis_sh', $CMS_EINSTELLUNGEN['Netze Lehrerserver'])."</td></tr>";
+	$code .= "<tr><th>VPN-Anleitung anzeigen:</th><td>".cms_generiere_schieber('netze_vpn', $CMS_EINSTELLUNGEN['Netze VPN-Anleitung'])."</td></tr>";
+	$code .= "<tr><th>Hostingpartner Schülernetz:</th><td>".cms_generiere_input('cms_netze_hostingpartner_sh', $CMS_EINSTELLUNGEN['Hosting Schülernetz'])."</td></tr>";
+	$code .= "<tr><th>Hostingpartner Lehrernetz:</th><td>".cms_generiere_input('cms_netze_hostingpartner_ls', $CMS_EINSTELLUNGEN['Hosting Lehrernetz'])."</td></tr>";
 	$code .= "</table>";
 
 	$code .= "<h3>Chat</h3>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>Socket-IP:</th><td>".cms_generiere_input('cms_netze_socketip', $CMS_SOCKET_IP)."</td></tr>";
-	$code .= "<tr><th>Socket-Port:</th><td>".cms_generiere_input('cms_netze_socketport', $CMS_SOCKET_PORT)."</td></tr>";
+	$code .= "<tr><th>Socket-IP:</th><td>".cms_generiere_input('cms_netze_socketip', $CMS_EINSTELLUNGEN['Netze Socket-IP'])."</td></tr>";
+	$code .= "<tr><th>Socket-Port:</th><td>".cms_generiere_input('cms_netze_socketport', $CMS_EINSTELLUNGEN['Netze Socket-Port'])."</td></tr>";
 	$code .= "</table>";
 
 	$code .= "<h3>Update</h3>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>GitHub-Secret:</th><td>".cms_generiere_input('cms_netze_github', $GITHUB_OAUTH)."</td></tr>";
+	$code .= "<tr><th>GitHub-Secret:</th><td>".cms_generiere_input('cms_netze_github', $CMS_EINSTELLUNGEN['Netze GitHub'])."</td></tr>";
 	$code .= "</table>";
 	$code .= "</div></div>";
 
 	$code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-	
+	$code .= "<h2>Lehrernetz</h2>";
+	if (!$CMS_IMLN) {
+		$code .= cms_meldung_firewall();
+	}
+	else {
+		$code .= cms_generiere_nachladen('cms_netze_lehrernetz', 'cms_schulnetze_lehrernetz_laden()');
+	}
+	$code .= "</div></div>";
 	$code .= "<div class=\"cms_clear\"></div>";
 	$code .= "<div class=\"cms_spalte_i\">";
 
@@ -66,7 +74,7 @@ if (cms_r("technik.server.netze")) {
 		$sessionid = $_SESSION['SESSIONID'];
 		$iv = substr($sessionid, 0, 16);
 
-		$code .= "<p><span class=\"cms_button_wichtig\" onclick=\"cms_schulhof_verwaltung_schulnetze();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung\">Abbrechen</a></p></div>";
+		$code .= "<p><span class=\"cms_button_wichtig\" onclick=\"cms_schulnetze_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung\">Abbrechen</a></p></div>";
 	}
 	else {
 		$code .= "<p><span class=\"cms_button cms_button_gesichert\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Verwaltung\">Abbrechen</a></p></div>";

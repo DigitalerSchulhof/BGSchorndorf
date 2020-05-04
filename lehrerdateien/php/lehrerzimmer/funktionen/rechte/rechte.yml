@@ -99,7 +99,6 @@ schulhof:
     anmeldehinwiese: Anmeldehinweise bearbeiten
     schule:
       details: Details der Schule verwalten
-      ansprechartner: Ansprechpartner der Schule verwalten
       mail: Mailadressen des Schulhofs verwalten
     sprachen:
       anlegen: Sprachen anlegen

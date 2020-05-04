@@ -1,113 +1,206 @@
 /* ROLLE WIRD GESPEICHERT */
-function cms_schulhof_verwaltung_schulnetze(lehrernetz) {
-	lehrernetz 	= false || lehrernetz;
-	cms_laden_an('Schulnetze verwalten', 'Die Eingaben werden überprüft.');
-	var shost = document.getElementById('cms_schulhof_verwaltung_schulnetz_shost').value;
-	var sbenutzer = document.getElementById('cms_schulhof_verwaltung_schulnetz_sbenutzer').value;
-	var spass = document.getElementById('cms_schulhof_verwaltung_schulnetz_spass').value;
-	var sdb = document.getElementById('cms_schulhof_verwaltung_schulnetz_sdb').value;
-	var base = document.getElementById('cms_schulhof_verwaltung_schulnetz_base').value;
+function cms_schulnetze_lehrernetz_laden() {
+	var feld = document.getElementById('cms_netze_lehrernetz');
 
-	var meldung = '<p>Die Schulnetze konnten nicht geändert werden, denn ...</p><ul>';
-	var fehler = false;
+	if (CMS_IMLN) {
+		formulardaten = new FormData();
+		cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+		formulardaten.append("anfragenziel", 	'37');
 
-	if (lehrernetz) {
-		var lhost = document.getElementById('cms_schulhof_verwaltung_schulnetz_lhost').value;
-		var lbenutzer = document.getElementById('cms_schulhof_verwaltung_schulnetz_lbenutzer').value;
-		var lpass = document.getElementById('cms_schulhof_verwaltung_schulnetz_lpass').value;
-		var ldb = document.getElementById('cms_schulhof_verwaltung_schulnetz_ldb').value;
-		var shserver = document.getElementById('cms_schulhof_verwaltung_schulnetz_shserver').value;
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe.match(/^<h3>Datenbanken<\/h3><h4>Lehrer<\/h4><table/)) {
+				feld.innerHTML = rueckgabe;
+			}
+			else {feld.innerHTML = rueckgabe;}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	}
+	else {
+		cms_meldung_firewall();
+	}
+}
+
+
+function cms_schulnetze_speichern() {
+	if (CMS_IMLN) {
+		cms_laden_an('Schulnetze verwalten', 'Die Eingaben werden überprüft.');
+		var shost = document.getElementById('cms_netze_host_sh').value;
+		var sbenutzer = document.getElementById('cms_netze_benutzer_sh').value;
+		var spass = document.getElementById('cms_netze_passwort_sh').value;
+		var sdb = document.getElementById('cms_netze_datenbank_sh').value;
+
+		var phost = document.getElementById('cms_netze_host_pers').value;
+		var pbenutzer = document.getElementById('cms_netze_benutzer_pers').value;
+		var ppass = document.getElementById('cms_netze_passwort_pers').value;
+		var pdb = document.getElementById('cms_netze_datenbank_pers').value;
+		var base = document.getElementById('cms_netze_basisverzeichnis_sh').value;
+		var lehrer = document.getElementById('cms_netze_lehrerverzeichnis_sh').value;
+		var vpn = document.getElementById('cms_netze_vpn').value;
+		var hosts = document.getElementById('cms_netze_hostingpartner_sh').value;
+		var hostl = document.getElementById('cms_netze_hostingpartner_ls').value;
+		var socketip = document.getElementById('cms_netze_socketip').value;
+		var socketport = document.getElementById('cms_netze_socketport').value;
+		var githubsecret = document.getElementById('cms_netze_github').value;
+
+		var lhost = document.getElementById('cms_netze_host_lsh').value;
+		var lbenutzer = document.getElementById('cms_netze_benutzer_lsh').value;
+		var lpass = document.getElementById('cms_netze_passwort_lsh').value;
+		var ldb = document.getElementById('cms_netze_datenbank_lsh').value;
+		var schueler = document.getElementById('cms_netze_schuelerverzeichnis_lsh').value;
+
+		var meldung = '<p>Die Schulnetze konnten nicht geändert werden, denn ...</p><ul>';
+		var fehler = false;
+
+		if (shost.length == 0) {
+			meldung += '<li>der Host der Schulhof-Datenbank ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (sbenutzer.length == 0) {
+			meldung += '<li>der Benutzer der Schulhof-Datenbank ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (sdb.length == 0) {
+			meldung += '<li>die Datenbank der Schulhof-Datenbank ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (phost.length == 0) {
+			meldung += '<li>der Host der Personen-Datenbank ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (pbenutzer.length == 0) {
+			meldung += '<li>der Benutzer der Personen-Datenbank ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (pdb.length == 0) {
+			meldung += '<li>die Datenbank der Personen-Datenbank ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (base.length == 0) {
+			meldung += '<li>das Basisverzeichnis ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (lehrer.length == 0) {
+			meldung += '<li>der Lehrerserver ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (!cms_check_toggle(vpn)) {
+			meldung += '<li>die Angabe zur VPN-Anleitung ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (hosts.length == 0) {
+			meldung += '<li>der Hostingpartner des Schülernetzes ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (hostl.length == 0) {
+			meldung += '<li>der Hostingpartner des Lehrernetzes ist nicht korrekt.</li>';
+			fehler = true;
+		}
+
+		if (githubsecret.length == 0) {
+			meldung += '<li>das GitHubsecret für Updates ist nicht korrekt.</li>';
+			fehler = true;
+		}
 
 		if (lhost.length == 0) {
-			meldung += '<li>der Host der Lehrerzimmer-Datenbank ist nicht korrekt.</li>';
+			meldung += '<li>der Host der Lehrer-Datenbank ist nicht korrekt.</li>';
 			fehler = true;
 		}
 
 		if (lbenutzer.length == 0) {
-			meldung += '<li>der Benutzer der Lehrerzimmer-Datenbank ist nicht korrekt.</li>';
+			meldung += '<li>der Benutzer der Lehrer-Datenbank ist nicht korrekt.</li>';
 			fehler = true;
 		}
 
 		if (ldb.length == 0) {
-			meldung += '<li>die Datenbank der Lehrerzimmer-Datenbank ist nicht korrekt.</li>';
+			meldung += '<li>die Datenbank der Lehrer-Datenbank ist nicht korrekt.</li>';
 			fehler = true;
 		}
 
-		if (shserver.length == 0) {
-			meldung += '<li>der Ausgangsserver ist nicht korrekt.</li>';
+		if (schueler.length == 0) {
+			meldung += '<li>der Schülerserver ist nicht korrekt.</li>';
 			fehler = true;
 		}
-	}
 
-	var lnzbvpn = document.getElementById('cms_schulhof_schulnetz_lnzb_vpn').value;
-	var lnda = document.getElementById('cms_schulhof_verwaltung_schulnetz_ldaten').value;
+		if (fehler) {
+			cms_meldung_an('fehler', 'Schulnetze verwalten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		}
+		else {
+			cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden im Schülernetz übernommen.');
+			var formulardaten = new FormData();
+			formulardaten.append("shost",     		shost);
+			formulardaten.append("sbenutzer", 		sbenutzer);
+			formulardaten.append("spass", 				spass);
+			formulardaten.append("sdb", 					sdb);
+			formulardaten.append("phost",     		phost);
+			formulardaten.append("pbenutzer", 		pbenutzer);
+			formulardaten.append("ppass", 				ppass);
+			formulardaten.append("pdb", 					pdb);
+			formulardaten.append("anfragenziel", 	'152');
 
-	if (shost.length == 0) {
-		meldung += '<li>der Host der Schulhof-Datenbank ist nicht korrekt.</li>';
-		fehler = true;
-	}
+			function anfragennachbehandlung(rueckgabe) {
+				alert(rueckgabe);
+				if (rueckgabe == "ERFOLG") {
+					cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden in die Datenbank geschrieben.');
+					var formulardatendb = new FormData();
+					formulardatendb.append("base", 					base);
+					formulardatendb.append("lehrer", 				lehrer);
+					formulardatendb.append("vpn", 					vpn);
+					formulardatendb.append("hosts", 				hosts);
+					formulardatendb.append("hostl", 				hostl);
+					formulardatendb.append("socketip", 			socketip);
+					formulardatendb.append("socketport", 		socketport);
+					formulardatendb.append("githubsecret", 	githubsecret);
+					formulardatendb.append("anfragenziel", 	'395');
 
-	if (sbenutzer.length == 0) {
-		meldung += '<li>der Benutzer der Schulhof-Datenbank ist nicht korrekt.</li>';
-		fehler = true;
-	}
+					function anfragennachbehandlungdatenbank(rueckgabe) {
+						alert(rueckgabe);
+						if (rueckgabe == "ERFOLG") {
+							cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden im Lehrernetz übernommen.');
+							var formulardatenl = new FormData();
+							cms_lehrerdatenbankzugangsdaten_schicken(formulardatenl);
+							formulardatenl.append("shost",     		shost);
+							formulardatenl.append("sbenutzer", 		sbenutzer);
+							formulardatenl.append("spass", 				spass);
+							formulardatenl.append("sdb", 					sdb);
+							formulardatenl.append("lhost",     		lhost);
+							formulardatenl.append("lbenutzer", 		lbenutzer);
+							formulardatenl.append("lpass", 				lpass);
+							formulardatenl.append("ldb", 					ldb);
+							formulardatenl.append("schueler", 		schueler);
+							formulardatenl.append("anfragenziel", 	'38');
 
-	if (sdb.length == 0) {
-		meldung += '<li>die Datenbank der Schulhof-Datenbank ist nicht korrekt.</li>';
-		fehler = true;
-	}
+							function anfragennachbehandlunglehrer(rueckgabe) {
+								if (rueckgabe == "ERFOLG"){
+									cms_meldung_an('erfolg', 'Schulnetze verwalten', '<p>Die Schulnetzdaten wurden geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulnetze\');">OK</span></p>');
+								}
+								else {cms_fehlerbehandlung(rueckgabe);}
+							}
+							cms_ajaxanfrage (false, formulardatenl, anfragennachbehandlunglehrer, lehrer);
 
-	if (fehler) {
-		cms_meldung_an('fehler', 'Schulnetze verwalten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-	}
-	else {
-		cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden übernommen.');
-
-		var formulardaten = new FormData();
-		formulardaten.append("shost",     	shost);
-		formulardaten.append("sbenutzer", 	sbenutzer);
-		formulardaten.append("spass", 		spass);
-		formulardaten.append("sdb", 		sdb);
-		formulardaten.append("base", 		base);
-		formulardaten.append("lnzbvpn", 	lnzbvpn);
-		formulardaten.append("lnda", 		lnda);
-		formulardaten.append("anfragenziel", 	'152');
-
-		function anfragennachbehandlung(rueckgabe) {
-			if (rueckgabe == "ERFOLG") {
-				if (lehrernetz) {
-					// Anfrage an die Lehrerseite
-					var formulardaten2 = new FormData();
-					formulardaten2.append("lhost",     		lhost);
-					formulardaten2.append("lbenutzer", 		lbenutzer);
-					formulardaten2.append("lpass", 				lpass);
-					formulardaten2.append("ldb", 					ldb);
-					formulardaten2.append("shserver", 		shserver);
-					formulardaten2.append("nutzerid",    	CMS_BENUTZERID);
-					formulardaten2.append("sessionid", 		CMS_SESSIONID);
-					formulardaten2.append("dbshost", 		shost);
-					formulardaten2.append("dbsuser", 		sbenutzer);
-					formulardaten2.append("dbspass", 		spass);
-					formulardaten2.append("dbsdb", 			sdb);
-					formulardaten2.append("dbsschluessel", 	CMS_DBS_SCHLUESSEL);
-					formulardaten2.append("anfragenziel", 	'153');
-
-					function anfragennachbehandlunglehrer(rueckgabe) {
-						if (rueckgabe == "ERFOLG"){
-							cms_meldung_an('erfolg', 'Schulnetze verwalten', '<p>Die Schulnetzdaten wurden geändert.</p><p>Aus Sicherheitsgründen ist eine Weiterleitung zur Verwaltungsübersicht notwendig. Danach ist der Schulhof wieder ganz normal benutzbar.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulnetze\');">OK</span></p>');
+							cms_laden_aus();
 						}
 						else {cms_fehlerbehandlung(rueckgabe);}
 					}
-
-					cms_ajaxanfrage (false, formulardaten2, anfragennachbehandlunglehrer, CMS_LN_DA);
+					cms_ajaxanfrage (false, formulardatendb, anfragennachbehandlungdatenbank);
 				}
-				else {
-					cms_meldung_an('erfolg', 'Schulnetze verwalten', '<p>Die Schulnetzdaten wurden geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulnetze\');">OK</span></p>');
-				}
+				else {cms_fehlerbehandlung(rueckgabe);}
 			}
-			else {cms_fehlerbehandlung(rueckgabe);}
+			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 		}
-
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 	}
+	else {
+		cms_meldung_firewall();
+	}
+
 }

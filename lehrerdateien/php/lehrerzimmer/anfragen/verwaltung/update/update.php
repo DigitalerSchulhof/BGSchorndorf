@@ -16,6 +16,7 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/meldungen.php");
 include_once("../../lehrerzimmer/funktionen/generieren.php");
 $angemeldet = cms_angemeldet();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
 
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
@@ -31,7 +32,7 @@ if ($angemeldet && cms_r("technik.server.update")) {
   });
 
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
-  $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
+  $GitHub_base_at = "https://".$CMS_EINSTELLUNGEN['Netze GitHub'].":@api.github.com/repos/oxydon/BGSchorndorf";
 
   $base_verzeichnis = realpath(dirname(__FILE__)."/../../../../..");
   $update_verzeichnis = "$base_verzeichnis/update";
@@ -62,7 +63,7 @@ if ($angemeldet && cms_r("technik.server.update")) {
     CURLOPT_RETURNTRANSFER  => true,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token $GITHUB_OAUTH",
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
       "Accept: application/vnd.github.v3+json",
     )
@@ -100,7 +101,7 @@ if ($angemeldet && cms_r("technik.server.update")) {
     CURLOPT_FILE            => $tar_ziel,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token $GITHUB_OAUTH",
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
     )
   );

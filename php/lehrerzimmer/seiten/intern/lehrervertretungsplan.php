@@ -8,7 +8,7 @@ $code .= "<h1>Lehrervertretungsplan</h1>";
 
 $angemeldet = false;
 $kennung = null;
-$code .= "<script>var CMS_LN_DA = '$CMS_LN_DA';</script>";
+$code .= "<script>var CMS_LN_DA = '".$CMS_EINSTELLUNGEN['Netze Lehrerserver']."';</script>";
 $code .= "<script src=\"js/lehrerzimmer/intern.js?v=".substr(md5("js/lehrerzimmer/intern.js"), 0, 7)."\"></script>";
 
 $sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM internedienste WHERE inhalt = AES_ENCRYPT('VPlanL', '$CMS_SCHLUESSEL')");
