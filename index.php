@@ -72,6 +72,8 @@
     if (!in_array($CMS_URL[0], array("Website", "Schulhof", "Problembehebung", "Intern", "App"))) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
+			$CMS_URL[1] = "Fehler";
+			$CMS_URL[2] = "404";
 		}
 		else if (($CMS_URL[0] == "Schulhof") && (!isset($CMS_URL[1]))) {
 			$CMS_URL = array();
@@ -97,15 +99,18 @@
 		// Ungültige Website URL Anfänge
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {
 			if (isset($CMS_URL[1])) {
-				if (($CMS_URL[1] != "Seiten") && ($CMS_URL[1] != 'Blog') && ($CMS_URL[1] != 'Galerien') && ($CMS_URL[1] != 'Termine') && ($CMS_URL[1] != 'Voranmeldung') &&
-				    ($CMS_URL[1] != 'Ferien') && ($CMS_URL[1] != 'Datenschutz') && ($CMS_URL[1] != 'Impressum') && ($CMS_URL[1] != 'Feedback')) {
+				if (!in_array($CMS_URL[1], array("Fehler", "Seiten", "Blog", "Galerien", "Termine", "Voranmeldung", "Ferien", "Datenschutz", "Impressum", "Feedback"))) {
 					$CMS_URL = array();
 					$CMS_URL[0] = "Website";
+					$CMS_URL[1] = "Fehler";
+					$CMS_URL[2] = "404";
 				}
 				else if (isset($CMS_URL[2])) {
-					if (($CMS_URL[1] == "Seiten") && ($CMS_URL[2] != 'Aktuell')) {
+					if (!in_array($CMS_URL[2], array("Seiten", "Aktuell", "301", "302", "403", "404", "500"))) {
 						$CMS_URL = array();
 						$CMS_URL[0] = "Website";
+						$CMS_URL[1] = "Fehler";
+						$CMS_URL[2] = "404";
 					}
 				}
 			}
@@ -113,7 +118,9 @@
 	}
 	else {
 		$CMS_URL = array();
-		$CMS_URL[0] = 'Website';
+		$CMS_URL[0] = "Website";
+		$CMS_URL[1] = "Fehler";
+		$CMS_URL[2] = "404";
 	}
 
 	$CMS_URLGANZ = implode('/', $CMS_URL);
@@ -152,7 +159,8 @@
 	if (count($CMS_URL) > 0) {
 		if ($CMS_URL[0] == "Website") {
 			if (count($CMS_URL) > 1) {
-				if ($CMS_URL[1] == "Termine") {$CMS_SEITENTITEL = "Termine";}
+				if ($CMS_URL[1] == "Fehler") {$CMS_SEITENTITEL = "Fehler";}
+				else if ($CMS_URL[1] == "Termine") {$CMS_SEITENTITEL = "Termine";}
 				else if ($CMS_URL[1] == "Ferien") {$CMS_SEITENTITEL = "Ferien";}
 				else if ($CMS_URL[1] == "Blog") {$CMS_SEITENTITEL = "Blog";}
 				else if ($CMS_URL[1] == "Galerien") {$CMS_SEITENTITEL = "Galerien";}

@@ -46,6 +46,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
 
   file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^status$ - [R=503,L]\nRewriteRule ^(.*)$ aktualisiert.php");
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
+  file_put_contents("$backup_verzeichnis/.htaccess", "Deny from all");
 
   // Versionen prüfen und Daten laden
   $curl = curl_init();
@@ -138,7 +139,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     include("$base_verzeichnis/version/updatedb.php");
     $ob = ob_get_contents();
     ob_end_clean();
-    $ob = str_replace("{cms_schluessel}", "'$CMS_SCHLUESSEL'", $ob);
+    $ob = str_replace("{cms_schluessel}", "$CMS_SCHLUESSEL", $ob);
 
     $sql = "";
     $verreicht = false;
@@ -174,7 +175,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     echo "Styles neukompilieren<br>";
     flush();
     ob_flush();
-    
+
     $sql = "SELECT name, wert, alias FROM style";
     $sql = $dbs->prepare($sql);
 
