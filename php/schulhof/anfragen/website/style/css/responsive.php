@@ -102,7 +102,7 @@
 			text-align: center  !important;
 		}
 
-		#cms_fusszeile_i .cms_notiz {text-align: center;}
+		#cms_fusszeile_i p {text-align: center;}
 
 		#cms_blende_m {width: 100%;}
 

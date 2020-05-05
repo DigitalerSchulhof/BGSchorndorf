@@ -389,30 +389,6 @@ if (cms_r("statistik.besucher.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-if (cms_r("technik.feedback")) {
-	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">";
-			$code .=  "<h3>Feedback</h3>";
-			$code .=  "<p>Feedback sehen und verwalten.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-}
-if (cms_r("technik.fehlermeldungen")) {
-	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Website/Fehlermeldungen\">";
-			$code .=  "<h3>Fehlermeldungen</h3>";
-			$code .=  "<p>Fehlermeldungen sehen und verwalten.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-}
-if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
-	$code .=  "<li>";
-		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auffaellig\" href=\"Schulhof/Aufgaben/Auffälliges\">";
-			$code .=  "<h3>Auffälliges Verhalten</h3>";
-			$code .=  "<p>Auffälliges Verhalten von Nutzern sehen und verwalten.</p>";
-		$code .=  "</a>";
-	$code .=  "</li>";
-}
 if (cms_r("schulhof.information.newsletter.*")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_newsletter\" href=\"Schulhof/Website/Newsletter\">";
@@ -426,6 +402,14 @@ if (cms_r("website.weiterleiten")) {
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_weiterleiten\" href=\"Schulhof/Website/Weiterleiten\">";
 			$code .=  "<h3>Weiterleiten</h3>";
 			$code .=  "<p>Weiterleitungen einrichten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("website.masterelemente")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_masterelemente\" href=\"Schulhof/Website/Masterelemente_bearbeiten\">";
+			$code .=  "<h3>Masterelemente</h3>";
+			$code .=  "<p>Text in der Fußzeile und Abschnitt neben der Anmeldung ändern.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
@@ -540,12 +524,35 @@ if (cms_r("technik.server.update")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
-
 if (cms_r("statistik.speicherplatz")) {
 	$code .=  "<li>";
 		$code .=  "<a class=\"cms_uebersicht_verwaltung_speicherplatz\" href=\"Schulhof/Verwaltung/Speicherplatz/Statistik\">";
 			$code .=  "<h3>Speicherplatzstatistik</h3>";
 			$code .=  "<p>Speicherplatzauslastung anzeigen</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_auffaellig\" href=\"Schulhof/Aufgaben/Auffälliges\">";
+			$code .=  "<h3>Auffälliges Verhalten</h3>";
+			$code .=  "<p>Auffälliges Verhalten von Nutzern sehen und verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("technik.feedback")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_feedback\" href=\"Schulhof/Website/Feedback\">";
+			$code .=  "<h3>Feedback</h3>";
+			$code .=  "<p>Feedback sehen und verwalten.</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("technik.fehlermeldungen")) {
+	$code .=  "<li>";
+		$code .=  "<a class=\"cms_uebersicht_verwaltung_website_fehlermeldungen cms_uebersicht_verwaltung_technisch\" href=\"Schulhof/Website/Fehlermeldungen\">";
+			$code .=  "<h3>Fehlermeldungen</h3>";
+			$code .=  "<p>Fehlermeldungen sehen und verwalten.</p>";
 		$code .=  "</a>";
 	$code .=  "</li>";
 }

@@ -149,7 +149,6 @@ function cms_schulnetze_speichern() {
 			formulardaten.append("anfragenziel", 	'152');
 
 			function anfragennachbehandlung(rueckgabe) {
-				alert(rueckgabe);
 				if (rueckgabe == "ERFOLG") {
 					cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden in die Datenbank geschrieben.');
 					var formulardatendb = new FormData();
@@ -164,7 +163,6 @@ function cms_schulnetze_speichern() {
 					formulardatendb.append("anfragenziel", 	'395');
 
 					function anfragennachbehandlungdatenbank(rueckgabe) {
-						alert(rueckgabe);
 						if (rueckgabe == "ERFOLG") {
 							cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden im Lehrernetz übernommen.');
 							var formulardatenl = new FormData();
@@ -184,6 +182,10 @@ function cms_schulnetze_speichern() {
 								if (rueckgabe == "ERFOLG"){
 									cms_meldung_an('erfolg', 'Schulnetze verwalten', '<p>Die Schulnetzdaten wurden geändert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulnetze\');">OK</span></p>');
 								}
+								else if (rueckgabe.match(/^DATEI/)) {
+									meldung += '<li>die neue Konfigurationsdatei konnte nicht geschrieben werden.</li>';
+									cms_meldung_an('fehler', 'Schulnetze verwalten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+								}
 								else {cms_fehlerbehandlung(rueckgabe);}
 							}
 							cms_ajaxanfrage (false, formulardatenl, anfragennachbehandlunglehrer, lehrer);
@@ -193,6 +195,10 @@ function cms_schulnetze_speichern() {
 						else {cms_fehlerbehandlung(rueckgabe);}
 					}
 					cms_ajaxanfrage (false, formulardatendb, anfragennachbehandlungdatenbank);
+				}
+				else if (rueckgabe.match(/^DATEI/)) {
+					meldung += '<li>die neue Konfigurationsdatei konnte nicht geschrieben werden.</li>';
+					cms_meldung_an('fehler', 'Schulnetze verwalten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 				}
 				else {cms_fehlerbehandlung(rueckgabe);}
 			}

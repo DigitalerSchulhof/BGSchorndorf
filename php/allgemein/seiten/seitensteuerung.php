@@ -373,6 +373,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Weiterleiten']                                = 'php/schulhof/seiten/website/weiterleiten/liste.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Weiterleiten/Neu']                            = 'php/schulhof/seiten/website/weiterleiten/neu.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Weiterleiten/Details']                        = 'php/schulhof/seiten/website/weiterleiten/bearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Masterelemente_bearbeiten']                   = 'php/schulhof/seiten/website/master/bearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Style_ändern']                                = 'php/schulhof/seiten/website/style/styleaendern.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';

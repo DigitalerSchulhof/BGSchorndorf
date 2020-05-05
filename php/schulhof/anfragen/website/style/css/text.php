@@ -1,6 +1,6 @@
 // HELL;
 
-.cms_notiz, .cms_hochladen_fortschritt_anzeige {
+.cms_notiz, .cms_hochladen_fortschritt_anzeige, #cms_fusszeile_i p {
 	color: @h_haupt_notizschrift;
 	font-size: 70% !important;
 }
@@ -178,7 +178,7 @@ pre, .cms_konsole, .cms_code {
 
 // DUNKEL;
 
-.cms_notiz, .cms_hochladen_fortschritt_anzeige {
+.cms_notiz, .cms_hochladen_fortschritt_anzeige, #cms_fusszeile_i p {
 	color: @d_haupt_notizschrift;
 }
 

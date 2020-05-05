@@ -559,20 +559,14 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	if (cms_r("statistik.besucher.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Besucherstatistiken\">Besucherstatistiken</a></li> ";
 	}
-	if (cms_r("technik.feedback")) {
-		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Feedback\">Feedback</a></li> ";
-	}
-	if (cms_r("technik.fehlermeldungen")) {
-		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a></li> ";
-	}
-	if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
-		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
-	}
 	if (cms_r("schulhof.information.newsletter.*")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Newsletter\">Newsletter</a></li> ";
 	}
 	if (cms_r("website.weiterleiten")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Weiterleiten\">Weiterleitungen</a></li> ";
+	}
+	if (cms_r("website.masterelemente")) {
+		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Masterelemente_bearbeiten\">Masterelemente</a></li> ";
 	}
 	if (cms_r("website.styleändern")) {
 		$VERwebsite .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Style_ändern\">Style ändern</a></li> ";
@@ -609,6 +603,15 @@ function cms_schulhofnavigation_verwaltung($dbs) {
 	}
 	if (cms_r("statistik.speicherplatz")) {
 		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Speicherplatz/Statistik\">Speicherplatzstatistik</a></li> ";
+	}
+	if (cms_r("technik.feedback")) {
+		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Feedback\">Feedback</a></li> ";
+	}
+	if (cms_r("technik.fehlermeldungen")) {
+		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Website/Fehlermeldungen\">Fehlermeldungen</a></li> ";
+	}
+	if (cms_r("schulhof.verwaltung.nutzerkonten.verstöße.auffälliges")) {
+		$VERadministration .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Auffälliges\">Auffälliges Verhalten</a></li> ";
 	}
 
 

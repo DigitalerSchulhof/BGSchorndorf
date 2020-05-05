@@ -33,7 +33,7 @@
 	text-align: center;
 }
 
-.cms_optimierung_H #cms_fusszeile_i .cms_notiz {text-align: center;}
+.cms_optimierung_H #cms_fusszeile_i p {text-align: center;}
 
 .cms_fussnavigation li {
 list-style: none;

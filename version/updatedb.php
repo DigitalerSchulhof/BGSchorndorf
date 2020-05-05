@@ -103,3 +103,9 @@ INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (237, AES_ENCRYPT(
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (238, AES_ENCRYPT('Netze Socket-IP', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_SOCKET_IP;?>', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (239, AES_ENCRYPT('Netze Socket-Port', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_SOCKET_PORT;?>', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze GitHub', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $GITHUB_OAUTH;?>', '{cms_schluessel}'));
+
+CREATE TABLE `master` (  `id` bigint(255) UNSIGNED NOT NULL,  `inhalt` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,  `wert` longtext COLLATE utf8_unicode_ci DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `master`  ADD PRIMARY KEY (`id`);
+
+INSERT INTO master (id, inhalt, wert) VALUES (0, 'Fußzeile', '');
+INSERT INTO master (id, inhalt, wert) VALUES (1, 'Anmelden', '');
