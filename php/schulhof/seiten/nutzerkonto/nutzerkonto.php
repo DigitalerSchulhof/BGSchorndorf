@@ -69,30 +69,30 @@ if($num > 0) {
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
 // eBedarf-Umfrage
-$ausgefuellt = false;
-$sql = $dbs->prepare("SELECT COUNT(*), bedarf FROM ebestellung WHERE id = ?");
-$sql->bind_param("i", $CMS_BENUTZERID);
-if ($sql->execute()) {
-	$sql->bind_result($test, $bestellbedarf);
-	if ($sql->fetch()) {
-		if ($test != 0) {$ausgefuellt = true;}
-	}
-}
-$sql->close();
-
-
-$bestellende = mktime (23, 59, 59, 5, 6, 2020);
-if ((!$ausgefuellt) && (time() <= $bestellende)) {
-	$meldung = "<h4>Sammelbestellung für Notebooks oder Tablets</h4>";
-	if ($CMS_BENUTZERART == 's') {
-		$meldung .= "<p>Bestelle hier ein Notebook oder Tablet oder melde hier bei finanziellen Schwierigkeiten Gerätebedarf an!</p>";
-	}
-	else {
-		$meldung .= "<p>Bestellen Sie hier ein Notebook oder Tablet oder melden Sie hier bei finanziellen Schwierigkeiten Gerätebedarf an!</p>";
-	}
-	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
-	echo cms_meldung("warnung", $meldung);
-}
+// $ausgefuellt = false;
+// $sql = $dbs->prepare("SELECT COUNT(*), bedarf FROM ebestellung WHERE id = ?");
+// $sql->bind_param("i", $CMS_BENUTZERID);
+// if ($sql->execute()) {
+// 	$sql->bind_result($test, $bestellbedarf);
+// 	if ($sql->fetch()) {
+// 		if ($test != 0) {$ausgefuellt = true;}
+// 	}
+// }
+// $sql->close();
+//
+//
+// $bestellende = mktime (23, 59, 59, 5, 6, 2020);
+// if ((!$ausgefuellt) && (time() <= $bestellende)) {
+// 	$meldung = "<h4>Sammelbestellung für Notebooks oder Tablets</h4>";
+// 	if ($CMS_BENUTZERART == 's') {
+// 		$meldung .= "<p>Bestelle hier ein Notebook oder Tablet oder melde hier bei finanziellen Schwierigkeiten Gerätebedarf an!</p>";
+// 	}
+// 	else {
+// 		$meldung .= "<p>Bestellen Sie hier ein Notebook oder Tablet oder melden Sie hier bei finanziellen Schwierigkeiten Gerätebedarf an!</p>";
+// 	}
+// 	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
+// 	echo cms_meldung("warnung", $meldung);
+// }
 
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
@@ -634,12 +634,12 @@ $code = "<ul class=\"cms_aktionen_liste\">";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";
-	if (($ausgefuellt) && (time() <= $bestellende)) {
-		$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe ändern</a></li>";
-	}
-	if (($ausgefuellt) && (time() > $bestellende) && (($bestellbedarf == '1') || ($bestellbedarf == '2'))) {
-		$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe einsehen</a></li>";
-	}
+	// if (($ausgefuellt) && (time() <= $bestellende)) {
+	// 	$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe ändern</a></li>";
+	// }
+	// if (($ausgefuellt) && (time() > $bestellende) && (($bestellbedarf == '1') || ($bestellbedarf == '2'))) {
+	// 	$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe einsehen</a></li>";
+	// }
 $code .= "</ul>";
 echo $code;
 ?>
