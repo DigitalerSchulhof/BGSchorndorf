@@ -57,8 +57,6 @@ CREATE TABLE `ebestellung` (`id` BIGINT(255) UNSIGNED NOT NULL ,`bedarf` TINYINT
 
 ALTER TABLE `ebestellung` ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- 0.7.4
-
 CREATE TABLE `wichtigeeinstellungen` (`id` bigint(255) UNSIGNED NOT NULL,  `inhalt` varbinary(2000) NOT NULL,  `wert` varbinary(2000) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ALTER TABLE `wichtigeeinstellungen`  ADD PRIMARY KEY (`id`);
 

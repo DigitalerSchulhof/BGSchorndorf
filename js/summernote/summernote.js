@@ -7788,7 +7788,6 @@ $$1.summernote = $$1.extend($$1.summernote, {
 });
 
 })));
-//# sourceMappingURL=summernote.js
 
 function cms_editor_aktivieren(id, medien) {
 	if (medien) {

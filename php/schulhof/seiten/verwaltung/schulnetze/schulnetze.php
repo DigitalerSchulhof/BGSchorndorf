@@ -5,7 +5,7 @@
 
 <?php
 if (cms_r("technik.server.netze")) {
-	$warnung = cms_meldung('warnung', '<h4>Hier endet die Spielwiese – Fehler können das System lahmlegen</h4><p>Wenn hier ein Fehler passiert, kann der Zugang zum Schulhof und zur Schulwebsite nachhaltig beschädigt werden, sodass es nur noch durch Änderungen im Programmcode selbst wieder gestartet werden kann. Änderungen sollten daher nicht von Laien durchgeführt werden!</p><p>Es kann sinnvoll sein, vor dieser Aktion ein Backup durchzuführen.</p><p>Hier werden lediglich die Datenbankzugänge geändert. Datenübertragungen und/oder -löschungen müssen manuell durchgeführt werden.</p><p>Wenn Zweifel an der Richtigkeit der Eingaben bestehen, sollte ein Fachmann hinzugezogen werden!</p>');
+	$warnung = cms_meldung('warnung', '<h4>Hier endet die Spielwiese – Fehler können das System lahmlegen</h4><p>Wenn hier ein Fehler passiert, kann der Zugang zum Schulhof und zur Schulwebsite nachhaltig beschädigt werden, sodass es nur noch durch Änderungen im Programmcode selbst möglich ist, diesen wiederzu starten. <b>Änderungen sollten daher nicht von Laien durchgeführt werden!</b></p><p>Es kann sinnvoll sein, vor dieser Aktion ein Backup durchzuführen.</p><p>Hier werden lediglich die Datenbankzugänge geändert. Datenübertragungen und/oder -löschungen müssen manuell durchgeführt werden.</p><p>Wenn Zweifel an der Richtigkeit der Eingaben bestehen, sollte ein Fachmann hinzugezogen werden!</p>');
 
 	$code = $warnung;
 
@@ -52,7 +52,7 @@ if (cms_r("technik.server.netze")) {
 
 	$code .= "<h3>Update</h3>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>GitHub-Secret:</th><td>".cms_generiere_input('cms_netze_github', $CMS_EINSTELLUNGEN['Netze GitHub'])."</td></tr>";
+	$code .= "<tr><th>GitHub-OAuth:</th><td>".cms_generiere_input('cms_netze_github', $CMS_EINSTELLUNGEN['Netze GitHub'])."</td></tr>";
 	$code .= "</table>";
 	$code .= "</div></div>";
 

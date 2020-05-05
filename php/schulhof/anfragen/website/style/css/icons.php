@@ -75,6 +75,7 @@
 	display: inline-block;
 	width: 8px;
 	height: 8px;
+	margin: 1px;
 	margin-right: 2px;
 	line-height: 0px;
 	position: relative;
