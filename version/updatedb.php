@@ -90,8 +90,6 @@ INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (1, AES_ENCRYPT('SMTP-Ho
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (2, AES_ENCRYPT('SMTP-Authentifizierung', '{cms_schluessel}'), AES_ENCRYPT('<?php echo boolval($CMS_MAILSMTPAUTH);?>', '{cms_schluessel}'));
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Benutzername', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILUSERNAME;?>', '{cms_schluessel}'));
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Passwort', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILPASSWORT;?>', '{cms_schluessel}'));
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Signatur Text', '{cms_schluessel}'), AES_ENCRYPT('<?php echo str_replace(PHP_EOL, "\\\\n", $CMS_MAILSIGNATUR[0]);?>', '{cms_schluessel}'));
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Signatur HTML', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_MAILSIGNATUR[1];?>', '{cms_schluessel}'));
 
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (233, AES_ENCRYPT('Hosting Schülernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_HOSTINGPARTNEREX;?>', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (234, AES_ENCRYPT('Hosting Lehrernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php echo $CMS_HOSTINGPARTNERIN;?>', '{cms_schluessel}'));
