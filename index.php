@@ -119,8 +119,6 @@
 	else {
 		$CMS_URL = array();
 		$CMS_URL[0] = "Website";
-		$CMS_URL[1] = "Fehler";
-		$CMS_URL[2] = "404";
 	}
 
 	$CMS_URLGANZ = implode('/', $CMS_URL);
