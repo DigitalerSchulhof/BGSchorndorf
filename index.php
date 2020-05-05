@@ -105,14 +105,15 @@
 					$CMS_URL[1] = "Fehler";
 					$CMS_URL[2] = "404";
 				}
-				else if (isset($CMS_URL[2])) {
-					if (!in_array($CMS_URL[2], array("Seiten", "Aktuell", "301", "302", "403", "404", "500"))) {
-						$CMS_URL = array();
-						$CMS_URL[0] = "Website";
-						$CMS_URL[1] = "Fehler";
-						$CMS_URL[2] = "404";
-					}
-				}
+				// else if (isset($CMS_URL[2])) {
+				// 	if (!in_array($CMS_URL[2], array("Seiten", "Aktuell", "301", "302", "403", "404", "500"))) {
+				// 		$CMS_URL = array();
+				// 		$CMS_URL[0] = "Website";
+				// 		$CMS_URL[1] = "Fehler";
+				// 		$CMS_URL[2] = "404";
+				// 		echo 2;
+				// 	}
+				// }
 			}
 		}
 	}
