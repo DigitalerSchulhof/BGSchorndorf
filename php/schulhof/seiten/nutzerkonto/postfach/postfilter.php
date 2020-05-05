@@ -234,7 +234,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				$N['anzeigename'] = "";
 			}
 			$N['id'] = $nid;
-			$N['tags'] = "";
+			$N['tags'] = array();
 			$N['nachricht'] = $nnachricht;
 			$N['betreff'] = $nbetreff;
 			$N['zeit'] = $nzeit;
@@ -309,7 +309,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 		if ($sql->execute()) {
 			$sql->bind_result($tagfarbe);
 			while ($sql->fetch()) {
-				$NACHRICHTEN[$n]['tags'] .= "<span class=\"cms_tag_klein cms_farbbeispiel_$tagfarbe\"></span>";
+				$NACHRICHTEN[$n]['tags'][] = $tagfarbe;
 			}
 		}
 	}
@@ -321,12 +321,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 		if ($N['zeigen']) {
 			$datum = date ("d.m.Y", $N['zeit']);
 			$uhrzeit = date ("H:i", $N['zeit']);
-			if ($app != 'app') {
-				$code .= "<tr onmouseover=\"cms_einblenden('cms_postfach_vorschau_".$modus."_".$N['id']."', 'table-row')\" onmouseout=\"cms_ausblenden('cms_postfach_vorschau_".$modus."_".$N['id']."')\">";
-			}
-			else {
-				$code .= "<tr>";
-			}
+			$code .= "<tr>";
 
 
 			$markierungv = "";
@@ -349,13 +344,19 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				if ($N['gelesen'] == '-') {$markierungv = '<b>'; $markierungh = '</b>';}
 			}
 
-			$code .= "<td>".$icon."</td>";
+			$tags = "<div style=\"position: absolute; top: 0; left: -2px;height: 100%\">";
+			foreach($N['tags'] as $tag) {
+				$tags .= "<span style=\"width: 2px; height: ".(100/count($N['tags']))."%; display: block\" class=\"cms_farbbeispiel_$tag\"></span>";
+			}
+			$tags .= "</div>";
+
+			$code .= "<td style=\"position: relative\">".$tags.$icon."</td>";
 			$betreffevent = cms_texttrafo_e_event($N['betreff']);
 			$lesen = "cms_postfach_nachricht_lesen('$modus', '".$N['anzeigename']."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$N['id']."', '$app')";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['anzeigename'].$markierungh."</td>";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['betreff'].$markierungh."</td>";
-			$code .= "<td>".$datum."</td>";
-			$code .= "<td>".$uhrzeit."</td>";
+			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$datum."</td>";
+			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$uhrzeit."</td>";
 
 			if ($app != 'app') {
 				//Speicherfrist als Icon ausgeben
@@ -363,6 +364,7 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				else {$rest = $N['zeit'] + $speicherdauer - $jetzt;}
 				$hoehe = $rest/$speicherdauer*100;
 				$style = 'height: '.$hoehe.'%;';
+				$styleaussen = '';
 				if ($rest > 0) {
 					$vertage = floor($rest / 86400);
 					$rest = $rest - ($vertage*86400);
@@ -384,10 +386,11 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				}
 				else {
 					$style = 'height: 100%; background: #000000;';
-					$verbleibend = "mit der Abmeldung";
+					$styleaussen = 'background: inherit;';
+					$verbleibend = "verschwindet mit der Abmeldung";
 				}
 
-				$speicherfrist = "<span class=\"cms_postfach_papierkorb_aussen\"><span class=\"cms_postfach_papierkorb_innen\" style=\"$style\"></span><span class=\"cms_hinweis\">$verbleibend</span></span>";
+				$speicherfrist = "<span class=\"cms_postfach_papierkorb_aussen\" style=\"$styleaussen\"><span class=\"cms_postfach_papierkorb_innen\" style=\"$style\"></span><span class=\"cms_hinweis\">$verbleibend</span></span>";
 
 				// Aktionen
 				$code .= "<td>";
@@ -415,18 +418,6 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 				$code .= "</td>";
 			}
 			$code .= "</tr>";
-
-			// VORSCHAU
-			if ($app != 'app') {
-				$code .= "<tr class=\"cms_postfach_vorschau\" id=\"cms_postfach_vorschau_".$modus."_".$N['id']."\">";
-				$code .= "<td colspan=\"6\">";
-				// Vorschau
-				$nachricht = strip_tags($N['nachricht']);
-				if (strlen($nachricht) > 150) {$nachricht = substr($nachricht,0,150)."...";}
-				$code .= "<p class=\"cms_notiz\">".$N['tags']." ".$nachricht."</p>";
-				$code .= "</td>";
-				$code .= "</tr>";
-			}
 		}
 	}
 

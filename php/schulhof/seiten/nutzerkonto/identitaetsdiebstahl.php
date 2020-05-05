@@ -21,7 +21,7 @@ echo cms_meldung("warnung", "<h4>Identitätsdiebstahl</h4><p>Wenn dieser Vorgang
 	</tr>
 	<tr>
 		<th>Erklärung</th>
-		<td colspan="2"><p>Mir ist bewusst, dass ich gerade einen Identitätsdiebstahl melde.</p><p><?php echo cms_schieber_generieren('schulhof_nutzerkonto_profildaten_diebstahl', '0');?></p></td>
+		<td colspan="2"><p>Mir ist bewusst, dass ich gerade einen Identitätsdiebstahl melde.</p><p><?php echo cms_generiere_schieber('schulhof_nutzerkonto_profildaten_diebstahl', '0');?></p></td>
 	</tr>
 </table>
 

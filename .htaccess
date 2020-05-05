@@ -8,8 +8,8 @@ RewriteRule ^\.htaccess$ - [F]
   RewriteRule ^(.*)$ index.php?URL=$1
 </IfModule>
 
-ErrorDocument 404 /Website/Fehler/404/
-ErrorDocument 403 /Website/Fehler/403/
-ErrorDocument 301 /Website/Fehler/301/
-ErrorDocument 302 /Website/Fehler/302/
-ErrorDocument 500 /Website/Fehler/500/
+ErrorDocument 404 /Website/Fehler/404
+ErrorDocument 403 /Website/Fehler/403
+ErrorDocument 301 /Website/Fehler/301
+ErrorDocument 302 /Website/Fehler/302
+ErrorDocument 500 /Website/Fehler/500

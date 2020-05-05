@@ -448,18 +448,21 @@ function cms_welches_betriebssystem() {
   return $betriebssystem;
 }
 
-function cms_einstellungen_laden() {
+function cms_einstellungen_laden($tabelle) {
   global $CMS_SCHLUESSEL;
   $einstellungen = array();
+	if (($tabelle != 'allgemeineeinstellungen') && ($tabelle != 'wichtigeeinstellungen') && ($tabelle != 'maileinstellungen')) {
+		return $einstellungen;
+	}
 	$dbs = cms_verbinden('s');
-	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM allgemeineeinstellungen");
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(inhalt, '$CMS_SCHLUESSEL') AS inhalt, AES_DECRYPT(wert, '$CMS_SCHLUESSEL') AS wert FROM $tabelle");
 	if ($sql->execute()) {
-		$sql->bind_result($inhalt, $wert);
+		$sql->bind_result($einhalt, $ewert);
 		while ($sql->fetch()) {
-			$einstellungen[$inhalt] = $wert;
+			$einstellungen[$einhalt] = $ewert;
 		}
 	}
-	$sql->close();
+	$dbs->close();
 	cms_trennen($dbs);
   return $einstellungen;
 }

@@ -15,7 +15,7 @@ if (isset($_SESSION['BENUTZERID'])) {$person = $_SESSION['BENUTZERID'];} else {e
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 
 $dbs = cms_verbinden('s');
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $person);
 
 $zugriff = $CMS_GRUPPENRECHTE['mitglied'];

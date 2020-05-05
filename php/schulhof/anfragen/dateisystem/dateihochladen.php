@@ -18,13 +18,12 @@ if (isset($_POST['urheberrecht'])) {$urheberrecht = $_POST['urheberrecht'];} els
 if (isset($_POST['skalieren'])) {$skalieren = $_POST['skalieren'];} else {$skalieren = '';}
 if (isset($_POST['skalierengroesse'])) {$skalierengroesse = $_POST['skalierengroesse'];} else {$skalierengroesse = '';}
 if (isset($_POST['pfad'])) {$pfad = $_POST['pfad'];} else {$pfad = '';}
-if (isset($_POST['max'])) {$CMS_MAX_DATEI = $_POST['max'];} else {$CMS_MAX_DATEI = 0;}
 
 if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
 $CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 $dbs = cms_verbinden('s');
 
@@ -114,7 +113,7 @@ if (cms_angemeldet() && $zugriff) {
 		// Prüfen, ob der Dateiname nur erlaubte Zeichen enthält
 		if (!cms_check_dateiname($dateiname)) {$fehlercode .= "ZEICHEN"; $fehler = true;}
 
-		if ($groesse > $CMS_MAX_DATEI) {$fehlercode .= "GROESSE"; $fehler = true;}
+		if ($groesse > $CMS_EINSTELLUNGEN['Maximale Dateigröße']) {$fehlercode .= "GROESSE"; $fehler = true;}
 
 		// UPLOAD DURCHFÜHREN
 		if (!$fehler) {

@@ -40,7 +40,7 @@ if ($art == 'Kurse') {
 
 $dbs = cms_verbinden('s');
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $art, $id, $CMS_BENUTZERID);
 
 $zugriff = $CMS_GRUPPENRECHTE['bearbeiten'] || cms_r("schulhof.gruppen.$art.bearbeiten");

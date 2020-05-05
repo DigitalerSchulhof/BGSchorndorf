@@ -7,8 +7,18 @@
 if (cms_r("technik.server.dateienerlaubnis")) {
 	$code = "<h3>Limit</h3>";
 	$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr><th>Maximale Dateigröße:</th><td><input class=\"cms_klein\" type=\"text\" name=\"cms_schulhof_zulaessig_groesse\" id=\"cms_schulhof_zulaessig_groesse\" value=\"$CMS_MAX_DATEI\"> ";
+		$code .= "<tr><th>Maximale Dateigröße:</th><td><input class=\"cms_klein\" type=\"text\" name=\"cms_schulhof_zulaessig_groesse\" id=\"cms_schulhof_zulaessig_groesse\" value=\"".$CMS_EINSTELLUNGEN['Maximale Dateigröße']."\"> ";
 		$code .= "<select class=\"cms_einheit cms_klein\" name=\"cms_schulhof_zulaessig_einheit\" id=\"cms_schulhof_zulaessig_einheit\">";
+			$code .= "<option value=\"B\">Byte</option>";
+			$code .= "<option value=\"KB\">KB</option>";
+			$code .= "<option value=\"MB\">MB</option>";
+			$code .= "<option value=\"GB\">GB</option>";
+			$code .= "<option value=\"TB\">TB</option>";
+			$code .= "<option value=\"PB\">PB</option>";
+			$code .= "<option value=\"EB\">EB</option>";
+		$code .= "</select></td></tr>";
+		$code .= "<tr><th>Gesamtspeicherplatz:</th><td><input class=\"cms_klein\" type=\"text\" name=\"cms_schulhof_gesamt_groesse\" id=\"cms_schulhof_gesamt_groesse\" value=\"".$CMS_EINSTELLUNGEN['Gesamtspeicherplatz']."\"> ";
+		$code .= "<select class=\"cms_einheit cms_klein\" name=\"cms_schulhof_gesamt_einheit\" id=\"cms_schulhof_gesamt_einheit\">";
 			$code .= "<option value=\"B\">Byte</option>";
 			$code .= "<option value=\"KB\">KB</option>";
 			$code .= "<option value=\"MB\">MB</option>";

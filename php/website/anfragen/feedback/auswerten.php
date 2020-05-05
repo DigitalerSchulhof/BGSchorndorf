@@ -14,7 +14,7 @@ if (isset($_POST['beschreibung'])) {$beschreibung = htmlentities(cms_texttrafo_e
 if (isset($_POST['name'])) {$name = htmlentities(cms_texttrafo_e_event($_POST['name']));} else {$name = "";}
 if (isset($_POST['feedback'])) {$feedback = htmlentities(cms_texttrafo_e_event($_POST['feedback']));} else {$feedback = "";}
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 $CMS_ANGEMELDET = cms_angemeldet();
 $fehleraktiv = $CMS_EINSTELLUNGEN['Fehlermeldung aktiv'] == "1";
 $feedbackaktiv = $CMS_EINSTELLUNGEN['Feedback aktiv'] == "1";
@@ -82,7 +82,7 @@ if($titel != "") {
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
-          "Authorization: token $GITHUB_OAUTH",
+          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
           "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
           "Accept: application/vnd.github.v3+json",
         ),

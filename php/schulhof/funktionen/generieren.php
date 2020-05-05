@@ -532,7 +532,7 @@ function cms_sonderrollen_generieren() {
 	return $code;
 }
 
-function cms_schieber_generieren($id, $wert, $zusatzaktion = '') {
+function cms_generiere_schieber($id, $wert, $zusatzaktion = '') {
   $code = "";
   $vorsilbe = "in";
   if ($wert == 1) {$vorsilbe = "";}
@@ -853,6 +853,11 @@ function cms_generiere_input($id, $wert="", $typ="text") {
   return "<input type=\"$typ\" name=\"$id\" id=\"$id\" value=\"$wert\">";
 }
 
+function cms_generiere_mailinput($id, $wert="") {
+  if (cms_check_mail($wert)) {$bild = "richtig.png";} else {$bild = "falsch.png";}
+  return "<input type=\"text\" name=\"$id\" id=\"$id\" value=\"$wert\" onchange=\"cms_check_mail_wechsel('$id')\" onkeyup=\"cms_check_mail_wechsel('$id')\"></td><td><span class=\"cms_eingabe_icon\" id=\"$id"."_icon\"><img src=\"res/icons/klein/$bild\"></span>";
+}
+
 function cms_generiere_select($id, $optionen, $wert="") {
   $optionen = str_replace("value=\"$wert\"", "value=\"$wert\" selected=\"selected\"", $optionen);
   return "<select name=\"$id\" id=\"$id\">$optionen</select>";
@@ -866,6 +871,11 @@ function strposX($haystack, $needle, $number){
     }else{
         return error_log('Error: Value for parameter $number is out of range');
     }
+}
+
+function cms_format_preis($eingabe) {
+  $eingabe = ($eingabe*1000+1)/1000;
+  return str_replace(".", ",", substr($eingabe, 0, -1));
 }
 
 ?>

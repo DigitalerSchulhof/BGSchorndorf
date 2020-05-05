@@ -14,15 +14,13 @@ if (isset($_POST['host'])) 				{$host = $_POST['host'];} 						else {echo "FEHLE
 if (isset($_POST['benutzer'])) 		{$benutzer = $_POST['benutzer'];} 		else {echo "FEHLER"; exit;}
 if (isset($_POST['passwort'])) 		{$passwort = $_POST['passwort'];} 		else {echo "FEHLER"; exit;}
 if (isset($_POST['smtpauth'])) 		{$smtpauth = $_POST['smtpauth'];} 		else {echo "FEHLER"; exit;}
-
+if (!cms_check_mail($absender)) {echo "FEHLER"; exit;}
+if (strlen($host) < 3) {echo "FEHLER"; exit;}
+if (!cms_check_toggle($smtpauth)) {echo "FEHLER"; exit;}
 
 
 if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail")) {
 	$fehler = false;
-
-	if (!cms_check_mail($absender)) {$fehler = true;}
-
-	if (($smtpauth != 1) && ($smtpauth != 0)) {$fehler = true;}
 
 	// Zielmailadresse laden
 	$id = $_SESSION['BENUTZERID'];
@@ -40,34 +38,29 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.schule.mail")) {
 	cms_trennen($dbs);
 
 	if (!$fehler) {
-		if ($smtpauth == 1) {$smtpauth = true;}
-		else {$smtpauth = false;}
+		$CMS_MAIL = cms_einstellungen_laden('maileinstellungen');
+		$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
 
-
-		$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
-		$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Test des neuen Mailzugangs';
+		$empfaengername = cms_generiere_anzeigename($vorname, $nachname, $titel);
+		$betreff = 'Test des neuen Mailzugangs';
 
 		// Vorübergehend Maildaten überschreiben
-		$CMS_MAILABSENDER = $absender;
-		$CMS_MAILHOST = $host;
-		$CMS_MAILSMTPAUTH = $smtpauth;
-		$CMS_MAILUSERNAME = $benutzer;
-		$CMS_MAILPASSWORT = $passwort;
+		$CMS_MAIL['Absender'] = $absender;
+		$CMS_MAIL['SMTP-Host'] = $host;
+		$CMS_MAIL['SMTP-Authentifizierung'] = $smtpauth;
+		$CMS_MAIL['Benutzername'] = $benutzer;
+		$CMS_MAIL['Passwort'] = $passwort;
 
 		$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 
-		$text;
-		for ($i=0; $i<2; $i++) {
-			$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Wenn diese Mail ankommt, funktionieren die neuen Zugangsdaten zur Schulmailadresse!'.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].'Herzlichen Glückwunsch!'.$CMS_MAILZ[$i];
-			$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
-		}
+		$text = "<p>".$anrede."</p>";
+		$text .= "<p>Wenn diese Mail ankommt, funktionieren die neuen Zugangsdaten zur Schulmailadresse!</p>";
+		$text .= "<p>Herzlichen Glückwunsch!</p>";
 
 		require_once '../../phpmailer/PHPMailerAutoload.php';
 
 		// Mail verschicken:
-		$mailerfolg = cms_mailsenden($empfaenger, $mail, $betreff, $text[1], $text[0]);
+		$mailerfolg = cms_mailsenden($empfaengername, $mail, $betreff, $text);
 
 		echo "ERFOLG";
 	}

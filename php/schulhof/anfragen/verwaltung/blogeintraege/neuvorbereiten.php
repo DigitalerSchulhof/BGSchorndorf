@@ -6,7 +6,7 @@ include_once("../../schulhof/funktionen/check.php");
 include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 

@@ -11,6 +11,7 @@ set_time_limit(0);
 session_start();
 
 $DATEIMODE = 0775;
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
 
 $dbs = cms_verbinden("s");
 
@@ -22,7 +23,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     }
   });
   $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
-  $GitHub_base_at = "https://$GITHUB_OAUTH:@api.github.com/repos/oxydon/BGSchorndorf";
+  $GitHub_base_at = "https://".$CMS_EINSTELLUNGEN['Netze GitHub'].":@api.github.com/repos/oxydon/BGSchorndorf";
 
   $base_verzeichnis = realpath(dirname(__FILE__)."/../../../../..");
   $update_verzeichnis = "$base_verzeichnis/update";
@@ -46,6 +47,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
 
   file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^status$ - [R=503,L]\nRewriteRule ^(.*)$ aktualisiert.php");
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
+  file_put_contents("$backup_verzeichnis/.htaccess", "Deny from all");
 
   // Versionen prüfen und Daten laden
   $curl = curl_init();
@@ -54,7 +56,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     CURLOPT_RETURNTRANSFER  => true,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token $GITHUB_OAUTH",
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
       "Accept: application/vnd.github.v3+json",
     )
@@ -93,7 +95,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     CURLOPT_FILE            => $tar_ziel,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token $GITHUB_OAUTH",
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
     )
   );
@@ -138,7 +140,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     include("$base_verzeichnis/version/updatedb.php");
     $ob = ob_get_contents();
     ob_end_clean();
-    $ob = str_replace("{cms_schluessel}", "'$CMS_SCHLUESSEL'", $ob);
+    $ob = str_replace("{cms_schluessel}", "$CMS_SCHLUESSEL", $ob);
 
     $sql = "";
     $verreicht = false;
@@ -174,7 +176,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     echo "Styles neukompilieren<br>";
     flush();
     ob_flush();
-    
+
     $sql = "SELECT name, wert, alias FROM style";
     $sql = $dbs->prepare($sql);
 

@@ -73,7 +73,7 @@ if (cms_r("schulhof.planung.schuljahre.stundentagebücher.erzeugen")) {
     // Zeiträume laden
     foreach($ZEITRAEUME AS $z) {
       $tabellencode .= "<tr><td>".$z['bez']."</td><td>".cms_tagname(date('N', $z['beginn']))." ".date('d.m.Y', $z['beginn'])."</td><td>";
-      $tabellencode .= cms_tagname(date('N', $z['ende']))." ".date('d.m.Y', $z['ende'])."</td><td>".cms_schieber_generieren('zeitraum_erzeugen_'.$z['id'], 0)."</td></tr>";
+      $tabellencode .= cms_tagname(date('N', $z['ende']))." ".date('d.m.Y', $z['ende'])."</td><td>".cms_generiere_schieber('zeitraum_erzeugen_'.$z['id'], 0)."</td></tr>";
     }
     if (strlen($tabellencode) > 0) {$code .= $tabellencode;}
     else {$code .= "<tr><td class=\"cms_notiz\" colspan=\"4\">Keine aktiven zukünftigen Zeiträume gefunden.</td></tr>";}

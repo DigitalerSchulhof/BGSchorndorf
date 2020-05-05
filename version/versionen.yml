@@ -1,5 +1,18 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_8_0:
+    version: 0.8
+    tag: Dienstag, den 05. Mai 2020
+    neuerungen:
+      - Änderungen an allen Schuldaten können nun über den Schulhof vorgenommen werden.
+      - Änderungen an der vom Schulhof versendeten Mailadresse können vorgenommen werden. Die Signatur dieser Mails kann bearbeitet werden.
+      - Schulnetzte können nun direkt über die Benutzeroberfläche des Digitalen Schuhofs geändert werden.
+      - Auffälliges, Feedback und Fehlermeldungen wurden von »Website« nach »Administration« verschoben.
+      - Der Text in der Fußzeile und neben der Anmeldung kann bearbeitet werden.
+      - In der Druckansicht von Blogeinträgen sind nun Vorschaubilder enthalten.
+      - Formatierungsfehler in der Druckansicht behoben.
+      - Bei Blogeinträgen und Terminen wird angezeigt, wie viele diesen noch als ToDo markiert haben.
+      - "Vorschau von Nachrichten im Postfach entfernt, Vorbereitung für Mehrfachauswahl :)"
   0_7_3:
     version: 0.7.3
     tag: Donnerstag, den 30. April 2020

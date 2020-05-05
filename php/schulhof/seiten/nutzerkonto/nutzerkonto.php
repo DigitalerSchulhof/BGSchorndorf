@@ -17,7 +17,7 @@ if(cms_r("technik.server.update")) {
 			CURLOPT_RETURNTRANSFER  => true,
 			CURLOPT_HTTPHEADER      => array(
 				"Content-Type: application/json",
-				"Authorization: token $GITHUB_OAUTH",
+				"Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
 				"User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
 				"Accept: application/vnd.github.v3+json",
 			)
@@ -69,29 +69,30 @@ if($num > 0) {
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
 // eBedarf-Umfrage
-$ausgefuellt = false;
-$sql = $dbs->prepare("SELECT COUNT(*) FROM ebedarf WHERE id = ?");
-$sql->bind_param("i", $CMS_BENUTZERID);
-if ($sql->execute()) {
-	$sql->bind_result($test);
-	if ($sql->fetch()) {
-		if ($test != 0) {$ausgefuellt = true;}
-	}
-}
-$sql->close();
-
-if ((!$ausgefuellt) && (time() < mktime (23, 59, 59, 4, 28, 2020))) {
-	$meldung = "<h4>Bedarfsabfrage für Notebooks oder Tablets</h4>";
-	$meldung .= "<p>Das Burg-Gymnasium ist dabei eine Sammelbestellung an Notebook oder Tablets für den persönlichen Gebrauch zu organisieren, damit alle Schülerinnen und Schüler gleichberechtigt am eLearning teilnehmen können.";
-	if ($CMS_BENUTZERART == 's') {
-		$meldung .= " Damit eine solche Bestellung organisiert und der Bedarf ermittelt werden kann, brauchen wir Deine Hilfe!</p><p><b>Bitte nimm auch dann teil, wenn kein Bedarf besteht!</b></p>";
-	}
-	else {
-		$meldung .= " Damit eine solche Bestellung organisiert und der Bedarf ermittelt werden kann, brauchen wir Ihre Hilfe!</p><p><b>Bitte nehmen Sie auch dann teil, wenn kein Bedarf besteht!</b></p>";
-	}
-	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bedarfsabfrage\" class=\"cms_button\">Jetzt Teilnehmen!</a></p>";
-	echo cms_meldung("warnung", $meldung);
-}
+// $ausgefuellt = false;
+// $sql = $dbs->prepare("SELECT COUNT(*), bedarf FROM ebestellung WHERE id = ?");
+// $sql->bind_param("i", $CMS_BENUTZERID);
+// if ($sql->execute()) {
+// 	$sql->bind_result($test, $bestellbedarf);
+// 	if ($sql->fetch()) {
+// 		if ($test != 0) {$ausgefuellt = true;}
+// 	}
+// }
+// $sql->close();
+//
+//
+// $bestellende = mktime (23, 59, 59, 5, 6, 2020);
+// if ((!$ausgefuellt) && (time() <= $bestellende)) {
+// 	$meldung = "<h4>Sammelbestellung für Notebooks oder Tablets</h4>";
+// 	if ($CMS_BENUTZERART == 's') {
+// 		$meldung .= "<p>Bestelle hier ein Notebook oder Tablet oder melde hier bei finanziellen Schwierigkeiten Gerätebedarf an!</p>";
+// 	}
+// 	else {
+// 		$meldung .= "<p>Bestellen Sie hier ein Notebook oder Tablet oder melden Sie hier bei finanziellen Schwierigkeiten Gerätebedarf an!</p>";
+// 	}
+// 	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
+// 	echo cms_meldung("warnung", $meldung);
+// }
 
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
@@ -633,6 +634,12 @@ $code = "<ul class=\"cms_aktionen_liste\">";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";
+	// if (($ausgefuellt) && (time() <= $bestellende)) {
+	// 	$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe ändern</a></li>";
+	// }
+	// if (($ausgefuellt) && (time() > $bestellende) && (($bestellbedarf == '1') || ($bestellbedarf == '2'))) {
+	// 	$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe einsehen</a></li>";
+	// }
 $code .= "</ul>";
 echo $code;
 ?>

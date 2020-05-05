@@ -297,6 +297,10 @@ body {
 
 .cms_groesseaendern:hover {cursor: ew-resize;}
 
+textarea {
+	transition: 0s;
+}
+
 // DUNKEL;
 
 * {

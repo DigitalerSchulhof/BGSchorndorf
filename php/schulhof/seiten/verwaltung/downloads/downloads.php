@@ -69,8 +69,8 @@ function cms_downloadelemente($dbs, $art, $id, $gruppe = '-', $gruppenid = '-') 
         }
         $code .= "<p id=\"cms_download_datei_".$did."_verzeichnis\"></p></td>";
       $code .= "</tr>";
-      $code .= "<tr><th></th><th>Dateiname anzeigen:</th><td>".cms_schieber_generieren('cms_download_dateiname_'.$did, $d['dateiname'])."</td>";
-      $code .= "<th>Dateigröße anzeigen:</th><td>".cms_schieber_generieren('cms_download_dateigroesse_'.$did, $d['dateigroesse'])."</td></tr>";
+      $code .= "<tr><th></th><th>Dateiname anzeigen:</th><td>".cms_generiere_schieber('cms_download_dateiname_'.$did, $d['dateiname'])."</td>";
+      $code .= "<th>Dateigröße anzeigen:</th><td>".cms_generiere_schieber('cms_download_dateigroesse_'.$did, $d['dateigroesse'])."</td></tr>";
 
       $code .= "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_download_entfernen('$did');\">Download löschen</span></td></tr>";
     $code .= "</table>";

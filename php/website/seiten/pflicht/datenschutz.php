@@ -9,32 +9,32 @@
   <h4>Herausgeber</h4>
   <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
   <?php
-    echo "<p>$CMS_NAMESCHULLEITER<br>$CMS_SCHULE<br>";
-    echo "$CMS_STRASSE<br>";
-    echo "$CMS_PLZORT";
-    if (strlen($CMS_TELEFON) > 0) {echo "<br>Telefon: $CMS_TELEFON";}
-    if (strlen($CMS_TELEFAX) > 0) {echo "<br>Fax: $CMS_TELEFAX";}
-    if (strlen($CMS_MAILSCHULE) > 0) {echo "<br><a href=\"mailto:$CMS_MAILSCHULE\">$CMS_MAILSCHULE</a>";}
+    echo "<p>".$CMS_WICHTIG['Schulleiter Name']."<br>".$CMS_WICHTIG['Schulname']."<br>";
+    echo $CMS_WICHTIG['Schule Straße']."<br>";
+    echo $CMS_WICHTIG['Schule PLZOrt'];
+    if (strlen($CMS_WICHTIG['Schule Telefon']) > 0) {echo "<br>Telefon: ".$CMS_WICHTIG['Schule Telefon'];}
+    if (strlen($CMS_WICHTIG['Schule Fax']) > 0) {echo "<br>Fax: ".$CMS_WICHTIG['Schule Fax'];}
+    if (strlen($CMS_WICHTIG['Schule Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Schule Mail']."\">".$CMS_WICHTIG['Schule Mail']."</a>";}
     echo "</p>";
   ?>
   <p>Vertretungsberechtigte entscheiden, ggf. mit Rücksprache anderer, über den Zweck der Verarbeitung von personenbezogenen Daten und welche Mittel dazu eingesetzt werden.</p>
 
   <h4>Verantwortlich im Sinne des Presserechts (§55 RStV)</h4>
   <?php
-    echo "<p>$CMS_NAMEPRESSERECHT";
-    if (strlen($CMS_MAILPRESSERECHT) > 0) {echo "<br><a href=\"mailto:$CMS_MAILPRESSERECHT\">$CMS_MAILPRESSERECHT</a>";}
+    echo "<p>".$CMS_WICHTIG['Presse Name'];
+    if (strlen($CMS_WICHTIG['Presse Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Presse Mail']."\">".$CMS_WICHTIG['Presse Mail']."</a>";}
     echo "</p>";
   ?>
   <h4>Datenschutzbeauftragter</h4>
   <?php
-    echo "<p>$CMS_NAMEDATENSCHUTZ";
-    if (strlen($CMS_MAILDATENSCHUTZ) > 0) {echo "<br><a href=\"mailto:$CMS_MAILDATENSCHUTZ\">$CMS_MAILDATENSCHUTZ</a>";}
+    echo "<p>".$CMS_WICHTIG['Datenschutz Name'];
+    if (strlen($CMS_WICHTIG['Datenschutz Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Datenschutz Mail']."\">".$CMS_WICHTIG['Datenschutz Mail']."</a>";}
     echo "</p>";
   ?>
   <h4>Technische Administration</h4>
   <?php
-    echo "<p>$CMS_NAMEADMINISTRATION";
-    if (strlen($CMS_MAILADMINISTRATION) > 0) {echo "<br><a href=\"mailto:$CMS_MAILADMINISTRATION\">$CMS_MAILADMINISTRATION</a>";}
+    echo "<p>".$CMS_WICHTIG['Administration Name'];
+    if (strlen($CMS_WICHTIG['Administration Mail']) > 0) {echo "<br><a href=\"mailto:".$CMS_WICHTIG['Administration Mail']."\">".$CMS_WICHTIG['Administration Mail']."</a>";}
     echo "</p>";
   ?>
 </div></div>
@@ -75,7 +75,7 @@ else {$einwilligungB = "<span id=\"cms_datenschutz_einwilligungB\" class=\"cms_d
       <p>Personenbezogene Daten sind alle Daten, die auf Sie persönlich bezeihbar sind, z.B. Name, Adresse, eMail-Adressen oder ihr Nutzerverhalten.</p>
 
       <h4>Dienstleister</h4>
-      <p>Diese Website kann nur durch Server eines Dienstleisters (<?php echo $CMS_HOSTINGPARTNEREX;?>) zur Verfügung gestellt werden. Alle eingegebenen Daten werde auf diesen Servern gespeichert oder verarbeitet.</p>
+      <p>Diese Website kann nur durch Server eines Dienstleisters (<?php echo $CMS_EINSTELLUNGEN['Hosting Schülernetz'];?>) zur Verfügung gestellt werden. Alle eingegebenen Daten werde auf diesen Servern gespeichert oder verarbeitet.</p>
 
       <h4>Kontaktformular</h4>
       <p>Alle im Kontaktformular angegeben Daten werden nicht über die Nachricht selbst hinaus zwischengespeichert, sondern per eMail an den gewünschten Empfänger und auf Wunsch an Sie selbst geschickt. Es verbleibt keine Kopie auf den Servern der Website. Die eingegebenen Informationen werden nicht an Dritte weitergeben. Um diesen Dienst nutzen zu können ist <b>Einwilligung A</b> notwendig. Hier werden Cookies erzeugt, die sicherstellen, dass keine Spamnachrichten generiert werden. Diese Cookies werden nach dem Schließen des Browsers gelöscht und enthalten keine personenbezogenen Daten.</p>
@@ -98,7 +98,7 @@ else {$einwilligungB = "<span id=\"cms_datenschutz_einwilligungB\" class=\"cms_d
       <p>Jede Übertragung von Daten zwischen dieser Seite und Ihnen erfolgt grundsätzlich verschlüsselt, damit diese Daten während der Übertragung nicht von Dritten eingesehen werden können. Verschlüsselte Verbindungen erkennen Sie an dem Präfix »https://« in der Adresszeile Ihres Browsers. Oft wird dazu ein Schlosssymbol angezeigt.</p>
 
       <h4>Server-Log-Dateien</h4>
-      <p>Der Dienstleister dieser Seite (<?php echo $CMS_HOSTINGPARTNEREX; ?>) speichert beim Aufruf einer Seite automatisch den Zugriff, um Ihnen diese Website anzeigen zu können und ihre Sicherheit und Stabilität zu gewährlseiten. Ihr Browser übermittelt automatisch folgende Daten:</p>
+      <p>Der Dienstleister dieser Seite (<?php echo $CMS_EINSTELLUNGEN['Hosting Schülernetz']; ?>) speichert beim Aufruf einer Seite automatisch den Zugriff, um Ihnen diese Website anzeigen zu können und ihre Sicherheit und Stabilität zu gewährlseiten. Ihr Browser übermittelt automatisch folgende Daten:</p>
       <ul>
         <li>besuchte Seiten dieser Domain</li>
         <li>Datum und Uhrzeit des Zugriffs auf die jeweilige Seite</li>

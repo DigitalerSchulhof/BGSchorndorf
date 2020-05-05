@@ -86,14 +86,14 @@ if (cms_angemeldet() && $zugriff) {
     if ($id == '-') {$code = "<h3>Neuer Download</h3>";}
     else {$code = "<h3>Download bearbeiten</h3>";}
     $code .= "<table class=\"cms_formular\">";
-    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('website_element_downloads_aktiv', $aktiv)."</td></tr>";}
+    if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('website_element_downloads_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"cms_website_element_downloads_aktiv\" name=\"cms_website_element_downloads_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_downloads_position', $position, $maxpos, $neu)."</td></tr>";
     $code .= "<tr><th>Datei:</th><td>".cms_dateiwahl_knopf ('website', 'cms_website_element_downloads_datei', 's', 'website', '-', 'download', $pfad)."</td></tr>";
     $code .= "<tr><th>Titel:</th><td><input type=\"text\" name=\"website_element_downloads_titel\" id=\"website_element_downloads_titel\" value=\"$titel\"></td></tr>";
     $code .= "<tr><th>Beschreibung:</th><td><textarea name=\"website_element_downloads_beschreibung\" id=\"website_element_downloads_beschreibung\">$beschreibung</textarea></td></tr>";
-    $code .= "<tr><th>Dateiname anzeigen:</th><td>".cms_schieber_generieren('website_element_downloads_dateiname', $name)."</td></tr>";
-    $code .= "<tr><th>Dateigröße anzeigen:</th><td>".cms_schieber_generieren('website_element_downloads_dateigroesse', $groesse)."</td></tr>";
+    $code .= "<tr><th>Dateiname anzeigen:</th><td>".cms_generiere_schieber('website_element_downloads_dateiname', $name)."</td></tr>";
+    $code .= "<tr><th>Dateigröße anzeigen:</th><td>".cms_generiere_schieber('website_element_downloads_dateigroesse', $groesse)."</td></tr>";
     $code .= "</table>";
 
     $code .= "<p>";

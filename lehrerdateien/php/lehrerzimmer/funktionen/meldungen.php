@@ -52,17 +52,6 @@ function cms_meldung_fehler () {
 	return cms_meldung ("fehler", "<h4>Fehler</h4>".$inhalt);
 }
 
-function cms_meldung_eingeschraenkt () {
-	$inhalt = '<h4>Nur eingeschränkte Nutzung möglich</h4><p>Einige Funktionen stehen in diesem Netz nicht zur Verfügung.';
-	global $CMS_LN_ZB_VPN;
-	if ($CMS_LN_ZB_VPN == 1) {
-		$inhalt .= ' Um auf diese Funktionen zugreifen zu können, ist ein Fernzugriff (per VPN) auf ein anderes Netz erforderlich.</p>';
-		$inhalt .= '<p><a class="cms_button" href="Schulhof/Hilfe/VPN">VPN Verbindung einrichten</a>';
-	}
-	$inhalt .= '</p>';
-	return cms_meldung ("firewall", $inhalt);
-}
-
 function cms_meldung_unbekannt () {
 	$inhalt = '<h4>Unbekannter Fehler</h4><p>Ein unbekannter Fehler ist aufgetreten. Es wurden keine Datensätze gefunden. Bitte den Administrator informieren!</p>';
 	return cms_meldung ("fehler", $inhalt);

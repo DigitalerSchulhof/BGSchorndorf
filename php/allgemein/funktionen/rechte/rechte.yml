@@ -98,8 +98,7 @@ schulhof:
     einstellungen: Allgemeine Einstellungen vornehmen
     anmeldehinwiese: Anmeldehinweise bearbeiten
     schule:
-      adressen: Adressen der Schule verwalten
-      ansprechartner: Ansprechpartner der Schule verwalten
+      details: Details der Schule verwalten
       mail: Mailadressen des Schulhofs verwalten
     sprachen:
       anlegen: Sprachen anlegen
@@ -498,6 +497,7 @@ website:
     bearbeiten: Auszeichnungen bearbeiten
     löschen: Auszeichnungen löschen
   styleändern: Style ändern
+  masterelemente: Masterelemente bearbeiten
 artikel:
   genehmigen:
     blogeinträge: Blogeinträge genehmigen

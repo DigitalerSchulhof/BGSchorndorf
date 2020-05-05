@@ -10,7 +10,7 @@ function cms_neuer_beschluss() {
 	var code = "";
 	code += "<tr><th>Titel:</th><td colspan=\"6\"><input type=\"text\" name=\"cms_beschluss_titel_"+neueid+"\" id=\"cms_beschluss_titel_"+neueid+"\" value=\"\"></td></tr>";
 	code += "<tr><th>Beschreibung:</th><td colspan=\"6\"><textarea name=\"cms_beschluss_beschreibung_"+neueid+"\" id=\"cms_beschluss_beschreibung_"+neueid+"\"></textarea></td></tr>";
-  code += "<tr><th>Langfristig:</th><td colspan=\"6\">"+cms_schieber_generieren('cms_beschluss_langfristig_'+neueid, 0)+"</td></tr>";
+  code += "<tr><th>Langfristig:</th><td colspan=\"6\">"+cms_generiere_schieber('cms_beschluss_langfristig_'+neueid, 0)+"</td></tr>";
   code += "<tr><th>Stimmen:</th><td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">Dafür</span><img src=\"res/icons/klein/pro.png\"></span></td>";
   code += "<td><input type=\"number\" min=\"0\" step=\"1\" value=\"0\" name=\"cms_beschluss_pro_"+neueid+"\" id=\"cms_beschluss_pro_"+neueid+"\"></td>";
   code += "<td><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">Enthaltung</span><img src=\"res/icons/klein/egal.png\"></span></td>";

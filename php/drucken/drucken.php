@@ -13,6 +13,7 @@
 	include_once("php/schulhof/funktionen/dateisystem.php");
 	$CMS_VERSION = trim(file_get_contents("version/version"));
 	$CMS_ANGEMELDET = cms_angemeldet();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
 	if ($CMS_ANGEMELDET) {
 
 		// Nutzerdaten laden
@@ -55,10 +56,10 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">"; ?>
+	<?php echo "<link type=\"image/png\" href=\"dateien/schulspezifisch/favicon.ico\" rel=\"shortcut icon\">"; ?>
 	<title>&nbsp;</title>
 
-	<?php echo "<base href=\"$CMS_BASE\">";
+	<?php echo "<base href=\"".$CMS_EINSTELLUNGEN['Netze Basisverzeichnis']."\">";
 		// <!-- Einbindung der Stylesheets -->
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?v=".substr(md5("css/drucken.css"), 0, 7)."\">";
 	?>
@@ -69,13 +70,13 @@
 		$dbs = cms_verbinden('s');
 		$druckfehler = true;
 		function cms_druckkopf() {
-			global $CMS_LOGODRUCK, $CMS_SCHULE, $CMS_ORT;
+			global $CMS_WICHTIG;
 			$code = "<div class=\"cms_druckkopf\">";
 				$code .= "<span class=\"cms_logo\">";
-					$code .= "<img class=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGODRUCK\">";
+					$code .= "<img class=\"cms_logo_bild\" src=\"dateien/schulspezifisch/logodruck.png\">";
 					$code .= "<span class=\"cms_logo_schrift\">";
-						$code .= "<span class=\"cms_logo_o\">$CMS_SCHULE</span>";
-						$code .= "<span class=\"cms_logo_u\">$CMS_ORT</span>";
+						$code .= "<span class=\"cms_logo_o\">".$CMS_WICHTIG['Schulname']."</span>";
+						$code .= "<span class=\"cms_logo_u\">".$CMS_WICHTIG['Schule Ort']."</span>";
 					$code .= "</span><div class=\"cms_clear\">";
 					$code .= "</div>";
 				$code .= "</span>";
@@ -100,6 +101,10 @@
 		else {
 			include_once("php/allgemein/funktionen/brotkrumen.php");
 			$CMS_MONATELINK = "(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)";
+
+			if (preg_match("/^Website\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ)) {
+				include('blog.php');
+			}
 
 			if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ)) {
 				include('blog.php');

@@ -61,7 +61,7 @@
             $code .= "</tr>";
             $code .= "<tr>";
               $code .= "<th>Systemzustand übermitteln:</th>";
-              $code .= "<td>".cms_schieber_generieren('fehlermeldung_okay', 0)."</td>";
+              $code .= "<td>".cms_generiere_schieber('fehlermeldung_okay', 0)."</td>";
             $code .= "</tr>";
           $code .= "</tbody>";
         $code .= "</table>";

@@ -32,7 +32,7 @@ if ($CMS_URL[0] != 'App') {
 			echo "<ul class=\"cms_auszeichnung\">".$auszeichnungen."</ul>";
 		}
 
-		echo "<p class=\"cms_notiz\" id=\"cms_geraetewahl\">";
+		echo "<p id=\"cms_geraetewahl\">";
 		if (isset($_SESSION['DSGVO_EINWILLIGUNG_A'])) {
 			if ($_SESSION['DSGVO_EINWILLIGUNG_A']) {
 				echo "Anzeige optimieren für: <a href=\"javascript:cms_geraet_aendern('P');\">Computer</a>, <a href=\"javascript:cms_geraet_aendern('T');\">Tablets</a> oder <a href=\"javascript:cms_geraet_aendern('H');\">Smartphones</a>.";
@@ -40,8 +40,16 @@ if ($CMS_URL[0] != 'App') {
 		}
 		echo "</p>";
 
-		echo "<p class=\"cms_notiz\">Die verwendeten Icons stammen von <a href=\"http://www.fatcow.com/free-icons\" target=\"_blank\">Fatcow</a> und wurden unter der Lizenz <a href=\"http://creativecommons.org/licenses/by/3.0/us/\">Creative Commons Attribution 3.0</a> veröffentlicht. Die verwendete Schriftart Roboto stammt von <a href=\"https://github.com/google/roboto\" target=\"_blank\">Google</a> und wurden unter der Lizenz <a href=\"https://github.com/google/roboto/blob/master/LICENSE\">Apache License 2.0</a> veröffentlicht.</p>";
-
+		$fusszeile = "";
+		$sql = $dbs->prepare("SELECT wert FROM master WHERE inhalt = 'Fußzeile'");
+		if ($sql->execute()) {
+			$sql->bind_result($fusszeile);
+			$sql->fetch();
+		}
+		$sql->close();
+		if (strlen($fusszeile) > 0) {
+			echo $fusszeile;
+		}
 		echo "</div>";
 	echo "</div>";
 	echo "</div>";

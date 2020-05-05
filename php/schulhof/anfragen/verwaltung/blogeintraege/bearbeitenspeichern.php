@@ -41,7 +41,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['BLOGEINTRAGID'])) {$blogid = $_SESSION['BLOGEINTRAGID'];} else {echo "FEHLER";exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if(!cms_check_ganzzahl($oeffentlichkeit, 0, 4)) {
   die("FEHLER");

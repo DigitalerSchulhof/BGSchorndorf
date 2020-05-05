@@ -60,8 +60,8 @@ function cms_check_ganzzahl(wert, min, max) {
 
 /* PRÜFT, OB DIE EINGEGEBENE MAILADRESSE KORREKT IST UND ZEIGT EIN ICON AN */
 function cms_check_mail_wechsel(id) {
-	var mail = document.getElementById('cms_schulhof_'+id).value;
-	var iconF = document.getElementById('cms_schulhof_'+id+'_icon');
+	var mail = document.getElementById(id).value;
+	var iconF = document.getElementById(id+'_icon');
 	if (cms_check_mail(mail)) {
 		iconF.innerHTML = '<img src="res/icons/klein/richtig.png">';
 	}
@@ -152,18 +152,18 @@ function cms_check_ip (ip) {
 function cms_groesse_umrechnen(bytes) {
 	if (isNaN(bytes)) {return 0;}
 
-    if (bytes/1024 > 1) {
-        bytes = bytes/1024;
-        if (bytes/1024 > 1) {
-            bytes = bytes/1024;
-            if (bytes/1024 > 1) {
-                bytes = bytes/1024;
-                if (bytes/1024 > 1) {
-                    bytes = bytes/1024;
-                    if (bytes/1024 > 1) {
-                        bytes = bytes/1024;
-                        if (bytes/1024 > 1) {
-                            bytes = bytes/1024;
+    if (bytes/1000 > 1) {
+        bytes = bytes/1000;
+        if (bytes/1000 > 1) {
+            bytes = bytes/1000;
+            if (bytes/1000 > 1) {
+                bytes = bytes/1000;
+                if (bytes/1000 > 1) {
+                    bytes = bytes/1000;
+                    if (bytes/1000 > 1) {
+                        bytes = bytes/1000;
+                        if (bytes/1000 > 1) {
+                            bytes = bytes/1000;
                             bytes = ((Math.round(bytes * 100)/100).toString()).replace(/\./, ',');
                             return bytes+" EB";
                         }

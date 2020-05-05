@@ -439,12 +439,12 @@ if ($angemeldet && $zugriff) {
     else {$code .= $KURSEOPTIONEN;}
     $code .= "</select></td><td>";
     if ($kid != '-') {
-      $code .= cms_schieber_generieren('stundendetails_vanz',1);
+      $code .= cms_generiere_schieber('stundendetails_vanz',1);
     }
     else if ($uid != '-') {
-      $code .= cms_schieber_generieren('stundendetails_vanz',1);
+      $code .= cms_generiere_schieber('stundendetails_vanz',1);
     }
-    else {$code .= cms_schieber_generieren('stundendetails_vanz',1);}
+    else {$code .= cms_generiere_schieber('stundendetails_vanz',1);}
     $code .= "</td></tr>";
     $code .= "</table>";
 

@@ -72,6 +72,8 @@
     if (!in_array($CMS_URL[0], array("Website", "Schulhof", "Problembehebung", "Intern", "App"))) {
 			$CMS_URL = array();
 			$CMS_URL[0] = "Website";
+			$CMS_URL[1] = "Fehler";
+			$CMS_URL[2] = "404";
 		}
 		else if (($CMS_URL[0] == "Schulhof") && (!isset($CMS_URL[1]))) {
 			$CMS_URL = array();
@@ -97,15 +99,18 @@
 		// Ungültige Website URL Anfänge
 		if ((!$CMS_ANGEMELDET) && ($CMS_URL[0] == "Website")) {
 			if (isset($CMS_URL[1])) {
-				if (($CMS_URL[1] != "Seiten") && ($CMS_URL[1] != 'Blog') && ($CMS_URL[1] != 'Galerien') && ($CMS_URL[1] != 'Termine') && ($CMS_URL[1] != 'Voranmeldung') &&
-				    ($CMS_URL[1] != 'Ferien') && ($CMS_URL[1] != 'Datenschutz') && ($CMS_URL[1] != 'Impressum') && ($CMS_URL[1] != 'Feedback')) {
+				if (!in_array($CMS_URL[1], array("Fehler", "Seiten", "Blog", "Galerien", "Termine", "Voranmeldung", "Ferien", "Datenschutz", "Impressum", "Feedback"))) {
 					$CMS_URL = array();
 					$CMS_URL[0] = "Website";
+					$CMS_URL[1] = "Fehler";
+					$CMS_URL[2] = "404";
 				}
 				else if (isset($CMS_URL[2])) {
-					if (($CMS_URL[1] == "Seiten") && ($CMS_URL[2] != 'Aktuell')) {
+					if (!in_array($CMS_URL[2], array("Seiten", "Aktuell", "301", "302", "403", "404", "500"))) {
 						$CMS_URL = array();
 						$CMS_URL[0] = "Website";
+						$CMS_URL[1] = "Fehler";
+						$CMS_URL[2] = "404";
 					}
 				}
 			}
@@ -113,7 +118,7 @@
 	}
 	else {
 		$CMS_URL = array();
-		$CMS_URL[0] = 'Website';
+		$CMS_URL[0] = "Website";
 	}
 
 	$CMS_URLGANZ = implode('/', $CMS_URL);
@@ -145,13 +150,15 @@
 
 	}
 
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
+	$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
 
 	$CMS_SEITENTITEL = "";
 	if (count($CMS_URL) > 0) {
 		if ($CMS_URL[0] == "Website") {
 			if (count($CMS_URL) > 1) {
-				if ($CMS_URL[1] == "Termine") {$CMS_SEITENTITEL = "Termine";}
+				if ($CMS_URL[1] == "Fehler") {$CMS_SEITENTITEL = "Fehler";}
+				else if ($CMS_URL[1] == "Termine") {$CMS_SEITENTITEL = "Termine";}
 				else if ($CMS_URL[1] == "Ferien") {$CMS_SEITENTITEL = "Ferien";}
 				else if ($CMS_URL[1] == "Blog") {$CMS_SEITENTITEL = "Blog";}
 				else if ($CMS_URL[1] == "Galerien") {$CMS_SEITENTITEL = "Galerien";}
@@ -180,10 +187,10 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<?php echo "<link type=\"image/png\" href=\"res/logos/$CMS_FAVICON\" rel=\"shortcut icon\">";?>
-	<title><?php echo $CMS_SCHULE." ".$CMS_ORT." • ".$CMS_SEITENTITEL;?></title>
+	<?php echo "<link type=\"image/png\" href=\"dateien/schulspezifisch/favicon.ico\" rel=\"shortcut icon\">";?>
+	<title><?php echo $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']." • ".$CMS_SEITENTITEL;?></title>
 
-	<?php echo "<base href=\"$CMS_BASE\">";
+	<?php echo "<base href=\"".$CMS_EINSTELLUNGEN['Netze Basisverzeichnis']."\">";
 		$hellhash 	= substr(md5(filemtime("css/hell.css")), 0, 7);
 		$dunkelhash = substr(md5(filemtime("css/dunkel.css")), 0, 7);
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?cb=$hellhash\">";
@@ -193,7 +200,7 @@
 
 		function js($js) {
 			global $CMS_VERSION;
-			$v = $CMS_VERSION;
+			$cb = $CMS_VERSION;
 			if(file_exists("$js")) {
 				$cb = substr(md5(filemtime("$js")), 0, 7);
 			}
@@ -264,6 +271,7 @@
 			$code .= js("js/schulhof/verwaltung/schuljahrfabrik.js");
 			$code .= js("js/schulhof/verwaltung/import.js");
 			$code .= js("js/schulhof/website/style.js");
+			$code .= js("js/schulhof/website/master.js");
 			$code .= js("js/schulhof/website/zuordnung.js");
 			$code .= js("js/schulhof/website/termine.js");
 			$code .= js("js/schulhof/website/blogeintraege.js");
@@ -302,11 +310,11 @@
 
     <script><?php
 			$CMS_ONLOAD_EXTERN_EVENTS = "";
-			echo "var CMS_DOMAIN = '".$CMS_DOMAIN."';\n";
+			echo "var CMS_DOMAIN = '".$CMS_WICHTIG['Schule Domain']."';\n";
 			echo "var CMS_DIASHOWZEIT = $CMS_DIASHOWZEIT;\n";
 	    if ($CMS_ANGEMELDET) {
 				if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
-					echo "var CMS_LN_DA = '".$CMS_LN_DA."';\n";
+					echo "var CMS_LN_DA = '".$CMS_EINSTELLUNGEN['Netze Lehrerserver']."';\n";
 					if (isset($_SESSION['IMLN'])) {
 						if ($_SESSION['IMLN'] == 1) {
 			        echo "var CMS_IMLN = true;\n";
@@ -331,7 +339,7 @@
         echo "var CMS_BENUTZERVORNAME = '".$_SESSION['BENUTZERVORNAME']."';\n";
         echo "var CMS_BENUTZERNACHNAME = '".$_SESSION['BENUTZERNACHNAME']."';\n";
         echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
-        echo "var CMS_MAX_DATEI = ".$CMS_MAX_DATEI.";\n";
+        echo "var CMS_MAX_DATEI = ".$CMS_EINSTELLUNGEN['Maximale Dateigröße'].";\n";
 				if ($CMS_URL[0] != 'App') {
 					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(1)', 30000);\n";
 					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(1);";

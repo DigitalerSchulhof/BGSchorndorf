@@ -31,16 +31,16 @@
 				}
 
 				if ($CMS_URL[0] != 'App') {
-					echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN.($CMS_URL[0] == "Schulhof"?"/Schulhof/Nutzerkonto":"")."\">";
+					echo "<a id=\"cms_logo\" href=\"".$CMS_WICHTIG['Schule Domain'].($CMS_URL[0] == "Schulhof"?"/Schulhof/Nutzerkonto":"")."\">";
 				}
 				else {
-					echo "<a id=\"cms_logo\" href=\"".$CMS_DOMAIN."/App\">";
+					echo "<a id=\"cms_logo\" href=\"".$CMS_WICHTIG['Schule Domain']."/App\">";
 				}
 
-				echo "<img id=\"cms_logo_bild\" src=\"res/logos/$CMS_LOGO\">";
+				echo "<img id=\"cms_logo_bild\" src=\"dateien/schulspezifisch/logo.png\">";
 				echo "<span id=\"cms_logo_schrift\">";
-					echo "<span id=\"cms_logo_o\">$CMS_SCHULE</span>";
-					echo "<span id=\"cms_logo_u\">$CMS_ORT</span>";
+					echo "<span id=\"cms_logo_o\">".$CMS_WICHTIG['Schulname']."</span>";
+					echo "<span id=\"cms_logo_u\">".$CMS_WICHTIG['Schule Ort']."</span>";
 				echo "</span>";
 				echo "<div class=\"cms_clear\"></div>";
 				echo "</a>";
@@ -59,7 +59,7 @@
 					echo "<span id=\"cms_appzurueck\" class=\"cms_link\" onclick=\"window.history.back();\">&larr; zurück</span>";
 					include_once('php/app/seiten/menue.php');
 					echo "<div id=\"cms_appmenue_a\">".cms_appmenue()."<span id=\"cms_appmenue_schliessen\" onclick=\"cms_ausblenden('cms_appmenue_a')\">&times;</span>";
-					echo "<p id=\"cms_app_impressum\">Verantwortlich für die Verarbeitung von Daten in dieser App ist das Land Baden-Württemberg vertreten durch<br>$CMS_NAMESCHULLEITER • $CMS_SCHULE<br>$CMS_STRASSE • $CMS_PLZORT<br><br>";
+					echo "<p id=\"cms_app_impressum\">Verantwortlich für die Verarbeitung von Daten in dieser App ist das Land Baden-Württemberg vertreten durch<br>".$CMS_WICHTIG['Schulleiter Name']." • ".$CMS_WICHTIG['Schulname']."<br>".$CMS_WICHTIG['Schule Straße']." • ".$CMS_WICHTIG['Schule PLZOrt']."<br><br>";
 				  echo "Die verwendeten Icons stammen von Fatcow und wurden unter der Lizenz Creative Commons Attribution 3.0 veröffentlicht.</p>";
 					echo "</div>";
 				}

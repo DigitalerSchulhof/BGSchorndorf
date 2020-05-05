@@ -21,7 +21,7 @@ if (!cms_check_pfad($pfad)) {echo "FEHLER";exit;}
 
 $CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 $dbs = cms_verbinden('s');
 

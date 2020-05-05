@@ -62,9 +62,9 @@ function cms_leihgeraet_ausgeben ($leihgeraetid) {
 	$code .= "<h3>Details</h3>";
 	$code .= "<table class=\"cms_formular\">";
 		$code .= "<tr><th>Bezeichnung:</th><td><input type=\"text\" name=\"cms_leihgeraete_bezeichnung\" id=\"cms_leihgeraete_bezeichnung\" value=\"".$bezeichnung."\"></td></tr>";
-		$code .= "<tr><th>Verfügbar:</th><td>".cms_schieber_generieren('leihgeraete_verfuegbar', $verfuegbar)."</td></tr>";
-		$code .= "<tr><th>Buchbar:</th><td>".cms_schieber_generieren('leihgeraete_buchbar', $buchbar)."</td></tr>";
-		$code .= "<tr><th>Extern verwaltbar:</th><td>".cms_schieber_generieren('leihgeraete_extern', $extern)."</td></tr>";
+		$code .= "<tr><th>Verfügbar:</th><td>".cms_generiere_schieber('leihgeraete_verfuegbar', $verfuegbar)."</td></tr>";
+		$code .= "<tr><th>Buchbar:</th><td>".cms_generiere_schieber('leihgeraete_buchbar', $buchbar)."</td></tr>";
+		$code .= "<tr><th>Extern verwaltbar:</th><td>".cms_generiere_schieber('leihgeraete_extern', $extern)."</td></tr>";
 	$code .= "</table>";
 	$code .= "</div></div>";
 
@@ -89,7 +89,7 @@ function cms_leihgeraet_ausgeben ($leihgeraetid) {
 			$code .= "<tr><th>Beginn:</th><td colspan=\"2\">".cms_uhrzeit_eingabe("cms_blockierungen_beginn_".$blockierungen[$i]['id'], $blockierungen[$i]['beginns'], $blockierungen[$i]['beginnm'])."</td></tr>";
 			$code .= "<tr><th>Ende:</th><td colspan=\"2\">".cms_uhrzeit_eingabe("cms_blockierungen_ende_".$blockierungen[$i]['id'], $blockierungen[$i]['endes'], $blockierungen[$i]['endem'])."</td></tr>";
 			$code .= "<tr><th>Grund:</th><td colspan=\"2\"><input type=\"text\" name=\"cms_blockierungen_grund_".$blockierungen[$i]['id']."\" id=\"cms_blockierungen_grund_".$blockierungen[$i]['id']."\" value=\"".$blockierungen[$i]['grund']."\"></td></tr>";
-			$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Ferien:<span class=\"cms_hinweis\">Auch in den Ferien blockieren?</span></span></th><td colspan=\"2\">".cms_schieber_generieren("blockierungen_ferien_".$blockierungen[$i]['id'], $blockierungen[$i]['ferien'])."</td></tr>";
+			$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Ferien:<span class=\"cms_hinweis\">Auch in den Ferien blockieren?</span></span></th><td colspan=\"2\">".cms_generiere_schieber("blockierungen_ferien_".$blockierungen[$i]['id'], $blockierungen[$i]['ferien'])."</td></tr>";
 		$code .= "</table>";
 		$anzahl++;
 		$ids .= "|".$blockierungen[$i]['id'];

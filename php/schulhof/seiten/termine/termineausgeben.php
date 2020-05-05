@@ -296,6 +296,53 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		}
 		$sql->close();
 
+		// ToDo Infos laden
+		$todoinfo = "";
+		if($art == 'in') {
+			$gruppenrechte = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
+			if($gruppenrechte['termine'] == '1') {
+				$sql = "SELECT * FROM (SELECT AES_DECRYPT(p.art, '$CMS_SCHLUESSEL') as a, COUNT(*) as c FROM {$gk}todoartikel as t JOIN personen as p ON p.id = t.person WHERE t.termin = ? GROUP BY a) as x WHERE x.c > 0 ORDER BY FIELD(a, 's', 'l', 'e', 'v', 'x')";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $termin['id']);
+				$sql->bind_result($art, $count);
+				$sql->execute();
+				while ($sql->fetch()) {
+					$numeri = array();
+					switch($art) {
+						case 's':
+							$numeri[] = "Schüler";
+							$numeri[] = "Schüler";
+							break;
+						case 'l';
+							$numeri[] = "Lehrer";
+							$numeri[] = "Lehrer";
+							break;
+						case 'e';
+							$numeri[] = "Eltern";
+							$numeri[] = "Eltern";
+							break;
+						case 'v';
+							$numeri[] = "Verwaltungsangestellte(r)";
+							$numeri[] = "Verwaltungsangestellte";
+							break;
+						case 'x';
+							$numeri[] = "Externe(r)";
+							$numeri[] = "Externe";
+							break;
+						default:
+							break;
+					}
+					if($count == 1) {
+						$todoinfo .= "<b>$count {$numeri['0']}</b>, ";
+					} else {
+						$todoinfo .= "<b>$count {$numeri['1']}</b>, ";
+					}
+				}
+				$sql->close();
+				$todoinfo = substr($todoinfo, 0, -2);
+			}
+		}
+
 		$aktionen = "";
 		if ($CMS_URL[0] == "Schulhof") {
 			if ($termin['art'] == 'oe') {
@@ -341,7 +388,7 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 		$code .= "</div></div>";
 
-		if ((count($downloads) > 0) || (strlen($aktionen) > 0)) {
+		if ((count($downloads) > 0) || (strlen($todoinfo) > 0) || (strlen($aktionen) > 0)) {
 			$code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
 			if (count($downloads) > 0) {
 				$code .= "<h3>Zugehörige Downloads</h3>";
@@ -352,6 +399,9 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 						$code .= cms_schulhof_interndownload_ausgeben($d);
 					}
 				}
+			}
+			if(strlen($todoinfo) > 0) {
+				$code .= "ToDo: $todoinfo";
 			}
 			if (strlen($aktionen) > 0) {
 				$code .= "<h3>Aktionen</h3><p>".$aktionen."</p>";

@@ -79,7 +79,7 @@ if (cms_angemeldet() && $zugriff) {
 		// BENACHRICHTIGUNG VERSCHICKEN
 		if ($nutzerkonto) {
 			$empfaenger = $email;
-			$betreff = $CMS_SCHULE.' '.$CMS_ORT.' Schulhof - Löschung Nutzerkonto';
+			$betreff = 'Löschung Nutzerkonto';
 
 			$anrede = cms_mail_anrede($titel, $vorname, $nachname, $art, $geschlecht);
 
@@ -91,27 +91,24 @@ if (cms_angemeldet() && $zugriff) {
 			$sql->execute();
 			cms_trennen($dbp);
 
+			$CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+			$CMS_MAIL = cms_einstellungen_laden("maileinstellungen");
 
-			$text;
-			for ($i=0; $i<2; $i++) {
-				$text[$i] = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-				if ($art != 's') {
-					$text[$i] = $text[$i].'Ihr Nutzerkonto wurde gelöscht! '.$CMS_MAILZ[$i];
-					$text[$i] = $text[$i].'Diese Aktion kann nicht rückgängig gemacht werden. Falls Sie weiterhin ein Notzerkonto benötigen, muss ein neues Nutzerkonto angelegt werden. Kontaktieren Sie dazu bitte die Schule. '.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-				}
-				else {
-					$text[$i] = $text[$i].'Dein Nutzerkonto wurde gelöscht! '.$CMS_MAILZ[$i];
-					$text[$i] = $text[$i].'Diese Aktion kann nicht rückgängig gemacht werden. Falls Du weiterhin ein Notzerkonto benötigst, muss ein neues Nutzerkonto angelegt werden. Kontaktiere dazu bitte die Schule. '.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
-				}
-				$text[$i] = $text[$i].$CMS_MAILSIGNATUR[$i];
+			$text = "<p>$anrede</p>";
+			if ($art != 's') {
+				$text .= "<p>Ihr Nutzerkonto wurde gelöscht!</p>";
+				$text .= "<p>Diese Aktion kann nicht rückgängig gemacht werden. Falls Sie weiterhin ein Notzerkonto benötigen, muss ein neues Nutzerkonto angelegt werden. Kontaktieren Sie dazu bitte die Schule.</p>";
+			}
+			else {
+				$text .= "<p>Dein Nutzerkonto wurde gelöscht!</p>";
+				$text .= "<p>Diese Aktion kann nicht rückgängig gemacht werden. Falls Du weiterhin ein Notzerkonto benötigst, muss ein neues Nutzerkonto angelegt werden. Kontaktiere dazu bitte die Schule.</p>";
 			}
 
 			require_once '../../phpmailer/PHPMailerAutoload.php';
 
 			// Mail verschicken:
-			if (strlen($titel) > 0) {$empfaenger = $titel." ".$vorname." ".$nachname;}
-			else {$empfaenger = $vorname." ".$nachname;}
-			$mailerfolg = cms_mailsenden($empfaenger, $email, $betreff, $text[1], $text[0]);
+			$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
+			$mailerfolg = cms_mailsenden($empfaenger, $email, $betreff, $text);
 		}
 
 		echo "ERFOLG";

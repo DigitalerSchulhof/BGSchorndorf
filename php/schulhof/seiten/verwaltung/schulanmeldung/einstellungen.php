@@ -11,7 +11,7 @@ if (cms_r("schulhof.organisation.schulanmeldung.vorbereiten")) {
 	$CMS_VORANMELDUNG = cms_schulanmeldung_einstellungen_laden();
 	$code .= "<h2>Details</h2>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>Voranmeldung aktiv</th><td>".cms_schieber_generieren('voranmeldung_aktiv', $CMS_VORANMELDUNG['Anmeldung aktiv'])."</td></tr>";
+	$code .= "<tr><th>Voranmeldung aktiv</th><td>".cms_generiere_schieber('voranmeldung_aktiv', $CMS_VORANMELDUNG['Anmeldung aktiv'])."</td></tr>";
 	$code .= "<tr><th>Beginn der Voranmeldung</th><td>".cms_datum_eingabe('cms_voranmeldung_beginn', date('d', $CMS_VORANMELDUNG['Anmeldung von']), date('m', $CMS_VORANMELDUNG['Anmeldung von']), date('Y', $CMS_VORANMELDUNG['Anmeldung von']))." – ";
 	$code .= cms_uhrzeit_eingabe('cms_voranmeldung_beginn', date('H', $CMS_VORANMELDUNG['Anmeldung von']), date('i', $CMS_VORANMELDUNG['Anmeldung von']))."</td></tr>";
 	$code .= "<tr><th>Ende der Voranmeldung</th><td>".cms_datum_eingabe('cms_voranmeldung_ende', date('d', $CMS_VORANMELDUNG['Anmeldung bis']), date('m', $CMS_VORANMELDUNG['Anmeldung bis']), date('Y', $CMS_VORANMELDUNG['Anmeldung bis']))." – ";

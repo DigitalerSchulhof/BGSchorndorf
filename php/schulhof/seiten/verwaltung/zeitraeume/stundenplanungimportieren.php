@@ -73,7 +73,7 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchf�
     $code .= "<tr><th>Klasse:</th><td>";
       $code .= "<select name=\"cms_stundenplanung_import_klasse\" id=\"cms_stundenplanung_import_klasse\" disabled=\"disabled\">";
     $code .= "<option value=\"-\">nicht importieren</option></select></td></tr>";
-    $code .= "<tr><th>Zuordnen:</th><td><p>".cms_schieber_generieren("stundenplanung_import_zuordnen", 0)."</p><p>Ordnet den Kursen gemäß ihrer Klassen alle Schüler dieser Klassen zu.<br>Ferner werden die Lehrkräfte als Kursmitglieder und Vorsitzende zugeordnet.</p></td></tr>";
+    $code .= "<tr><th>Zuordnen:</th><td><p>".cms_generiere_schieber("stundenplanung_import_zuordnen", 0)."</p><p>Ordnet den Kursen gemäß ihrer Klassen alle Schüler dieser Klassen zu.<br>Ferner werden die Lehrkräfte als Kursmitglieder und Vorsitzende zugeordnet.</p></td></tr>";
     $code .= "</table>";
 
     $code .= "<p><input type=\"hidden\" name=\"cms_stundenplanung_import_schuljahr\" id=\"cms_stundenplanung_import_schuljahr\" value=\"$SCHULJAHR\"></p>";

@@ -30,7 +30,7 @@ if (cms_angemeldet() && cms_r("statistik.speicherplatz")) {
 
 	// Speicherplatz bereichnen
 	$fehler = false;
-	$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+	$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 	$speicherplatz = $CMS_EINSTELLUNGEN['Gesamtspeicherplatz'];
 	$datgroesse = 0;
 	$dbgroesse = 0;

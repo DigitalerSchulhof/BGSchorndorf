@@ -102,7 +102,7 @@
 			text-align: center  !important;
 		}
 
-		#cms_fusszeile_i .cms_notiz {text-align: center;}
+		#cms_fusszeile_i p {text-align: center;}
 
 		#cms_blende_m {width: 100%;}
 
@@ -120,6 +120,10 @@
 			height: auto !important;
 			margin-left: 0px !important;
 			float: none !important;
+		}
+
+		.cms_blockwahl {
+			width: 100%;
 		}
 	}
 }

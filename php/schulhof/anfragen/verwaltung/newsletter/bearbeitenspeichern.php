@@ -24,7 +24,7 @@ if (!cms_check_ganzzahl($CMS_BENUTZERID,0)) {echo "FEHLER";exit;}
 if (isset($_SESSION['NEWSLETTERID'])) {$id = $_SESSION['NEWSLETTERID'];} else {echo "FEHLER";exit;}
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 if (cms_angemeldet() && cms_r("website.elemente.newsletter.bearbeiten")) {
 	$fehler = false;

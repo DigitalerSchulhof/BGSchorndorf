@@ -87,9 +87,9 @@ function cms_blogeintrag_details_laden($id, $ziel) {
     }
     $code .= "</select></td></tr>";
     if ($genehmigung) {
-      $code .= "<tr><th>Genehmigt:</th><td>".cms_schieber_generieren('blogeintrag_genehmigt', $genehmigt)."</td></tr>";
+      $code .= "<tr><th>Genehmigt:</th><td>".cms_generiere_schieber('blogeintrag_genehmigt', $genehmigt)."</td></tr>";
     }
-    $code .= "<tr><th>Aktiv:</th><td>".cms_schieber_generieren('blogeintrag_aktiv', $aktiv)."</td></tr>";
+    $code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('blogeintrag_aktiv', $aktiv)."</td></tr>";
 		$code .= "</table>";
     if (!$genehmigung) {
       $code .= "<p><input type=\"hidden\" value=\"0\" id=\"cms_blogeintrag_genehmigt\" name=\"cms_blogeintrag_genehmigt\"></p>";
@@ -112,7 +112,7 @@ function cms_blogeintrag_details_laden($id, $ziel) {
 		$code .= "</table>";
     $code .= "<h3>Erweiterte Optionen</h3>";
 		$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_schieber_generieren('blogeintrag_notifikationen', $notifikationen)."</td></tr>";
+		$code .= "<tr><th><span class=\"cms_hinweis_aussen\">Notifikationen senden:<span class=\"cms_hinweis\">Notifikationen werden beim Löschen, Genehmigen und Ablehen immer gesandt.</span></span></th><td>".cms_generiere_schieber('blogeintrag_notifikationen', $notifikationen)."</td></tr>";
 		$code .= "</table>";
 		$code .= "</div></div>";
 

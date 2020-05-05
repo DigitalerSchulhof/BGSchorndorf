@@ -30,7 +30,7 @@ if (isset($_SESSION['ANMELDUNG BEARBEITEN'])) {
 			}
 			$nr++;
 
-			$code .= "<h1>Anmeldung am $CMS_SCHULE</h1>";
+			$code .= "<h1>Anmeldung am ".$CMS_WICHTIG['Schulname']."</h1>";
 			$code .= "<p class=\"cms_datum\">".cms_tagnamekomplett(date('w', $jetzt)).", den ".date('d', $jetzt).". ".cms_monatsnamekomplett(date('m', $jetzt))." ".date('Y', $jetzt)."</p>";
 
 			// DATENSÄTZE LADEN
@@ -182,7 +182,7 @@ if (isset($_SESSION['ANMELDUNG BEARBEITEN'])) {
 
 			$code .= "<p>Diese Angaben sind nach bestem Wissen und Gewissen aktuell und sachlich richtig.</p>";
 
-			$code .= "<span class=\"cms_unterschrift\">$CMS_ORT, den ".date('d.m.Y', $jetzt)."</span>";
+			$code .= "<span class=\"cms_unterschrift\">".$CMS_WICHTIG['Schule Ort'].", den ".date('d.m.Y', $jetzt)."</span>";
 			$code .= "<p class=\"cms_unterschrift\">Ort, Datum, Unterschrift</p>";
 		}
 	}

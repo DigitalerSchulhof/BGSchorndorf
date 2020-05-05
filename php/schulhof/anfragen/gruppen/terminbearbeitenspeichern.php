@@ -47,7 +47,7 @@ if (!cms_valide_gruppe($gruppe)) {echo "FEHLER";exit;}
 $gk = cms_textzudb($gruppe);
 
 
-$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 
 $dbs = cms_verbinden('s');
 $CMS_GRUPPENRECHTE = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);

@@ -75,6 +75,7 @@
 	display: inline-block;
 	width: 8px;
 	height: 8px;
+	margin: 1px;
 	margin-right: 2px;
 	line-height: 0px;
 	position: relative;
@@ -193,6 +194,7 @@
 .cms_uebersicht_verwaltung_genehmigungen_galerien {background-image: url('../res/icons/gross/galeriengenehmigt.png');}
 .cms_uebersicht_verwaltung_dauerbrenner {background-image: url('../res/icons/gross/dauerbrenner.png');}
 .cms_uebersicht_verwaltung_pinnwaende {background-image: url('../res/icons/gross/pinnwaende.png');}
+.cms_uebersicht_verwaltung_mail {background-image: url('../res/icons/gross/schulhofmailer.png');}
 
 .cms_uebersicht_verwaltung_gruppen_gremien {background-image: url('../res/icons/gross/gremien.png');}
 .cms_uebersicht_verwaltung_gruppen_fachschaften {background-image: url('../res/icons/gross/fachschaften.png');}
@@ -231,6 +233,7 @@
 .cms_uebersicht_verwaltung_website_newsletter  {background-image: url('../res/icons/gross/newsletter.png');}
 .cms_uebersicht_verwaltung_website_weiterleiten {background-image: url('../res/icons/gross/weiterleiten.png');}
 .cms_uebersicht_verwaltung_website_styleaendern {background-image: url('../res/icons/gross/style.png');}
+.cms_uebersicht_verwaltung_website_masterelemente {background-image: url('../res/icons/gross/masterelemente.png');}
 
 .cms_uebersicht_verwaltung_technik_geraete {background-image: url('../res/icons/gross/geraete.png');}
 .cms_uebersicht_verwaltung_technik_hausmeister {background-image: url('../res/icons/gross/hausmeister.png');}

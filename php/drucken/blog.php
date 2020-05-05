@@ -206,7 +206,7 @@
 	}
 	$CMS_EINSTELLUNGEN;
 	if($art == "in") {
-		$CMS_EINSTELLUNGEN = cms_einstellungen_laden();
+		$CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
 		// Prüfen, ob diese Gruppe existiert
 		if (in_array($g, $CMS_GRUPPEN)) {
 			if ($schuljahr == "Schuljahrübergreifend") {
@@ -353,10 +353,19 @@
 
 
 
-			$code .= "<div class=\"cms_spalte_15\"><div class=\"cms_spalte_i\">".$kalender."</div></div>";
+			$code .= "<div class=\"cms_spalte_15\"><div class=\"cms_spalte_i\">".$kalender;
+			if(strlen($blogeintrag['vorschaubild']) > 0) {
+				$code .= cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten);					
+			}
+			$code .= "</div></div>";
 			$code .= "<div class=\"cms_spalte_23\"><div class=\"cms_spalte_i\">";
 				$code .= "<h1 style=\"margin-top: 0\">".$blogeintrag['bezeichnung']."</h1>";
-				$code .= cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten);
+				if(strlen($blogeintrag['vorschaubild']) > 0) {
+					if ($blogeintrag['art'] == 'oe') {$code .= "<p><img style=\"max-width: 100%\" src=\"".$blogeintrag['vorschaubild']."\"></p>";}
+					else {$code .= "<p><img style=\"max-width: 100%\" src=\"".cms_generiere_bilddaten($blogeintrag['vorschaubild'])."\"></p>";}
+				} else {
+					$code .= cms_blogeintragdetailansicht_blogeintraginfos($dbs, $blogeintrag, $zeiten);
+				}
 			$code .= "</div></div>";
 
 			$code .= "<div class=\"cms_clear\"></div>";

@@ -92,7 +92,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
 
   // Nutzerkonto
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto']                                         = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Bedarfsabfrage']                          = 'php/schulhof/seiten/nutzerkonto/ebedarf.php';
+  //$CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Bestellung']                              = 'php/schulhof/seiten/nutzerkonto/ebestellung.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil']                             = 'php/schulhof/seiten/nutzerkonto/profildaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Gespeicherte_Daten']          = 'php/schulhof/seiten/nutzerkonto/gespeichertedaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Meine_Rechte']                = 'php/schulhof/seiten/nutzerkonto/meinerechte.php';
@@ -262,6 +262,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Leihgeräte/Leihgeräte_bearbeiten']         = 'php/schulhof/seiten/verwaltung/leihgeraete/leihgeraetebearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Allgemeine_Einstellungen']                 = 'php/schulhof/seiten/verwaltung/allgemeineeinstellungen/allgemeineeinstellungen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schulnetze']                               = 'php/schulhof/seiten/verwaltung/schulnetze/schulnetze.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schulhofmailer']                           = 'php/schulhof/seiten/verwaltung/schulhofmailer/schulhofmailer.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/VPN']                                      = 'php/schulhof/seiten/verwaltung/vpn/vpn.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Zulässige_Dateien']                        = 'php/schulhof/seiten/verwaltung/zulaessigedateien/zulaessigedateien.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Schuldetails']                             = 'php/schulhof/seiten/verwaltung/schuldetails/schuldetails.php';
@@ -372,6 +373,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Weiterleiten']                                = 'php/schulhof/seiten/website/weiterleiten/liste.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Weiterleiten/Neu']                            = 'php/schulhof/seiten/website/weiterleiten/neu.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Weiterleiten/Details']                        = 'php/schulhof/seiten/website/weiterleiten/bearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Masterelemente_bearbeiten']                   = 'php/schulhof/seiten/website/master/bearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Style_ändern']                                = 'php/schulhof/seiten/website/style/styleaendern.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';

@@ -165,7 +165,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 			$dklasse = $klasseninfo['klasse'];
 			$dstufe = $klasseninfo['stufe'];
 
-			if ($CMS_SCHULE == "Burg-Gymnasium") {
+			if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 				$dlehrer = cms_bg_lehrer($dlehrer);
 				$draum = cms_bg_raum($draum);
 			}
@@ -184,14 +184,14 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 			}
 
 			if (($dstufe != 'J1') && ($dstufe != 'J2') && ($dstufe != '///BLOCKIERUNG///')) {
-				if ($CMS_SCHULE == "Burg-Gymnasium") {
+				if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
 				if (!in_array($dfach, $FAECHER)) {array_push($FAECHER, $dfach);}
 			}
 			else if (($dstufe == 'J1') || ($dstufe == 'J2')) {
 				$dfach = substr($dfach,1,-1);
-				if ($CMS_SCHULE == "Burg-Gymnasium") {
+				if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
 				if (!in_array($dfach, $FAECHER)) {array_push($FAECHER, $dfach);}
@@ -376,7 +376,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 			$klasseninfo = cms_klasseninfo($daten[$klasse-1]);
 			$dklasse = $klasseninfo['klasse'];
 			$dstufe = $klasseninfo['stufe'];
-			if ($CMS_SCHULE == "Burg-Gymnasium") {
+			if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 				$dlehrer = cms_bg_lehrer($dlehrer);
 				$draum = cms_bg_raum($draum);
 			}
@@ -438,7 +438,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 
 			// Kurse einlesen
 			if (($dstufe != 'J1') && ($dstufe != 'J2') && ($dstufe != '///BLOCKIERUNG///')) {
-				if ($CMS_SCHULE == "Burg-Gymnasium") {
+				if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
 				if (!isset($UNTERRICHT[$dtag][$drythmen][$dstunde][$draum])) {
@@ -465,7 +465,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 				$kursart = substr($dfach,0,1);
 				$kursnr = substr($dfach,-1);
 				$dfach = substr($dfach,1,-1);
-				if ($CMS_SCHULE == "Burg-Gymnasium") {
+				if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
 				$bez = $dstufe." ".$kursart."K ".$FACHIDS[$dfach]['bez']." ".$kursnr;
