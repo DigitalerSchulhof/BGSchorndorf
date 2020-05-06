@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_8_1:
+    version: 0.8.1
+    tag: Mittwoch, den 06. Mai 2020
+    neuerungen:
+      - Nicht angezeigte Downloads in der Lehreransicht von Blogeinträgen behoben.
   0_8_0:
     version: 0.8
     tag: Dienstag, den 05. Mai 2020

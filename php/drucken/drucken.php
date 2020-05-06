@@ -14,6 +14,8 @@
 	$CMS_VERSION = trim(file_get_contents("version/version"));
 	$CMS_ANGEMELDET = cms_angemeldet();
 	$CMS_EINSTELLUNGEN = cms_einstellungen_laden("allgemeineeinstellungen");
+	$CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+
 	if ($CMS_ANGEMELDET) {
 
 		// Nutzerdaten laden
