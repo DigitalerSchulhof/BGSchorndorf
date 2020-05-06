@@ -81,6 +81,8 @@ else if ($CMS_URL[0] == 'Schulhof') {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
   // SCHULHOF
   $CMS_VERFUEGBARE_SEITEN['Schulhof']                                                     = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Neuerungen']                                          = 'php/schulhof/seiten/nutzerkonto/neuerungen.php';
   // Anmeldung
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung']                                           = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Bis_bald!']                                 = 'php/schulhof/seiten/nutzerkonto/anmelden.php';

@@ -62,6 +62,7 @@ if($num > 0) {
 		$meldung .= "<li>$n</li>";
 	}
 	$meldung .= "</ul>";
+	$meldung .= "<p>Weitere Informationen können der <a href=\"Schulhof/Neuerungen\" style=\"color: inherit\"><b>Neuerungsseite</b></a> entnommen werden.</p>";
 	echo cms_meldung("info", $meldung);
 }
 
