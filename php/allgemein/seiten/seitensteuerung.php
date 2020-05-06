@@ -39,7 +39,7 @@ else if ($CMS_URL[0] == 'Website') {
   $CMS_VERFUEGBARE_SEITEN['Website/Voranmeldung/Ansprechpartner']                         = 'php/website/seiten/schulanmeldung/ansprechpartner.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Voranmeldung/Zusammenfassung']                         = 'php/website/seiten/schulanmeldung/zusammenfassung.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Voranmeldung/Fertig']                                  = 'php/website/seiten/schulanmeldung/fertig.php';
-  $CMS_VERFUEGBARE_SEITEN['Website/Fehler']                                               = 'php/website/seiten/fehler/404.php';
+
   $CMS_VERFUEGBARE_SEITEN['Website/Fehler/301']                                           = 'php/website/seiten/fehler/301.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Fehler/302']                                           = 'php/website/seiten/fehler/302.php';
   $CMS_VERFUEGBARE_SEITEN['Website/Fehler/403']                                           = 'php/website/seiten/fehler/403.php';
@@ -81,6 +81,8 @@ else if ($CMS_URL[0] == 'Schulhof') {
   include_once("php/schulhof/anfragen/verwaltung/gruppen/initial.php");
   // SCHULHOF
   $CMS_VERFUEGBARE_SEITEN['Schulhof']                                                     = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
+
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Neuerungen']                                          = 'php/schulhof/seiten/nutzerkonto/neuerungen.php';
   // Anmeldung
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung']                                           = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Anmeldung/Bis_bald!']                                 = 'php/schulhof/seiten/nutzerkonto/anmelden.php';
@@ -378,7 +380,6 @@ else if ($CMS_URL[0] == 'Schulhof') {
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';
 
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/Fehler']                                              = 'php/schulhof/seiten/fehler/404.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Fehler/404']                                          = 'php/schulhof/seiten/fehler/404.php';
 }
 

@@ -106,7 +106,7 @@
 					$CMS_URL[2] = "404";
 				}
 				else if (isset($CMS_URL[2])) {
-					if (!in_array($CMS_URL[2], array("Seiten", "Aktuell", "301", "302", "403", "404", "500"))) {
+					if ($CMS_URL[1] == "Seiten" && !in_array($CMS_URL[2], array("Aktuell", "301", "302", "403", "404", "500"))) {
 						$CMS_URL = array();
 						$CMS_URL[0] = "Website";
 						$CMS_URL[1] = "Fehler";

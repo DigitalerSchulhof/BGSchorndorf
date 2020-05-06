@@ -1,5 +1,6 @@
 RewriteEngine on
 RewriteRule ^\.htaccess$ - [F]
+RewriteRule ^aktualisiert.php$ [R=404,L]
 
 <IfModule mod_rewrite.c>
   RewriteEngine on

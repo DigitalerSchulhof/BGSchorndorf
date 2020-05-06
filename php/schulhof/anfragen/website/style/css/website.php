@@ -337,7 +337,7 @@
 .cms_eventuebersicht_box_a:first-child .cms_eventuebersicht_box_i {padding-left: 0px;}
 .cms_eventuebersicht_box_a:last-child .cms_eventuebersicht_box_i {padding-right: 0px;}
 
-#cms_hauptteil_i img {max-width: 100%;}
+#cms_hauptteil_i img, #cms_hauptteil_i video, #cms_hauptteil_i audio {max-width: 100%;}
 .cms_liste td > img, .cms_formular td > img, .cms_dateisystem_tabelle td > img, .cms_icon_klein_o > img {max-width: none !important;}
 
 .cms_kopfnavigation .cms_websitesuche {

@@ -36,7 +36,7 @@
 							case 200:
 								document.getElementById("status").innerHTML = "Die Website ist wieder errichbar!<br>Seite kann neugeladen werden!";
 								document.getElementById("status").style.background = "rgb(102,187,106)";
-								document.getElementById("status").style.height = "100px";
+								document.getElementById("status").style.height = "140px";
 								break;
 								case 503:
 								break;
