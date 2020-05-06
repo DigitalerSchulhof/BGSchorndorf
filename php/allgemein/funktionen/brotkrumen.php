@@ -4,7 +4,6 @@ function cms_brotkrumen($url, $aktionen = true) {
 
 	$code = "";
 	$link = "";
-
 	if ($url[0] == "Website") {
 		$link .= "/Website";
 		$code .= " / <a class=\"cms_link\" href=\"".substr($link, 1)."\">Startseite</a>";
@@ -44,10 +43,21 @@ function cms_brotkrumen($url, $aktionen = true) {
 				if (($i == 0) && ($u == "Website")) {$u = "Startseite";}
 				$code .= " / <a class=\"cms_link\" href=\"".substr($link, 1)."\">".$u."</a>";
 			}
+		} else if($url[1] == "Fehler") {
+			$code = "";
+			for ($i=1; $i < count($url); $i++) {
+				$link .= "/".$url[$i];
+				$u = str_replace("_", " ", $url[$i]);
+				$code .= " / <a class=\"cms_link\" href=\"".substr($link, 1)."\">".$u."</a>";
+			}
 		}
 	}
 	else {
 		for ($i=0; $i < count($url); $i++) {
+			if($url[1] == "Fehler" && $i == 0) {
+				$link .= "/".$url[$i];
+				continue;
+			}
 			$link .= "/".$url[$i];
 			$u = str_replace("_", " ", $url[$i]);
 			if (($i == 0) && ($u == "Website")) {$u = "Startseite";}
