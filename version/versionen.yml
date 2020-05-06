@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_8_2:
+    version: 0.8.2
+    tag: Mittwoch, den 06. Mai 2020
+    neuerungen:
+      - Mehrfachauswahl im Postfach möglich zum schnelleren Löschen vieler Nachrichten.
   0_8_1:
     version: 0.8.1
     tag: Mittwoch, den 06. Mai 2020

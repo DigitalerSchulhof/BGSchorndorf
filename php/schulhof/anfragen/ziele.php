@@ -388,8 +388,8 @@ $CMS_ZIELE[384] = '';
 $CMS_ZIELE[385] = '';
 $CMS_ZIELE[386] = 'php/schulhof/anfragen/nutzerkonto/todo.php';
 $CMS_ZIELE[387] = 'php/schulhof/anfragen/verwaltung/update/update.php';
-$CMS_ZIELE[388] = '';
-$CMS_ZIELE[389] = '';
+$CMS_ZIELE[388] = 'php/schulhof/anfragen/nutzerkonto/postfach/multiselect_papierkorb.php';
+$CMS_ZIELE[389] = 'php/schulhof/anfragen/nutzerkonto/postfach/multiselect_zuruecklegen.php';
 $CMS_ZIELE[390] = 'php/schulhof/anfragen/verwaltung/personen/registrieren.php';
 $CMS_ZIELE[391] = 'php/schulhof/anfragen/verwaltung/personen/registriertuebernehmen.php';
 $CMS_ZIELE[392] = 'php/schulhof/anfragen/verwaltung/personen/registrierungloeschen.php';
@@ -400,5 +400,5 @@ $CMS_ZIELE[396] = 'php/schulhof/anfragen/website/master/bearbeiten.php';
 $CMS_ZIELE[397] = '';
 $CMS_ZIELE[398] = '';
 $CMS_ZIELE[399] = '';
-$CMS_ZIELE[400] = '';
+$CMS_ZIELE[400] = 'php/schulhof/anfragen/nutzerkonto/postfach/multiselect_loeschen.php';
 ?>
