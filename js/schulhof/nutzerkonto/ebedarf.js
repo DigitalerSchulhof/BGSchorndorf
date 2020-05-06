@@ -2,6 +2,32 @@ function cms_ebestellung_aktualisieren() {
   var wert = document.getElementById('cms_ebestellung_bedarf').value;
 
   if (wert == '1') {
+    cms_einblenden('cms_ebestellung_geraete');
+    cms_ausblenden('cms_ebestellung_kontakt');
+    cms_ausblenden('cms_ebestellung_bedingung');
+    cms_ausblenden('cms_ebestellung_bedingung_akzept');
+    document.getElementById('cms_ebestellung_speichern').innerHTML = "Ich habe bestellt / werde bestellen";
+  }
+  else if (wert == '2') {
+    cms_ausblenden('cms_ebestellung_geraete');
+    cms_einblenden('cms_ebestellung_kontakt');
+    cms_einblenden('cms_ebestellung_bedingung', 'table-row');
+    cms_einblenden('cms_ebestellung_bedingung_akzept', 'table-row');
+    document.getElementById('cms_ebestellung_speichern').innerHTML = "Geräteleihe bestätigen";
+  }
+  else {
+    cms_ausblenden('cms_ebestellung_geraete');
+    cms_ausblenden('cms_ebestellung_kontakt');
+    cms_ausblenden('cms_ebestellung_bedingung');
+    cms_ausblenden('cms_ebestellung_bedingung_akzept');
+    document.getElementById('cms_ebestellung_speichern').innerHTML = "Keinen Bedarf anzeigen";
+  }
+}
+
+function cms_ebestellung_aktualisieren2() {
+  var wert = document.getElementById('cms_ebestellung_bedarf').value;
+
+  if (wert == '1') {
     document.getElementById('cms_ebestellung_anz_leiheubuntu').value = 0;
     cms_ausblenden('cms_ebestellung_leihe');
     cms_einblenden('cms_ebestellung_geraete');
@@ -98,6 +124,125 @@ function cms_ebestellung_neuberechnen(wert) {
 }
 
 function cms_ebestellung_speichern() {
+	cms_laden_an('Bedarf speichern', 'Die Angaben werden geprüft');
+
+	var bedarf = document.getElementById('cms_ebestellung_bedarf').value;
+
+	var anrede = document.getElementById('cms_ebestellung_anrede').value;
+	var vorname = document.getElementById('cms_ebestellung_vorname').value;
+	var nachname = document.getElementById('cms_ebestellung_nachname').value;
+	var strasse = document.getElementById('cms_ebestellung_strasse').value;
+	var hausnr = document.getElementById('cms_ebestellung_hausnr').value;
+	var plz = document.getElementById('cms_ebestellung_plz').value;
+	var ort = document.getElementById('cms_ebestellung_ort').value;
+	var bedingungen = document.getElementById('cms_bedingungen').value;
+
+	var telefon1 = document.getElementById('cms_schulhof_ebestellung_telefon').value;
+	var telefon2 = document.getElementById('cms_schulhof_ebestellung_telefon_wiederholen').value;
+	var mail1 = document.getElementById('cms_schulhof_ebestellung_mail').value;
+	var mail2 = document.getElementById('cms_schulhof_ebestellung_mail_wiederholen').value;
+
+	var meldung = '<p>Die Angeben konnten nicht gespeichert werden, denn</p><ul>';
+	var fehler = false;
+
+  if ((bedarf != '0') && (bedarf != '1') && (bedarf != '2')) {
+    meldung += '<li>die Eingabe für den Bedarf ist ungültig.</li>';
+		fehler = true;
+  }
+
+  if (bedarf == '2') {
+    if ((anrede != '-') && (anrede != 'Frau') && (anrede != 'Herr')) {
+  		meldung += '<li>die Anrede ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (vorname.length < 1) {
+  		meldung += '<li>der Vorname ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (nachname.length < 1) {
+  		meldung += '<li>der Nachname ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (strasse.length < 1) {
+  		meldung += '<li>die Straße ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (hausnr.length < 1) {
+  		meldung += '<li>die Hausnummer ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (!cms_check_ganzzahl(plz, 0, 99999)) {
+  		meldung += '<li>die Postleitzahl ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (ort.length < 1) {
+  		meldung += '<li>der Ort ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+    if (telefon1.length < 4) {
+  		meldung += '<li>die Telefonnummer ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+  	if (telefon1 != telefon2) {
+  		meldung += '<li>die Telefonnummern sind nicht identisch.</li>';
+  		fehler = true;
+  	}
+
+    if (!cms_check_mail(mail1)) {
+  		meldung += '<li>die eMailadresse ist ungültig.</li>';
+  		fehler = true;
+  	}
+
+  	if (mail1 != mail2) {
+  		meldung += '<li>die eMailadressen sind nicht identisch.</li>';
+  		fehler = true;
+  	}
+  }
+
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Bedarf speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		var formulardaten = new FormData();
+
+		formulardaten.append("bedarf",  bedarf);
+		formulardaten.append("anrede",     anrede);
+		formulardaten.append("vorname",     vorname);
+		formulardaten.append("nachname",     nachname);
+		formulardaten.append("strasse",     strasse);
+		formulardaten.append("hausnr",     hausnr);
+		formulardaten.append("plz",     plz);
+		formulardaten.append("ort",     ort);
+		formulardaten.append("bedingungen",     bedingungen);
+		formulardaten.append("telefon1",   telefon1);
+		formulardaten.append("telefon2",   telefon2);
+		formulardaten.append("mail1",   mail1);
+		formulardaten.append("mail2",   mail2);
+		formulardaten.append("anfragenziel", 	'394');
+
+		function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Bestellung speichern', '<p>Die Bestellung/Leihe wurde übermittelt. Vielen Dank!<br>Bitte bachten Sie, dass im Falle eines Kaufs der Shop außerhalb des Schulhofs genutzt werden muss.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto\');">OK</span></p>');
+			}
+			else {
+				cms_fehlerbehandlung(rueckgabe);
+			}
+		}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+
+function cms_ebestellung_speichern2() {
 	cms_laden_an('Bedarf speichern', 'Die Angaben werden geprüft');
 
 	var bedarf = document.getElementById('cms_ebestellung_bedarf').value;

@@ -27,6 +27,8 @@ if (isset($_SESSION['ZEITRAUMSTUNDENPLANIMPORT'])) {$ZEITRAUM = $_SESSION['ZEITR
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$fehler = false;
 
+	$CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+
 	if (strlen($csv) == 0) {$fehler = true;}
 	if (strlen($trennung) == 0) {$fehler = true;}
 	if (!cms_check_ganzzahl($SCHULJAHR, 0)) {$fehler = true;}
