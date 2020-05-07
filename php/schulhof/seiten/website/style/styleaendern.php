@@ -14,6 +14,8 @@ if (cms_r("website.styleändern")) {
     echo cms_meldung("info", $meldetext);
   }
 
+  echo "<p><span class=\"cms_button\" onclick=\"cms_website_style_aendern();\">Speichern</span></p>";
+
   // Style-Werte laden
   $styles = array();
   $sql = $dbs->prepare("SELECT * FROM style");

@@ -215,17 +215,17 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			if ($monat != date('m', $blogeintrag['datum'])) {$gefunden = false;}
 			if ($tag != date('d', $blogeintrag['datum'])) {$gefunden = false;}
 		}
-
+		$zugriff = false;
 		if (($gefunden) && ($art == 'oe')) {
-			$gefunden = $gefunden && (isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]);
-			$gefunden = cms_oeffentlich_sichtbar($dbs, 'blogeintraege', $blogeintrag);
+			$zugriff = isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"];
+			$zugriff &= cms_oeffentlich_sichtbar($dbs, 'blogeintraege', $blogeintrag);
 		}
 		else if ($gefunden) {
 			$gruppenrecht = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
-			$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ((isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]) || $gruppenrecht['blogeintraege']);
+			$zugriff = $gruppenrecht['sichtbar'] && ((isset($blogeintrag["aktiv"]) && $blogeintrag["aktiv"]) || $gruppenrecht['blogeintraege']);
 		}
 
-		if ($gefunden) {
+		if ($gefunden && $zugriff) {
 			$code .= "</div>";
 			$zeiten = cms_blogeintrag_zeiten($blogeintrag);
 			// Schnellinfos
@@ -428,10 +428,16 @@ function cms_blogeintragdetailansicht_ausgeben($dbs, $gruppenid = "-") {
 			$code .= "<div class=\"cms_clear\"></div>";
 		}
 		else {
+			if($art == "in" && $gefunden && !$zugriff) {
+				$sql = "DELETE FROM {$gk}todoartikel WHERE blogeintrag = ?";
+				$sql = $dbs->prepare($sql);
+				$sql->bind_param("i", $blogeintrag['id']);
+				$sql->execute();
+				$sql->close();
+			}
 			$code .= "<h1>Blogeintragdetailansicht</h1>";
 			$code .= cms_meldung('info', '<h4>Blogeintrag nicht verfügbar</h4><p>Dieser Blogeintrag ist derzeit nicht verfügbar. Möglicherweise ist er inaktiv oder er existiert nicht oder nicht mehr.</p>');
 		}
-
 	}
 	else {
 		$code .= "<h1>Blogeintragdetailansicht</h1>";

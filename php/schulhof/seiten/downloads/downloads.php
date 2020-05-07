@@ -34,6 +34,19 @@ function cms_schulhof_download_ausgeben($e) {
 }
 
 function cms_schulhof_interndownload_ausgeben($e) {
+  global $CMS_BENUTZERID, $CMS_SCHLUESSEL;
+  if(preg_match("/^dateien\\/schulhof\\/gruppen\\/(.+)\\/(\\d+)(\\/.+)$/", $e["pfad"], $matches) == 1) {
+    $gruppe = strtoupper(substr($matches[1],0,1)).substr($matches[1],1);
+    if ($gruppe == "Sonstigegruppen") {$gruppe = "Sonstige Gruppen";}
+    $gruppenid = $matches[2];
+    $datei = $matches[3];
+    $dbs = cms_verbinden("s");
+    $sql = "DELETE FROM notifikationen WHERE person = ? AND gruppe = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND gruppenid = ? AND art = 'd' AND vorschau = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+    $sql = $dbs->prepare($sql);
+    $sql->bind_param("isis", $CMS_BENUTZERID, $gruppe, $gruppenid, $datei);
+    $sql->execute();
+    $sql->close();
+  }
   // Inaktiv für den Benutzer
   $code = "";
   $pfad = implode("/", array_slice(explode("/", $e['pfad']), 1));

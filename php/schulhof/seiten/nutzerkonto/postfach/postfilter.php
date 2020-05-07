@@ -80,8 +80,10 @@ function cms_postfach_filter_ausgeben ($modus, $start, $ende, $papierkorb, $fid,
 
 	// Seiten ausgeben
 	$code .= "<p id=\"cms_seiten\">";
-	for ($i = 1; $i<= $nachrichtenanzahl; $i++) {
-		$code .= "<span class=\"cms_button\" onclick=\"cms_postfach_nachrichten_seite('$fid', '$i', '$modus', '$papierkorb', '$app');\">$i</span> ";
+	if($nachrichtenanzahl > 1) {
+		for ($i = 1; $i <= $nachrichtenanzahl; $i++) {
+			$code .= "<span class=\"cms_button\" onclick=\"cms_postfach_nachrichten_seite('$fid', '$i', '$modus', '$papierkorb', '$app');\">$i</span> ";
+		}
 	}
 	$code .= "<input name=\"cms_postfach_filter_limit".$fid."\" id=\"cms_postfach_filter_limit".$fid."\" type=\"hidden\" value=\"25\">";
 	$code .= "<input name=\"cms_postfach_filter_nummer".$fid."\" id=\"cms_postfach_filter_nummer".$fid."\" type=\"hidden\" value=\"0\">";
@@ -350,7 +352,11 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 			}
 			$tags .= "</div>";
 
-			$code .= "<td style=\"position: relative\">".$tags.$icon."</td>";
+			$klasse = "";
+			if($app != 'app') {
+				$klasse .= "cms_multiselect";
+			}
+			$code .= "<td class=\"$klasse\" style=\"position: relative\">".$tags.$icon."</td>";
 			$betreffevent = cms_texttrafo_e_event($N['betreff']);
 			$lesen = "cms_postfach_nachricht_lesen('$modus', '".$N['anzeigename']."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$N['id']."', '$app')";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['anzeigename'].$markierungh."</td>";
@@ -415,12 +421,24 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 					$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_loeschen_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 				}
 				$code .= $speicherfrist;
+				$code .= "<input type=\"hidden\" class=\"cms_nachricht_id\" value=\"{$N['id']}\">";
 				$code .= "</td>";
 			}
 			$code .= "</tr>";
 		}
 	}
 
+	if($app != 'app' && count($NACHRICHTEN) > 0) {
+		$code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"6\">";
+		if ($papierkorb == "-") {
+			$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_papierkorb_anzeige('$modus')\"><span class=\"cms_hinweis\">Alle in den Papierkorb</span><img src=\"res/icons/klein/papierkorb.png\"></span> ";
+		}
+		else {
+			$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_zuruecklegen('$modus')\"><span class=\"cms_hinweis\">Alle zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
+			$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_loeschen_anzeige('$modus')\"><span class=\"cms_hinweis\">Alle endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+		}
+		$code .= "</td></tr>";
+	}
 	cms_trennen($dbs);
 	cms_trennen($db);
 

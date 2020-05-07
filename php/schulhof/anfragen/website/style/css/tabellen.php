@@ -174,8 +174,17 @@ th.cms_zahl, td.cms_zahl {
 	cursor: s-resize;
 }
 
-.cms_auswaehlen:hover {
+.cms_auswaehlen,
+.cms_liste .cms_multiselect {
 	cursor: crosshair;
+}
+
+.cms_liste .cms_multiselect_menue {
+	display: none;
+}
+
+.cms_liste .cms_multiselect_s {
+	background-color: @h_haupt_abstufung2;
 }
 
 // DUNKEL;
@@ -227,4 +236,8 @@ table.table td {
 
 table.table tr:nth-child(2n+1) td {
 	background-color: @d_formular_feldhintergrund;
+}
+
+.cms_liste .cms_multiselect_s {
+	background-color: @d_haupt_abstufung2;
 }

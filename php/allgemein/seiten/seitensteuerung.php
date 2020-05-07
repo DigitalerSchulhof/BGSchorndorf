@@ -94,7 +94,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
 
   // Nutzerkonto
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto']                                         = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
-  //$CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Bestellung']                              = 'php/schulhof/seiten/nutzerkonto/ebestellung.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Bestellung']                              = 'php/schulhof/seiten/nutzerkonto/ebestellung.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil']                             = 'php/schulhof/seiten/nutzerkonto/profildaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Gespeicherte_Daten']          = 'php/schulhof/seiten/nutzerkonto/gespeichertedaten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Mein_Profil/Meine_Rechte']                = 'php/schulhof/seiten/nutzerkonto/meinerechte.php';

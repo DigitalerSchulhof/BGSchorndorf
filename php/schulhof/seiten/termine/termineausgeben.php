@@ -260,16 +260,17 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		if ($tag != date('d', $termin['beginn'])) {$gefunden = false;}
 	}
 
+	$zugriff = false;
 	if (($gefunden) && ($art == 'oe')) {
-		$gefunden = $gefunden && isset($termin["aktiv"]) && $termin["aktiv"];
-		$gefunden = cms_oeffentlich_sichtbar($dbs, 'termine', $termin);
+		$zugriff = isset($termin["aktiv"]) && $termin["aktiv"];
+		$zugriff &= cms_oeffentlich_sichtbar($dbs, 'termine', $termin);
 	}
 	else if ($gefunden) {
 		$gruppenrecht = cms_gruppenrechte_laden($dbs, $gruppe, $gruppenid);
-		$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ((isset($termin["aktiv"]) && $termin["aktiv"]) || $gruppenrecht['termine']);
+		$zugriff = $gruppenrecht['sichtbar'] && ((isset($termin["aktiv"]) && $termin["aktiv"]) || $gruppenrecht['termine']);
 	}
 
-	if ($gefunden) {
+	if ($gefunden && $zugriff) {
 		$code .= "</div>";
 		$zeiten = cms_termin_zeiten($termin);
 		// Schnellinfos
@@ -413,6 +414,13 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 		$CMS_TERMINID = $termin["id"];
 	}
 	else {
+		if($art == "in" && $gefunden && !$zugriff) {
+			$sql = "DELETE FROM {$gk}todoartikel WHERE termin = ?";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("i", $termin['id']);
+			$sql->execute();
+			$sql->close();
+		}
 		$code .= "<h1>Termindetailansicht</h1>";
 		$code .= cms_meldung('info', '<h4>Termin nicht verfügbar</h4><p>Dieser Termin ist derzeit nicht verfügbar. Möglicherweise ist er inaktiv oder er existiert nicht oder nicht mehr.</p>');
 	}
