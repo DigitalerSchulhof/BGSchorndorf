@@ -14,7 +14,12 @@
   if(!cms_r("technik.server.update")) {
     echo cms_meldung_berechtigung();
   } else {
-    $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
+    if($CMS_EINSTELLUNGEN["Netze Ofizielle Version"]) {
+      $Updater_base = "https://update.digitaler-schulhof.de";
+    } else {
+      $Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
+    }
+
     $basis_verzeichnis = dirname(__FILE__)."/../../../../..";
 
     if(!file_exists("$basis_verzeichnis/version")) {
@@ -25,11 +30,11 @@
       // Versionsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/releases/latest",
+        CURLOPT_URL             => "$Updater_base/releases/latest",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
-          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
           "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
           "Accept: application/vnd.github.v3+json",
         )
@@ -41,11 +46,11 @@
       // Neuerungsverlauf von GitHub holen
       $curl = curl_init();
       $curlConfig = array(
-        CURLOPT_URL             => "$GitHub_base/contents/version/versionen.yml?ref=master",
+        CURLOPT_URL             => "$Updater_base/contents/version/versionen.yml?ref=master",
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
-          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
           "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
           "Accept: application/vnd.github.VERSION.raw"
         )
@@ -56,7 +61,8 @@
 
       $fehler = false;
       $release = json_decode($release, true);
-      $fehler |= !count($release);
+      $fehler |= is_null($release);
+      $fehler |= !@count($release);
       $fehler |= isset($release["documentation_url"]); // Hinweis auf API; Fehler
       $versionen = @Yaml::loadString($versionen);
       $fehler |= is_null($versionen);
@@ -66,12 +72,7 @@
         echo cms_meldung_fehler();
       } else {
         if($CMS_IMLN) {
-          if(version_compare($release["name"], $version, "lt")) {
-            echo cms_meldung_fehler();
-            echo "<div class=\"cms_spalte_2\">";
-              echo "<span class=\"cms_button\" onclick=\"cms_link('Schulhof/Verwaltung')\">Zurück zur Übersicht</span>";
-              echo "</div>";
-            } else if(version_compare($release["name"], $version, "gt")) {
+            if(version_compare($release["name"], $version, "gt")) {
               echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version verfügbar: <b>{$release['name']}</b><br>Die aktuelle Version ist: <b>$version</b></p>");
 
               echo "<div class=\"cms_spalte_2\">";

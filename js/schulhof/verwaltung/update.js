@@ -14,7 +14,7 @@ function cms_schulhof_aktualisieren() {
     anfrage.onreadystatechange = function() {
       rueckgabe = anfrage.responseText;
       if (anfrage.readyState==3 && anfrage.status==200) {
-        rueckgabe = rueckgabe.substring(2);
+        rueckgabe = rueckgabe.substring(16);
         $("#aktualisieren_fortschritt").html(rueckgabe);
       }
       if (anfrage.readyState==4 && anfrage.status==200) {

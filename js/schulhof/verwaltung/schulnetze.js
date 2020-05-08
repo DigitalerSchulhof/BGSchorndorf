@@ -41,7 +41,10 @@ function cms_schulnetze_speichern() {
 		var hostl = document.getElementById('cms_netze_hostingpartner_ls').value;
 		var socketip = document.getElementById('cms_netze_socketip').value;
 		var socketport = document.getElementById('cms_netze_socketport').value;
-		var githubsecret = document.getElementById('cms_netze_github').value;
+		var offizielle_version = document.getElementById('cms_netze_offizielle_version').value;
+		var github_benutzer = document.getElementById('cms_netze_github_benutzer').value;
+		var github_repo = document.getElementById('cms_netze_github_repo').value;
+		var github_oauth = document.getElementById('cms_netze_github_oauth').value;
 
 		var lhost = document.getElementById('cms_netze_host_lsh').value;
 		var lbenutzer = document.getElementById('cms_netze_benutzer_lsh').value;
@@ -107,9 +110,20 @@ function cms_schulnetze_speichern() {
 			fehler = true;
 		}
 
-		if (githubsecret.length == 0) {
-			meldung += '<li>das GitHubsecret für Updates ist nicht korrekt.</li>';
+		if (!cms_check_toggle(offizielle_version)) {
+			meldung += '<li>die Angabe zur offiziellen Version ist nicht korrekt.</li>';
 			fehler = true;
+		}
+
+		if(offizielle_version == 0) {
+			if(github_benutzer.length == 0) {
+				meldung += '<li>der GitHub Benutzer ist nicht korrekt.</li>';
+				fehler = true;
+			}
+			if(github_repo.length == 0) {
+				meldung += '<li>die GitHub Repository ist nicht korrekt.</li>';
+				fehler = true;
+			}
 		}
 
 		if (lhost.length == 0) {
@@ -152,14 +166,17 @@ function cms_schulnetze_speichern() {
 				if (rueckgabe == "ERFOLG") {
 					cms_laden_an('Schulnetze verwalten', 'Die Änderungen werden in die Datenbank geschrieben.');
 					var formulardatendb = new FormData();
-					formulardatendb.append("base", 					base);
-					formulardatendb.append("lehrer", 				lehrer);
-					formulardatendb.append("vpn", 					vpn);
-					formulardatendb.append("hosts", 				hosts);
-					formulardatendb.append("hostl", 				hostl);
-					formulardatendb.append("socketip", 			socketip);
-					formulardatendb.append("socketport", 		socketport);
-					formulardatendb.append("githubsecret", 	githubsecret);
+					formulardatendb.append("base", 								base);
+					formulardatendb.append("lehrer", 							lehrer);
+					formulardatendb.append("vpn", 								vpn);
+					formulardatendb.append("hosts", 							hosts);
+					formulardatendb.append("hostl", 							hostl);
+					formulardatendb.append("socketip", 						socketip);
+					formulardatendb.append("socketport", 					socketport);
+					formulardatendb.append("offizielle_version", 	offizielle_version);
+					formulardatendb.append("github_benutzer", 		github_benutzer);
+					formulardatendb.append("github_repo", 				github_repo);
+					formulardatendb.append("github_oauth", 				github_oauth);
 					formulardatendb.append("anfragenziel", 	'395');
 
 					function anfragennachbehandlungdatenbank(rueckgabe) {
