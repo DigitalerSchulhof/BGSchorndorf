@@ -128,4 +128,4 @@ INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (241, AES_ENCRYPT(
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (242, AES_ENCRYPT('Netze GitHub Repository', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (243, AES_ENCRYPT('Netze GitHub OAuth', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 
--- 0.8.3
+-- 0.8.4
