@@ -185,7 +185,7 @@ function cms_seite_ausgeben($dbs) {
                   if ($zsart == 'g') {$jahr = date('Y'); $link = "Website/Galerien/$jahr/".cms_monatsnamekomplett(date('n'));}
                   else if ($zsart == 't') {$jahr = date('Y'); $link = "Website/Termine/$jahr/".cms_monatsnamekomplett(date('n'));}
                   else if ($zsart == 'b') {$jahr = date('Y'); $link = "Website/Blog/$jahr/".cms_monatsnamekomplett(date('n'));}
-                  else {$link = "Website/".$CMS_URL[1]."/".$CMS_URL[2]."/".$pfad."/".str_replace('_', ' ', $zsbez);}
+                  else {$link = "Website/".$CMS_URL[1]."/".$CMS_URL[2]."/".$pfad."/".str_replace(' ', '_', $zsbez);}
                   $mcode .= "<li><a class=\"cms_website_menuepunkte\" href=\"$link\">";
                   $mcode .= "<h3>$zsbez</h3>";
                   if (strlen($zsbesch)>0) {$mcode .= "<p>$zsbesch</p>";}
