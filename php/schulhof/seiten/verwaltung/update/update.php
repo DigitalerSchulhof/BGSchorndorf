@@ -14,7 +14,7 @@
   if(!cms_r("technik.server.update")) {
     echo cms_meldung_berechtigung();
   } else {
-    if($CMS_EINSTELLUNGEN["Netze Ofizielle Version"]) {
+    if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
       $Updater_base = "https://update.digitaler-schulhof.de";
     } else {
       $Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";

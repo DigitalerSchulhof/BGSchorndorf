@@ -123,9 +123,9 @@ ALTER TABLE `etoken`  ADD PRIMARY KEY (`id`);
 ALTER TABLE `etoken`  ADD CONSTRAINT `etokenperson` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 DELETE FROM allgemeineeinstellungen WHERE id = 240;
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze Ofizielle Version', '{cms_schluessel}'), AES_ENCRYPT('1', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze Offizielle Version', '{cms_schluessel}'), AES_ENCRYPT('1', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (241, AES_ENCRYPT('Netze GitHub Benutzer', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (242, AES_ENCRYPT('Netze GitHub Repository', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (243, AES_ENCRYPT('Netze GitHub OAuth', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 
--- 0.8.3
+-- 0.8.4
