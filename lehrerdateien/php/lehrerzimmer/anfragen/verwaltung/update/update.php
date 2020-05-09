@@ -1,5 +1,4 @@
 <?php
-
 set_time_limit(0);
 ignore_user_abort(true);
 
@@ -32,8 +31,11 @@ if ($angemeldet && cms_r("technik.server.update")) {
     }
   });
 
-  $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
-  $GitHub_base_at = "https://".$CMS_EINSTELLUNGEN['Netze GitHub'].":@api.github.com/repos/oxydon/BGSchorndorf";
+  if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
+    $Updater_base = "https://update.digitaler-schulhof.de";
+  } else {
+    $Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
+  }
 
   $base_verzeichnis = realpath(dirname(__FILE__)."/../../../../..");
   $update_verzeichnis = "$base_verzeichnis/update";
@@ -60,11 +62,11 @@ if ($angemeldet && cms_r("technik.server.update")) {
   // Versionen prüfen und Daten laden
   $curl = curl_init();
   $curlConfig = array(
-    CURLOPT_URL             => "$GitHub_base/releases/latest",
+    CURLOPT_URL             => "$Updater_base/releases/latest",
     CURLOPT_RETURNTRANSFER  => true,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
       "Accept: application/vnd.github.v3+json",
     )
@@ -76,10 +78,9 @@ if ($angemeldet && cms_r("technik.server.update")) {
   $antwort = curl_exec($curl);
   curl_close($curl);
   if(!($antwort = @json_decode($antwort, true))) {
-    cms_backup_fehler(error_get_last());
+    cms_backup_fehler("decode antwort", error_get_last());
 	}
 
-  $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
 
   echo "Update herunterladen<br>";
@@ -102,7 +103,7 @@ if ($angemeldet && cms_r("technik.server.update")) {
     CURLOPT_FILE            => $tar_ziel,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
     )
   );

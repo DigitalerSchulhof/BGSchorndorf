@@ -2,7 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {
-	if($CMS_EINSTELLUNGEN["Netze Ofizielle Version"]) {
+	if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
 		$Updater_base = "https://update.digitaler-schulhof.de";
 	} else {
 		$Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";

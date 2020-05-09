@@ -2,7 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {
-	if($CMS_EINSTELLUNGEN["Netze Ofizielle Version"]) {
+	if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
 		$Updater_base = "https://update.digitaler-schulhof.de";
 	} else {
 		$Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
@@ -30,9 +30,9 @@ if(cms_r("technik.server.update")) {
 		$neuste = curl_exec($curl);
 		curl_close($curl);
 
-		if(($neuste = json_decode($neuste, true)) === null || !count($neuste) || @$neuste["documentation_url"]/* Fehler mit API */)
+		if(($neuste = json_decode($neuste, true)) === null || !count($neuste) || @$neuste["documentation_url"]/* Fehler mit API */){
 			echo cms_meldung_fehler();
-		else {
+		} else {
 			$neusteversion = $neuste["name"];
 
 			if(version_compare($neusteversion, $version, "gt")) {

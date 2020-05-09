@@ -40,7 +40,7 @@ if (cms_angemeldet() && cms_r("technik.server.netze")) {
 	$sql->bind_param("ss", $socketip, $inhalt); $sql->execute();
 	$inhalt = "Netze Socket-Port";
 	$sql->bind_param("ss", $socketport, $inhalt); $sql->execute();
-	$inhalt = "Netze Ofizielle Version";
+	$inhalt = "Netze Offizielle Version";
 	$sql->bind_param("ss", $offizielle_version, $inhalt); $sql->execute();
 	$inhalt = "Netze GitHub Benutzer";
 	$sql->bind_param("ss", $github_benutzer, $inhalt); $sql->execute();

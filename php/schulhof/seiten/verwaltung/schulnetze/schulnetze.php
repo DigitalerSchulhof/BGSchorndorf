@@ -52,8 +52,8 @@ if (cms_r("technik.server.netze")) {
 
 	$code .= "<h3>Update</h3>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>Offizielle Version nutzen:</th><td>".cms_generiere_schieber('netze_offizielle_version', $CMS_EINSTELLUNGEN['Netze Ofizielle Version'], '$(\'.cms_netze_github\').toggle()')."</td></tr>";
-	if($CMS_EINSTELLUNGEN['Netze Ofizielle Version'] == 1) {
+	$code .= "<tr><th>Offizielle Version nutzen:</th><td>".cms_generiere_schieber('netze_offizielle_version', $CMS_EINSTELLUNGEN['Netze Offizielle Version'], '$(\'.cms_netze_github\').toggle()')."</td></tr>";
+	if($CMS_EINSTELLUNGEN['Netze Offizielle Version'] == 1) {
 		$github_style = "display: none;";
 	} else {
 		$github_style = "";
