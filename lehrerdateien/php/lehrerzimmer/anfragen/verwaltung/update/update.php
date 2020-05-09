@@ -1,6 +1,7 @@
 <?php
 
 set_time_limit(0);
+ignore_user_abort(true);
 
 include_once("../../lehrerzimmer/funktionen/config.php");
 include_once("../../lehrerzimmer/funktionen/texttrafo.php");

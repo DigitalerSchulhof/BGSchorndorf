@@ -7,6 +7,7 @@ include_once("../../../php/schulhof/funktionen/check.php");
 include_once("../../../php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 
 set_time_limit(0);
+ignore_user_abort(true);
 
 session_start();
 
