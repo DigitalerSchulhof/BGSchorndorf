@@ -6,7 +6,7 @@ if(!isset($keininclude) || $keininclude != true) {
 	include_once("../../schulhof/funktionen/check.php");
 	include_once("../../schulhof/funktionen/generieren.php");
 }
-include_once("../../schulhof/anfragen/website/style/check.php");
+include_once(__DIR__."/../../../../schulhof/anfragen/website/style/check.php");
 if(session_status() == PHP_SESSION_NONE) {
 	session_start();
 }
@@ -86,7 +86,7 @@ for ($i=0; $i<count($anzeige); $i++) {
 }
 
 
-if (cms_angemeldet() && cms_r("website.styleändern")) {
+if ((isset($keininclude) && $keininclude == true) || (cms_angemeldet() && cms_r("website.styleändern"))) {
 	$fehler = false;
 
 	if (!$fehler) {
@@ -129,47 +129,47 @@ if (cms_angemeldet() && cms_r("website.styleändern")) {
 
 		ob_start();
 
-		include_once("../../schulhof/anfragen/website/style/css/fonts.php");
-		include_once("../../schulhof/anfragen/website/style/css/seite.php");
-		include_once("../../schulhof/anfragen/website/style/css/text.php");
-		include_once("../../schulhof/anfragen/website/style/css/navigationen.php");
-		include_once("../../schulhof/anfragen/website/style/css/buttons.php");
-		include_once("../../schulhof/anfragen/website/style/css/reiter.php");
-		include_once("../../schulhof/anfragen/website/style/css/links.php");
-		include_once("../../schulhof/anfragen/website/style/css/meldungen.php");
-		include_once("../../schulhof/anfragen/website/style/css/wechselbilder.php");
-		include_once("../../schulhof/anfragen/website/style/css/formulare.php");
-		include_once("../../schulhof/anfragen/website/style/css/blende.php");
-		include_once("../../schulhof/anfragen/website/style/css/tabellen.php");
-		include_once("../../schulhof/anfragen/website/style/css/spezialfaelle.php");
-		include_once("../../schulhof/anfragen/website/style/css/termine.php");
-		include_once("../../schulhof/anfragen/website/style/css/blogeintraege.php");
-		include_once("../../schulhof/anfragen/website/style/css/icons.php");
-		include_once("../../schulhof/anfragen/website/style/css/dateisystem.php");
-		include_once("../../schulhof/anfragen/website/style/css/hinweise.php");
-		include_once("../../schulhof/anfragen/website/style/css/gruppen.php");
-		include_once("../../schulhof/anfragen/website/style/css/sitemap.php");
-		include_once("../../schulhof/anfragen/website/style/css/seitenwahl.php");
-		include_once("../../schulhof/anfragen/website/style/css/bearbeiten.php");
-		include_once("../../schulhof/anfragen/website/style/css/neuigkeiten.php");
-		include_once("../../schulhof/anfragen/website/style/css/responsive.php");
-		include_once("../../schulhof/anfragen/website/style/css/ladeicon.php");
-		include_once("../../schulhof/anfragen/website/style/css/voranmeldung.php");
-		include_once("../../schulhof/anfragen/website/style/css/contextmenue.php");
-		include_once("../../schulhof/anfragen/website/style/css/galerien.php");
-		include_once("../../schulhof/anfragen/website/style/css/pinnwaende.php");
-		include_once("../../schulhof/anfragen/website/style/css/tagebuch.php");
-		include_once("../../schulhof/anfragen/website/style/css/app.php");
-		include_once("../../schulhof/anfragen/website/style/css/rechtebaum.php");
-		include_once("../../schulhof/anfragen/website/style/css/bedingterechte.php");
-		include_once("../../schulhof/anfragen/website/style/css/buchung.php");
-		include_once("../../schulhof/anfragen/website/style/css/stundenplanung.php");
-		include_once("../../schulhof/anfragen/website/style/css/kalender.php");
-		include_once("../../schulhof/anfragen/website/style/css/website.php");
-		include_once("../../schulhof/anfragen/website/style/css/summernote.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/fonts.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/seite.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/text.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/navigationen.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/buttons.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/reiter.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/links.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/meldungen.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/wechselbilder.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/formulare.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/blende.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/tabellen.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/spezialfaelle.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/termine.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/blogeintraege.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/icons.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/dateisystem.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/hinweise.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/gruppen.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/sitemap.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/seitenwahl.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/bearbeiten.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/neuigkeiten.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/responsive.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/ladeicon.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/voranmeldung.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/contextmenue.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/galerien.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/pinnwaende.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/tagebuch.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/app.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/rechtebaum.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/bedingterechte.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/buchung.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/stundenplanung.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/kalender.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/website.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/summernote.php");
 
-		include_once("../../schulhof/anfragen/website/style/css/fontsdruck.php");
-		include_once("../../schulhof/anfragen/website/style/css/drucken.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/fontsdruck.php");
+		include_once(__DIR__."/../../../../schulhof/anfragen/website/style/css/drucken.php");
 
 		$ob = ob_get_contents();
 		ob_end_clean();

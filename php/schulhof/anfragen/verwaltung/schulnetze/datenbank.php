@@ -6,22 +6,22 @@ include_once("../../schulhof/funktionen/check.php");
 
 session_start();
 // Variablen einlesen, falls übergeben
-if (isset($_POST['base'])) 					{$base = $_POST['base'];} 								else {echo "FEHLER";exit;}
-if (isset($_POST['lehrer'])) 				{$lehrer = $_POST['lehrer'];} 						else {echo "FEHLER";exit;}
-if (isset($_POST['vpn'])) 					{$vpn = $_POST['vpn'];} 									else {echo "FEHLER";exit;}
-if (isset($_POST['hosts'])) 				{$hosts = $_POST['hosts'];} 							else {echo "FEHLER";exit;}
-if (isset($_POST['hostl'])) 				{$hostl = $_POST['hostl'];} 							else {echo "FEHLER";exit;}
-if (isset($_POST['socketip'])) 			{$socketip = $_POST['socketip'];} 				else {echo "FEHLER";exit;}
-if (isset($_POST['socketport'])) 		{$socketport = $_POST['socketport'];} 		else {echo "FEHLER";exit;}
-if (isset($_POST['githubsecret']))	{$githubsecret = $_POST['githubsecret'];} else {echo "FEHLER";exit;}
+postLesen("base", "lehrer", "vpn", "hosts", "hostl", "socketip", "socketport", "offizielle_version");
+$github_benutzer = "";
+$github_repo = "";
+$github_oauth = "";
+postLesen("github_benutzer", "github_repo", "github_oauth", false);
 
-if (strlen($base) == 0) 				{echo "FEHLER";exit;}
-if (strlen($lehrer) == 0) 			{echo "FEHLER";exit;}
-if (!cms_check_toggle($vpn)) 		{echo "FEHLER";exit;}
-if (strlen($hosts) == 0) 				{echo "FEHLER";exit;}
-if (strlen($hostl) == 0) 				{echo "FEHLER";exit;}
-if (strlen($githubsecret) == 0) {echo "FEHLER";exit;}
-
+if (strlen($base) == 0) 										{echo "FEHLER";exit;}
+if (strlen($lehrer) == 0) 									{echo "FEHLER";exit;}
+if (!cms_check_toggle($vpn)) 								{echo "FEHLER";exit;}
+if (strlen($hosts) == 0) 										{echo "FEHLER";exit;}
+if (strlen($hostl) == 0) 										{echo "FEHLER";exit;}
+if (!cms_check_toggle($offizielle_version)) {echo "FEHLER";exit;}
+if($offizielle_version == 0) {
+	if(!strlen($github_benutzer))							{echo "FEHLER";exit;}
+	if(!strlen($github_repo))									{echo "FEHLER";exit;}
+}
 if (cms_angemeldet() && cms_r("technik.server.netze")) {
 	// Übrige Werte in die Datenbank schreiben
 	$dbs = cms_verbinden('s');
@@ -40,8 +40,14 @@ if (cms_angemeldet() && cms_r("technik.server.netze")) {
 	$sql->bind_param("ss", $socketip, $inhalt); $sql->execute();
 	$inhalt = "Netze Socket-Port";
 	$sql->bind_param("ss", $socketport, $inhalt); $sql->execute();
-	$inhalt = "Netze GitHub";
-	$sql->bind_param("ss", $githubsecret, $inhalt); $sql->execute();
+	$inhalt = "Netze Ofizielle Version";
+	$sql->bind_param("ss", $offizielle_version, $inhalt); $sql->execute();
+	$inhalt = "Netze GitHub Benutzer";
+	$sql->bind_param("ss", $github_benutzer, $inhalt); $sql->execute();
+	$inhalt = "Netze GitHub Repository";
+	$sql->bind_param("ss", $github_repo, $inhalt); $sql->execute();
+	$inhalt = "Netze GitHub OAuth";
+	$sql->bind_param("ss", $github_oauth, $inhalt); $sql->execute();
 	cms_trennen($dbs);
 	echo "ERFOLG";
 }

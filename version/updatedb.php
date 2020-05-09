@@ -111,6 +111,7 @@ INSERT INTO master (id, inhalt, wert) VALUES (1, 'Anmelden', '');
 -- 0.8
 
 -- 0.8.2
+
 DROP TABLE ebestellung;
 
 CREATE TABLE `ebestellung` (  `id` bigint(255) UNSIGNED NOT NULL,  `bedarf` tinyint(1) UNSIGNED DEFAULT NULL,  `anrede` varbinary(500) DEFAULT NULL,  `vorname` varbinary(1000) DEFAULT NULL,  `nachname` varbinary(1000) DEFAULT NULL,  `strasse` varbinary(1000) DEFAULT NULL,  `hausnr` varbinary(1000) DEFAULT NULL,  `plz` varbinary(1000) DEFAULT NULL,  `ort` varbinary(1000) DEFAULT NULL,  `telefon` varbinary(500) DEFAULT NULL,  `email` varbinary(500) DEFAULT NULL,  `bedingungen` tinyint(1) UNSIGNED DEFAULT NULL,  `eingegangen` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -120,3 +121,11 @@ ALTER TABLE `ebestellung`  ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFER
 CREATE TABLE `etoken` (  `id` bigint(255) UNSIGNED NOT NULL,  `token` varbinary(5000) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ALTER TABLE `etoken`  ADD PRIMARY KEY (`id`);
 ALTER TABLE `etoken`  ADD CONSTRAINT `etokenperson` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELETE FROM allgemeineeinstellungen WHERE id = 240;
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze Ofizielle Version', '{cms_schluessel}'), AES_ENCRYPT('1', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (241, AES_ENCRYPT('Netze GitHub Benutzer', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (242, AES_ENCRYPT('Netze GitHub Repository', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (243, AES_ENCRYPT('Netze GitHub OAuth', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
+
+-- 0.8.3

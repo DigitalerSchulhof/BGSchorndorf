@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_8_3:
+    version: 0.8.3
+    tag: Donnerstag, den 07. Mai 2020
+    neuerungen:
+      - Fehler in der Mehrfachauswahl behoben.
+      - Umstellung auf die offizielle Seite des Digitalen Schulhofs für den Updater.
   0_8_2:
     version: 0.8.2
     tag: Mittwoch, den 06. Mai 2020

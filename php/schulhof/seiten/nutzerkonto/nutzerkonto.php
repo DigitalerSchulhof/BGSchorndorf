@@ -2,7 +2,11 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {
-	$GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
+	if($CMS_EINSTELLUNGEN["Netze Ofizielle Version"]) {
+		$Updater_base = "https://update.digitaler-schulhof.de";
+	} else {
+		$Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
+	}
 	$basis_verzeichnis = dirname(__FILE__)."/../../../..";
 
 	if(!file_exists("$basis_verzeichnis/version/version")) {
@@ -13,11 +17,11 @@ if(cms_r("technik.server.update")) {
 		// Versionsverlauf von GitHub holen
 		$curl = curl_init();
 		$curlConfig = array(
-			CURLOPT_URL             => "$GitHub_base/releases/latest",
+			CURLOPT_URL             => "$Updater_base/releases/latest",
 			CURLOPT_RETURNTRANSFER  => true,
 			CURLOPT_HTTPHEADER      => array(
 				"Content-Type: application/json",
-				"Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+				"Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
 				"User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
 				"Accept: application/vnd.github.v3+json",
 			)
@@ -40,7 +44,6 @@ if(cms_r("technik.server.update")) {
 }
 
 // Das ist neu
-
 $sql = "INSERT INTO updatenews (person, gesehen) VALUES (?, 1) ON DUPLICATE KEY UPDATE person=person";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("i", $CMS_BENUTZERID);

@@ -7,6 +7,7 @@ include_once("../../../php/schulhof/funktionen/check.php");
 include_once("../../../php/schulhof/anfragen/verwaltung/gruppen/initial.php");
 
 set_time_limit(0);
+ignore_user_abort(true);
 
 session_start();
 
@@ -22,14 +23,17 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
       cms_backup_fehler();
     }
   });
-  $GitHub_base = "https://api.github.com/repos/oxydon/BGSchorndorf";
-  $GitHub_base_at = "https://".$CMS_EINSTELLUNGEN['Netze GitHub'].":@api.github.com/repos/oxydon/BGSchorndorf";
+  if($CMS_EINSTELLUNGEN["Netze Ofizielle Version"]) {
+    $Updater_base = "https://update.digitaler-schulhof.de";
+  } else {
+    $Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
+  }
 
   $base_verzeichnis = realpath(dirname(__FILE__)."/../../../../..");
   $update_verzeichnis = "$base_verzeichnis/update";
   $backup_verzeichnis = "$base_verzeichnis/backup";
   $version = trim(file_get_contents("$base_verzeichnis/version/version"));
-  echo "||";
+  echo "||||||||||||||||";
   flush();
   ob_flush();
 
@@ -44,7 +48,6 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
   // Backup machen
   cms_v_loeschen($backup_verzeichnis);
   mkdir($backup_verzeichnis, $DATEIMODE, true);
-
   file_put_contents("$base_verzeichnis/.htaccess", "RewriteEngine on\nRewriteRule ^status$ - [R=503,L]\nRewriteRule ^(.*)$ aktualisiert.php");
   cms_v_verschieben($base_verzeichnis, $backup_verzeichnis);
   file_put_contents("$backup_verzeichnis/.htaccess", "Deny from all");
@@ -52,11 +55,11 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
   // Versionen prüfen und Daten laden
   $curl = curl_init();
   $curlConfig = array(
-    CURLOPT_URL             => "$GitHub_base/releases/latest",
+    CURLOPT_URL             => "$Updater_base/releases/latest",
     CURLOPT_RETURNTRANSFER  => true,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
       "Accept: application/vnd.github.v3+json",
     )
@@ -71,7 +74,6 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     cms_backup_fehler("decode antwort", error_get_last());
   }
 
-  $assets = $antwort["assets"];
   $tarball = $antwort["tarball_url"];
 
   echo "Update herunterladen<br>";
@@ -95,7 +97,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     CURLOPT_FILE            => $tar_ziel,
     CURLOPT_HTTPHEADER      => array(
       "Content-Type: application/json",
-      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+      "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
       "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
     )
   );
@@ -154,7 +156,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
         $sql .= $zeile;
       } else {
         if(preg_match("/^\\s*--\\s*((?:[0-9]+)(?:\\.[0-9]+)*)\\s*$/", $zeile, $matches) === 1) {
-          if(version_compare($matches[1], $version) === 0) {
+          if(version_compare($matches[1], $version) >= 0) {
             $verreicht = true;
           }
           continue;

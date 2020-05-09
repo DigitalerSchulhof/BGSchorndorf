@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 
-<h1>Willkommen auf dem Schulhof des <?php echo $CMS_WICHTIG['Schulname Genitv'];?>!</h1>
+<h1>Willkommen auf dem Schulhof des <?php echo $CMS_WICHTIG['Schulname Genitiv'];?>!</h1>
 </div>
 
 <div class="cms_spalte_3">

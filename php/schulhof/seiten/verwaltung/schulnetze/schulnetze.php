@@ -52,7 +52,16 @@ if (cms_r("technik.server.netze")) {
 
 	$code .= "<h3>Update</h3>";
 	$code .= "<table class=\"cms_formular\">";
-	$code .= "<tr><th>GitHub-OAuth:</th><td>".cms_generiere_input('cms_netze_github', $CMS_EINSTELLUNGEN['Netze GitHub'])."</td></tr>";
+	$code .= "<tr><th>Offizielle Version nutzen:</th><td>".cms_generiere_schieber('netze_offizielle_version', $CMS_EINSTELLUNGEN['Netze Ofizielle Version'], '$(\'.cms_netze_github\').toggle()')."</td></tr>";
+	if($CMS_EINSTELLUNGEN['Netze Ofizielle Version'] == 1) {
+		$github_style = "display: none;";
+	} else {
+		$github_style = "";
+	}
+	$code .= "<tr class=\"cms_netze_github\" style=\"$github_style\"><td colspan=\"2\"><h4>Eigenen Fork nutzen (GitHub)</h4></td></tr>";
+	$code .= "<tr class=\"cms_netze_github\" style=\"$github_style\"><th>Benutzer:</th><td>".cms_generiere_input('cms_netze_github_benutzer', $CMS_EINSTELLUNGEN['Netze GitHub Benutzer'])."</td></tr>";
+	$code .= "<tr class=\"cms_netze_github\" style=\"$github_style\"><th>Repository:</th><td>".cms_generiere_input('cms_netze_github_repo', $CMS_EINSTELLUNGEN['Netze GitHub Repository'])."</td></tr>";
+	$code .= "<tr class=\"cms_netze_github\" style=\"$github_style\"><th>OAuth:</th><td>".cms_generiere_input('cms_netze_github_oauth', $CMS_EINSTELLUNGEN['Netze GitHub OAuth'])."</td></tr>";
 	$code .= "</table>";
 	$code .= "</div></div>";
 
