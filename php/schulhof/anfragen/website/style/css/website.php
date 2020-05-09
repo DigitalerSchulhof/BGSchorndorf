@@ -544,6 +544,10 @@
 	cursor: pointer;
 }
 
+.cms_beispiel {
+	padding: 0px 10% 0px 10%;
+}
+
 // DUNKEL;
 
 .cms_termine_jahrueberischt_knoepfe_jahr {
