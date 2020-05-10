@@ -208,10 +208,10 @@ if ((isset($keininclude) && $keininclude == true) || (cms_angemeldet() && cms_r(
 		$dunkel 	= "@media (prefers-color-scheme: dark) { $dunkel }";
 		$drucken 	= "@media screen {.cms_druckseite {display: none;}} @media print { $drucken }";
 
-		@mkdir("../../../css");
-		file_put_contents("../../../css/hell.css", 		$hell);
-		file_put_contents("../../../css/dunkel.css", 	$dunkel);
-		file_put_contents("../../../css/drucken.css", $drucken);
+		@mkdir(__DIR__."/../../../../../css");
+		file_put_contents(__DIR__."/../../../../../css/hell.css", 		$hell);
+		file_put_contents(__DIR__."/../../../../../css/dunkel.css", 	$dunkel);
+		file_put_contents(__DIR__."/../../../../../css/drucken.css", 	$drucken);
 
 		echo "ERFOLG";
 	}
