@@ -7,7 +7,6 @@
 <div class="cms_spalte_2"><div class="cms_spalte_i">
   <h3>Verantwortliche Personen</h3>
   <h4>Herausgeber</h4>
-  <p>Verwantwortlich für die Verarbeitung von Daten auf dieser Website ist das Land Baden-Württemberg vertreten durch</p>
   <?php
     echo "<p>".$CMS_WICHTIG['Schulleiter Name']."<br>".$CMS_WICHTIG['Schulname']."<br>";
     echo $CMS_WICHTIG['Schule Straße']."<br>";
