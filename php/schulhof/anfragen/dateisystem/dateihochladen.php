@@ -180,6 +180,9 @@ if (cms_angemeldet() && $zugriff) {
 			$eintrag['vorschau']  = "$anzeigepfad/$dateiname";
 			$eintrag['link']      = "Schulhof/Gruppen/$gruppensj/".cms_textzulink($g)."/$gruppenbez";
 
+			$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
+	    $CMS_MAIL = cms_einstellungen_laden('maileinstellungen');
+
 			cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 		}
 		if (($skalieren == 1) && (!$skaliert)) {echo "UNSKALIERT";}

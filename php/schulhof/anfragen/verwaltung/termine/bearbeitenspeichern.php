@@ -225,8 +225,12 @@ if (cms_angemeldet() && $zugriff) {
     $eintrag['titel']     = $bezeichnung;
     $eintrag['vorschau']  = cms_tagname(date('w', $BEGINN))." $tag. ".$monatsname." $jahr";
     $eintrag['link']      = "Schulhof/Termine/$jahr/$monatsname/$tag/".cms_textzulink($bezeichnung);
-    if($notifikationen)
+    if($notifikationen) {
+    	$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
+    	$CMS_MAIL = cms_einstellungen_laden('maileinstellungen');
+
       cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
+    }
 
 		echo "ERFOLG";
 	}
