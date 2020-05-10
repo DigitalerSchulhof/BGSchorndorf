@@ -15,7 +15,7 @@ if (cms_r("schulhof.planung.räume.*")) {
 		// Alle Rollen ausgeben
 		$dbs = cms_verbinden('s');
 
-		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, verfuegbar, buchbar, externverwaltbar FROM raeume) AS raeume ORDER BY bezeichnung ASC");
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, verfuegbar, buchbar, externverwaltbar FROM raeume) AS raeume ORDER BY id ASC");
 
 		$RAEUME = array();
 		$ausgabe = "";

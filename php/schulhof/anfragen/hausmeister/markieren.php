@@ -72,6 +72,10 @@ if (cms_angemeldet() && cms_r("schulhof.technik.hausmeisteraufträge.markieren")
 		$eintrag['titel']     = $titel;
 		$eintrag['vorschau']  = "";
 		$eintrag['link']      = "";
+
+		$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
+		$CMS_MAIL = cms_einstellungen_laden('maileinstellungen');
+		
 		cms_notifikation_senden($dbs, $eintrag, "");
 		echo "ERFOLG";
 	}

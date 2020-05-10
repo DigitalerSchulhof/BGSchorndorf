@@ -67,7 +67,7 @@ else {
 
 		// Zugeordnete Personen suchen
 		$zugeordnethidden = "";
-		$sql = "SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen JOIN schuelereltern ON personen.id = $join WHERE $where";
+		$sql = "SELECT id FROM personen JOIN schuelereltern ON personen.id = $join WHERE $where";
 		$sql = $dbs->prepare($sql);
 		$sql->bind_param("i", $id);
 		if ($sql->execute()) {

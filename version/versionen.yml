@@ -1,5 +1,13 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_8_6:
+    version: 0.8.6
+    tag: Sonntag, den 10. Mai 2020
+    neuerungen:
+      - Ausgabefehler bei der Verknüpfung von Schülern und Eltern behoben.
+      - Vereinheitlichung der Knöpfe bei Weiterleitungen.
+      - Neues Recht, das verbotenen Programmcode für ausgewählte Personen im Schulhof ermöglicht.
+      - Behebung des Bugs, dass bei neuen Einträgen keine Mails mehr versendet werden.
   0_8_5:
     version: 0.8.5
     tag: Samstag, den 09. Mai 2020

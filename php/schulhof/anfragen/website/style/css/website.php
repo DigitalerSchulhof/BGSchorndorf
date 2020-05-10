@@ -545,7 +545,7 @@
 }
 
 .cms_beispiel {
-	padding: 0px 10% 0px 10%;
+	padding: @haupt_absatzschulhof 10% @haupt_absatzschulhof 10%;
 }
 
 // DUNKEL;

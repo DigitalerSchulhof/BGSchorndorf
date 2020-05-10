@@ -90,6 +90,10 @@ if (cms_angemeldet() && $zugriff) {
 		$eintrag['titel']     = $bezeichnung;
 		$eintrag['vorschau']  = cms_tagname(date('w', $BEGINN))." $tag. ".$monatsname." $jahr";
 		$eintrag['link']      = $link;
+
+  	$CMS_WICHTIG = cms_einstellungen_laden('wichtigeeinstellungen');
+  	$CMS_MAIL = cms_einstellungen_laden('maileinstellungen');
+		
 		cms_notifikation_senden($dbs, $eintrag, $CMS_BENUTZERID);
 		echo "ERFOLG";
 	}

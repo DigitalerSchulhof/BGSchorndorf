@@ -14,7 +14,7 @@ if (cms_r("website.weiterleiten")) {
   $c = 0;
   while($sql->fetch()) {
     $c++; // Ne PHP :)
-    echo "<tr><td>$von</td><td><img src='res/icons/klein/springen.png'></td><td>$zu</td><td><span class=\"cms_aktion_klein\" onclick=\"cms_weiterleitung_bearbeiten_vorbereiten($id);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> <span class=\"cms_aktion_klein\" onclick=\"cms_weiterleitung_loeschen($id);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span></td></tr>";
+    echo "<tr><td>$von</td><td><img src='res/icons/klein/springen.png'></td><td>$zu</td><td><span class=\"cms_aktion_klein\" onclick=\"cms_weiterleitung_bearbeiten_vorbereiten($id);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> <span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_weiterleitung_loeschen($id);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span></td></tr>";
   }
   if(!$c) {
     echo "<tr><td colspan='3' class=\"cms_notiz\">Keine Weiterleitungen eingerichtet</td></tr>";
