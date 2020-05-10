@@ -134,8 +134,9 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					$ausgabe .= "</td>";
 					// Aktionen anfügen
 					$ausgabe .= "<td>";
-					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\"><span class=\"cms_hinweis\">Nachricht schreiben</span><img src=\"res/icons/klein/nachricht.png\"></span> ";
-
+					if(!is_null($pnutzer)) {
+						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $pid)\"><span class=\"cms_hinweis\">Nachricht schreiben</span><img src=\"res/icons/klein/nachricht.png\"></span> ";
+					}
 					if (cms_r("schulhof.verwaltung.personen.daten")) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_verwaltung_details_vorbreiten('$vorzeigename', $pid, 'Details')\"><span class=\"cms_hinweis\">Details</span><img src=\"res/icons/klein/details.png\"></span> ";
 					}
