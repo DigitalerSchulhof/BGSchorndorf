@@ -252,7 +252,7 @@ function cms_personensuche_mail(id) {
         if (personenart == 'e') {personenbez = 'Eltern'; personenicon = 'elter.png';}
         if (personenart == 'v') {personenbez = 'Verwaltungsangestellte'; personenicon = 'verwaltung.png';}
         if (personenart == 'x') {personenbez = 'Externe'; personenicon = 'extern.png';}
-        ausgabe += "<span class=\"cms_button\" onclick=\"cms_personensuche_mail_wahl('"+id+"', '"+personenid+"', '"+personenart+"', '"+personenname+"');\"><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">"+personenbez+"</span><img src=\"res/icons/klein/"+personenicon+"\"></span> "+personenname+"</span>";
+        ausgabe += "<span class=\"cms_button\" onclick=\"cms_personensuche_mail_wahl('"+id+"', '"+personenid+"', '"+personenart+"', '"+personenname+"');\"><span class=\"cms_icon_klein_o\"><span class=\"cms_hinweis\">"+personenbez+"</span><img src=\"res/icons/klein/"+personenicon+"\"></span> "+personenname+"</span> ";
       }
       meldung.style.textAlign = 'left';
       meldung.innerHTML = ausgabe;

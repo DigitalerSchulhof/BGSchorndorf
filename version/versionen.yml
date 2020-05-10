@@ -17,7 +17,7 @@ version:
     version: 0.8.4
     tag: Samstag, den 09. Mai 2020
     neuerungen:
-      - Bug bei den Einstellungen der Schulnetze behoben
+      - Bug bei den Einstellungen der Schulnetze behoben.
   0_8_3:
     version: 0.8.3
     tag: Donnerstag, den 07. Mai 2020
