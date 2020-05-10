@@ -5,6 +5,7 @@ version:
     tag: x
     neuerungen:
       - Ausgabefehler bei der Verknüpfung von Schülern und Eltern behoben.
+      - Vereinheitlichung der Knöpfe bei Weiterleitungen.
   0_8_5:
     version: 0.8.5
     tag: Samstag, den 09. Mai 2020
