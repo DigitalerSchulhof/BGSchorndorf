@@ -2,7 +2,7 @@
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
 	// ToDo laden
-	$bez = $CMS_URL[3];
+	$bez = $CMS_URL[2];
 	$bez = cms_linkzutext($bez);
 	$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ? AND bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
 	$sql = $dbs->prepare($sql);
@@ -14,11 +14,10 @@
 ?>
 <h1><?php echo $bezeichnung;?></h1>
 <?php
-	echo $beschreibung;
 	if(strlen($beschreibung)) {
 		echo "<p>$beschreibung</p>";
 	} else {
-		echo "<p class=\"cms_notiz\">Keine Beschreibung angegeben</p>";
+		echo "<p class=\"cms_notiz\">Keine Beschreibung angegeben.</p>";
 	}
 ?>
 

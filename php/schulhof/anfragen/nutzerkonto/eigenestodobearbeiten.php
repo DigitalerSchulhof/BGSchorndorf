@@ -13,7 +13,8 @@ if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];}
 if (!cms_check_ganzzahl($CMS_BENUTZERID, 0)) {echo "FEHLER";exit;}
 if (!cms_check_ganzzahl($id, 0) && $id != '-') {echo "FEHLER";exit;}
 if(!cms_check_titel($bezeichnung)) {echo "FEHLER"; exit;}
-$beschreibung = cms_texttrafo_e_db($beschreibung);
+if($bezeichnung == "Neu") {echo "FEHLER";exit;}
+$beschreibung = cms_texttrafo_e_db_ohnetag($beschreibung);
 
 if (cms_angemeldet()) {
   $dbs = cms_verbinden('s');

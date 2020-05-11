@@ -138,24 +138,26 @@ ALTER TABLE `todo` ADD CONSTRAINT `todopersonpersonen` FOREIGN KEY (`person`) RE
 	foreach($CMS_GRUPPEN as $g) {
 		$gk = cms_textzudb($g);
 		echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD `id` BIGINT(255) UNSIGNED NOT NULL FIRST;";
-		echo "SET @n = 0; UPDATE {$gk}todoartikel SET id = (@n := @n + 1);";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD PRIMARY KEY( `id`);";
-		
-		echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelblogblogeintrag`;";
-		echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelpersonpersonen`;";
-		echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikeltermintermin`;";
-
-		echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelpersonpersonen`;";
-		echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelblogblogeintrag`;";
-		echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikeltermintermin`;";
-		echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelindex`;";
-
-		echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `{$gk}blogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `{$gk}termineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-
-		echo "ALTER TABLE `{$gk}todoartikel` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `termin`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;";
+		echo "ALTER TABLE `{$gk}todoartikel` ADD `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL AFTER `termin`;";
+		echo "ALTER TABLE `{$gk}todoartikel` ADD `beschreibung` BLOB NULL DEFAULT NULL AFTER `beschreibung`;";
+		// echo "ALTER TABLE `{$gk}todoartikel` ADD `id` BIGINT(255) UNSIGNED NOT NULL FIRST;";
+		// echo "SET @n = 0; UPDATE {$gk}todoartikel SET id = (@n := @n + 1);";
+		// echo "ALTER TABLE `{$gk}todoartikel` ADD PRIMARY KEY( `id`);";
+		//
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelblogblogeintrag`;";
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelpersonpersonen`;";
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikeltermintermin`;";
+		//
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelpersonpersonen`;";
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelblogblogeintrag`;";
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikeltermintermin`;";
+		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelindex`;";
+		//
+		// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+		// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `{$gk}blogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+		// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `{$gk}termineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+		//
+		// echo "ALTER TABLE `{$gk}todoartikel` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `termin`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;";
 	}
 ?>
 
