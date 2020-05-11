@@ -139,7 +139,7 @@ ALTER TABLE `todo` ADD CONSTRAINT `todopersonpersonen` FOREIGN KEY (`person`) RE
 		$gk = cms_textzudb($g);
 		echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
 		echo "ALTER TABLE `{$gk}todoartikel` ADD `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL AFTER `termin`;";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD `beschreibung` BLOB NULL DEFAULT NULL AFTER `beschreibung`;";
+		echo "ALTER TABLE `{$gk}todoartikel` ADD `beschreibung` BLOB NULL DEFAULT NULL AFTER `bezeichnung`;";
 		// echo "ALTER TABLE `{$gk}todoartikel` ADD `id` BIGINT(255) UNSIGNED NOT NULL FIRST;";
 		// echo "SET @n = 0; UPDATE {$gk}todoartikel SET id = (@n := @n + 1);";
 		// echo "ALTER TABLE `{$gk}todoartikel` ADD PRIMARY KEY( `id`);";
@@ -160,5 +160,6 @@ ALTER TABLE `todo` ADD CONSTRAINT `todopersonpersonen` FOREIGN KEY (`person`) RE
 		// echo "ALTER TABLE `{$gk}todoartikel` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `termin`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;";
 	}
 ?>
+
 
 -- 0.9
