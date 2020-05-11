@@ -292,6 +292,10 @@
 	margin-top: 40px;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
 // DUNKEL;
 
 #cms_dsgvo_datenschutz .cms_meldung {

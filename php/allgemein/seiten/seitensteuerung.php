@@ -378,6 +378,21 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Masterelemente_bearbeiten']                   = 'php/schulhof/seiten/website/master/bearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Website/Style_ändern']                                = 'php/schulhof/seiten/website/style/styleaendern.php';
 
+  if (preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)) {
+    $CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                 = 'php/schulhof/seiten/nutzerkonto/todo/ansehen.php';
+  }
+  if (preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/Bearbeiten$/", $CMS_URLGANZ)) {
+    $CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                 = 'php/schulhof/seiten/nutzerkonto/todo/bearbeiten.php';
+  }
+  if(preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)
+   || preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)) {
+     $CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                 = 'php/schulhof/seiten/nutzerkonto/todo/bearbeiten.php';
+   }
+
+  // Wichtig, /Neu -> drunter
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/ToDo']                                                = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/ToDo/Neu']                                            = 'php/schulhof/seiten/nutzerkonto/todo/neu.php';
+
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Fehler/404']                                          = 'php/schulhof/seiten/fehler/404.php';

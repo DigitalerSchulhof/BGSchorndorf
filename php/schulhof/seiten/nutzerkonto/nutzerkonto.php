@@ -397,8 +397,8 @@ if ($genehmigungenda) {$neuigkeiten .= $genehmigungen;}
 
 
 // Favoriten ausgeben
-$favoriten = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/favoriten.png\"></span>";
-$favoriten .= "<span class=\"cms_neuigkeit_inhalt\"><h4>Favoriten</h4>";
+$favoriten = "<li class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img class=\"pointer\" src=\"res/icons/gross/favoriten.png\" onclick=\"cms_link('Schulhof/Nutzerkonto/Favoriten')\"></span>";
+$favoriten .= "<span class=\"cms_neuigkeit_inhalt\"><a href=\"Schulhof/Nutzerkonto/Favoriten\"><h4>Favoriten</h4></a>";
 $favoritenda = false;
 $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(url, '$CMS_SCHLUESSEL'), AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung FROM favoritseiten WHERE person = ?) AS x ORDER BY id");
 $sql->bind_param("i", $CMS_BENUTZERID);
@@ -414,21 +414,26 @@ if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 
-$todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/todo.png\"></span>";
-$todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
-$todob = "";
-$todot = "";
+$todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img class=\"pointer\" src=\"res/icons/gross/todo.png\" onclick=\"cms_link('Schulhof/ToDo')\"></span>";
+$todo .= "<span class=\"cms_neuigkeit_inhalt\"><a href=\"Schulhof/ToDo\"><h4>ToDo</h4></a>";
+$todob = "";	// blog
+$todot = "";	// termine
+$todoe = "";	// eigene
 $tododa = false;
 $sql = "";
 foreach($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
-	$sql .= "(SELECT 'b', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
-	$sql .= "(SELECT 't', IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 'b', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 't', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
 }
 $sql = substr($sql, 0, -6);
 $sql = $dbs->prepare($sql);
+// t termin
+// s schuljahr
+// g gruppe
+// a artikel
 if ($sql->execute()) {
-	$sql->bind_result($a, $sbez, $g, $gbez, $abez, $adat);
+	$sql->bind_result($a, $tbez, $tbes, $sbez, $g, $gbez, $abez, $adat);
 	while ($sql->fetch()) {
 		$tododa = true;
 		$sbez = cms_textzulink($sbez);
@@ -436,31 +441,64 @@ if ($sql->execute()) {
 		$jahr = date('Y', $adat);
 		$tag = date('d', $adat);
 
+		if(!strlen($tbez)) {
+			$tbez = $abez;
+		}
 
 		if($a == "b") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todob .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
+			$todob .= "<p><a href=\"$link\">($g » $gbez) $tbez</a></p>";
+			if(strlen($tbes)) {
+				$todob .= "<p class=\"cms_notiz\">$tbes</p>";
+			}
 		}
 		if($a == "t") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todot .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
+			$todot .= "<p><a href=\"$link\">($g » $gbez) $tbez</a></p>";
+			if(strlen($tbes)) {
+				$todot .= "<p class=\"cms_notiz\">$tbes</p>";
+			}
 		}
-	}
-	$ueberschr = strlen($todob) > 0 && strlen($todot) > 0;
-	if(strlen($todob)) {
-		if($ueberschr) {
-			$todo .= "<h6>Blogeinträge:</h6>";
-		}
-		$todo .= $todob;
-	}
-	if(strlen($todot)) {
-		if($ueberschr) {
-			$todo .= "<h6>Termine:</h6>";
-		}
-		$todo .= $todot;
 	}
 }
 $sql->close();
+// Eigene ToDo's
+$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ?";
+$sql = $dbs->prepare($sql);
+$sql->bind_param("i", $CMS_BENUTZERID);
+$sql->bind_result($bezeichnung, $beschreibung);
+$sql->execute();
+while($sql->fetch()) {
+	$todoe .= "<p><a href=\"Schulhof/ToDo/".cms_textzulink($bezeichnung)."\">$bezeichnung</a></p>";
+	if(strlen($beschreibung)) {
+		$todoe .= "<p class=\"cms_notiz\">$beschreibung</p>";
+	}
+	$tododa = true;
+}
+
+$ges = 0;
+$ges += +(strlen($todob) > 0);
+$ges += +(strlen($todot) > 0);
+$ges += +(strlen($todoe) > 0);
+$ueberschr = $ges > 1;
+if(strlen($todob)) {
+	if($ueberschr) {
+		$todo .= "<h6>Blogeinträge:</h6>";
+	}
+	$todo .= $todob;
+}
+if(strlen($todot)) {
+	if($ueberschr) {
+		$todo .= "<h6>Termine:</h6>";
+	}
+	$todo .= $todot;
+}
+if(strlen($todoe)) {
+	if($ueberschr) {
+		$todo .= "<h6>Eigene ToDo's:</h6>";
+	}
+	$todo .= $todoe;
+}
 
 $todo .= "</span></li></ul>";
 
