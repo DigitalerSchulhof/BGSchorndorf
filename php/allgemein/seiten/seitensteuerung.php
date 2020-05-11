@@ -390,7 +390,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
    }
 
   // Wichtig, /Neu -> drunter
-  $CMS_VERFUEGBARE_SEITEN['Schulhof/ToDo']                                                = 'php/schulhof/seiten/nutzerkonto/todo/uebersicht.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/ToDo']                                                = 'php/schulhof/seiten/nutzerkonto/nutzerkonto.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/ToDo/Neu']                                            = 'php/schulhof/seiten/nutzerkonto/todo/neu.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Chatmeldungen']                              = 'php/schulhof/seiten/verwaltung/chatmeldungen/liste.php';
