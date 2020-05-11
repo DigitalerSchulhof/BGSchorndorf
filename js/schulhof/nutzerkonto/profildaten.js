@@ -405,6 +405,78 @@ function cms_seite_todo(gruppe, gruppenid, art, artikelid) {
 	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
 }
 
+function cms_eigenes_todo_speichern() {
+	var bezeichnung = document.getElementById('cms_todo_bezeichnung').value;
+	var beschreibung = document.getElementById('cms_todo_beschreibung').value;
+	var id = document.getElementById('cms_todo_id').value;
+
+	if(id == "-") {
+		var meldung = '<p>Das ToDo konnte nicht erstellt werden, denn ...</p><ul>';
+	} else {
+		var meldung = '<p>Das ToDo konnte nicht bearbeitet werden, denn ...</p><ul>';
+	}
+	var fehler = false;
+
+	if(!cms_check_titel(bezeichnung)) {
+		meldung += '<li>die Eingabe für die Bezeichnung ist ungültig.</li>';
+		fehler = true;
+	}
+
+	if (fehler) {
+		if(id == "-") {
+			cms_meldung_an('fehler', 'ToDo hinzufügen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		} else {
+			cms_meldung_an('fehler', 'ToDo bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+		}
+	} else {
+		var formulardaten = new FormData();
+		formulardaten.append("anfragenziel", '401');
+		formulardaten.append("beschreibung", 	beschreibung);
+		formulardaten.append("bezeichnung", 	bezeichnung);
+		formulardaten.append("id",     				id);
+
+		if(id == "-") {
+			cms_laden_an('ToDo hinzufügen', 'Das eigene ToDo wird angelegt.');
+		} else {
+			cms_laden_an('ToDo bearbeiten', 'Das eigene ToDo wird bearbeitet.');
+		}
+
+		function anfragennachbehandlung(rueckgabe) {
+			if(rueckgabe == "DOPPELT") {
+				if(id == "-") {
+					cms_meldung_an('fehler', 'ToDo hinzufügen', '<p>Ein eigenes ToDo mit der Bezeichnung existiert bereits.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				} else {
+					cms_meldung_an('fehler', 'ToDo bearbeiten', '<p>Ein eigenes ToDo mit der Bezeichnung existiert bereits.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+				}
+			} else if(rueckgabe == "ERFOLG") {
+				if(id == "-") {
+					cms_meldung_an('erfolg', 'ToDo hinzufügen', '<p>Das ToDo wurde hinzugefügt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto\');">OK</span></p>');
+				} else {
+					cms_meldung_an('erfolg', 'ToDo bearbeiten', '<p>Die Änderugnen wurden übernommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto\');">OK</span></p>');
+				}
+			} else {cms_fehlerbehandlung(rueckgabe);}
+		}
+
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	}
+}
+
+function cms_eigenes_todo_loeschen(id) {
+	var formulardaten = new FormData();
+	formulardaten.append("anfragenziel", '402');
+	formulardaten.append("id",     				id);
+
+	cms_laden_an('ToDo erledigen', 'Das eigene ToDo wird erledigt.');
+
+	function anfragennachbehandlung(rueckgabe) {
+		if(rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Nutzerkonto");
+		} else {cms_fehlerbehandlung(rueckgabe);}
+
+	}
+	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+}
+
 function cms_favorit_benennen(fid) {
 	cms_laden_an('Favorit umbenennen', 'Der Favorit wird umbenannt.');
 	var name = document.getElementById('cms_favoriten_bezeichnung_'+fid).value;

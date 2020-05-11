@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9:
+    version: 0.9
+    tag: Montag, den 11. Mai 2020
+    neuerungen:
+      - Über den ToDo-Knopf auf »Nutzerkonto« können eigene ToDo's angelegt werden.
+      - Auf der ToDo-Übersicht können an als ToDo markierte Blogeinträge und Termine Notizen angehängt werden.
   0_8_6:
     version: 0.8.6
     tag: Sonntag, den 10. Mai 2020

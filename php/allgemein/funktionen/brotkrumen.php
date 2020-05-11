@@ -1,7 +1,8 @@
 <?php
 function cms_brotkrumen($url, $aktionen = true) {
-	global $CMS_SEITENDETAILS, $CMS_GRUPPEN, $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_LINKMUSTER, $CMS_URLGANZ;
+	global $CMS_SEITENDETAILS, $CMS_GRUPPEN, $CMS_BENUTZERID, $CMS_SCHLUESSEL, $CMS_LINKMUSTER;
 
+	$urlganz = implode('/', $url);
 	$code = "";
 	$link = "";
 	if ($url[0] == "Website") {
@@ -100,8 +101,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 		$CMS_MONATELINK = "(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)";
 		if (cms_angemeldet() &&
 		(
-			preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)		||
-			preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)
+			preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)		||
+			preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)
 		) && count($url) == 10) {
 			$dbs = cms_verbinden("s");
 			$schuljahr = cms_linkzutext($url[2]);
@@ -138,7 +139,7 @@ function cms_brotkrumen($url, $aktionen = true) {
 			$artikelid;
 
 			if(!$fehler) {
-				if(preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)) {
+				if(preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)) {
 					// Blogeintrag prüfen
 					$art = 'b';
 					$blogquery = "= ?";
@@ -169,7 +170,7 @@ function cms_brotkrumen($url, $aktionen = true) {
 					}
 					$fehler |= !$gefunden;
 
-				} else if(preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)) {
+				} else if(preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)) {
 					// Termin prüfen
 					$art = 't';
 					$terminquery = "= ?";
@@ -228,17 +229,38 @@ function cms_brotkrumen($url, $aktionen = true) {
 				$todo = "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">$text</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_seite_todo('$g', '$gruppenid', '$art', '$artikelid')\" src=\"$icon\"><input type=\"hidden\" value=\"$todowert\" name=\"cms_seite_todo\" id=\"cms_seite_todo\"></span>";
 				$code .= $todo;
 			}
+		} else if(preg_match("/^Schulhof\/Nutzerkonto$/", $urlganz)) {
+			$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo anlegen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/Neu')\" src=\"res/icons/klein/todo_neu.png\"></span>";
+		} else if(preg_match("/^Schulhof\/ToDo\/Ansehen\/$CMS_LINKMUSTER$/", $urlganz)) {
+			$bez = $url[3];
+			$bez = cms_linkzutext($bez);
+			$sql = "SELECT id FROM todo WHERE person = ? AND bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $CMS_BENUTZERID, $bez);
+			$sql->bind_result($id);
+			if($sql->execute() && $sql->fetch()) {
+				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/Bearbeiten/{$url[3]}')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+			}
+		} else if(preg_match("/^Schulhof\/ToDo\/Bearbeiten\/$CMS_LINKMUSTER$/", $urlganz)) {
+			$bez = $url[3];
+			$bez = cms_linkzutext($bez);
+			$sql = "SELECT id FROM todo WHERE person = ? AND bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
+			$sql = $dbs->prepare($sql);
+			$sql->bind_param("is", $CMS_BENUTZERID, $bez);
+			$sql->bind_result($id);
+			if($sql->execute() && $sql->fetch()) {
+				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_eigenes_todo_loeschen($id)\" src=\"res/icons/klein/todo_erledigen.png\"></span>";
+			}
 		}
-
 		// Weiterleitung einrichten
 		if(cms_r("website.weiterleiten")) {
 			$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Neue Weiterleitung</span><img onclick=\"cms_neue_weiterleitung('/".join('/', $url)."')\" src=\"res/icons/klein/weiterleiten.png\"></span>";
 		}
 
-		if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER/", $CMS_URLGANZ) ||
-				preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ) ||
+		if (preg_match("/^Schulhof\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{1,2}\/$CMS_LINKMUSTER$/", $urlganz) ||
+				preg_match("/^Schulhof\/Gruppen\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz) ||
 
-				preg_match("/^Website\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $CMS_URLGANZ)
+				preg_match("/^Website\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)
 			) {
 				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Seite Drucken</span><img onclick=\"cms_drucken('Drucken/".join('/', $url)."')\" src=\"res/icons/klein/drucken.png\"></span>";
 		}

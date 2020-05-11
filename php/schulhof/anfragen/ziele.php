@@ -401,4 +401,6 @@ $CMS_ZIELE[397] = '';
 $CMS_ZIELE[398] = '';
 $CMS_ZIELE[399] = '';
 $CMS_ZIELE[400] = 'php/schulhof/anfragen/nutzerkonto/postfach/multiselect_loeschen.php';
+$CMS_ZIELE[401] = 'php/schulhof/anfragen/nutzerkonto/eigenestodo.php';
+$CMS_ZIELE[402] = 'php/schulhof/anfragen/nutzerkonto/eigenestodoloeschen.php';
 ?>

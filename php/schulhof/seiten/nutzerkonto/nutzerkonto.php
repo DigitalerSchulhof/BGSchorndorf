@@ -418,6 +418,7 @@ $todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" clas
 $todo .= "<span class=\"cms_neuigkeit_inhalt\"><h4>ToDo</h4>";
 $todob = "";
 $todot = "";
+$todoe = "";
 $tododa = false;
 $sql = "";
 foreach($CMS_GRUPPEN as $g) {
@@ -446,21 +447,45 @@ if ($sql->execute()) {
 			$todot .= "<p><a href=\"$link\">($g » $gbez) $abez</a></p>";
 		}
 	}
-	$ueberschr = strlen($todob) > 0 && strlen($todot) > 0;
-	if(strlen($todob)) {
-		if($ueberschr) {
-			$todo .= "<h6>Blogeinträge:</h6>";
-		}
-		$todo .= $todob;
-	}
-	if(strlen($todot)) {
-		if($ueberschr) {
-			$todo .= "<h6>Termine:</h6>";
-		}
-		$todo .= $todot;
-	}
 }
 $sql->close();
+// Eigene ToDo's
+$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ?";
+$sql = $dbs->prepare($sql);
+$sql->bind_param("i", $CMS_BENUTZERID);
+$sql->bind_result($bezeichnung, $beschreibung);
+$sql->execute();
+while($sql->fetch()) {
+	$todoe .= "<p><a href=\"Schulhof/ToDo/Ansehen/".cms_textzulink($bezeichnung)."\">$bezeichnung</a></p>";
+	if(strlen($beschreibung)) {
+		$todoe .= "<p class=\"cms_notiz\">$beschreibung</p>";
+	}
+	$tododa = true;
+}
+
+$ges = 0;
+$ges += +(strlen($todob) > 0);
+$ges += +(strlen($todot) > 0);
+$ges += +(strlen($todoe) > 0);
+$ueberschr = $ges > 1;
+if(strlen($todob)) {
+	if($ueberschr) {
+		$todo .= "<h6>Blogeinträge:</h6>";
+	}
+	$todo .= $todob;
+}
+if(strlen($todot)) {
+	if($ueberschr) {
+		$todo .= "<h6>Termine:</h6>";
+	}
+	$todo .= $todot;
+}
+if(strlen($todoe)) {
+	if($ueberschr) {
+		$todo .= "<h6>Eigene ToDo's:</h6>";
+	}
+	$todo .= $todoe;
+}
 
 $todo .= "</span></li></ul>";
 
