@@ -296,6 +296,13 @@
 	cursor: pointer;
 }
 
+#cms_wiki {
+	position: fixed;
+	bottom: 26px;
+	right: 10px;
+	z-index: 100;
+}
+
 // DUNKEL;
 
 #cms_dsgvo_datenschutz .cms_meldung {

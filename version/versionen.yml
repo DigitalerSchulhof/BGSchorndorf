@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9_1:
+    version: 0.9.1
+    tag: Mittwoch, den 13. Mai 2020
+    neuerungen:
+      - Fehler behoben, dass bei Terminen mit Schreibrechten keine ToDo's angezeigt wurden.
   0_9:
     version: 0.9
     tag: Montag, den 11. Mai 2020

@@ -305,11 +305,11 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 				$sql = "SELECT * FROM (SELECT AES_DECRYPT(p.art, '$CMS_SCHLUESSEL') as a, COUNT(*) as c FROM {$gk}todoartikel as t JOIN personen as p ON p.id = t.person WHERE t.termin = ? GROUP BY a) as x WHERE x.c > 0 ORDER BY FIELD(a, 's', 'l', 'e', 'v', 'x')";
 				$sql = $dbs->prepare($sql);
 				$sql->bind_param("i", $termin['id']);
-				$sql->bind_result($art, $count);
+				$sql->bind_result($tart, $count);
 				$sql->execute();
 				while ($sql->fetch()) {
 					$numeri = array();
-					switch($art) {
+					switch($tart) {
 						case 's':
 							$numeri[] = "Schüler";
 							$numeri[] = "Schüler";
@@ -391,6 +391,9 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 
 		if ((count($downloads) > 0) || (strlen($todoinfo) > 0) || (strlen($aktionen) > 0)) {
 			$code .= "<div class=\"cms_spalte_4\"><div class=\"cms_spalte_i\">";
+			if(strlen($todoinfo) > 0) {
+				$code .= "ToDo: $todoinfo";
+			}
 			if (count($downloads) > 0) {
 				$code .= "<h3>Zugehörige Downloads</h3>";
 				if ($art == 'oe') {foreach ($downloads as $d) {$code .= cms_schulhof_download_ausgeben($d);}}
@@ -400,9 +403,6 @@ function cms_termindetailansicht_ausgeben($dbs, $gruppenid = "-") {
 						$code .= cms_schulhof_interndownload_ausgeben($d);
 					}
 				}
-			}
-			if(strlen($todoinfo) > 0) {
-				$code .= "ToDo: $todoinfo";
 			}
 			if (strlen($aktionen) > 0) {
 				$code .= "<h3>Aktionen</h3><p>".$aktionen."</p>";

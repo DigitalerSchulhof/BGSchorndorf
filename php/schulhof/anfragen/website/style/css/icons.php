@@ -264,7 +264,8 @@
 	top: 10px;
 }
 
-img[src^=res/icons/klein] {
+img[src^="res/icons/klein"],
+img[src^="res/icons/gross"] {
 	image-rendering: pixelated;
 }
 
