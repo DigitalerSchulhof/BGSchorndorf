@@ -175,7 +175,7 @@ if (cms_angemeldet() && $zugriff) {
     foreach ($downloads as $d) {
       $d['titel'] = cms_texttrafo_e_db($d['titel']);
       $d['beschreibung'] = cms_texttrafo_e_db($d['beschreibung']);
-      $did = cms_generiere_kleinste_id('terminedownloads');
+      $did = cms_generiere_kleinste_id($gk.'termineinterndownloads');
       $sql->bind_param("isssiii", $terminid, $d['pfad'], $d['titel'], $d['beschreibung'], $d['dateiname'], $d['dateigroesse'], $did);
       $sql->execute();
     }
