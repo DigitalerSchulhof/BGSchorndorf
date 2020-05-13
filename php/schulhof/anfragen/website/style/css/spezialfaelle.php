@@ -263,7 +263,7 @@
 
 .cms_blockwahl {
 	padding: 10px;
-	width: 50%;
+	width: 33%;
 	transition: 250ms ease-in-out;
 	position: relative;
 }
@@ -294,6 +294,13 @@
 
 .pointer {
 	cursor: pointer;
+}
+
+#cms_wiki {
+	position: fixed;
+	bottom: 26px;
+	right: 10px;
+	z-index: 100;
 }
 
 // DUNKEL;

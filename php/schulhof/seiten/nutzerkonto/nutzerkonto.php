@@ -85,12 +85,11 @@ if ($sql->execute()) {
 $sql->close();
 
 
-$bestellende = mktime (23, 59, 59, 5, 31, 2020);
+$bestellende = mktime (23, 59, 59, 7, 31, 2020);
 if ((!$ausgefuellt) && (time() <= $bestellende)) {
 	$meldung = "<h4>Bestellung / Leihe für Notebooks oder Tablets</h4>";
-	$meldung .= "<p>Die Suche nach einem preiswerten Händler für gute Geräte mit kurzen Lieferzeiten gestaltete sich schwieriger als erwartet. Aufgrund von leeren Lagerbeständen mussten neue Angebote eingeholt werden, was den Bestellprozess verzögert hat. Nun haben sich aber gute Angebote ergeben, die auch einige Vorteile mit sich bringen: Shop, Lieferung, Zahlungsart und -abwicklung übernimmt der Händler selbst. Damit sind längere Zahlungsfristen und sogar ein Ratenkauf möglich.</p>";
-	$meldung .= "<p>Zeitnah (diesmal wirklich) erscheint hier ein Link zur Bestellung.</p>";
-	//$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
+	$meldung .= "<p>Nachdem der Sachbearbeiter dieses neuen Kontaktes aus gesundheitlichen Gründen voraussichtlich erst wieder ab 18. Mai ansprechbar ist, haben wir unsere Pläne nun zum dritten Mal über den Haufen geworfen. Dafür geht es jetzt los!</p>";
+	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
 	echo cms_meldung("warnung", $meldung);
 }
 

@@ -39,6 +39,12 @@
 	top: 25px;
 }
 
+.cms_hinweis_links {
+	left: unset;
+	right: 0;
+	text-align: right;
+}
+
 .cms_layout_zeile_plus .cms_hinweis {
 	bottom: 15px;
 }

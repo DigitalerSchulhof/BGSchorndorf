@@ -20,10 +20,11 @@ if (isset($_POST['telefon1'])) {$telefon1 = cms_texttrafo_e_db($_POST['telefon1'
 if (isset($_POST['telefon2'])) {$telefon2 = cms_texttrafo_e_db($_POST['telefon2']);} else {echo "FEHLER15"; exit;}
 if (isset($_POST['mail1'])) {$mail1 = $_POST['mail1'];} else {echo "FEHLER16"; exit;}
 if (isset($_POST['mail2'])) {$mail2 = $_POST['mail2'];} else {echo "FEHLER17"; exit;}
+if (isset($_POST['geraeteids'])) {$geraeteids = $_POST['geraeteids'];} else {echo "FEHLER17"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$id = $_SESSION['BENUTZERID'];} else {echo "FEHLER18";exit;}
 if (!cms_check_ganzzahl($id)) {echo "FEHLER19"; exit;}
 if (($bedarf != '0') && ($bedarf != '1') && ($bedarf != '2')) {echo "FEHLER20"; exit;}
-if ($bedarf == '2') {
+if (($bedarf == '1') || ($bedarf == '2')) {
   if (($anrede != '-') && ($anrede != 'Frau') && ($anrede != 'Herr')) {echo "FEHLER22"; exit;}
   if (strlen($vorname) < 1) {echo "FEHLER23"; exit;}
   if (strlen($nachname) < 1) {echo "FEHLER24"; exit;}
@@ -37,13 +38,63 @@ if ($bedarf == '2') {
 	if (!cms_check_mail($mail1)) {echo "FEHLER31"; exit;}
 	if ($mail1 != $mail2) {echo "FEHLER"; exit;}
 }
+if (($bedarf == '1')) {
+	if ($bedingungen != 1) {echo "FEHLER36"; exit;}
+}
 
-$dbs = cms_verbinden('s');
+$da = true;
+$statusok = true;
 $fehler = false;
-$sql = $dbs->prepare("DELETE FROM ebestellung WHERE id = ?");
-$sql->bind_param("i", $id);
-$sql->execute();
-$sql->close();
+
+// Geräteverfügbarkeit prüfen
+$dbs = cms_verbinden('s');
+$bestellt = array();
+$vorrat = array();
+if ($bedarf == '1') {
+  $sql = $dbs->prepare("SELECT SUM(stueck), geraet FROM eposten WHERE bestellung != ? GROUP BY geraet");
+  $sql->bind_param("i", $CMS_BENUTZERID);
+  if ($sql->execute()) {
+    $sql->bind_result($b, $gid);
+    while($sql->fetch()) {
+      $bestellt[$gid] = $b;
+    }
+  }
+  $sql->close();
+
+  $sql = $dbs->prepare("SELECT stk, id FROM egeraete");
+  if ($sql->execute()) {
+    $sql->bind_result($stk, $gid);
+    while($sql->fetch()) {
+      if (isset($bestellt[$gid])) {$vorrat[$gid] = $stk - $bestellt[$gid];}
+      else {$vorrat[$gid] = $stk;}
+    }
+  }
+  $sql->close();
+
+  if (!cms_check_idfeld($geraeteids)) {
+    $fehler = true;
+  }
+  else {
+    $geraeteids = substr($geraeteids, 1);
+    $gids = explode("|", $geraeteids);
+    for ($i=0; $i<count($gids); $i++) {
+      if (isset($_POST['geraet'.$gids[$i]])) {
+        $anzahl = $_POST['geraet'.$gids[$i]];
+        if (!cms_check_ganzzahl($anzahl, 0,5)) {
+          $fehler = true;
+        }
+        else {
+          if ($vorrat[$gids[$i]] < $anzahl) {
+            $da = false;
+          }
+        }
+      }
+      else {
+        $fehler = true;
+      }
+    }
+  }
+}
 
 $sql = $dbs->prepare("SELECT COUNT(*) FROM nutzerkonten WHERE id = ?");
 $sql->bind_param("i", $id);
@@ -56,23 +107,62 @@ if ($sql->execute()) {
 }
 $sql->close();
 
+$sql = $dbs->prepare("SELECT COUNT(*) FROM ebestellung WHERE id = ? AND status >= 2");
+$sql->bind_param("i", $id);
+if ($sql->execute()) {
+	$sql->bind_result($anzahl);
+	if ($sql->fetch()) {
+		if ($anzahl > 0) {$statusok = false;}
+	}
+	else {$fehler = true;}
+}
+$sql->close();
 
-if (!$fehler) {
+
+if ($da && $statusok && !$fehler) {
+  $sql = $dbs->prepare("DELETE FROM ebestellung WHERE id = ?");
+  $sql->bind_param("i", $id);
+  $sql->execute();
+  $sql->close();
+
 	// INSERT
 	$jetzt = time();
-	if ($bedarf == '2') {
-		$sql = $dbs->prepare("INSERT INTO ebestellung (id, bedarf, anrede, vorname, nachname, strasse, hausnr, plz, ort, telefon, email, bedingungen, eingegangen) VALUES (?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?, ?)");
-		$sql->bind_param("iissssssssssi", $id, $bedarf, $anrede, $vorname, $nachname, $strasse, $hausnr, $plz, $ort, $telefon1, $mail1, $bestellnr, $jetzt);
+	if ($bedarf == '1') {
+		$sql = $dbs->prepare("INSERT INTO ebestellung (id, bedarf, status, anrede, vorname, nachname, strasse, hausnr, plz, ort, telefon, email, bedingungen, eingegangen) VALUES (?, ?, 0, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), ?, ?)");
+		$sql->bind_param("iisssssssssii", $id, $bedarf, $anrede, $vorname, $nachname, $strasse, $hausnr, $plz, $ort, $telefon1, $mail1, $bedingungen, $jetzt);
+	}
+	else if ($bedarf == '2') {
+    $sql = $dbs->prepare("INSERT INTO ebestellung (id, bedarf, status, anrede, vorname, nachname, strasse, hausnr, plz, ort, telefon, email, bedingungen, eingegangen) VALUES (?, ?, 0, AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), 1, ?)");
+		$sql->bind_param("iisssssssssi", $id, $bedarf, $anrede, $vorname, $nachname, $strasse, $hausnr, $plz, $ort, $telefon1, $mail1, $jetzt);
 	}
 	else {
-		$sql = $dbs->prepare("INSERT INTO ebestellung (id, bedarf, anrede, vorname, nachname, strasse, hausnr, plz, ort, telefon, email, bedingungen, eingegangen) VALUES (?, ?, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?)");
+    $sql = $dbs->prepare("INSERT INTO ebestellung (id, bedarf, status, anrede, vorname, nachname, strasse, hausnr, plz, ort, telefon, email, bedingungen, eingegangen) VALUES (?, ?, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ?)");
 		$sql->bind_param("iii", $id, $bedarf, $jetzt);
 	}
 	$sql->execute();
-
 	$sql->close();
 
+  if ($bedarf == '1') {
+    $sql = $dbs->prepare("INSERT INTO eposten (bestellung, geraet, stueck) VALUES (?, ?, ?)");
+    for ($i=0; $i<count($gids); $i++) {
+      if ($_POST['geraet'.$gids[$i]] > 0) {
+        $sql->bind_param("iii", $id, $gids[$i], $_POST['geraet'.$gids[$i]]);
+        $sql->execute();
+      }
+    }
+  	$sql->close();
+  }
+
 	echo "ERFOLG";
+}
+else if (!$statusok) {
+  echo "STATUS";
+}
+else if (!$da) {
+  echo "VERFUEGBAR";
+}
+else if ($fehler) {
+  echo "FEHLER";
 }
 else {
 	echo "BERECHTIGUNG";

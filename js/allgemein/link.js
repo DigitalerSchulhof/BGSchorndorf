@@ -1,9 +1,15 @@
 function cms_link (ziel, neuerTab) {
 	neuerTab = neuerTab || false;
-	if(!neuerTab)
-		window.location.href = CMS_DOMAIN+'/'+ziel;
-	else
-		window.open(CMS_DOMAIN+"/"+ziel, '_blank');
+	var link = CMS_DOMAIN+'/'+ziel;
+	if(ziel.substring(0, 4) == "http") {
+		link = ziel;
+	}
+
+	if(!neuerTab) {
+		window.location.href = link;
+	} else {
+		window.open(link, '_blank');
+	}
 }
 
 function cms_bezzulink(bezeichnung) {

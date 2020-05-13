@@ -33,6 +33,10 @@
 		border-right: none !important;
 	}
 
+	.cms_blockwahl {
+		width: 50%;
+	}
+
 	@media (max-width: 599px) {
 		.cms_eventuebersicht_box_a {
 			float: none !important;
