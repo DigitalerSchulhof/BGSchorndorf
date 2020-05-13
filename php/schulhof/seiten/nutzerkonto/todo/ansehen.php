@@ -17,7 +17,7 @@
 	if(strlen($beschreibung)) {
 		echo "<p>$beschreibung</p>";
 	} else {
-		echo "<p class=\"cms_notiz\">Keine Beschreibung angegeben.</p>";
+		echo "<p class=\"cms_notiz\">Keine Notizen</p>";
 	}
 ?>
 

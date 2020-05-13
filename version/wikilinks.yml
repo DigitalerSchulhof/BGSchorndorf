@@ -1,0 +1,9 @@
+seiten:
+  - url: Schulhof/Nutzerkonto
+    typ: url
+    wiki: https://digitaler-schulhof.de/Wiki/Benutzung
+  - url:
+      - /Schulhof\/Nutzerkonto\/Postfach/
+      - /Schulhof\/Nutzerkonto\/Postfach\/(?:|Neue_Nachricht|Posteingang|Entwürfe|Postausgang|Papierkorb|Tags|\/Tags\/Neuen_Tag_anlegen|Signatur)/
+    typ: regex
+    wiki: https://digitaler-schulhof.de/Wiki/Nutzerkonto/Postfach
