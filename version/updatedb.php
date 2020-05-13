@@ -161,5 +161,20 @@ ALTER TABLE `todo` ADD CONSTRAINT `todopersonpersonen` FOREIGN KEY (`person`) RE
 	}
 ?>
 
-
 -- 0.9
+
+DROP TABLE ebestellung;
+CREATE TABLE `ebestellung` (  `id` bigint(255) UNSIGNED NOT NULL,  `bedarf` tinyint(1) UNSIGNED DEFAULT NULL,  `status` tinyint(1) UNSIGNED DEFAULT NULL,  `anrede` varbinary(500) DEFAULT NULL,  `vorname` varbinary(1000) DEFAULT NULL,  `nachname` varbinary(1000) DEFAULT NULL,  `strasse` varbinary(1000) DEFAULT NULL,  `hausnr` varbinary(1000) DEFAULT NULL,  `plz` varbinary(1000) DEFAULT NULL,  `ort` varbinary(1000) DEFAULT NULL,  `telefon` varbinary(500) DEFAULT NULL,  `email` varbinary(500) DEFAULT NULL,  `bedingungen` tinyint(1) UNSIGNED DEFAULT NULL,  `eingegangen` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `ebestellung`  ADD PRIMARY KEY (`id`);
+ALTER TABLE `ebestellung`  ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `egeraete` (  `id` bigint(255) UNSIGNED NOT NULL,  `titel` varbinary(1000) DEFAULT NULL,  `bild` varbinary(1000) DEFAULT NULL,  `beschreibung` blob DEFAULT NULL,  `preis` bigint(255) DEFAULT NULL,  `stk` int(255) UNSIGNED DEFAULT NULL,  `lieferzeit` varbinary(1000) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `egeraete`  ADD PRIMARY KEY (`id`);
+
+CREATE TABLE `eposten` (  `bestellung` bigint(255) UNSIGNED NOT NULL,  `geraet` bigint(255) UNSIGNED NOT NULL,  `stueck` bigint(255) UNSIGNED NOT NULL DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `eposten`  ADD PRIMARY KEY (`bestellung`,`geraet`),  ADD KEY `bestellunggeraet` (`geraet`);
+ALTER TABLE `eposten`  ADD CONSTRAINT `bestellunggeraet` FOREIGN KEY (`geraet`) REFERENCES `egeraete` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,  ADD CONSTRAINT `bestellungperson` FOREIGN KEY (`bestellung`) REFERENCES `ebestellung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- 0.9.1

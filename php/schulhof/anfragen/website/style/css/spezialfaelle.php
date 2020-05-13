@@ -263,7 +263,7 @@
 
 .cms_blockwahl {
 	padding: 10px;
-	width: 50%;
+	width: 33%;
 	transition: 250ms ease-in-out;
 	position: relative;
 }

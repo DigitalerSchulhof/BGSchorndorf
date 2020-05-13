@@ -3,125 +3,98 @@ function cms_ebestellung_aktualisieren() {
 
   if (wert == '1') {
     cms_einblenden('cms_ebestellung_geraete');
-    cms_ausblenden('cms_ebestellung_kontakt');
-    cms_ausblenden('cms_ebestellung_bedingung');
-    cms_ausblenden('cms_ebestellung_bedingung_akzept');
-    document.getElementById('cms_ebestellung_speichern').innerHTML = "Ich habe bestellt / werde bestellen";
-  }
-  else if (wert == '2') {
-    cms_ausblenden('cms_ebestellung_geraete');
     cms_einblenden('cms_ebestellung_kontakt');
     cms_einblenden('cms_ebestellung_bedingung', 'table-row');
     cms_einblenden('cms_ebestellung_bedingung_akzept', 'table-row');
-    document.getElementById('cms_ebestellung_speichern').innerHTML = "Geräteleihe bestätigen";
-  }
-  else {
-    cms_ausblenden('cms_ebestellung_geraete');
-    cms_ausblenden('cms_ebestellung_kontakt');
-    cms_ausblenden('cms_ebestellung_bedingung');
-    cms_ausblenden('cms_ebestellung_bedingung_akzept');
-    document.getElementById('cms_ebestellung_speichern').innerHTML = "Keinen Bedarf anzeigen";
-  }
-}
-
-function cms_ebestellung_aktualisieren2() {
-  var wert = document.getElementById('cms_ebestellung_bedarf').value;
-
-  if (wert == '1') {
-    document.getElementById('cms_ebestellung_anz_leiheubuntu').value = 0;
-    cms_ausblenden('cms_ebestellung_leihe');
-    cms_einblenden('cms_ebestellung_geraete');
-    cms_einblenden('cms_ebestellung_kontakt');
-    cms_einblenden('cms_ebestellung_bedingung', 'table-row');
-    cms_einblenden('cms_ebestellung_bedingung_akzept', 'table-row');
-    cms_einblenden('cms_ebestellung_kauf_ulap', 'table-row');
-    cms_einblenden('cms_ebestellung_kauf_wlap', 'table-row');
-    cms_einblenden('cms_ebestellung_kauf_mkombi', 'table-row');
-    cms_einblenden('cms_ebestellung_kauf_gkombi', 'table-row');
-    cms_ausblenden('cms_ebestellung_leihe_ulap');
-    cms_ausblenden('cms_ebestellung_kein');
-    cms_ebestellung_neuberechnen(wert);
     document.getElementById('cms_ebestellung_speichern').innerHTML = "Zahlungspflichtig bestellen";
+    cms_ebestellung_neuberechnen();
   }
   else if (wert == '2') {
-    document.getElementById('cms_ebestellung_anz_laptopubuntu').value = 0;
-    document.getElementById('cms_ebestellung_anz_laptopwindows').value = 0;
-    document.getElementById('cms_ebestellung_anz_kombimittel').value = 0;
-    document.getElementById('cms_ebestellung_anz_kombigut').value = 0;
-    cms_einblenden('cms_ebestellung_leihe');
     cms_ausblenden('cms_ebestellung_geraete');
     cms_einblenden('cms_ebestellung_kontakt');
     cms_ausblenden('cms_ebestellung_bedingung');
     cms_ausblenden('cms_ebestellung_bedingung_akzept');
-    cms_ausblenden('cms_ebestellung_kauf_ulap');
-    cms_ausblenden('cms_ebestellung_kauf_wlap');
-    cms_ausblenden('cms_ebestellung_kauf_mkombi');
-    cms_ausblenden('cms_ebestellung_kauf_gkombi');
-    cms_einblenden('cms_ebestellung_leihe_ulap', 'table-row');
-    cms_ausblenden('cms_ebestellung_kein');
-    cms_ebestellung_neuberechnen(wert);
-    document.getElementById('cms_ebestellung_speichern').innerHTML = "Geräteleihe bestätigen";
+    document.getElementById('cms_ebestellung_speichern').innerHTML = "Leihe beantragen";
+    cms_ebestellung_neuberechnen();
   }
   else {
-    document.getElementById('cms_ebestellung_anz_laptopubuntu').value = 0;
-    document.getElementById('cms_ebestellung_anz_laptopwindows').value = 0;
-    document.getElementById('cms_ebestellung_anz_kombimittel').value = 0;
-    document.getElementById('cms_ebestellung_anz_kombigut').value = 0;
-    document.getElementById('cms_ebestellung_anz_leiheubuntu').value = 0;
-    cms_ausblenden('cms_ebestellung_leihe');
     cms_ausblenden('cms_ebestellung_geraete');
     cms_ausblenden('cms_ebestellung_kontakt');
     cms_ausblenden('cms_ebestellung_bedingung');
     cms_ausblenden('cms_ebestellung_bedingung_akzept');
-    cms_ausblenden('cms_ebestellung_kauf_ulap');
-    cms_ausblenden('cms_ebestellung_kauf_wlap');
-    cms_ausblenden('cms_ebestellung_kauf_mkombi');
-    cms_ausblenden('cms_ebestellung_kauf_gkombi');
-    cms_ausblenden('cms_ebestellung_leihe_ulap');
-    cms_einblenden('cms_ebestellung_kein', 'table-row');
-    cms_ebestellung_neuberechnen(wert);
     document.getElementById('cms_ebestellung_speichern').innerHTML = "Keinen Bedarf anzeigen";
+    cms_ebestellung_neuberechnen();
   }
 }
 
-function cms_ebestellung_neuberechnen(wert) {
-  if (wert == '1') {
-    var anzkaufulap = parseInt(document.getElementById('cms_ebestellung_anz_laptopubuntu').value);
-    var anzkaufwlap = parseInt(document.getElementById('cms_ebestellung_anz_laptopwindows').value);
-    var anzkaufkombim = parseInt(document.getElementById('cms_ebestellung_anz_kombimittel').value);
-    var anzkaufkombig = parseInt(document.getElementById('cms_ebestellung_anz_kombigut').value);
-    if (anzkaufulap == 0) {cms_ausblenden('cms_ebestellung_kauf_ulap');}
-    else {cms_einblenden('cms_ebestellung_kauf_ulap', 'table-row');}
-    if (anzkaufwlap == 0) {cms_ausblenden('cms_ebestellung_kauf_wlap');}
-    else {cms_einblenden('cms_ebestellung_kauf_wlap', 'table-row');}
-    if (anzkaufkombim == 0) {cms_ausblenden('cms_ebestellung_kauf_mkombi');}
-    else {cms_einblenden('cms_ebestellung_kauf_mkombi', 'table-row');}
-    if (anzkaufkombig == 0) {cms_ausblenden('cms_ebestellung_kauf_gkombi');}
-    else {cms_einblenden('cms_ebestellung_kauf_gkombi', 'table-row');}
-    document.getElementById('cms_ebestellung_menge_ulap').innerHTML = anzkaufulap;
-    document.getElementById('cms_ebestellung_menge_wlap').innerHTML = anzkaufwlap;
-    document.getElementById('cms_ebestellung_menge_mkombi').innerHTML = anzkaufkombim;
-    document.getElementById('cms_ebestellung_menge_gkombi').innerHTML = anzkaufkombig;
-    var preislaptopubuntu = 300.00 * anzkaufulap;
-    var preislaptopwindows = 300.00 * anzkaufwlap;
-    var preiskombimittel = 500.00 * anzkaufkombim;
-    var preiskombigut = 700.00 * anzkaufkombig;
-    var summe = preislaptopubuntu + preislaptopwindows + preiskombimittel + preiskombigut;
-    document.getElementById('cms_ebestellung_summe_ulap').innerHTML = cms_format_preis(preislaptopubuntu)+" €";
-    document.getElementById('cms_ebestellung_summe_wlap').innerHTML = cms_format_preis(preislaptopwindows)+" €";
-    document.getElementById('cms_ebestellung_summe_mkombi').innerHTML = cms_format_preis(preiskombimittel)+" €";
-    document.getElementById('cms_ebestellung_summe_gkombi').innerHTML = cms_format_preis(preiskombigut)+" €";
-    document.getElementById('cms_ebestellung_summe').innerHTML = cms_format_preis(summe)+" €";
+function cms_ebestellung_neuberechnen() {
+  // Laden anschalten
+  document.getElementById('cms_bestellzusammenfassung').innerHTML = '<td colspan="4" class=\"cms_zentriert\">'+cms_ladeicon()+'</td>';
+  // Werte auslesen
+  var bedarf = document.getElementById('cms_ebestellung_bedarf').value;
+  var geraeteids = document.getElementById('cms_bestellen_geraeteids').value;
+  var formulardaten = new FormData();
+
+  var fehler = false;
+
+  if (bedarf != '1') {
+    if (geraeteids.length > 0) {
+      if (cms_check_idfeld(geraeteids)) {
+        geraetids = geraeteids.substr(1);
+        gids = geraetids.split('|');
+        for (var i=0; i<gids.length; i++) {
+          if (document.getElementById('cms_ebestellung_geraet_'+gids[i])) {
+            document.getElementById('cms_ebestellung_geraet_'+gids[i]).value='0';
+          }
+          else {fehler = true;}
+        }
+      }
+      else {fehler = true;}
+    }
   }
-  else if (wert == '2') {
-    var anzleihe = parseInt(document.getElementById('cms_ebestellung_anz_leiheubuntu').value);
-    document.getElementById('cms_ebestellung_menge_leihe').innerHTML = anzleihe;
-    document.getElementById('cms_ebestellung_summe').innerHTML = "0,00 €";
+
+  if (bedarf == '1') {
+    if (geraeteids.length > 0) {
+      if (cms_check_idfeld(geraeteids)) {
+        geraetids = geraeteids.substr(1);
+        gids = geraetids.split('|');
+        for (var i=0; i<gids.length; i++) {
+          if (document.getElementById('cms_ebestellung_geraet_'+gids[i])) {
+            var wert = document.getElementById('cms_ebestellung_geraet_'+gids[i]).value;
+            formulardaten.append('geraet'+gids[i], wert);
+            if (!cms_check_ganzzahl(wert, 0,5)) {
+              fehler = true;
+            }
+          }
+          else {fehler = true;}
+        }
+      }
+      else {fehler = true;}
+    }
+  }
+
+  if (fehler) {
+    document.getElementById('cms_bestellzusammenfassung').innerHTML = '<td colspan="4" class=\"cms_zentriert cms_notiz\">Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Eingaben.</td>';
   }
   else {
-    document.getElementById('cms_ebestellung_summe').innerHTML = "0,00 €";
+    formulardaten.append("bedarf",  bedarf);
+    formulardaten.append("geraeteids",   geraeteids);
+    formulardaten.append("anfragenziel", 	'397');
+
+    function anfragennachbehandlung(rueckgabe) {
+			if (rueckgabe.match(/^<tr>/)) {
+        document.getElementById('cms_bestellzusammenfassung').innerHTML = rueckgabe;
+			}
+			else {
+				document.getElementById('cms_bestellzusammenfassung').innerHTML = rueckgabe;//'<td colspan="4" class=\"cms_zentriert cms_notiz\">Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Eingaben.</td>';
+			}
+		}
+		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
   }
+
 }
+
+
 
 function cms_ebestellung_speichern() {
 	cms_laden_an('Bedarf speichern', 'Die Angaben werden geprüft');
@@ -135,12 +108,14 @@ function cms_ebestellung_speichern() {
 	var hausnr = document.getElementById('cms_ebestellung_hausnr').value;
 	var plz = document.getElementById('cms_ebestellung_plz').value;
 	var ort = document.getElementById('cms_ebestellung_ort').value;
-	var bedingungen = document.getElementById('cms_bedingungen').value;
 
 	var telefon1 = document.getElementById('cms_schulhof_ebestellung_telefon').value;
 	var telefon2 = document.getElementById('cms_schulhof_ebestellung_telefon_wiederholen').value;
 	var mail1 = document.getElementById('cms_schulhof_ebestellung_mail').value;
 	var mail2 = document.getElementById('cms_schulhof_ebestellung_mail_wiederholen').value;
+	var bedingungen = document.getElementById('cms_bedingungen').value;
+	var geraeteids = document.getElementById('cms_bestellen_geraeteids').value;
+  var formulardaten = new FormData();
 
 	var meldung = '<p>Die Angeben konnten nicht gespeichert werden, denn</p><ul>';
 	var fehler = false;
@@ -150,7 +125,7 @@ function cms_ebestellung_speichern() {
 		fehler = true;
   }
 
-  if (bedarf == '2') {
+  if ((bedarf == '1') || (bedarf == '2')) {
     if ((anrede != '-') && (anrede != 'Frau') && (anrede != 'Herr')) {
   		meldung += '<li>die Anrede ist ungültig.</li>';
   		fehler = true;
@@ -207,13 +182,43 @@ function cms_ebestellung_speichern() {
   	}
   }
 
+  if (bedarf == '1') {
+    if (bedingungen != '1') {
+  		meldung += '<li>die Bestellbedingungen müssen akzeptiert werden.</li>';
+  		fehler = true;
+  	}
+
+    if (geraeteids.length > 0) {
+      var geraetefehler = false;
+      if (!cms_check_idfeld(geraeteids)) {
+        meldung += '<li>die Geräteids sind ungültig.</li>';
+    		fehler = true;
+      }
+      else {
+        geraetids = geraeteids.substr(1);
+        gids = geraetids.split('|');
+        for (var i=0; i<gids.length; i++) {
+          if (document.getElementById('cms_ebestellung_geraet_'+gids[i])) {
+            var wert = document.getElementById('cms_ebestellung_geraet_'+gids[i]).value;
+            formulardaten.append('geraet'+gids[i], wert);
+            if (!cms_check_ganzzahl(wert, 0,5)) {
+              geraetefehler = true;
+            }
+          }
+        }
+      }
+      if (geraetefehler) {
+        meldung += '<li>die Bestellmenge pro Gerät muss zwischen 0 und 5 liegen. Dieser Wert stimmt bei mindestens einem Gerät nicht.</li>';
+        fehler = true;
+      }
+    }
+  }
+
 
 	if (fehler) {
 		cms_meldung_an('fehler', 'Bedarf speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
 	else {
-		var formulardaten = new FormData();
-
 		formulardaten.append("bedarf",  bedarf);
 		formulardaten.append("anrede",     anrede);
 		formulardaten.append("vorname",     vorname);
@@ -227,11 +232,18 @@ function cms_ebestellung_speichern() {
 		formulardaten.append("telefon2",   telefon2);
 		formulardaten.append("mail1",   mail1);
 		formulardaten.append("mail2",   mail2);
+		formulardaten.append("geraeteids",   geraeteids);
 		formulardaten.append("anfragenziel", 	'394');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-				cms_meldung_an('erfolg', 'Bestellung speichern', '<p>Die Bestellung/Leihe wurde übermittelt. Vielen Dank!<br>Bitte bachten Sie, dass im Falle eines Kaufs der Shop außerhalb des Schulhofs genutzt werden muss.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto\');">OK</span></p>');
+				cms_meldung_an('erfolg', 'Bestellung speichern', '<p>Die Bestellung/Leihe wurde übermittelt. Vielen Dank!</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto\');">OK</span></p>');
+			}
+			else if (rueckgabe == "VERFUEGBAR") {
+				cms_meldung_an('fehler', 'Bestellung speichern', '<p>Die Bestellung konnte nicht gespeichert werden, da mindestens eines der gewählten Geräte nicht mehr verfügbar ist.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+			}
+			else if (rueckgabe == "STATUS") {
+				cms_meldung_an('fehler', 'Bestellung speichern', '<p>Die Bestellung konnte nicht gespeichert werden, da bereits eine Bestellung vorliegt, die schon aufgegeben wurde.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 			}
 			else {
 				cms_fehlerbehandlung(rueckgabe);
