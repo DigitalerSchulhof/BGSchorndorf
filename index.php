@@ -33,6 +33,7 @@
 	}
 	$CMS_IMVN = false;
 	$CMS_IMNB = false;
+	$CMS_WIKI = null;
 	$CMS_VERSION = trim(file_get_contents("version/version"));
 	$CMS_WECHSELBILDER = 0;
 	$CMS_DIASHOWZEIT = 7000;
@@ -543,6 +544,7 @@
 		include_once("php/allgemein/seiten/blende.php");
 		if ($CMS_URL[0] != 'App') {
 			include_once("php/allgemein/seiten/aktionsschicht.php");
+			include_once("php/allgemein/seiten/wiki.php");
 		}
 		cms_trennen($dbs);
 	?>

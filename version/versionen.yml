@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9_2:
+    version: 0.9.2
+    tag: Mittwoch, den 13. Mai 2020
+    neuerungen:
+      - Vorbereitung für eine interne Systemumstellung.
   0_9_1:
     version: 0.9.1
     tag: Mittwoch, den 13. Mai 2020

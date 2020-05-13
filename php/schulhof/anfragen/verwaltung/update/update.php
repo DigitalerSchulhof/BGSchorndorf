@@ -24,7 +24,7 @@ if (cms_angemeldet() && cms_r("technik.server.update") && ($_SESSION["IMLN"] ?? 
     }
   });
   if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
-    $Updater_base = "https://update.digitaler-schulhof.de";
+    $Updater_base = "https://pool.digitaler-schulhof.de";
   } else {
     $Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
   }
