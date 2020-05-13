@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9_3:
+    version: 0.9.3
+    tag: Mittwoch, den 13. Mai 2020
+    neuerungen:
+      - Über den Hilfe-Knopf unten rechts kann, wenn angelegt, die offizielle Hilfe-Seite aufgerufen werden.
   0_9_2:
     version: 0.9.2
     tag: Mittwoch, den 13. Mai 2020
