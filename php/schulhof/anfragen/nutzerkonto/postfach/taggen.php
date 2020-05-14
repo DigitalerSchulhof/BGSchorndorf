@@ -10,8 +10,9 @@ session_start();
 if (isset($_POST['tagid'])) {$tagid = $_POST['tagid'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['anschalten'])) {$anschalten = $_POST['anschalten'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION["POSTLESENID"])) {$id = $_SESSION["POSTLESENID"];} else {echo "FEHLER"; exit;}
-if (isset($_SESSION["POSTLESENMODUS"])) {$modus = $_SESSION["POSTLESENMODUS"];} else {echo "FEHLER"; exit;}
+if (isset($_SESSION["POSTLESENID"])) {$id = $_SESSION["POSTLESENID"];} else {if(isset($_POST["id"])) {$id = $_POST["id"];} else {echo "FEHLER"; exit;}}
+if (isset($_POST["id"])) {$id = $_POST["id"];} else {if(isset($_SESSION["POSTLESENID"])) {$id = $_SESSION["POSTLESENID"];} else {echo "FEHLER"; exit;}}
+if (isset($_POST["modus"])) {$modus = $_POST["modus"];} else {if(isset($_SESSION["POSTLESENMODUS"])) {$modus = $_SESSION["POSTLESENMODUS"];} else {echo "FEHLER"; exit;}}
 if (!cms_check_ganzzahl($CMS_BENUTZERID)) {echo "FEHLER"; exit;}
 if (($modus != 'eingang') && ($modus != 'ausgang') && ($modus != 'entwurf')) {echo "FEHLER"; exit;}
 

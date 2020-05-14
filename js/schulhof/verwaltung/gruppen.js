@@ -19,7 +19,7 @@ function cms_gruppen_listeausgeben(name, schuljahr) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppen_neu_speichern (art) {
@@ -59,7 +59,7 @@ function cms_gruppen_neu_speichern (art) {
               else {cms_fehlerbehandlung(rueckgabe);}
             }
 
-            cms_ajaxanfrage (false, formulardaten, lehrerservernachbehandlung, CMS_LN_DA);
+            cms_ajaxanfrage (formulardaten, lehrerservernachbehandlung, CMS_LN_DA);
           }
           else {
             cms_meldung_an('erfolg', 'Neue Gruppe anlegen', '<p>Die Gruppe wurde angelegt.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Gruppen/'+art.replace(' ', '_')+'\');">Zurück zur Übersicht</span></p>');
@@ -106,7 +106,7 @@ function cms_gruppen_neu_speichern (art) {
         }
     	}
 
-    	cms_ajaxanfrage (false, eingaben, anfragennachbehandlung);
+    	cms_ajaxanfrage (eingaben, anfragennachbehandlung);
     }
   }
 }
@@ -166,7 +166,7 @@ function cms_gruppen_bearbeiten_speichern (art) {
       }
   	}
 
-  	cms_ajaxanfrage (false, eingaben, anfragennachbehandlung);
+  	cms_ajaxanfrage (eingaben, anfragennachbehandlung);
   }
 }
 
@@ -342,7 +342,7 @@ function cms_gruppen_loeschen (art, bezeichnung, id) {
           else {cms_fehlerbehandlung(rueckgabe);}
         }
 
-        cms_ajaxanfrage (false, lehrerdaten, lehrerservernachbehandlung, CMS_LN_DA);
+        cms_ajaxanfrage (lehrerdaten, lehrerservernachbehandlung, CMS_LN_DA);
       }
       else {
         cms_gruppen_listeausgeben(art, aschuljahr);
@@ -352,7 +352,7 @@ function cms_gruppen_loeschen (art, bezeichnung, id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppen_bearbeiten_vorbereiten(art, id) {
@@ -370,7 +370,7 @@ function cms_gruppen_bearbeiten_vorbereiten(art, id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_kategorie_icon_waehlen(id, nr) {
@@ -412,7 +412,7 @@ function cms_gruppe_reihenfolge_laden() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_stufen_laden() {
@@ -433,7 +433,7 @@ function cms_gruppe_stufen_laden() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_klassenfaecher_laden() {
@@ -456,7 +456,7 @@ function cms_gruppe_klassenfaecher_laden() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_kursefaecher_laden() {
@@ -476,7 +476,7 @@ function cms_gruppe_kursefaecher_laden() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_klassen_laden() {
@@ -497,7 +497,7 @@ function cms_gruppe_klassen_laden() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_klassenaktualisieren() {
@@ -549,7 +549,7 @@ function cms_gruppe_personenausklassen() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_chatmeldung_loeschen(gruppe, id) {
@@ -565,7 +565,7 @@ function cms_chatmeldung_loeschen(gruppe, id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_chatmeldung_nachricht_loeschen(gruppe, id) {
@@ -581,5 +581,5 @@ function cms_chatmeldung_nachricht_loeschen(gruppe, id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

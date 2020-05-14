@@ -56,7 +56,7 @@ function cms_voranmeldung_beginnen() {
 			if (rueckgabe == "ERFOLG") {cms_link('Website/Voranmeldung/Schülerdaten');}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Voranmeldung beginnen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -271,7 +271,7 @@ function cms_schuelerdaten_speichern() {
 			if (rueckgabe == "ERFOLG") {cms_link('Website/Voranmeldung/Ansprechpartner');}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Schülerdaten speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -502,7 +502,7 @@ function cms_ansprechpartnerdaten_speichern() {
 			if (rueckgabe == "ERFOLG") {cms_link('Website/Voranmeldung/Zusammenfassung');}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Ansprechpartner speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -527,7 +527,7 @@ function cms_voranmeldung_abbrechen() {
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -569,7 +569,7 @@ function cms_voranmeldung_speichern() {
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Voranmeldung abschließen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');

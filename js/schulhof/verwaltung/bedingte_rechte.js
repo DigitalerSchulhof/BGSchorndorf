@@ -62,7 +62,7 @@ function cms_bedingte_rechte_speichern() {
       cms_fehlerbehandlung(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_bedingte_rollen_speichern() {
@@ -90,7 +90,7 @@ function cms_bedingte_rollen_speichern() {
       cms_fehlerbehandlung(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_bedingte_bedingung_syntax_pruefen(dis) {
@@ -114,7 +114,7 @@ function cms_bedingte_bedingung_syntax_pruefen(dis) {
       cms_fehlerbehandlung(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 // Grafische Bedingungen

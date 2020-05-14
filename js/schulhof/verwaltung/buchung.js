@@ -83,7 +83,7 @@ function cms_buchung_neu_speichern(art, standort, ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neue Buchung anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -114,7 +114,7 @@ function cms_buchung_loeschen(id, art, standort, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -138,7 +138,7 @@ function cms_buchung_alleloeschen(ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -183,7 +183,7 @@ function cms_buchunganzeigen(art, standort, richtung, ziel) {
 			}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		box.innerHTML = cms_meldung_code ('fehler', 'Buchungen konnten nicht geladen werden', meldung+'</ul>');

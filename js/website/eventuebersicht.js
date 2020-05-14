@@ -23,7 +23,7 @@ function cms_eventuebersichten_anzeigen (id, spalte, position, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_eventuebersichten_aendern(was) {
@@ -148,7 +148,7 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -247,6 +247,6 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }

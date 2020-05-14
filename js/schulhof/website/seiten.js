@@ -12,7 +12,7 @@ function cms_schulhof_website_seite_neu_vorbereiten(zuordnung) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_website_seite_neu_speichern() {
@@ -121,7 +121,7 @@ function cms_schulhof_website_seite_neu_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -139,7 +139,7 @@ function cms_schulhof_website_seite_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_website_seite_bearbeiten() {
@@ -228,7 +228,7 @@ function cms_schulhof_website_seite_bearbeiten() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -250,7 +250,7 @@ function cms_schulhof_website_seite_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_website_seite_startseite_anzeigen (anzeigename, id) {
@@ -271,7 +271,7 @@ function cms_schulhof_website_seite_startseite(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_seitenwahl_auswahl(id, bezeichnung, seite) {
@@ -297,7 +297,7 @@ function cms_neue_weiterleitung(ziel) {
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_weiterleitung_neu_speichern() {
@@ -335,7 +335,7 @@ function cms_weiterleitung_neu_speichern() {
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -353,7 +353,7 @@ function cms_weiterleitung_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_weiterleitung_bearbeiten_speichern(id) {
@@ -393,7 +393,7 @@ function cms_weiterleitung_bearbeiten_speichern(id) {
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -410,5 +410,5 @@ function cms_weiterleitung_loeschen(id) {
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

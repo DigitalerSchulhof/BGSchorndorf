@@ -107,7 +107,7 @@ function cms_schulanmeldung_einstellungen_aendern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -127,7 +127,7 @@ function cms_schulanmeldung_neu_speichern() {
 			if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Verwaltung/Schulanmeldung');}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Anmeldung speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -145,7 +145,7 @@ function cms_schulanmeldung_bearbeiten_vorbereiten(id) {
 		if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Verwaltung/Schulanmeldung/Anmeldung_bearbeiten');}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulanmeldung_bearbeiten_speichern() {
@@ -164,7 +164,7 @@ function cms_schulanmeldung_bearbeiten_speichern() {
 			if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Verwaltung/Schulanmeldung');}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Anmeldung speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -190,7 +190,7 @@ function cms_schulanmeldung_loeschen(name, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -211,7 +211,7 @@ function cms_schulanmeldung_alleloeschen() {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulanmeldung_aufnehmen(name, id) {
@@ -228,7 +228,7 @@ function cms_schulanmeldung_aufnehmen(name, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulanmeldung_ablehnen(name, id) {
@@ -245,7 +245,7 @@ function cms_schulanmeldung_ablehnen(name, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulanmeldung_drucken(id) {
@@ -262,7 +262,7 @@ function cms_schulanmeldung_drucken(id) {
     }
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulanmeldung_exportieren(id) {
@@ -295,7 +295,7 @@ function cms_schulanmeldung_exportieren(id) {
       }
       else {cms_fehlerbehandlung(rueckgabe);}
     }
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
   else {
     cms_meldung_an('fehler', 'Schulanmeldungen exportieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');

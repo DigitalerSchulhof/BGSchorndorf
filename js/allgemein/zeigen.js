@@ -210,7 +210,7 @@ function cms_geraet_aendern(geraet) {
 			}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 

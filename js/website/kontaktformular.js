@@ -21,7 +21,7 @@ function cms_kontaktformulare_anzeigen (id, spalte, position, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_kontaktformulare_neu_speichern(zusatz) {
@@ -135,7 +135,7 @@ function cms_kontaktformulare_neu_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -251,7 +251,7 @@ function cms_kontaktformulare_bearbeiten_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -377,7 +377,7 @@ function cms_kontaktformular_absenden(element) {
       else {cms_fehlerbehandlung(rueckgabe);}
     }
 
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 

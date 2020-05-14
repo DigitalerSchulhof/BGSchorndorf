@@ -193,7 +193,7 @@ function cms_schulhof_leihgeraet_neu_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -216,7 +216,7 @@ function cms_schulhof_leihgeraet_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_leihgeraet_bearbeiten_vorbereiten (id) {
@@ -233,7 +233,7 @@ function cms_schulhof_leihgeraet_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_leihgeraet_bearbeiten () {
@@ -270,6 +270,6 @@ function cms_schulhof_leihgeraet_bearbeiten () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

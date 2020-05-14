@@ -1,4 +1,11 @@
 $(window).on("load", function() {
+  $("body").on("keydown", function(e) {
+    if(e.keyCode === 27) {
+      $("#contextmenue").hide().html("").removeClass("contextmenue_multiselect");
+      $(".cms_multiselect_s").removeClass("cms_multiselect_s");
+      multiselect_drag = false;
+    }
+  });
   $("body").on("contextmenu", ".cms_liste td", function(e) {
     var context = $("#contextmenue");
     context.html("").hide();

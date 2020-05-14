@@ -85,7 +85,7 @@ function cms_pinnwaende_neu_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -108,7 +108,7 @@ function cms_pinnwaende_loeschen(id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_pinnwaende_bearbeiten_vorbereiten (id) {
@@ -125,7 +125,7 @@ function cms_pinnwaende_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_pinnwaende_bearbeiten () {
@@ -162,7 +162,7 @@ function cms_pinnwaende_bearbeiten () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -253,7 +253,7 @@ function cms_pinnwandanschlaege_neuspeichern(pinnwand) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -277,7 +277,7 @@ function cms_pinnwandanschlag_loeschen(id, pinnwand) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_pinnwandanschlag_bearbeiten_vorbereiten (id, pinnwand) {
@@ -295,7 +295,7 @@ function cms_pinnwandanschlag_bearbeiten_vorbereiten (id, pinnwand) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_pinnwandanschlag_bearbeiten (pinnwand) {
@@ -328,6 +328,6 @@ function cms_pinnwandanschlag_bearbeiten (pinnwand) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

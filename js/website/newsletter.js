@@ -21,7 +21,7 @@ function cms_wnewsletter_anzeigen (id, spalte, position, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_wnewsletter_neu_speichern(zusatz) {
@@ -80,7 +80,7 @@ function cms_wnewsletter_neu_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -141,7 +141,7 @@ function cms_wnewsletter_bearbeiten_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -198,6 +198,6 @@ function cms_wnewsletter_anmelden(element) {
       } else {cms_fehlerbehandlung(rueckgabe);}
     }
 
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }

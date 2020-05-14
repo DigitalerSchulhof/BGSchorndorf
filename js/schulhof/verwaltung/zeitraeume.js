@@ -17,7 +17,7 @@ function cms_stundenplanzeitraeume_vorbereiten(id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -209,7 +209,7 @@ function cms_zeitraeume_neu_speichern() {
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -232,7 +232,7 @@ function cms_zeitraeume_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_zeitraeume_bearbeiten_vorbereiten (id) {
@@ -249,7 +249,7 @@ function cms_zeitraeume_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_zeitraeume_bearbeiten_speichern () {
@@ -290,7 +290,7 @@ function cms_zeitraeume_bearbeiten_speichern () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -349,7 +349,7 @@ function cms_zeitraeume_rythmisieren_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_zeitraeume_rythmisierung_speichern() {
@@ -403,7 +403,7 @@ function cms_zeitraeume_rythmisierung_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -423,7 +423,7 @@ function cms_zeitraeume_klonen_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -493,7 +493,7 @@ function cms_zeitraeume_klonen_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -511,7 +511,7 @@ function cms_stundenplanung_importieren_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -787,7 +787,7 @@ function cms_stundenplanung_import_speichern() {
                 formulardaten.append('import', 'j');
                 formulardaten.append('art', 'Kurse');
                 formulardaten.append('anfragenziel', '220');
-                cms_ajaxanfrage (false, formulardaten, kurseanlegen);
+                cms_ajaxanfrage (formulardaten, kurseanlegen);
               }
               // STUNDEN PLATZIEREN
               else if (stundennr < stundenanzahl) {
@@ -801,13 +801,13 @@ function cms_stundenplanung_import_speichern() {
                 formulardaten.append('lehrer', stundeninfo[4]);
                 formulardaten.append('raum', stundeninfo[5]);
                 formulardaten.append('anfragenziel', '352');
-                cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
+                cms_ajaxanfrage (formulardaten, stundenplatzieren);
               }
               else {
                 formulardaten = new FormData();
                 formulardaten.append('zuordnen', zuordnen);
                 formulardaten.append('anfragenziel', '353');
-                cms_ajaxanfrage (false, formulardaten, abschluss);
+                cms_ajaxanfrage (formulardaten, abschluss);
               }
             }
 
@@ -838,13 +838,13 @@ function cms_stundenplanung_import_speichern() {
                 formulardaten.append('lehrer', stundeninfo[4]);
                 formulardaten.append('raum', stundeninfo[5]);
                 formulardaten.append('anfragenziel', '352');
-                cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
+                cms_ajaxanfrage (formulardaten, stundenplatzieren);
               }
               else {
                 formulardaten = new FormData();
                 formulardaten.append('zuordnen', zuordnen);
                 formulardaten.append('anfragenziel', '353');
-                cms_ajaxanfrage (false, formulardaten, abschluss);
+                cms_ajaxanfrage (formulardaten, abschluss);
               }
             }
 
@@ -892,7 +892,7 @@ function cms_stundenplanung_import_speichern() {
               formulardaten.append('import', 'j');
               formulardaten.append('art', 'Kurse');
               formulardaten.append('anfragenziel', '220');
-              cms_ajaxanfrage (false, formulardaten, kurseanlegen);
+              cms_ajaxanfrage (formulardaten, kurseanlegen);
             }
             // STUNDEN PLATZIEREN
             else if (stundennr < stundenanzahl) {
@@ -906,13 +906,13 @@ function cms_stundenplanung_import_speichern() {
               formulardaten.append('lehrer', stundeninfo[4]);
               formulardaten.append('raum', stundeninfo[5]);
               formulardaten.append('anfragenziel', '352');
-              cms_ajaxanfrage (false, formulardaten, stundenplatzieren);
+              cms_ajaxanfrage (formulardaten, stundenplatzieren);
             }
             else {
               formulardaten = new FormData();
               formulardaten.append('zuordnen', zuordnen);
               formulardaten.append('anfragenziel', '353');
-              cms_ajaxanfrage (false, formulardaten, abschluss);
+              cms_ajaxanfrage (formulardaten, abschluss);
             }
           }
           else {
@@ -920,13 +920,13 @@ function cms_stundenplanung_import_speichern() {
           }
         }
 
-        cms_ajaxanfrage (false, formulardaten, analyseergebnisII);
+        cms_ajaxanfrage (formulardaten, analyseergebnisII);
       }
       else {
         cms_fehlerbehandlung(rueckgabe);
       }
     }
 
-    cms_ajaxanfrage (false, formulardaten, analyseergebnisI);
+    cms_ajaxanfrage (formulardaten, analyseergebnisI);
 	}
 }

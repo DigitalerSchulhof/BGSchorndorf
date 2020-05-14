@@ -55,7 +55,7 @@ function cms_speicherplatzstatistik(bereich, gesamtspeicher) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 
 }

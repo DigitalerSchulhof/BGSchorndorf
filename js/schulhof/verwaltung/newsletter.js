@@ -9,7 +9,7 @@ function cms_neuer_newsletter(ziel) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_newsletter_bearbeiten_vorbereiten(id, ziel) {
@@ -29,7 +29,7 @@ function cms_newsletter_bearbeiten_vorbereiten(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_newsletter_details_vorbereiten(id, ziel) {
@@ -49,7 +49,7 @@ function cms_newsletter_details_vorbereiten(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_newsletter_empfaenger_anlegen(id) {
@@ -115,7 +115,7 @@ function cms_newsletter_empfaenger_anlegen_ok(id) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Empfänger hinzufügen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -180,7 +180,7 @@ function cms_newsletter_empfaenger_bearbeiten_ok(id) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Empfänger bearbeitet', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -207,7 +207,7 @@ function cms_newsletter_empfaenger_loeschen(id) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 
 }
 
@@ -229,7 +229,7 @@ function cms_newsletter_empfaenger_loeschen_alle(id) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 
 }
 
@@ -285,7 +285,7 @@ function cms_newsletter_neu_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neuen Newsletter anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -317,7 +317,7 @@ function cms_newsletter_bearbeiten_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Galerie bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -344,7 +344,7 @@ function cms_newsletter_loeschen(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_newsletter_alle_loeschen_vorbereiten() {
@@ -365,7 +365,7 @@ function cms_newsletter_alle_loeschen() {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_newsletter_senden(id) {
@@ -389,5 +389,5 @@ function cms_newsletter_senden(id) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

@@ -34,7 +34,7 @@ function cms_fehlermeldung_einhanden() {
       if (rueckgabe == "ERFOLG") {cms_link('Website/Feedback/Danke!');}
       else {cms_fehlerbehandlung(rueckgabe);}
     }
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
   else {
     cms_meldung_an('fehler', 'Fehler melden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -64,7 +64,7 @@ function cms_feedback_einhanden() {
       if (rueckgabe == "ERFOLG") {cms_link('Website/Feedback/Danke!');}
       else {cms_fehlerbehandlung(rueckgabe);}
     }
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
   else {
     cms_meldung_an('fehler', 'Fehler melden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');

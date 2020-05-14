@@ -29,7 +29,7 @@ function cms_netzcheck(zeigen) {
 				var formulardaten = new FormData();
 				formulardaten.append("anfragenziel", '169');
 				formulardaten.append("status", '1');
-				cms_ajaxanfrage (false, formulardaten, null);
+				cms_ajaxanfrage (formulardaten, null);
 			}
 			else if (anfrage.readyState==4) {
 				if (zeigen == 'j') {
@@ -40,7 +40,7 @@ function cms_netzcheck(zeigen) {
 				var formulardaten = new FormData();
 				formulardaten.append("anfragenziel", '169');
 				formulardaten.append("status", '0');
-				cms_ajaxanfrage (false, formulardaten, null);
+				cms_ajaxanfrage (formulardaten, null);
 			}
 		};
 		anfrage.open("POST",CMS_LN_DA+"php/oeffentlich/anfragen/echo.php",true);
@@ -76,6 +76,6 @@ function cms_vplan_gruende (id, zeit, art) {
 			}
 			else {gruendeplan[id].innerHTML = '';}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }

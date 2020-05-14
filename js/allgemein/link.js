@@ -37,7 +37,7 @@ function cms_mobinavi_aendern(id) {
 				else {cms_fehlerbehandlung(rueckgabe);}
 			}
 
-			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+			cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 		}
 		else {
 			feld.style.display = 'none';

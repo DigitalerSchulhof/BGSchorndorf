@@ -15,7 +15,7 @@ function cms_besucherstatistik_schulhof_zeitraum(jahr, jahrS, monatS, jahrE, mon
       $("#besucherstatistik").html(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 var cms_aktuell = {start: {jahr: 0, monat: 0}, ende: {jahr: 0, monat: 0}, typ: 0, modus: "letzte", geloescht: true, startseite: true};
@@ -45,7 +45,7 @@ function cms_besucherstatistik_website_zeitraum(typ, jahr, jahrS, monatS, jahrE,
       $("#besucherstatistik").html(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_besucherstatistik_website_startseite_toggle(typ) {
@@ -71,7 +71,7 @@ function cms_besucherstatistik_website_startseite_toggle(typ) {
       $("#besucherstatistik").html(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_besucherstatistik_website_geloescht_toggle(typ) {
@@ -97,5 +97,5 @@ function cms_besucherstatistik_website_geloescht_toggle(typ) {
       $("#besucherstatistik").html(rueckgabe);
     }
   }
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

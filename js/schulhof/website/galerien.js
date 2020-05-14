@@ -9,7 +9,7 @@ function cms_neue_galerie(ziel) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_galerie_bearbeiten_vorbereiten(id, ziel) {
@@ -29,7 +29,7 @@ function cms_galerie_bearbeiten_vorbereiten(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_galerie_eingabenpruefen() {
@@ -150,7 +150,7 @@ function cms_galerie_neu_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neue Galerie anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -186,7 +186,7 @@ function cms_galerie_bearbeiten_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Galerie bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -213,7 +213,7 @@ function cms_galerie_loeschen(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_galerien_jahr_loeschen_vorbereiten() {
@@ -237,7 +237,7 @@ function cms_galerien_jahr_loeschen() {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_galerieverwaltung(jahr, spalten, anfang, ende) {
@@ -274,7 +274,7 @@ function cms_galerieverwaltung(jahr, spalten, anfang, ende) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -293,7 +293,7 @@ function cms_galerie_genehmigen(id, ziel) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_galerie_ablehnen(id, ziel) {
@@ -311,7 +311,7 @@ function cms_galerie_ablehnen(id, ziel) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 $(document).ready(function () {

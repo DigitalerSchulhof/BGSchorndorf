@@ -21,17 +21,18 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 
 	$code .= "<table class=\"cms_liste\">";
 		$code .= "<thead>";
-			$code .= "<tr><th></th><th>Name</th><th>Mail</th><th>Zuordnung</th><th>Benutzername</th><th>Aktionen</th></tr>";
+			$code .= "<tr><th></th><th>Name</th><th>Klasse</th><th>Mail</th><th>Zuordnung</th><th>Benutzername</th><th>Aktionen</th></tr>";
 		$code .= "</thead>";
 		$code .= "<tbody>";
-		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname FROM nutzerregistrierung) AS x ORDER BY nachname, vorname, titel");
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(klasse, '$CMS_SCHLUESSEL') AS klasse, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname FROM nutzerregistrierung) AS x ORDER BY nachname, vorname, titel");
 		$ausgabe = "";
 		if ($sql->execute()) {
-			$sql->bind_result($resid, $titel, $email, $vorname, $nachname);
+			$sql->bind_result($resid, $titel, $klasse, $email, $vorname, $nachname);
 			while ($sql->fetch()) {
 				$ausgabe .= "<tr>";
 					$ausgabe .= "<td><img src=\"res/icons/klein/details.png\"></td>";
 					$ausgabe .= "<td>".cms_generiere_anzeigename($vorname, $nachname, $titel)."</td>";
+					$ausgabe .= "<td>$klasse</td>";
 					$ausgabe .= "<td>".$email."</td>";
 					$ausgabe .= "<td><select name=\"cms_registrierung_per_$resid\" id=\"cms_registrierung_per_$resid\">$OPTIONEN</select></td>";
 					$benutzername = substr($nachname, 0, min(8,strlen($nachname))).substr($vorname, 0, min(3,strlen($vorname)))."-bg";

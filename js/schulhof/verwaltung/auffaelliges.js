@@ -14,7 +14,7 @@ function cms_auffaelliges_details(id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_auffaelliges_status_setzen(id, status) {
@@ -34,7 +34,7 @@ function cms_auffaelliges_status_setzen(id, status) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_auffaelliges_loeschen(id) {
@@ -57,7 +57,7 @@ function cms_auffaelliges_notizen_speichern(id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_auffaelliges_alle_loeschen_vorbereiten() {
@@ -78,5 +78,5 @@ function cms_auffaelliges_alle_loeschen() {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

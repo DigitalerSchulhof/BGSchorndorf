@@ -8,7 +8,7 @@ function cms_neue_ferien() {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_ferien_neu_speichern() {
@@ -30,7 +30,7 @@ function cms_ferien_neu_speichern() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neuen Ferientermin anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -57,7 +57,7 @@ function cms_ferien_bearbeiten_speichern() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Ferientermin bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -81,7 +81,7 @@ function cms_ferien_bearbeiten_vorbereiten(id) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_ferien_loeschen_vorbereiten(id, bezeichnung) {
@@ -105,7 +105,7 @@ function cms_ferien_loeschen(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_ferientermine_eingabenpruefen(modus) {
@@ -181,7 +181,7 @@ function cms_ferien_jahr_loeschen() {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -219,6 +219,6 @@ function cms_ferienverwaltung(jahr, spalten, anfang, ende) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }

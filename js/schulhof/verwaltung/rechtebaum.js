@@ -104,7 +104,7 @@ function cms_rechte_speichern_nutzer() {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_alle_rechte_ausklappen(box, papa) {

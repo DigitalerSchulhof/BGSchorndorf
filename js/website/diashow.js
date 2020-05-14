@@ -21,7 +21,7 @@ function cms_diashows_anzeigen (id, spalte, position, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_diashows_neu_speichern(zusatz) {
@@ -106,7 +106,7 @@ function cms_diashows_neu_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -195,6 +195,6 @@ function cms_diashows_bearbeiten_speichern(zusatz) {
   		else {cms_fehlerbehandlung(rueckgabe);}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }

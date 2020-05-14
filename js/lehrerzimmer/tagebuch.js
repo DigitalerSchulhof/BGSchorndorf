@@ -14,7 +14,7 @@ function cms_tagebuchmeldung_laden() {
     }
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 function cms_notfallzustand_anzeigen(wert, app) {
@@ -56,7 +56,7 @@ function cms_notfallzustand(wert, app) {
       }
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
   }
 }
 
@@ -104,7 +104,7 @@ function cms_tagebuchdetails_laden() {
       document.getElementById('cms_persoenlichestagebuch').innerHTML = rueckgabe;
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
   }
 }
 
@@ -136,7 +136,7 @@ function cms_tagebuch_eintragbearbeiten(id) {
       feld.innerHTML = rueckgabe;
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
   }
 }
 
@@ -377,7 +377,7 @@ function cms_tagebuch_eintrag_speichern(freigabe) {
     }
   }
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 
@@ -395,7 +395,7 @@ function cms_stundenerzeugen_vorbereiten(sjid) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -533,13 +533,13 @@ function cms_stundenerzeugen_speichern() {
             formulardaten.append("erster", 	    'n');
             formulardaten.append("anfragenziel", 	'36');
 
-            cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+            cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
           }
         }
         else {cms_fehlerbehandlung(rueckgabe);}
       }
 
-      cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
     }
     else {
       cms_meldung_an('erfolg', 'Stunden und Tagebücher erzeugen', '<p>Es war nichts zu erzeugen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung\');">OK</span></p>');

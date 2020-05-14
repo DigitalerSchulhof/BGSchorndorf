@@ -27,7 +27,7 @@ function cms_gruppe_abonnieren(art, id) {
         cms_fehlerbehandlung(rueckgabe);
       }
   	}
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
   else {
     cms_meldung_fehler();
@@ -408,7 +408,7 @@ function cms_blogeintraegeintern_neu_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neuen Blogeintrag anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -442,7 +442,7 @@ function cms_blogeintraegeintern_bearbeiten_vorbereiten(id, ziel, gruppe, gruppe
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_blogeintraegeintern_bearbeiten_speichern(ziel) {
@@ -474,7 +474,7 @@ function cms_blogeintraegeintern_bearbeiten_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Blogeintrag bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -503,7 +503,7 @@ function cms_blogeintraegeintern_loeschen(id, gruppe, gruppenid, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_termineintern_neu_speichern(ziel) {
@@ -535,7 +535,7 @@ function cms_termineintern_neu_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neuen Termin anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -566,7 +566,7 @@ function cms_termineintern_bearbeiten_vorbereiten(id, ziel, gruppe, gruppenid, s
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_termineintern_bearbeiten_speichern(ziel) {
@@ -598,7 +598,7 @@ function cms_termineintern_bearbeiten_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Termin bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -627,7 +627,7 @@ function cms_termineintern_loeschen(id, gruppe, gruppenid, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_pinnwand_speichern(gruppe, gruppenid, ziel) {
@@ -649,7 +649,7 @@ function cms_gruppe_pinnwand_speichern(gruppe, gruppenid, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -1023,7 +1023,7 @@ function cms_chat_nachricht_melden(art, gid, id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 /* Nachricht löschen - Bestätigung */
 function cms_chat_nachricht_loeschen_anzeigen(t) {

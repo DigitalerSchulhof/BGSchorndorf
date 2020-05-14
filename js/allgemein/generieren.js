@@ -167,7 +167,7 @@ function cms_neue_captcha(uid) {
     cms_laden_aus();
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 var cms_stopschreiben_timeouts = {};

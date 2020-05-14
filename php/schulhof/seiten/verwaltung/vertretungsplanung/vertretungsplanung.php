@@ -273,12 +273,13 @@ if (cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
 
 
       $code .= "<ul class=\"cms_reitermenue\">";
-        $code .= "<li><span id=\"cms_reiter_konflikte_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('konflikte', 0,5)\">Liste</span></li> ";
-        $code .= "<li><span id=\"cms_reiter_konflikte_1\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 1,5)\">Plan</span></li> ";
-        $code .= "<li><span id=\"cms_reiter_konflikte_2\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 2,5)\">Stundendetails</span></li> ";
-        $code .= "<li><span id=\"cms_reiter_konflikte_3\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 3,5)\">Tagesinfo</span></li> ";
-        $code .= "<li><span id=\"cms_reiter_konflikte_4\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 4,5)\">Vorschau</span></li> ";
-        $code .= "<li><span id=\"cms_reiter_konflikte_5\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 5,5)\">Ausplanung</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_0\" class=\"cms_reiter_aktiv\" onclick=\"cms_reiter('konflikte', 0,6)\">Liste</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_1\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 1,6)\">Plan</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_2\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 2,6)\">Stundendetails</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_3\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 3,6)\">Tagesinfo</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_4\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 4,6)\">Vorschau</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_5\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 5,6)\">Ausplanung</span></li> ";
+        $code .= "<li><span id=\"cms_reiter_konflikte_6\" class=\"cms_reiter\" onclick=\"cms_reiter('konflikte', 6,6)\">Wünsche</span></li> ";
       $code .= "</ul>";
 
       $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_konflikte_0\" style=\"display: block;\">";
@@ -381,8 +382,13 @@ if (cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")) {
         $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_l', '');
         $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_r', '');
         $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_k', '');
-        $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_s', 'cms_vplan_alles_neuladen(\'a\', \'s\');');
+        $code .= cms_generiere_nachladen('cms_ausplanung_ausgeplant_s', '');
         $code .= "<input type=\"hidden\" name=\"cms_ausplanungen_ort\" id=\"cms_ausplanungen_ort\" value=\"v\">";
+        $code .= "</div>";
+      $code .= "</div>";
+      $code .= "<div class=\"cms_reitermenue_o\" id=\"cms_reiterfenster_konflikte_6\">";
+        $code .= "<div class=\"cms_reitermenue_i\">";
+        $code .= cms_generiere_nachladen('cms_vplan_vertretungswuensche', 'cms_vplan_alles_neuladen(\'a\', \'s\');');
         $code .= "</div>";
       $code .= "</div>";
       $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_vplan_vormerkungen_uebernehmen()\">Änderungen übernehmen und veröffentlichen</span> <span class=\"cms_button\" onclick=\"cms_vplan_drucken()\">Drucken</span> <span class=\"cms_button\" onclick=\"cms_vplan_standardansicht()\">Standardansicht</span></p>";

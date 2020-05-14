@@ -47,7 +47,7 @@ function cms_listen_personenliste_laden(art) {
     else {tabelle.innerHTML = '<tr><td class="cms_notiz">Bei der Erstellung der Liste ist ein Fehler aufgetreten.</td></tr>';}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_listen_gruppenliste_laden(gruppe, gruppenid) {
@@ -122,5 +122,5 @@ function cms_listen_gruppenliste_laden(gruppe, gruppenid) {
     else {tabelle.innerHTML = '<p class="cms_notiz cms_zentriert">Bei der Erstellung der Liste ist ein Fehler aufgetreten.</p>';}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

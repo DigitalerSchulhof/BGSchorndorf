@@ -9,7 +9,7 @@ function cms_neuer_blogeintrag(ziel) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -30,7 +30,7 @@ function cms_blogeintraege_bearbeiten_vorbereiten(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_blogeintraege_eingabenpruefen() {
@@ -220,7 +220,7 @@ function cms_blogeintraege_neu_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Neuen Blogeintrag anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -256,7 +256,7 @@ function cms_blogeintraege_bearbeiten_speichern(ziel) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Blogeintrag bearbeiten', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -284,7 +284,7 @@ function cms_blogeintraege_loeschen(id, ziel) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_blogeintraege_jahr_loeschen_vorbereiten() {
@@ -308,7 +308,7 @@ function cms_blogeintraege_jahr_loeschen() {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -346,7 +346,7 @@ function cms_blogeintragverwaltung(jahr, spalten, anfang, ende) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }
 
@@ -366,7 +366,7 @@ function cms_blog_genehmigen(gruppe, id, ziel) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -386,7 +386,7 @@ function cms_blog_ablehnen(gruppe, id, ziel) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_neuer_artikellink() {

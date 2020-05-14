@@ -2,7 +2,14 @@
 	include_once(__DIR__."/../funktionen/yaml.php");
 	use Async\Yaml;
 
-	if(is_null($CMS_WIKI)) {
+	$sql = $dbs->prepare("SELECT AES_DECRYPT(wikiknopf, '$CMS_SCHLUESSEL') FROM personen_einstellungen WHERE person = ?");
+	$sql->bind_param("i", $CMS_BENUTZERID);
+	$sql->bind_result($wikiknopf);
+	$sql->execute();
+	$sql->fetch();
+	$sql->close();
+
+	if(is_null($CMS_WIKI) && $wikiknopf) {
 
 		$wikilinks = file_get_contents(__DIR__."/../../../version/wikilinks.yml");
 
@@ -23,7 +30,7 @@
 		if($wikilinks && $wikilinks["seiten"] && is_array($wikilinks["seiten"])) {
 			foreach($wikilinks["seiten"] as $seite) {
 				$url = $seite["url"];
-				$typ = $seite["typ"];
+				$typ = $seite["typ"] ?? "url";
 				$wiki = $seite["wiki"];
 				if(is_array($url)) {
 					foreach($url as $u) {
