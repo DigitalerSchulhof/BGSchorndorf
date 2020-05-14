@@ -8,7 +8,7 @@ version:
       - In Registrierungen wird nun auch die Eingabe zur Klasse angezeigt.
       - Inaktive Blogeinträge werden bei zur Bearbeitung berechtigten Personen genauso schwächer dargestellt wie nicht genehmigte Blogeinträge.
       - Seitenrepertoire des Hilfe-Knopfs erweitert.
-      - Persönliche Einstellung, den Hilfe-Knopf zu verbergen hinzugefügt.
+      - Persönliche Einstellung um den Hilfe-Knopf zu verbergen wurde hinzugefügt.
       - Mehrfachauswahl auf mehreren Seiten eingeführt und verbessert.
   0_9_3:
     version: 0.9.3
