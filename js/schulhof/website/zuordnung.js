@@ -24,7 +24,7 @@ function cms_zuordnung_aktualisieren() {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_gruppe_zuordnen(gruppe, id) {

@@ -12,7 +12,7 @@ function cms_schienen_vorbereiten(id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schienen_fach_auswaehlen (id) {
@@ -53,7 +53,7 @@ function cms_schienen_kurse_laden (id) {
     else {schienenkursefeld.innerHTML = '<span class=\"cms_notiz\">Bein Laden der Kurse ist ein Fehler aufgetreten.</span><input type="hidden" name="cms_schiene_kursegewaehltids" id="cms_schiene_kursegewaehltids" value="'+gewaehlt+'">';}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 
 }
 
@@ -118,7 +118,7 @@ function cms_schienen_neu_speichern() {
       }
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -140,7 +140,7 @@ function cms_schienen_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schienen_bearbeiten_vorbereiten (id) {
@@ -157,7 +157,7 @@ function cms_schienen_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schienen_bearbeiten_speichern () {
@@ -188,6 +188,6 @@ function cms_schienen_bearbeiten_speichern () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

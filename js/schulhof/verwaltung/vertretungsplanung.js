@@ -35,7 +35,7 @@ function cms_vplan_schulstunden_laden_von() {
 			}
 			else {"<p class=\"cms_notiz\">Fehler beim Laden der Schulstunden.</p>";}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung_vplanstunden);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung_vplanstunden);
 	}
 }
 
@@ -70,7 +70,7 @@ function cms_vplan_schulstunden_laden_bis() {
 			}
 			else {"<p class=\"cms_notiz\">Fehler beim Laden der Schulstunden.</p>";}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung_vplanstunden);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung_vplanstunden);
 	}
 }
 
@@ -106,7 +106,7 @@ function cms_vplan_klassen_laden() {
 			else {"<p class=\"cms_notiz\">Fehler beim Laden der Klassen.</p>";}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -167,7 +167,7 @@ function cms_datumspeichern(tag, monat, jahr, art) {
 		formulardaten.append("art", 	art);
 		formulardaten.append("anfragenziel", 	'370');
 
-		cms_ajaxanfrage (false, formulardaten, null);
+		cms_ajaxanfrage (formulardaten, null);
 	}
 }
 
@@ -201,7 +201,7 @@ function cms_ausplanen_lausgeplant() {
 			else {feldlehreraus.innerHTML = rueckgabe;}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -235,7 +235,7 @@ function cms_ausplanen_rausgeplant() {
 			else {feldraumaus.innerHTML = rueckgabe;}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -269,7 +269,7 @@ function cms_ausplanen_kausgeplant() {
 			else {feldklasseaus.innerHTML = rueckgabe;}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -303,7 +303,7 @@ function cms_ausplanen_sausgeplant() {
 			else {feldstufeaus.innerHTML = rueckgabe;}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -444,7 +444,7 @@ function cms_ausplanung_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -481,7 +481,7 @@ function cms_ausplanung_loeschen(id, art) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -537,7 +537,7 @@ function cms_ausplanung_rueckabwicklung(id, art) {
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 function cms_ausplanung_rueckabwicklung_naechstestunde() {
@@ -604,7 +604,7 @@ function cms_ausplanung_rueckabwicklung_stunde(uid, kid, b) {
 				}
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 	else {
 		cms_ausplanung_rueckabwicklung_naechstestunde();
@@ -658,7 +658,7 @@ function cms_vplantext_laden() {
 				vtext.innerHTML = rueckgabe;
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -693,7 +693,7 @@ function cms_vplan_vplanvorschau() {
 				vplanvorschau.innerHTML = rueckgabe;
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -809,7 +809,7 @@ function cms_vplan_vtexte_speichern(aendern) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -1039,7 +1039,7 @@ function cms_vplan_konflikte_liste(sortierung, sortierrichtung) {
 				konflikteliste.innerHTML = '<p class=\"cms_notiz\">Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>';
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1075,7 +1075,7 @@ function cms_vplan_konflikte_planwahl() {
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -1129,7 +1129,7 @@ function cms_vplan_konflikte_plan() {
 				konflikteplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden der Konflikte ist ein Fehler aufgetreten.</p>';
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1238,7 +1238,7 @@ function cms_vplan_wochenplan_l(details) {
 				lehrerwochenplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Lehrerplans ist ein Fehler aufgetreten.</p>';
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1283,7 +1283,7 @@ function cms_vplan_wochenplan_r(details) {
 				raumwochenplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Raumplans ist ein Fehler aufgetreten.</p>';
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1325,7 +1325,7 @@ function cms_vplan_wochenplan_k() {
 				klassenwochenplan.innerHTML = '<p class=\"cms_notiz\">Beim Laden des Klassen- und Stufenplans ist ein Fehler aufgetreten.</p>';
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1424,7 +1424,7 @@ function cms_vplan_stunde_ueberschreiben(zusatzbem, zwang) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1466,7 +1466,7 @@ function cms_vplan_stunde_verlegen(zusatzbem, zwang) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1510,7 +1510,7 @@ function cms_vplan_stunde_ersetzen(zusatzbem, zwang) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1553,7 +1553,7 @@ function cms_vplan_stunde_tauschen(zwang) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1642,7 +1642,7 @@ function cms_vplan_freieressourcen_laden(modus, uid, kid, nr) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1726,7 +1726,7 @@ function cms_stundendetails_laden(uid, kid, datum, uhrzeit, anzeigen) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1762,7 +1762,7 @@ function cms_vplan_stunde_entfall (uid, kid, sichtbar) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1803,7 +1803,7 @@ function cms_vplan_stunde_aenderungenzurueck (uid, kid) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1839,7 +1839,7 @@ function cms_vplan_stunde_regelstundenplan (uid, kid) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -1903,7 +1903,7 @@ function cms_vplan_stunde_zusatzstunde (bemerkungszusatz, zwang) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -2001,7 +2001,7 @@ function cms_vplan_stunde_aendern (uid, kid, ort, bemerkungszusatz, zwang, leise
 				else {cms_fehlerbehandlung(rueckgabe);}
 			}
 
-			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+			cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 		}
 	}
 }
@@ -2058,7 +2058,7 @@ function cms_vplan_stundendetails_stunden_laden(uid, kid) {
 			}
 			else {"<p class=\"cms_notiz\">Fehler beim Laden der Schulstunden.</p>";}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung_vplanstunden);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung_vplanstunden);
 	}
 }
 
@@ -2080,7 +2080,7 @@ function cms_vplan_vormerkungen_uebernehmen() {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 function cms_vplan_vormerkungen_loeschen_anzeigen() {
@@ -2101,7 +2101,7 @@ function cms_vplan_vormerkungen_loeschen() {
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
 
@@ -2145,7 +2145,7 @@ function cms_vplan_regelstundenplan_zueuecksetzen() {
 			}
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 }
 
@@ -2175,7 +2175,7 @@ function cms_vplan_drucken() {
 	    }
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -2261,11 +2261,11 @@ function cms_vplan_auswahl_aendern(modus, aktion, sichtbar) {
 					if (aktion == 'entfall') {formulardaten.append("anfragenziel",	'18');}
 					if (aktion == 'sichtbarkeit') {formulardaten.append("anfragenziel",	'25');}
 
-          cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+          cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
         }
       }
 
-      cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
     }
     else {
 			cms_meldung_aus();

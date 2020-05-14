@@ -22,5 +22,5 @@ function cms_websuche_suchen (suche, ergebnis) {
 		ergebnisfeld.innerHTML = rueckgabe;
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

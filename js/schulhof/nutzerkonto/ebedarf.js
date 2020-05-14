@@ -89,7 +89,7 @@ function cms_ebestellung_neuberechnen() {
 				document.getElementById('cms_bestellzusammenfassung').innerHTML = rueckgabe;//'<td colspan="4" class=\"cms_zentriert cms_notiz\">Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Eingaben.</td>';
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 
 }
@@ -249,7 +249,7 @@ function cms_ebestellung_speichern() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -418,6 +418,6 @@ function cms_ebestellung_speichern2() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

@@ -89,7 +89,7 @@ function cms_schulhof_verwaltung_personen_neu_speichern () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -137,7 +137,7 @@ function cms_schulhof_verwaltung_personen_benutzerkonto_aendern () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -167,7 +167,7 @@ function cms_schulhof_verwaltung_personen_lehrerkuerzel_aendern () {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 
 
 	cms_laden_an('Lehrerkürzel ändern', 'Die neuen persönlichen Daten werden verschlüsselt gespeichert.');
@@ -231,7 +231,7 @@ function cms_schulhof_verwaltung_personen_persoenlich_aendern(art) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -258,7 +258,7 @@ function cms_schulhof_verwaltung_person_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 // Rolle vergeben
@@ -285,7 +285,7 @@ function cms_schulhof_verwaltung_personen_rolle_vergeben(anschalten, rolle) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -310,7 +310,7 @@ function cms_schulhof_verwaltung_personen_recht_vergeben(anschalten, recht) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -336,7 +336,7 @@ function cms_schulhof_verwaltung_personen_einstellungen (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -446,7 +446,7 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -501,7 +501,7 @@ function cms_persondazu(feldid, id, art, selbst, hinzufuegeart) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_personweg(feldid, id, selbst, hinzufuegeart) {
@@ -537,7 +537,7 @@ function cms_schulhof_verwaltung_person_schuljahr_einstellen(schuljahr, person) 
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -562,7 +562,7 @@ function cms_schulhof_verwaltung_personen_verknuepfung () {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_neueperson_nutzerkonto() {
@@ -604,7 +604,7 @@ function cms_schulhof_verwaltung_details_vorbreiten(anrede, id, ziel) {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -649,7 +649,7 @@ function cms_schulhof_verwaltung_nutzerkonto_neu_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -676,7 +676,7 @@ function cms_schulhof_verwaltung_nutzerkonto_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -720,7 +720,7 @@ function cms_personen_ids_aendern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -757,7 +757,7 @@ function cms_kurszuordnung_zuruecksetzen() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -879,7 +879,7 @@ function cms_personenimport_speichern() {
 			}
     }
 
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -900,7 +900,7 @@ function cms_kurszuordnungimport_stufen_laden() {
 				feld.innerHTML = rueckgabe;
       }
     }
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -933,7 +933,7 @@ function cms_kurszuordnungklassenregelunterricht_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -1028,7 +1028,7 @@ function cms_kurszuordnungimport_speichern() {
 			}
     }
 
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -1057,7 +1057,7 @@ function cms_nicht_zugeordnet_schueler_laden() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -1099,12 +1099,12 @@ function cms_nicht_zugeordnet_loeschen() {
 			var formulardaten = new FormData();
 			formulardaten.append("id",     		   personen[personennr]);
 			formulardaten.append("anfragenziel", '125');
-			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+			cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 		}
 		else {
 			cms_meldung_an('erfolg', 'Nicht zugeordnete Schüler löschen', '<p>Die Personen wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
 		}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

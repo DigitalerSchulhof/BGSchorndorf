@@ -6,7 +6,7 @@ function cms_notifikationen_loeschen() {
 	function anfragennachbehandlung(rueckgabe) {if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Nutzerkonto');}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -19,5 +19,5 @@ function cms_neuigkeit_schliessen(id) {
 	function anfragennachbehandlung(rueckgabe) {if (rueckgabe == "ERFOLG") {cms_link('Schulhof/Nutzerkonto/Neuigkeiten');}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

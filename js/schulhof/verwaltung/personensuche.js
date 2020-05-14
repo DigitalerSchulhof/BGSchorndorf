@@ -82,7 +82,9 @@ function cms_personensuche(id, art, gruppe) {
     }
 	}
 
-	cms_ajaxanfrage (fehler, formulardaten, anfragennachbehandlung);
+  if(!fehler) {
+	   cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+   }
 }
 
 
@@ -181,7 +183,7 @@ function cms_personenprofil(id) {
     else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -262,7 +264,9 @@ function cms_personensuche_mail(id) {
     }
 	}
 
-	cms_ajaxanfrage (fehler, formulardaten, anfragennachbehandlung);
+  if(!fehler) {
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+  }
 }
 
 
@@ -326,7 +330,7 @@ function cms_personenliste_laden() {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -407,7 +411,9 @@ function cms_personensuche_schuljahr(id) {
     }
 	}
 
-	cms_ajaxanfrage (fehler, formulardaten, anfragennachbehandlung);
+  if(!fehler) {
+	   cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+  }
 }
 
 

@@ -53,10 +53,10 @@ function cms_intern_vplan_laden(art) {
 			}
 	  }
 
-	  cms_ajaxanfrage (false, formulardatenh, heutenachbehandlung, CMS_LN_DA);
-	  cms_ajaxanfrage (false, formulardatenm, morgennachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (formulardatenh, heutenachbehandlung, CMS_LN_DA);
+	  cms_ajaxanfrage (formulardatenm, morgennachbehandlung, CMS_LN_DA);
 		if (art == 'l') {
-			cms_ajaxanfrage (false, formulardateng, geraetenachbehandlung);
+			cms_ajaxanfrage (formulardateng, geraetenachbehandlung);
 		}
 	}
 }

@@ -14,7 +14,7 @@ function cms_schulnetze_lehrernetz_laden() {
 			else {feld.innerHTML = rueckgabe;}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung, CMS_LN_DA);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 	}
 	else {
 		cms_meldung_firewall();
@@ -205,13 +205,13 @@ function cms_schulnetze_speichern() {
 								}
 								else {cms_fehlerbehandlung(rueckgabe);}
 							}
-							cms_ajaxanfrage (false, formulardatenl, anfragennachbehandlunglehrer, lehrer);
+							cms_ajaxanfrage (formulardatenl, anfragennachbehandlunglehrer, lehrer);
 
 							cms_laden_aus();
 						}
 						else {cms_fehlerbehandlung(rueckgabe);}
 					}
-					cms_ajaxanfrage (false, formulardatendb, anfragennachbehandlungdatenbank);
+					cms_ajaxanfrage (formulardatendb, anfragennachbehandlungdatenbank);
 				}
 				else if (rueckgabe.match(/^DATEI/)) {
 					meldung += '<li>die neue Konfigurationsdatei konnte nicht geschrieben werden.</li>';
@@ -219,7 +219,7 @@ function cms_schulnetze_speichern() {
 				}
 				else {cms_fehlerbehandlung(rueckgabe);}
 			}
-			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+			cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 		}
 	}
 	else {

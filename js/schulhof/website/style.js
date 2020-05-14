@@ -99,7 +99,7 @@ function cms_website_style_aendern() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Style ändern', '<p>Der neue Style konnte nicht übernommen werden, denn die Stylingregeln enthalten Fehler.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');

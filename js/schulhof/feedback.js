@@ -14,7 +14,7 @@ function cms_fehlermeldung_details(id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 function cms_fehlermeldung_status_setzen(id, status) {
   cms_laden_an('Fehlermeldung ändern', 'Wird verarbeitet...');
@@ -33,7 +33,7 @@ function cms_fehlermeldung_status_setzen(id, status) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_fehlermeldung_notizen_speichern(id) {
@@ -52,7 +52,7 @@ function cms_fehlermeldung_notizen_speichern(id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_feedback_details(id) {
@@ -71,7 +71,7 @@ function cms_feedback_details(id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 function cms_feedback_loeschen(id) {
   cms_laden_an('Feedback löschen', 'Wird verarbeitet...');
@@ -90,5 +90,5 @@ function cms_feedback_loeschen(id) {
     }
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

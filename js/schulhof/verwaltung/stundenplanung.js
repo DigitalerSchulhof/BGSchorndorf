@@ -13,7 +13,7 @@ function cms_stundenplanung_vorbereiten(sjid, zrid) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_stundenplanung_vollbild(vollbild) {
@@ -34,7 +34,7 @@ function cms_stundenplanung_vollbild(vollbild) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -56,7 +56,7 @@ function cms_stundenplanung_modus(modus) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -78,7 +78,7 @@ function cms_stundenplanung_stufewaehlen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -100,7 +100,7 @@ function cms_stundenplanung_klassewaehlen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -122,7 +122,7 @@ function cms_stundenplanung_kurswaehlen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -144,7 +144,7 @@ function cms_stundenplanung_lehrerwaehlen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -166,7 +166,7 @@ function cms_stundenplanung_raumwaehlen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -188,7 +188,7 @@ function cms_stundenplanung_rythmuswaehlen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -226,7 +226,7 @@ function cms_stundeplatzieren(tag, stunde) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -248,7 +248,7 @@ function cms_stundeloeschen(id) {
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
 
-	  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -288,6 +288,6 @@ function cms_stundenplan_vorbereiten(art, id, zeitraum) {
       else {cms_fehlerbehandlung(rueckgabe);}
     }
 
-    cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

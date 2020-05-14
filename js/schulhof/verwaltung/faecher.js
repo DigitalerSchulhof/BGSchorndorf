@@ -12,7 +12,7 @@ function cms_faecher_vorbereiten(id) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_faecher_neu_speichern() {
@@ -77,7 +77,7 @@ function cms_faecher_neu_speichern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -213,11 +213,11 @@ function cms_faecher_import_speichern() {
           formulardaten.append("kollegen", "");
           formulardaten.append("anfragenziel", 	'80');
 
-          cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+          cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
         }
       }
 
-      cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
     }
     else {
       cms_meldung_an('erfolg', 'Fächer importieren', '<p>Es war nichts zu importieren.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">OK</span></p>');
@@ -245,7 +245,7 @@ function cms_schulhof_faecher_loeschen(anzeigename, id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 /* RAUM WIRD ZUM BEARBEITEN VORBEREITET */
@@ -263,7 +263,7 @@ function cms_schulhof_faecher_bearbeiten_vorbereiten (id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_faecher_bearbeiten () {
@@ -327,6 +327,6 @@ function cms_schulhof_faecher_bearbeiten () {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

@@ -69,13 +69,13 @@ function cms_anmelden (benutzername, passwort, art) {
 							var formulardaten = new FormData();
 							formulardaten.append("anfragenziel", '169');
 							formulardaten.append("status", '1');
-							cms_ajaxanfrage (false, formulardaten, anmeldungdurchfuehren);
+							cms_ajaxanfrage (formulardaten, anmeldungdurchfuehren);
 						}
 						else if (anfrage.readyState==4) {
 							var formulardaten = new FormData();
 							formulardaten.append("anfragenziel", '169');
 							formulardaten.append("status", '0');
-							cms_ajaxanfrage (false, formulardaten, anmeldungdurchfuehren);
+							cms_ajaxanfrage (formulardaten, anmeldungdurchfuehren);
 						}
 					};
 					anfrage.open("POST",gesicherteadresse+"php/oeffentlich/anfragen/echo.php",true);
@@ -89,7 +89,7 @@ function cms_anmelden (benutzername, passwort, art) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -140,7 +140,7 @@ function cms_abmelden(art) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 // Aktivitätsanzeige anpassen
@@ -254,7 +254,7 @@ function cms_timeout_aktualisieren (art) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -278,7 +278,7 @@ function cms_timeout_verlaengern() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -324,7 +324,7 @@ function cms_passwort_vergessen () {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -435,7 +435,7 @@ function cms_registrieren (element) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -485,7 +485,7 @@ function cms_registrieren_uebernehmen (res) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -509,5 +509,5 @@ function cms_registrieren_loeschen(id) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

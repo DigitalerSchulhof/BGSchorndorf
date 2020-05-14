@@ -28,7 +28,7 @@ function cms_element_freigeben(art, id, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_element_ablehnen(art, id, modus, zusatz) {
@@ -45,7 +45,7 @@ function cms_element_ablehnen(art, id, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_element_aktivieren(art, id, modus, zusatz) {
@@ -62,7 +62,7 @@ function cms_element_aktivieren(art, id, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_element_alleaktivieren(seite, modus, zusatz) {
@@ -78,7 +78,7 @@ function cms_element_alleaktivieren(seite, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_element_allefreigeben(seite, modus, zusatz) {
@@ -94,7 +94,7 @@ function cms_element_allefreigeben(seite, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -117,5 +117,5 @@ function cms_element_loeschen(art, id, modus, zusatz) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

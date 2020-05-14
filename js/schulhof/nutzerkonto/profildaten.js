@@ -46,7 +46,7 @@ function cms_schulhof_nutzerkonto_benutzerkonto_aendern () {
         cms_fehlerbehandlung(rueckgabe);
       }
   	}
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -73,7 +73,7 @@ function cms_schulhof_nutzerkonto_lehrerkuerzel_aendern () {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 /* PASSWORT WIRD GEÄNDERT */
@@ -124,7 +124,7 @@ function cms_schulhof_nutzerkonto_passwort_aendern () {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -182,7 +182,7 @@ function cms_nutzerkonto_identitaetsdiebstahl() {
 			cms_meldung_an('fehler', 'Identitäsdiebstahl melden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 		}
 		else {
-			cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+			cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 		}
 	}
 }
@@ -206,7 +206,7 @@ function cms_identitaetsdiebstahl_loeschen(id, zeit) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_schulhof_nutzerkonto_einstellungen_aendern() {
@@ -292,7 +292,7 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -313,7 +313,7 @@ function cms_schulhof_nutzerkonto_schuljahr_einstellen(schuljahr) {
 			cms_fehlerbehandlung(rueckgabe);
 		}
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_persoenliche_notizen_speichern() {
@@ -332,7 +332,7 @@ function cms_persoenliche_notizen_speichern() {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_favorit_loeschen_anzeigen(fid, url) {
@@ -370,7 +370,7 @@ function cms_favorisieren(fid, url, fw) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_seite_todo_speichern(gruppe, gruppenid, art, artikelid) {
@@ -405,7 +405,7 @@ function cms_seite_todo_speichern(gruppe, gruppenid, art, artikelid) {
 			} else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -441,7 +441,7 @@ function cms_seite_todo_setzen(gruppe, gruppenid, art, artikelid) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_eigenes_todo_speichern() {
@@ -500,7 +500,7 @@ function cms_eigenes_todo_speichern() {
 			} else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -517,7 +517,7 @@ function cms_eigenes_todo_loeschen(id) {
 		} else {cms_fehlerbehandlung(rueckgabe);}
 
 	}
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 function cms_favorit_benennen(fid) {
@@ -536,5 +536,5 @@ function cms_favorit_benennen(fid) {
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
-	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }

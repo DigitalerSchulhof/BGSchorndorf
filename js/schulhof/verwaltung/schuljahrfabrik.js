@@ -19,7 +19,7 @@ function cms_schuljahrfabrik_vorbereiten(id, ziel, zielschuljahr) {
     else {cms_fehlerbehandlung(rueckgabe);}
   }
 
-  cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
 
@@ -217,7 +217,7 @@ function cms_schuljahrfabrik_grundlagen() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -251,7 +251,7 @@ function cms_schuljahrfabrik_profile() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -288,7 +288,7 @@ function cms_schuljahrfabrik_schueleruebernehmen(feldid, bestandsid, gruppe, gru
       }
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -418,7 +418,7 @@ function cms_schuljahrfabrik_schueleringruppen() {
       else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -541,7 +541,7 @@ function cms_schuljahrfabrik_klassenkurse() {
     			else {cms_fehlerbehandlung(rueckgabe);}
     		}
         cms_laden_an('Schuljahrfabrik – Kurse für Klassen anlegen', 'Mitglieder werden übertragen');
-    		cms_ajaxanfrage (false, formulardateninnen, anfragennachbehandlunginnen);
+    		cms_ajaxanfrage (formulardateninnen, anfragennachbehandlunginnen);
 			}
       else if (nachfehler) {
         cms_meldung_an('fehler', 'Schuljahrfabrik – Kurse für Klassen anlegen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -549,7 +549,7 @@ function cms_schuljahrfabrik_klassenkurse() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
     cms_laden_an('Schuljahrfabrik – Kurse für Klassen anlegen', 'Die Daten werden verarbeitet');
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -745,7 +745,7 @@ function cms_schuljahrfabrik_stufenkurse() {
                 fehler = true;
               }
 
-              cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+              cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
             }
     			}
           else if (nachfehler) {
@@ -755,7 +755,7 @@ function cms_schuljahrfabrik_stufenkurse() {
     		}
     	}
 
-      cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
     }
     else {
       cms_meldung_an('erfolg', 'Schuljahrfabrik – Kurse für Stufen anlegen', '<p>Es war nichts zu erzeugen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung\');">Zurück zur Übersicht</span> <span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Schuljahrfabrik/Personen_in_Kursen\');">Weiter zu »Personen in Kursen«</span></p>');
@@ -831,7 +831,7 @@ function cms_schuljahrfabrik_personeninkursen() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -920,6 +920,6 @@ function cms_schuljahrfabrik_lehrauftraege() {
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }

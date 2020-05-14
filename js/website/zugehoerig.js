@@ -29,6 +29,6 @@ function cms_zugehoerig_laden (feldid, jahr, gruppe, gruppenid, url) {
   		else {feld.innerHTML = rueckgabe;}
   	}
 
-  	cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+  	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
   }
 }

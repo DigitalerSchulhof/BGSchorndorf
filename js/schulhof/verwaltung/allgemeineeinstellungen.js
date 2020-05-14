@@ -41,7 +41,7 @@ function cms_einstellungen_rechte_aendern() {
 	formulardaten.append("rechteeltern", 			rechteeltern);
 	formulardaten.append("rechteexterne", 		rechteexterne);
 	formulardaten.append("anfragenziel", 			'230');
-	cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+	cms_ajaxanfrage (formulardaten, cms_einstellungen_anfragennachbehandlung);
 }
 
 
@@ -100,7 +100,7 @@ function cms_einstellungen_gruppen_aendern() {
 	else {
 		cms_laden_an('Gruppen-Einstellungen ändern', 'Die Änderungen werden übernommen.');
 		formulardaten.append("anfragenziel", 	'225');
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }
 
@@ -208,7 +208,7 @@ function cms_einstellungen_stundenplaene_aendern() {
 		formulardaten.append("buchungsbeginnM", 						buchungsbeginnM);
 		formulardaten.append("buchungsendeS", 							buchungsendeS);
 		formulardaten.append("buchungsendeM", 							buchungsendeM);
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }
 
@@ -268,7 +268,7 @@ function cms_einstellungen_tagebuch_aendern() {
 		formulardaten.append("hausaufgaben", 					hausaufgaben);
 		formulardaten.append("entschuldigungen", 			entschuldigungen);
 		formulardaten.append("mindestabwesenheit", 		abwesenheitsmin);
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }
 
@@ -333,7 +333,7 @@ function cms_einstellungen_website_aendern() {
 		formulardaten.append("fehlermeldungangemeldet", 	fehlermeldungangemeldet);
 		formulardaten.append("feedbackaktiv", 						feedbackaktiv);
 		formulardaten.append("feedbackangemeldet", 				feedbackangemeldet);
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }
 
@@ -438,7 +438,7 @@ function cms_einstellungen_geraeteverwaltung_aendern() {
 		formulardaten.append("extvorname2", 			extvorname2);
 		formulardaten.append("extnachname2", 			extnachname2);
 		formulardaten.append("extmail2", 					extmail2);
-		cms_ajaxanfrage (false, formulardaten, cms_einstellungen_anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, cms_einstellungen_anfragennachbehandlung);
 	}
 }
 
