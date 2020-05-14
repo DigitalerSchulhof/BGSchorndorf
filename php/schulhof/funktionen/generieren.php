@@ -58,14 +58,6 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     }
     else {$fehler = true;}
     $sql->close();
-
-    // Persönliche Daten löschen
-    if ($id !== null) {
-      $sql = $db->prepare("UPDATE $tabelle SET idvon = NULL, idzeit = NULL WHERE id = ?");
-    	$sql->bind_param("i", $id);
-    	$sql->execute();
-    	$sql->close();
-    }
     cms_trennen($db);
   }
   return $id;
@@ -500,6 +492,9 @@ function cms_sonderrollen_generieren() {
   }
   if (cms_r("schulhof.technik.geräte.probleme")) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Probleme_melden\">Probleme melden</a></li> ";
+  }
+  if (cms_r("lehrerzimmer.vertretungsplan.wünsche")) {
+    $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Aufgaben/Vertretungsplan_Wüsche_äußern\">Vertretungsplanwünsche äußern</a></li> ";
   }
   if (cms_r("schulhof.technik.hausmeisteraufträge.erstellen")) {
     $code .= "<li><a class=\"cms_button\" href=\"Schulhof/Hausmeister\">Hausmeisteraufträge</a></li> ";

@@ -9,6 +9,8 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 
 	$zeiten = cms_blogeintrag_zeiten($daten);
 
+	if (!isset($daten['aktiv'])) {$daten['aktiv'] = 1;}
+
 	if ($art != 'diashow') {
 		$code .= "<li>";
 	}
@@ -19,7 +21,7 @@ function cms_blogeintrag_link_ausgeben($dbs, $daten, $art, $internvorlink = "") 
 		else if ($daten['art'] == 'in') {$link = $internvorlink."/Blog/";}
 	}
 	$link .= $zeiten['jahr']."/".$zeiten['monatname']."/".$zeiten['tag']."/$bezeichnunglink";
-	if ($daten['genehmigt'] == 0) {$zusatzklasse = " cms_nicht_genehmigt";} else {$zusatzklasse = "";}
+	if (($daten['genehmigt'] == 0) || ($daten['aktiv'] == 0)) {$zusatzklasse = " cms_nicht_genehmigt";} else {$zusatzklasse = "";}
 	$code .= "<a class=\"cms_bloglink$zusatzklasse\" href=\"$link\"><div class=\"cms_bloglinkinnen\">";
 	if ($art == 'liste') {$code .= cms_blogeintrag_kalenderblatterzeugen($daten, $zeiten);}
 	$code .= "<p class=\"cms_notiz\">".cms_blogeintrag_dauernotiz($daten, $zeiten)."</p>";

@@ -11,6 +11,8 @@ function cms_termin_link_ausgeben($dbs, $daten, $internvorlink = "") {
 
 	$zeiten = cms_termin_zeiten($daten);
 
+	if (!isset($daten['aktiv'])) {$daten['aktiv'] = 1;}
+
 	$code .= "<li>";
 	$link = "";
 	if ($CMS_URL[0] == 'Website') {$link = "Website/Termine/";}
@@ -19,7 +21,7 @@ function cms_termin_link_ausgeben($dbs, $daten, $internvorlink = "") {
 		else if ($daten['art'] == 'in') {$link = $internvorlink."/Termine/";}
 	}
 	$link .= $zeiten['jahrb']."/".$zeiten['monatnameb']."/".$zeiten['tagb']."/$bezeichnunglink";
-	if ($daten['genehmigt'] == 0) {$zusatzklasse = " cms_nicht_genehmigt";} else {$zusatzklasse = "";}
+	if (($daten['genehmigt'] == 0) || ($daten['aktiv'] == 0)) {$zusatzklasse = " cms_nicht_genehmigt";} else {$zusatzklasse = "";}
 
 	// Override für Ferien
 	if (($daten['art'] == 'f') || ($daten['art'] == 'b') || ($daten['art'] == 't') || ($daten['art'] == 's')) {

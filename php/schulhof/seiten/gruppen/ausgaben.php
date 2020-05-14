@@ -12,6 +12,7 @@ function cms_gruppentermine_ausgeben($dbs, $gruppe, $gruppenid, $limit, $CMS_URL
 		$jetzt = time();
 		$sqloe = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, 'oe' AS art FROM termine JOIN $gk"."termine ON termine.id = $gk"."termine.termin WHERE gruppe = ? AND ende > ? AND aktiv = 1 ORDER BY beginn ASC, ende ASC LIMIT ?";
 		$sqlin = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, beginn, ende, mehrtaegigt, uhrzeitbt, uhrzeitet, ortt, genehmigt, aktiv, AES_DECRYPT(text, '$CMS_SCHLUESSEL') AS text, 'in' AS art FROM $gk"."termineintern WHERE gruppe = ? AND ende > ?$aktivitaetnoetig ORDER BY beginn ASC, ende ASC LIMIT ?";
+
 		$sql = $dbs->prepare("SELECT * FROM (($sqloe) UNION ($sqlin)) AS x ORDER BY beginn ASC, ende ASC, bezeichnung ASC LIMIT ?");
 		$sql->bind_param("iiiiiii", $gruppenid, $jetzt, $limit, $gruppenid, $jetzt, $limit, $limit);
 		// Terminausgabe erzeugen

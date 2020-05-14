@@ -2,10 +2,13 @@
 version:
   0_9_4:
     version: 0.9.4
-    tag: Donnerstag, den 14. Mai 2020
+    tag: Donnerstag, 14. Mai 2020
     neuerungen:
+      - Vertretungsplanwünsche können über den Digitalen Schulhof eingereicht werden.
+      - In Registrierungen wird nun auch die Eingabe zur Klasse angezeigt.
+      - Inaktive Blogeinträge werden bei zur Bearbeitung berechtigten Personen genauso schwächer dargestellt wie nicht genehmigte Blogeinträge.
       - Seitenrepertoire des Hilfe-Knopfs erweitert.
-      - Persönliche Einstellung, den Hilfe-Knopf zu verbergen, sollte dieser zu sehr helfen, hinzugefügt.
+      - Persönliche Einstellung, den Hilfe-Knopf zu verbergen hinzugefügt.
       - Mehrfachauswahl auf mehreren Seiten eingeführt und verbessert.
   0_9_3:
     version: 0.9.3

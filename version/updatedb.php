@@ -181,3 +181,7 @@ ALTER TABLE `eposten`  ADD CONSTRAINT `bestellunggeraet` FOREIGN KEY (`geraet`) 
 
 ALTER TABLE `personen_einstellungen` ADD `wikiknopf` VARBINARY(50) NOT NULL AFTER `inaktivitaetszeit`;
 UPDATE `personen_einstellungen` SET wikiknopf = AES_ENCRYPT('1', '{cms_schluessel}');
+
+CREATE TABLE `cms_schulhof`.`vplanwuensche` ( `id` BIGINT(255) UNSIGNED NOT NULL , `datum` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `wunsch` LONGBLOB NULL DEFAULT NULL , `status` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL , `idvon` BIGINT(255) UNSIGNED NULL , `idzeit` BIGINT(255) UNSIGNED NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;
+
+-- 0.9.4
