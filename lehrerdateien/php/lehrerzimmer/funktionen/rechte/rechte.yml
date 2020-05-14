@@ -566,6 +566,7 @@ lehrerzimmer:
   vertretungsplan:
     ausplanungen: Ausplanungen vornehmen
     vertretungsplanung: Vertretungsplanung vornehmen
+    wünsche: Wünsche für Planänderungen äußern
 technik:
   fehlermeldungen: Fehlermeldungen verwalten
   feedback: Feedback verwalten

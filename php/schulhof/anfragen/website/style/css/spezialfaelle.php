@@ -303,6 +303,11 @@
 	z-index: 100;
 }
 
+.cms_erledigt {
+	text-decoration: line-through;
+	opacity: .5;
+}
+
 // DUNKEL;
 
 #cms_dsgvo_datenschutz .cms_meldung {

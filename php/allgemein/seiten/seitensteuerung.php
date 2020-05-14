@@ -125,6 +125,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Geräte_verwalten/Problembericht_bearbeiten'] = 'php/schulhof/seiten/aufgaben/geraete/problemberichtbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Identitätsdiebstähle_behandeln']             = 'php/schulhof/seiten/aufgaben/identitaetsdiebstahl/identitaetsdiebstahl.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Registrierungen']                            = 'php/schulhof/seiten/aufgaben/registrierungen/registrierungen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben/Vertretungsplan_Wüsche_äußern']              = 'php/schulhof/seiten/aufgaben/vplanwuensche/vplanwuensche.php';
   // Hausmeister
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister']                                         = 'php/schulhof/seiten/hausmeister/hausmeister.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Hausmeister/Aufträge']                                = 'php/schulhof/seiten/hausmeister/auftraege.php';

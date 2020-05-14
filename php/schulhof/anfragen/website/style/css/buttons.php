@@ -111,14 +111,26 @@
 	background-color: @h_haupt_hintergrund;
 }
 
+.cms_button_passiv:hover {
+	color: @h_haupt_abstufung1;
+	border: 1px solid @h_haupt_abstufung1;
+	background-color: @h_haupt_hintergrund;
+}
+
 .cms_button_passivda {
 	color: @d_haupt_schriftfarbenegativ;
 	border: 1px solid @d_haupt_schriftfarbenegativ;
 	background-color: @h_haupt_hintergrund;
 }
 
+.cms_button_passivda:hover {
+	color: @d_haupt_schriftfarbenegativ;
+	border: 1px solid @d_haupt_schriftfarbenegativ;
+	background-color: @h_haupt_hintergrund;
+}
+
 .cms_button_gesichert:hover, .cms_iconbutton_gesichert:hover,
-.cms_button_passiv:hover, .cms_button_passivda {
+.cms_button_passiv:hover, .cms_button_passivda:hover {
 	cursor: default;
 }
 
@@ -385,7 +397,19 @@ h6+.cms_toggleeinblenden {
 	background-color: @d_haupt_hintergrund;
 }
 
+.cms_button_passiv:hover {
+	color: @d_haupt_abstufung1;
+	border: 1px solid @d_haupt_abstufung1;
+	background-color: @d_haupt_hintergrund;
+}
+
 .cms_button_passivda {
+	color: @d_haupt_schriftfarbepositiv;
+	border: 1px solid @d_haupt_schriftfarbepositiv;
+	background-color: @d_haupt_hintergrund;
+}
+
+.cms_button_passivda:hover {
 	color: @d_haupt_schriftfarbepositiv;
 	border: 1px solid @d_haupt_schriftfarbepositiv;
 	background-color: @d_haupt_hintergrund;
