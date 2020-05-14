@@ -160,12 +160,10 @@ function cms_multiselect_schulhof_postfach_nachricht_papierkorb_anzeige (modus) 
 }
 
 function cms_multiselect_schulhof_postfach_nachricht_papierkorb (modus) {
-	cms_laden_an('Nachrichten in den Papierkorb legen', 'Die Nachrichten werden in den Papierkorb gelegt.');
-
 	var ids = [];
 	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 
-	cms_multiselect_anfrage(53, {"id": ids}, {"modus": modus}).then((rueckgabe) => {
+	cms_multianfrage(53, ["Nachrichten in den Papierkorb legen", "Die Nachrichten werden in den Papierkorb gelegt."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
 			var ziel = '';
 			if (modus == 'eingang') {ziel = 'Posteingang';}
@@ -217,24 +215,17 @@ function cms_multiselect_schulhof_postfach_nachricht_loeschen_anzeige (modus) {
 
 
 function cms_multiselect_schulhof_postfach_nachricht_loeschen (modus) {
-	cms_laden_an('Nachrichten endgültig löschen', 'Die Nachrichten weden endgültig gelöscht.');
-
-	var formulardaten = new FormData();
 	var ids = [];
 	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
-	formulardaten.append("ids",     	JSON.stringify(ids));
-	formulardaten.append("modus",     modus);
-	formulardaten.append("anfragenziel", 	'400');
 
-	function anfragennachbehandlung(rueckgabe) {
+	cms_multianfrage(54, ["Nachrichten endgültig löschen", "Die Nachrichten weden endgültig gelöscht."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
 			cms_link('Schulhof/Nutzerkonto/Postfach/Papierkorb');
 		}
 		else {
 			cms_fehlerbehandlung(rueckgabe);
 		}
-	}
-	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+	});
 }
 
 
@@ -269,16 +260,9 @@ function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id
 }
 
 function cms_multiselect_schulhof_postfach_nachricht_zuruecklegen (modus) {
-	cms_laden_an('Nachrichten zurücklegen', 'Die Nachrichten werden aus dem Papierkorb zurückgelegt.');
-
-	var formulardaten = new FormData();
 	var ids = [];
 	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
-	formulardaten.append("ids",     	JSON.stringify(ids));
-	formulardaten.append("modus",    	modus);
-	formulardaten.append("anfragenziel", 	'389');
-
-	function anfragennachbehandlung(rueckgabe) {
+	cms_multianfrage(55, ["Nachrichten zurücklegen", "Die Nachrichten werden aus dem Papierkorb zurückgelegt."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
 			var ziel = '';
 			if (modus == 'eingang') {ziel = 'Posteingang';}
@@ -289,8 +273,7 @@ function cms_multiselect_schulhof_postfach_nachricht_zuruecklegen (modus) {
 		else {
 			cms_fehlerbehandlung(rueckgabe);
 		}
-	}
-	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+	});
 }
 
 /* Nachrichtenansicht wird für Benutzung vorbereitet */
@@ -475,9 +458,8 @@ function cms_postfach_nachricht_taggen(anschalten, tagid, app) {
 		cms_laden_an('Nachricht taggen', 'Der Tag wird von der Nachricht entfernt.');
 	}
 
-
 	var formulardaten = new FormData();
-	formulardaten.append("tagid",  		tagid);
+	formulardaten.append("tagid",  			tagid);
 	formulardaten.append("anschalten",  anschalten);
 	formulardaten.append("anfragenziel", 	'62');
 
@@ -497,6 +479,40 @@ function cms_postfach_nachricht_taggen(anschalten, tagid, app) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen(papierkorb, modus, anschalten) {
+	cms_ajaxanfrage(388).then((rueckgabe) => {
+		rueckgabe = JSON.parse(rueckgabe);
+		var tags = "";
+		rueckgabe.forEach((t) => tags += "<span class=\"cms_toggle\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen('"+papierkorb+"', '"+modus+"', '"+anschalten+"', "+t[0]+")\">"+t[1]+"</span>");
+		cms_meldung_an("", "Tag auswählen", tags, "<span class=\"cms_button_nein\" onclick=\"cms_meldung_aus();\">Abbrechen</span>");
+	});
+}
+
+function cms_multiselect_schulhof_postfach_nachrichten_taggen(papierkorb, modus, anschalten, tag) {
+	var ids = [];
+	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	if(anschalten == 1) {
+		var n = ["Nachrichten taggen", "Der Tag wird den Nachrichten zugewiesen"];
+	} else {
+		var n = ["Nachrichten taggen", "Der Tag wird den Nachrichten entfernt"];
+	}
+	cms_multianfrage(62, n, {id: ids}, {modus: modus, anschalten: anschalten, tagid: tag}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			if(papierkorb == "-") {
+				var ziel = '';
+				if (modus == 'eingang') {ziel = 'Posteingang';}
+				if (modus == 'entwurf') {ziel = 'Entwürfe';}
+				if (modus == 'ausgang') {ziel = 'Postausgang';}
+				cms_link('Schulhof/Nutzerkonto/Postfach/'+ziel);
+			} else {
+				cms_link('Schulhof/Nutzerkonto/Postfach/Papierkorb');
+			}
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
+}
 
 function cms_postfach_nachrichten_laden(modus, papierkorb, id, app) {
 	var app = app || "nein";

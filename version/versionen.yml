@@ -1,5 +1,12 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9_4:
+    version: 0.9.4
+    tag: Donnerstag, den 14. Mai 2020
+    neuerungen:
+      - Seitenrepertoire des Hilfe-Knopfs erweitert.
+      - Persönliche Einstellung, den Hilfe-Knopf zu verbergen, sollte dieser zu sehr helfen, hinzugefügt.
+      - Mehrfachauswahl auf mehreren Seiten eingeführt und verbessert.
   0_9_3:
     version: 0.9.3
     tag: Mittwoch, den 13. Mai 2020

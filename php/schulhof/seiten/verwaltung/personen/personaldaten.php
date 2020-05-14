@@ -205,7 +205,7 @@ function cms_personaldaten_ausgeben($id) {
 				$sjbezakt = "";
 				$sjakt = false;
 
-				$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, beginn, ende FROM schuljahre ORDER BY beginn DESC");
+				$sql = $dbs->prepare("SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), beginn, ende FROM schuljahre ORDER BY beginn DESC");
 				$jetzt = time();
 				if ($sql->execute()) {
 					$sql->bind_result($sjid, $sjbez, $sjbeginn, $sjende);
@@ -373,7 +373,7 @@ function cms_personaldaten_ansprechpartner_ausgeben($id) {
 				else if ($art == 'e') {
 					// Kinder
 					$kinder = "";
-					$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = ?) AS personen ORDER BY nachname, vorname");
+					$sql = $dbs->prepare("SELECT * FROM (SELECT DISTINCT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') FROM schuelereltern JOIN personen ON personen.id = schuelereltern.schueler WHERE schuelereltern.eltern = ?) ORDER BY nachname, vorname");
 					$sql->bind_param("i", $id);
 					if ($sql->execute()) {
 						$sql->bind_result($kid, $kvor, $knach, $ktit);

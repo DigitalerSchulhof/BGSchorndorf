@@ -355,6 +355,7 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 	var terminoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_terminoeffentlich').value;
 	var blogoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_blogoeffentlich').value;
 	var galerieoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_galerieoeffentlich').value;
+	var wikiknopf = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_wikiknopf').value;
 
 	var meldung = '<p>Die Änderungen konnten nicht vorgenommen werden, denn ...</p><ul>';
 	var fehler = false;
@@ -400,6 +401,10 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 		meldung += '<li>die Eingabe der zulässigen Inaktivitätszeit ist keine Zahl.</li>';
 		fehler = true;
 	}
+	if (!cms_check_toggle(wikiknopf)) {
+		meldung += '<li>die Eingabe für den Hilfe-Knopf ist ungültig.</li>';
+		fehler = true;
+	}
 
 	if (!fehler) {
 		if (postalletage < 1) {
@@ -427,19 +432,20 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 		cms_laden_an('Einstellungen ändern', 'Das neue Passwort wird verschlüsselt gespeichert.');
 
 		var formulardaten = new FormData();
-		formulardaten.append("postmail", 			postmail);
-		formulardaten.append("postalletage", 		Math.floor(postalletage));
+		formulardaten.append("postmail", 						postmail);
+		formulardaten.append("postalletage", 				Math.floor(postalletage));
 		formulardaten.append("postpapierkorbtage", 	Math.floor(postpapierkorbtage));
 		formulardaten.append("notifikationsmail", 	notifikationsmail);
-		formulardaten.append("vertretungsmail", 	vertretungsmail);
-		formulardaten.append("uebersichtsanzahl", uebersichtsanzahl);
+		formulardaten.append("vertretungsmail", 		vertretungsmail);
+		formulardaten.append("uebersichtsanzahl", 	uebersichtsanzahl);
 		formulardaten.append("inaktivitaetszeit", 	inaktivitaetszeit);
 		formulardaten.append("terminoeffentlich", 	terminoeffentlich);
 		formulardaten.append("blogoeffentlich", 		blogoeffentlich);
 		formulardaten.append("galerieoeffentlich", 	galerieoeffentlich);
-		formulardaten.append("id", 					id);
-		formulardaten.append("modus", 				1);
-		formulardaten.append("anfragenziel", 	'68');
+		formulardaten.append("wikiknopf", 					wikiknopf);
+		formulardaten.append("id", 									id);
+		formulardaten.append("modus", 							1);
+		formulardaten.append("anfragenziel", 				'68');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {cms_meldung_an('erfolg', 'Einstellungen ändern', '<p>Die neuen Einstellungen wurden übernommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen/Einstellungen_des_Nutzerkontos\');">OK</span></p>');}
