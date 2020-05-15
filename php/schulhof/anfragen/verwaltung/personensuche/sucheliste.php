@@ -119,7 +119,10 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					else if ($pgeschlecht == 'w') {$geschlecht = "&#x2640;";}
 					else if ($pgeschlecht == 'u') {$geschlecht = "&#x26a5;";}
 					// GEBURTSDATUM UMÄNDERN
-					$ausgabe .= "<tr><td>$icon</td><td>$ptitel</td><td>$pnachname</td><td>$pvorname</td><td>$geschlecht</td>";
+
+					$hpid = "<input type=\"hidden\" class=\"cms_person_id\" value=\"$pid\">";
+
+					$ausgabe .= "<tr><td class=\"cms_multiselect\">$hpid$icon</td><td>$ptitel</td><td>$pnachname</td><td>$pvorname</td><td>$geschlecht</td>";
 					$online = "offline.png";
 					if ($psessiontimeout > $jetzt) {$online = "online.png";}
 					$ausgabe .= "<td>";
@@ -184,6 +187,10 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					$ausgabe .= "</td></tr>";
 				}
 			}
+			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
+				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Nutzerkonten löschen</span><img src=\"res/icons/klein/nutzerkonto_loeschen.png\"></span> ";
+				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_verwaltung_personen_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Personen löschen</span><img src=\"res/icons/klein/person_loeschen.png\"></span> ";
+			$ausgabe .= "</td></tr>";
 			$sql->close();
 		}
 		if ($anzahl == 0) {
