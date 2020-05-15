@@ -1,5 +1,13 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9_5:
+    version: 0.9.5
+    tag: Freitag, 15. Mai 2020
+    neuerungen:
+      - Fehler beim Speichern der persönlichen Einstellungen behoben.
+      - Mehrfachauswahl weiter implementiert.
+      - Internen Fehler bei der Erstellung von Datensätzen behoben.
+      - Wir haben einen Keks versteckt.
   0_9_4:
     version: 0.9.4
     tag: Donnerstag, 14. Mai 2020

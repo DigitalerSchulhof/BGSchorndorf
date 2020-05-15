@@ -69,9 +69,6 @@ function cms_ajaxanfrage (a, b, c, d) {
 		var anfrage = new XMLHttpRequest();
 		anfrage.onreadystatechange = function() {
 			if (anfrage.readyState==4 && anfrage.status==200) {
-				if(titel !== null) {
-					cms_laden_aus();
-				}
 				erfolg(anfrage.responseText);
 				// Rückwärtskompatibilität
 				if (typeof callback === "function") {callback(anfrage.responseText);}

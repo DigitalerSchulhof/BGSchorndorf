@@ -161,7 +161,7 @@ function cms_multiselect_schulhof_postfach_nachricht_papierkorb_anzeige (modus) 
 
 function cms_multiselect_schulhof_postfach_nachricht_papierkorb (modus) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 
 	cms_multianfrage(53, ["Nachrichten in den Papierkorb legen", "Die Nachrichten werden in den Papierkorb gelegt."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
@@ -216,7 +216,7 @@ function cms_multiselect_schulhof_postfach_nachricht_loeschen_anzeige (modus) {
 
 function cms_multiselect_schulhof_postfach_nachricht_loeschen (modus) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 
 	cms_multianfrage(54, ["Nachrichten endgültig löschen", "Die Nachrichten weden endgültig gelöscht."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
@@ -261,7 +261,7 @@ function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id
 
 function cms_multiselect_schulhof_postfach_nachricht_zuruecklegen (modus) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 	cms_multianfrage(55, ["Nachrichten zurücklegen", "Die Nachrichten werden aus dem Papierkorb zurückgelegt."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
 			var ziel = '';
@@ -490,7 +490,7 @@ function cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen(papierkor
 
 function cms_multiselect_schulhof_postfach_nachrichten_taggen(papierkorb, modus, anschalten, tag) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 	if(anschalten == 1) {
 		var n = ["Nachrichten taggen", "Der Tag wird den Nachrichten zugewiesen"];
 	} else {
