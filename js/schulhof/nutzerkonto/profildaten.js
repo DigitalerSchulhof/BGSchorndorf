@@ -379,6 +379,7 @@ function cms_favorisieren(fid, url, fw) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+// Speichert Bezeichnung + Beschreibung
 function cms_seite_todo_speichern(gruppe, gruppenid, art, artikelid) {
 	var bezeichnung = document.getElementById('cms_todo_bezeichnung').value;
 	var beschreibung = document.getElementById('cms_todo_beschreibung').value;
@@ -415,6 +416,7 @@ function cms_seite_todo_speichern(gruppe, gruppenid, art, artikelid) {
 	}
 }
 
+// Speichert Status
 function cms_seite_todo_setzen(gruppe, gruppenid, art, artikelid) {
 	var todo = document.getElementById('cms_seite_todo');
 	var neuerwert = '0';
@@ -544,3 +546,18 @@ function cms_favorit_benennen(fid) {
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
+
+$(document).ready(function () {
+	$("body").on("keydown", (e) => {
+		if(e.keyCode === 16) {
+			$("#cms_todo_setzen").hide();
+			$("#cms_todo_loeschen").show();
+		}
+	});
+	$("body").on("keyup", (e) => {
+		if(e.keyCode === 16) {
+			$("#cms_todo_setzen").show();
+			$("#cms_todo_loeschen").hide();
+		}
+	});
+});

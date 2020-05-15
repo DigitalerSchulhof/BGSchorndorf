@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_9_6:
+    version: 0.9.6
+    tag: Samstag, 16. Mai 2020
+    neuerungen:
+      - Wenn die Umschalttaste gedrückt ist, können ToDo's direkt gelöscht werden, ohne die »ToDo bearbeiten«-Seite aufzurufen. (<a href="https://praxistipps.chip.de/umschalttaste-welche-ist-das_9956" target="_blank">Wo ist die Umschalttaste</a>)
   0_9_5:
     version: 0.9.5
     tag: Freitag, 15. Mai 2020
