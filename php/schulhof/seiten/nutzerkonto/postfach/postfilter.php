@@ -358,7 +358,12 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 			}
 			$hnid = "<input type=\"hidden\" class=\"cms_nachricht_id\" value=\"{$N['id']}\">";
 
-			$code .= "<td class=\"$klasse\" style=\"position: relative\">".$hnid.$tags.$icon."</td>";
+			$meta = 0;
+			$meta |= (($N['gelesen'] != "-") << 0);
+
+			$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
+
+			$code .= "<td class=\"$klasse\" style=\"position: relative\">".$hnid.$hmeta.$tags.$icon."</td>";
 			$betreffevent = cms_texttrafo_e_event($N['betreff']);
 			$lesen = "cms_postfach_nachricht_lesen('$modus', '".$N['anzeigename']."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$N['id']."', '$app')";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['anzeigename'].$markierungh."</td>";
@@ -432,8 +437,8 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 	if($app != 'app' && count($NACHRICHTEN) > 0) {
 		$code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"6\">";
 			if ($modus == "eingang") {
-				$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_lesen('1')\"><span class=\"cms_hinweis\">Alle als gelesen markieren</span><img src=\"res/icons/klein/lesen.png\"></span> ";
-				$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_lesen('0')\"><span class=\"cms_hinweis\">Alle als ungelesen markieren</span><img src=\"res/icons/klein/entlesen.png\"></span> ";
+				$code .= "<span class=\"cms_aktion_klein\" data-multiselect-maske=\"1\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_lesen('1')\"><span class=\"cms_hinweis\">Alle als gelesen markieren</span><img src=\"res/icons/klein/lesen.png\"></span> ";
+				$code .= "<span class=\"cms_aktion_klein\" data-multiselect-maske=\"2\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_lesen('0')\"><span class=\"cms_hinweis\">Alle als ungelesen markieren</span><img src=\"res/icons/klein/entlesen.png\"></span> ";
 			}
 			$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen('$papierkorb', '$modus', '1')\"><span class=\"cms_hinweis\">Alle taggen</span><img src=\"res/icons/klein/tag.png\"></span> ";
 			$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen('$papierkorb', '$modus', '0')\"><span class=\"cms_hinweis\">Alle enttaggen</span><img src=\"res/icons/klein/tag_loeschen.png\"></span> ";

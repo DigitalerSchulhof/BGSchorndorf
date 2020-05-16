@@ -70,8 +70,26 @@ function cms_multiselect_toggle(dis, sofort) {
 
   tr.toggleClass("cms_multiselect_s");
 
+  var metaa = -1;
+  var metao = 0;
+
+  $(".cms_multiselect_s .cms_multiselect_meta").each((i, e) => {
+    metaa &= parseInt($(e).val());
+    metao |= parseInt($(e).val());
+  });
   var aktionen = [];
-  menue.find("td>span").each((i, e) => aktionen.push($(e).clone()));
+  menue.find("td>span").each((i, e) => {
+    var maske = $(e).data("multiselect-maske");
+    var push = true;
+    if(maske !== undefined) {
+      var meta = (maske >> 1 & 1) ? metao : metaa;
+      push = (~(((meta >> (maske >> 2)) & 1) ^ ((maske >> 1) & 1))) & 1;
+    }
+    if(push) {
+      aktionen.push($(e).clone())
+    }
+  });
+
   context.html(aktionen);
   context.find(".cms_hinweis").removeClass("cms_hinweis").addClass("cms_alter_hinweis");
 

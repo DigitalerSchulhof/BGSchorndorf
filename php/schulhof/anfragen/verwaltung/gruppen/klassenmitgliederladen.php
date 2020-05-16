@@ -24,7 +24,7 @@ if (cms_angemeldet() && cms_r("schulhof.gruppen.kurse.[|anlegen,bearbeiten]")) {
 			$sql .= " personen ON klassenmitglieder.person = personen.id WHERE gruppe IN $klassen) AS x ORDER BY nachname ASC, vorname ASC, titel ASC";
 			$sql = $dbs->prepare($sql);
 			if ($sql->execute()) {
-				$sql->bind_result($pid, $pvorname, $pnachname, $ptitel, $part)
+				$sql->bind_result($pid, $pvorname, $pnachname, $ptitel, $part);
 				while ($sql->fetch()) {
 					$code .= "|".$pid.";".$part.";".cms_generiere_anzeigename($pvorname, $pnachname, $ptitel);
 				}

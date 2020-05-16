@@ -500,6 +500,9 @@ function cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen(papierkor
 		rueckgabe = JSON.parse(rueckgabe);
 		var tags = "";
 		rueckgabe.forEach((t) => tags += "<span class=\"cms_toggle\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen('"+papierkorb+"', '"+modus+"', '"+anschalten+"', "+t[0]+")\">"+t[1]+"</span> ");
+		if(tags == "") {
+			tags = "<p class=\"cms_notiz\">Keine Tags verfügbar</p>";
+		}
 		cms_meldung_an("", "Tag auswählen", tags, "<span class=\"cms_button_nein\" onclick=\"cms_meldung_aus();\">Abbrechen</span>");
 	});
 }
