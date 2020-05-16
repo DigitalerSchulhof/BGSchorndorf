@@ -54,7 +54,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.anlegen")) {
 	  $sql->close();
 
 		// EINSTELLUNGEN DER PERSON EINTRAGEN
-		$sql = $dbs->prepare("INSERT INTO personen_einstellungen (person, notifikationsmail, postmail, postalletage, postpapierkorbtage, vertretungsmail, uebersichtsanzahl, oeffentlichertermin, oeffentlicherblog, oeffentlichegalerie, inaktivitaetszeit, wikiknopf) VALUES (?, AES_ENCRYPT('0', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('365','$CMS_SCHLUESSEL'), AES_ENCRYPT('30','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('5','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('30','$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'));");
+		$sql = $dbs->prepare("INSERT INTO personen_einstellungen (person, notifikationsmail, postmail, postalletage, postpapierkorbtage, vertretungsmail, uebersichtsanzahl, oeffentlichertermin, oeffentlicherblog, oeffentlichegalerie, inaktivitaetszeit, wikiknopf, dateiaenderung) VALUES (?, AES_ENCRYPT('0', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('365','$CMS_SCHLUESSEL'), AES_ENCRYPT('30','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('5','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('1','$CMS_SCHLUESSEL'), AES_ENCRYPT('30','$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'), AES_ENCRYPT('1', '$CMS_SCHLUESSEL'));");
 		$sql->bind_param("i", $id);
 		$sql->execute();
 		$sql->close();

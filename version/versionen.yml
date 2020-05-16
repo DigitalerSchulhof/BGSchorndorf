@@ -5,6 +5,7 @@ version:
     tag: Samstag, 16. Mai 2020
     neuerungen:
       - Wenn die Umschalttaste gedrückt ist, können ToDo's direkt gelöscht werden, ohne die »ToDo bearbeiten«-Seite aufzurufen. (<a href="https://praxistipps.chip.de/umschalttaste-welche-ist-das_9956" target="_blank">Wo ist die Umschalttaste</a>)
+      - In den persönlichen Einstellungen kann ausgewählt werden, ob Dateiänderungen in abbonnierten Gruppen eine Notifikation verursacht.
   0_9_5:
     version: 0.9.5
     tag: Freitag, 15. Mai 2020

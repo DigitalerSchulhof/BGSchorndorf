@@ -372,6 +372,7 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 	var terminoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_terminoeffentlich').value;
 	var blogoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_blogoeffentlich').value;
 	var galerieoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_galerieoeffentlich').value;
+	var dateiaenderung = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_dateiaenderung').value;
 	var wikiknopf = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_wikiknopf').value;
 
 	var meldung = '<p>Die Änderungen konnten nicht vorgenommen werden, denn ...</p><ul>';
@@ -400,6 +401,10 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 	}
 	if (!cms_check_toggle(galerieoeffentlich)) {
 		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei öffentlichen Galerien ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!cms_check_toggle(dateiaenderung)) {
+		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei Dateiänderungen ist ungültig.</li>';
 		fehler = true;
 	}
 	if (!cms_check_ganzzahl(postalletage,1,1000)) {
@@ -459,6 +464,7 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 		formulardaten.append("terminoeffentlich", 	terminoeffentlich);
 		formulardaten.append("blogoeffentlich", 		blogoeffentlich);
 		formulardaten.append("galerieoeffentlich", 	galerieoeffentlich);
+		formulardaten.append("dateiaenderung", 			dateiaenderung);
 		formulardaten.append("wikiknopf", 					wikiknopf);
 		formulardaten.append("id", 									id);
 		formulardaten.append("modus", 							1);
