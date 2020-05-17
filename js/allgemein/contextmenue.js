@@ -70,6 +70,10 @@ function cms_multiselect_toggle(dis, sofort) {
 
   tr.toggleClass("cms_multiselect_s");
 
+  if(!$(".cms_multiselect_s").length) {
+    return;
+  }
+
   var metaa = -1;
   var metao = 0;
 
