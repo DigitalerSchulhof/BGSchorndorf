@@ -412,3 +412,12 @@ function cms_weiterleitung_loeschen(id) {
 	}
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
+
+function cms_multiselect_weiterleitungen_loeschen() {
+	cms_multianfrage(382, ["Weiterleitungen löschen", "Die Weiterleitungen werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_link("Schulhof/Website/Weiterleiten");
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
+}

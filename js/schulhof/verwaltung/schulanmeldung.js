@@ -193,6 +193,18 @@ function cms_schulanmeldung_loeschen(name, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_schulanmeldungen_loeschen_anzeigen() {
+  cms_meldung_an('warnung', 'Anmeldungen löschen', '<p>Sollen die Anmeldung wirklich gelöscht werden? Sie können nach der Löschung nicht wiederhergesetllt werden.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulanmeldungen_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schulanmeldungen_loeschen() {
+  cms_multianfrage(251, ["Anmeldungen löschen", "Die Anmeldungen werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+    if (rueckgabe == "ERFOLG") {
+      cms_meldung_an('erfolg', 'Anmeldungen löschen', '<p>Die Anmeldungen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulanmeldung\');">OK</span></p>');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  });
+}
 
 function cms_schulanmeldung_alleloeschen_anzeigen() {
   cms_meldung_an('warnung', 'Alle Anmeldungen löschen', '<p>Sollen wirklich <b>alle Anmeldungen</b> unwiederbringlich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulanmeldung_alleloeschen()">Löschung durchführen</span></p>');
@@ -246,6 +258,24 @@ function cms_schulanmeldung_ablehnen(name, id) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_schulanmeldung_aufnehmen() {
+  cms_multianfrage(253, ["Schüler aufnehmen", "Die Schüler werden aufgenommen"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+    if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Schüler aufnehmen', '<p>Die Schüler wurden an der Schule aufgenommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulanmeldung\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+  });
+}
+
+function cms_multiselect_schulanmeldung_ablehnen() {
+  cms_multianfrage(254, ["Schüler ablehnen", "Die Aufnahmen werden zurückgenommen"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+    if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Schüler ablehnen', '<p>Die Aufnahmen wurden zurückgenommen.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schulanmeldung\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+  });
 }
 
 function cms_schulanmeldung_drucken(id) {

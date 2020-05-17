@@ -15,6 +15,18 @@ if (!cms_check_ganzzahl($id,0) && ($id !== '-')) {echo "FEHLER";exit;}
 
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.durchführen")) {
 	$_SESSION['STUNDENPLANUNGKURSE'] = $id;
+
+	$dbs = cms_verbinden('s');
+	// Lehrer laden
+	$sql = $dbs->prepare("SELECT p.id FROM kursemitglieder as k JOIN personen as p ON k.person = p.id WHERE p.art = AES_ENCRYPT('l', '$CMS_SCHLUESSEL') AND k.gruppe = ?");
+	$sql->bind_param("i", $id);
+	$lid = null;
+	$sql->bind_result($lid);
+	$sql->execute();
+	$sql->fetch();
+	if($lid != null) {
+		$_SESSION['STUNDENPLANUNGLEHRER'] = $lid;
+	}
 	echo "ERFOLG";
 }
 else {

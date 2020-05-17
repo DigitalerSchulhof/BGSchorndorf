@@ -16,11 +16,13 @@ function cms_ferienverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loesch
   if ($sql->execute()) {
     $sql->bind_result($fid, $fbezeichnung, $fart, $fbeginn, $fende, $fmehrtaegigt, $fidvon, $fidzeit);
     while ($sql->fetch()) {
+      $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$fid\">";
+
       if ($fart == 'f') {$icon = "ferien.png";$art = "Ferien";}
       else if ($fart == 'b') {$icon = "beweglicherferientag.png";$art = "Beweglicher Ferientag";}
       else if ($fart == 't') {$icon = "feiertag.png";$art = "Feiertag";}
       else {$icon = "sonderereignis.png";$art = "Sonderereignis";}
-      $ferien .= '<tr><td><img src="res/icons/oegruppen/'.$icon.'"></td><td>'.$fbezeichnung.'</td>';
+      $ferien .= '<tr><td class="cms_multiselect">'.$hmeta.'<img src="res/icons/oegruppen/'.$icon.'"></td><td>'.$fbezeichnung.'</td>';
       $ferien .= "<td>$art</td>";
       $ferien .= "<td>".cms_tagnamekomplett(date('w', $fbeginn)).", ".date('d.m.Y', $fbeginn)."</td>";
       $ferien .= "<td>".cms_tagnamekomplett(date('w', $fende)).", ".date('d.m.Y', $fende)."</td>";
@@ -39,7 +41,14 @@ function cms_ferienverwaltung_suche($dbs, $jahr, $anzeigen, $bearbeiten, $loesch
     if (strlen($ferien) == 0) {
       $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Termine vorhanden --</td></tr>";
     }
-    else {$code .= $ferien;}
+    else {
+      $code .= $ferien;
+      $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
+      if ($loeschen) {
+        $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_ferien_loeschen_anzeigen()\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+      }
+      $code .= "</tr>";
+    }
   }
   $sql->close();
 

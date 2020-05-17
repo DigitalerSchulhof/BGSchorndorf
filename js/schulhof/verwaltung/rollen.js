@@ -82,7 +82,6 @@ function cms_schulhof_rolle_loeschen_anzeigen (anzeigename, id) {
 	cms_meldung_an('warnung', 'Rolle löschen', '<p>Soll die Rolle <b>'+anzeigename+'</b> wirklich gelöscht werden?</p><p>Jede Person, die diese Rolle inne hat, verliert sie und alle damit verbundenen Rechte!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_rolle_loeschen(\''+anzeigename+'\','+id+')">Löschung durchführen</span></p>');
 }
 
-
 function cms_schulhof_rolle_loeschen(anzeigename, id) {
 	cms_laden_an('Rolle löschen', 'Die Rolle <b>'+anzeigename+'</b> wird gelöscht.');
 
@@ -113,6 +112,19 @@ function cms_schulhof_rolle_loeschen(anzeigename, id) {
 
 		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
+}
+
+function cms_multiselect_schulhof_rollen_loeschen_anzeigen() {
+	cms_meldung_an('warnung', 'Rollen löschen', '<p>Sollen die Rollen wirklich gelöscht werden?</p><p>Jede Person, die eine dieser Rolle inne hat, verliert sie und alle damit verbundenen Rechte!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_rollen_loeschen()">Löschungen durchführen</span></p>');
+}
+
+function cms_multiselect_schulhof_rollen_loeschen() {
+	cms_multianfrage(143, ["Rollen löschen", "Die Rollen werden gelöscht."], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Rollen löschen', '<p>Die Rollen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Rollen\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
 }
 
 /* BEARBEITETE ROLLE WIRD GESPEICHERT */

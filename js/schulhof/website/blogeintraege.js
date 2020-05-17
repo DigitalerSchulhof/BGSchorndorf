@@ -267,7 +267,6 @@ function cms_blogeintraege_loeschen_vorbereiten(id, bezeichnung, ziel) {
 	cms_meldung_an('warnung', 'Blogeintrag löschen', '<p>Soll der Blogeintrag <b>'+bezeichnung+'</b> wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_blogeintraege_loeschen(\''+id+'\',\''+ziel+'\')">Löschung durchführen</span></p>');
 }
 
-
 function cms_blogeintraege_loeschen(id, ziel) {
 	cms_laden_an('Blogeintrag löschen', 'Der Blogeintrag wird gelöscht.');
 
@@ -285,6 +284,30 @@ function cms_blogeintraege_loeschen(id, ziel) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_blogeintraege_loeschen_anzeigen(ziel) {
+	cms_meldung_an('warnung', 'Blogeinträge löschen', '<p>Sollen die Blogeinträge wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_blogeintraege_loeschen(\''+ziel+'\')">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_blogeintraege_loeschen(ziel) {
+	cms_multianfrage(73, ["Blogeinträge löschen", "Die Blogeinträge werden gelöscht"], {id: cms_multiselect_ids()}, null, null, (rueckgaben) => {
+		// Berechtigung unterdrücken, falls nicht alle richtige Öffentlichkeit haben
+		let rueckgabe = "ERFOLG";
+		rueckgaben.forEach((rueck) => {
+			if(rueck != "ERFOLG" && rueck != "BERECHTIGUNG") {
+				rueckgabe = rueck;
+			}
+		});
+		return rueckgabe;
+	}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Blogeinträge löschen', '<p>Die Blogeinträge wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\''+ziel+'\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
 }
 
 function cms_blogeintraege_jahr_loeschen_vorbereiten() {

@@ -20,7 +20,9 @@ if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 			$sql->bind_result($sjid, $sjbez, $sjbeginn, $sjende);
 			while ($sql->fetch()) {
 				$ausgabe .= "<tr>";
-					$ausgabe .= "<td><img src=\"res/icons/klein/schuljahr.png\"></td>";
+					$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$sjid\">";
+
+					$ausgabe .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/schuljahr.png\"></td>";
 					$ausgabe .= "<td>$sjbez</td>";
 					$beginn = date('d.m.Y', $sjbeginn);
 					$ende = date('d.m.Y', $sjende);
@@ -61,6 +63,12 @@ if (cms_r("schulhof.planung.schuljahre.[|anlegen,bearbeiten,löschen]")) {
 
 		if ($ausgabe == "") {
 			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";
+		} else {
+			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"5\">";
+			if (cms_r("schulhof.planung.schuljahre.löschen")) {
+				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_schuljahr_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+			}
+			$ausgabe .= "</tr>";
 		}
 
 		echo $ausgabe;

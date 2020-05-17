@@ -37,7 +37,9 @@ $sql->close();
 
 
 foreach ($NEWSLETTER AS $daten) {
-  $newsletter .= '<tr><td><img src="res/icons/klein/newsletter.png"></td><td>'.$daten['bezeichnung'].'</td>';
+  $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\">";
+
+  $newsletter .= '<tr><td class="cms_multiselect">'.$hmeta.'<img src="res/icons/klein/newsletter.png"></td><td>'.$daten['bezeichnung'].'</td>';
   $zuordnungen = "";
   foreach ($CMS_GRUPPEN as $g) {
     $gk = cms_textzudb($g);
@@ -66,17 +68,22 @@ foreach ($NEWSLETTER AS $daten) {
   $newsletter .= '</tr>';
 }
 
-if (strlen($newsletter) == 0)
+if (strlen($newsletter) == 0) {
   $canzeigen .= "<tr><td colspan=\"4\" class=\"cms_notiz\">-- keine Newsletter vorhanden --</td></tr>";
-else
+} else {
   $canzeigen .= $newsletter;
-
+  $canzeigen .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"4\">";
+  if ($loeschen) {
+    $canzeigen .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_newsletter_loeschen_anzeigen('Schulhof/Website/Newsletter')\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+  }
+  $canzeigen .= "</tr>";
+}
 
 $canzeigen .= '</tbody>';
 $canzeigen .= '</tr>';
 $canzeigen .= '</table>';
 
-if (cms_r("schulhof.information.newsletter.löschen")) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen_vorbereiten()">Alle Newsletter löschen</span></p>';}
+if ($loeschen) {$canzeigen .= '<p><span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen_vorbereiten()">Alle Newsletter löschen</span></p>';}
 
 cms_trennen($dbs);
 

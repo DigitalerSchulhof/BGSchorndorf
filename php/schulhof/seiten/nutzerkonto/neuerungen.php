@@ -54,8 +54,10 @@ if(cms_r("technik.server.update")) {
 	$version = function ($v, $version, $sichtbar = 0) {
 		$code = "<h4>".$version["version"]." - ".$version["tag"]."</h4>";
 		$code .= "<ul>";
-			foreach($version["neuerungen"] as $n)
-				$code .= "<li>$n</li>";
+			foreach($version["neuerungen"] as $n) {
+				$n = preg_replace_callback("/\[(W|E)\]/", function($m) {return "<span class=\"cms_notiz\">{$m[0]}</span>";}, $n);
+				$code .= "<li style=\"line-height: 1.45em\">$n</li>";
+			}
 		$code .= "</ul>";
 		return cms_toggleeinblenden_generieren ("cms_neuerungenverlaufknopf_$v", "Neuerungen in Version <b>".$version["version"]."</b> einblenden", "Neuerungen in Version <b>".$version["version"]."</b> ausblenden", $code, $sichtbar);
 	};

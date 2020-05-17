@@ -2,35 +2,38 @@
 version:
   0_9_6:
     version: 0.9.6
-    tag: Samstag, 16. Mai 2020
+    tag: Sonntag, 17. Mai 2020
     neuerungen:
-      - Wenn die Umschalttaste gedrückt ist, können ToDo's direkt gelöscht werden, ohne die »ToDo bearbeiten«-Seite aufzurufen. (<a href="https://praxistipps.chip.de/umschalttaste-welche-ist-das_9956" target="_blank">Wo ist die Umschalttaste</a>)
-      - In den persönlichen Einstellungen kann ausgewählt werden, ob Dateiänderungen in abbonnierten Gruppen eine Notifikation verursacht.
-      - Über die Mehrfachauswahl können im Postfach schnell Nachrichten als »gelesen« markiert werden.
-      - Aktionen, die keine Wirkung auf die gewählten Zeilen hat, werden in der Mehrfachauswahl ausgeblendet.
+      - "Wenn die Umschalttaste gedrückt ist, können ToDo's direkt gelöscht werden. (<a style='color: inherit' href='https://praxistipps.chip.de/umschalttaste-welche-ist-das_9956' target='_blank'>Wo ist die Umschalttaste [Chip-Praxistipp]</a>) [E]"
+      - In den persönlichen Einstellungen kann ausgewählt werden, ob Dateiänderungen in abonnierten Gruppen eine Notifikation verursacht. [E]
+      - Über die Mehrfachauswahl können Nachrichten im Postfach schnell als »gelesen« markiert werden. [E]
+      - Aktionen, die keine Wirkung auf die gewählten Zeilen haben, werden in der Mehrfachauswahl ausgeblendet. [E]
+      - "Mehrfachauswahl auf folgenden Seiten implementiert: Personen-, Rollen-, Gruppen-, Stundenplanzeiträume-, Fächer-, Profil-, Schienen-, Schuljahr-, Räume-, Leihgeräte-, Ferien-, Schulanmeldung-, Termine-, Blogeinträge-, Galerien-, Auszeichnung-, Newsletter-, Weiterleitungs-, Hausmeisteraufträge-, Feedbackverwaltung [E]"
+      - Stundenplanung etwas bequemer gemacht. [E]
+      - "🚧 Wir bauen interne Strukturen um. Es wird für einige Zeit wenig Neues mehr kommen. 🚧<br><b>Wir bedanken uns herzlich für das viele tolle Feedback und eure Ideen :)</b><br>~ Jesper Engberg und Patrick Wagner"
   0_9_5:
     version: 0.9.5
     tag: Freitag, 15. Mai 2020
     neuerungen:
-      - Fehler beim Speichern der persönlichen Einstellungen behoben.
-      - Mehrfachauswahl weiter implementiert.
-      - Internen Fehler bei der Erstellung von Datensätzen behoben.
+      - Fehler beim Speichern der persönlichen Einstellungen behoben. [E]
+      - Mehrfachauswahl weiter implementiert. [E]
+      - Internen Fehler bei der Erstellung von Datensätzen behoben. [E]
       - Wir haben einen Keks versteckt.
   0_9_4:
     version: 0.9.4
     tag: Donnerstag, 14. Mai 2020
     neuerungen:
-      - Vertretungsplanwünsche können über den Digitalen Schulhof eingereicht werden.
-      - In Registrierungen wird nun auch die Eingabe zur Klasse angezeigt.
-      - Inaktive Blogeinträge werden bei zur Bearbeitung berechtigten Personen genauso schwächer dargestellt wie nicht genehmigte Blogeinträge.
-      - Seitenrepertoire des Hilfe-Knopfs erweitert.
-      - Persönliche Einstellung um den Hilfe-Knopf zu verbergen wurde hinzugefügt.
-      - Mehrfachauswahl auf mehreren Seiten eingeführt und verbessert.
+      - Vertretungsplanwünsche können über den Digitalen Schulhof eingereicht werden. [W]
+      - In Registrierungen wird nun auch die Eingabe zur Klasse angezeigt. [W]
+      - Inaktive Blogeinträge werden bei zur Bearbeitung berechtigten Personen genauso schwächer dargestellt wie nicht genehmigte Blogeinträge. [W]
+      - Seitenrepertoire des Hilfe-Knopfs erweitert. [E]
+      - Persönliche Einstellung um den Hilfe-Knopf zu verbergen wurde hinzugefügt. [E]
+      - Mehrfachauswahl auf mehreren Seiten eingeführt und verbessert. [E]
   0_9_3:
     version: 0.9.3
     tag: Mittwoch, den 13. Mai 2020
     neuerungen:
-      - Über den Hilfe-Knopf unten rechts kann, wenn angelegt, die offizielle Hilfe-Seite aufgerufen werden.
+      - Über den Hilfe-Knopf unten rechts kann, wenn angelegt, die offizielle Hilfe-Seite aufgerufen werden. [E]
   0_9_2:
     version: 0.9.2
     tag: Mittwoch, den 13. Mai 2020
@@ -40,147 +43,147 @@ version:
     version: 0.9.1
     tag: Mittwoch, den 13. Mai 2020
     neuerungen:
-      - Fehler behoben, dass bei Terminen mit Schreibrechten keine ToDo's angezeigt wurden.
+      - Fehler behoben, dass bei Terminen mit Schreibrechten keine ToDo's angezeigt wurden. [E]
   0_9:
     version: 0.9
     tag: Montag, den 11. Mai 2020
     neuerungen:
-      - Über den ToDo-Knopf auf »Nutzerkonto« können eigene ToDo's angelegt werden.
-      - Auf der ToDo-Übersicht können an als ToDo markierte Blogeinträge und Termine Notizen angehängt werden.
+      - Über den ToDo-Knopf auf »Nutzerkonto« können eigene ToDo's angelegt werden. [E]
+      - Auf der ToDo-Übersicht können an als ToDo markierte Blogeinträge und Termine Notizen angehängt werden. [E]
   0_8_6:
     version: 0.8.6
     tag: Sonntag, den 10. Mai 2020
     neuerungen:
-      - Ausgabefehler bei der Verknüpfung von Schülern und Eltern behoben.
-      - Vereinheitlichung der Knöpfe bei Weiterleitungen.
-      - Neues Recht, das verbotenen Programmcode für ausgewählte Personen im Schulhof ermöglicht.
-      - Behebung des Bugs, dass bei neuen Einträgen keine Mails mehr versendet werden.
+      - Ausgabefehler bei der Verknüpfung von Schülern und Eltern behoben. [E]
+      - Vereinheitlichung der Knöpfe bei Weiterleitungen. [E]
+      - Neues Recht, das verbotenen Programmcode für ausgewählte Personen im Schulhof ermöglicht. [E]
+      - Behebung des Bugs, dass bei neuen Einträgen keine Mails mehr versendet werden. [W]
   0_8_5:
     version: 0.8.5
     tag: Samstag, den 09. Mai 2020
     neuerungen:
-      - Bug bei der Ausgabe der Unterseiten auf Menüpunktunterseiten für Seiten, deren Bezeichnung Leerzeichen enhalten haben behoben.
+      - Bug bei der Ausgabe der Unterseiten auf Menüpunktunterseiten für Seiten, deren Bezeichnung Leerzeichen enhalten haben behoben. [W]
   0_8_4:
     version: 0.8.4
     tag: Samstag, den 09. Mai 2020
     neuerungen:
-      - Bug bei den Einstellungen der Schulnetze behoben.
+      - Bug bei den Einstellungen der Schulnetze behoben. [W]
   0_8_3:
     version: 0.8.3
     tag: Donnerstag, den 07. Mai 2020
     neuerungen:
-      - Fehler in der Mehrfachauswahl behoben.
-      - Umstellung auf die offizielle Seite des Digitalen Schulhofs für den Updater.
+      - Fehler in der Mehrfachauswahl behoben. [E]
+      - Umstellung auf die offizielle Seite des Digitalen Schulhofs für den Updater. [E]
   0_8_2:
     version: 0.8.2
     tag: Mittwoch, den 06. Mai 2020
     neuerungen:
-      - Mehrfachauswahl im Postfach möglich zum schnelleren Löschen vieler Nachrichten.
+      - Mehrfachauswahl im Postfach möglich zum schnelleren Löschen vieler Nachrichten. [E]
   0_8_1:
     version: 0.8.1
     tag: Mittwoch, den 06. Mai 2020
     neuerungen:
-      - Nicht angezeigte Downloads in der Lehreransicht von Blogeinträgen behoben.
+      - Nicht angezeigte Downloads in der Lehreransicht von Blogeinträgen behoben. [E]
   0_8_0:
     version: 0.8
     tag: Dienstag, den 05. Mai 2020
     neuerungen:
-      - Änderungen an allen Schuldaten können nun über den Schulhof vorgenommen werden.
-      - Änderungen an der vom Schulhof versendeten Mailadresse können vorgenommen werden. Die Signatur dieser Mails kann bearbeitet werden.
-      - Schulnetzte können nun direkt über die Benutzeroberfläche des Digitalen Schuhofs geändert werden.
-      - Auffälliges, Feedback und Fehlermeldungen wurden von »Website« nach »Administration« verschoben.
-      - Der Text in der Fußzeile und neben der Anmeldung kann bearbeitet werden.
-      - In der Druckansicht von Blogeinträgen sind nun Vorschaubilder enthalten.
-      - Formatierungsfehler in der Druckansicht behoben.
-      - Bei Blogeinträgen und Terminen wird angezeigt, wie viele diesen noch als ToDo markiert haben.
-      - "Vorschau von Nachrichten im Postfach entfernt, Vorbereitung für Mehrfachauswahl :)"
+      - Änderungen an allen Schuldaten können nun über den Schulhof vorgenommen werden. [W]
+      - Änderungen an der vom Schulhof versendeten Mailadresse können vorgenommen werden. Die Signatur dieser Mails kann bearbeitet werden. [W]
+      - Schulnetzte können nun direkt über die Benutzeroberfläche des Digitalen Schuhofs geändert werden. [W]
+      - Auffälliges, Feedback und Fehlermeldungen wurden von »Website« nach »Administration« verschoben. [W]
+      - Der Text in der Fußzeile und neben der Anmeldung kann bearbeitet werden. [W]
+      - In der Druckansicht von Blogeinträgen sind nun Vorschaubilder enthalten. [E]
+      - Formatierungsfehler in der Druckansicht behoben. [E]
+      - Bei Blogeinträgen und Terminen wird angezeigt, wie viele diesen noch als ToDo markiert haben. [E]
+      - "Vorschau von Nachrichten im Postfach entfernt, Vorbereitung für Mehrfachauswahl :) [E]"
   0_7_3:
     version: 0.7.3
     tag: Donnerstag, den 30. April 2020
     neuerungen:
-      - Ein kleiner Fehler im Lehrernetz wurde behoben.
-      - Ein interner Fehler bezüglich ToDo's wurde behoben.
+      - Ein kleiner Fehler im Lehrernetz wurde behoben. [W]
+      - Ein interner Fehler bezüglich ToDo's wurde behoben. [E]
       - Testphase gilt als beendet!
   0_7_2:
     version: 0.7.2
     tag: Donnerstag, den 30. April 2020
     neuerungen:
-      - Mehrfaches Anzeigen der Neuigkeiten behoben.
+      - Mehrfaches Anzeigen der Neuigkeiten behoben. [E]
   0_7_1:
     version: 0.7.1
     tag: Donnerstag, den 30. April 2020
     neuerungen:
-      - Nach einem Update werden Neuigkeiten auf der Startseite einmalig angezeigt.
-      - Notifikationen von Dateiänderungen verschwinden wenn die Gruppe geöffnet wird.
-      - Der Updater liest den Versionsverlauf nun korrekt.
+      - Nach einem Update werden Neuigkeiten auf der Startseite einmalig angezeigt. [E]
+      - Notifikationen von Dateiänderungen verschwinden wenn die Gruppe geöffnet wird. [E]
+      - Der Updater liest den Versionsverlauf nun korrekt. [E]
   0_7:
     version: 0.7
     tag: Mittwoch, den 29. April 2020
     neuerungen:
-      - Fehler beim Anlegen von ToDo's behoben
-      - Notifikation bei Dateiänderungen abonnierter Gruppen
-      - Fehler beim Laden der Einstellungen behoben
-      - Fehler beim Speichern von Links in Blogeinträgen behoben
+      - Fehler beim Anlegen von ToDo's behoben [E]
+      - Notifikation bei Dateiänderungen abonnierter Gruppen [E]
+      - Fehler beim Laden der Einstellungen behoben [E]
+      - Fehler beim Speichern von Links in Blogeinträgen behoben [E]
   0_6_4:
     version: 0.6.4
     tag: Mittwoch, den 29. April 2020
     neuerungen:
-      - Obsolete Dateien dem Updater entnommen
+      - Obsolete Dateien dem Updater entnommen [W]
   0_6_3:
     version: 0.6.3
     tag: Dienstag, den 28. April 2020
     neuerungen:
-      - Der Modus aktualisierter Dateien wird nun richtig gesetzt.
-      - Aktionsicons in der Mobilansicht vergrößert
-      - Fortschrittsanzeige
+      - Der Modus aktualisierter Dateien wird nun richtig gesetzt. [W]
+      - Aktionsicons in der Mobilansicht vergrößert [E]
+      - Fortschrittsanzeige im Updater [E]
   0_6_2:
     version: 0.6.2
     tag: Dienstag, den 28. April 2020
     neuerungen:
-      - Der automatische Updater aktualisiert nun auch Dateien im Lehrernetz.
-      - Wartende Nutzer werden darauf hingewiesen, wenn das Update vorbei ist.
+      - Der automatische Updater aktualisiert nun auch Dateien im Lehrernetz. [E]
+      - Wartende Nutzer werden darauf hingewiesen, wenn das Update vorbei ist. [E]
   0_6_1:
     version: 0.6.1
     tag: Montag, den 27. April 2020
     neuerungen:
-      - Die Nutzerkonto-Startseite enthielt Bugs beim Erstellen von öffentlichen Blogeinträgen und Terminen sowie bei Nutzern, deren Aufführungen unter »Aktuelles« nicht alle Reiter enthielten.
-      - Die ToDo-Neuigkeit wurde zur besseren und übersichtlicheren Lesbarkeit verbreitert und verschoben.
-      - Aktualisierte Dateien werden sofort übernommen und veraltete gecachte Dateien vernachlässigt.
-      - Updates erzeugen auch automatisch eine neue Version des Designs.
-      - Blogeinträge und Termine in abonnierten Gruppen werden automatisch an die ToDo-Liste angehängt.
+      - Die Nutzerkonto-Startseite enthielt Bugs beim Erstellen von öffentlichen Blogeinträgen und Terminen sowie bei Nutzern, deren Aufführungen unter »Aktuelles« nicht alle Reiter enthielten. [W]
+      - Die ToDo-Neuigkeit wurde zur besseren und übersichtlicheren Lesbarkeit verbreitert und verschoben. [E]
+      - Aktualisierte Dateien werden sofort übernommen und veraltete gecachte Dateien vernachlässigt. [E]
+      - Updates erzeugen auch automatisch eine neue Version des Designs. [E]
+      - Blogeinträge und Termine in abonnierten Gruppen werden automatisch an die ToDo-Liste angehängt. [E]
   0_6_0:
     version: 0.6.0
     tag: Sonntag, den 26. April 2020
     neuerungen:
-      - Updates können direkt über den Schulhof eingespielt werden.
-      - Blogeinträge können ausgedruckt werden.
-      - Blogeinträge können einer ToDo-Liste hinzugefügt werden.
+      - Updates können direkt über den Schulhof eingespielt werden. [E]
+      - Blogeinträge können ausgedruckt werden. [E]
+      - Blogeinträge und Termine können einer ToDo-Liste hinzugefügt werden. [E]
   0_5_8:
     version: 0.5.8
     tag: Sonntag, den 19. April 2020
     neuerungen:
-      - Links können wie Downloads direkt an Blogeinträge angehängt werden.
-      - Wer in Gruppen Blogeinträge schreiben kann, kann auch an eine Pinnwand schreiben.
-      - Die Speicherplatzauslastung kann nun direkt über den Schulhof eingesehen werden.
-      - Die Darkmode-Option wurde zu den Designmöglichkeiten ergänzt.
+      - Links können wie Downloads direkt an Blogeinträge angehängt werden. [E]
+      - Wer in Gruppen Blogeinträge schreiben kann, kann auch an eine Pinnwand schreiben. [W]
+      - Die Speicherplatzauslastung kann nun direkt über den Schulhof eingesehen werden. [W]
+      - Die Darkmode-Option wurde zu den Designmöglichkeiten ergänzt. [W]
   0_5_7:
     version: 0.5.7
     tag: Freitag, den 16. Februar 2019
     neuerungen:
       - Ein neues Rechtesystem wurde eingeführt, das die individuellere Vergabe von Rechten gewährleistet.
-      - Design und Layout des Schulhofs kann nun über den Schulhof direkt verändert werden.
+      - Design und Layout des Schulhofs kann nun über den Schulhof direkt verändert werden. [W]
   0_5_6:
     version: 0.5.6
     tag: Samstag, den 30. November 2019
     neuerungen:
-      - Verschiedene Vertretungsstunden können gemeinsam markiert und bearbeitet werden.
-      - Gerätemeldungen können direkt an Hausmeister weitergereicht werden.
-      - Einführung einer Ziel-Uhrzeit für Hausmeisteraufträge.
+      - Verschiedene Vertretungsstunden können gemeinsam markiert und bearbeitet werden. [W]
+      - Gerätemeldungen können direkt an Hausmeister weitergereicht werden. [W]
+      - Einführung einer Ziel-Uhrzeit für Hausmeisteraufträge. [W]
   0_5_5:
     version: 0.5.5
     tag: Freitag, den 08. November 2019
     neuerungen:
-      - Aufträge für Hausmeister können direkt gemeldet werden. Eine Bearbeitung wird direkt an den Auftraggeber rückgemeldet.
+      - Aufträge für Hausmeister können direkt gemeldet werden. Eine Bearbeitung wird direkt an den Auftraggeber rückgemeldet. [W]
   0_5_4:
     version: 0.5.4
     tag: Freitag, den 06. September 2019
@@ -190,16 +193,16 @@ version:
     version: 0.5.3
     tag: Freitag, den 06. September 2019
     neuerungen:
-      - Die Dateiverschlüsselung wurde erheblich verbessert.
-      - Der Benutzertyp »extern« wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister).
-      - Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt.
-      - Das Hausmeister-Auftragsbuch bietet die Möglichkeit, online Mängel und Wünsche an die Hausmeister zu richten.
-      - An Pinnwänden können Zettel auf bestimmte Zeit angepinnt werden.
-      - "Dauerbrenner wurden eingeführt. Dabei handelt es sich um Seiten, die allgemeine Informationen enthalten, die ständig wiederkehren. Beispiele: Sicherheitshinweise, Abläufe für neue Kollegen etc."
-      - Interne Termine und intere Blogeinträge können nun im Genehmigungscenter genehemigt werden.
-      - Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für »intern«).
-      - In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat ein Nutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button).
-      - Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können.
+      - Die Dateiverschlüsselung wurde erheblich verbessert. [W]
+      - Der Benutzertyp »extern« wurde für Personen hinzugefügt, die nur indirekt mit dem Schulbetrieb zu tun haben (z.B. Hausmeister, oder externe Dienstleister). [W]
+      - Beim Upload von Dateien werden in Dateinamen Leerzeichen, Umlaute und »ß« automatisch ersetzt. [W]
+      - Das Hausmeister-Auftragsbuch bietet die Möglichkeit, online Mängel und Wünsche an die Hausmeister zu richten. [W]
+      - An Pinnwänden können Zettel auf bestimmte Zeit angepinnt werden. [W]
+      - "Dauerbrenner wurden eingeführt. Dabei handelt es sich um Seiten, die allgemeine Informationen enthalten, die ständig wiederkehren. Beispiele: Sicherheitshinweise, Abläufe für neue Kollegen etc. [W]"
+      - Interne Termine und intere Blogeinträge können nun im Genehmigungscenter genehemigt werden. [W]
+      - Interne Termine und intere Blogeinträge unterscheiden sich nun optisch in den zugehörigen Gruppen (interne Inhalte erhalten ein Icon für »intern«). [W]
+      - In Gruppen wird bei den Personen unterschieden zwischen »hat kein Nutzerkonto« (grau umrandet dargestellt), »hat ein Nutzerkonto, kann aber nicht per Postfach kontaktiert werden« (schwarz umrandet dargestellt) und »hat ein Nutzerkonto und kann kontaktiert werden« (normaler Button). [W]
+      - Listen wurden dahingehend überarbeitet, dass Zugriffsrechte weiter gefächert erteilt werden können. [W]
   0_5_2:
     version: 0.5.2
     tag: Dienstag, den 12. März 2019

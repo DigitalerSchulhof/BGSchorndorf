@@ -347,6 +347,21 @@ function cms_newsletter_loeschen(id, ziel) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_newsletter_loeschen_anzeigen(ziel) {
+	cms_meldung_an('warnung', 'Newsletter löschen', '<p>Sollen die Newsletter wirklich gelöscht werden?<br>Dadurch werden alle Anmeldeformulare auf der Website automatisch entfernt. Die Empfängerlisten der Newsletter werden <b>unwiderruflich</b> geleert!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_newsletter_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_newsletter_loeschen(ziel) {
+	cms_multianfrage(365, ["Newsletter löschen", "Die Newsletter werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Newsletter löschen', '<p>Der Newsletter wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\''+ziel+'\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
+}
+
 function cms_newsletter_alle_loeschen_vorbereiten() {
 	cms_meldung_an('warnung', 'Alle Newsletter löschen', '<p>Sollen <b>alle</b> Newsletter gelöscht werden?<br>Sämtliche Anmeldeformulare auf der Website werden automatisch entfernt. Alle Empfängerlisten werden <b>unwiderruflich</b> geleert!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_newsletter_alle_loeschen()">Löschung durchführen</span></p>');
 }

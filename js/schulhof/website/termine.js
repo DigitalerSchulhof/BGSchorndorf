@@ -202,6 +202,29 @@ function cms_termine_loeschen(id, ziel) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_termine_loeschen_anzeigen(ziel) {
+	cms_meldung_an('warnung', 'Termine löschen', '<p>Sollen die Termine wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_termine_loeschen(\''+ziel+'\')">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_termine_loeschen(ziel) {
+	cms_multianfrage(212, ["Termine löschen", "Die Termine werden gelöscht"], {id: cms_multiselect_ids()}, null, null, (rueckgaben) => {
+		// Berechtigung unterdrücken, falls nicht alle richtige Öffentlichkeit haben
+		let rueckgabe = "ERFOLG";
+		rueckgaben.forEach((rueck) => {
+			if(rueck != "ERFOLG" && rueck != "BERECHTIGUNG") {
+				rueckgabe = rueck;
+			}
+		});
+		return rueckgabe;
+	}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Termine löschen', '<p>Die Termine wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\''+ziel+'\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
+}
 
 function cms_termine_eingabenpruefen(modus) {
 	var meldung = '<p>Der Termin konnte nicht erstellt werden, denn ...</p><ul>';

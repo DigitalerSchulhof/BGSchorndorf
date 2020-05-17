@@ -86,7 +86,7 @@ function cms_multiselect_toggle(dis, sofort) {
     var maske = $(e).data("multiselect-maske");
     var push = true;
     if(maske !== undefined) {
-      var meta = (maske >> 1 & 1) ? metao : metaa;
+      var meta = (maske & 1) ? metaa : metao;
       push = (~(((meta >> (maske >> 2)) & 1) ^ ((maske >> 1) & 1))) & 1;
     }
     if(push) {
@@ -95,6 +95,9 @@ function cms_multiselect_toggle(dis, sofort) {
   });
 
   context.html(aktionen);
+  if(!aktionen.length) {
+    context.html("<p style=\"opcaity: 1\" class=\"cms_notiz\">Keine Aktionen für die aktuelle Auswahl verfügbar</p>");
+  }
   context.find(".cms_hinweis").removeClass("cms_hinweis").addClass("cms_alter_hinweis");
 
   var top = tr.offset().top+(tr.outerHeight()-context.outerHeight())/2;
@@ -106,4 +109,11 @@ function cms_multiselect_toggle(dis, sofort) {
     context.clearQueue().css({"top": top, "left": left}).fadeIn();
   }
   context.addClass("contextmenue_multiselect");
+}
+
+function cms_multiselect_ids(klasse) {
+  klasse = klasse || "cms_multiselect_id";
+  var ids = [];
+  $(".cms_multiselect_s ."+klasse).each((i, e) => ids.push($(e).val()));
+  return ids;
 }

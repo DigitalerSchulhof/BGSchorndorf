@@ -201,7 +201,6 @@ function cms_schulhof_leihgeraet_loeschen_anzeigen (anzeigename, id) {
 	cms_meldung_an('warnung', 'Leihgeräte löschen', '<p>Sollen die Leihgeräte <b>'+anzeigename+'</b> wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_leihgeraet_loeschen(\''+anzeigename+'\','+id+')">Löschung durchführen</span></p>');
 }
 
-
 function cms_schulhof_leihgeraet_loeschen(anzeigename, id) {
 	cms_laden_an('Leihgeräte löschen', 'Die Leihgeräte <b>'+anzeigename+'</b> werden gelöscht.');
 
@@ -217,6 +216,19 @@ function cms_schulhof_leihgeraet_loeschen(anzeigename, id) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_schulhof_leihgeraete_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Leihgeräte löschen', '<p>Sollen die Leihgeräte wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_leihgeraet_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schulhof_leihgeraet_loeschen() {
+	cms_multianfrage(115, ["Leihgeräte löschen", "Die Leihgeräte werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Leihgeräte löschen', '<p>Die Leihgeräte wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Leihgeräte\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
 }
 
 function cms_schulhof_leihgeraet_bearbeiten_vorbereiten (id) {

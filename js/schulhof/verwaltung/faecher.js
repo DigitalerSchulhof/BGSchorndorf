@@ -240,12 +240,25 @@ function cms_schulhof_faecher_loeschen(anzeigename, id) {
 
 	function anfragennachbehandlung(rueckgabe) {
 		if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Fächer löschen', '<p>Das Fach wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Fach löschen', '<p>Das Fach wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">OK</span></p>');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_schulhof_faecher_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Fächer löschen', '<p>Sollen die Fächer wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_faecher_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schulhof_faecher_loeschen() {
+  cms_multianfrage(81, ["Fächer löschen", "Die Fächer werden gelöscht"], {id: cms_cms_multiselect_ids()}).then((rueckgabe) => {
+    if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Fächer löschen', '<p>Die Fächer wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Fächer\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+  });
 }
 
 /* RAUM WIRD ZUM BEARBEITEN VORBEREITET */

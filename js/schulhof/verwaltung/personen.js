@@ -272,7 +272,7 @@ function cms_multiselect_schulhof_verwaltung_personen_loeschen() {
 			cms_meldung_an('fehler', 'Personen löschen', '<p>Mindestens eine Person konnte nicht gelöscht werden. Es muss immer mindestens einen Administrator geben.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
 		}
 		else if (rueckgabe == "ERFOLG") {
-			cms_meldung_an('erfolg', 'Personen löschen', '<p>Die Personen wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Personen löschen', '<p>Die Personen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
 		}
 		else {cms_fehlerbehandlung(rueckgabe);}
 	});
@@ -1149,7 +1149,7 @@ function cms_nicht_zugeordnet_loeschen() {
 			cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 		}
 		else {
-			cms_meldung_an('erfolg', 'Nicht zugeordnete Schüler löschen', '<p>Die Personen wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Nicht zugeordnete Schüler löschen', '<p>Die Personen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
 		}
 	}
 

@@ -216,6 +216,21 @@ function cms_galerie_loeschen(id, ziel) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_galerien_loeschen_anzeigen(ziel) {
+	cms_meldung_an('warnung', 'Galerien löschen', '<p>Sollen die Galerien wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_galerien_loeschen(\''+ziel+'\')">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_galerien_loeschen(ziel) {
+	cms_multianfrage(305, ["Galerien löschen", "Die Galerien werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Galerien löschen', '<p>Die Galerien wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\''+ziel+'\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
+}
+
 function cms_galerien_jahr_loeschen_vorbereiten() {
   var jahr = document.getElementById('cms_verwaltung_galerien_jahr_angezeigt').value;
 	cms_meldung_an('warnung', 'Galerien des Jahres '+jahr+' löschen', '<p>Sollen <b>alle</b> Galerien des Jahres '+jahr+' wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_galerien_jahr_loeschen()">Löschung durchführen</span></p>');

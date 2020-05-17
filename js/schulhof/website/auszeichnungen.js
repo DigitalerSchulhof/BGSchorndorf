@@ -85,7 +85,6 @@ function cms_auszeichnung_neu_speichern() {
 	}
 }
 
-
 function cms_auszeichnung_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Auszeichnung bearbeiten', 'Die Berechtigung wird geprüft.');
 
@@ -102,7 +101,6 @@ function cms_auszeichnung_bearbeiten_vorbereiten (id) {
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
-
 
 function cms_auszeichnung_bearbeiten_speichern() {
 	cms_laden_an('Auszeichnung bearbeiten', 'Die Eingaben werden überprüft.');
@@ -136,11 +134,9 @@ function cms_auszeichnung_bearbeiten_speichern() {
 	}
 }
 
-
 function cms_auszeichnung_loeschen_anzeigen (id) {
 	cms_meldung_an('warnung', 'Auszeichnung löschen', '<p>Soll die Auszeichnung wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_auszeichnung_loeschen(\''+id+'\')">Löschung durchführen</span></p>');
 }
-
 
 function cms_auszeichnung_loeschen(id) {
 	cms_laden_an('Auszeichnung löschen', 'Die Auszeichnung wird gelöscht.');
@@ -157,4 +153,17 @@ function cms_auszeichnung_loeschen(id) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_auszeichnungen_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Auszeichnungen löschen', '<p>Sollen die Auszeichnungen wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_auszeichnungen_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_auszeichnungen_loeschen() {
+	cms_multianfrage(277, ["Auszeichnungen löschen", "Die Auszeichnungen werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Auszeichnungen löschen', '<p>Die Auszeichnungen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Website/Auszeichnungen\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
 }
