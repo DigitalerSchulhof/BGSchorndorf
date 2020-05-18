@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_1:
+    version: 0.10.1
+    tag: ????, den ??. Mai 2020
+    neuerungen:
+      - Ein Ausgabefehler bei den Bestellungen wurde behoben [W]
   0_10:
     version: 0.10
     tag: Montag, den 18. Mai 2020
