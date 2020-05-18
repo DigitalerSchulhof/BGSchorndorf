@@ -190,6 +190,11 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					$ausgabe .= "</td></tr>";
 				}
 			}
+			$sql->close();
+		}
+		if ($anzahl == 0) {
+			$ausgabe .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- Keine Datensätze gefunden -</td></tr>";
+		} else {
 			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
 				if(cms_r("schulhof.verwaltung.nutzerkonten.löschen")) {
 					$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" data-multiselect-maske=\"2\" onclick=\"cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Nutzerkonten löschen</span><img src=\"res/icons/klein/nutzerkonto_loeschen.png\"></span> ";
@@ -198,10 +203,6 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_verwaltung_personen_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Personen löschen</span><img src=\"res/icons/klein/person_loeschen.png\"></span> ";
 				}
 			$ausgabe .= "</td></tr>";
-			$sql->close();
-		}
-		if ($anzahl == 0) {
-			$ausgabe .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- Keine Datensätze gefunden -</td></tr>";
 		}
 		echo $ausgabe;
 		cms_trennen($dbs);
