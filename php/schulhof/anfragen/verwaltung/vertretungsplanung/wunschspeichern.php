@@ -30,8 +30,9 @@ if (cms_angemeldet() && $zugriff) {
   $datum = mktime(0,0,0,$datumM, $datumT, $datumJ);
   $wunschid = cms_generiere_kleinste_id('vplanwuensche');
 	// WUNSCH EINTRAGEN
-  $sql = $dbs->prepare("UPDATE vplanwuensche SET datum = ?, wunsch = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), status = 0 WHERE id = ?");
-  $sql->bind_param("isi", $datum, $anliegen, $wunschid);
+  $jetzt = time();
+  $sql = $dbs->prepare("UPDATE vplanwuensche SET datum = ?, wunsch = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), status = 0, ersteller = ?, erstellzeit = ? WHERE id = ?");
+  $sql->bind_param("isiii", $datum, $anliegen, $CMS_BENUTZERID, $jetzt, $wunschid);
   $sql->execute();
   $sql->close();
 

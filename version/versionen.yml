@@ -10,6 +10,8 @@ version:
       - Aktionen, die keine Wirkung auf die gewählten Zeilen haben, werden in der Mehrfachauswahl ausgeblendet. [E]
       - "Mehrfachauswahl auf folgenden Seiten implementiert: Personen-, Rollen-, Gruppen-, Stundenplanzeiträume-, Fächer-, Profil-, Schienen-, Schuljahr-, Räume-, Leihgeräte-, Ferien-, Schulanmeldung-, Termine-, Blogeinträge-, Galerien-, Auszeichnung-, Newsletter-, Weiterleitungs-, Hausmeisteraufträge-, Feedbackverwaltung [E]"
       - Stundenplanung etwas bequemer gemacht. [E]
+      - Bei der Verarbeitung von Vertretungsplanwünschen wird nun im Reiter angezeigt, ob Wünsche vorhanden sind [W]
+      - Es werden immer alle Vertretungsplanwünsche ausgegeben und zwar nach Status, Datum und innerhalb eines Datums nach Kollegen sortiert. Die Einreichugnszeit wird erfasst. [W]
       - "🚧 Wir bauen interne Strukturen radikal um. Es wird für einige Zeit wenig Neues kommen. 🚧<br><b>Wir bedanken uns herzlich für das viele tolle Feedback und eure Ideen :)</b><br>~ Jesper Engberg und Patrick Wagner"
   0_9_5:
     version: 0.9.5

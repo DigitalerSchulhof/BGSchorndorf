@@ -190,3 +190,8 @@ ALTER TABLE `personen_einstellungen` ADD `dateiaenderung` VARBINARY(50) NOT NULL
 UPDATE `personen_einstellungen` SET dateiaenderung = AES_ENCRYPT('1', '{cms_schluessel}');
 
 -- 0.9.6
+
+ALTER TABLE `vplanwuensche` ADD `ersteller` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `status`, ADD `erstellzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `ersteller`;
+ALTER TABLE `vplanwuensche` ADD CONSTRAINT `erstellerperson` FOREIGN KEY (`ersteller`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- 0.10
