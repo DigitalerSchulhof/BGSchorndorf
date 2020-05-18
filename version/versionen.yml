@@ -1,8 +1,8 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
-  0_9_6:
-    version: 0.9.6
-    tag: Sonntag, 17. Mai 2020
+  0_10:
+    version: 0.10
+    tag: Montag, den 18. Mai 2020
     neuerungen:
       - "Wenn die Umschalttaste gedrückt ist, können ToDo's direkt gelöscht werden. (<a style='color: inherit' href='https://praxistipps.chip.de/umschalttaste-welche-ist-das_9956' target='_blank'>Wo ist die Umschalttaste [Chip-Praxistipp]</a>) [E]"
       - In den persönlichen Einstellungen kann ausgewählt werden, ob Dateiänderungen in abonnierten Gruppen eine Notifikation verursacht. [E]
@@ -13,7 +13,7 @@ version:
       - "🚧 Wir bauen interne Strukturen radikal um. Es wird für einige Zeit wenig Neues kommen. 🚧<br><b>Wir bedanken uns herzlich für das viele tolle Feedback und eure Ideen :)</b><br>~ Jesper Engberg und Patrick Wagner"
   0_9_5:
     version: 0.9.5
-    tag: Freitag, 15. Mai 2020
+    tag: Freitag, den 15. Mai 2020
     neuerungen:
       - Fehler beim Speichern der persönlichen Einstellungen behoben. [E]
       - Mehrfachauswahl weiter implementiert. [E]
@@ -21,7 +21,7 @@ version:
       - Wir haben einen Keks versteckt.
   0_9_4:
     version: 0.9.4
-    tag: Donnerstag, 14. Mai 2020
+    tag: Donnerstag, den 14. Mai 2020
     neuerungen:
       - Vertretungsplanwünsche können über den Digitalen Schulhof eingereicht werden. [W]
       - In Registrierungen wird nun auch die Eingabe zur Klasse angezeigt. [W]
