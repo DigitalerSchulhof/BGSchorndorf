@@ -89,7 +89,7 @@ $sql->close();
 $bestellende = mktime (23, 59, 59, 7, 31, 2020);
 if ((!$ausgefuellt) && (time() <= $bestellende)) {
 	$meldung = "<h4>Bestellung / Leihe für Notebooks oder Tablets</h4>";
-	$meldung .= "<p>Nachdem der Sachbearbeiter dieses neuen Kontaktes aus gesundheitlichen Gründen voraussichtlich erst wieder ab 18. Mai ansprechbar ist, haben wir unsere Pläne nun zum dritten Mal über den Haufen geworfen. Dafür geht es jetzt los!</p>";
+	$meldung .= "<p>Das Angebot ist komplett... Das DELL-Angebot ist da!</p>";
 	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
 	echo cms_meldung("warnung", $meldung);
 }
