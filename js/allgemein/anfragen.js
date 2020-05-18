@@ -45,7 +45,10 @@ function cms_ajaxanfrage (a, b, c, d) {
 		if(d === undefined || d === null) {
 			return cms_ajaxanfrage(a, b, c, "");
 		} else if(d === true) {
-			return cms_ajaxanfrage (a, b, c, CMS_LN_DA);
+			if(typeof CMS_LN_DA !== 'undefined') {
+				return cms_ajaxanfrage (a, b, c, CMS_LN_DA);
+			}
+			return cms_ajaxanfrage(a, b, c, "");
 		}
 
 		titel = b[0];
@@ -63,7 +66,7 @@ function cms_ajaxanfrage (a, b, c, d) {
 			daten.append("anfragenziel", a);
 		}
 		host = d;
-		if(host === CMS_LN_DA) {
+		if(typeof CMS_LN_DA !== 'undefined' && host === CMS_LN_DA) {
 			cms_lehrerdatenbankzugangsdaten_schicken(daten);
 		}
 		if(titel !== null) {
@@ -107,7 +110,7 @@ function cms_multianfrage(ziel, laden, arrays, statisch, host, rueckgabenbehandl
 	if(arrays === undefined || arrays === null) {
 		arrays = {};
 	}
-	if(host === true) {
+	if(typeof CMS_LN_DA !== 'undefined' && host === true) {
 		host = CMS_LN_DA;
 	}
 	host = host || "";
@@ -141,7 +144,7 @@ function cms_multianfrage(ziel, laden, arrays, statisch, host, rueckgabenbehandl
 		daten.push(data);
 	});
 
-	if(host === CMS_LN_DA) {
+	if(typeof CMS_LN_DA !== 'undefined' && host === CMS_LN_DA) {
 		cms_lehrerdatenbankzugangsdaten_schicken(daten);
 	}
 
