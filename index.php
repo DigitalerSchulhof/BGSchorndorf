@@ -272,6 +272,7 @@
 			$code .= js("js/schulhof/verwaltung/schienen.js");
 			$code .= js("js/schulhof/verwaltung/schuljahrfabrik.js");
 			$code .= js("js/schulhof/verwaltung/import.js");
+			$code .= js("js/schulhof/verwaltung/shop.js");
 			$code .= js("js/schulhof/website/style.js");
 			$code .= js("js/schulhof/website/master.js");
 			$code .= js("js/schulhof/website/zuordnung.js");

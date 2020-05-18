@@ -153,7 +153,7 @@ $code .= "<div class=\"cms_meldung\" style=\"margin-top: 50px;\"><h2>Aktuelle Be
 $sql = $dbs->prepare("SELECT COUNT(*), bedarf, status FROM ebestellung WHERE id = ?");
 $sql->bind_param("i", $CMS_BENUTZERID);
 if ($sql->execute()) {
-	$sql->bind_result($anzahl, $b, $status);
+	$sql->bind_result($anzahl, $bedarf, $status);
 	$sql->fetch();
 }
 $sql->close();
@@ -170,7 +170,7 @@ else {
 		if ($status == 0) {$statusmeldung = "Bestellung eingegangen"; if ($bedarf == '1') {$statusmeldung .= " - Bezahlung ausstehend";}}
 		else if ($status == 1) {$statusmeldung = "Bezahlt";}
 		else if ($status == 2) {$statusmeldung = "Übermittelt";}
-		else if ($status == 3) {$statusmeldung = "Abgeschlossen";}
+		else if ($status == 3) {$statusmeldung = "Geliefert";}
 		$code .= "<p><b>Bestellstatus:</b> $statusmeldung</p>";
 		$code .= "<table class=\"cms_liste\">";
 			$code .= "<tr><th>Artikel</th><th style=\"text-align: right\">Menge</th><th style=\"text-align: right\">Einzelpreis</th><th style=\"text-align: right\">Summe</th></tr>";

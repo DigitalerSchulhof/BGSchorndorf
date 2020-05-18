@@ -281,6 +281,12 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Speicherplatz']                            = 'php/schulhof/seiten/verwaltung/speicherplatz/speicherplatz.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Speicherplatz/Statistik']                  = 'php/schulhof/seiten/verwaltung/speicherplatz/statistik.php';
 
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Produkte']                                 = 'php/schulhof/seiten/verwaltung/shop/produkte.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Produkte/Neues_Produkt_anlegen']           = 'php/schulhof/seiten/verwaltung/shop/neuesprodukt.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Produkte/Produkt_bearbeiten']              = 'php/schulhof/seiten/verwaltung/shop/produktbearbeiten.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Bestellungen']                             = 'php/schulhof/seiten/verwaltung/shop/bestellungen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Bestellungen/Bestellung_ansehen']          = 'php/schulhof/seiten/verwaltung/shop/bestellungansehen.php';
+
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Update']                                   = 'php/schulhof/seiten/verwaltung/update/update.php';
   if (preg_match("/^Schulhof\/Ferien(\/[0-9]{4}){0,1}$/", $CMS_URLGANZ))
     {$CMS_VERFUEGBARE_SEITEN[$CMS_URLGANZ]                                                = 'php/website/seiten/ferien/ferien.php';}

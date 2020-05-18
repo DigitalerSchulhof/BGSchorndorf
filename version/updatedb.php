@@ -193,5 +193,5 @@ UPDATE `personen_einstellungen` SET dateiaenderung = AES_ENCRYPT('1', '{cms_schl
 
 ALTER TABLE `vplanwuensche` ADD `ersteller` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `status`, ADD `erstellzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `ersteller`;
 ALTER TABLE `vplanwuensche` ADD CONSTRAINT `erstellerperson` FOREIGN KEY (`ersteller`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
+ALTER TABLE `egeraete` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `lieferzeit`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;
 -- 0.10

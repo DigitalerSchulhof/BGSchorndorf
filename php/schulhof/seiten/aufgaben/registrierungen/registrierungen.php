@@ -49,7 +49,7 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 		$sql->close();
 
 		if ($ausgabe == "") {
-			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"6\">- keine Datensätze gefunden -</td></tr>";
+			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
 		}
 
 		$code .= $ausgabe;
