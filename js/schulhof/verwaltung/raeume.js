@@ -219,6 +219,19 @@ function cms_schulhof_raum_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_schulhof_raeume_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Räume löschen', '<p>Sollen die Räume wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_raeume_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schulhof_raeume_loeschen() {
+	cms_multianfrage(138, ["Räume löschen", "Die Räume werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Räume löschen', '<p>Die Räume wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Räume\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
+}
+
 function cms_schulhof_raum_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Raum bearbeiten', 'Die Berechtigung wird geprüft.');
 

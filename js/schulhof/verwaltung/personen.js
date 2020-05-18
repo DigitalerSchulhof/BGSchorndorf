@@ -240,9 +240,8 @@ function cms_schulhof_verwaltung_person_loeschen_anzeige(anzeigename, id) {
 	cms_meldung_an('warnung', 'Person löschen', '<p>Achtung! Sie sind im Begriff die Person <br><b>'+anzeigename+'</b><br> zu löschen! Sind Sie sicher, dass Sie fortfahren möchten?<br>Alle Daten, die mit dieser Person in Verbindung stehen, werden unwiderruflich gelöscht!<br>Die Person wird über die Löschung benachrichtigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_verwaltung_person_loeschen(\''+anzeigename+'\','+id+')">Löschung durchführen</span></p>');
 }
 
-
 function cms_schulhof_verwaltung_person_loeschen(anzeigename, id) {
-	cms_laden_an('Person löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kan einen Moment dauern. Danach wird die Person über die Löschung per eMail informiert.');
+	cms_laden_an('Person löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kann einen Moment dauern. Danach wird die Person über die Löschung per eMail informiert.');
 
 	var formulardaten = new FormData();
 	formulardaten.append("id",     		id);
@@ -259,6 +258,24 @@ function cms_schulhof_verwaltung_person_loeschen(anzeigename, id) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_schulhof_verwaltung_personen_loeschen_anzeige() {
+	cms_meldung_an('warnung', 'Personen löschen', '<p>Achtung! Sie sind im Begriff alle gewählten Personen zu löschen! Sind Sie sicher, dass Sie fortfahren möchten?<br>Alle Daten, die mit diesen Person in Verbindung stehen, werden unwiderruflich gelöscht!<br>Die Personen werden über die Löschung benachrichtigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_verwaltung_personen_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schulhof_verwaltung_personen_loeschen() {
+	var ids = [];
+	$(".cms_multiselect_s .cms_person_id").each((i, e) => ids.push($(e).val()));
+	cms_multianfrage(125, ["Personen löschen", "Die Löschungen der gewählten Personen werden durchgeführt. Dies kann einen Moment dauern. Danach werden die Personen über die Löschung per eMail informiert."], {id: ids}).then((rueckgabe) => {
+		if (rueckgabe == "ADMINFEHLER") {
+			cms_meldung_an('fehler', 'Personen löschen', '<p>Mindestens eine Person konnte nicht gelöscht werden. Es muss immer mindestens einen Administrator geben.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+		}
+		else if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Personen löschen', '<p>Die Personen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
 }
 
 // Rolle vergeben
@@ -355,6 +372,7 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 	var terminoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_terminoeffentlich').value;
 	var blogoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_blogoeffentlich').value;
 	var galerieoeffentlich = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_galerieoeffentlich').value;
+	var dateiaenderung = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_dateiaenderung').value;
 	var wikiknopf = document.getElementById('cms_schulhof_verwaltung_personen_einstellungen_wikiknopf').value;
 
 	var meldung = '<p>Die Änderungen konnten nicht vorgenommen werden, denn ...</p><ul>';
@@ -383,6 +401,10 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 	}
 	if (!cms_check_toggle(galerieoeffentlich)) {
 		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei öffentlichen Galerien ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!cms_check_toggle(dateiaenderung)) {
+		meldung += '<li>die Eingabe für den Erhalt von Neuigkeiten bei Dateiänderungen ist ungültig.</li>';
 		fehler = true;
 	}
 	if (!cms_check_ganzzahl(postalletage,1,1000)) {
@@ -442,6 +464,7 @@ function cms_schulhof_verwaltung_personen_einstellungen_aendern() {
 		formulardaten.append("terminoeffentlich", 	terminoeffentlich);
 		formulardaten.append("blogoeffentlich", 		blogoeffentlich);
 		formulardaten.append("galerieoeffentlich", 	galerieoeffentlich);
+		formulardaten.append("dateiaenderung", 			dateiaenderung);
 		formulardaten.append("wikiknopf", 					wikiknopf);
 		formulardaten.append("id", 									id);
 		formulardaten.append("modus", 							1);
@@ -661,12 +684,12 @@ function cms_schulhof_verwaltung_nutzerkonto_neu_speichern() {
 
 
 function cms_schulhof_verwaltung_nutzerkonto_loeschen_anzeige(anzeigename, id) {
-	cms_meldung_an('warnung', 'Nutzerkonto löschen', '<p>Achtung! Sie sind im Begriff das Nutzerkonto von <br><b>'+anzeigename+'</b><br> zu löschen! Sind Sie sicher, dass Sie fortfahren möchten?<br>Alle Daten, die mit dieser Person in Verbindung stehen, werden unwiderruflich gelöscht!<br>Die Person wird über die Löschung benachrichtigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_verwaltung_nutzerkonto_loeschen(\''+anzeigename+'\','+id+')">Löschung durchführen</span></p>');
+	cms_meldung_an('warnung', 'Nutzerkonto löschen', '<p>Achtung! Sie sind im Begriff das Nutzerkonto von <br><b>'+anzeigename+'</b><br> zu löschen! Sind Sie sicher, dass Sie fortfahren möchten?<br>Alle Daten, die mit diesem NutNutzerkonto in Verbindung stehen, werden unwiderruflich gelöscht!<br>Die Person wird über die Löschung benachrichtigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_schulhof_verwaltung_nutzerkonto_loeschen(\''+anzeigename+'\','+id+')">Löschung durchführen</span></p>');
 }
 
 
 function cms_schulhof_verwaltung_nutzerkonto_loeschen(anzeigename, id) {
-	cms_laden_an('Nutzerkonto löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kan einen Moment dauern. Danach wird die Person über die Löschung per eMail informiert.');
+	cms_laden_an('Nutzerkonto löschen', 'Die Löschung von <br><b>'+anzeigename+'</b><br> wird durchgeführt. Dies kann einen Moment dauern. Danach wird die Person über die Löschung per eMail informiert.');
 
 	var formulardaten = new FormData();
 	formulardaten.append("id",     		id);
@@ -685,6 +708,24 @@ function cms_schulhof_verwaltung_nutzerkonto_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen_anzeige() {
+	cms_meldung_an('warnung', 'Nutzerkonten löschen', '<p>Achtung! Sie sind im Begriff die Nutzerkonten aller ggewählten Personen zu löschen! Sind Sie sicher, dass Sie fortfahren möchten?<br>Alle Daten, die mit diesen Nutzerkonten in Verbindung stehen, werden unwiderruflich gelöscht!<br>Die Personen werden über die Löschung benachrichtigt.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen()">Löschung durchführen</span></p>');
+}
+
+
+function cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen(anzeigename, id) {
+	var ids = [];
+	$(".cms_multiselect_s .cms_person_id").each((i, e) => ids.push($(e).val()));
+	cms_multianfrage(136, ["Nutzerkonten löschen", "Die Löschungen der gewählten Nutzerkonten werden durchgeführt. Dies kann einen Moment dauern. Danach werden die Personen über die Löschung per eMail informiert."], {id: ids}).then((rueckgabe) => {
+		if (rueckgabe == "ADMINFEHLER") {
+			cms_meldung_an('fehler', 'Nutzerkonten löschen', '<p>Mindestens ein Nutzerkonto konnte nicht gelöscht werden. Es muss immer mindestens einen Administrator geben.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+		}
+		else if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Nutzerkonten löschen', '<p>Die Nutzerkonten wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
+}
 
 function cms_personen_ids_aendern() {
 	cms_laden_an('Personen-IDs ändern', 'Die Eingaben werden überprüft.');
@@ -1108,7 +1149,7 @@ function cms_nicht_zugeordnet_loeschen() {
 			cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 		}
 		else {
-			cms_meldung_an('erfolg', 'Nicht zugeordnete Schüler löschen', '<p>Die Personen wurde gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
+			cms_meldung_an('erfolg', 'Nicht zugeordnete Schüler löschen', '<p>Die Personen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Personen\');">OK</span></p>');
 		}
 	}
 

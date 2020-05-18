@@ -161,7 +161,7 @@ function cms_multiselect_schulhof_postfach_nachricht_papierkorb_anzeige (modus) 
 
 function cms_multiselect_schulhof_postfach_nachricht_papierkorb (modus) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 
 	cms_multianfrage(53, ["Nachrichten in den Papierkorb legen", "Die Nachrichten werden in den Papierkorb gelegt."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
@@ -216,7 +216,7 @@ function cms_multiselect_schulhof_postfach_nachricht_loeschen_anzeige (modus) {
 
 function cms_multiselect_schulhof_postfach_nachricht_loeschen (modus) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 
 	cms_multianfrage(54, ["Nachrichten endgültig löschen", "Die Nachrichten weden endgültig gelöscht."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
@@ -228,7 +228,23 @@ function cms_multiselect_schulhof_postfach_nachricht_loeschen (modus) {
 	});
 }
 
-
+function cms_multiselect_schulhof_postfach_nachrichten_lesen ( gelesen) {
+	var ids = [];
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	if(gelesen == 1) {
+		var n = ["Nachrichten lesen", "Die Nachrichten werden als gelesen markiert"];
+	} else {
+		var n = ["Nachrichten lesen", "Die Nachrichten werden als ungelesen markiert"];
+	}
+	cms_multianfrage(405, n, {id: ids}, {gelesen: gelesen}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Nutzerkonto/Postfach/Posteingang');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
+}
 
 function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id, app) {
 	var app = app || 'nein';
@@ -261,7 +277,7 @@ function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id
 
 function cms_multiselect_schulhof_postfach_nachricht_zuruecklegen (modus) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 	cms_multianfrage(55, ["Nachrichten zurücklegen", "Die Nachrichten werden aus dem Papierkorb zurückgelegt."], {id: ids}, {modus: modus}).then((rueckgabe) => {
 		if (rueckgabe == "ERFOLG") {
 			var ziel = '';
@@ -483,14 +499,17 @@ function cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen(papierkor
 	cms_ajaxanfrage(388).then((rueckgabe) => {
 		rueckgabe = JSON.parse(rueckgabe);
 		var tags = "";
-		rueckgabe.forEach((t) => tags += "<span class=\"cms_toggle\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen('"+papierkorb+"', '"+modus+"', '"+anschalten+"', "+t[0]+")\">"+t[1]+"</span>");
+		rueckgabe.forEach((t) => tags += "<span class=\"cms_toggle\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen('"+papierkorb+"', '"+modus+"', '"+anschalten+"', "+t[0]+")\">"+t[1]+"</span> ");
+		if(tags == "") {
+			tags = "<p class=\"cms_notiz\">Keine Tags verfügbar</p>";
+		}
 		cms_meldung_an("", "Tag auswählen", tags, "<span class=\"cms_button_nein\" onclick=\"cms_meldung_aus();\">Abbrechen</span>");
 	});
 }
 
 function cms_multiselect_schulhof_postfach_nachrichten_taggen(papierkorb, modus, anschalten, tag) {
 	var ids = [];
-	$(".cms_postfach_liste .cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
 	if(anschalten == 1) {
 		var n = ["Nachrichten taggen", "Der Tag wird den Nachrichten zugewiesen"];
 	} else {

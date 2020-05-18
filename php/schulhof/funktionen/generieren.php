@@ -58,6 +58,13 @@ function cms_generiere_kleinste_id ($tabelle, $netz = "s", $benutzer = '-') {
     }
     else {$fehler = true;}
     $sql->close();
+    // Persönliche Daten löschen
+    if ($id !== null) {
+      $sql = $db->prepare("UPDATE $tabelle SET idvon = NULL, idzeit = NULL WHERE id = ?");
+      $sql->bind_param("i", $id);
+      $sql->execute();
+      $sql->close();
+    }
     cms_trennen($db);
   }
   return $id;

@@ -62,7 +62,8 @@ if($num > 0) {
 	$meldung .= "<h6>Das ist neu:</h6>";
 	$meldung .= "<ul>";
 	foreach($version["neuerungen"] as $n) {
-		$meldung .= "<li>$n</li>";
+		$n = preg_replace_callback("/\[(W|E)\]/", function($m) {return "<span class=\"cms_notiz\">{$m[0]}</span>";}, $n);
+		$meldung .= "<li style=\"line-height: 1.45em\">$n</li>";
 	}
 	$meldung .= "</ul>";
 	$meldung .= "<p>Weitere Informationen können der <a href=\"Schulhof/Neuerungen\" style=\"color: inherit\"><b>Neuerungsseite</b></a> entnommen werden.</p>";

@@ -17,6 +17,7 @@ if (isset($_POST['inaktivitaetszeit'])) {$inaktivitaetszeit = $_POST['inaktivita
 if (isset($_POST['terminoeffentlich'])) {$terminoeffentlich = $_POST['terminoeffentlich'];} else {echo "FEHLER";exit;}
 if (isset($_POST['blogoeffentlich'])) {$blogoeffentlich = $_POST['blogoeffentlich'];} else {echo "FEHLER";exit;}
 if (isset($_POST['galerieoeffentlich'])) {$galerieoeffentlich = $_POST['galerieoeffentlich'];} else {echo "FEHLER";exit;}
+if (isset($_POST['dateiaenderung'])) {$dateiaenderung = $_POST['dateiaenderung'];} else {echo "FEHLER";exit;}
 if (isset($_POST['wikiknopf'])) {$wikiknopf = $_POST['wikiknopf'];} else {echo "FEHLER";exit;}
 
 if (isset($_POST['modus'])) {$modus = $_POST['modus'];} else {echo "FEHLER";exit;}
@@ -47,6 +48,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_toggle($terminoeffentlich)) {$fehler = true;}
 	if (!cms_check_toggle($blogoeffentlich)) {$fehler = true;}
 	if (!cms_check_toggle($galerieoeffentlich)) {$fehler = true;}
+	if (!cms_check_toggle($dateiaenderung)) {$fehler = true;}
 	if (!cms_check_ganzzahl($postalletage,1,1000)) {$fehler = true;}
 	if (!cms_check_ganzzahl($postpapierkorbtage,0,100)) {$fehler = true;}
 	if (!cms_check_ganzzahl($uebersichtsanzahl,1,25)) {$fehler = true;}
@@ -71,8 +73,8 @@ if (cms_angemeldet() && $zugriff) {
 		// PROFILDATEN UPDATEN
 		$dbs = cms_verbinden('s');
 
-		$sql = $dbs->prepare("UPDATE personen_einstellungen SET postmail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), postalletage = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), postpapierkorbtage = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), notifikationsmail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vertretungsmail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), uebersichtsanzahl = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), inaktivitaetszeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichertermin = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlicherblog = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichegalerie = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), wikiknopf = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE person = $id");
-		$sql->bind_param("sssssssssss", $postmail, $postalletage, $postpapierkorbtage, $notifikationsmail, $vertretungsmail, $uebersichtsanzahl, $inaktivitaetszeit, $terminoeffentlich, $blogoeffentlich, $galerieoeffentlich, $wikiknopf);
+		$sql = $dbs->prepare("UPDATE personen_einstellungen SET postmail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), postalletage = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), postpapierkorbtage = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), notifikationsmail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), vertretungsmail = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), uebersichtsanzahl = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), inaktivitaetszeit = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichertermin = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlicherblog = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), oeffentlichegalerie = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), wikiknopf = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), dateiaenderung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE person = $id");
+		$sql->bind_param("ssssssssssss", $postmail, $postalletage, $postpapierkorbtage, $notifikationsmail, $vertretungsmail, $uebersichtsanzahl, $inaktivitaetszeit, $terminoeffentlich, $blogoeffentlich, $galerieoeffentlich, $wikiknopf, $dateiaenderung);
 		$sql->execute();
 		$sql->close();
 		cms_trennen($dbs);

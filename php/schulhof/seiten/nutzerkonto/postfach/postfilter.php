@@ -356,7 +356,16 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 			if($app != 'app') {
 				$klasse .= "cms_multiselect";
 			}
-			$code .= "<td class=\"$klasse\" style=\"position: relative\">".$tags.$icon."</td>";
+			$hnid = "<input type=\"hidden\" class=\"cms_nachricht_id\" value=\"{$N['id']}\">";
+
+			$meta = 0;
+			if ($modus == "eingang") {
+				$meta |= (($N['gelesen'] != "-") << 0);
+			}
+			
+			$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
+
+			$code .= "<td class=\"$klasse\" style=\"position: relative\">".$hnid.$hmeta.$tags.$icon."</td>";
 			$betreffevent = cms_texttrafo_e_event($N['betreff']);
 			$lesen = "cms_postfach_nachricht_lesen('$modus', '".$N['anzeigename']."', '".$betreffevent."', '".$datum."', '".$uhrzeit."', '".$N['id']."', '$app')";
 			$code .= "<td onclick=\"$lesen\" class=\"cms_postfach_nachricht_lesen\">".$markierungv.$N['anzeigename'].$markierungh."</td>";
@@ -421,7 +430,6 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 					$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_schulhof_postfach_nachricht_loeschen_anzeige('$modus', '".$betreffevent."', '".$loeschendatum."', ".$N['id'].")\"><span class=\"cms_hinweis\">Endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
 				}
 				$code .= $speicherfrist;
-				$code .= "<input type=\"hidden\" class=\"cms_nachricht_id\" value=\"{$N['id']}\">";
 				$code .= "</td>";
 			}
 			$code .= "</tr>";
@@ -430,15 +438,19 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 
 	if($app != 'app' && count($NACHRICHTEN) > 0) {
 		$code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"6\">";
-		$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen('$papierkorb', '$modus', '1')\"><span class=\"cms_hinweis\">Alle Nachrichten taggen</span><img src=\"res/icons/klein/tag.png\"></span> ";
-		$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen('$papierkorb', '$modus', '0')\"><span class=\"cms_hinweis\">Alle Nachrichten enttaggen</span><img src=\"res/icons/klein/tag.png\"></span> ";
-		if ($papierkorb == "-") {
-			$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_papierkorb_anzeige('$modus')\"><span class=\"cms_hinweis\">Alle in den Papierkorb</span><img src=\"res/icons/klein/papierkorb.png\"></span> ";
-		}
-		else {
-			$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_zuruecklegen('$modus')\"><span class=\"cms_hinweis\">Alle zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
-			$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_loeschen_anzeige('$modus')\"><span class=\"cms_hinweis\">Alle endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
-		}
+			if ($modus == "eingang") {
+				$code .= "<span class=\"cms_aktion_klein\" data-multiselect-maske=\"1\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_lesen('1')\"><span class=\"cms_hinweis\">Alle als gelesen markieren</span><img src=\"res/icons/klein/lesen.png\"></span> ";
+				$code .= "<span class=\"cms_aktion_klein\" data-multiselect-maske=\"2\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_lesen('0')\"><span class=\"cms_hinweis\">Alle als ungelesen markieren</span><img src=\"res/icons/klein/entlesen.png\"></span> ";
+			}
+			$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen('$papierkorb', '$modus', '1')\"><span class=\"cms_hinweis\">Alle taggen</span><img src=\"res/icons/klein/tag.png\"></span> ";
+			$code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen('$papierkorb', '$modus', '0')\"><span class=\"cms_hinweis\">Alle enttaggen</span><img src=\"res/icons/klein/tag_loeschen.png\"></span> ";
+			if ($papierkorb == "-") {
+				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_papierkorb_anzeige('$modus')\"><span class=\"cms_hinweis\">Alle in den Papierkorb</span><img src=\"res/icons/klein/papierkorb.png\"></span> ";
+			}
+			else {
+				$code .= "<span class=\"cms_aktion_klein cms_aktion\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_zuruecklegen('$modus')\"><span class=\"cms_hinweis\">Alle zurücklegen</span><img src=\"res/icons/klein/zuruecklegen.png\"></span> ";
+				$code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_postfach_nachricht_loeschen_anzeige('$modus')\"><span class=\"cms_hinweis\">Alle endgültig löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+			}
 		$code .= "</td></tr>";
 	}
 	cms_trennen($dbs);

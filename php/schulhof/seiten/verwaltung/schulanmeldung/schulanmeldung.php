@@ -59,7 +59,7 @@ if (cms_r("schulhof.organisation.schulanmeldung.*")) {
 	$code .= "<h3>Datensätze</h3>";
 	$code .= "<table class=\"cms_liste\">";
 		$code .= "<thead>";
-			$code .= "<tr><th>Vorname</th><th>Nachname</th><th>Geburtsdatum</th><th>Ort</th><th>Eingegangen</th><th></th><th>Aktionen</th></tr>";
+			$code .= "<tr><th></th><th>Vorname</th><th>Nachname</th><th>Geburtsdatum</th><th>Ort</th><th>Eingegangen</th><th></th><th>Aktionen</th></tr>";
 		$code .= "</thead>";
 		$code .= "<tbody id=\"cms_voranmeldung_schueler\">";
 		// Alle Rollen ausgeben
@@ -71,6 +71,12 @@ if (cms_r("schulhof.organisation.schulanmeldung.*")) {
 			$sql->bind_result($said, $savor, $sanach, $sageb, $saort, $saakz, $saeing);
 			while ($sql->fetch()) {
 				$ausgabe .= "<tr>";
+					// 0: Wurde aufgenommen?
+					$meta = 0;
+					$meta |= (($saakz == "ja") << 0);
+					$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$said\"><input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
+
+					$ausgabe .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/schulanmeldung.png\"></td>";
 					$ausgabe .= "<td>$savor</td>";
 					$ausgabe .= "<td>$sanach</td>";
 					$ausgabe .= "<td>".date('d', $sageb).". ".cms_monatsnamekomplett(date('m', $sageb))." ".date('Y', $sageb)."</td>";
@@ -103,7 +109,15 @@ if (cms_r("schulhof.organisation.schulanmeldung.*")) {
 		$sql->close();
 
 		if (strlen($ausgabe) == 0) {
-			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
+			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"8\">- keine Datensätze gefunden -</td></tr>";
+		} else {
+			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"8\">";
+			$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_ja\" data-multiselect-maske=\"1\" onclick=\"cms_multiselect_schulanmeldung_aufnehmen();\"><span class=\"cms_hinweis\">Alle aufnehmen</span><img src=\"res/icons/klein/akzeptieren.png\"></span> ";
+			$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_wichtig\" data-multiselect-maske=\"2\" onclick=\"cms_multiselect_schulanmeldung_ablehnen();\"><span class=\"cms_hinweis\">Alle ablehnen</span><img src=\"res/icons/klein/ablehnen.png\"></span> ";
+			if (cms_r("schulhof.organisation.schulanmeldung.löschen")) {
+				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulanmeldungen_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+			}
+			$ausgabe .= "</tr>";
 		}
 		$code .= $ausgabe."</tbody>";
 	$code .= "</table>";

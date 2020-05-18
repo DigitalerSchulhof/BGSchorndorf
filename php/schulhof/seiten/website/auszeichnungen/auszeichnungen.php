@@ -12,8 +12,6 @@ if ($anzeigen) {
   $canlegen = '';
   $canzeigen = '';
 
-  $spalten = 7;
-
   $canzeigen .= '<table class="cms_liste">';
   $canzeigen .= '<tr><th></th><th>Bezeichnung</th><th>Link</th><th>Ziel</th><th></th><th>Aktionen</th></tr>';
   $auszeichnungen = "";
@@ -21,7 +19,9 @@ if ($anzeigen) {
   if ($sql->execute()) {
     $sql->bind_result($aid, $abez, $alink, $aziel, $aaktiv);
     while ($sql->fetch()) {
-      $auszeichnungen .= "<tr><td><img src=\"res/icons/klein/auszeichnungen.png\"></td>";
+      $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$aid\">";
+
+      $auszeichnungen .= "<tr><td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/auszeichnungen.png\"></td>";
       $auszeichnungen .= "<td>$abez</td><td>$alink</td>";
       if ($aaktiv == '1') {$aaktivicon = "gruen.png";} else {$aaktivicon = "rot.png";}
       if ($aziel == '_blank') {$azieltext = "Neuer Tab";} else {$azieltext = "Dieser Tab";}
@@ -32,7 +32,14 @@ if ($anzeigen) {
     }
   }
   $sql->close();
-  if (strlen($auszeichnungen) > 0) {$canzeigen .= $auszeichnungen;}
+  if (strlen($auszeichnungen) > 0) {
+    $canzeigen .= $auszeichnungen;
+    $canzeigen .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"6\">";
+    if (cms_r("website.auszeichnungen.löschen")) {
+      $canzeigen .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_multiselect_auszeichnungen_loeschen_anzeigen()\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
+    }
+    $canzeigen .= "</tr>";
+  }
   else {$canzeigen .= "<tr><td class=\"cms_notiz\" colspan=\"6\">– Keine Auszeichnungen angelegt –</td></tr>";}
   $canzeigen .= '</table>';
 

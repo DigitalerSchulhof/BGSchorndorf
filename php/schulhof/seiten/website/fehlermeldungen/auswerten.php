@@ -19,12 +19,14 @@
       if ($sql->execute()) {
         $sql->bind_result($fid, $ferst, $furl, $ftit, $fbes, $fzeit, $fstatus);
         while ($sql->fetch()) {
+          $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$fid\">";
+
           $liste .= '<tr class=\"cms_fehlermeldung_'.$fstatus.'\">';
           if($fstatus == "2") {
-            $liste .= '<td><img src="res/icons/klein/fehlermeldung_behoben.png"></td>';
+            $liste .= '<td class="cms_multiselect">'.$hmeta.'<img src="res/icons/klein/fehlermeldung_behoben.png"></td>';
           }
           else {
-            $liste .= '<td><img src="res/icons/klein/fehlermeldung.png"></td>';
+            $liste .= '<td class="cms_multiselect">'.$hmeta.'<img src="res/icons/klein/fehlermeldung.png"></td>';
           }
           $liste .= "<td style=\"word-break: break-word;\">$ftit</td>";
           $liste .= "<td style=\"word-break: break-word;\">$fbes</td>";

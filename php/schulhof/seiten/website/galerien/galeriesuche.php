@@ -32,8 +32,10 @@ function cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen) {
   $sql->close();
 
   foreach ($GALERIEN as $daten) {
+    $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\">";
+
     if ($daten['genehmigt'] == 1) {$klasse = '';} else {$klasse = ' class="cms_vorlaeufig"';}
-    $schulhofgalerien .= '<tr'.$klasse.'><td><img src="res/icons/klein/galerie.png"></td><td>'.$daten['bezeichnung'].'</td>';
+    $schulhofgalerien .= '<tr'.$klasse.'><td class="cms_multiselect">'.$hmeta.'<img src="res/icons/klein/galerie.png"></td><td>'.$daten['bezeichnung'].'</td>';
     $zuordnungen = "";
 
     foreach ($CMS_GRUPPEN as $g) {
@@ -77,7 +79,14 @@ function cms_galerieverwaltung_suche($dbs, $jahr, $anzeigen) {
   if (strlen($schulhofgalerien) == 0) {
     $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Galerien vorhanden --</td></tr>";
   }
-  else {$code .= $schulhofgalerien;}
+  else {
+    $code .= $schulhofgalerien;
+    $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
+    if (cms_r("artikel.galerien.löschen")) {
+      $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_galerien_loeschen_anzeigen('Schulhof/Website/Galerien')\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+    }
+    $code .= "</tr>";
+  }
 
   return $code;
 }

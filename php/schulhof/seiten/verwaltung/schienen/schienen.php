@@ -68,7 +68,9 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schiene
 
       foreach ($SCHIENEN AS $S) {
         $code .= "<tr>";
-          $code .= "<td><img src=\"res/icons/klein/schienen.png\"></td>";
+          $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$S['id']}\">";
+
+          $code .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/schienen.png\"></td>";
           $code .= "<td>".$S['bez']."</td>";
           $code .= "<td>".$S['zbez']."</td>";
           $code .= "<td>".implode(", ", $S['kurse'])."</td>";
@@ -85,6 +87,12 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schiene
 
       if (count($SCHIENEN) == 0) {
         $code .= "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";
+      } else {
+        $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"5\">";
+        if (cms_r("schulhof.planung.schuljahre.planungszeiträume.stundenplanung.schienen.löschen")) {
+          $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schienen_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+        }
+        $code .= "</tr>";
       }
 
     $code .= "</table>";

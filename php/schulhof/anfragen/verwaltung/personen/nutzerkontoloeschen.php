@@ -3,6 +3,7 @@ include_once("../../schulhof/funktionen/texttrafo.php");
 include_once("../../allgemein/funktionen/sql.php");
 include_once("../../schulhof/funktionen/config.php");
 include_once("../../schulhof/funktionen/check.php");
+include_once("../../schulhof/funktionen/generieren.php");
 include_once("../../allgemein/funktionen/mail.php");
 include_once("../../schulhof/funktionen/dateisystem.php");
 
@@ -21,7 +22,7 @@ if (cms_angemeldet() && $zugriff) {
 
 	// Zu löschende Person laden
 	$dbs = cms_verbinden('s');
-
+	$nutzerkonto = false;
 	$sql = $dbs->prepare("SELECT AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art FROM personen LEFT JOIN nutzerkonten ON personen.id = nutzerkonten.id WHERE personen.id = ?");
   $sql->bind_param("i", $id);
   if ($sql->execute()) {

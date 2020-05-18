@@ -88,7 +88,6 @@ function cms_ferien_loeschen_vorbereiten(id, bezeichnung) {
 	cms_meldung_an('warnung', 'Ferien löschen', '<p>Soll der Ferientermin <b>'+bezeichnung+'</b> wirklich gelöscht werden?</p><p><b>Achtung!</b> Tagebücher werden nicht automatisch angepasst!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_ferien_loeschen(\''+id+'\')">Löschung durchführen</span></p>');
 }
 
-
 function cms_ferien_loeschen(id, ziel) {
 	cms_laden_an('Ferien löschen', 'Der Termin wird gelöscht.');
 
@@ -106,6 +105,21 @@ function cms_ferien_loeschen(id, ziel) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_ferien_loeschen_anzeigen() {
+	cms_meldung_an('warnung', 'Ferien löschen', '<p>Sollen die Ferientermine wirklich gelöscht werden?</p><p><b>Achtung!</b> Tagebücher werden nicht automatisch angepasst!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_ferien_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_ferien_loeschen() {
+	cms_multianfrage(10, ["Ferien löschen", "Die Ferien werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Ferien löschen', '<p>Die Ferien wurden gelöscht.</p><p><b>Achtung!</b> Tagebücher wurden nicht automatisch angepasst!</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Ferien\');">OK</span></p>');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
 }
 
 function cms_ferientermine_eingabenpruefen(modus) {

@@ -143,6 +143,19 @@ function cms_schienen_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_schienen_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Schienen löschen', '<p>Sollen die Schienen wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schienen_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schienen_loeschen() {
+  cms_multianfrage(357, ["Schienen löschen", "Die Schienen werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+    if (rueckgabe == "ERFOLG") {
+      cms_meldung_an('erfolg', 'Schienen löschen', '<p>Die Schienen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Schienen\');">OK</span></p>');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  });
+}
+
 function cms_schienen_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Schiene bearbeiten', 'Die Berechtigung wird geprüft.');
 

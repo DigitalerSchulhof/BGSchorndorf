@@ -235,6 +235,19 @@ function cms_zeitraeume_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_zeitraeume_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Zeiträume löschen', '<p>Sollen die Zeiträume wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_zeitraeume_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_zeitraeume_loeschen() {
+  cms_multianfrage(327, ["Zeiträume löschen", "Die Zeiträume werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+    if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Zeiträume löschen', '<p>Die Zeiträume wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Zeiträume\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+  });
+}
+
 function cms_zeitraeume_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Zeitraum bearbeiten', 'Die Berechtigung wird geprüft.');
 

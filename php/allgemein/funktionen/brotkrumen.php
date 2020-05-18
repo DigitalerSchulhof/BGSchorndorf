@@ -214,7 +214,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 					$curl = $url;
 					$curl[1] = "ToDo";
 					$curl = implode("/", $curl);
-					$todo = "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('$curl')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+					$todo = "<span class=\"cms_aktionsicon\" id=\"cms_todo_setzen\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('$curl')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+					$todo .= "<span class=\"cms_aktionsicon\" id=\"cms_todo_loeschen\" style=\"display: none;\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_seite_todo_setzen('$g', '$gruppenid', '$art', '$artikelid')\" src=\"res/icons/klein/todo_erledigen.png\"><input type=\"hidden\" value=\"1\" name=\"cms_seite_todo\" id=\"cms_seite_todo\"></span>";
 				}
 				else {
 					$todowert = 0;
@@ -223,7 +224,7 @@ function cms_brotkrumen($url, $aktionen = true) {
 
 				$code .= $todo;
 			}
-		} else if(preg_match("/^Schulhof\/Nutzerkonto$/", $urlganz)) {
+		} else if(preg_match("/^Schulhof\/Nutzerkonto$/", $urlganz) || preg_match("/^Schulhof\/ToDo$/", $urlganz)) {
 			$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo anlegen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/Neu')\" src=\"res/icons/klein/todo_neu.png\"></span>";
 		} else if (cms_angemeldet() && (preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz) || preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)) && count($url) == 10) {
 			$schuljahr = cms_linkzutext($url[2]);
@@ -350,7 +351,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 			$sql->bind_param("is", $CMS_BENUTZERID, $bez);
 			$sql->bind_result($id);
 			if($sql->execute() && $sql->fetch()) {
-				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/{$url[2]}/Bearbeiten')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+				$code .= "<span class=\"cms_aktionsicon\" id=\"cms_todo_setzen\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/{$url[2]}/Bearbeiten')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+				$code .= "<span class=\"cms_aktionsicon\" id=\"cms_todo_loeschen\" style=\"display: none;\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_eigenes_todo_loeschen($id)\" src=\"res/icons/klein/todo_erledigen.png\"></span>";
 			}
 		} else if(preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/Bearbeiten$/", $urlganz)) {
 			$bez = $url[2];

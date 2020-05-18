@@ -166,8 +166,10 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
 
 
   foreach ($GRUPPEN AS $daten) {
+    $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\">";
+
     $code .= "<tr>";
-    $code .= "<td><img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
+    $code .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
     $code .= "<td>".$daten['bezeichnung']."</td>";
     $code .= "<td>".$daten['mitglieder']."</td>";
     $code .= "<td>".$daten['vorsitz']."</td>";
@@ -198,9 +200,14 @@ function cms_gruppen_verwaltung_listeausgeben_schuljahr($dbs, $name, $bearbeiten
     }
     $code .= "</td></tr>";
   }
-
   $spalten = 7;
   if ($name == "Stufen") {$spalten++;}
+
+  if(strlen($code) > 0 && $loeschen && (($CMS_IMLN && (($namek == "gremien") || ($namek == "fachschaften"))) || (($namek != "gremien") && ($namek != "fachschaften")))) {
+    $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"$spalten\">";
+    $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_gruppen_loeschen_anzeigen('$name')\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+    $code .= "</tr>";
+  }
   if (strlen($code) == 0) {$code = "<tr><td class=\"cms_notiz\" colspan=\"$spalten\">- keine Datensätze gefunden -</td></tr>";}
 
   return $code;

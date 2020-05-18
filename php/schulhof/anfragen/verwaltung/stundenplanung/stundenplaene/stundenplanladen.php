@@ -92,8 +92,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 	else {
 		echo $code;
 	}
-}
-else {
+} else {
 	echo "BERECHTIGUNG";
 }
 ?>

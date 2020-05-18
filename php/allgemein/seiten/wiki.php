@@ -1,54 +1,55 @@
 <?php
 	include_once(__DIR__."/../funktionen/yaml.php");
 	use Async\Yaml;
+	if(cms_angemeldet()) {
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(wikiknopf, '$CMS_SCHLUESSEL') FROM personen_einstellungen WHERE person = ?");
+		$sql->bind_param("i", $CMS_BENUTZERID);
+		$sql->bind_result($wikiknopf);
+		$sql->execute();
+		$sql->fetch();
+		$sql->close();
 
-	$sql = $dbs->prepare("SELECT AES_DECRYPT(wikiknopf, '$CMS_SCHLUESSEL') FROM personen_einstellungen WHERE person = ?");
-	$sql->bind_param("i", $CMS_BENUTZERID);
-	$sql->bind_result($wikiknopf);
-	$sql->execute();
-	$sql->fetch();
-	$sql->close();
+		if(is_null($CMS_WIKI) && $wikiknopf) {
 
-	if(is_null($CMS_WIKI) && $wikiknopf) {
+			$wikilinks = file_get_contents(__DIR__."/../../../version/wikilinks.yml");
 
-		$wikilinks = file_get_contents(__DIR__."/../../../version/wikilinks.yml");
-
-		$t = function ($url, $typ, $urlganz) {
-			switch ($typ) {
-				case "regex":
+			$t = function ($url, $typ, $urlganz) {
+				switch ($typ) {
+					case "regex":
 					if(preg_match($url, $urlganz) === 1) {
 						return true;
 					}
 					break;
-				case "url":
+					case "url":
 					return $url == $urlganz;
-			}
-			return false;
-		};
+				}
+				return false;
+			};
 
-		$wikilinks = YAML::loader($wikilinks);
-		if($wikilinks && $wikilinks["seiten"] && is_array($wikilinks["seiten"])) {
-			foreach($wikilinks["seiten"] as $seite) {
-				$url = $seite["url"];
-				$typ = $seite["typ"] ?? "url";
-				$wiki = $seite["wiki"];
-				if(is_array($url)) {
-					foreach($url as $u) {
-						if($t($u, $typ, $CMS_URLGANZ)) {
-							$CMS_WIKI = $wiki;
-							break;
+			$wikilinks = YAML::loader($wikilinks);
+			if($wikilinks && $wikilinks["seiten"] && is_array($wikilinks["seiten"])) {
+				foreach($wikilinks["seiten"] as $seite) {
+					$url = $seite["url"];
+					$typ = $seite["typ"] ?? "url";
+					$wiki = $seite["wiki"];
+					if(is_array($url)) {
+						foreach($url as $u) {
+							if($t($u, $typ, $CMS_URLGANZ)) {
+								$CMS_WIKI = $wiki;
+								break;
+							}
 						}
-					}
-				} else {
-					if($t($url, $typ, $CMS_URLGANZ)) {
-						$CMS_WIKI = $wiki;
+					} else {
+						if($t($url, $typ, $CMS_URLGANZ)) {
+							$CMS_WIKI = $wiki;
+						}
 					}
 				}
 			}
 		}
-	}
 
-	if(!is_null($CMS_WIKI) && $CMS_WIKI !== false) {
-		echo "<span id=\"cms_wiki\" class=\"cms_aktion_klein\" onclick=\"cms_link('$CMS_WIKI', true)\" style=\"padding: 2px;\"><span class=\"cms_hinweis cms_hinweis_links\" style=\"bottom: 45px;\">Hilfe</span><img src=\"res/icons/gross/wiki.png\"></span>";
+		if(!is_null($CMS_WIKI) && $CMS_WIKI !== false) {
+			echo "<span id=\"cms_wiki\" class=\"cms_aktion_klein\" onclick=\"cms_link('$CMS_WIKI', true)\" style=\"padding: 2px;\"><span class=\"cms_hinweis cms_hinweis_links\" style=\"bottom: 45px;\">Hilfe</span><img src=\"res/icons/gross/wiki.png\"></span>";
+		}
 	}
 ?>

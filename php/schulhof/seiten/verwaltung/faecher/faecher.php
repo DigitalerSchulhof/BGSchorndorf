@@ -62,7 +62,9 @@ if (cms_r("schulhof.planung.schuljahre.fächer.[|anlegen,bearbeiten,löschen]"))
       $sql = $dbs->prepare("SELECT AES_DECRYPT(kuerzel, '$CMS_SCHLUESSEL') FROM lehrer JOIN fachkollegen ON lehrer.id = fachkollegen.kollege WHERE fachkollegen.fach = ?");
       foreach ($FAECHER AS $daten) {
         $ausgabe .= "<tr>";
-          $ausgabe .= "<td><img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
+          $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\">";
+
+          $ausgabe .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/gruppen/klein/".$daten['icon']."\"></td>";
           $ausgabe .= "<td><span class=\"cms_tag_gross cms_farbbeispiel_".$daten['farbe']."\"></span></td>";
           $ausgabe .= "<td>".$daten['bezeichnung']."</td>";
           $ausgabe .= "<td>".$daten['kuerzel']."</td>";
@@ -93,7 +95,13 @@ if (cms_r("schulhof.planung.schuljahre.fächer.[|anlegen,bearbeiten,löschen]"))
 
 			if ($ausgabe == "") {
 				$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"6\">- keine Datensätze gefunden -</td></tr>";
-			}
+			} else {
+        $ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"6\">";
+        if (cms_r("schulhof.planung.schuljahre.fächer.löschen")) {
+          $ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_faecher_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+        }
+        $ausgabe .= "</tr>";
+      }
 
 			$code .= $ausgabe;
 

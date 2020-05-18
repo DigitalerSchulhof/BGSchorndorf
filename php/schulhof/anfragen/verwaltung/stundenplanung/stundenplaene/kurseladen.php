@@ -33,7 +33,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 		$sql = "SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bezeichnung, AES_DECRYPT(faecher.bezeichnung, '$CMS_SCHLUESSEL') AS fach, AES_DECRYPT(faecher.kuerzel, '$CMS_SCHLUESSEL') AS kuerzel FROM (SELECT kurs FROM kursklassen WHERE klasse = ?) ";
 		$sql .= "AS x JOIN kurse ON x.kurs = kurse.id JOIN faecher ON kurse.fach = faecher.id ORDER BY fach ASC, bezeichnung ASC";
 		$sql = $dbs->prepare($sql);
-		$sql->bind_param("i", $klasse)
+		$sql->bind_param("i", $klasse);
 		if ($sql->execute()) {
 			$sql->bind_result($kursid, $kursbez, $kursfach, $kurskurz);
 			while ($sql->fetch()) {
