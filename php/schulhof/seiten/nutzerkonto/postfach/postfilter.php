@@ -359,8 +359,10 @@ function cms_postfach_nachrichten_listen ($modus, $papierkorb, $start, $ende, $n
 			$hnid = "<input type=\"hidden\" class=\"cms_nachricht_id\" value=\"{$N['id']}\">";
 
 			$meta = 0;
-			$meta |= (($N['gelesen'] != "-") << 0);
-
+			if ($modus == "eingang") {
+				$meta |= (($N['gelesen'] != "-") << 0);
+			}
+			
 			$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
 
 			$code .= "<td class=\"$klasse\" style=\"position: relative\">".$hnid.$hmeta.$tags.$icon."</td>";
