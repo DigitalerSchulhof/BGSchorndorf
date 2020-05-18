@@ -70,9 +70,34 @@ function cms_multiselect_toggle(dis, sofort) {
 
   tr.toggleClass("cms_multiselect_s");
 
+  if(!$(".cms_multiselect_s").length) {
+    return;
+  }
+
+  var metaa = -1;
+  var metao = 0;
+
+  $(".cms_multiselect_s .cms_multiselect_meta").each((i, e) => {
+    metaa &= parseInt($(e).val());
+    metao |= parseInt($(e).val());
+  });
   var aktionen = [];
-  menue.find("td>span").each((i, e) => aktionen.push($(e).clone()));
+  menue.find("td>span").each((i, e) => {
+    var maske = $(e).data("multiselect-maske");
+    var push = true;
+    if(maske !== undefined) {
+      var meta = (maske & 1) ? metaa : metao;
+      push = (~(((meta >> (maske >> 2)) & 1) ^ ((maske >> 1) & 1))) & 1;
+    }
+    if(push) {
+      aktionen.push($(e).clone())
+    }
+  });
+
   context.html(aktionen);
+  if(!aktionen.length) {
+    context.html("<p style=\"opcaity: 1\" class=\"cms_notiz\">Keine Aktionen für die aktuelle Auswahl verfügbar</p>");
+  }
   context.find(".cms_hinweis").removeClass("cms_hinweis").addClass("cms_alter_hinweis");
 
   var top = tr.offset().top+(tr.outerHeight()-context.outerHeight())/2;
@@ -84,4 +109,11 @@ function cms_multiselect_toggle(dis, sofort) {
     context.clearQueue().css({"top": top, "left": left}).fadeIn();
   }
   context.addClass("contextmenue_multiselect");
+}
+
+function cms_multiselect_ids(klasse) {
+  klasse = klasse || "cms_multiselect_id";
+  var ids = [];
+  $(".cms_multiselect_s ."+klasse).each((i, e) => ids.push($(e).val()));
+  return ids;
 }

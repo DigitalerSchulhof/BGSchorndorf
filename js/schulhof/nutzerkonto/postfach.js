@@ -228,7 +228,23 @@ function cms_multiselect_schulhof_postfach_nachricht_loeschen (modus) {
 	});
 }
 
-
+function cms_multiselect_schulhof_postfach_nachrichten_lesen ( gelesen) {
+	var ids = [];
+	$(".cms_multiselect_s .cms_nachricht_id").each((i, e) => ids.push($(e).val()));
+	if(gelesen == 1) {
+		var n = ["Nachrichten lesen", "Die Nachrichten werden als gelesen markiert"];
+	} else {
+		var n = ["Nachrichten lesen", "Die Nachrichten werden als ungelesen markiert"];
+	}
+	cms_multianfrage(405, n, {id: ids}, {gelesen: gelesen}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_link('Schulhof/Nutzerkonto/Postfach/Posteingang');
+		}
+		else {
+			cms_fehlerbehandlung(rueckgabe);
+		}
+	});
+}
 
 function cms_schulhof_postfach_nachricht_zuruecklegen (modus, betreff, datum, id, app) {
 	var app = app || 'nein';
@@ -483,7 +499,10 @@ function cms_multiselect_schulhof_postfach_nachrichten_taggen_anzeigen(papierkor
 	cms_ajaxanfrage(388).then((rueckgabe) => {
 		rueckgabe = JSON.parse(rueckgabe);
 		var tags = "";
-		rueckgabe.forEach((t) => tags += "<span class=\"cms_toggle\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen('"+papierkorb+"', '"+modus+"', '"+anschalten+"', "+t[0]+")\">"+t[1]+"</span>");
+		rueckgabe.forEach((t) => tags += "<span class=\"cms_toggle\" onclick=\"cms_multiselect_schulhof_postfach_nachrichten_taggen('"+papierkorb+"', '"+modus+"', '"+anschalten+"', "+t[0]+")\">"+t[1]+"</span> ");
+		if(tags == "") {
+			tags = "<p class=\"cms_notiz\">Keine Tags verfügbar</p>";
+		}
 		cms_meldung_an("", "Tag auswählen", tags, "<span class=\"cms_button_nein\" onclick=\"cms_meldung_aus();\">Abbrechen</span>");
 	});
 }

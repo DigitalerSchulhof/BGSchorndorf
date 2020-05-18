@@ -29,8 +29,8 @@ $sql->close();
 
 if ((time() <= $bestellende) && ($status < 2)) {
 	$meldung = "<h4>Bestellprozess</h4>";
-	$meldung .= "<p><b>Achtung!!</b> Die hier angebotenen <b>ASUS</b> Geräte sind Übergangsgeräte aus Restposten (Stangenware) für ganz dringende Fälle. Ein Angebot für unsere Schule mit Einheitsgeräten von <b>DELL</b> wird voraussichtlich bis zum 16. Mai folgen und eine Lieferdauer von etwa zwei Wochen haben. Bei beiden Angeboten handelt es sich keineswegs um schlechte Geräte, jedoch ist es wahrscheinlich, dass die <b>DELL</b>-Geräte etwas langlebiger sein werden.</p>";
-	$meldung .= "<p>Die Bestellmöglichkeit endet am ".cms_tagnamekomplett(date("w", $bestellende)).", den ".date("d", $bestellende).". ".cms_monatsnamekomplett(date("m", $bestellende))." ".date("Y", $bestellende)." um ".date("H:i:s", $bestellende)." Uhr</p><p><b>ASUS</b>-Bestellungen werden in Gruppen an den Händler weitergegeben. Eine Bearbeitung der Bestellung kann erst nach Zahlungseingang erfolgen. Für <b>DELL</b>-Bestellungen wird ein fester Bestellkoridor vorgegeben und dann für die ganze Schule eine  Bestellung aufgegeben. <b>Jede Person kann insgesamt nur einmal bestellen!</b></p><p>Finazierungen/Ratenkäufe sind leider nicht möglich.</p>";
+	$meldung .= "<p><b>Achtung!!</b> Die hier angebotenen <b>ASUS</b> Geräte sind Übergangsgeräte aus Restposten (Stangenware) für ganz dringende Fälle. Bei beiden Angeboten handelt es sich keineswegs um schlechte Geräte, jedoch ist es wahrscheinlich, dass die <b>DELL</b>-Geräte etwas langlebiger sein werden.</p>";
+	$meldung .= "<p>Die Bestellmöglichkeit endet am ".cms_tagnamekomplett(date("w", $bestellende)).", den ".date("d", $bestellende).". ".cms_monatsnamekomplett(date("m", $bestellende))." ".date("Y", $bestellende)." um ".date("H:i:s", $bestellende)." Uhr</p><p><b>ASUS</b>-Bestellungen werden in Gruppen an den Händler weitergegeben. Eine Bearbeitung der Bestellung kann erst nach Zahlungseingang erfolgen. Alle Bestellungen, die <b>DELL</b>-Geräte enthalten, werden erst zum Bestellende übermittelt. <b>Jede Person kann insgesamt nur einmal bestellen!</b></p><p>Finazierungen/Ratenkäufe sind leider nicht möglich.</p>";
 	echo cms_meldung("warnung", $meldung);
 
 	$code = "<h2>";
@@ -118,11 +118,11 @@ if ((time() <= $bestellende) && ($status < 2)) {
 		$code .= "<tr><th>eMailadresse wiederholen:</th><td><input name=\"cms_schulhof_ebestellung_mail_wiederholen\" id=\"cms_schulhof_ebestellung_mail_wiederholen\" type=\"text\" onkeyup=\"cms_check_passwort_gleich('ebestellung_mail')\" value=\"$mail\"></td><td><span class=\"cms_eingabe_icon\" id=\"cms_schulhof_ebestellung_mail_gleich_icon\"></span></td></tr>";
 
 		$meldung = "<h4>Bestellprozess</h4>";
-		$meldung .= "<p><b>Achtung!!</b> Die hier angebotenen <b>ASUS</b> Geräte sind Übergangsgeräte aus Restposten (Stangenware) für ganz dringende Fälle. Ein Angebot für unsere Schule mit Einheitsgeräten von <b>DELL</b> wird voraussichtlich bis zum 16. Mai folgen und eine Lieferdauer von etwa zwei Wochen haben. Bei beiden Angeboten handelt es sich keineswegs um schlechte Geräte, jedoch ist es wahrscheinlich, dass die <b>DELL</b>-Geräte etwas langlebiger sein werden.</p>";
-		$meldung .= "<p>Die Bestellmöglichkeit endet am ".cms_tagnamekomplett(date("w", $bestellende)).", den ".date("d", $bestellende).". ".cms_monatsnamekomplett(date("m", $bestellende))." ".date("Y", $bestellende)." um ".date("H:i:s", $bestellende)." Uhr</p><p><b>ASUS</b>-Bestellungen werden in Gruppen an den Händler weitergegeben. Eine Bearbeitung der Bestellung kann erst nach Zahlungseingang erfolgen. Für <b>DELL</b>-Bestellungen wird ein fester Bestellkoridor vorgegeben und dann für die ganze Schule eine  Bestellung aufgegeben. <b>Jede Person kann insgesamt nur einmal bestellen!</b></p><p>Finazierungen/Ratenkäufe sind leider nicht möglich.</p>";
+		$meldung .= "<p><b>Achtung!!</b> Die hier angebotenen <b>ASUS</b> Geräte sind Übergangsgeräte aus Restposten (Stangenware) für ganz dringende Fälle. Bei beiden Angeboten handelt es sich keineswegs um schlechte Geräte, jedoch ist es wahrscheinlich, dass die <b>DELL</b>-Geräte etwas langlebiger sein werden.</p>";
+		$meldung .= "<p>Die Bestellmöglichkeit endet am ".cms_tagnamekomplett(date("w", $bestellende)).", den ".date("d", $bestellende).". ".cms_monatsnamekomplett(date("m", $bestellende))." ".date("Y", $bestellende)." um ".date("H:i:s", $bestellende)." Uhr</p><p><b>ASUS</b>-Bestellungen werden in Gruppen an den Händler weitergegeben. Eine Bearbeitung der Bestellung kann erst nach Zahlungseingang erfolgen. Alle Bestellungen, die <b>DELL</b>-Geräte enthalten, werden erst zum Bestellende übermittelt. <b>Jede Person kann insgesamt nur einmal bestellen!</b></p><p>Finazierungen/Ratenkäufe sind leider nicht möglich.</p>";
 
 		$meldung .= "<h4>Bestellbedingungen</h4>";
-		$meldung .= "<p>Die Bestellung kann erst nach Zahlungseingang abgewickelt werden. Gegenüber der Schule können keine Garantie-Ansprüche geltend gemacht werden. Ansprechpartner hierfür ist der Händler selbst. Im Falle der ASUS-Geräte ist das die ixsoft verion-GmbH (www.ixsoft.de - Details zu den ASUS-Geräten können hier eingesehen werden). Im Fall der DELL-Geräte wird hier der Händler zu gegebenener Zeit bekannt gegeben.</p><p>Das hier gelistete Angebot wurde nach bestem Wissen und Gewissen, mit Sorgfalt und mehrfacher Kontrolle erstellt. Sollten einzelne Daten dennoch falsch von den Händlern übernommen worden sein, so trägt das Risiko der Käufer.</p>";
+		$meldung .= "<p>Die Bestellung kann erst nach Zahlungseingang abgewickelt werden. Gegenüber der Schule können keine Garantie-Ansprüche geltend gemacht werden. Ansprechpartner hierfür ist der Händler selbst. Im Falle der ASUS-Geräte ist das die ixsoft verion-GmbH (<a href=\"https://www.ixsoft.de\">www.ixsoft.de</a> - Details zu den ASUS-Geräten können hier eingesehen werden). Die DELL-Geräte werden über die Firma ETES GmbH (<a href=\"https://www.etes.de\">www.etes.de</a>) bezogen.</p><p>Das hier gelistete Angebot wurde nach bestem Wissen und Gewissen, mit Sorgfalt und mehrfacher Kontrolle erstellt. Sollten einzelne Daten dennoch falsch von den Händlern übernommen worden sein, so trägt das Risiko der Käufer.</p>";
 
 		$meldung .= "<h4>Datenschutz</h4><p>Für die Abwicklung der Bestellung wird die Schule ermächtigt die hier aufgeführten Bestell- und Kontaktdaten an den jeweiligen zuständigen oben genannten Händler weiterzugeben.</p>";
 
@@ -153,7 +153,7 @@ $code .= "<div class=\"cms_meldung\" style=\"margin-top: 50px;\"><h2>Aktuelle Be
 $sql = $dbs->prepare("SELECT COUNT(*), bedarf, status FROM ebestellung WHERE id = ?");
 $sql->bind_param("i", $CMS_BENUTZERID);
 if ($sql->execute()) {
-	$sql->bind_result($anzahl, $b, $status);
+	$sql->bind_result($anzahl, $bedarf, $status);
 	$sql->fetch();
 }
 $sql->close();
@@ -170,7 +170,7 @@ else {
 		if ($status == 0) {$statusmeldung = "Bestellung eingegangen"; if ($bedarf == '1') {$statusmeldung .= " - Bezahlung ausstehend";}}
 		else if ($status == 1) {$statusmeldung = "Bezahlt";}
 		else if ($status == 2) {$statusmeldung = "Übermittelt";}
-		else if ($status == 3) {$statusmeldung = "Abgeschlossen";}
+		else if ($status == 3) {$statusmeldung = "Geliefert";}
 		$code .= "<p><b>Bestellstatus:</b> $statusmeldung</p>";
 		$code .= "<table class=\"cms_liste\">";
 			$code .= "<tr><th>Artikel</th><th style=\"text-align: right\">Menge</th><th style=\"text-align: right\">Einzelpreis</th><th style=\"text-align: right\">Summe</th></tr>";

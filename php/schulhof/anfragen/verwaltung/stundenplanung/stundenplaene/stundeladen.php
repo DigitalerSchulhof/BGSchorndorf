@@ -68,10 +68,10 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 	$bestehend = array();
 	$anzahl = 0;
 	if (!$fehler) {
-		$sql = $dbs->prepare("SELECT * FROM (SELECT kurs, lehrkraft, raum FROM stunden WHERE zeitraum = ? AND tag = ? AND stunde = ? AND (kurs IN (SELECT kurs FROM kursklassen WHERE klasse IN (SELECT DISTINCT klasse FROM kursklassen WHERE kurs = ?)) OR raum = ? OR lehrkraft = ?)) AS x)";
+		$sql = $dbs->prepare("SELECT * FROM (SELECT kurs, lehrkraft, raum FROM stunden WHERE zeitraum = ? AND tag = ? AND stunde = ? AND (kurs IN (SELECT kurs FROM kursklassen WHERE klasse IN (SELECT DISTINCT klasse FROM kursklassen WHERE kurs = ?)) OR raum = ? OR lehrkraft = ?)) AS x");
 		$sql->bind_param("iiiii", $zeitraum, $tag, $stunde, $kurs, $raum, $lehrer);
 		if ($sql->execute()) {
-			$sql->bind_result($bkurs, $blehrer, $braum)
+			$sql->bind_result($bkurs, $blehrer, $braum);
 			while ($daten = $anfrage->fetch()) {
 				$bestehend[$anzahl]['kurs'] = $bkurs;
 				$bestehend[$anzahl]['lehrkraft'] = $blehrer;
@@ -182,7 +182,7 @@ function cms_stunde_ausgeben($dbs, $lehrer, $raum, $kurs, $tag, $stunde, $modus,
 	$sql->bind_param("i", $kurs);
 	if ($sql->execute()) {
 		$sql->bind_result($kid, $kbez, $kstufe);
-		while ($sql->fetch()) {
+		if ($sql->fetch()) {
 			$kurs = array();
 			$kurs['id'] = $kid;
 			$kurs['bezeichnung'] = $kbez;

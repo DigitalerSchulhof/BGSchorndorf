@@ -37,7 +37,7 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
   if ($sql->execute()) {
     $sql->bind_result($pid, $pvor, $pnach, $ptit, $pkurz);
     while ($sql->fetch()) {
-      if ($lehrkraft == '-') {$lehrkraft = $pid}
+      if ($lehrkraft == '-') {$lehrkraft = $pid;}
       $lehreroptionen .= "<option id=\"cms_stundenplanung_lehrkraft_$pid\" value=\"$pid\">";
         $lehreroptionen .= cms_generiere_anzeigename($pvor, $pnach, $ptit)." ($pkurz)";
       $lehreroptionen .= "</option>";
@@ -206,7 +206,6 @@ if (isset($_SESSION["STUNDENPLANZEITRAUM"])) {
     echo $code;
   }
 } else {echo cms_meldung_bastler();echo "</div>";}
-} else {echo cms_meldung_berechtigung(); echo "</div>";}
 ?>
 
 

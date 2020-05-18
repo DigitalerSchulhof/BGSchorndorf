@@ -82,7 +82,7 @@ if($titel != "") {
         CURLOPT_RETURNTRANSFER  => true,
         CURLOPT_HTTPHEADER      => array(
           "Content-Type: application/json",
-          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub'],
+          "Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
           "User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
           "Accept: application/vnd.github.v3+json",
         ),
@@ -170,7 +170,6 @@ function issue_body_machen() {
   $r .= "|\n\n";
   $r .= "\n</p></details>\n\n";
   $r .= "#### Dieses Ticket wurde nach Angaben Dritter automatisch erstellt.";
-  die(base64_encode($r));
   return $r;
 }
 ?>

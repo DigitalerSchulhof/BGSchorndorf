@@ -121,8 +121,11 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					// GEBURTSDATUM UMÄNDERN
 
 					$hpid = "<input type=\"hidden\" class=\"cms_person_id\" value=\"$pid\">";
+					$meta = 0;
+					$meta |= (!is_null($pnutzer) << 0);
+					$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
 
-					$ausgabe .= "<tr><td class=\"cms_multiselect\">$hpid$icon</td><td>$ptitel</td><td>$pnachname</td><td>$pvorname</td><td>$geschlecht</td>";
+					$ausgabe .= "<tr><td class=\"cms_multiselect\">$hpid$hmeta$icon</td><td>$ptitel</td><td>$pnachname</td><td>$pvorname</td><td>$geschlecht</td>";
 					$online = "offline.png";
 					if ($psessiontimeout > $jetzt) {$online = "online.png";}
 					$ausgabe .= "<td>";
@@ -187,14 +190,19 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.personen.sehen")) {
 					$ausgabe .= "</td></tr>";
 				}
 			}
-			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
-				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Nutzerkonten löschen</span><img src=\"res/icons/klein/nutzerkonto_loeschen.png\"></span> ";
-				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_verwaltung_personen_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Personen löschen</span><img src=\"res/icons/klein/person_loeschen.png\"></span> ";
-			$ausgabe .= "</td></tr>";
 			$sql->close();
 		}
 		if ($anzahl == 0) {
-			$ausgabe .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- keine Datensätze gefunden -</td></tr>";
+			$ausgabe .= "<tr><td class=\"cms_notiz\" colspan=\"7\">- Keine Datensätze gefunden -</td></tr>";
+		} else {
+			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
+				if(cms_r("schulhof.verwaltung.nutzerkonten.löschen")) {
+					$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" data-multiselect-maske=\"2\" onclick=\"cms_multiselect_schulhof_verwaltung_nutzerkonten_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Nutzerkonten löschen</span><img src=\"res/icons/klein/nutzerkonto_loeschen.png\"></span> ";
+				}
+				if(cms_r("schulhof.verwaltung.personen.löschen")) {
+					$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_verwaltung_personen_loeschen_anzeige()\"><span class=\"cms_hinweis\">Alle Personen löschen</span><img src=\"res/icons/klein/person_loeschen.png\"></span> ";
+				}
+			$ausgabe .= "</td></tr>";
 		}
 		echo $ausgabe;
 		cms_trennen($dbs);

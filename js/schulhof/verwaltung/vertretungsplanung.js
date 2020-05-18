@@ -332,13 +332,27 @@ function cms_wuensche_neuladen() {
 		formulardaten.append("anfragenziel", 	'399');
 
 		function anfragennachbehandlung(rueckgabe) {
-			if (rueckgabe.match(/^<table/) || rueckgabe.match(/^<p/)) {
-				feldvplanwunsch.innerHTML = rueckgabe;
+			if (rueckgabe.match(/^[0-9]+\|[0-9]+\|<table/) || rueckgabe.match(/^[0-9]+\|[0-9]+\|<p/)) {
+				var ergebnis = rueckgabe.split('|');
+				var neu = parseInt(ergebnis[0]);
+				var gesamt = parseInt(ergebnis[1]);
+				var reiter = document.getElementById("cms_reiter_konflikte_6");
+				if (neu > 0) {
+					var code = " <span class=\"cms_meldezahl cms_meldezahl_wichtig\"><b>"+neu+"</b>/"+gesamt+"</span>";
+				}
+				else if (gesamt > 0) {
+					var code = " <span class=\"cms_meldezahl\">"+gesamt+"</span>";
+				}
+				else {
+					var code = "";
+				}
+				reiter.innerHTML = "Wünsche"+code;
+				feldvplanwunsch.innerHTML = rueckgabe.substr(ergebnis[0].length+ergebnis[1].length+2);
 			}
 			else {feldvplanwunsch.innerHTML = rueckgabe;}
 		}
 
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 }
 
@@ -372,7 +386,7 @@ function cms_vplanwunsch_status(id, status) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Status des Wunsches ändern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -407,7 +421,7 @@ function cms_vplanwunsch_loeschen(id) {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Wunsch löschen', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -2531,7 +2545,7 @@ function cms_vplanwunsch_einreichen() {
 				cms_fehlerbehandlung(rueckgabe);
 			}
 		}
-		cms_ajaxanfrage (false, formulardaten, anfragennachbehandlung);
+		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
 	else {
 		cms_meldung_an('fehler', 'Wunsch für den Vertretungsplan', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');

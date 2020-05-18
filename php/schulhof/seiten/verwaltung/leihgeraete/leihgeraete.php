@@ -46,7 +46,9 @@ if (cms_r("schulhof.organisation.leihgeräte.*")) {
 			if (strlen($ausstattung) > 0) {$ausstattung = substr($ausstattung, 2);}
 
 				$ausgabe .= "<tr>";
-					$ausgabe .= "<td><img src=\"res/icons/klein/leihgeraete.png\"></td>";
+					$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\">";
+
+					$ausgabe .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/leihgeraete.png\"></td>";
 					$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
 					$ausgabe .= "<td>".$ausstattung."</td>";
 					$ausgabe .= "<td>";
@@ -75,6 +77,12 @@ if (cms_r("schulhof.organisation.leihgeräte.*")) {
 
 		if ($ausgabe == "") {
 			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"5\">- keine Datensätze gefunden -</td></tr>";
+		} else {
+			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"5\">";
+			if (cms_r("schulhof.organisation.räume.löschen")) {
+				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_schulhof_leihgeraete_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+			}
+			$ausgabe .= "</tr>";
 		}
 
 		echo $ausgabe;

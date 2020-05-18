@@ -558,6 +558,14 @@ artikel:
       anlegen: Terine anlegen
       bearbeiten: Terine bearbeiten
       löschen: Terine löschen
+shop:
+  produkte:
+    anlegen: Produkte anlegen
+    bearbeiten: Produkte bearbeiten
+    löschen: Produkte löschen
+  bestellungen:
+    verarbeiten: Bestellungen verarbeiten
+    löschen: Bestellungen löschen
   # Rechte für Gruppeninterne finden sich unter "schulhof.gruppen.*"
 lehrerzimmer:
   zugriff: Zugriff aufs Lehrernetz gestatten

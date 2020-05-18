@@ -5,6 +5,8 @@
 	cms_ajaxanfrage(ziel, array[titel, tätigkeit], daten[, host]);
 
 	Ist titel null, wird laden nicht angezeigt
+	Ist host === true, dann CMS_LN_DA
+	Ist host === CMS_LN_DA, werden cms_lehrerdatenbankzugangsdaten_schicken an die Daten gehängt
 */
 function cms_ajaxanfrage (a, b, c, d) {
 	var host = host || '';
@@ -42,8 +44,12 @@ function cms_ajaxanfrage (a, b, c, d) {
 
 		if(d === undefined || d === null) {
 			return cms_ajaxanfrage(a, b, c, "");
+		} else if(d === true) {
+			if(typeof CMS_LN_DA !== 'undefined') {
+				return cms_ajaxanfrage (a, b, c, CMS_LN_DA);
+			}
+			return cms_ajaxanfrage(a, b, c, "");
 		}
-
 
 		titel = b[0];
 		taetigkeit = b[1] || "";
@@ -60,7 +66,9 @@ function cms_ajaxanfrage (a, b, c, d) {
 			daten.append("anfragenziel", a);
 		}
 		host = d;
-
+		if(typeof CMS_LN_DA !== 'undefined' && host === CMS_LN_DA) {
+			cms_lehrerdatenbankzugangsdaten_schicken(daten);
+		}
 		if(titel !== null) {
 			cms_laden_an(titel, taetigkeit);
 		}
@@ -84,7 +92,7 @@ function cms_ajaxanfrage (a, b, c, d) {
 	laden:			Wenn String: als Titel interpretiert, wenn Array: laden[0] als Titel, laden[1] als Tätigkeit
 	arrays:			Die Anfragewerte als Array - Fehler wenn leer
 	statisch: 	Statische Anfragewerte, die bei bei jeder Anfrage gleich sind - Strandard {}
-	host:				Host
+	host:				Host - Bei true CMS_LN_DA UND cms_lehrerdatenbankzugangsdaten_schicken an die Daten
 	rueckgabenbehandlung:	Callback der Rückgaben, nimmt array an Rückgabewerten, gibt Rückgabewert an .then(x) zurück
 */
 function cms_multianfrage(ziel, laden, arrays, statisch, host, rueckgabenbehandlung) {
@@ -101,6 +109,9 @@ function cms_multianfrage(ziel, laden, arrays, statisch, host, rueckgabenbehandl
 	}
 	if(arrays === undefined || arrays === null) {
 		arrays = {};
+	}
+	if(typeof CMS_LN_DA !== 'undefined' && host === true) {
+		host = CMS_LN_DA;
 	}
 	host = host || "";
 	if(statisch === undefined || statisch === null) {
@@ -132,6 +143,10 @@ function cms_multianfrage(ziel, laden, arrays, statisch, host, rueckgabenbehandl
 		}
 		daten.push(data);
 	});
+
+	if(typeof CMS_LN_DA !== 'undefined' && host === CMS_LN_DA) {
+		cms_lehrerdatenbankzugangsdaten_schicken(daten);
+	}
 
 	var max = daten.length;
 

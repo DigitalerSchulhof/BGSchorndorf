@@ -829,12 +829,12 @@ function cms_personaldaten_einstellungen_aendern($id) {
 		$dbs = cms_verbinden('s');
 		$fehler = false;
 
-		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') AS postmail, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS postalletage, AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS postpapierkorbtage, AES_DECRYPT(vertretungsmail, '$CMS_SCHLUESSEL') AS vertretungsmail, AES_DECRYPT(uebersichtsanzahl, '$CMS_SCHLUESSEL') AS uebersichtsanzahl, AES_DECRYPT(inaktivitaetszeit, '$CMS_SCHLUESSEL') AS inaktivitaetszeit, AES_DECRYPT(oeffentlichertermin, '$CMS_SCHLUESSEL') AS oeffentlichertermin, AES_DECRYPT(oeffentlicherblog, '$CMS_SCHLUESSEL') AS oeffentlicherblog, AES_DECRYPT(oeffentlichegalerie, '$CMS_SCHLUESSEL') AS oeffentlichegalerie, AES_DECRYPT(wikiknopf, '$CMS_SCHLUESSEL') FROM personen_einstellungen, personen WHERE personen.id = personen_einstellungen.person AND person = ?";
+		$sql = "SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, AES_DECRYPT(postmail, '$CMS_SCHLUESSEL') AS postmail, AES_DECRYPT(postalletage, '$CMS_SCHLUESSEL') AS postalletage, AES_DECRYPT(postpapierkorbtage, '$CMS_SCHLUESSEL') AS postpapierkorbtage, AES_DECRYPT(vertretungsmail, '$CMS_SCHLUESSEL') AS vertretungsmail, AES_DECRYPT(uebersichtsanzahl, '$CMS_SCHLUESSEL') AS uebersichtsanzahl, AES_DECRYPT(inaktivitaetszeit, '$CMS_SCHLUESSEL') AS inaktivitaetszeit, AES_DECRYPT(oeffentlichertermin, '$CMS_SCHLUESSEL') AS oeffentlichertermin, AES_DECRYPT(oeffentlicherblog, '$CMS_SCHLUESSEL') AS oeffentlicherblog, AES_DECRYPT(oeffentlichegalerie, '$CMS_SCHLUESSEL') AS oeffentlichegalerie, AES_DECRYPT(wikiknopf, '$CMS_SCHLUESSEL'), AES_DECRYPT(dateiaenderung, '$CMS_SCHLUESSEL') FROM personen_einstellungen, personen WHERE personen.id = personen_einstellungen.person AND person = ?";
 		$sql = $dbs->prepare($sql);
 		$sql->bind_param("i", $id);
 
 		if ($sql->execute()) {
-			$sql->bind_result($vorname, $nachname, $notifikationsmail, $postmail, $postalletage, $postpapierkorbtage, $vertretungsmail, $uebersichtsanzahl, $inaktivitaetszeit, $oeffentlichertermin, $oeffentlicherblog, $oeffentlichegalerie, $wikiknopf);
+			$sql->bind_result($vorname, $nachname, $notifikationsmail, $postmail, $postalletage, $postpapierkorbtage, $vertretungsmail, $uebersichtsanzahl, $inaktivitaetszeit, $oeffentlichertermin, $oeffentlicherblog, $oeffentlichegalerie, $wikiknopf, $dateiaenderung);
 			if ($sql->fetch()) {}
 				else {$fehler = true;}
 			$sql->close();
@@ -896,6 +896,10 @@ function cms_personaldaten_einstellungen_aendern($id) {
 				$code .= "<tr>";
 					$code .= "<th>eine öffentliche Galerie erstellt wurde</th>";
 					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_galerieoeffentlich", $oeffentlichegalerie)."</td>";
+				$code .= "</tr>";
+				$code .= "<tr>";
+					$code .= "<th>eine Datei einer abonnierten Gruppe verändert wurde</th>";
+					$code .= "<td>".cms_generiere_schieber("schulhof_".$idname."_einstellungen_dateiaenderung", $dateiaenderung)."</td>";
 				$code .= "</tr>";
 			$code .= "</table>";
 

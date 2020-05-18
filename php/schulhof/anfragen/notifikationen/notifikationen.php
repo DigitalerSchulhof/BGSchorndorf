@@ -30,7 +30,7 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
 
   // Alle Empfänger von Notifikationen suchen
   $empfaenger = array();
-  $spalten = "letztenotifikation, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL') AS notifikationsmail, letzteanmeldung, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(art, '$CMS_SCHLUESSEL') AS art, AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL') AS geschlecht, AES_DECRYPT(email, '$CMS_SCHLUESSEL') AS email";
+  $spalten = "letztenotifikation, AES_DECRYPT(notifikationsmail, '$CMS_SCHLUESSEL'), letzteanmeldung, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(personen.titel, '$CMS_SCHLUESSEL'), AES_DECRYPT(art, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(email, '$CMS_SCHLUESSEL'), AES_DECRYPT(dateiaenderung, '$CMS_SCHLUESSEL')";
 
   if (($gruppek == "termine") || ($gruppek == "blogeinträge") || ($gruppek == "blogeintraege") || ($gruppek == "galerien")) {
     $sql = $dbs->prepare(cms_notifikationsempfaenger_oeffentlich($dbs, $eintrag, $ausnahme, $spalten));
@@ -48,7 +48,7 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
 
   if ($sql->execute()) {
     $empfaenger = array();
-    $sql->bind_result($sid, $sletztenotifikation, $snotifikationsmail, $sletzteanmeldung, $svorname, $snachname, $stitel, $sart, $sgeschlecht, $semail);
+    $sql->bind_result($sid, $sletztenotifikation, $snotifikationsmail, $sletzteanmeldung, $svorname, $snachname, $stitel, $sart, $sgeschlecht, $semail, $dateiaenderung);
     while($sql->fetch()) {
       $e['id'] = $sid;
       $e['notifikationsmail'] = $snotifikationsmail;
@@ -60,7 +60,11 @@ function cms_notifikation_senden($dbs, $eintrag, $ausnahme) {
       $e['art'] = $sart;
       $e['geschlecht'] = $sgeschlecht;
       $e['email'] = $semail;
-      array_push($empfaenger, $e);
+
+      // Wenn Datei/Ordner und Einstellung
+      if((in_array($eintrag['art'], array("d", "o")) && $dateiaenderung) || !in_array($eintrag['art'], array("d", "o"))) {
+        array_push($empfaenger, $e);
+      }
     }
     $sql->close();
     $jetzt = time();

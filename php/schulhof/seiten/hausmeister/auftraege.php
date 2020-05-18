@@ -19,7 +19,11 @@ if (cms_r("schulhof.technik.hausmeisteraufträge.sehen")) {
       $sql->bind_result($hid, $hstat, $htit, $hstart, $hziel, $hersteller, $hpvor, $hpnach, $hptit, $herstellt);
       while ($sql->fetch()) {
         $eintraege .= "<tr>";
-          $eintraege .= "<td><img src=\"res/icons/klein/hausmeister.png\"></td>";
+          $meta = 0;
+          $meta |= (($hstat == 'e') << 0);
+          $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$hid\"><input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
+
+          $eintraege .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/hausmeister.png\"></td>";
           if ($hstat == 'e') {$icon = "gruen"; $hinweis = "erledigt";} else {$icon = "rot"; $hinweis = "offen";}
           $eintraege .= "<td>".cms_generiere_hinweisicon($icon, $hinweis)."</td>";
           $eintraege .= "<td>$htit</td>";
@@ -39,14 +43,14 @@ if (cms_r("schulhof.technik.hausmeisteraufträge.sehen")) {
           if (cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
             $eintraege .= "<span class=\"cms_aktion_klein\" onclick=\"cms_hausmeisterauftrag_lesen($hid)\"><span class=\"cms_hinweis\">Details anzeigen</span><img src=\"res/icons/klein/auftrag.png\"></span> ";
             if ($hstat == 'e') {
-              $eintraege .= "<span class=\"cms_aktion_klein cms_button_wichtig\" onclick=\"cms_hausmeisterauftrag_markieren('n', $hid)\"><span class=\"cms_hinweis\">als ausstehend markieren</span><img src=\"res/icons/klein/ausstehend.png\"></span> ";
+              $eintraege .= "<span class=\"cms_aktion_klein cms_button_wichtig\" onclick=\"cms_hausmeisterauftrag_markieren('n', $hid)\"><span class=\"cms_hinweis\">Als ausstehend markieren</span><img src=\"res/icons/klein/ausstehend.png\"></span> ";
             }
             else {
-              $eintraege .= "<span class=\"cms_aktion_klein cms_button_ja\" onclick=\"cms_hausmeisterauftrag_markieren('e', $hid)\"><span class=\"cms_hinweis\">als erledigt markieren</span><img src=\"res/icons/klein/erledigt.png\"></span> ";
+              $eintraege .= "<span class=\"cms_aktion_klein cms_button_ja\" onclick=\"cms_hausmeisterauftrag_markieren('e', $hid)\"><span class=\"cms_hinweis\">Als erledigt markieren</span><img src=\"res/icons/klein/erledigt.png\"></span> ";
             }
           }
           if (cms_r("schulhof.technik.hausmeisteraufträge.löschen")) {
-            $eintraege .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_hausmeisterauftrag_loeschen_anzeigen($hid)\"><span class=\"cms_hinweis\">löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+            $eintraege .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_hausmeisterauftrag_loeschen_anzeigen($hid)\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
           }
           $eintraege .= "</td>";
 
@@ -60,6 +64,16 @@ if (cms_r("schulhof.technik.hausmeisteraufträge.sehen")) {
     }
     else {
       $code .= $eintraege;
+      $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
+      if (cms_r("schulhof.technik.hausmeisteraufträge.markieren")) {
+        $code .= "<span class=\"cms_aktion_klein cms_button_wichtig\" data-multiselect-maske=\"2\" onclick=\"cms_multiselect_hausmeisterauftraege_markieren('n')\"><span class=\"cms_hinweis\">Alle als ausstehend markieren</span><img src=\"res/icons/klein/ausstehend.png\"></span> ";
+        $code .= "<span class=\"cms_aktion_klein cms_button_ja\" data-multiselect-maske=\"1\" onclick=\"cms_multiselect_hausmeisterauftraege_markieren('e')\"><span class=\"cms_hinweis\">Alle als erledigt markieren</span><img src=\"res/icons/klein/erledigt.png\"></span> ";
+      }
+      if (cms_r("schulhof.technik.hausmeisteraufträge.löschen")) {
+        $code .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_multiselect_hausmeisterauftraege_loeschen_anzeigen()\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+      }
+
+      $code .= "</tr>";
       $code .= cms_meldung('info', '<h4>Markierungen</h4><p>Mit Markierungen erhält der Ersteller des Auftrags eine Rückmeldung darüber, dass der Auftrag erfüllt wurde.</p>');
     }
   $code .= "</table>";

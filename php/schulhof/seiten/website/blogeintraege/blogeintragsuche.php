@@ -31,8 +31,10 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr) {
   $sql->close();
 
   foreach ($EINTRAEGE AS $daten) {
+    $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\">";
+
     if ($daten['genehmigt'] == 1) {$klasse = '';} else {$klasse = ' class="cms_vorlaeufig"';}
-    $schulhofblogeintraege .= '<tr'.$klasse.'><td><img src="res/icons/klein/blog.png"></td><td>'.$daten['bezeichnung'].'</td>';
+    $schulhofblogeintraege .= '<tr'.$klasse.'><td class="cms_multiselect">'.$hmeta.'<img src="res/icons/klein/blog.png"></td><td>'.$daten['bezeichnung'].'</td>';
     $zuordnungen = "";
     foreach ($CMS_GRUPPEN as $g) {
       $gk = cms_textzudb($g);
@@ -73,10 +75,16 @@ function cms_blogeintragverwaltung_suche($dbs, $jahr) {
   }
 
   if (strlen($schulhofblogeintraege) == 0) {
-    $spalten = 7;
-    $code .= "<tr><td colspan=\"$spalten\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
+    $code .= "<tr><td colspan=\"7\" class=\"cms_notiz\">-- keine Blogeinträge vorhanden --</td></tr>";
   }
-  else {$code .= $schulhofblogeintraege;}
+  else {
+    $code .= $schulhofblogeintraege;
+    $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"7\">";
+    if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.löschen")) {
+      $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_blogeintraege_loeschen_anzeigen('Schulhof/Website/Blogeinträge')\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+    }
+    $code .= "</tr>";
+  }
 
   return $code;
 }

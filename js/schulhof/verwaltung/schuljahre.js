@@ -112,6 +112,19 @@ function cms_schulhof_schuljahr_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_schulhof_schuljahr_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Schuljahre löschen', '<p>Sollen die Schuljahre wirklich gelöscht werden?</p><p>Mit der Löschung eines Schuljahres wird auch die Löschung aller Klassenstufen, Klassen und Kurse, sowie der zugehörigen Unterrichtsgruppen und sämtlichen Aktivitäten ausgeführt, die diesem Schuljahr zugeordnet sind.</p><p>Die gelöschten Daten können nicht wiederhergestellt werden!</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_schulhof_schuljahr_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_schulhof_schuljahr_loeschen() {
+	cms_multianfrage(149, ["Schuljahre löschen", "Die Schuljahre werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Schuljahre löschen', '<p>Die Schuljahre wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Schuljahre\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
+}
+
 /* SCHULJAHR WIRD ZUM BEARBEITEN VORBEREITET */
 function cms_schulhof_schuljahr_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Schuljahre bearbeiten', 'Die Berechtigung wird geprüft.');

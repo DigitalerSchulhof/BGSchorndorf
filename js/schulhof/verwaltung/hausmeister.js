@@ -88,7 +88,6 @@ function cms_hausmeisterauftrag_neu_speichern(app) {
 	}
 }
 
-
 function cms_hausmeisterauftrag_markieren(art, id) {
 	cms_laden_an('Hausmeisterauftrag markieren', 'Die Markierung wird geprüft.');
 
@@ -97,19 +96,19 @@ function cms_hausmeisterauftrag_markieren(art, id) {
 
 	if ((art != 'n') && (art != 'e')) {
 		fehler = true;
-		meldung += '<li>Es wurde eine ungültige Markierung angegeben.</li>';
+		meldung += '<li>es wurde eine ungültige Markierung angegeben.</li>';
 	}
 
 	if (!cms_check_ganzzahl(id,0)) {
 		fehler = true;
-		meldung += '<li>Die eingegebene ID ist ungültig.</li>';
+		meldung += '<li>die eingegebene ID ist ungültig.</li>';
 	}
 
 	if (fehler) {
 		cms_meldung_an('fehler', 'Hausmeisterauftrag markieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 	}
 	else {
-		cms_laden_an('Hausmeisterauftrag einreichen', 'Der Hausmeisterauftrag wird markiert.');
+		cms_laden_an('Hausmeisterauftrag markieren', 'Der Hausmeisterauftrag wird markiert.');
 
 		var formulardaten = new FormData();
 		formulardaten.append("id", id);
@@ -127,6 +126,27 @@ function cms_hausmeisterauftrag_markieren(art, id) {
 	}
 }
 
+function cms_multiselect_hausmeisterauftraege_markieren(art) {
+	var fehler = false;
+	var meldung = '<p>Die Markierungen konnten nicht vorgenommen werden, denn ...</p><ul>';
+
+	if ((art != 'n') && (art != 'e')) {
+		fehler = true;
+		meldung += '<li>es wurde eine ungültige Markierung angegeben.</li>';
+	}
+
+	if (fehler) {
+		cms_meldung_an('fehler', 'Hausmeisteraufträge markieren', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+	}
+	else {
+		cms_multianfrage(310, ["Hausmeisteraufträge markieren", "Die Hausmeisteraufträge werden markiert"], {id: cms_multiselect_ids()}, {art: art}).then((rueckgabe) => {
+			if (rueckgabe == "ERFOLG") {
+				cms_meldung_an('erfolg', 'Hausmeisteraufträge markieren', '<p>Die Hausmeisteraufträge wurden markiert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister/Aufträge\');">Zurück zur Übersicht</span></p>');
+			}
+			else {cms_fehlerbehandlung(rueckgabe);}
+		});
+	}
+}
 
 function cms_hausmeisterauftrag_lesen(id) {
 	cms_laden_an('Hausmeisterauftrag lesen', 'Der Auftrag wird geöffnet.');
@@ -145,11 +165,9 @@ function cms_hausmeisterauftrag_lesen(id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
-
 function cms_hausmeisterauftrag_loeschen_anzeigen (id) {
-	cms_meldung_an('warnung', 'Auftrag löschen', '<p>Sollen der Auftrag wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_hausmeisterauftrag_loeschen('+id+')">Löschung durchführen</span></p>');
+	cms_meldung_an('warnung', 'Auftrag löschen', '<p>Soll der Auftrag wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_hausmeisterauftrag_loeschen('+id+')">Löschung durchführen</span></p>');
 }
-
 
 function cms_hausmeisterauftrag_loeschen(id) {
 	cms_laden_an('Auftrag löschen', 'Der Auftrag wird gelöscht.');
@@ -166,4 +184,17 @@ function cms_hausmeisterauftrag_loeschen(id) {
 	}
 
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_hausmeisterauftraege_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Aufträge löschen', '<p>Sollen die Aufträge wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_hausmeisterauftraege_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_hausmeisterauftraege_loeschen() {
+	cms_multianfrage(312, ["Aufträge löschen", "Die Aufträge werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+			cms_meldung_an('erfolg', 'Aufträge löschen', '<p>Der Aufträge wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Hausmeister/Aufträge\');">OK</span></p>');
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
 }

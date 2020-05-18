@@ -58,7 +58,12 @@
 						$zugeordnet = "Externe";
 						break;
 				}
-				$ausgabe .= "<td><span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/rollen.png\"></span>$icon</td>";
+				$meta = 0;
+				$meta |= (($daten['id'] > 5) << 0);
+
+				$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"{$daten['id']}\"><input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
+
+				$ausgabe .= "<td class=\"cms_multiselect\">$hmeta<span class=\"cms_icon_klein_o\"><img src=\"res/icons/klein/rollen.png\"></span>$icon</td>";
 				$ausgabe .= "<td>".$daten['bezeichnung']."</td>";
 
 				if($zugeordnet == "") {
@@ -104,6 +109,12 @@
 
 		if ($ausgabe == "") {
 			$ausgabe = "<tr><td class=\"cms_notiz\" colspan=\"4\">- keine Datensätze gefunden -</td></tr>";
+		} else {
+			$ausgabe .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"4\">";
+			if (cms_r("schulhof.verwaltung.rechte.rollen.löschen")) {
+				$ausgabe .= "<span class=\"cms_aktion_klein cms_aktion_nein\" data-multiselect-maske=\"3\" onclick=\"cms_multiselect_schulhof_rollen_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+			}
+			$ausgabe .= "</td></tr>";
 		}
 
 		echo $ausgabe;
@@ -114,7 +125,6 @@
 <?php
 	if (cms_r("schulhof.verwaltung.rechte.rollen.erstellen"))
 		echo "<p><a class=\"cms_button_ja\" href=\"Schulhof/Verwaltung/Rollen/Neue_Rolle_anlegen\">+ Neue Rolle anlegen</a></p>";
-
 	} else
 		echo cms_meldung_berechtigung();
 ?>

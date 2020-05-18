@@ -653,7 +653,6 @@ function cms_gruppe_pinnwand_speichern(gruppe, gruppenid, ziel) {
 }
 
 
-
 /*
   0: Init
   1: Verbinden

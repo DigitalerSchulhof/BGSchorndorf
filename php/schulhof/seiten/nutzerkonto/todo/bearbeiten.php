@@ -118,7 +118,7 @@
 						<table class="cms_formular">
 							<tr><td>Bezeichnung</td><td><input type="text" id="cms_todo_bezeichnung" value="<?php echo $bezeichnung; ?>"></td></tr>
 							<tr><td>Notizen</td><td><textarea id="cms_todo_beschreibung"><?php echo $beschreibung; ?></textarea></td></tr>
-							<tr><td colspan="2"><span class="cms_button_ja" onclick="cms_seite_todo_speichern(<?php echo "'$g', '$gruppenid', '$art', '$artikelid'";?>)">Änderungen speichern</td></tr>
+							<tr><td colspan="2"><span class="cms_button_ja" onclick="cms_seite_todo_speichern(<?php echo "'$g', '$gruppenid', '$art', '$artikelid'";?>)">Änderungen speichern</span> <span class="cms_button_nein" onclick="cms_seite_todo_setzen(<?php echo "'$g', '$gruppenid', '$art', '$artikelid'";?>)">Als erledigt markieren</span><input type="hidden" value="1" name="cms_seite_todo" id="cms_seite_todo"></td></tr>
 						</table>
 						<?php
 					$sql->close();
@@ -141,7 +141,7 @@
 <table class="cms_formular">
 	<tr><td>Bezeichnung</td><td><input type="text" id="cms_todo_bezeichnung" value="<?php echo $bezeichnung; ?>"></td></tr>
 	<tr><td>Notizen</td><td><textarea id="cms_todo_beschreibung"><?php echo $beschreibung; ?></textarea></td></tr>
-	<tr><td colspan="2"><span class="cms_button_ja" onclick="cms_eigenes_todo_speichern()">Änderungen speichern</td></tr>
+	<tr><td colspan="2"><span class="cms_button_ja" onclick="cms_eigenes_todo_speichern()">Änderungen speichern</span> <span class="cms_button_nein" onclick="cms_eigenes_todo_loeschen(<?php echo $id;?>)">Als erledigt markieren</span></td></tr>
 </table>
 <input type="hidden" id="cms_todo_id" value="<?php echo $id;?>">
 		<?php

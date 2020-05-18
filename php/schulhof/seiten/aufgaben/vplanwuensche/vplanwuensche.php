@@ -4,7 +4,7 @@ $code .= "<div class=\"cms_spalte_i\">";
 $code .= "<p class=\"cms_brotkrumen\">";
 $code .= cms_brotkrumen($CMS_URL);
 $code .= "</p>";
-$code .= "<h1>Wünsche für den Vertreungsplan äußern</h1>";
+$code .= "<h1>Wünsche für den Vertretungsplan äußern</h1>";
 
 if (cms_angemeldet() && cms_r("lehrerzimmer.vertretungsplan.wünsche")) {
 	$code .= "<table class=\"cms_formular\">";

@@ -29,7 +29,7 @@ function cms_stundenplanung_vollbild(vollbild) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -51,7 +51,7 @@ function cms_stundenplanung_modus(modus) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -73,7 +73,7 @@ function cms_stundenplanung_stufewaehlen(id) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -95,7 +95,7 @@ function cms_stundenplanung_klassewaehlen(id) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -117,7 +117,7 @@ function cms_stundenplanung_kurswaehlen(id) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -139,7 +139,7 @@ function cms_stundenplanung_lehrerwaehlen(id) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -161,7 +161,7 @@ function cms_stundenplanung_raumwaehlen(id) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }
@@ -183,7 +183,7 @@ function cms_stundenplanung_rythmuswaehlen(id) {
 
 	  function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
-	      cms_link('Schulhof/Verwaltung/Planung/Stundenplanung');
+        location.reload();
 	    }
 	    else {cms_fehlerbehandlung(rueckgabe);}
 	  }

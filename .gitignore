@@ -29,3 +29,5 @@
 /backup/*
 /update/*
 .tabnine_root
+.tabnineignore
+.tern-project

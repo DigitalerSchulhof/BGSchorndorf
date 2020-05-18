@@ -299,6 +299,22 @@ if (cms_r("schulhof.information.pinnwände.*")) {
 		$code .=  "</a>";
 	$code .=  "</li>";
 }
+if (cms_r("shop.produkte.*")) {
+	$code .= "<li>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_produkte\" href=\"Schulhof/Verwaltung/Produkte\">";
+			$code .=  "<h3>Produkte</h3>";
+			$code .=  "<p>Produkte ".aufzaehlen(array("anlegen" => cms_r("shop.produkte.anlegen"), "bearbeiten" => cms_r("shop.produkte.bearbeiten"), "löschen" => cms_r("shop.produkte.löschen"))).".</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
+if (cms_r("shop.bestellungen.*")) {
+	$code .= "<li>";
+		$code .= "<a class=\"cms_uebersicht_verwaltung_bestellungen\" href=\"Schulhof/Verwaltung/Bestellungen\">";
+			$code .=  "<h3>Bestellungen</h3>";
+			$code .=  "<p>Bestellungen ".aufzaehlen(array("anlegen" => cms_r("shop.bestellungen.anlegen"), "bearbeiten" => cms_r("shop.bestellungen.bearbeiten"), "löschen" => cms_r("shop.bestellungen.löschen"))).".</p>";
+		$code .=  "</a>";
+	$code .=  "</li>";
+}
 
 if ($code) {
 	$ausgabe .=  "<div class=\"cms_spalte_4\">";

@@ -44,7 +44,9 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,l
         $sql->bind_result($zid, $zbez, $zbeginn, $zende, $mo, $di, $mi, $do, $fr, $sa, $so, $rythmen, $aktiv);
         while ($sql->fetch()) {
           $zeilen .= "<tr>";
-            $zeilen .= "<td><img src=\"res/icons/klein/stundenplanzeitraeume.png\"></td>";
+            $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$zid\">";
+
+            $zeilen .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/stundenplanzeitraeume.png\"></td>";
             $zeilen .= "<td>$zbez</td>";
             $zeilen .= "<td>".date('d.m.Y', $zbeginn)."</td>";
             $zeilen .= "<td>".date('d.m.Y', $zende)."</td>";
@@ -82,7 +84,14 @@ if (cms_r("schulhof.planung.schuljahre.planungszeiträume.[|anlegen,bearbeiten,l
           $zeilen .= "</tr>";
         }
 
-        if (strlen($zeilen) > 0) {$code .= $zeilen;}
+        if (strlen($zeilen) > 0) {
+          $code .= $zeilen;
+          $code .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"8\">";
+          if (cms_r("schulhof.planung.schuljahre.planungszeiträume.löschen")) {
+            $code .= "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_zeitraeume_loeschen_anzeigen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+          }
+          $code .= "</tr>";
+        }
         else {
           $code .= "<tr><td class=\"cms_notiz\" colspan=\"8\">- keine Datensätze gefunden -</td></tr>";
         }

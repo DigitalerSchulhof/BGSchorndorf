@@ -13,15 +13,20 @@ if (cms_r("website.weiterleiten")) {
   echo "<table class=\"cms_liste\">";
   $c = 0;
   while($sql->fetch()) {
+    $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$id\">";
+
     $c++; // Ne PHP :)
-    echo "<tr><td>$von</td><td><img src='res/icons/klein/springen.png'></td><td>$zu</td><td><span class=\"cms_aktion_klein\" onclick=\"cms_weiterleitung_bearbeiten_vorbereiten($id);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> <span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_weiterleitung_loeschen($id);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span></td></tr>";
+    echo "<tr><td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/weiterleiten.png\"></td><td>$von</td><td><img src='res/icons/klein/springen.png'></td><td>$zu</td><td><span class=\"cms_aktion_klein\" onclick=\"cms_weiterleitung_bearbeiten_vorbereiten($id);\"><span class=\"cms_hinweis\">Bearbeiten</span><img src=\"res/icons/klein/bearbeiten.png\"></span> <span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_weiterleitung_loeschen($id);\"><span class=\"cms_hinweis\">Löschen</span><img src=\"res/icons/klein/loeschen.png\"></span></td></tr>";
   }
   if(!$c) {
-    echo "<tr><td colspan='3' class=\"cms_notiz\">Keine Weiterleitungen eingerichtet</td></tr>";
+    echo "<tr><td colspan='4' class=\"cms_notiz\">-- Keine Weiterleitungen eingerichtet --</td></tr>";
   }
+  echo "<tr class=\"cms_multiselect_menue\"><td colspan=\"4\">";
+  echo "<span class=\"cms_aktion_klein cms_aktion_nein\" onclick=\"cms_multiselect_weiterleitungen_loeschen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span>";
+  echo "</tr>";
   echo "</table>";
 
-  echo "<span class=\"cms_button_ja\" onclick=\"cms_neue_weiterleitung();\">Neue Weiterleitung einrichten</span>";
+  echo "<span class=\"cms_button_ja\" onclick=\"cms_neue_weiterleitung();\">+ Neue Weiterleitung einrichten</span>";
 }
 
 echo $code.'</div>';

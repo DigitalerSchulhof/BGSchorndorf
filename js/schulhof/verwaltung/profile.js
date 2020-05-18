@@ -140,6 +140,18 @@ function cms_profile_loeschen(anzeigename, id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_multiselect_profile_loeschen_anzeigen () {
+	cms_meldung_an('warnung', 'Profile löschen', '<p>Sollen die Profile wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_profile_loeschen()">Löschung durchführen</span></p>');
+}
+
+function cms_multiselect_profile_loeschen () {
+  cms_multianfrage(332, ["Profile löschen", "Die Profile werden gelöscht"], {id: cms_multiselect_ids()}).then((rueckgabe) => {
+    if(rueckgabe == "ERFOLG") {
+      cms_meldung_an('erfolg', 'Profile löschen', '<p>Die Profile wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Verwaltung/Planung/Profile\');">OK</span></p>');
+    } else {cms_fehlerbehandlung(rueckgabe);}
+  });
+}
+
 function cms_profile_bearbeiten_vorbereiten (id) {
 	cms_laden_an('Profil bearbeiten', 'Die Berechtigung wird geprüft.');
 

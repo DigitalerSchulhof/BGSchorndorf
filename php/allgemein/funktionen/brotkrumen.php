@@ -214,7 +214,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 					$curl = $url;
 					$curl[1] = "ToDo";
 					$curl = implode("/", $curl);
-					$todo = "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('$curl')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+					$todo = "<span class=\"cms_aktionsicon\" id=\"cms_todo_setzen\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('$curl')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+					$todo .= "<span class=\"cms_aktionsicon\" id=\"cms_todo_loeschen\" style=\"display: none;\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_seite_todo_setzen('$g', '$gruppenid', '$art', '$artikelid')\" src=\"res/icons/klein/todo_erledigen.png\"><input type=\"hidden\" value=\"1\" name=\"cms_seite_todo\" id=\"cms_seite_todo\"></span>";
 				}
 				else {
 					$todowert = 0;
@@ -223,125 +224,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 
 				$code .= $todo;
 			}
-		} else if(preg_match("/^Schulhof\/Nutzerkonto$/", $urlganz)) {
+		} else if(preg_match("/^Schulhof\/Nutzerkonto$/", $urlganz) || preg_match("/^Schulhof\/ToDo$/", $urlganz)) {
 			$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo anlegen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/Neu')\" src=\"res/icons/klein/todo_neu.png\"></span>";
-		} else if (cms_angemeldet() && (preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz) || preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)) && count($url) == 10) {
-			$schuljahr = cms_linkzutext($url[2]);
-			$g = cms_linkzutext($url[3]);
-			$gk = cms_textzudb($g);
-			$gbez = cms_linkzutext($url[4]);
-			$gruppenid = "";
-			$fehler = false;
-
-			// Prüfen, ob diese Gruppe existiert
-			if (in_array($g, $CMS_GRUPPEN)) {
-				if ($schuljahr == "Schuljahrübergreifend") {
-					$sql = $dbs->prepare("SELECT id, COUNT(*) as anzahl FROM $gk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr IS NULL");
-				  $sql->bind_param("s", $gbez);
-				}
-				else {
-					$sql = $dbs->prepare("SELECT id, COUNT(*) as anzahl FROM $gk WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND schuljahr IN (SELECT id FROM schuljahre WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'))");
-				  $sql->bind_param("ss", $gbez, $schuljahr);
-				}
-				// Schuljahr finden
-			  if ($sql->execute()) {
-			    $sql->bind_result($gruppenid, $anzahl);
-			    if ($sql->fetch()) {if ($anzahl != 1) {$fehler = true;}}
-					else {$fehler = true;}
-			  }
-			  else {$fehler = true;}
-			  $sql->close();
-			}
-			else {$fehler = true;}
-
-			$blogquery = "IS NULL";
-			$terminquery = "IS NULL";
-			$art = '';
-			$artikelid;
-
-			if(!$fehler) {
-				if(preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Blog\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)) {
-					// Blogeintrag prüfen
-					$art = 'b';
-					$blogquery = "= ?";
-
-					$jahr = $url[6];
-					$monat = cms_monatnamezuzahl($url[7]);
-					$tag = $url[8];
-					$blogeintragbez = cms_linkzutext($url[9]);
-					$datum = mktime(0, 0, 0, $monat, $tag, $jahr);
-					$aktiv = false;
-					$gefunden = false;
-
-					$sql = $dbs->prepare("SELECT id, aktiv FROM {$gk}blogeintraegeintern WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND datum = ?;");
-					$sql->bind_param("si", $blogeintragbez, $datum);
-					if ($sql->execute()) {
-				    $sql->bind_result($artikelid, $aktiv);
-				    if ($sql->fetch()) {
-							$gefunden = true;
-						}
-						else {$fehler = true;}
-				  }
-				  else {$fehler = true;}
-				  $sql->close();
-
-					if($gefunden) {
-						$gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gruppenid);
-						$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['blogeintraege']);
-					}
-					$fehler |= !$gefunden;
-
-				} else if(preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/$CMS_LINKMUSTER\/Termine\/[0-9]{4}\/$CMS_MONATELINK\/[0-9]{2}\/$CMS_LINKMUSTER$/", $urlganz)) {
-					// Termin prüfen
-					$art = 't';
-					$terminquery = "= ?";
-
-					$jahr = $url[6];
-					$monat = cms_monatnamezuzahl($url[7]);
-					$tag = $url[8];
-					$terminbez = cms_linkzutext($url[9]);
-					$datumb = mktime(0, 0, 0, $monat, $tag, $jahr);
-					$datume = mktime(0, 0, 0, $monat, $tag+1, $jahr)-1;
-					$gruppe = cms_linkzutext($url[3]);
-					$aktiv = false;
-					$gefunden = false;
-
-					$sql = $dbs->prepare("SELECT id, aktiv FROM {$gk}termineintern WHERE bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') AND (beginn BETWEEN ? AND ?);");
-					$sql->bind_param("sii", $terminbez, $datumb, $datume);
-					if ($sql->execute()) {
-						$sql->bind_result($artikelid, $aktiv);
-						if ($sql->fetch()) {$gefunden = true;}
-						else {$fehler = true;}
-					}
-					else {$fehler = true;}
-					$sql->close();
-
-					if($gefunden) {
-						$gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gruppenid);
-						$gefunden = $gefunden && $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['termine']);
-					}
-					$fehler |= !$gefunden;
-				}
-			}
-
-			$fehler = $fehler || is_null($artikelid);
-			if(!$fehler) {
-				$sql = "SELECT 1 FROM {$gk}todoartikel WHERE person = ? AND blogeintrag $blogquery AND termin $terminquery";
-				$sql = $dbs->prepare($sql);
-				$sql->bind_param("ii", $CMS_BENUTZERID, $artikelid);
-				$sql->bind_result($todo);
-				$sql->execute();
-				$todo = ($sql->fetch());
-
-				if ($todo) {
-					$curl = $url;
-					$curl[1] = "ToDo";
-					$curl = implode("/", $curl);
-					$todo = "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_seite_todo_setzen('$g', '$gruppenid', '$art', '$artikelid')\" src=\"res/icons/klein/todo_erledigen.png\"><input type=\"hidden\" value=\"1\" name=\"cms_seite_todo\" id=\"cms_seite_todo\"></span>";
-				}
-
-				$code .= $todo;
-			}
 		} else if(preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER$/", $urlganz)) {
 			$bez = $url[2];
 			$bez = cms_linkzutext($bez);
@@ -350,17 +234,8 @@ function cms_brotkrumen($url, $aktionen = true) {
 			$sql->bind_param("is", $CMS_BENUTZERID, $bez);
 			$sql->bind_result($id);
 			if($sql->execute() && $sql->fetch()) {
-				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/{$url[2]}/Bearbeiten')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
-			}
-		} else if(preg_match("/^Schulhof\/ToDo\/$CMS_LINKMUSTER\/Bearbeiten$/", $urlganz)) {
-			$bez = $url[2];
-			$bez = cms_linkzutext($bez);
-			$sql = "SELECT id FROM todo WHERE person = ? AND bezeichnung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')";
-			$sql = $dbs->prepare($sql);
-			$sql->bind_param("is", $CMS_BENUTZERID, $bez);
-			$sql->bind_result($id);
-			if($sql->execute() && $sql->fetch()) {
-				$code .= "<span class=\"cms_aktionsicon\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_eigenes_todo_loeschen($id)\" src=\"res/icons/klein/todo_erledigen.png\"></span>";
+				$code .= "<span class=\"cms_aktionsicon\" id=\"cms_todo_setzen\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo bearbeiten</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_link('Schulhof/ToDo/{$url[2]}/Bearbeiten')\" src=\"res/icons/klein/todo_bearbeiten.png\"></span>";
+				$code .= "<span class=\"cms_aktionsicon\" id=\"cms_todo_loeschen\" style=\"display: none;\"><span class=\"cms_hinweis cms_hinweis_unten\">Eigenes ToDo erledigen</span><img id=\"cms_seite_todo_icon\" onclick=\"cms_eigenes_todo_loeschen($id)\" src=\"res/icons/klein/todo_erledigen.png\"></span>";
 			}
 		}
 		// Weiterleitung

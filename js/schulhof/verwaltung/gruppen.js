@@ -313,9 +313,8 @@ function cms_gruppen_eingabenpruefung(art) {
 
 
 function cms_gruppen_loeschen_anzeigen (gruppe, bezeichnung, id) {
-	cms_meldung_an('warnung', 'Kategorie löschen', '<p>Soll die Gruppe <b>'+bezeichnung+'</b> wirklich gelöscht werden?</p><p>Mit dieser Gruppe verknüpfte interne Termine und Blogeinträge werden gelöscht.</p><p>Verknüpfungen zu öffentlichen Terminen, Blogeinträgen und Galerien werden entfernt. Alle für diese Gruppe gespeicherten Daten gehen unwiederbringlich verloren.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_gruppen_loeschen(\''+gruppe+'\', \''+bezeichnung+'\', \''+id+'\')">Löschen</span></p>');
+	cms_meldung_an('warnung', 'Gruppe löschen', '<p>Soll die Gruppe <b>'+bezeichnung+'</b> wirklich gelöscht werden?</p><p>Mit dieser Gruppe verknüpfte interne Termine und Blogeinträge werden gelöscht.</p><p>Verknüpfungen zu öffentlichen Terminen, Blogeinträgen und Galerien werden entfernt. Alle für diese Gruppe gespeicherten Daten gehen unwiederbringlich verloren.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_gruppen_loeschen(\''+gruppe+'\', \''+bezeichnung+'\', \''+id+'\')">Löschen</span></p>');
 }
-
 
 function cms_gruppen_loeschen (art, bezeichnung, id) {
 	cms_laden_an('Gruppe löschen', 'Die Gruppe <b>'+bezeichnung+'</b> wird gelöscht.');
@@ -353,6 +352,32 @@ function cms_gruppen_loeschen (art, bezeichnung, id) {
   }
 
   cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_multiselect_gruppen_loeschen_anzeigen (gruppe) {
+	cms_meldung_an('warnung', 'Gruppen löschen', '<p>Sollen die Gruppen wirklich gelöscht werden?</p><p>Mit diesen Gruppe verknüpfte interne Termine und Blogeinträge werden gelöscht.</p><p>Verknüpfungen zu öffentlichen Terminen, Blogeinträgen und Galerien werden entfernt. Alle für diese Gruppen gespeicherten Daten gehen unwiederbringlich verloren.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_multiselect_gruppen_loeschen(\''+gruppe+'\')">Löschen</span></p>');
+}
+
+function cms_multiselect_gruppen_loeschen (art) {
+  cms_multianfrage(222, ["Gruppen löschen", "Die Gruppen werden gelöscht."], {id: cms_multiselect_ids()}, {name: art}).then((rueckgabe) => {
+		if (rueckgabe == "ERFOLG") {
+      var aschuljahr = document.getElementById('cms_gruppen_schuljahr_aktiv').value;
+      if ((art == 'Fachschaften') || (art == 'Gremien')) {
+        cms_multianfrage(-1, ["Gruppen löschen", "Die Gruppen werden im Lehrernetz gelöscht."], {id: cms_multiselect_ids()}, {name: art}, true).then((rueckgabe) =>  {
+          if (rueckgabe == "ERFOLG") {
+            cms_gruppen_listeausgeben(art, aschuljahr);
+            cms_meldung_an('erfolg', 'Gruppen löschen', '<p>Die Gruppen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+          }
+          else {cms_fehlerbehandlung(rueckgabe);}
+        });
+      }
+      else {
+        cms_gruppen_listeausgeben(art, aschuljahr);
+        cms_meldung_an('erfolg', 'Gruppen löschen', '<p>Die Gruppen wurden gelöscht.</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">OK</span></p>');
+      }
+		}
+		else {cms_fehlerbehandlung(rueckgabe);}
+	});
 }
 
 function cms_gruppen_bearbeiten_vorbereiten(art, id) {

@@ -13,8 +13,10 @@
       if ($sql->execute()) {
         $sql->bind_result($fid, $fname, $ffback, $fzeit);
         while ($sql->fetch()) {
+          $hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$fid\">";
+
           $liste .= '<tr>';
-          $liste .= '<td><img src="res/icons/klein/feedback.png"></td>';
+          $liste .= '<td class="cms_multiselect">'.$hmeta.'<img src="res/icons/klein/feedback.png"></td>';
           $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"$fname\">";
           if (strpos(wordwrap($fname, 80), "\n")==0) {
             $liste .= substr($fname, 0, 80);
@@ -46,6 +48,12 @@
 
         if (strlen($liste) == 0) {
           $liste .= "<tr><td colspan=\"5\" class=\"cms_notiz\">-- kein Feedback vorhanden --</td></tr>";
+        } else {
+          $liste .= "<tr class=\"cms_multiselect_menue\"><td colspan=\"5\">";
+          if (cms_r("technik.feedback")) {
+            $liste .= "<span class=\"cms_aktion_klein cms_button_nein\" onclick=\"cms_multiselect_feedback_loeschen();\"><span class=\"cms_hinweis\">Alle löschen</span><img src=\"res/icons/klein/loeschen.png\"></span> ";
+          }
+          $liste .= "</tr>";
         }
         $ausgabe .= $liste;
       }
