@@ -40,7 +40,7 @@ if (cms_angemeldet() && cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")
       $erstellung = date("d.m.Y", $erstellzeit)." um ".date("H:i", $erstellzeit)." Uhr";
       if ($status == 1) {$style = " class=\"cms_erledigt\"";} else {$style = ""; $neu ++;}
       $code .= "<tr><td><p$style>".cms_textaustextfeld_anzeigen($wunsch)."</p>";
-      if ($nutzerkonto != null) {
+      if ($nutzerkonto !== null) {
         $anzeigename = cms_generiere_anzeigename($vorname, $nachname, $titel);
         $code .= "<p class=\"cms_notiz\">$datum – $anzeigename (erstellt am $erstellung)</p></td><td>";
       }
@@ -50,7 +50,7 @@ if (cms_angemeldet() && cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung")
       if (in_array($ersteller, $schreibenpool)) {
         $code .= "<span class=\"cms_aktion_klein\" onclick=\"cms_schulhof_postfach_nachricht_vorbereiten ('vorgabe', '', '', $ersteller)\"><span class=\"cms_hinweis\">Absender schreiben</span><img src=\"res/icons/klein/postnachricht.png\"></span> ";
       }
-      else if ($nutzerkonto != null) {
+      else if ($nutzerkonto == null) {
         $code .= "<span class=\"cms_aktion_klein cms_button_passivda\" onclick=\"cms_meldung_keinkonto()\"><img src=\"res/icons/klein/postnachricht.png\"></span> ";
       }
       else {
