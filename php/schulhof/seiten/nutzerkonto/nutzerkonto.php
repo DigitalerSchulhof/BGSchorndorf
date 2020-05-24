@@ -445,6 +445,8 @@ if ($sql->execute()) {
 			$tbez = $abez;
 		}
 
+		$tbes = cms_textaustextfeld_anzeigen($tbes);
+
 		if($a == "b") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
 			$todob .= "<p><a href=\"$link\">($g » $gbez) $tbez</a></p>";
@@ -471,6 +473,7 @@ $sql->execute();
 while($sql->fetch()) {
 	$todoe .= "<p><a href=\"Schulhof/ToDo/".cms_textzulink($bezeichnung)."\">$bezeichnung</a></p>";
 	if(strlen($beschreibung)) {
+		$beschreibung = cms_textaustextfeld_anzeigen($beschreibung);
 		$todoe .= "<p class=\"cms_notiz\">$beschreibung</p>";
 	}
 	$tododa = true;

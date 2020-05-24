@@ -15,6 +15,7 @@
 <h1><?php echo $bezeichnung;?></h1>
 <?php
 	if(strlen($beschreibung)) {
+		$beschreibung = cms_textaustextfeld_anzeigen($beschreibung);
 		echo "<p>$beschreibung</p>";
 	} else {
 		echo "<p class=\"cms_notiz\">Keine Notizen</p>";
