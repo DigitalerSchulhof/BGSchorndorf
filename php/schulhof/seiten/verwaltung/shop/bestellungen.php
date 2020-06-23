@@ -56,26 +56,26 @@ if (cms_r("shop.bestellungen.*")) {
 				}
 
 				$ausgabe .= "<td>";
-				if ($status == 0) {$ausgabe .= "Eingegangen";}
-				else if ($status == 1) {$ausgabe .= "Bezahlt";}
-				else if ($status == 2) {$ausgabe .= "Übermittelt";}
-				else if ($status == 3) {$ausgabe .= "Geliefert";}
+				if ($b['status'] == 0) {$ausgabe .= "Eingegangen";}
+				else if ($b['status'] == 1) {$ausgabe .= "Bezahlt";}
+				else if ($b['status'] == 2) {$ausgabe .= "Übermittelt";}
+				else if ($b['status'] == 3) {$ausgabe .= "Geliefert";}
 				$ausgabe .= "</td>";
 
 				// Aktionen
 				$ausgabe .= "<td>";
 				if (cms_r("shop.bestellungen.verarbeiten")) {
 					$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_bestellung_sehen(".$b['id'].");\"><span class=\"cms_hinweis\">Bestelldetails ansehen</span><img src=\"res/icons/klein/sichtbar.png\"></span> ";
-					if ($status != 0) {
+					if ($b['status'] != 0) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_bestellung_status(".$b['id'].", 0);\"><span class=\"cms_hinweis\">Als eingegangen markieren</span><img src=\"res/icons/klein/bestellt.png\"></span> ";
 					}
-					if ($status != 1) {
+					if ($b['status'] != 1) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_bestellung_status(".$b['id'].", 1);\"><span class=\"cms_hinweis\">Als bezahlt markieren</span><img src=\"res/icons/klein/bezahlt.png\"></span> ";
 					}
-					if ($status != 2) {
+					if ($b['status'] != 2) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_bestellung_status(".$b['id'].", 2);\"><span class=\"cms_hinweis\">Als übermittelt markieren</span><img src=\"res/icons/klein/aufgegeben.png\"></span> ";
 					}
-					if ($status != 3) {
+					if ($b['status'] != 3) {
 						$ausgabe .= "<span class=\"cms_aktion_klein\" onclick=\"cms_bestellung_status(".$b['id'].", 3);\"><span class=\"cms_hinweis\">Als geliefert markieren</span><img src=\"res/icons/klein/geliefert.png\"></span> ";
 					}
 

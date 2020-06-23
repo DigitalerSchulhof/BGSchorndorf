@@ -31,7 +31,7 @@ if (cms_r("shop.bestellungen.verarbeiten")) {
 			else {
 				$code .= "<table class=\"cms_formular\">";
 				$code .= "<tr><td><b>Empfänger:</b> ".cms_generiere_anzeigename($pvor, $pnach, $ptit)."<br>";
-				$code .= "<b>Bestellnummer:</b> $CMS_BENUTZERID<br>";
+				$code .= "<b>Bestellnummer:</b> $bid<br>";
 				if ($status == 0) {$statusmeldung = "Bestellung eingegangen"; if ($bedarf == '1') {$statusmeldung .= " - Bezahlung ausstehend";}}
 				else if ($status == 1) {$statusmeldung = "Bezahlt";}
 				else if ($status == 2) {$statusmeldung = "Übermittelt";}
@@ -71,7 +71,7 @@ if (cms_r("shop.bestellungen.verarbeiten")) {
 					}
 					else {
 						$sql = $dbs->prepare("SELECT * FROM (SELECT eposten.stueck, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, preis FROM eposten JOIN egeraete ON geraet = egeraete.id WHERE bestellung = ?) AS x ORDER BY preis ASC, titel ASC");
-						$sql->bind_param("i", $CMS_BENUTZERID);
+						$sql->bind_param("i", $bid);
 						if ($sql->execute()) {
 							$sql->bind_result($anzahl, $titel, $preis);
 							$summe = 0;

@@ -534,6 +534,18 @@ function cms_eigenes_todo_loeschen(id) {
 	cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_alle_todos_loeschen_anzeigen() {
+	cms_meldung_an('warnung', 'ToDo\'s erledigen', '<p>Sollen wirklich alle ToDo\'s als erledigt markiert werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_alle_todos_loeschen()">Erledigen</span></p>');
+}
+
+function cms_alle_todos_loeschen() {
+	cms_ajaxanfrage(389).then((rueckgabe) => {
+		if(rueckgabe == "ERFOLG") {
+			location.reload();
+		} else {cms_fehlerbehandlung(rueckgabe);}
+	});
+}
+
 function cms_favorit_benennen(fid) {
 	cms_laden_an('Favorit umbenennen', 'Der Favorit wird umbenannt.');
 	var name = document.getElementById('cms_favoriten_bezeichnung_'+fid).value;

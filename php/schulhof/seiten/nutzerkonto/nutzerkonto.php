@@ -415,7 +415,7 @@ if ($favoritenda) {$neuigkeiten .= $favoriten;}
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
 
 $todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img class=\"pointer\" src=\"res/icons/gross/todo.png\" onclick=\"cms_link('Schulhof/ToDo')\"></span>";
-$todo .= "<span class=\"cms_neuigkeit_inhalt\"><a href=\"Schulhof/ToDo\"><h4>ToDo</h4></a>";
+$todo .= "<span class=\"cms_neuigkeit_inhalt\"><span class=\"cms_aktionsicon\" onclick=\"cms_alle_todos_loeschen_anzeigen()\"><span class=\"cms_hinweis\">Alle ToDo's erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span><a href=\"Schulhof/ToDo\"><h4>ToDo</h4></a>";
 $todob = "";	// blog
 $todot = "";	// termine
 $todoe = "";	// eigene
@@ -445,6 +445,8 @@ if ($sql->execute()) {
 			$tbez = $abez;
 		}
 
+		$tbes = cms_textaustextfeld_anzeigen($tbes);
+
 		if($a == "b") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
 			$todob .= "<p><a href=\"$link\">($g » $gbez) $tbez</a></p>";
@@ -471,6 +473,7 @@ $sql->execute();
 while($sql->fetch()) {
 	$todoe .= "<p><a href=\"Schulhof/ToDo/".cms_textzulink($bezeichnung)."\">$bezeichnung</a></p>";
 	if(strlen($beschreibung)) {
+		$beschreibung = cms_textaustextfeld_anzeigen($beschreibung);
 		$todoe .= "<p class=\"cms_notiz\">$beschreibung</p>";
 	}
 	$tododa = true;
