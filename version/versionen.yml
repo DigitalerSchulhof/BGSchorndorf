@@ -2,16 +2,17 @@
 version:
   0_10_1:
     version: 0.10.1
-    tag: ????, den ??. ?? 2020
+    tag: Dienstg den 23. Juni 2020
     neuerungen:
-      - Ein Ausgabefehler bei den Bestellungen wurde behoben [W]
-      - Zeilenumbrüche in Beschreibungen von ToDo's werden nun korrekt angezeigt [E]
+      - Zeilenumbrüche in Beschreibungen von ToDo's werden nun korrekt angezeigt. [E]
+      - Ein Ausgabefehler bei den Bestellungen wurde behoben. [W]
+      - Über einen Knopf können alle offenen ToDo's als erledigt markiert werden. [E]
   0_10:
     version: 0.10
     tag: Montag, den 18. Mai 2020
     neuerungen:
       - "Wenn die Umschalttaste gedrückt ist, können ToDo's direkt gelöscht werden. (<a style='color: inherit' href='https://praxistipps.chip.de/umschalttaste-welche-ist-das_9956' target='_blank'>Wo ist die Umschalttaste [Chip-Praxistipp]</a>) [E]"
-      - In den persönlichen Einstellungen kann ausgewählt werden, ob Dateiänderungen in abonnierten Gruppen eine Notifikation verursacht. [E]
+      - In den persönlichen Einstellungen kann ausgewählt werden, ob Dateiänderungen in abonnierten Gruppen als Neuigkeit gewertet werden. [E]
       - Über die Mehrfachauswahl können Nachrichten im Postfach schnell als »gelesen« markiert werden. [E]
       - Aktionen, die keine Wirkung auf die gewählten Zeilen haben, werden in der Mehrfachauswahl ausgeblendet. [E]
       - "Mehrfachauswahl auf folgenden Seiten implementiert: Personen-, Rollen-, Gruppen-, Stundenplanzeiträume-, Fächer-, Profil-, Schienen-, Schuljahr-, Räume-, Leihgeräte-, Ferien-, Schulanmeldung-, Termine-, Blogeinträge-, Galerien-, Auszeichnung-, Newsletter-, Weiterleitungs-, Hausmeisteraufträge-, Feedbackverwaltung [E]"
