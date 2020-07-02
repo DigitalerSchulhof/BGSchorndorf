@@ -648,7 +648,15 @@ function cms_lehrerdb_header ($fehler = false) {
 		header("Access-Control-Allow-Origin: *");
 	}
 	else {
-		header("Access-Control-Allow-Origin: ".$CMS_SH_SERVER);
+		$ORIGIN = $_SERVER['HTTP_ORIGIN'];
+		if (strtolower($ORIGIN) == strtolower($CMS_SH_SERVER)) {
+			header("Access-Control-Allow-Origin: ".$CMS_SH_SERVER);
+		}
+		else {
+			// TODO Implentiere IP-Fallback
+			header("Access-Control-Allow-Origin: 192.168.198.25");
+		}
+
 	}
 	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 	header("Access-Control-Allow-Headers: Origin");
