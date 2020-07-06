@@ -69,7 +69,7 @@ function cms_verwaltung_personloeschen ($dbs, $dbp, $id) {
 		$CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
 		$CMS_MAIL = cms_einstellungen_laden("maileinstellungen");
 
-		$text = $anrede.$CMS_MAILZ[$i].$CMS_MAILZ[$i];
+		$text = "<p>".$anrede."</p>";
 		if ($art != 's') {
 			$text .= "<p>Ihr Nutzerkonto wurde gelöscht!</p>";
 			$text .= "<p>Diese Aktion kann nicht rückgängig gemacht werden. Falls Sie weiterhin ein Notzerkonto benötigen, muss ein neues Nutzerkonto angelegt werden. Kontaktieren Sie dazu bitte die Schule.</p>";
