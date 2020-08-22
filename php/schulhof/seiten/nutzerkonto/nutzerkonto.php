@@ -1,7 +1,7 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 // Nach Updates prüfen
-if(cms_r("technik.server.update")) {
+if(false && cms_r("technik.server.update")) {
 	if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
 		$Updater_base = "https://pool.digitaler-schulhof.de";
 	} else {

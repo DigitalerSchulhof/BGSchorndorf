@@ -37,7 +37,7 @@ function cms_rolle_ausgeben ($rolle) {
 
 	// u: Unterstes
 	// k: Hat Kinder	(Pfad nach rechts)
-	// 	c: Eingeklappt (Grünes +)
+	// c: Eingeklappt 	(Grünes +)
 
 	$recht_machen = function($pfad, $recht, $kinder = null, $unterstes = false) use (&$recht_machen, $cms_derrollerechte) {
 		$code = "";
