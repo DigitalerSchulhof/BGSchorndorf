@@ -487,7 +487,7 @@
 	line-height: 1.5em !important;
 	font-size: 10px !important;
 	transition: 250ms ease-in-out;
-	color: @h_auszeichnung_schrift;
+	color: @h_auszeichnung_schrift !important;
 }
 
 .cms_auszeichnung img {max-height: 150px;}
@@ -501,6 +501,10 @@
 	transform: translate(0px) !important;
 	background: @h_auszeichnung_hintergrundhover;
 	color: @h_auszeichnung_schrifthover;
+}
+
+.cms_auszeichnung a:hover p {
+	color: @h_auszeichnung_schrifthover !important;
 }
 
 

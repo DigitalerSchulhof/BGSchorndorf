@@ -1,5 +1,4 @@
 // Bei Klick ändert der Toggle seinen Wert von 1->0 oder von 0->1
-// DEPRECATED - HAS TO BE REMOVED
 function cms_toggle(id) {
 	var wert = document.getElementById('cms_'+id);
 	var feld = document.getElementById('cms_toggle_'+id);

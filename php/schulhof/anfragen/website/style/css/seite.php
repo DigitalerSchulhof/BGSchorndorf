@@ -22,7 +22,7 @@ body {
 	background: @h_kopfzeile_hintergrund;
 	position: @kopfzeile_positionierung;
 	top: @kopfzeile_abstandvonoben;
-	border-bottom: @kopfzeile_linienstaerkeunten;
+	border-bottom: @kopfzeile_linienstaerkeunten solid @h_kopfzeile_schattenfarbe;
 	left: 0px;
 	width: 100%;
 	z-index: 20;
@@ -51,7 +51,7 @@ body {
 }
 
 #cms_fusszeile_o {
-	border-top: @fusszeile_linienstaerkeoben;
+	border-top: @fusszeile_linienstaerkeoben solid @h_kopfzeile_schattenfarbe;;
 	background: @h_fusszeile_hintergrund;
 }
 

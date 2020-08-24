@@ -28,7 +28,7 @@ function cms_stylecheck_schattenmass($text) {
 }
 
 function cms_stylecheck_mass($text) {
-	return preg_match("/^(([0-9]+\.?[0-9]*(px|ex|em|in|cm|mm|pt|pc|%){1})|(auto|inherit|none)){1}( !important)?$/", $text);
+	return preg_match("/^((-?[0-9]+\.?[0-9]*(px|ex|em|in|cm|mm|pt|pc|%){1})|(auto|inherit|none)){1}( !important)?$/", $text);
 }
 
 function cms_stylecheck_abstand($text) {

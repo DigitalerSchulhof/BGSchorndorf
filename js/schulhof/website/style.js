@@ -135,7 +135,7 @@ function cms_stylecheck_schattenmass(text) {
 }
 
 function cms_stylecheck_mass(text) {
-	return text.match(/^(([0-9]+\.?[0-9]*(px|ex|em|in|cm|mm|pt|pc|%){1})|(auto|inherit|none)){1}( !important)?$/);
+	return text.match(/^((-?[0-9]+\.?[0-9]*(px|ex|em|in|cm|mm|pt|pc|%){1})|(auto|inherit|none)){1}( !important)?$/);
 }
 
 function cms_stylecheck_abstand(text) {
