@@ -21,22 +21,17 @@ if (cms_angemeldet()) {
   $dbs = cms_verbinden('s');
   $aktiv;
   $fehler = false;
-  $blogquery    = "IS NULL";
-  $terminquery  = "IS NULL";
-  if($status == '1') {
-    $blogquery = "NULL";
-    $terminquery = "NULL";
-  }
+  $blogquerycheck    = "IS NULL";
+  $terminquerycheck  = "IS NULL";
+  $blogquery = "NULL";
+  $terminquery = "NULL";
   $CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
   $gruppenrecht = cms_gruppenrechte_laden($dbs, $g, $gid);
 
   // Artikel prüfen
   if($a == "b") {
-    if($status == '1') {
-      $blogquery = "?";
-    } else {
-      $blogquery = "= ?";
-    }
+    $blogquery = "?";
+    $blogquerycheck = "= ?";
     $artikeltyp = "blogeintrag";
 
     $sql = "SELECT aktiv FROM {$gk}blogeintraegeintern WHERE id = ?";
@@ -49,11 +44,8 @@ if (cms_angemeldet()) {
     $gefunden = $gruppenrecht['sichtbar'] && ($aktiv || $gruppenrecht['blogeintraege']);
   }
   if($a == "t") {
-    if($status == '1') {
-      $terminquery = "?";
-    } else {
-      $terminquery = "= ?";
-    }
+    $terminquery = "?";
+    $terminquerycheck = "= ?";
     $artikeltyp = "termin";
 
     $sql = "SELECT aktiv FROM {$gk}termineintern WHERE id = ?";
@@ -71,12 +63,18 @@ if (cms_angemeldet()) {
   }
 
   if ($status == '1') {
-    $sql = "INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT ?, $blogquery, $terminquery FROM {$gk}todoartikel WHERE (SELECT count(*) FROM {$gk}todoartikel WHERE person = ? AND $artikeltyp = ?) = 0 LIMIT 1";
-    $sql = $dbs->prepare($sql);
-    $sql->bind_param("iiii", $CMS_BENUTZERID, $aid, $CMS_BENUTZERID, $aid);
+    // Existiert schon?
+    $sql = $dbs->prepare("SELECT COUNT(*) FROM {$gk}todoartikel WHERE person = ? AND blogeintrag $blogquerycheck AND termin $terminquerycheck");
+    $sql->bind_result($anz);
     $sql->execute();
+    if(!$sql->fetch()) {
+      // Keine Todos
+      $sql = $dbs->prepare("INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) VALUES (?, $blogquery, $terminquery)");
+      $sql->bind_param("ii", $CMS_BENUTZERID, $aid);
+      $sql->execute();
+    }
   } else {
-    $sql = "DELETE FROM {$gk}todoartikel WHERE person = ? AND blogeintrag $blogquery AND termin $terminquery";
+    $sql = "DELETE FROM {$gk}todoartikel WHERE person = ? AND blogeintrag $blogquerycheck AND termin $terminquerycheck";
     $sql = $dbs->prepare($sql);
     $sql->bind_param("ii", $CMS_BENUTZERID, $aid);
     $sql->execute();
