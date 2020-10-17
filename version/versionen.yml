@@ -2,8 +2,9 @@
 version:
   0_10_2:
     version: 0.10.2
-    tag: Samstag, den 22. August 2020
+    tag: x, den x. September 2020
     neuerungen:
+      - Der Digitale Schulhof kann auf unterstützten Geräten direkt über einen Knopf auf der Anmeldeseite als App installiert werden [E]
       - Fehler beim Versenden gewisser eMails behoben [W]
       - Deaktivierung des automatischen Updaters aus Gründen interner Systemumstellungen [E]
       - Erreichbarkeit des Lehrerservers ohne Internetverbindung [W]
