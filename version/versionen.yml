@@ -4,9 +4,10 @@ version:
     version: 0.10.2
     tag: x, den x. September 2020
     neuerungen:
+      - Ein Fehler beim Speichern von ToDo's wurde behoben [E]
       - Der Digitale Schulhof kann auf unterstützten Geräten direkt über einen Knopf auf der Anmeldeseite als App installiert werden [E]
       - Fehler beim Versenden gewisser eMails behoben [W]
-      - Deaktivierung des automatischen Updaters aus Gründen interner Systemumstellungen [E]
+#      - Deaktivierung des automatischen Updaters aus Gründen interner Systemumstellungen [E]
       - Erreichbarkeit des Lehrerservers ohne Internetverbindung [W]
   0_10_1:
     version: 0.10.1
