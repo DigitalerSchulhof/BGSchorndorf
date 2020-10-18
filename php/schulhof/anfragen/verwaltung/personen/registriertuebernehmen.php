@@ -265,6 +265,9 @@ if (cms_angemeldet() && cms_r("schulhof.verwaltung.nutzerkonten.anlegen")) {
 
 		cms_trennen($dbp);
 
+    $CMS_WICHTIG = cms_einstellungen_laden("wichtigeeinstellungen");
+    $CMS_MAIL = cms_einstellungen_laden("maileinstellungen");
+
 		// PASSWORT VERSCHICKEN
 		$empfaenger = cms_generiere_anzeigename($vorname, $nachname, $titel);
 		$betreff = 'Neues Nutzerkonto';

@@ -113,8 +113,16 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 			$text = str_replace('MPGR1', 'MPG', $text);
 			$text = str_replace('MPGR2', 'MPG', $text);
 			$text = str_replace('MPGR3', 'MPG', $text);
+			$text = str_replace('JS1.2', 'MPG', $text);
+			$text = str_replace('JS1.3', 'MPG', $text);
 			$text = str_replace('WAHA', 'KarlWahl', $text);
+			$text = str_replace('WAHA1', 'KarlWahl', $text);
+			$text = str_replace('WAHA2', 'KarlWahl', $text);
+			$text = str_replace('WAHA3', 'KarlWahl', $text);
+			$text = str_replace('WAHA4', 'KarlWahl', $text);
 			$text = str_replace('HALL', 'OskarFrech', $text);
+			$text = str_replace('HALL1', 'OskarFrech', $text);
+			$text = str_replace('HALL2', 'OskarFrech', $text);
 			$text = str_replace('INFO', 'INF - 126', $text);
 			$text = str_replace('MU1', 'MU1 - 1.01', $text);
 			$text = str_replace('MU2', 'MU2 - 1.05', $text);
@@ -134,22 +142,25 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 		}
 
 		function cms_bg_fach($text) {
+      $text = strtoupper($text);
 			$text = preg_replace("/^EM$/", 'SEM', $text);
 			$text = preg_replace("/^ET$/", 'ETH', $text);
 			$text = preg_replace("/^RE$/", 'REV', $text);
 			$text = preg_replace("/^RK$/", 'RRK', $text);
 			$text = preg_replace("/^GM$/", 'GMK', $text);
+			$text = preg_replace("/^GK$/", 'GMK', $text);
 			$text = preg_replace("/^GM B$/", 'GMK B', $text);
 			$text = preg_replace("/^SPORTMÄ$/", 'SPM', $text);
 			$text = preg_replace("/^SPJU/", 'SPJ', $text);
 			$text = preg_replace("/^INFO 5$/", 'INF', $text);
 			$text = preg_replace("/^INFO 7$/", 'INF', $text);
 			$text = preg_replace("/^IN$/", 'INF', $text);
+			$text = preg_replace("/^IF$/", 'INF', $text);
 			$text = preg_replace("/^INFO-AG$/", 'INF', $text);
 			$text = preg_replace("/^IMP P$/", 'IMP', $text);
 			$text = preg_replace("/^IMP I$/", 'IMP', $text);
 			$text = preg_replace("/^IMP M$/", 'IMP', $text);
-			$text = preg_replace("/^VKB Vorbereitungskurs Bili$/", 'VKB', $text);
+			$text = preg_replace("/^VKB VORBEREITUNGSKURS BILI$/", 'VKB', $text);
 			$text = preg_replace("/^EB$/", 'VKB', $text);
 			return $text;
 		}
@@ -192,7 +203,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 				if (!in_array($dfach, $FAECHER)) {array_push($FAECHER, $dfach);}
 			}
 			else if (($dstufe == 'J1') || ($dstufe == 'J2')) {
-				$dfach = substr($dfach,1,-1);
+				$dfach = substr($dfach,0,-1);
 				if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
@@ -466,12 +477,17 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 			else if (($dstufe == 'J1') || ($dstufe == 'J2')) {
 				$kursart = substr($dfach,0,1);
 				$kursnr = substr($dfach,-1);
-				$dfach = substr($dfach,1,-1);
+				$dfach = substr($dfach,0,-1);
 				if ($CMS_WICHTIG['Schulname'] == "Burg-Gymnasium") {
 					$dfach = cms_bg_fach($dfach);
 				}
-				$bez = $dstufe." ".$kursart."K ".$FACHIDS[$dfach]['bez']." ".$kursnr;
-				$kurzbez = $dstufe." ".$kursart."K ".$dfach.$kursnr;
+        if (ctype_lower($kursart)) {
+          $kursart = "B";
+        } else {
+          $kursart = "L";
+        }
+				$bez = $dstufe." ".$kursart."F ".$FACHIDS[$dfach]['bez']." ".$kursnr;
+				$kurzbez = $dstufe." ".$kursart."F ".$dfach.$kursnr;
 				if (!cms_check_titel($bez)) {$fehler = true;}
 				if (!cms_check_titel($kurzbez)) {$fehler = true;}
 				if (!in_array($bez, $KURSEBEZ)) {
