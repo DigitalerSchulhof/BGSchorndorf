@@ -514,6 +514,18 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
     $code = "";
     $zusatz = strtolower($CMS_URL[2]);
     $zusatzklasse = "";
+    $breaking = $e['breaking'.$zusatz];
+    $breakinglink[1] = $e['breakinglink1'.$zusatz];
+    $breakingtext[1] = $e['breakingtext1'.$zusatz];
+    $breakinglink[2] = $e['breakinglink2'.$zusatz];
+    $breakingtext[2] = $e['breakingtext2'.$zusatz];
+    $breakinglink[3] = $e['breakinglink3'.$zusatz];
+    $breakingtext[3] = $e['breakingtext3'.$zusatz];
+    $breakinglink[4] = $e['breakinglink4'.$zusatz];
+    $breakingtext[4] = $e['breakingtext4'.$zusatz];
+    $breakinglink[5] = $e['breakinglink5'.$zusatz];
+    $breakingtext[5] = $e['breakingtext5'.$zusatz];
+
     $termine = $e['termine'.$zusatz];
     $termineanzahl = $e['termineanzahl'.$zusatz];
     $blog = $e['blog'.$zusatz];
@@ -531,6 +543,20 @@ function cms_eventuebersichten_ausgeben($dbs, $e) {
     if ($termine == 1) {$aussenklasse .= 't';}
     if ($blog == 1) {$aussenklasse .= 'b';}
     if ($galerie == 1) {$aussenklasse .= 'g';}
+
+    if ($breaking == 1) {
+      $code .= "<div class=\"cms_eventuebersicht_breaking_aussen\">";
+      for ($i = 1; $i<=5; $i++) {
+        if (strlen($breakinglink[$i]) != 0 && strlen($breakingtext[$i]) != 0) {
+          $teile = explode("<br>", cms_textaustextfeld_anzeigen($breakingtext[$i]));
+          $teile[0] = "<b>".$teile[0]."</b>";
+          $btext = implode("<br>", $teile);
+          $code .= "<a class=\"cms_eventuebersicht_breaking_innen\" href=\"".$breakinglink[$i]."\">$btext</a>";
+        }
+
+      }
+      $code .= "</div>";
+    }
 
     $code .= "<div class=\"cms_eventuebersicht$aussenklasse\">";
       $jetzt = time();

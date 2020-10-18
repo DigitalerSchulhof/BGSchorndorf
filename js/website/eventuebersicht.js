@@ -52,6 +52,43 @@ function cms_eventuebersichten_aendern(was) {
     if (termine == '1') {zeile.style.display = 'table-row';}
     else {zeile.style.display = 'none';}
   }
+  else if (was == 'breaking') {
+    var breaking = document.getElementById('cms_website_element_eventuebersicht_breaking').value;
+    var zeilel1 = document.getElementById('cms_website_element_eventuebersicht_breakinglink_zeile1');
+    var zeilel2 = document.getElementById('cms_website_element_eventuebersicht_breakinglink_zeile2');
+    var zeilel3 = document.getElementById('cms_website_element_eventuebersicht_breakinglink_zeile3');
+    var zeilel4 = document.getElementById('cms_website_element_eventuebersicht_breakinglink_zeile4');
+    var zeilel5 = document.getElementById('cms_website_element_eventuebersicht_breakinglink_zeile5');
+    var zeilet1 = document.getElementById('cms_website_element_eventuebersicht_breakingtext_zeile1');
+    var zeilet2 = document.getElementById('cms_website_element_eventuebersicht_breakingtext_zeile2');
+    var zeilet3 = document.getElementById('cms_website_element_eventuebersicht_breakingtext_zeile3');
+    var zeilet4 = document.getElementById('cms_website_element_eventuebersicht_breakingtext_zeile4');
+    var zeilet5 = document.getElementById('cms_website_element_eventuebersicht_breakingtext_zeile5');
+    if (breaking == '1') {
+      zeilel1.style.display = 'table-row';
+      zeilel2.style.display = 'table-row';
+      zeilel3.style.display = 'table-row';
+      zeilel4.style.display = 'table-row';
+      zeilel5.style.display = 'table-row';
+      zeilet1.style.display = 'table-row';
+      zeilet2.style.display = 'table-row';
+      zeilet3.style.display = 'table-row';
+      zeilet4.style.display = 'table-row';
+      zeilet5.style.display = 'table-row';
+    }
+    else {
+      zeilel1.style.display = 'none';
+      zeilel2.style.display = 'none';
+      zeilel3.style.display = 'none';
+      zeilel4.style.display = 'none';
+      zeilel5.style.display = 'none';
+      zeilet1.style.display = 'none';
+      zeilet2.style.display = 'none';
+      zeilet3.style.display = 'none';
+      zeilet4.style.display = 'none';
+      zeilet5.style.display = 'none';
+    }
+  }
 
 }
 
@@ -66,6 +103,18 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
   var blogart = document.getElementById('cms_website_element_eventuebersicht_blogart').value;
   var galerie = document.getElementById('cms_website_element_eventuebersicht_galerien').value;
   var galerieanzahl = document.getElementById('cms_website_element_eventuebersicht_galerienanzahl').value;
+
+  var breaking = document.getElementById('cms_website_element_eventuebersicht_breaking').value;
+  var breakingt1 = document.getElementById('cms_website_element_eventuebersicht_breakingtext1').value;
+  var breakingl1 = document.getElementById('cms_website_element_eventuebersicht_breakinglink1').value;
+  var breakingt2 = document.getElementById('cms_website_element_eventuebersicht_breakingtext2').value;
+  var breakingl2 = document.getElementById('cms_website_element_eventuebersicht_breakinglink2').value;
+  var breakingt3 = document.getElementById('cms_website_element_eventuebersicht_breakingtext3').value;
+  var breakingl3 = document.getElementById('cms_website_element_eventuebersicht_breakinglink3').value;
+  var breakingt4 = document.getElementById('cms_website_element_eventuebersicht_breakingtext4').value;
+  var breakingl4 = document.getElementById('cms_website_element_eventuebersicht_breakinglink4').value;
+  var breakingt5 = document.getElementById('cms_website_element_eventuebersicht_breakingtext5').value;
+  var breakingl5 = document.getElementById('cms_website_element_eventuebersicht_breakinglink5').value;
 
   var meldung = '<p>Die Eventübersicht konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -87,6 +136,11 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
 		meldung += '<li>es wurde eine ungültige Position angegeben.</li>';
 		fehler = true;
 	}
+
+  if ((breaking != 0) && (breaking != 1)) {
+    meldung += '<li>die Auswahl für die Breaking-News ist ungültig.</li>';
+		fehler = true;
+  }
 
   if ((termine != 0) && (termine != 1)) {
     meldung += '<li>die Terminauswahl ist ungültig.</li>';
@@ -139,6 +193,18 @@ function cms_eventuebersichten_neu_speichern(zusatz) {
     formulardaten.append("blogart", blogart);
 		formulardaten.append("galerie", galerie);
 		formulardaten.append("galerieanzahl", galerieanzahl);
+    formulardaten.append("breaking", breaking);
+    formulardaten.append("breakingl1", breakingl1);
+    formulardaten.append("breakingt1", breakingt1);
+    formulardaten.append("breakingl2", breakingl2);
+    formulardaten.append("breakingt2", breakingt2);
+    formulardaten.append("breakingl3", breakingl3);
+    formulardaten.append("breakingt3", breakingt3);
+    formulardaten.append("breakingl4", breakingl4);
+    formulardaten.append("breakingt4", breakingt4);
+    formulardaten.append("breakingl5", breakingl5);
+    formulardaten.append("breakingt5", breakingt5);
+
 		formulardaten.append("anfragenziel", 	'42');
 
     function anfragennachbehandlung(rueckgabe) {
@@ -166,6 +232,18 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
   var galerie = document.getElementById('cms_website_element_eventuebersicht_galerien').value;
   var galerieanzahl = document.getElementById('cms_website_element_eventuebersicht_galerienanzahl').value;
 
+  var breaking = document.getElementById('cms_website_element_eventuebersicht_breaking').value;
+  var breakingt1 = document.getElementById('cms_website_element_eventuebersicht_breakingtext1').value;
+  var breakingl1 = document.getElementById('cms_website_element_eventuebersicht_breakinglink1').value;
+  var breakingt2 = document.getElementById('cms_website_element_eventuebersicht_breakingtext2').value;
+  var breakingl2 = document.getElementById('cms_website_element_eventuebersicht_breakinglink2').value;
+  var breakingt3 = document.getElementById('cms_website_element_eventuebersicht_breakingtext3').value;
+  var breakingl3 = document.getElementById('cms_website_element_eventuebersicht_breakinglink3').value;
+  var breakingt4 = document.getElementById('cms_website_element_eventuebersicht_breakingtext4').value;
+  var breakingl4 = document.getElementById('cms_website_element_eventuebersicht_breakinglink4').value;
+  var breakingt5 = document.getElementById('cms_website_element_eventuebersicht_breakingtext5').value;
+  var breakingl5 = document.getElementById('cms_website_element_eventuebersicht_breakinglink5').value;
+
   var meldung = '<p>Die Eventübersicht konnte nicht bearbeitet werden, denn ...</p><ul>';
 	var fehler = false;
 
@@ -186,6 +264,11 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
 		meldung += '<li>es wurde eine ungültige Position angegeben.</li>';
 		fehler = true;
 	}
+
+  if ((breaking != 0) && (breaking != 1)) {
+    meldung += '<li>die Auswahl für die Breaking-News ist ungültig.</li>';
+		fehler = true;
+  }
 
   if ((termine != 0) && (termine != 1)) {
     meldung += '<li>die Terminauswahl ist ungültig.</li>';
@@ -238,6 +321,17 @@ function cms_eventuebersichten_bearbeiten_speichern(zusatz) {
 		formulardaten.append("blogart", blogart);
 		formulardaten.append("galerie", galerie);
 		formulardaten.append("galerieanzahl", galerieanzahl);
+    formulardaten.append("breaking", breaking);
+    formulardaten.append("breakingl1", breakingl1);
+    formulardaten.append("breakingt1", breakingt1);
+    formulardaten.append("breakingl2", breakingl2);
+    formulardaten.append("breakingt2", breakingt2);
+    formulardaten.append("breakingl3", breakingl3);
+    formulardaten.append("breakingt3", breakingt3);
+    formulardaten.append("breakingl4", breakingl4);
+    formulardaten.append("breakingt4", breakingt4);
+    formulardaten.append("breakingl5", breakingl5);
+    formulardaten.append("breakingt5", breakingt5);
 		formulardaten.append("anfragenziel", 	'43');
 
     function anfragennachbehandlung(rueckgabe) {

@@ -1,5 +1,15 @@
 // HELL;
 
+.cms_eventuebersicht_breaking_innen {
+	background-color: @h_haupt_meldungfehlerhinter;
+	color: @h_haupt_schriftfarbepositiv;
+}
+
+.cms_eventuebersicht_breaking_innen:hover {
+	background-color: @h_haupt_meldungwarnunghinter;
+	color: @h_haupt_schriftfarbepositiv;
+}
+
 .cms_termine_jahrueberischt_knoepfe_vorher {
 	display: inline-block;
 	text-align: left;
@@ -334,6 +344,23 @@
 	padding-right: 10px;
 }
 
+.cms_eventuebersicht_breaking_aussen {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.cms_eventuebersicht_breaking_innen {
+  display: inline-block;
+  flex-basis: 25%;
+  padding: 10px;
+  flex-grow: 1;
+}
+
+.cms_eventuebersicht_breaking_innen:hover {
+  cursor: pointer;
+}
+
 .cms_eventuebersicht_box_a:first-child .cms_eventuebersicht_box_i {padding-left: 0px;}
 .cms_eventuebersicht_box_a:last-child .cms_eventuebersicht_box_i {padding-right: 0px;}
 
@@ -553,6 +580,16 @@
 }
 
 // DUNKEL;
+
+.cms_eventuebersicht_breaking_innen {
+	background-color: @d_haupt_meldungfehlerhinter;
+	color: @d_haupt_schriftfarbepositiv;
+}
+
+.cms_eventuebersicht_breaking_innen:hover {
+	background-color: @d_haupt_meldungwarnunghinter;
+	color: @d_haupt_schriftfarbepositiv;
+}
 
 .cms_termine_jahrueberischt_knoepfe_jahr {
 	color: @d_haupt_abstufung2;
