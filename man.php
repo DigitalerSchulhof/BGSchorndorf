@@ -16,7 +16,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "<?php $anf = $DBS->prepare("SELECT wert FROM style WHERE name = 'cms_style_h_haupt_thema1'");$anf->bind_result($thema1);$anf->execute();$anf->fetch(); echo $thema1; ?>",
-  "description": "Der Digitaler Schulhof des <?php echo $CMS_WICHTIG["Schulname Genitiv"];?>",
+  "description": "Der Digitale Schulhof des <?php echo $CMS_WICHTIG["Schulname Genitiv"];?>",
   "icons": [{
     "src": "dateien/schulspezifisch/favicon/48.png",
     "sizes": "48x48",
