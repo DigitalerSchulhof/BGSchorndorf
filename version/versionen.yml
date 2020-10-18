@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_4:
+    version: 0.10.4
+    tag: Sonntag, den 18. Oktober 2020
+    neuerungen:
+      - Progressive Web App! [E]
   0_10_3:
     version: 0.10.3
     tag: Sonntag, den 18. Oktober 2020
