@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_3:
+    version: 0.10.3
+    tag: Sonntag, den 18. Oktober 2020
+    neuerungen:
+      - Vergessene Datei nachgereicht [E]
+      - Nach der Anmeldung in der App wird nicht auf die Startseite weitergeleitet [E]
   0_10_2:
     version: 0.10.2
     tag: Sonntag, den 18. Oktober 2020
@@ -7,9 +13,7 @@ version:
       - Ein Fehler beim Speichern von ToDo's wurde behoben [E]
       - Der Digitale Schulhof kann auf unterstützten Geräten direkt über einen Knopf auf der Anmeldeseite als App installiert werden [E]
       - Fehler beim Versenden gewisser eMails behoben [W]
-#      - Deaktivierung des automatischen Updaters aus Gründen interner Systemumstellungen [E]
-      - Erreichbarkeit des Lehrerservers ohne Internetverbindung [W]
-      - In Eventübersichten können Breaking-News angelegt werden [W] 
+      - In Eventübersichten können Breaking-News angelegt werden [W]
   0_10_1:
     version: 0.10.1
     tag: Dienstg den 23. Juni 2020

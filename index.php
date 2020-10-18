@@ -189,6 +189,7 @@
 	<meta name="format-detection" content="email=no">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="manifest" href="man.php">
 	<?php echo "<link type=\"image/png\" href=\"dateien/schulspezifisch/favicon.ico\" rel=\"shortcut icon\">";?>
 	<title><?php echo $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']." • ".$CMS_SEITENTITEL;?></title>
 
