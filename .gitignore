@@ -19,6 +19,7 @@
 /prepared.php
 /install.php
 /fix.php
+/fix2.php
 /encrypt.php
 /decrypt.php
 /dbl.sql
@@ -31,3 +32,4 @@
 .tabnine_root
 .tabnineignore
 .tern-project
+.vscode/*

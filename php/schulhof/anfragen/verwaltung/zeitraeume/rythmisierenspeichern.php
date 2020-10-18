@@ -11,8 +11,6 @@ if (isset($_SESSION['ZEITRAUMRYTHMISIEREN'])) {$zeitraum = $_SESSION['ZEITRAUMRY
 
 if (!cms_check_ganzzahl($zeitraum,0)) {echo "FEHLER"; exit;}
 
-
-
 $dbs = cms_verbinden('s');
 if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.rythmisieren")) {
 	$fehler = false;

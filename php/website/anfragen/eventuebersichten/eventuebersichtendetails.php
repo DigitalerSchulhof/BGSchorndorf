@@ -56,6 +56,17 @@ if (($zugriff) && ($angemeldet)) {
           $blogart = $daten['blogart'.$modusk];
           $bloganzahl = $daten['bloganzahl'.$modusk];
           $galerieanzahl = $daten['galerieanzahl'.$modusk];
+          $breaking = $daten['breaking'.$modusk];
+          $breakinglink[1] = $daten['breakinglink1'.$modusk];
+          $breakinglink[2] = $daten['breakinglink2'.$modusk];
+          $breakinglink[3] = $daten['breakinglink3'.$modusk];
+          $breakinglink[4] = $daten['breakinglink4'.$modusk];
+          $breakinglink[5] = $daten['breakinglink5'.$modusk];
+          $breakingtext[1] = $daten['breakingtext1'.$modusk];
+          $breakingtext[2] = $daten['breakingtext2'.$modusk];
+          $breakingtext[3] = $daten['breakingtext3'.$modusk];
+          $breakingtext[4] = $daten['breakingtext4'.$modusk];
+          $breakingtext[5] = $daten['breakingtext5'.$modusk];
         }
         else {$fehler = true;}
         $aktiv = $daten['aktiv'];
@@ -78,9 +89,19 @@ if (($zugriff) && ($angemeldet)) {
     if (cms_r("website.freigeben")) {$code .= "<tr><th>Aktiv:</th><td>".cms_generiere_schieber('website_element_eventuebersicht_aktiv', $aktiv)."</td></tr>";}
     else {$code .= "<tr><th>Aktiv:</th><td>".cms_meldung('info', '<h4>Freigabe erforderlich</h4><p>Die neuen Inhalte werden gespeichert, aber öffentlich nicht angezeigt, bis sie die Freigabe erhalten haben.</p>')."<input type=\"hidden\" id=\"website_element_eventuebersicht_aktiv\" name=\"website_element_eventuebersicht_aktiv\" value=\"0\"></td></tr>";}
     $code .= "<tr><th>Position:</th><td>".cms_positionswahl_generieren('cms_website_element_eventuebersicht_position', $position, $maxpos, $neu)."</td></tr>";
+
+
+    $code .= "<tr><th>Breaking-News:</th><td>".cms_generiere_schieber('website_element_eventuebersicht_breaking', $breaking, 'cms_eventuebersichten_aendern(\'breaking\');')."</td></tr>";
+    if ($breaking != '1') {$style = "display: none;";} else {$style = "display: table-row;";}
+    for ($i=1; $i<=5; $i++) {
+      $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_breakinglink_zeile$i\"><th>Breaking-Link $i:</th><td><input type=\"text\" id=\"cms_website_element_eventuebersicht_breakinglink$i\" name=\"cms_website_element_eventuebersicht_breakinglink$i\" value=\"".$breakinglink[$i]."\"></td></tr>";
+      $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_breakingtext_zeile$i\"><th>Breaking-Text $i:</th><td><textarea  id=\"cms_website_element_eventuebersicht_breakingtext$i\" name=\"cms_website_element_eventuebersicht_breakingtext$i\" >".$breakingtext[$i]."</textarea></td></tr>";
+    }
+
     $code .= "<tr><th>Termine:</th><td>".cms_generiere_schieber('website_element_eventuebersicht_termine', $termine, 'cms_eventuebersichten_aendern(\'termine\');')."</td></tr>";
     if ($termine != '1') {$style = "display: none;";} else {$style = "display: table-row;";}
     $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_termine_zeile\"><th><span class=\"cms_hinweis_aussen\">Terminanzahl:<span class=\"cms_hinweis\">Wie viele anstehenden Termine sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_termineanzahl\" name=\"cms_website_element_eventuebersicht_termineanzahl\" value=\"$termineanzahl\"></td></tr>";
+
     $code .= "<tr><th>Blog:</th><td>".cms_generiere_schieber('website_element_eventuebersicht_blog', $blog, 'cms_eventuebersichten_aendern(\'blog\');')."</td></tr>";
     if ($blog != '1') {$style = "display: none;";} else {$style = "display: table-row;";}
     $code .= "<tr style=\"$style\" id=\"cms_website_element_eventuebersicht_blog_zeile1\"><th><span class=\"cms_hinweis_aussen\">Bloganzahl:<span class=\"cms_hinweis\">Wie viele der letzten Blogeinträge sollen angezeigt werden?</span></span></th><td><input type=\"number\" class=\"cms_klein\" id=\"cms_website_element_eventuebersicht_bloganzahl\" name=\"cms_website_element_eventuebersicht_bloganzahl\" value=\"$bloganzahl\"></td></tr>";

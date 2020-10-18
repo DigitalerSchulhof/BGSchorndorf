@@ -77,6 +77,7 @@ if (cms_angemeldet() && $zugriff) {
 	function cms_bgfach($text) {
 		$text = strtoupper($text);
 		$text = preg_replace("/^GK$/", "GMK", $text);
+		$text = preg_replace("/^GEO$/", "EK", $text);
 		$text = preg_replace("/^BIO$/", "B", $text);
 		$text = preg_replace("/^S$/", "SP", $text);
 		$text = preg_replace("/^BLL$/", "SEM", $text);
@@ -84,12 +85,14 @@ if (cms_angemeldet() && $zugriff) {
 		$text = preg_replace("/^REL$/", "REV", $text);
 		$text = preg_replace("/^WI$/", "W", $text);
 		$text = preg_replace("/^VMA$/", "VM", $text);
+		$text = preg_replace("/^LTH$/", "LITH", $text);
 		return $text;
 	}
 
 	function cms_bglehrer($text) {
 		$text = strtoupper($text);
 		$text = str_replace(" ", "", $text);
+		$text = preg_replace("/^\#MPG*$/", "MPG ", $text);
 		$text = preg_replace("/^J1-KO.*$/", "MPG ", $text);
 		$text = preg_replace("/^J2-KO.*$/", "MPG ", $text);
 		$text = substr($text,0,-1);
@@ -127,12 +130,12 @@ if (cms_angemeldet() && $zugriff) {
 				if (strlen($ergebnis[3]) > 0) {$kursnr = $ergebnis[3];}
 			}
 			if ($kursart === null) {
-				$kursart = "GK";
-				if (ctype_lower($kursbez)) {$kursart = "GK";}
-				else if (ctype_upper($kursbez)) {$kursart = "LK";}
+				$kursart = "BF";
+				if (ctype_lower($kursbez)) {$kursart = "BF";}
+				else if (ctype_upper($kursbez)) {$kursart = "LF";}
 			}
 			$kursbez = cms_bgfach($kursbez);
-			if ($kursbez == "SEM") {$kursart = "SK";}
+			if ($kursbez == "SEM") {$kursart = "LF";}
 			$K['kurs'] = $STUFEBEZ." ".$kursart." ".$kursbez.$kursnr;
 			if (!in_array($K,$KURSE)) {array_push($KURSE, $K);}
 		}

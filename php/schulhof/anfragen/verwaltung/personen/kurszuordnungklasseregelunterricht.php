@@ -124,6 +124,48 @@ if (cms_angemeldet() && $zugriff) {
 	$sql->close();
 
 
+
+  // Lehrer in Stufenkursen eintragen
+  // Kurse laden
+	$KURSE = array();
+	$sql = $dbs->prepare("SELECT DISTINCT id FROM kurse WHERE schuljahr = ? AND id NOT IN (SELECT kurs FROM kurseklassen)");
+	$sql->bind_param("i", $sj);
+	if ($sql->execute()) {
+		$sql->bind_result($kid);
+		while ($sql->fetch()) {
+			array_push($KURSE, $kid);
+		}
+	}
+	$sql->close();
+
+	// Kurse leeren
+	if (count($KURSE) > 0) {
+		$kursesql = "(".implode(",", $KURSE).")";
+		$sql = $dbs->prepare("DELETE FROM kursemitglieder WHERE gruppe IN $kursesql AND person IN (SELECT id FROM lehrer)");
+		$sql->execute();
+		$sql->close();
+		$sql = $dbs->prepare("DELETE FROM kursevorsitz WHERE gruppe IN $kursesql AND person IN (SELECT id FROM lehrer)");
+		$sql->execute();
+		$sql->close();
+	}
+
+	// Lehrer in Kurse eintragen
+	$sql = $dbs->prepare("INSERT INTO kursemitglieder (gruppe, person, dateiupload, dateidownload, dateiloeschen, dateiumbenennen, termine, blogeintraege, chatten, nachrichtloeschen, nutzerstummschalten, chatbannbis, chatbannvon) SELECT DISTINCT ? AS gruppe, lehrer, 1 AS dateiupload, 1 AS dateidownload, 1 AS dateiloeschen, 1 AS dateiumbenennen, 1 AS termine, 1 AS blogeintraege, 1 AS chatten, 1 AS nachrichtloeschen, 1 AS nutzerstummschalten, null AS chatbannbis, null AS chatbannvon FROM regelunterricht WHERE kurs = ?");
+	foreach ($KURSE AS $K) {
+		$sql->bind_param("ii", $K, $K);
+		$sql->execute();
+	}
+	$sql->close();
+
+	// Lehrer als Kursvorsitzende eintragen
+	$sql = $dbs->prepare("INSERT INTO kursevorsitz (gruppe, person) SELECT DISTINCT ? AS gruppe, lehrer FROM regelunterricht WHERE kurs = ?");
+	foreach ($KURSE AS $K) {
+		$sql->bind_param("ii", $K, $K);
+		$sql->execute();
+	}
+	$sql->close();
+
+
 	cms_trennen($dbs);
 
 	echo "ERFOLG";
