@@ -32,3 +32,4 @@
 .tabnine_root
 .tabnineignore
 .tern-project
+.vscode/*

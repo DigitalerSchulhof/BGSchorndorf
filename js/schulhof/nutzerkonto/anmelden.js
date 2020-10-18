@@ -38,13 +38,8 @@ function cms_anmelden (benutzername, passwort, art) {
 		formulardaten.append("anfragenziel", 	'45');
 
 		function anmeldungdurchfuehren() {
-			if (art == 'app') {
-				cms_link('App')
-			}
-			else {
-				if(location.pathname.includes("Schulhof/Anmeldung")) {cms_link('Schulhof/Nutzerkonto');}
-				else {location.href = location.pathname;}
-			}
+			if(location.pathname.includes("Schulhof/Anmeldung")) {cms_link('Schulhof/Nutzerkonto');}
+			else {location.href = location.pathname;}
 		}
 
 		function anfragennachbehandlung(rueckgabe) {
