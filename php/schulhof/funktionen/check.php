@@ -35,7 +35,7 @@ function cms_check_titel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]*[\-a-zA-Z0-9äöüßÄÖÜ]+$/", $titel) != 1) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ! ]*[\-a-zA-Z0-9äöüßÄÖÜ!]+$/", $titel) != 1) {
 		return false;
 	}
 	else if (($titel == '.') || ($titel == '..')) {
@@ -45,7 +45,7 @@ function cms_check_titel($titel) {
 }
 
 function cms_check_url($url) {
-	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ\/_ ]+$/", $url) != 1) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ\/_! ]+$/", $url) != 1) {
 		return false;
 	}
 	return true;
