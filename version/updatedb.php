@@ -1,20 +1,20 @@
 /*
 
-	Format der Datei:
-	Wird aktualisiert, wird jede Query unter zuvor installierten Version ausgeführt.
+Format der Datei:
+Wird aktualisiert, wird jede Query unter der zuvor installierten Version ausgeführt.
 
 
-	-- Version
+-- Version
 
-	Queries nach der Version
+Queries nach der Version
 
-	-- Version
+-- Version
 
-	Queries
+Queries
 
-	-- Version
+-- Version
 
-	Aufeinander folgende Versionen ohne Änderungen dazwischen können ausgelassen werden.
+Aufeinander folgende Versionen ohne Änderungen dazwischen können ausgelassen werden.
 
 */
 
@@ -57,53 +57,83 @@ CREATE TABLE `ebestellung` (`id` BIGINT(255) UNSIGNED NOT NULL ,`bedarf` TINYINT
 
 ALTER TABLE `ebestellung` ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `wichtigeeinstellungen` (`id` bigint(255) UNSIGNED NOT NULL,  `inhalt` varbinary(2000) NOT NULL,  `wert` varbinary(2000) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `wichtigeeinstellungen`  ADD PRIMARY KEY (`id`);
+CREATE TABLE `wichtigeeinstellungen` (`id` bigint(255) UNSIGNED NOT NULL, `inhalt` varbinary(2000) NOT NULL, `wert` varbinary(2000) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `wichtigeeinstellungen` ADD PRIMARY KEY (`id`);
 
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (0, AES_ENCRYPT('Schulname', '{cms_schluessel}'), AES_ENCRYPT('<?php 						// echo $CMS_SCHULE;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (1, AES_ENCRYPT('Schulname Genitiv', '{cms_schluessel}'), AES_ENCRYPT('<?php 		// echo $CMS_SCHULE_GENITIV;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (2, AES_ENCRYPT('Schule Ort', '{cms_schluessel}'), AES_ENCRYPT('<?php 					// echo $CMS_ORT;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Schule Straße', '{cms_schluessel}'), AES_ENCRYPT('<?php 				// echo $CMS_STRASSE;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Schule PLZOrt', '{cms_schluessel}'), AES_ENCRYPT('<?php 				// echo $CMS_PLZORT;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Schule Telefon', '{cms_schluessel}'), AES_ENCRYPT('<?php 			// echo $CMS_TELEFON;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Schule Fax', '{cms_schluessel}'), AES_ENCRYPT('<?php 					// echo $CMS_TELEFAX;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (7, AES_ENCRYPT('Schule Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 					// echo $CMS_MAILSCHULE;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (8, AES_ENCRYPT('Schule Domain', '{cms_schluessel}'), AES_ENCRYPT('<?php 				// echo $CMS_DOMAIN;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (9, AES_ENCRYPT('Schulleitung Name', '{cms_schluessel}'), AES_ENCRYPT('<?php 		// echo $CMS_NAMESCHULLEITER;?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (0, AES_ENCRYPT('Schulname', '{cms_schluessel}'), AES_ENCRYPT('<?php 						// echo $CMS_SCHULE;
+																																																														?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (1, AES_ENCRYPT('Schulname Genitiv', '{cms_schluessel}'), AES_ENCRYPT('<?php 		// echo $CMS_SCHULE_GENITIV;
+																																																																		?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (2, AES_ENCRYPT('Schule Ort', '{cms_schluessel}'), AES_ENCRYPT('<?php 					// echo $CMS_ORT;
+																																																														?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Schule Straße', '{cms_schluessel}'), AES_ENCRYPT('<?php 				// echo $CMS_STRASSE;
+																																																																?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Schule PLZOrt', '{cms_schluessel}'), AES_ENCRYPT('<?php 				// echo $CMS_PLZORT;
+																																																																?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Schule Telefon', '{cms_schluessel}'), AES_ENCRYPT('<?php 			// echo $CMS_TELEFON;
+																																																																?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Schule Fax', '{cms_schluessel}'), AES_ENCRYPT('<?php 					// echo $CMS_TELEFAX;
+																																																														?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (7, AES_ENCRYPT('Schule Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 					// echo $CMS_MAILSCHULE;
+																																																															?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (8, AES_ENCRYPT('Schule Domain', '{cms_schluessel}'), AES_ENCRYPT('<?php 				// echo $CMS_DOMAIN;
+																																																																?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (9, AES_ENCRYPT('Schulleitung Name', '{cms_schluessel}'), AES_ENCRYPT('<?php 		// echo $CMS_NAMESCHULLEITER;
+																																																																		?>', '{cms_schluessel}'));
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (10, AES_ENCRYPT('Schulleitung Mail', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (11, AES_ENCRYPT('Datenschutz Name', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_NAMEDATENSCHUTZ;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (12, AES_ENCRYPT('Datenschutz Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_MAILDATENSCHUTZ;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (13, AES_ENCRYPT('Presse Name', '{cms_schluessel}'), AES_ENCRYPT('<?php 				//echo $CMS_NAMEPRESSERECHT;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (14, AES_ENCRYPT('Presse Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 				//echo $CMS_MAILPRESSERECHT;?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (11, AES_ENCRYPT('Datenschutz Name', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_NAMEDATENSCHUTZ;
+																																																																		?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (12, AES_ENCRYPT('Datenschutz Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_MAILDATENSCHUTZ;
+																																																																		?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (13, AES_ENCRYPT('Presse Name', '{cms_schluessel}'), AES_ENCRYPT('<?php 				//echo $CMS_NAMEPRESSERECHT;
+																																																															?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (14, AES_ENCRYPT('Presse Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 				//echo $CMS_MAILPRESSERECHT;
+																																																															?>', '{cms_schluessel}'));
 INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (15, AES_ENCRYPT('Webmaster Name', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (16, AES_ENCRYPT('Webmaster Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 			//echo $CMS_WEBMASTER;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (17, AES_ENCRYPT('Administration Name', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo $CMS_NAMEADMINISTRATION;?>', '{cms_schluessel}'));
-INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (18, AES_ENCRYPT('Administration Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo $CMS_MAILADMINISTRATION;?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (16, AES_ENCRYPT('Webmaster Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php 			//echo $CMS_WEBMASTER;
+																																																																	?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (17, AES_ENCRYPT('Administration Name', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo $CMS_NAMEADMINISTRATION;
+																																																																			?>', '{cms_schluessel}'));
+INSERT INTO wichtigeeinstellungen (id, inhalt, wert) VALUES (18, AES_ENCRYPT('Administration Mail', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo $CMS_MAILADMINISTRATION;
+																																																																			?>', '{cms_schluessel}'));
 
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (232, AES_ENCRYPT('Maximale Dateigröße', '{cms_schluessel}'), AES_ENCRYPT('20971520', '{cms_schluessel}'));
 
-CREATE TABLE `maileinstellungen` (`id` bigint(255) UNSIGNED NOT NULL,  `inhalt` varbinary(2000) NOT NULL,  `wert` blob NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `maileinstellungen`  ADD PRIMARY KEY (`id`);
+CREATE TABLE `maileinstellungen` (`id` bigint(255) UNSIGNED NOT NULL, `inhalt` varbinary(2000) NOT NULL, `wert` blob NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `maileinstellungen` ADD PRIMARY KEY (`id`);
 
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (0, AES_ENCRYPT('Absender', '{cms_schluessel}'), AES_ENCRYPT('<?php 							//echo $CMS_MAILABSENDER;?>', '{cms_schluessel}'));
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (1, AES_ENCRYPT('SMTP-Host', '{cms_schluessel}'), AES_ENCRYPT('<?php 							//echo $CMS_MAILHOST;?>', '{cms_schluessel}'));
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (2, AES_ENCRYPT('SMTP-Authentifizierung', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo boolval($CMS_MAILSMTPAUTH);?>', '{cms_schluessel}'));
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Benutzername', '{cms_schluessel}'), AES_ENCRYPT('<?php 					//echo $CMS_MAILUSERNAME;?>', '{cms_schluessel}'));
-INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Passwort', '{cms_schluessel}'), AES_ENCRYPT('<?php 							//echo $CMS_MAILPASSWORT;?>', '{cms_schluessel}'));
+INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (0, AES_ENCRYPT('Absender', '{cms_schluessel}'), AES_ENCRYPT('<?php 							//echo $CMS_MAILABSENDER;
+																																																											?>', '{cms_schluessel}'));
+INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (1, AES_ENCRYPT('SMTP-Host', '{cms_schluessel}'), AES_ENCRYPT('<?php 							//echo $CMS_MAILHOST;
+																																																												?>', '{cms_schluessel}'));
+INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (2, AES_ENCRYPT('SMTP-Authentifizierung', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo boolval($CMS_MAILSMTPAUTH);
+																																																																		?>', '{cms_schluessel}'));
+INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (3, AES_ENCRYPT('Benutzername', '{cms_schluessel}'), AES_ENCRYPT('<?php 					//echo $CMS_MAILUSERNAME;
+																																																													?>', '{cms_schluessel}'));
+INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (4, AES_ENCRYPT('Passwort', '{cms_schluessel}'), AES_ENCRYPT('<?php 							//echo $CMS_MAILPASSWORT;
+																																																											?>', '{cms_schluessel}'));
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (5, AES_ENCRYPT('Signatur Text', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 INSERT INTO maileinstellungen (id, inhalt, wert) VALUES (6, AES_ENCRYPT('Signatur HTML', '{cms_schluessel}'), AES_ENCRYPT('', '{cms_schluessel}'));
 
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (233, AES_ENCRYPT('Hosting Schülernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_HOSTINGPARTNEREX;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (234, AES_ENCRYPT('Hosting Lehrernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_HOSTINGPARTNERIN;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (235, AES_ENCRYPT('Netze Basisverzeichnis', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo $CMS_BASE;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (236, AES_ENCRYPT('Netze Lehrerserver', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_LN_DA;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (237, AES_ENCRYPT('Netze VPN-Anleitung', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_LN_ZB_VPN;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (238, AES_ENCRYPT('Netze Socket-IP', '{cms_schluessel}'), AES_ENCRYPT('<?php 				//echo $CMS_SOCKET_IP;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (239, AES_ENCRYPT('Netze Socket-Port', '{cms_schluessel}'), AES_ENCRYPT('<?php 			//echo $CMS_SOCKET_PORT;?>', '{cms_schluessel}'));
-INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze GitHub', '{cms_schluessel}'), AES_ENCRYPT('<?php 					//echo $GITHUB_OAUTH;?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (233, AES_ENCRYPT('Hosting Schülernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_HOSTINGPARTNEREX;
+																																																																					?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (234, AES_ENCRYPT('Hosting Lehrernetz', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_HOSTINGPARTNERIN;
+																																																																				?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (235, AES_ENCRYPT('Netze Basisverzeichnis', '{cms_schluessel}'), AES_ENCRYPT('<?php //echo $CMS_BASE;
+																																																																						?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (236, AES_ENCRYPT('Netze Lehrerserver', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_LN_DA;
+																																																																				?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (237, AES_ENCRYPT('Netze VPN-Anleitung', '{cms_schluessel}'), AES_ENCRYPT('<?php 		//echo $CMS_LN_ZB_VPN;
+																																																																					?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (238, AES_ENCRYPT('Netze Socket-IP', '{cms_schluessel}'), AES_ENCRYPT('<?php 				//echo $CMS_SOCKET_IP;
+																																																																			?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (239, AES_ENCRYPT('Netze Socket-Port', '{cms_schluessel}'), AES_ENCRYPT('<?php 			//echo $CMS_SOCKET_PORT;
+																																																																				?>', '{cms_schluessel}'));
+INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze GitHub', '{cms_schluessel}'), AES_ENCRYPT('<?php 					//echo $GITHUB_OAUTH;
+																																																																	?>', '{cms_schluessel}'));
 
-CREATE TABLE `master` (  `id` bigint(255) UNSIGNED NOT NULL,  `inhalt` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,  `wert` longtext COLLATE utf8_unicode_ci DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `master`  ADD PRIMARY KEY (`id`);
+CREATE TABLE `master` ( `id` bigint(255) UNSIGNED NOT NULL, `inhalt` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL, `wert` longtext COLLATE utf8_unicode_ci DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `master` ADD PRIMARY KEY (`id`);
 
 INSERT INTO master (id, inhalt, wert) VALUES (0, 'Fußzeile', '');
 INSERT INTO master (id, inhalt, wert) VALUES (1, 'Anmelden', '');
@@ -114,13 +144,13 @@ INSERT INTO master (id, inhalt, wert) VALUES (1, 'Anmelden', '');
 
 DROP TABLE ebestellung;
 
-CREATE TABLE `ebestellung` (  `id` bigint(255) UNSIGNED NOT NULL,  `bedarf` tinyint(1) UNSIGNED DEFAULT NULL,  `anrede` varbinary(500) DEFAULT NULL,  `vorname` varbinary(1000) DEFAULT NULL,  `nachname` varbinary(1000) DEFAULT NULL,  `strasse` varbinary(1000) DEFAULT NULL,  `hausnr` varbinary(1000) DEFAULT NULL,  `plz` varbinary(1000) DEFAULT NULL,  `ort` varbinary(1000) DEFAULT NULL,  `telefon` varbinary(500) DEFAULT NULL,  `email` varbinary(500) DEFAULT NULL,  `bedingungen` tinyint(1) UNSIGNED DEFAULT NULL,  `eingegangen` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `ebestellung`  ADD PRIMARY KEY (`id`);
-ALTER TABLE `ebestellung`  ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `ebestellung` ( `id` bigint(255) UNSIGNED NOT NULL, `bedarf` tinyint(1) UNSIGNED DEFAULT NULL, `anrede` varbinary(500) DEFAULT NULL, `vorname` varbinary(1000) DEFAULT NULL, `nachname` varbinary(1000) DEFAULT NULL, `strasse` varbinary(1000) DEFAULT NULL, `hausnr` varbinary(1000) DEFAULT NULL, `plz` varbinary(1000) DEFAULT NULL, `ort` varbinary(1000) DEFAULT NULL, `telefon` varbinary(500) DEFAULT NULL, `email` varbinary(500) DEFAULT NULL, `bedingungen` tinyint(1) UNSIGNED DEFAULT NULL, `eingegangen` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `ebestellung` ADD PRIMARY KEY (`id`);
+ALTER TABLE `ebestellung` ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `etoken` (  `id` bigint(255) UNSIGNED NOT NULL,  `token` varbinary(5000) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `etoken`  ADD PRIMARY KEY (`id`);
-ALTER TABLE `etoken`  ADD CONSTRAINT `etokenperson` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `etoken` ( `id` bigint(255) UNSIGNED NOT NULL, `token` varbinary(5000) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `etoken` ADD PRIMARY KEY (`id`);
+ALTER TABLE `etoken` ADD CONSTRAINT `etokenperson` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 DELETE FROM allgemeineeinstellungen WHERE id = 240;
 INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (240, AES_ENCRYPT('Netze Offizielle Version', '{cms_schluessel}'), AES_ENCRYPT('1', '{cms_schluessel}'));
@@ -130,52 +160,52 @@ INSERT INTO allgemeineeinstellungen (id, inhalt, wert) VALUES (243, AES_ENCRYPT(
 
 -- 0.8.6
 
-CREATE TABLE `todo` ( `id` BIGINT(255) UNSIGNED NOT NULL , `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `bezeichnung`  VARBINARY(5000) NULL DEFAULT NULL, `beschreibung` BLOB NULL DEFAULT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB;
-ALTER TABLE `todo`  ADD PRIMARY KEY (`id`);
+CREATE TABLE `todo` ( `id` BIGINT(255) UNSIGNED NOT NULL , `person` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL, `beschreibung` BLOB NULL DEFAULT NULL , `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL , `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL ) ENGINE = InnoDB;
+ALTER TABLE `todo` ADD PRIMARY KEY (`id`);
 ALTER TABLE `todo` ADD CONSTRAINT `todopersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 <?php
-	foreach($CMS_GRUPPEN as $g) {
-		$gk = cms_textzudb($g);
-		echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL AFTER `termin`;";
-		echo "ALTER TABLE `{$gk}todoartikel` ADD `beschreibung` BLOB NULL DEFAULT NULL AFTER `bezeichnung`;";
-		// echo "ALTER TABLE `{$gk}todoartikel` ADD `id` BIGINT(255) UNSIGNED NOT NULL FIRST;";
-		// echo "SET @n = 0; UPDATE {$gk}todoartikel SET id = (@n := @n + 1);";
-		// echo "ALTER TABLE `{$gk}todoartikel` ADD PRIMARY KEY( `id`);";
-		//
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelblogblogeintrag`;";
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelpersonpersonen`;";
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikeltermintermin`;";
-		//
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelpersonpersonen`;";
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelblogblogeintrag`;";
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikeltermintermin`;";
-		// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelindex`;";
-		//
-		// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `{$gk}blogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `{$gk}termineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-		//
-		// echo "ALTER TABLE `{$gk}todoartikel` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `termin`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;";
-	}
+foreach ($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	echo "ALTER TABLE `{$gk}todoartikel` ADD `bezeichnung` VARBINARY(5000) NULL DEFAULT NULL AFTER `termin`;";
+	echo "ALTER TABLE `{$gk}todoartikel` ADD `beschreibung` BLOB NULL DEFAULT NULL AFTER `bezeichnung`;";
+	// echo "ALTER TABLE `{$gk}todoartikel` ADD `id` BIGINT(255) UNSIGNED NOT NULL FIRST;";
+	// echo "SET @n = 0; UPDATE {$gk}todoartikel SET id = (@n := @n + 1);";
+	// echo "ALTER TABLE `{$gk}todoartikel` ADD PRIMARY KEY( `id`);";
+	//
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelblogblogeintrag`;";
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikelpersonpersonen`;";
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP FOREIGN KEY `{$gk}todoartikeltermintermin`;";
+	//
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelpersonpersonen`;";
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelblogblogeintrag`;";
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikeltermintermin`;";
+	// echo "ALTER TABLE `{$gk}todoartikel` DROP INDEX `{$gk}todoartikelindex`;";
+	//
+	// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikelblogblogeintrag` FOREIGN KEY (`blogeintrag`) REFERENCES `{$gk}blogeintraegeintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	// echo "ALTER TABLE `{$gk}todoartikel` ADD CONSTRAINT `{$gk}todoartikeltermintermin` FOREIGN KEY (`termin`) REFERENCES `{$gk}termineintern`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+	//
+	// echo "ALTER TABLE `{$gk}todoartikel` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `termin`, ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idvon`;";
+}
 ?>
 
 -- 0.9
 
 DROP TABLE ebestellung;
-CREATE TABLE `ebestellung` (  `id` bigint(255) UNSIGNED NOT NULL,  `bedarf` tinyint(1) UNSIGNED DEFAULT NULL,  `status` tinyint(1) UNSIGNED DEFAULT NULL,  `anrede` varbinary(500) DEFAULT NULL,  `vorname` varbinary(1000) DEFAULT NULL,  `nachname` varbinary(1000) DEFAULT NULL,  `strasse` varbinary(1000) DEFAULT NULL,  `hausnr` varbinary(1000) DEFAULT NULL,  `plz` varbinary(1000) DEFAULT NULL,  `ort` varbinary(1000) DEFAULT NULL,  `telefon` varbinary(500) DEFAULT NULL,  `email` varbinary(500) DEFAULT NULL,  `bedingungen` tinyint(1) UNSIGNED DEFAULT NULL,  `eingegangen` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `ebestellung` ( `id` bigint(255) UNSIGNED NOT NULL, `bedarf` tinyint(1) UNSIGNED DEFAULT NULL, `status` tinyint(1) UNSIGNED DEFAULT NULL, `anrede` varbinary(500) DEFAULT NULL, `vorname` varbinary(1000) DEFAULT NULL, `nachname` varbinary(1000) DEFAULT NULL, `strasse` varbinary(1000) DEFAULT NULL, `hausnr` varbinary(1000) DEFAULT NULL, `plz` varbinary(1000) DEFAULT NULL, `ort` varbinary(1000) DEFAULT NULL, `telefon` varbinary(500) DEFAULT NULL, `email` varbinary(500) DEFAULT NULL, `bedingungen` tinyint(1) UNSIGNED DEFAULT NULL, `eingegangen` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `ebestellung`  ADD PRIMARY KEY (`id`);
-ALTER TABLE `ebestellung`  ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ebestellung` ADD PRIMARY KEY (`id`);
+ALTER TABLE `ebestellung` ADD CONSTRAINT `ebestellung` FOREIGN KEY (`id`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `egeraete` (  `id` bigint(255) UNSIGNED NOT NULL,  `titel` varbinary(1000) DEFAULT NULL,  `bild` varbinary(1000) DEFAULT NULL,  `beschreibung` blob DEFAULT NULL,  `preis` bigint(255) DEFAULT NULL,  `stk` int(255) UNSIGNED DEFAULT NULL,  `lieferzeit` varbinary(1000) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `egeraete` ( `id` bigint(255) UNSIGNED NOT NULL, `titel` varbinary(1000) DEFAULT NULL, `bild` varbinary(1000) DEFAULT NULL, `beschreibung` blob DEFAULT NULL, `preis` bigint(255) DEFAULT NULL, `stk` int(255) UNSIGNED DEFAULT NULL, `lieferzeit` varbinary(1000) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `egeraete`  ADD PRIMARY KEY (`id`);
+ALTER TABLE `egeraete` ADD PRIMARY KEY (`id`);
 
-CREATE TABLE `eposten` (  `bestellung` bigint(255) UNSIGNED NOT NULL,  `geraet` bigint(255) UNSIGNED NOT NULL,  `stueck` bigint(255) UNSIGNED NOT NULL DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `eposten`  ADD PRIMARY KEY (`bestellung`,`geraet`),  ADD KEY `bestellunggeraet` (`geraet`);
-ALTER TABLE `eposten`  ADD CONSTRAINT `bestellunggeraet` FOREIGN KEY (`geraet`) REFERENCES `egeraete` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,  ADD CONSTRAINT `bestellungperson` FOREIGN KEY (`bestellung`) REFERENCES `ebestellung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE `eposten` ( `bestellung` bigint(255) UNSIGNED NOT NULL, `geraet` bigint(255) UNSIGNED NOT NULL, `stueck` bigint(255) UNSIGNED NOT NULL DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `eposten` ADD PRIMARY KEY (`bestellung`,`geraet`), ADD KEY `bestellunggeraet` (`geraet`);
+ALTER TABLE `eposten` ADD CONSTRAINT `bestellunggeraet` FOREIGN KEY (`geraet`) REFERENCES `egeraete` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, ADD CONSTRAINT `bestellungperson` FOREIGN KEY (`bestellung`) REFERENCES `ebestellung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- 0.9.3
 
@@ -199,4 +229,9 @@ ALTER TABLE `egeraete` ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER 
 
 -- 0.10.1
 
-ALTER TABLE `eventuebersichten`  ADD `breakingalt` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `galerieanzahlneu`,  ADD `breakingaktuell` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingalt`,  ADD `breakingneu` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingaktuell`,  ADD `breakinglink1alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingneu`,  ADD `breakinglink1aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink1alt`,  ADD `breakinglink1neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink1aktuell`,  ADD `breakinglink2alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink1neu`,  ADD `breakinglink2aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink2alt`,  ADD `breakinglink2neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink2aktuell`,  ADD `breakinglink3alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink2neu`,  ADD `breakinglink3aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink3alt`,  ADD `breakinglink3neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink3aktuell`,  ADD `breakinglink4alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink3neu`,  ADD `breakinglink4aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink4alt`,  ADD `breakinglink4neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink4aktuell`,  ADD `breakinglink5alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink4neu`,  ADD `breakinglink5aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink5alt`,  ADD `breakinglink5neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink5aktuell`,  ADD `breakingtext1alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakinglink5neu`,  ADD `breakingtext1aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext1alt`,  ADD `breakingtext1neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext1aktuell`,  ADD `breakingtext2alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext1neu`,  ADD `breakingtext2aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext2alt`,  ADD `breakingtext2neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext2aktuell`,  ADD `breakingtext3alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext2neu`,  ADD `breakingtext3aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext3alt`,  ADD `breakingtext3neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext3aktuell`,  ADD `breakingtext4alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext3neu`,  ADD `breakingtext4aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext4alt`,  ADD `breakingtext4neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext4aktuell`,  ADD `breakingtext5alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext4neu`,  ADD `breakingtext5aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext5alt`,  ADD `breakingtext5neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL  AFTER `breakingtext5aktuell`;
+ALTER TABLE `eventuebersichten` ADD `breakingalt` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `galerieanzahlneu`, ADD `breakingaktuell` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingalt`, ADD `breakingneu` VARCHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingaktuell`, ADD `breakinglink1alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingneu`, ADD `breakinglink1aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink1alt`, ADD `breakinglink1neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink1aktuell`, ADD `breakinglink2alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink1neu`, ADD `breakinglink2aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink2alt`, ADD `breakinglink2neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink2aktuell`, ADD `breakinglink3alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink2neu`, ADD `breakinglink3aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink3alt`, ADD `breakinglink3neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink3aktuell`, ADD `breakinglink4alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink3neu`, ADD `breakinglink4aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink4alt`, ADD `breakinglink4neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink4aktuell`, ADD `breakinglink5alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink4neu`, ADD `breakinglink5aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink5alt`, ADD `breakinglink5neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink5aktuell`, ADD `breakingtext1alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakinglink5neu`, ADD `breakingtext1aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext1alt`, ADD `breakingtext1neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext1aktuell`, ADD `breakingtext2alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext1neu`, ADD `breakingtext2aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext2alt`, ADD `breakingtext2neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext2aktuell`, ADD `breakingtext3alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext2neu`, ADD `breakingtext3aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext3alt`, ADD `breakingtext3neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext3aktuell`, ADD `breakingtext4alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext3neu`, ADD `breakingtext4aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext4alt`, ADD `breakingtext4neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext4aktuell`, ADD `breakingtext5alt` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext4neu`, ADD `breakingtext5aktuell` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext5alt`, ADD `breakingtext5neu` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `breakingtext5aktuell`;
+
+-- 0.10.4
+
+ALTER TABLE `personen_einstellungen` ADD `blogtodo` VARBINARY(50) NOT NULL AFTER `dateiaenderung`, ADD `termintodo` VARBINARY(50) NOT NULL AFTER `blogtodo`;
+UPDATE `personen_einstellungen` SET `blogtodo` = AES_ENCRYPT('1', '{cms_schluessel}'), `termintodo` = AES_ENCRYPT('1', '{cms_schluessel}');

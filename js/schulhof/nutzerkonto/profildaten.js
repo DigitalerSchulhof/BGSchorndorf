@@ -223,6 +223,8 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 	var galerieoeffentlich = document.getElementById('cms_schulhof_nutzerkonto_einstellungen_galerieoeffentlich').value;
 	var dateiaenderung = document.getElementById('cms_schulhof_nutzerkonto_einstellungen_dateiaenderung').value;
 	var wikiknopf = document.getElementById('cms_schulhof_nutzerkonto_einstellungen_wikiknopf').value;
+	var blogtodo = document.getElementById('cms_schulhof_nutzerkonto_einstellungen_blogtodo').value;
+	var termintodo = document.getElementById('cms_schulhof_nutzerkonto_einstellungen_termintodo').value;
 
 	var meldung = '<p>Die Änderungen konnten nicht vorgenommen werden, denn ...</p><ul>';
 	var fehler = false;
@@ -276,6 +278,14 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 		meldung += '<li>die Eingabe für den Hilfe-Knopf ist ungültig.</li>';
 		fehler = true;
 	}
+	if (!cms_check_toggle(blogtodo)) {
+		meldung += '<li>die Eingabe für die Markierung neuer Blogeinträge als ToDo ist ungültig.</li>';
+		fehler = true;
+	}
+	if (!cms_check_toggle(termintodo)) {
+		meldung += '<li>die Eingabe für die Markierung neuer Termine als ToDo ist ungültig.</li>';
+		fehler = true;
+	}
 
 	if (fehler) {
 		cms_meldung_an('fehler', 'Einstellungen ändern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
@@ -296,6 +306,8 @@ function cms_schulhof_nutzerkonto_einstellungen_aendern() {
 		formulardaten.append("galerieoeffentlich", 	galerieoeffentlich);
 		formulardaten.append("dateiaenderung", 			dateiaenderung);
 		formulardaten.append("wikiknopf", 					wikiknopf);
+		formulardaten.append("blogtodo", 						blogtodo);
+		formulardaten.append("termintodo", 					termintodo);
 		formulardaten.append("modus", 						  0);
 		formulardaten.append("anfragenziel", 				'68');
 

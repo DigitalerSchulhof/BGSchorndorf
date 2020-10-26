@@ -330,7 +330,7 @@ if (!$fehler) {
     if ($t['art'] == 'in') {
       $g = $t['gruppenart'];
       $gk = cms_textzudb($g);
-      $gid = $t['id'];
+      $gid = $t['gruppe'];
       $sql = $dbs->prepare("SELECT AES_DECRYPT(schuljahre.bezeichnung, '$CMS_SCHLUESSEL') AS sbez, AES_DECRYPT($gk.bezeichnung, '$CMS_SCHLUESSEL') AS gbez FROM $gk LEFT JOIN schuljahre ON $gk.schuljahr = schuljahre.id WHERE $gk.id = ?");
       $sql->bind_param("i", $gid);
       if ($sql->execute()) {
