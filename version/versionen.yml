@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_5:
+    version: 0.10.5
+    tag: Mittwoch, den 28. Oktober 2020
+    neuerungen:
+      - Titel von Blogeinträgen und Terminen können die Zeichen ».« und »!« enthalten [E]
+      - Dateinamen können die Zeichen »(«, »)«, »!«, ».« und » « enthalten [E]
   0_10_4:
     version: 0.10.4
     tag: Sonntag, den 18. Oktober 2020
