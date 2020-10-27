@@ -96,7 +96,7 @@
   $mailer->From           = $CMS_MAIL['Absender'];
   $mailer->FromName       = $CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort'];
 
-  $mailer->AddReplyTo($CMS_WICHTIG['Webmaster Mail'], "Webmaster Schulhof ".$CMS_WICHTIG['Schulname']." ".$CMS_WICHTIG['Schule Ort']);
+  $mailer->AddReplyTo($mail, $absender);
 	$mailer->AddAddress($email, $name);
 
   $mailer->IsHTML(true);
