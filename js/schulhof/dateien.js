@@ -180,13 +180,13 @@ function cms_dateisystem_aktionen_hochladen(netz, bereich, id, feldid) {
 	}
 	for (var i=0; i<CMS_UPLOADDATEIEN[feldid].length; i++) {
 		if (CMS_UPLOADDATEIEN[feldid][i].size > CMS_MAX_DATEI) {
-			meldung += '<li>die Datei <b>'+cms_dateiname_erzeugen(CMS_UPLOADDATEIEN[feldid][i].name)+'</b> ist zu groß ('+cms_groesse_umrechnen(CMS_UPLOADDATEIEN[feldid][i].size)+'). Erlaubt sind bis zu '+cms_groesse_umrechnen(CMS_MAX_DATEI)+'.</li>';
-			fehler = true;
-		}
-		if (!cms_dateiname_erzeugen(CMS_UPLOADDATEIEN[feldid][i].name).match(/^([-a-zA-Z0-9_\.]{3,255})$/)) {
-			meldung += '<li>die Datei <b>'+cms_dateiname_erzeugen(CMS_UPLOADDATEIEN[feldid][i].name)+'</b> hat einen ungültigen Dateinamen. Es sind nur lateinische Buchstaben, arabische Ziffern und die Zeichen »-« und »_« zulässig. Außerdem darf der Dateiname nicht weniger als 3 Zeichen und nicht mehr als 255 Zeichen lang sein.</li>';
-			fehler = true;
-		}
+      meldung += "<li>die Datei <b>" + cms_dateiname_erzeugen(CMS_UPLOADDATEIEN[feldid][i].name) + "</b> ist zu groß (" + cms_groesse_umrechnen(CMS_UPLOADDATEIEN[feldid][i].size) + "). Erlaubt sind bis zu " + cms_groesse_umrechnen(CMS_MAX_DATEI) + ".</li>";
+      fehler = true;
+    }
+		if (!cms_dateiname_erzeugen(CMS_UPLOADDATEIEN[feldid][i].name).match(/^([-a-zA-Z0-9_!(). ]{3,255})$/)) {
+      meldung += "<li>die Datei <b>" + cms_dateiname_erzeugen(CMS_UPLOADDATEIEN[feldid][i].name) + "</b> hat einen ungültigen Dateinamen. Es sind nur lateinische Buchstaben von »a-z« und von »A-Z« (keine Umlaute, kein ß) sowie die Zeichen »-«, »!«, »(«, »)«, ».«, » « und »_« zulässig. Außerdem darf der Dateiname nicht weniger als 3 Zeichen und nicht mehr als 255 Zeichen lang sein.</li>";
+      fehler = true;
+    }
 	}
 
 	if (fehler) {
@@ -487,7 +487,7 @@ function cms_ordnererstellen(netz, bereich, id, feldid) {
 
 	var meldung = '<p>Der Ordner konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
-	if (name.match(/^([a-zA-Z0-9_-])+$/) === null) {
+	if (name.match(/^([-a-zA-Z0-9_])+$/) === null) {
 		fehler = true;
 		meldung += '<li>die Ordnerbezeichnung enthält unerlaubte Zeichen. Folgende Zeichen sind erlaubt: lateinische Buchstaben von »a-z« und von »A-Z« (keine Umlaute, kein ß) sowie die Zeichen »-« und »_« (keine Leerzeichen).</li>';
 	}
@@ -692,9 +692,9 @@ function cms_dateiumbenennen(netz, bereich, id, pfad, datei, feldid) {
 		meldung += '<li>der neue Dateiname unterscheidet sich nicht vom alten Dateinamen.</li>'
 	}
 
-	if (nameneu.match(/^([a-zA-Z0-9_-])*.([a-zA-Z0-9])+$/) === null) {
+	if (nameneu.match(/^([-a-zA-Z0-9_!(). ])*.([a-zA-Z0-9])+$/) === null) {
 		fehler = true;
-		meldung += '<li>die Dateibezeichnung enthält unerlaubte Zeichen. Folgende Zeichen sind erlaubt: lateinische Buchstaben von »a-z« und von »A-Z« (keine Umlaute, kein ß) sowie die Zeichen »-« und »_« (keine Leerzeichen). Sie besteht aus einem Dateinamen, einem Punkt und einer Dateiendung.</li>';
+		meldung += '<li>die Dateibezeichnung enthält unerlaubte Zeichen. Folgende Zeichen sind erlaubt: lateinische Buchstaben von »a-z« und von »A-Z« (keine Umlaute, kein ß) sowie die Zeichen »-«, »!«, »(«, »)«, ».«, » « und »_«. Sie besteht aus einem Dateinamen, einem Punkt und einer Dateiendung.</li>';
 	}
 
 	if (keinnetz) {cms_meldung_firewall();}
@@ -786,7 +786,7 @@ function cms_ordnerumbenennen(netz, bereich, id, pfad, datei, feldid) {
 		meldung += '<li>der neue Dateiname unterscheidet sich nicht vom alten Dateinamen.</li>'
 	}
 
-	if (nameneu.match(/^([a-zA-Z0-9_-])+$/) === null) {
+	if (nameneu.match(/^([-a-zA-Z0-9_])+$/) === null) {
 		fehler = true;
 		meldung += '<li>die Ordnerbezeichnung enthält unerlaubte Zeichen. Folgende Zeichen sind erlaubt: lateinische Buchstaben von »a-z« und von »A-Z« (keine Umlaute, kein ß) sowie die Zeichen »-« und »_« (keine Leerzeichen).</li>';
 	}

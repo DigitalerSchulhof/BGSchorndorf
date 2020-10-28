@@ -18,7 +18,7 @@
 	session_start();
 
 	$CMS_ANGEMELDET = cms_angemeldet();
-	$CMS_LINKMUSTER = "[\.\-a-zA-Z0-9äöüßÄÖÜ()_]+";
+	$CMS_LINKMUSTER = "[-.!a-zA-Z0-9äöüßÄÖÜ()_]+";
 
 	if (isset($_SESSION['IMLN'])) {
 		if ($_SESSION['IMLN'] == 1) {

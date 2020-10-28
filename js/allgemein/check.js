@@ -19,11 +19,11 @@ function cms_check_dateiname (datei) {
 }
 
 function cms_check_nametitel (titel) {
-	return titel.match(/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ. ]*$/);
+	return titel.match(/^[\-0-9a-zA-ZÄÖÜäöüßáÁàÀâÂéÉèÈêÊíÍìÌîÎïÏóÓòÒôÔúÚùÙûÛçÇøØæÆœŒåÅ!. ]*$/);
 }
 
 function cms_check_titel(titel) {
-	return titel.match(/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]*[\-a-zA-Z0-9äöüßÄÖÜ]+$/);
+	return titel.match(/^[\.\-a-zA-Z0-9äöüßÄÖÜ! ]*[\-a-zA-Z0-9äöüßÄÖÜ!]+$/);
 }
 
 function cms_check_buchstaben(text) {

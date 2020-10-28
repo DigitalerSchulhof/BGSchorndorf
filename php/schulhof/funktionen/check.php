@@ -35,7 +35,7 @@ function cms_check_titel($titel) {
 				$r = false;
 		return $r;
 	}
-	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ ]*[\-a-zA-Z0-9äöüßÄÖÜ]+$/", $titel) != 1) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ! ]*[\-a-zA-Z0-9äöüßÄÖÜ!]+$/", $titel) != 1) {
 		return false;
 	}
 	else if (($titel == '.') || ($titel == '..')) {
@@ -45,14 +45,14 @@ function cms_check_titel($titel) {
 }
 
 function cms_check_url($url) {
-	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ\/_ ]+$/", $url) != 1) {
+	if (preg_match("/^[\.\-a-zA-Z0-9äöüßÄÖÜ\/_! ]+$/", $url) != 1) {
 		return false;
 	}
 	return true;
 }
 
 function cms_check_dateiname($datei) {
-	if (preg_match("/^[\-\_a-zA-Z0-9]{1,244}\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $datei) != 1) {
+	if (preg_match("/^[\-\_a-zA-Z0-9!(). ]{1,244}\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $datei) != 1) {
 		return false;
 	}
 	else return true;

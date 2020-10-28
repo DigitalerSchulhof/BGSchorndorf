@@ -232,7 +232,7 @@ if (cms_angemeldet() && $zugriff) {
 
 		if($notifikationen && ($aktiv == 1)) {
 			// ToDo Eintragen
-			$sql = $dbs->prepare("INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT abo.person, ?, NULL FROM {$gk}notifikationsabo as abo WHERE abo.gruppe = ? AND abo.person != ? AND NOT EXISTS(SELECT todo.blogeintrag FROM {$gk}todoartikel as todo WHERE todo.person = abo.person AND todo.blogeintrag = ?)");
+			$sql = $dbs->prepare("INSERT INTO {$gk}todoartikel (person, blogeintrag, termin) SELECT abo.person, ?, NULL FROM {$gk}notifikationsabo as abo JOIN personen_einstellungen as pe ON pe.person = abo.person WHERE abo.gruppe = ? AND abo.person != ? AND pe.blogtodo = AES_ENCRYPT('1', '$CMS_SCHLUESSEL') AND NOT EXISTS(SELECT todo.blogeintrag FROM {$gk}todoartikel as todo WHERE todo.person = abo.person AND todo.blogeintrag = ?)");
 			$sql->bind_param("iiii", $blogid, $gruppenid, $CMS_BENUTZERID, $blogid);
 			$sql->execute();
 			$sql->close();

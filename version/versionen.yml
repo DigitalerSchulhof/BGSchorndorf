@@ -1,5 +1,13 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_5:
+    version: 0.10.5
+    tag: Montag, den 26. Oktober 2020
+    neuerungen:
+      - Titel von Blogeinträgen und Terminen können die Zeichen ».« und »!« enthalten [E]
+      - Dateinamen können die Zeichen »(«, »)«, »!«, ».« und » « enthalten [E]
+      - In den persönlichen kann ausgewählt werden, ob neue Blogeinträge und Termine abonnierter Gruppen als ToDo markiert werden sollen [E]
+      - Fehler beim Ausgeben von persönlichen Terminen im Kalender behoben [E]
   0_10_4:
     version: 0.10.4
     tag: Sonntag, den 18. Oktober 2020

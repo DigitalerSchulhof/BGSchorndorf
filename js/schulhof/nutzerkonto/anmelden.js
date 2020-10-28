@@ -49,8 +49,9 @@ function cms_anmelden (benutzername, passwort, art) {
 				meldung += '<li>oder das Passwort ist nicht mehr gültig.</li>';
 				if (art == 'app') {
 					document.getElementById("cms_appmeldung").innerHTML = cms_meldung_code ('fehler', 'Anmelden', meldung+'</ul>');
+				} else {
+					cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 				}
-				cms_meldung_an('fehler', 'Anmelden', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
 			}
 			else if (rueckgabe.match(/^ERFOLG/)) {
 				// Check, ob im Lehrernetz

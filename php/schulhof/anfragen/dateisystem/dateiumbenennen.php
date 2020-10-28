@@ -64,7 +64,7 @@ if (cms_angemeldet() && $zugriff) {
 		$fehler = true;
 	}
 
-	if (preg_match("/^([a-zA-Z0-9_-])*.([a-zA-Z0-9])+$/", $nameneu) < 1) {
+	if (preg_match("/^([-a-zA-Z0-9_!(). ])*.([a-zA-Z0-9])+$/", $nameneu) < 1) {
 		$fehler = true;
 	}
 
