@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_6:
+    version: 0.10.6
+    tag: _, den _, November 2020
+    neuerungen:
+      - Asynchroner Update-Prüfer auf der Startseite [E]
   0_10_5:
     version: 0.10.5
     tag: Montag, den 26. Oktober 2020
