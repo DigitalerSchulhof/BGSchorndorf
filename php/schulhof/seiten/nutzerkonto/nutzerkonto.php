@@ -1,46 +1,12 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
 // Nach Updates prüfen
-if(false && cms_r("technik.server.update")) {
-	if($CMS_EINSTELLUNGEN["Netze Offizielle Version"]) {
-		$Updater_base = "https://pool.digitaler-schulhof.de";
-	} else {
-		$Updater_base = "https://api.github.com/repos/{$CMS_EINSTELLUNGEN['Netze GitHub Benutzer']}/{$CMS_EINSTELLUNGEN['Netze GitHub Repository']}";
-	}
-	$basis_verzeichnis = dirname(__FILE__)."/../../../..";
-
-	if(!file_exists("$basis_verzeichnis/version/version")) {
-		echo cms_meldung("fehler", "<h4>Ungültige Version</h4><p>Bitte den Administrator benachrichtigen!</p>");
-	} else {
-		$version = trim(file_get_contents("$basis_verzeichnis/version/version"));
-
-		// Versionsverlauf von GitHub holen
-		$curl = curl_init();
-		$curlConfig = array(
-			CURLOPT_URL             => "$Updater_base/releases/latest",
-			CURLOPT_RETURNTRANSFER  => true,
-			CURLOPT_HTTPHEADER      => array(
-				"Content-Type: application/json",
-				"Authorization: token ".$CMS_EINSTELLUNGEN['Netze GitHub OAuth'],
-				"User-Agent: ".$_SERVER["HTTP_USER_AGENT"],
-				"Accept: application/vnd.github.v3+json",
-			)
-		);
-		curl_setopt_array($curl, $curlConfig);
-		$neuste = curl_exec($curl);
-		curl_close($curl);
-
-		if(($neuste = json_decode($neuste, true)) === null || !count($neuste) || @$neuste["documentation_url"]/* Fehler mit API */){
-			echo cms_meldung_fehler();
-		} else {
-			$neusteversion = $neuste["name"];
-
-			if(version_compare($neusteversion, $version, "gt")) {
-				echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version für den Digitalen Schulhof verfügbar: <b>".$neusteversion."</b></p>");
-				echo "<span class=\"cms_button_wichtig\" onclick=\"cms_link('Schulhof/Verwaltung/Update')\">Schulhof aktualisieren</span> ";
-			}
-		}
-	}
+if(cms_r("technik.server.update")) {
+	echo "<div style=\"display: none\" id=\"cms_schulhof_nutzerkonto_updater\">";
+		echo cms_meldung("erfolg", "<h4>Neue Version</h4><p>Es ist eine neue Version für den Digitalen Schulhof verfügbar: <b id=\"cms_schulhof_nutzerkonto_updater_neue_version\"></b></p>");
+		echo "<span class=\"cms_button_wichtig\" onclick=\"cms_link('Schulhof/Verwaltung/Update')\">Schulhof aktualisieren</span> ";
+		echo "<script>cms_schulhof_nutzerkonto_update_check();</script>";
+	echo "</div>";
 }
 
 // Das ist neu

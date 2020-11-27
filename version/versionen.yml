@@ -1,5 +1,12 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_6:
+    version: 0.10.6
+    tag: Freitag, den 27. November 2020
+    neuerungen:
+      - Diverse Tippfehler wurden verbessert [E]
+      - Der Update-Check wird asynchron durchgeführt [E]
+      - Der Link zur Android-App wurde angepasst. Die neue App findet sich über den Knopf auf der Anmeldeseite zum Digitalen Schulhof! [E]
   0_10_5:
     version: 0.10.5
     tag: Montag, den 26. Oktober 2020

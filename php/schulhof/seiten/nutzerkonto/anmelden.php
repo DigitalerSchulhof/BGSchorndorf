@@ -45,7 +45,7 @@ if ($anmeldung_moeglich) {
 	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a> <a class=\"cms_button\" href=\"Schulhof/Registrieren\">Registrieren</a></p>";
 
 	$code .= '<h3>Jetzt auch als App</h3>';
-	$code .= "<p><a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/apple.png');\" href=\"https://apps.apple.com/de/app/digitaler-schulhof/id1500912100\" target=\"_blank\">iPhone / iPad</a> <a class=\"cms_iconbutton\"  href=\"https://play.google.com/store/apps/details?id=com.dsh.digitalerschulhof\" style=\"background-image:url('res/icons/gross/android.png');\">Android</a></p>";
+	$code .= "<p><a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/apple.png');\" href=\"https://apps.apple.com/de/app/digitaler-schulhof/id1500912100\" target=\"_blank\">iPhone / iPad</a> <a class=\"cms_iconbutton\"  href=\"https://play.google.com/store/apps/details?id=de.dsh\" style=\"background-image:url('res/icons/gross/android.png');\">Android</a></p>";
  	$code .= "<button id=\"dshPWAInstallation\" style=\"display: none;background-image:url('res/icons/gross/pwa.png');\" onclick=\"a2hs.install()\" class=\"cms_iconbutton cms_button cms_button_ja\">Direkt installieren</button>";
 }
 else {

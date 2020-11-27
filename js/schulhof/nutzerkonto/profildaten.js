@@ -1,3 +1,18 @@
+function cms_schulhof_nutzerkonto_update_check() {
+	let daten = new FormData();
+	daten.append("anfragenziel", "406");
+	cms_ajaxanfrage(daten, rueckgabe => {
+		if(rueckgabe == "BERECHTIGUNG" || rueckgabe == "FEHLER") {
+			cms_fehlerbehandlung(rueckgabe);
+		} else {
+			if(rueckgabe != "NEIN") {
+				$("#cms_schulhof_nutzerkonto_updater").show();
+				$("#cms_schulhof_nutzerkonto_updater_neue_version").text(rueckgabe);
+			}
+		}
+	})
+}
+
 /* BENUTZERNAME WIRD GEÄNDERT */
 function cms_schulhof_nutzerkonto_benutzerkonto_aendern () {
 	cms_laden_an('Nutzerkonto ändern', 'Die Eingaben werden überprüft.');
