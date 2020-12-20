@@ -1,6 +1,10 @@
 <?php
 $code = "";
 
+if (strpos($_SERVER['HTTP_USER_AGENT'], "dshApp") === false && strpos($_SERVER['HTTP_USER_AGENT'], "Android") !== false) {
+	$code .= cms_meldung("fehler", "<h4>Veraltete App!</h4><p>Es ist eine neue Version der App des Digitalen Schulhof verfügbar!<br>Diese kann <a href=\"href=\"https://play.google.com/store/apps/details?id=de.dsh\">hier</a> heruntergeladen werden.<br>Die alte Version kann und sollte anschließend deinstalliert werden.</p>");
+}
+
 if ($CMS_ANGEMELDET) {
 	$code .= "<h2>Hauptmenü</h2>";
 	$code .= cms_appmenue();
@@ -17,4 +21,3 @@ else {
 }
 
 echo "<div class=\"cms_spalte_i\">".$code."</div>";
-?>
