@@ -313,7 +313,7 @@ function cms_check_browser() {
 
 	 if (testfeld) {
 		 if (unterstuetzung) {
-			 testfeld.innerHTML = '<img src="res/icons/gross/erfolg.png"><br>Der Browser untestützt alle Funktionen des Schulhofs.';
+			 testfeld.innerHTML = '<img src="res/icons/gross/erfolg.png"><br>Der Browser unterstützt alle Funktionen des Schulhofs.';
 		 }
 	 }
  }

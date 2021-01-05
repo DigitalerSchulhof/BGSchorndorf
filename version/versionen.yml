@@ -2,9 +2,10 @@
 version:
   0_10_7:
     version: 0.10.7
-    tag: x, den x. Dezember 2020
+    tag: x, den x. Januar 2021
     neuerungen:
       - Meldung zur neuen Android-App eingebaut [E]
+      - Weitere Tippfehler verbessert [E]
   0_10_6:
     version: 0.10.6
     tag: Freitag, den 27. November 2020
