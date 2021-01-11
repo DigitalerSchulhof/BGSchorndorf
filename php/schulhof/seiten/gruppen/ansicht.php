@@ -52,11 +52,18 @@ if (!$fehler) {
 		$code .= "</div>";
 		$code .= "<div class=\"cms_spalte_34\">";
 			$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
-				$code .= "<h2>Termine</h2>";
-				$termincode = cms_gruppentermine_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ, $GRUPPENRECHTE);
-				if (strlen($termincode) > 0) {$code .= "<ul class=\"cms_terminuebersicht\">".$termincode."</ul>";}
-				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine anstehenden Termine vorhanden.</p>";}
+			$code .= "<h2>Pinnwand</h2>";
+			$code .= cms_gruppenlinks_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
+			if ($GRUPPENRECHTE['blogeintraege']) {
+				$code .= "<textarea id=\"cms_gruppenpinnwand\" class=\"cms_notizzettel\">$pinnwand</textarea>";
+				$code .= "<p><span class=\"cms_button\" onclick=\"cms_gruppe_pinnwand_speichern('$g', '$gruppenid', '$CMS_URLGANZ')\">Speichern</span> <a class=\"cms_button cms_button_nein\" href=\"$CMS_URLGANZ\">Abbrechen</a></p>";
+			}
+			else {
+				$code .= "<div class=\"cms_notizzettel cms_notizpinnwand\">";
+				$code .= cms_textaustextfeld_anzeigen($pinnwand)."</div>";
+			}
 			$code .= "</div></div>";
+
 			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 				$code .= "<h2>Blog</h2>";
 				$blogcode = cms_gruppenblogeintraege_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, 'liste', $CMS_URLGANZ, $GRUPPENRECHTE);
@@ -68,6 +75,12 @@ if (!$fehler) {
 			$code .= "</div></div>";
 			$code .= "<div class=\"cms_clear\"></div>";
 			$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
+				$code .= "<h2>Termine</h2>";
+				$termincode = cms_gruppentermine_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ, $GRUPPENRECHTE);
+				if (strlen($termincode) > 0) {$code .= "<ul class=\"cms_terminuebersicht\">".$termincode."</ul>";}
+				else {$code .= "<p class=\"cms_notiz\">Derzeit sind keine anstehenden Termine vorhanden.</p>";}
+			$code .= "</div></div>";
+			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
 				$code .= "<h2>Beschlüsse</h2>";
 				$beschlusscode = cms_gruppenbeschluesse_ausgeben($dbs, $g, $gruppenid, $CMS_BENUTZERUEBERSICHTANZAHL, $CMS_URLGANZ, $GRUPPENRECHTE);
 				if (strlen($beschlusscode) > 0) {$code .= "<ul class=\"cms_beschlussuebersicht\">".$beschlusscode."</ul>";}
@@ -93,18 +106,6 @@ if (!$fehler) {
 			// 		$code .= cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
 			// 	$code .= "</div></div>";
 			// }
-
-			$code .= "<div class=\"cms_spalte_60\"><div class=\"cms_spalte_i\">";
-			$code .= "<h2>Pinnwand</h2>";
-			if ($GRUPPENRECHTE['blogeintraege']) {
-				$code .= "<textarea id=\"cms_gruppenpinnwand\" class=\"cms_notizzettel\">$pinnwand</textarea>";
-				$code .= "<p><span class=\"cms_button\" onclick=\"cms_gruppe_pinnwand_speichern('$g', '$gruppenid', '$CMS_URLGANZ')\">Speichern</span> <a class=\"cms_button cms_button_nein\" href=\"$CMS_URLGANZ\">Abbrechen</a></p>";
-			}
-			else {
-				$code .= "<div class=\"cms_notizzettel cms_notizpinnwand\">";
-				$code .= cms_textaustextfeld_anzeigen($pinnwand)."</div>";
-			}
-			$code .= "</div></div>";
 
 			$code .= "<div class=\"cms_clear\"></div>";
 			$code .= "<div class=\"cms_spalte_i\">";

@@ -291,4 +291,48 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 	$code .= "$(window).on('load', function() {socketChat.init('$g', '$gruppenid');})</script>";
 	return $code;
 }
+
+
+function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $gruppenrechte) {
+	global $CMS_SCHLUESSEL;
+	$code = "";
+
+	if (cms_valide_gruppe($gruppe) && (cms_check_ganzzahl($gruppenid, 0))) {
+		$gk = cms_textzudb($gruppe);
+		$LINKS = array();
+
+		$jetzt = time();
+		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung FROM $gk" . "links WHERE gruppe = ? ORDER BY id ASC");
+		$sql->bind_param("i", $gruppenid);
+		// Blogausgabe erzeugen
+		if ($sql->execute()) {	// Safe weil keine Eingabe
+			$sql->bind_result($lid, $llink, $ltitel, $lbeschreibung);
+			while ($sql->fetch()) {
+				$L = array();
+				$L['id'] = $lid;
+				$L['link'] = $llink;
+				$L['titel'] = $ltitel;
+				$L['beschreibung'] = $lbeschreibung;
+				array_push($LINKS, $L);
+			}
+		}
+		$sql->close();
+
+		foreach ($LINKS as $L) {
+			$code .= "<a href=\"{$L["link"]}\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/gruppen/gross/gebaeude_turm.png');\">";
+			$code .= "<h4>{$L["titel"]}</h4>";
+			if (strlen($L["beschreibung"]) > 0) {
+				$code .= "<p>{$L["beschreibung"]}</p>";
+			}
+			$info = $L["link"];
+			if (strlen($info) > 0) {
+				$code .= "<p class=\"cms_notiz\">" . $info . "</p>";
+			}
+			$code .= "</a>";
+		}
+	}
+
+	return $code;
+}
+
 ?>

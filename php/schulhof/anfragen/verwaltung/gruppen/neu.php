@@ -18,6 +18,10 @@ if (isset($_POST['mitglieder'])) {$mitglieder = $_POST['mitglieder'];} else {ech
 if (isset($_POST['vorsitz'])) {$vorsitz = $_POST['vorsitz'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['aufsicht'])) {$aufsicht = $_POST['aufsicht'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['linklink'])) {$linklink = $_POST['linklink'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['linktitel'])) {$linktitel = $_POST['linktitel'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['linkbeschreibung'])) {$linkbeschreibung = $_POST['linkbeschreibung'];} else {echo "FEHLER"; exit;}
+
 if (isset($_POST['import'])) {$import = $_POST['import'];} else {echo "FEHLER"; exit;}
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 if (($import != 'j') && ($import != 'n')) {echo "FEHLER"; exit;}
@@ -64,6 +68,10 @@ $artg = cms_vornegross($art);
 
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
+
+	if(!cms_check_titel($linktitel)) {$fehler = true;}
+	$linkbeschreibung = cms_texttrafo_e_db($linkbeschreibung);
+
 
 	// Pflichteingaben prüfen
 	if ($art == 'Kurse') {if (!cms_check_titel($kurzbezeichnung)) {$fehler = true;}}
@@ -379,6 +387,13 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->bind_param("ssiii", $bezeichnung, $icon, $sichtbar, $chat, $id);
 		$sql->execute();
 		$sql->close();
+
+		$lid = cms_generiere_kleinste_id("{$artk}links");
+		$sql = $dbs->prepare("UPDATE {$artk}links SET gruppe = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+		$sql->bind_param("isssi", $id, $linklink, $linktitel, $linkbeschreibung, $lid);
+		$sql->execute();
+		$sql->close();
+
 
 		if ($art == 'Stufen') {
 			// Nachfolgende Elemente verschieben

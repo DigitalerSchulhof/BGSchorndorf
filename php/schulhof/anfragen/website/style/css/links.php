@@ -43,6 +43,12 @@ a:hover, .cms_link:hover {
 	cursor: pointer;
 }
 
+.cms_aktionsicon_links {
+	float: left;
+	margin-left: 0;
+	margin-right: 5px;
+}
+
 .cms_optimierung_H .cms_aktionsicon {
 	width: 22px;
 	height: 22px;

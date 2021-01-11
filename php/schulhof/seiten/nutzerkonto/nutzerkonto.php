@@ -379,7 +379,7 @@ $sql->close();
 if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
-
+echo "<input type=\"hidden\" value=\"1\" name=\"cms_seite_todo\" id=\"cms_seite_todo\">";
 $todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img class=\"pointer\" src=\"res/icons/gross/todo.png\" onclick=\"cms_link('Schulhof/ToDo')\"></span>";
 $todo .= "<span class=\"cms_neuigkeit_inhalt\"><span class=\"cms_aktionsicon\" onclick=\"cms_alle_todos_loeschen_anzeigen()\"><span class=\"cms_hinweis\">Alle ToDo's erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span><a href=\"Schulhof/ToDo\"><h4>ToDo</h4></a>";
 $todob = "";	// blog
@@ -389,8 +389,8 @@ $tododa = false;
 $sql = "";
 foreach($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
-	$sql .= "(SELECT 'b', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
-	$sql .= "(SELECT 't', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 'b', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', g.id, AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), a.id, AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 't', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', g.id, AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), a.id, AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
 }
 $sql = substr($sql, 0, -6);
 $sql = $dbs->prepare($sql);
@@ -399,7 +399,7 @@ $sql = $dbs->prepare($sql);
 // g gruppe
 // a artikel
 if ($sql->execute()) {
-	$sql->bind_result($a, $tbez, $tbes, $sbez, $g, $gbez, $abez, $adat);
+	$sql->bind_result($a, $tbez, $tbes, $sbez, $g, $gid, $gbez, $aid, $abez, $adat);
 	while ($sql->fetch()) {
 		$tododa = true;
 		$sbez = cms_textzulink($sbez);
@@ -413,16 +413,18 @@ if ($sql->execute()) {
 
 		$tbes = cms_textaustextfeld_anzeigen($tbes);
 
+		$licon = "<span class=\"cms_aktionsicon cms_aktionsicon_links\" onclick=\"cms_seite_todo_setzen('$g', $gid, '$a', $aid)\"><span class=\"cms_hinweis\">ToDo erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span>";
+
 		if($a == "b") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todob .= "<p><a href=\"$link\">($g » $gbez) $tbez</a></p>";
+			$todob .= "<p>$licon<a href=\"$link\">($g » $gbez) $tbez</a></p>";
 			if(strlen($tbes)) {
 				$todob .= "<p class=\"cms_notiz\">$tbes</p>";
 			}
 		}
 		if($a == "t") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Termine/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todot .= "<p><a href=\"$link\">($g » $gbez) $tbez</a></p>";
+			$todot .= "<p>$licon<a href=\"$link\">($g » $gbez) $tbez</a></p>";
 			if(strlen($tbes)) {
 				$todot .= "<p class=\"cms_notiz\">$tbes</p>";
 			}
@@ -431,13 +433,15 @@ if ($sql->execute()) {
 }
 $sql->close();
 // Eigene ToDo's
-$sql = "SELECT AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ?";
+$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ?";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("i", $CMS_BENUTZERID);
-$sql->bind_result($bezeichnung, $beschreibung);
+$sql->bind_result($tid, $bezeichnung, $beschreibung);
 $sql->execute();
 while($sql->fetch()) {
-	$todoe .= "<p><a href=\"Schulhof/ToDo/".cms_textzulink($bezeichnung)."\">$bezeichnung</a></p>";
+	$licon = "<span class=\"cms_aktionsicon cms_aktionsicon_links\" onclick=\"cms_eigenes_todo_loeschen($tid)\"><span class=\"cms_hinweis\">ToDo erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span>";
+	$todoe .= "<p>$licon<a href=\"Schulhof/ToDo/".cms_textzulink($bezeichnung)."\">$bezeichnung</a></p>";
+
 	if(strlen($beschreibung)) {
 		$beschreibung = cms_textaustextfeld_anzeigen($beschreibung);
 		$todoe .= "<p class=\"cms_notiz\">$beschreibung</p>";

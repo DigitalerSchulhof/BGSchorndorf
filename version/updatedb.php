@@ -235,3 +235,12 @@ ALTER TABLE `eventuebersichten` ADD `breakingalt` VARCHAR(1) CHARACTER SET utf8 
 
 ALTER TABLE `personen_einstellungen` ADD `blogtodo` VARBINARY(50) NOT NULL AFTER `dateiaenderung`, ADD `termintodo` VARBINARY(50) NOT NULL AFTER `blogtodo`;
 UPDATE `personen_einstellungen` SET `blogtodo` = AES_ENCRYPT('1', '{cms_schluessel}'), `termintodo` = AES_ENCRYPT('1', '{cms_schluessel}');
+
+-- 0.10.7
+
+<?php
+foreach ($CMS_GRUPPEN as $g) {
+	$gk = cms_textzudb($g);
+	echo "CREATE TABLE `{$gk}links` ( `id` bigint(255) unsigned NOT NULL, `gruppe` bigint(255) unsigned NOT NULL, `link` varbinary(5000) NOT NULL, `titel` varbinary(5000) NOT NULL, `beschreibung` blob NOT NULL, `idvon` bigint(255) unsigned DEFAULT NULL, `idzeit` bigint(255) unsigned DEFAULT NULL, PRIMARY KEY (`id`), KEY `{$gk}linksgruppegruppe` (`gruppe`), CONSTRAINT `{$gk}}linksgruppegruppe` FOREIGN KEY (`gruppe`) REFERENCES `$gk` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+}
+?>
