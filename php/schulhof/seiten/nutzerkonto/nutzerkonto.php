@@ -379,7 +379,7 @@ $sql->close();
 if ($favoritenda) {$neuigkeiten .= $favoriten;}
 
 if (strlen($neuigkeiten) > 0) {echo "<ul class=\"cms_neuigkeiten\">$neuigkeiten</ul>";}
-
+echo "<input type=\"hidden\" value=\"1\" name=\"cms_seite_todo\" id=\"cms_seite_todo\">";
 $todo = "<ul class=\"cms_neuigkeiten\"><li style=\"width: 100% !important\" class=\"cms_neuigkeit\"><span class=\"cms_neuigkeit_icon\"><img class=\"pointer\" src=\"res/icons/gross/todo.png\" onclick=\"cms_link('Schulhof/ToDo')\"></span>";
 $todo .= "<span class=\"cms_neuigkeit_inhalt\"><span class=\"cms_aktionsicon\" onclick=\"cms_alle_todos_loeschen_anzeigen()\"><span class=\"cms_hinweis\">Alle ToDo's erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span><a href=\"Schulhof/ToDo\"><h4>ToDo</h4></a>";
 $todob = "";	// blog
@@ -413,11 +413,11 @@ if ($sql->execute()) {
 
 		$tbes = cms_textaustextfeld_anzeigen($tbes);
 
-		$licon = "<span class=\"cms_aktionsicon cms_aktionsicon_links\" onclick=\"cms_seite_todo_speichern('$g', $gid, '$a', $aid)\"><span class=\"cms_hinweis\">ToDo erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span>";
+		$licon = "<span class=\"cms_aktionsicon cms_aktionsicon_links\" onclick=\"cms_seite_todo_setzen('$g', $gid, '$a', $aid)\"><span class=\"cms_hinweis\">ToDo erledigen</span><img src=\"res/icons/klein/todo_erledigen.png\"></span>";
 
 		if($a == "b") {
 			$link = "Schulhof/Gruppen/$sbez/".cms_textzulink($g)."/".cms_textzulink($gbez)."/Blog/$jahr/$monatsname/$tag/".cms_textzulink($abez);
-			$todob .= "<p$licon<a href=\"$link\">($g » $gbez) $tbez</a></p>";
+			$todob .= "<p>$licon<a href=\"$link\">($g » $gbez) $tbez</a></p>";
 			if(strlen($tbes)) {
 				$todob .= "<p class=\"cms_notiz\">$tbes</p>";
 			}

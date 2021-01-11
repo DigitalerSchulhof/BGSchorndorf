@@ -300,7 +300,6 @@ function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $gruppenrechte) {
 	if (cms_valide_gruppe($gruppe) && (cms_check_ganzzahl($gruppenid, 0))) {
 		$gk = cms_textzudb($gruppe);
 		$LINKS = array();
-		$bearbeiten = $gruppenrechte['blogeintraege'];
 
 		$jetzt = time();
 		$sql = $dbs->prepare("SELECT id, AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') AS beschreibung FROM $gk" . "links WHERE gruppe = ? ORDER BY id ASC");
@@ -320,7 +319,7 @@ function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $gruppenrechte) {
 		$sql->close();
 
 		foreach ($LINKS as $L) {
-			$code .= "<a href=\"{$L["link"]}\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/icons/gross/konferenz.png');\">";
+			$code .= "<a href=\"{$L["link"]}\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/gruppen/gross/gebaeude_turm.png');\">";
 			$code .= "<h4>{$L["titel"]}</h4>";
 			if (strlen($L["beschreibung"]) > 0) {
 				$code .= "<p>{$L["beschreibung"]}</p>";

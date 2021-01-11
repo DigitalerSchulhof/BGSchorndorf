@@ -2,9 +2,11 @@
 version:
   0_10_8:
     version: 0.10.8
-    tag: Mittwoch, den 13. Januar
+    tag: Montag, den 11. Januar
     neuerungen:
       - Gruppen können neben der Pinnwand leicht erreichbare Links enthalten, welche das Ziel direkt öffnen [E]
+      - ToDo's können über einen Knopf direkt auf der Startseite als erledigt markiert werden [E]
+      - Fatalen Fehler beim Update Check der App behoben [E]
   0_10_7:
     version: 0.10.7
     tag: Dienstag, den 5. Januar 2021
