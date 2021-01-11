@@ -1,8 +1,13 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_8:
+    version: 0.10.8
+    tag: Mittwoch, den 13. Januar
+    neuerungen:
+      - Gruppen können neben der Pinnwand leicht erreichbare Links enthalten, welche das Ziel direkt öffnen [E]
   0_10_7:
     version: 0.10.7
-    tag: x, den x. Januar 2021
+    tag: Dienstag, den 5. Januar 2021
     neuerungen:
       - Meldung zur neuen Android-App eingebaut [E]
       - Weitere Tippfehler verbessert [E]

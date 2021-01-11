@@ -25,6 +25,10 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     $aufsicht = "";
     $schuljahre = array();
 
+    $linktitel = "";
+    $linkbeschreibung = "";
+    $linklink = "";
+
     // Bestimmte Gruppen können nur im Lehrernetz angelegt werden
     if ((($namek == "gremien") || ($namek == "fachschaften")) && ($id == '-')) {
       $sichtbar = 1;
@@ -138,7 +142,20 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
         }
       }
       $sql->close();
+
+      // Links
+      $sql = $dbs->prepare("SELECT AES_DECRYPT(link, '$CMS_SCHLUESSEL') AS link, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') AS titel, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM $namek" . "links WHERE gruppe = ?");
+      $sql->bind_param("i", $id);
+      if ($sql->execute()) {
+        $sql->bind_result($linklink, $linktitel, $linkbeschreibung);
+        $sql->fetch();
+        // while ($sql->fetch()) {
+        //   $aufsicht .= "|" . $aperson;
+        // }
+      }
+      $sql->close();
     }
+
 
     // Anzahl Stufen in diesem Schuljahr
     if ($namek == 'stufen') {
@@ -421,6 +438,13 @@ function cms_gruppen_verwaltung_gruppeneigenschaften($name, $anlegen, $bearbeite
     $ausgabe .= "<h3>Personen</h3>";
     $ausgabe .= cms_personensuche_generieren($dbs, 'cms_gruppe_mitglieder', $name, $id, 'mitglieder', $mitglieder, $vorsitz, $namek);
     $ausgabe .= cms_personensuche_generieren($dbs, 'cms_gruppe_aufsicht', $name, $id, 'aufsicht', $aufsicht);
+
+    $ausgabe .= "<h3>Link</h3>";
+    $ausgabe .= "<table class=\"cms_formular\">";
+    $ausgabe .= "<tr><th>Titel:</th><td><input type=\"text\" name=\"cms_gruppe_link_titel\" id=\"cms_gruppe_link_titel\" value=\"$linktitel\"></td></tr>";
+    $ausgabe .= "<tr><th>Beschreibung:</th><td><textarea name=\"cms_gruppe_link_beschreibung\" id=\"cms_gruppe_link_beschreibung\">$linkbeschreibung</textarea></td></tr>";
+    $ausgabe .= "<tr><th>Link:</th><td><input placeholder=\"https://...\" type=\"text\" name=\"cms_gruppe_link_link\" id=\"cms_gruppe_link_link\" value=\"$linklink\"></td></tr>";
+    $ausgabe .= "</table>";
     cms_trennen($dbs);
 
 

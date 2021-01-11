@@ -17,6 +17,10 @@ if (isset($_POST['mitglieder'])) {$mitglieder = $_POST['mitglieder'];} else {ech
 if (isset($_POST['vorsitz'])) {$vorsitz = $_POST['vorsitz'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['aufsicht'])) {$aufsicht = $_POST['aufsicht'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['art'])) {$art = $_POST['art'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['linklink'])) {$linklink = $_POST['linklink'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['linktitel'])) {$linktitel = $_POST['linktitel'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['linkbeschreibung'])) {$linkbeschreibung = $_POST['linkbeschreibung'];} else {echo "FEHLER"; exit;}
+
 if (!cms_valide_gruppe($art)) {echo "FEHLER"; exit;}
 if (isset($_SESSION['Gruppen']['bearbeiten']['id'])) {$id = $_SESSION['Gruppen']['bearbeiten']['id'];} else {echo "FEHLER"; exit;}
 if (isset($_SESSION['BENUTZERID'])) {$CMS_BENUTZERID = $_SESSION['BENUTZERID'];} else {echo "FEHLER"; exit;}
@@ -62,6 +66,8 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
 	if (!cms_check_toggle($chat)) {$fehler = true;}
+	if(!cms_check_titel($linktitel)) {$fehler = true;}
+	$linkbeschreibung = cms_texttrafo_e_db($linkbeschreibung);
 
 	if (($sichtbar != 0) && ($sichtbar != 1) && ($sichtbar != 2) && ($sichtbar != 3)) {
 		$fehler = true;
@@ -302,6 +308,17 @@ if (cms_angemeldet() && $zugriff) {
 	  $sql->bind_param("ssiii", $bezeichnung, $icon, $sichtbar, $chat, $id);
 	  $sql->execute();
 	  $sql->close();
+
+		$sql = $dbs->prepare("DELETE FROM {$artk}links WHERE gruppe = ?");
+		$sql->bind_param("i", $id);
+		$sql->execute();
+		$sql->close();
+
+		$lid = cms_generiere_kleinste_id("{$artk}links");
+		$sql = $dbs->prepare("UPDATE {$artk}links SET gruppe = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+		$sql->bind_param("isssi", $id, $linklink, $linktitel, $linkbeschreibung, $lid);
+		$sql->execute();
+		$sql->close();
 
 		if ($art == 'Stufen') {
 			// Vorige Position ermitteln

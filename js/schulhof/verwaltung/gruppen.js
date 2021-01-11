@@ -180,6 +180,10 @@ function cms_gruppen_eingabenpruefung(art) {
   var mitglieder = document.getElementById('cms_gruppe_mitglieder_personensuche_gewaehlt').value;
   var vorsitz = document.getElementById('cms_gruppe_mitglieder_personensuche_gewaehlt2').value;
   var aufsicht = document.getElementById('cms_gruppe_aufsicht_personensuche_gewaehlt').value;
+  var linklink = document.getElementById('cms_gruppe_link_link').value;
+  var linktitel = document.getElementById('cms_gruppe_link_titel').value;
+  var linkbeschreibung = document.getElementById('cms_gruppe_link_beschreibung').value;
+
   if (art == 'Stufen') {
     var reihenfolge = document.getElementById('cms_gruppe_reihenfolge').value;
     var tagebuch = document.getElementById('cms_gruppe_tagebuch').value;
@@ -285,6 +289,9 @@ function cms_gruppen_eingabenpruefung(art) {
     formulardaten.append('mitglieder', mitglieder);
     formulardaten.append('vorsitz', vorsitz);
     formulardaten.append('aufsicht', aufsicht);
+    formulardaten.append('linklink', linklink);
+    formulardaten.append('linktitel', linktitel);
+    formulardaten.append('linkbeschreibung', linkbeschreibung);
     formulardaten.append('import', 'n');
     if (art == 'Stufen') {
       formulardaten.append('reihenfolge', reihenfolge);
