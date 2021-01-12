@@ -69,7 +69,7 @@ $artg = cms_vornegross($art);
 if (cms_angemeldet() && $zugriff) {
 	$fehler = false;
 
-	if(!cms_check_titel($linktitel)) {$fehler = true;}
+	if(!cms_check_titel($linktitel) && (strlen($linktitel) != 0)) {$fehler = true;}
 	$linkbeschreibung = cms_texttrafo_e_db($linkbeschreibung);
 
 
