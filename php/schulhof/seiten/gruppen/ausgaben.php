@@ -293,7 +293,7 @@ function cms_gruppenchat_ausgeben($dbs, $g, $gruppenid, $rechte) {
 }
 
 
-function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $gruppenrechte) {
+function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $icon) {
 	global $CMS_SCHLUESSEL;
 	$code = "";
 
@@ -319,7 +319,7 @@ function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $gruppenrechte) {
 		$sql->close();
 
 		foreach ($LINKS as $L) {
-			$code .= "<a href=\"{$L["link"]}\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/gruppen/gross/gebaeude_turm.png');\">";
+			$code .= "<a href=\"{$L["link"]}\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/gruppen/gross/$icon');\">";
 			$code .= "<h4>{$L["titel"]}</h4>";
 			if (strlen($L["beschreibung"]) > 0) {
 				$code .= "<p>{$L["beschreibung"]}</p>";
