@@ -35,6 +35,19 @@ if ($sql->execute()) {
 }
 $sql->close();
 
+$CMS_HOSTINGPARTNERIN = "NN";
+$CMS_LN_DA = "NN/";
+
+$sql = $dbs->prepare("SELECT AES_DECRYPT(wert, '$CMS_SCHLUESSEL') FROM allgemeineeinstellungen WHERE inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSEL')");
+$information = "Netze Lehrerserver";
+$sql->bind_param("s", $information);
+$sql->bind_result($CMS_LN_DA);
+$sql->execute(); $sql->fetch();
+$information = "Hosting Lehrernetz";
+$sql->bind_param("s", $information);
+$sql->bind_result($CMS_HOSTINGPARTNERIN);
+$sql->execute(); $sql->fetch();
+
 $os = cms_welches_betriebssystem();
 
 $code = "";
