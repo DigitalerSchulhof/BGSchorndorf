@@ -221,15 +221,14 @@ foreach ($CMS_GRUPPEN as $g) {
 ALTER TABLE `tagebuch` ADD `leistungsmessung` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `freigabe`;
 ALTER TABLE `tagebuch` ADD `urheber` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `leistungsmessung`;
 ALTER TABLE `tagebuch` ADD PRIMARY KEY(`id`);
-ALTER TABLE `tagebuch` ADD CONSTRAINT `tagebuchurheber` FOREIGN KEY (`urheber`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE; 
+ALTER TABLE `tagebuch` ADD CONSTRAINT `tagebuchurheber` FOREIGN KEY (`urheber`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 CREATE TABLE `lobtadel` (`id` bigint(255) UNSIGNED NOT NULL, `eintrag` bigint(255) UNSIGNED DEFAULT NULL, `person` bigint(255) UNSIGNED DEFAULT NULL, `art` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL, `charakter` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL, `bemerkung` blob DEFAULT NULL, `idvon` bigint(255) UNSIGNED DEFAULT NULL, `idzeit` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `lobtadel` ADD PRIMARY KEY (`id`), ADD KEY `lobtadeleintragtagebuch` (`eintrag`);
 ALTER TABLE `lobtadel` ADD CONSTRAINT `lobtadeleintragtagebuch` FOREIGN KEY (`eintrag`) REFERENCES `tagebuch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `lobtadel` DROP `charakter`;
 
-CREATE TABLE `fehlzeiten` ( `id` bigint(255) UNSIGNED NOT NULL, `eintrag` bigint(255) UNSIGNED DEFAULT NULL, `person` bigint(255) UNSIGNED DEFAULT NULL, `von` bigint(255) UNSIGNED DEFAULT NULL, `bis` bigint(255) UNSIGNED DEFAULT NULL, `bemerkung` blob DEFAULT NULL, `entschuldigt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0, `idvon` bigint(255) UNSIGNED DEFAULT NULL, `idzeit` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `fehlzeiten` ( `id` bigint(255) UNSIGNED NOT NULL, `person` bigint(255) UNSIGNED DEFAULT NULL, `von` bigint(255) UNSIGNED DEFAULT NULL, `bis` bigint(255) UNSIGNED DEFAULT NULL, `bemerkung` blob DEFAULT NULL, `entschuldigt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0, `idvon` bigint(255) UNSIGNED DEFAULT NULL, `idzeit` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `fehlzeiten` ADD PRIMARY KEY (`id`), ADD KEY `fehlzeiteneintragtagebuch` (`eintrag`);
-
-ALTER TABLE `fehlzeiten` ADD CONSTRAINT `fehlzeiteneintragtagebuch` FOREIGN KEY (`eintrag`) REFERENCES `tagebuch` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `fehlzeiten` ADD PRIMARY KEY (`id`);

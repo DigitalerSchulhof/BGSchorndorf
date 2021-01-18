@@ -16,7 +16,7 @@ if ($CMS_BENUTZERART == 'l') {
     while ($sql->fetch()) {
       $eintraege .= "<li class=\"cms_neuigkeit cms_neuigkeit_ganz\" id=\"cms_tagebuchneuigkeit\" onclick=\"cms_tagebuch_eintragen('$uid')\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/gruppen/gross/$icon\"></span>";
       $eintraege .= "<span class=\"cms_neuigkeit_inhalt\"><h4>$bezeichnung</h4>";
-      $zeit = cms_tagname(date('N', $beginn)).", ".date("d.m.Y H:i", $beginn)." – ".date("H:i", $ende);
+      $zeit = cms_tagname(date('N', $beginn)).", ".date("d.m.Y H:i", $beginn)." – ".date("H:i", $ende+1);
       $eintraege .= "<p>$zeit</p>";
       $eintraege .= "</span></li>";
     }
@@ -30,7 +30,6 @@ if ($CMS_BENUTZERART == 'l') {
   $code .= "</div>";
 
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
-  $code .= "<h2 style=\"padding-top:30px\">Tagebücher einsehen</h2>";
   $klassentagebuecher = "";
   $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id AS id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, stufen.reihenfolge AS reihe FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ? AND klassen.id IN (SELECT gruppe FROM klassenvorsitz WHERE person = ?)) AS x ORDER BY x.reihe, x.bez");
   $sql->bind_param("ii", $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID);
@@ -41,9 +40,6 @@ if ($CMS_BENUTZERART == 'l') {
     }
   }
   $sql->close();
-  if (strlen($klassentagebuecher) > 0) {
-    $code .= "<h3>Klassentagebücher</h3><p>$klassentagebuecher</p>";
-  }
 
   $kurstagebuecher = "";
   $sql = $dbs->prepare("SELECT * FROM (SELECT kurse.id AS id, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') AS bez, stufen.reihenfolge AS reihe FROM kurse LEFT JOIN stufen ON kurse.stufe = stufen.id WHERE kurse.schuljahr = ? AND kurse.id IN (SELECT gruppe FROM kursevorsitz WHERE person = ?)) AS x ORDER BY x.reihe, x.bez");
@@ -55,9 +51,17 @@ if ($CMS_BENUTZERART == 'l') {
     }
   }
   $sql->close();
-  if (strlen($kurstagebuecher) > 0) {
-    $code .= "<h3>Kurstagebücher</h3><p>$kurstagebuecher</p>";
+
+  if ((strlen($klassentagebuecher) > 0) || (strlen($kurstagebuecher) > 0)) {
+    $code .= "<h2 style=\"padding-top:30px\">Tagebücher einsehen</h2>";
+    if (strlen($klassentagebuecher) > 0) {
+      $code .= "<h3>Klassentagebücher</h3><p>$klassentagebuecher</p>";
+    }
+    if (strlen($kurstagebuecher) > 0) {
+      $code .= "<h3>Kurstagebücher</h3><p>$kurstagebuecher</p>";
+    }
   }
+
   $code .= "</div></div>";
 
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";

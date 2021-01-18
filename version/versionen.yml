@@ -2,10 +2,9 @@
 version:
   0_10_9:
     version: 0.10.9
-    tag: Montag, den 18. Januar 2021
+    tag: Dienstag, den 19. Januar 2021
     neuerungen:
       - Einträge in digitales Tagebuch möglich [W]
-      - Digitales Tagebuch kann von Lehrkräften der jeweiligen Klasse oder des jeweiligen Kurses eingesehen werden [W]
       - Fehler beim Bearbeiten von Gruppen behoben [W]
   0_10_8:
     version: 0.10.8

@@ -118,6 +118,7 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Favoriten']                               = 'php/schulhof/seiten/nutzerkonto/favoriten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Neuigkeiten']                             = 'php/schulhof/seiten/nutzerkonto/neuigkeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Tagebuch']                                = 'php/schulhof/seiten/nutzerkonto/tagebuch/uebersicht.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Nutzerkonto/Tagebuch/Eintragen']                      = 'php/schulhof/seiten/nutzerkonto/tagebuch/eintragen.php';
 
   // Aufgaben
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Aufgaben']                                            = 'php/schulhof/seiten/aufgaben/aufgaben.php';
