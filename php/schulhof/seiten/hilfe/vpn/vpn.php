@@ -70,6 +70,7 @@ $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_win\"><span class=\"cms_b
 $code .= "<h3>Windows</h3>";
 $code .= "<ol>";
 $code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Sollte der Verbindung nicht automatisch vertraut werden, machen Sie eine Ausnahme. (Erweitert » Ausnahmeregel)</li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem digitalen Lehrerzimmer!</p>');
 $code .= "</li>";
@@ -95,6 +96,7 @@ $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_mac\"><span class=\"cms_b
 $code .= "<h3>MacOS</h3>";
 $code .= "<ol>";
 $code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Sollte der Verbindung nicht automatisch vertraut werden, machen Sie eine Ausnahme. (Erweitert » Ausnahmeregel)</li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem digitalen Lehrerzimmer!</p>');
 $code .= "</li>";
@@ -125,6 +127,7 @@ $code .= "<p id=\"cms_einblendeknopf_vpn_herunterladen_tux\"><span class=\"cms_b
 $code .= "<h3>Linux</h3>";
 $code .= "<ol>";
 $code .= "<li>Öffnen Sie das Online-Portal der $CMS_HOSTINGPARTNERIN unter <a href=\"".$vpninfo['adresse']."\" target=\"_blank\">".$vpninfo['adresse'].".</a></li>";
+$code .= "<li>Sollte der Verbindung nicht automatisch vertraut werden, machen Sie eine Ausnahme. (Erweitert » Ausnahmeregel)</li>";
 $code .= "<li><p>Melden Sie sich mit den folgenden Zugangsdaten an:</p><table class=\"cms_liste\"><tr><th>Benutzername:</th><td>".$vpninfo['benutzer']."</td></tr><tr><th>Passwort: </th><td>".$vpninfo['passwort']."</td></tr></table>";
 $code .= cms_meldung('warnung', '<h4>Keinesfalls das Passwort ändern!</h4><p>Nach der Anmeldung könnten Sie das Passwort ändern. Bitte tun Sie das nicht. Alle Kollegen teilen sich einen Zugang. Wenn Sie das Kennwort ändern, werfen Sie damit alle anderen aus dem digitlen Lehrerzimmer!</p>');
 $code .= "</li>";

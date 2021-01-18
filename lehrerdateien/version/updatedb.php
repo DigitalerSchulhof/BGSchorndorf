@@ -19,3 +19,7 @@
 */
 
 -- 0.8.4
+
+-- 0.10.8
+
+ALTER TABLE `tagebuch` ADD `urheber` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `leistungsmessung`; 

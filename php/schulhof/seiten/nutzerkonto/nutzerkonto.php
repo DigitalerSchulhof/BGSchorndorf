@@ -39,26 +39,6 @@ if($num > 0) {
 ?><?php
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
-// eBedarf-Umfrage
-$ausgefuellt = false;
-$sql = $dbs->prepare("SELECT COUNT(*), bedarf FROM ebestellung WHERE id = ?");
-$sql->bind_param("i", $CMS_BENUTZERID);
-if ($sql->execute()) {
-	$sql->bind_result($test, $bestellbedarf);
-	if ($sql->fetch()) {
-		if ($test != 0) {$ausgefuellt = true;}
-	}
-}
-$sql->close();
-
-
-$bestellende = mktime (23, 59, 59, 7, 31, 2020);
-if ((!$ausgefuellt) && (time() <= $bestellende)) {
-	$meldung = "<h4>Bestellung / Leihe für Notebooks oder Tablets</h4>";
-	$meldung .= "<p>Das Angebot ist komplett... Das DELL-Angebot ist da!</p>";
-	$meldung .= "<p><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button\">Zur Bestellung / Leihe ...</a></p>";
-	echo cms_meldung("warnung", $meldung);
-}
 
 include_once('php/schulhof/seiten/termine/termineausgeben.php');
 // Prfüfen, ob ein neues Schuljahr zur Verfügung steht
@@ -100,34 +80,24 @@ if (isset($_SESSION['PASSWORTTIMEOUT'])) {
 $neuigkeiten = "";
 
 // Prüfen, ob Tagebücher zu füllen sind
-$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM (SELECT DISTINCT kurse.id FROM kurse JOIN stufen ON kurse.stufe = stufen.id JOIN unterricht ON unterricht.tkurs = kurse.id WHERE kurse.schuljahr = ? AND stufen.tagebuch = 1 AND tlehrer = ?) AS x");
-$sql->bind_param("ii", $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID);
-$tbkurs = 0;
+$jetzt = time();
+$sql = $dbs->prepare("SELECT COUNT(*) AS anzahl FROM tagebuch WHERE id IN (SELECT id FROM unterricht WHERE tbeginn < ? AND tlehrer = ?) AND freigabe != 1");
+$sql->bind_param("ii", $jetzt, $CMS_BENUTZERID);
+$anzahltagebuch = 0;
 if ($sql->execute()) {
-	$sql->bind_result($tbkurs);
+	$sql->bind_result($anzahltagebuch);
 	$sql->fetch();
 }
 $sql->close();
-if ($tbkurs > 0) {
-	$zusatzklasse = "";
-	$zusatzlink = "";
-	if ($CMS_IMLN) {
-		$zusatzlink = " onclick=\"cms_link('Schulhof/Nutzerkonto/Tagebuch')\"";
-	}
-	else {
-		$zusatzklasse = " cms_neuigkeit_ln";
-	}
-	$neuigkeiten .= "<li class=\"cms_neuigkeit cms_neuigkeit_ganz$zusatzklasse\" id=\"cms_tagebuchneuigkeit\"$zusatzlink><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/tagebuch.png\"></span>";
+if ($anzahltagebuch > 0) {
+	$neuigkeiten .= "<li class=\"cms_neuigkeit cms_neuigkeit_ganz\" onclick=\"cms_link('Schulhof/Nutzerkonto/Tagebuch')\"><span class=\"cms_neuigkeit_icon\"><img src=\"res/icons/gross/tagebuch.png\"></span>";
 	$neuigkeiten .= "<span class=\"cms_neuigkeit_inhalt\" id=\"cms_tagebuchneuigkeit_inhalt\"><h4>Tagebucheinträge</h4>";
-	if ($CMS_IMLN) {
-		$neuigkeiten .= "<p>Offene Einträge suchen ...</p>";
-		$neuigkeiten .= cms_ladeicon();
+	if ($anzahltagebuch == 1) {
+		$neuigkeiten .= "<p>1 offener Eintrag</p>";
+	} else {
+		$neuigkeiten .= "<p>$anzahltagebuch offene Einträge</p>";
 	}
-	else {$neuigkeiten .= "<p>Prüfung in diesem Netz nicht möglich.</p>";}
 	$neuigkeiten .= "</span></li>";
-	if ($CMS_IMLN) {
-		$neuigkeiten .= "<script>cms_tagebuchmeldung_laden();</script>";
-	}
 }
 
 // Prüfen, ob neue Nachrichten vorhanden sind
@@ -645,12 +615,6 @@ $code = "<ul class=\"cms_aktionen_liste\">";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Postfach\">Postfach $meldezahl</a></li> ";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Favoriten\">Favoriten</a></li> ";
 	$code .= "<li><a class=\"cms_button\" href=\"Schulhof/Nutzerkonto/Einstellungen\">Einstellungen</a></li> ";
-	if (($ausgefuellt) && (time() <= $bestellende)) {
-		$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe ändern</a></li>";
-	}
-	if (($ausgefuellt) && (time() > $bestellende) && (($bestellbedarf == '1') || ($bestellbedarf == '2'))) {
-		$code .= "<li><a href=\"Schulhof/Nutzerkonto/Bestellung\" class=\"cms_button cms_button_wichtig\">Bestellung / Leihe einsehen</a></li>";
-	}
 $code .= "</ul>";
 echo $code;
 ?>
