@@ -7,7 +7,6 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
   $eintrag = $_SESSION['TAGEBUCHEINTRAG'];
 
   $tlehrer = null;
-
   // Stundeninformationen laden
   $sql = $dbs->prepare("SELECT tagebuch.id, AES_DECRYPT(tagebuch.inhalt, '$CMS_SCHLUESSEL'), AES_DECRYPT(tagebuch.hausaufgabe, '$CMS_SCHLUESSEL'), tagebuch.freigabe, tagebuch.leistungsmessung, tagebuch.urheber, tbeginn, tende, traum, tkurs, tlehrer, AES_DECRYPT(ur.vorname, '$CMS_SCHLUESSEL') AS urvor, AES_DECRYPT(ur.nachname, '$CMS_SCHLUESSEL') AS urnach, AES_DECRYPT(ur.titel, '$CMS_SCHLUESSEL') AS urtitel, AES_DECRYPT(lehr.vorname, '$CMS_SCHLUESSEL') AS lehrvor, AES_DECRYPT(lehr.nachname, '$CMS_SCHLUESSEL') AS lehrnach, AES_DECRYPT(lehr.titel, '$CMS_SCHLUESSEL') AS lehrtitel, kuerzel, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') FROM tagebuch JOIN unterricht ON tagebuch.id = unterricht.id LEFT JOIN personen AS ur ON ur.id = tagebuch.urheber LEFT JOIN lehrer ON lehrer.id = tlehrer LEFT JOIN personen AS lehr ON lehr.id = tlehrer LEFT JOIN kurse ON tkurs = kurse.id LEFT JOIN raeume ON traum = raeume.id WHERE tagebuch.id = ? AND freigabe != 1");
   $sql->bind_param("i", $eintrag);
@@ -59,8 +58,8 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
     $fehlzeiten = "";
     $fzanzahl = 0;
     $fznr = 0;
-    $fzids = [];
-    $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_ENCRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE (von < ? AND bis > ?) OR (von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?) AND person IN (SELECT person FROM kursemitglieder WHERE id = ?)");
+    $fzids = "";
+    $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE (von < ? AND bis > ?) OR (von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?) AND person IN (SELECT person FROM kursemitglieder WHERE id = ?)");
     $sql->bind_param("iiiiiii", $tbeginn, $tende, $tbeginn, $tende, $tbeginn, $tende, $tkurs);
     if ($sql->execute()) {
       $sql->bind_result($fid, $fzperson, $fzvon, $fzbis, $fzbem);
@@ -68,20 +67,20 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
         $fehlzeiten .= "<table class=\"cms_formular\" id=\"cms_eintrag_fz_$fid\">";
         $fehlzeiten .= "<tr><th>Person:</th><td><select name=\"cms_eintrag_fz_person_$fid\" id=\"cms_eintrag_fz_person_$fid\">".str_replace("value=\"$fzperson\"", "value=\"$fzperson\" selected=\"selected\"", $schueler)."</select></td></tr>";
         $ganztaegig = "<span class=\"cms_button\" onclick=\"cms_eintrag_ganztaegig('$fid')\">Ganztägig</span>";
-        $fehlzeiten .= "<tr><th>Zeitraum:</th><td>".cms_uhrzeit_eingabe("cms_eintrag_fz_von_$fid", date("H", $fzvon), date("i", $fzvon))." – ".cms_uhrzeit_eingabe("cms_eintrag_fz_von_$fid", date("H", $fzbis), date("i", $fzbis))." $ganztaegig</td></tr>";
+        $fehlzeiten .= "<tr><th>Zeitraum:</th><td>".cms_uhrzeit_eingabe("cms_eintrag_fz_von_$fid", date("H", $fzvon), date("i", $fzvon))." – ".cms_uhrzeit_eingabe("cms_eintrag_fz_bis_$fid", date("H", $fzbis), date("i", $fzbis))." $ganztaegig</td></tr>";
         $fehlzeiten .= "<tr><th>Bemerkung:</th><td><input type=\"text\" name=\"cms_eintrag_fz_bemerkung_$fid\" id=\"cms_eintrag_fz_bemerkung_$fid\" value=\"$fzbem\"></td></tr>";
       	$fehlzeiten .= "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_eintrag_fzweg('$fid');\">– Fehlzeit entfernen</span></td></tr>";
         $fehlzeiten .= "</table>";
         $fzanzahl++;
         $fznr++;
-        array_push($fzids, $fid);
+        $fzids .= "|".$fid;
       }
     }
     $sql->close();
 
     $code .= "<p><input type=\"hidden\" value=\"$fzanzahl\" id=\"cms_eintrag_fzan\" name=\"cms_eintrag_fzan\"></p>";
     $code .= "<p><input type=\"hidden\" value=\"$fznr\" id=\"cms_eintrag_fznr\" name=\"cms_eintrag_fznr\"></p>";
-    $code .= "<p><input type=\"hidden\" value=\"".implode("|", $fzids)."\" id=\"cms_eintrag_fzids\" name=\"cms_eintrag_fzids\"></p>";
+    $code .= "<p><input type=\"hidden\" value=\"$fzids\" id=\"cms_eintrag_fzids\" name=\"cms_eintrag_fzids\"></p>";
     $code .= "<div id=\"cms_eintrag_fehlzeiten\">";
     if ($CMS_IMLN) {
       $code .= cms_generiere_nachladen("cms_eintrag_fehlzeiten_laden", "");
@@ -96,10 +95,10 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
     $lobundtadel = "";
     $ltanzahl = 0;
     $ltnr = 0;
-    $ltids = [];
+    $ltids = "";
     $ltpersonen = $schueler."<option value=\"-\">ganzer Kurs</option>";
-    $ltart = "<option value=\"m\">Mitarbeits-Tadel</option><option value=\"v\">Verhaltens-Tadel</option><option value=\"l\">Lob</option>";
-    $sql = $dbs->prepare("SELECT lobtadel.id, person, art, AES_ENCRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM lobtadel WHERE eintrag = ?");
+    $ltartwahl = "<option value=\"m\">Mitarbeits-Tadel</option><option value=\"v\">Verhaltens-Tadel</option><option value=\"l\">Lob</option>";
+    $sql = $dbs->prepare("SELECT lobtadel.id, person, art, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM lobtadel WHERE eintrag = ?");
     $sql->bind_param("i", $uid);
     if ($sql->execute()) {
       $sql->bind_result($ltid, $ltperson, $ltart, $ltbem);
@@ -107,13 +106,13 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
         if ($ltperson == null) {$ltperson = "-";}
         $lobundtadel .= "<table class=\"cms_formular\" id=\"cms_eintrag_lt_$ltid\">";
         $lobundtadel .= "<tr><th>Person:</th><td><select name=\"cms_eintrag_lt_person_$ltid\" id=\"cms_eintrag_lt_person_$ltid\">".str_replace("value=\"$ltperson\"", "value=\"$ltperson\" selected=\"selected\"", $ltpersonen)."</select></td></tr>";
-      	$lobundtadel .= "<tr><th>Art:</th><td><select name=\"cms_eintrag_lt_art_$ltid\" id=\"cms_eintrag_lt_art_$ltid\">".str_replace("value=\"$ltart\"", "value=\"$ltart\" selected=\"selected\"", $ltpersonen)."</select></td></tr>";
+      	$lobundtadel .= "<tr><th>Art:</th><td><select name=\"cms_eintrag_lt_art_$ltid\" id=\"cms_eintrag_lt_art_$ltid\">".str_replace("value=\"$ltart\"", "value=\"$ltart\" selected=\"selected\"", $ltartwahl)."</select></td></tr>";
         $lobundtadel .= "<tr><th>Bemerkung:</th><td><textarea name=\"cms_eintrag_lt_bemerkung_$ltid\" id=\"cms_eintrag_lt_bemerkung_$ltid\">$ltbem</textarea></td></tr>";
       	$lobundtadel .= "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_eintrag_ltweg('$ltid');\">– Lob / Tadel entfernen</span></td></tr>";
         $lobundtadel .= "</table>";
         $ltanzahl++;
         $ltnr++;
-        array_push($ltids, $ltid);
+        $ltids .= "|".$ltid;
       }
     }
     $sql->close();
@@ -121,8 +120,8 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
     $code .= "<h2>Lob und Tadel</h2>";
     $code .= "<p><input type=\"hidden\" value=\"$ltanzahl\" id=\"cms_eintrag_ltan\" name=\"cms_eintrag_ltan\"></p>";
     $code .= "<p><input type=\"hidden\" value=\"$ltnr\" id=\"cms_eintrag_ltnr\" name=\"cms_eintrag_ltnr\"></p>";
-    $code .= "<p><input type=\"hidden\" value=\"".implode("|", $ltids)."\" id=\"cms_eintrag_ltids\" name=\"cms_eintrag_ltids\"></p>";
-    $code .= "<div id=\"cms_eintrag_lobundtadel\"></div>";
+    $code .= "<p><input type=\"hidden\" value=\"$ltids\" id=\"cms_eintrag_ltids\" name=\"cms_eintrag_ltids\"></p>";
+    $code .= "<div id=\"cms_eintrag_lobundtadel\">$lobundtadel</div>";
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_eintrag_ltdazu()\">+ Lob oder Tadel hinzufügen</span></p>";
 
 

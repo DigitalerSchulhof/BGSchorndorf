@@ -22,9 +22,11 @@ if ($CMS_BENUTZERART == 'l') {
     }
   }
 
+  $code .= "<h2>Offene Tagebucheinträge</h2>";
   if (strlen($eintraege) > 0) {
-    $code .= "<h2>Offene Tagebucheinträge</h2>";
     $code .= "<ul class=\"cms_neuigkeiten\">$eintraege</ul>";
+  } else {
+    $code .= "<p class=\"cms_notiz\">Aktuell sind keine offenen Tagebucheitnräge vorhanden.</p>";
   }
 
   $code .= "</div>";
@@ -54,12 +56,15 @@ if ($CMS_BENUTZERART == 'l') {
 
   if ((strlen($klassentagebuecher) > 0) || (strlen($kurstagebuecher) > 0)) {
     $code .= "<h2 style=\"padding-top:30px\">Tagebücher einsehen</h2>";
-    if (strlen($klassentagebuecher) > 0) {
+
+    $code .= "<div class=\"cms_meldung cms_meldung_warnung\"><h4>Ansicht</h4><p>Die Tagebuchansicht wird so bald wie möglich nachgeliefert.</p></div>";
+
+    /*if (strlen($klassentagebuecher) > 0) {
       $code .= "<h3>Klassentagebücher</h3><p>$klassentagebuecher</p>";
     }
     if (strlen($kurstagebuecher) > 0) {
       $code .= "<h3>Kurstagebücher</h3><p>$kurstagebuecher</p>";
-    }
+    }*/
   }
 
   $code .= "</div></div>";

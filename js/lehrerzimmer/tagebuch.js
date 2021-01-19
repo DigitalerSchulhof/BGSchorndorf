@@ -331,11 +331,7 @@ function cms_eintrag_fzladen(uid) {
       box.innerHTML = box.innerHTML+rueck[0];
       anzahl.value = parseInt(anzahl.value)+parseInt(rueck[1]);
       nr.value = parseInt(nr.value)+parseInt(rueck[1]);
-      if ((ids.value).length > 0) {
-        ids.value = ids.value+"|"+rueck[2];
-      } else {
-        ids.value = rueck[2];
-      }
+      ids.value = ids.value+"|"+rueck[2];
     }
     // Laden entfernen
     var box = document.getElementById('cms_eintrag_fehlzeiten');
@@ -356,7 +352,7 @@ function cms_tagebuch_eintrag_speichern() {
   var fzids = document.getElementById('cms_eintrag_fzids').value;
   var fids = fzids.split("|");
   var ltids = document.getElementById('cms_eintrag_ltids').value;
-  var lids = lzids.split("|");
+  var lids = ltids.split("|");
 
 	var meldung = '<p>Der Tagebucheintrag konnte nicht erstellt werden, denn ...</p><ul>';
 	var fehler = false;
@@ -372,14 +368,15 @@ function cms_tagebuch_eintrag_speichern() {
 		fehler = true;
 	}
 
-	if (!cms_check_toggle(freigeben)) {
+	if (!cms_check_toggle(freigabe)) {
 		meldung += '<li>die Freigabe ist ungültig.</li>';
 		fehler = true;
 	}
 
   // Fehlzeiten analysieren
   var fehlzeitenfehler = false;
-  for (var i=0; i<fids.length; i++) {
+
+  for (var i=1; i<fids.length; i++) {
     var fzid = fids[i];
     var person = document.getElementById("cms_eintrag_fz_person_"+fzid).value;
     var zeitbh = parseInt(document.getElementById("cms_eintrag_fz_von_"+fzid+"_h").value);
@@ -397,14 +394,14 @@ function cms_tagebuch_eintrag_speichern() {
   }
 
   var lobtadelfehler = false;
-  for (var i=0; i<lids.length; i++) {
+  for (var i=1; i<lids.length; i++) {
     var ltid = lids[i];
     var person = document.getElementById("cms_eintrag_lt_person_"+ltid).value;
     var art = document.getElementById("cms_eintrag_lt_art_"+ltid).value;
     if (!cms_check_ganzzahl(person,0) && (person != "-")) {lobtadelfehler = true;}
   }
   if (lobtadelfehler) {
-    meldung += '<li>mindestens ein Lob/tadel ist ungültig. </li>';
+    meldung += '<li>mindestens ein Lob/tadel ist ungültig.</li>';
     fehler = true;
   }
 
@@ -421,7 +418,7 @@ function cms_tagebuch_eintrag_speichern() {
     formulardaten.append("freigabe", freigabe);
     formulardaten.append("fzids", fzids);
     formulardaten.append("ltids", ltids);
-    for (var i=0; i<fids.length; i++) {
+    for (var i=1; i<fids.length; i++) {
       var fzid = fids[i];
       var person = document.getElementById("cms_eintrag_fz_person_"+fzid).value;
       var zeitbh = parseInt(document.getElementById("cms_eintrag_fz_von_"+fzid+"_h").value);
@@ -436,21 +433,24 @@ function cms_tagebuch_eintrag_speichern() {
       formulardaten.append("fzzeitem_"+fzid, zeitem);
       formulardaten.append("fzbemerkung_"+fzid, bemerkung);
     }
-    for (var i=0; i<lids.length; i++) {
+    for (var i=1; i<lids.length; i++) {
       var ltid = lids[i];
       var person = document.getElementById("cms_eintrag_lt_person_"+ltid).value;
       var art = document.getElementById("cms_eintrag_lt_art_"+ltid).value;
       var bemerkung = document.getElementById("cms_eintrag_lt_bemerkung_"+ltid).value;
-      formulardaten.append("lzperson_"+fzid, person);
-      formulardaten.append("lzart_"+fzid, art);
-      formulardaten.append("lzbemerkung_"+fzid, bemerkung);
+      formulardaten.append("ltperson_"+ltid, person);
+      formulardaten.append("ltart_"+ltid, art);
+      formulardaten.append("ltbemerkung_"+ltid, bemerkung);
     }
 		formulardaten.append("anfragenziel", 	'431');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
 				cms_meldung_an('erfolg', 'Tagebucheintrag speichern', '<p>Der Tagebucheintrag wurde gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Tagebuch\');">Zurück zur Übersicht</span></p>');
-			}
+			} else if (rueckgabe == "ZUORDNUNG") {
+        meldung += '<li>Zugeordnete Schülerinnen und Schüler sind nicht in diesem Kurs.</li>';
+        cms_meldung_an('fehler', 'Tagebucheintrag speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+      }
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 

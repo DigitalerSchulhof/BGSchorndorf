@@ -18,6 +18,7 @@ $angemeldet = cms_angemeldet();
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
 // Stundeninformationen laden
+$tlehrer = null;
 $sql = $dbs->prepare("SELECT tagebuch.id, AES_DECRYPT(tagebuch.inhalt, '$CMS_SCHLUESSEL'), AES_DECRYPT(tagebuch.hausaufgabe, '$CMS_SCHLUESSEL'), tagebuch.freigabe, tagebuch.leistungsmessung, tagebuch.urheber, tbeginn, tende, traum, tkurs, tlehrer, AES_DECRYPT(ur.vorname, '$CMS_SCHLUESSEL') AS urvor, AES_DECRYPT(ur.nachname, '$CMS_SCHLUESSEL') AS urnach, AES_DECRYPT(ur.titel, '$CMS_SCHLUESSEL') AS urtitel, AES_DECRYPT(lehr.vorname, '$CMS_SCHLUESSEL') AS lehrvor, AES_DECRYPT(lehr.nachname, '$CMS_SCHLUESSEL') AS lehrnach, AES_DECRYPT(lehr.titel, '$CMS_SCHLUESSEL') AS lehrtitel, kuerzel, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') FROM tagebuch JOIN unterricht ON tagebuch.id = unterricht.id LEFT JOIN personen AS ur ON ur.id = tagebuch.urheber LEFT JOIN lehrer ON lehrer.id = tlehrer LEFT JOIN personen AS lehr ON lehr.id = tlehrer LEFT JOIN kurse ON tkurs = kurse.id LEFT JOIN raeume ON traum = raeume.id WHERE tagebuch.id = ? AND freigabe != 1");
 $sql->bind_param("i", $eintrag);
 if ($sql->execute()) {
@@ -28,6 +29,7 @@ if ($sql->execute()) {
 $sql->close();
 
 // Benutzerart laden
+$CMS_BENUTZERART = "";
 $sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?");
 $sql->bind_param("i", $CMS_BENUTZERID);
 if ($sql->execute()) {
@@ -66,7 +68,7 @@ if ($angemeldet && $CMS_BENUTZERART == 'l' && $tlehrer == $CMS_BENUTZERID) {
       $fehlzeiten .= "<table class=\"cms_formular\" id=\"cms_eintrag_fz_$fid\">";
       $fehlzeiten .= "<tr><th>Person:</th><td><select name=\"cms_eintrag_fz_person_$fid\" id=\"cms_eintrag_fz_person_$fid\">".str_replace("value=\"$fzperson\"", "value=\"$fzperson\" selected=\"selected\"", $schueler)."</select></td></tr>";
       $ganztaegig = "<span class=\"cms_button\" onclick=\"cms_eintrag_ganztaegig('$fid')\">Ganztägig</span>";
-      $fehlzeiten .= "<tr><th>Zeitraum:</th><td>".cms_uhrzeit_eingabe("cms_eintrag_fz_von_$fid", date("H", $fzvon), date("i", $fzvon))." – ".cms_uhrzeit_eingabe("cms_eintrag_fz_von_$fid", date("H", $fzbis), date("i", $fzbis))." $ganztaegig</td></tr>";
+      $fehlzeiten .= "<tr><th>Zeitraum:</th><td>".cms_uhrzeit_eingabe("cms_eintrag_fz_von_$fid", date("H", $fzvon), date("i", $fzvon))." – ".cms_uhrzeit_eingabe("cms_eintrag_fz_bis_$fid", date("H", $fzbis), date("i", $fzbis))." $ganztaegig</td></tr>";
       $fehlzeiten .= "<tr><th>Bemerkung:</th><td><input type=\"text\" name=\"cms_eintrag_fz_bemerkung_$fid\" id=\"cms_eintrag_fz_bemerkung_$fid\" value=\"$fzbem\"></td></tr>";
       $fehlzeiten .= "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_eintrag_fzweg('$fid');\">– Fehlzeit entfernen</span></td></tr>";
       $fehlzeiten .= "</table>";
