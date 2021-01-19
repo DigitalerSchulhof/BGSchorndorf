@@ -4,7 +4,7 @@ version:
     version: 0.10.9
     tag: x, den x. Januar
     neuerungen:
-      - Fehler im Randfall bei ToDo's behoben
+      - Fehler im Randfall bei ToDo's behoben [E]
   0_10_8:
     version: 0.10.8
     tag: Montag, den 11. Januar
