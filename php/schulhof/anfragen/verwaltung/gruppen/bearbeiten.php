@@ -66,7 +66,7 @@ if (cms_angemeldet() && $zugriff) {
 	if (!cms_check_titel($bezeichnung)) {$fehler = true;}
 
 	if (!cms_check_toggle($chat)) {$fehler = true;}
-	if(!cms_check_titel($linktitel)) {$fehler = true;}
+	if(!cms_check_titel($linktitel) && (strlen($linktitel) != 0)) {$fehler = true;}
 	$linkbeschreibung = cms_texttrafo_e_db($linkbeschreibung);
 
 	if (($sichtbar != 0) && ($sichtbar != 1) && ($sichtbar != 2) && ($sichtbar != 3)) {

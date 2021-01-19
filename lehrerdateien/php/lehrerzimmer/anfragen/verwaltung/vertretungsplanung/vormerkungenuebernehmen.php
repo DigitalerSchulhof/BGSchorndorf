@@ -56,20 +56,68 @@ if ($angemeldet && $zugriff) {
     $sql = $dbs->prepare($sql);
     $sql->bind_param("iiiiiissi", $k['kurs'], $k['beginn'], $k['ende'], $k['lehrer'], $k['raum'], $k['vplananzeigen'], $k['vplanart'], $k['vplanbem'], $id);
     $sql->execute();
+    $sql->close();
+
+    // Neu ins Tagebuch übernehmen wenn die Stufe ein Tagebuch führt
+    $eintragen = false;
+    $sql = $dbs->prepare("SELECT tagebuch FROM stufen JOIN kurse ON kurse.stufe = stufen.id AND kurse.id = ?");
+    $sql->bind_param("i", $k['kurs']);
+    if ($sql->execute()) {
+      $sql->bind_result($tagebuch);
+      $sql->fetch();
+      if ($tagebuch == 1) {$eintragen = true;}
+    }
+    $sql->close();
+    if ($eintragen) {
+      $sql = $dbs->prepare("INSERT INTO tagebuch (id) VALUE (?)");
+      $sql->bind_param("i", $id);
+      $sql->execute();
+      $sql->close();
+    }
   }
+  // Löschen
   $sql = "DELETE FROM unterrichtkonflikt WHERE altid IS NULL";
   $sql = $dbs->prepare($sql);
   $sql->execute();
+  $sql->close();
 
-  $sql = "UPDATE unterricht SET tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = ?, vplanart = ?, vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
-  $sql = $dbs->prepare($sql);
+
   foreach ($AENDERUNGEN AS $k) {
+    $sql = "UPDATE unterricht SET tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = ?, vplanart = ?, vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
+    $sql = $dbs->prepare($sql);
     $sql->bind_param("iiiiiissi", $k['kurs'], $k['beginn'], $k['ende'], $k['lehrer'], $k['raum'], $k['vplananzeigen'], $k['vplanart'], $k['vplanbem'], $k['id']);
     $sql->execute();
+    $sql->close();
+
+    // Neu ins Tagebuch übernehmen wenn die Stufe ein Tagebuch führt
+    $eintragen = false;
+    $sql = $dbs->prepare("SELECT tagebuch FROM stufen JOIN kurse ON kurse.stufe = stufen.id AND kurse.id = ?");
+    $sql->bind_param("i", $k['kurs']);
+    if ($sql->execute()) {
+      $sql->bind_result($tagebuch);
+      $sql->fetch();
+      if ($tagebuch == 1) {$eintragen = true;}
+    }
+    $sql->close();
+    if ($eintragen) {
+      $sql = $dbs->prepare("DELETE FROM tagebuch WHERE id = ?");
+      $sql->bind_param("i", $k['id']);
+      $sql->execute();
+      $sql->close();
+      if ($k['vplanart'] == 'e') {
+        $sql = $dbs->prepare("INSERT INTO tagebuch (id, inhalt, freigabe) VALUE (?, AES_ENCRYPT('Entfall', '$CMS_SCHLUESSEL'), 1)");
+      } else {
+        $sql = $dbs->prepare("INSERT INTO tagebuch (id) VALUE (?)");
+      }
+      $sql->bind_param("i", $k['id']);
+      $sql->execute();
+      $sql->close();
+    }
   }
   $sql = "DELETE FROM unterrichtkonflikt";
   $sql = $dbs->prepare($sql);
   $sql->execute();
+  $sql->close();
 
   cms_trennen($dbs);
 

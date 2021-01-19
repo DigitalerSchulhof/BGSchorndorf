@@ -419,4 +419,16 @@ $CMS_ZIELE[416] = 'php/schulhof/anfragen/verwaltung/shop/bestellungen/status.php
 $CMS_ZIELE[417] = 'php/schulhof/anfragen/verwaltung/shop/bestellungen/sehen.php';
 $CMS_ZIELE[418] = 'php/schulhof/anfragen/verwaltung/shop/bestellungen/loeschen.php';
 $CMS_ZIELE[419] = 'php/schulhof/anfragen/verwaltung/shop/bestellungen/alleloeschen.php';
+$CMS_ZIELE[420] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[421] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[422] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[423] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[424] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[425] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[426] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[427] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[428] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[429] = 'php/schulhof/anfragen/';
+$CMS_ZIELE[430] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/eintragvorbereiten.php';
+$CMS_ZIELE[431] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/eintragspeichern.php';
 ?>

@@ -53,7 +53,7 @@ if (!$fehler) {
 		$code .= "<div class=\"cms_spalte_34\">";
 			$code .= "<div class=\"cms_spalte_40\"><div class=\"cms_spalte_i\">";
 			$code .= "<h2>Pinnwand</h2>";
-			$code .= cms_gruppenlinks_ausgeben($dbs, $g, $gruppenid, $GRUPPENRECHTE);
+			$code .= cms_gruppenlinks_ausgeben($dbs, $g, $gruppenid, $icon);
 			if ($GRUPPENRECHTE['blogeintraege']) {
 				$code .= "<textarea id=\"cms_gruppenpinnwand\" class=\"cms_notizzettel\">$pinnwand</textarea>";
 				$code .= "<p><span class=\"cms_button\" onclick=\"cms_gruppe_pinnwand_speichern('$g', '$gruppenid', '$CMS_URLGANZ')\">Speichern</span> <a class=\"cms_button cms_button_nein\" href=\"$CMS_URLGANZ\">Abbrechen</a></p>";
