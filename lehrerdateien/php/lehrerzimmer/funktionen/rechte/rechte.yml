@@ -85,6 +85,11 @@ schulhof:
         sehen: Personenids sehen
         bearbeiten: Personenids bearbeiten
         importieren: Personenids importieren
+    tagebücher:
+      sehen: Tagebücher einsehen
+      korrigieren: Tagebücher korrigieren
+      drucken: Tagebücher drucken
+      anmahnen: Tagebucheintrag anmahnen
     rechte:
       zuordnen: Personen Rechte zuordnen
       bedingt: Rechte bedingt zuordnen

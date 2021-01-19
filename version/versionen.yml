@@ -2,12 +2,14 @@
 version:
   0_10_9:
     version: 0.10.9
-    tag: x, den x. Januar
+    tag: Dienstag, den 19. Januar 2021
     neuerungen:
+      - Einträge in digitales Tagebuch möglich, Ansicht und Entschuldigungswesen folgen [W]
       - Fehler im Randfall bei ToDo's behoben [E]
+      - Fehler beim Bearbeiten von Gruppen behoben [W]
   0_10_8:
     version: 0.10.8
-    tag: Montag, den 11. Januar
+    tag: Montag, den 11. Januar 2021
     neuerungen:
       - Gruppen können neben der Pinnwand leicht erreichbare Links enthalten, welche das Ziel direkt öffnen [E]
       - ToDo's können über einen Knopf direkt auf der Startseite als erledigt markiert werden [E]
