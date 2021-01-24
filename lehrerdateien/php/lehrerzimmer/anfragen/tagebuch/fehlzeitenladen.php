@@ -6,7 +6,7 @@ include_once("../../lehrerzimmer/funktionen/check.php");
 // Variablen einlesen, falls übergeben
 if (isset($_POST['nutzerid'])) 		{$nutzerid = $_POST['nutzerid'];} 			        else {cms_anfrage_beenden(); exit;}
 if (isset($_POST['sessionid'])) 	{$sessionid = $_POST['sessionid'];} 		        else {cms_anfrage_beenden(); exit;}
-if (isset($_POST['unterricht'])) 	{$unterricht = $_POST['untericht'];} 		        else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['unterricht'])) 	{$unterricht = $_POST['unterricht'];} 		        else {cms_anfrage_beenden(); exit;}
 
 // REIHENFOLGE WICHTIG!! NICHT ÄNDERN -->
 include_once("../../lehrerzimmer/funktionen/entschluesseln.php");
@@ -17,10 +17,12 @@ $angemeldet = cms_angemeldet();
 
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
+$dbs = cms_verbinden('s');
+
 // Stundeninformationen laden
 $tlehrer = null;
 $sql = $dbs->prepare("SELECT tagebuch.id, AES_DECRYPT(tagebuch.inhalt, '$CMS_SCHLUESSEL'), AES_DECRYPT(tagebuch.hausaufgabe, '$CMS_SCHLUESSEL'), tagebuch.freigabe, tagebuch.leistungsmessung, tagebuch.urheber, tbeginn, tende, traum, tkurs, tlehrer, AES_DECRYPT(ur.vorname, '$CMS_SCHLUESSEL') AS urvor, AES_DECRYPT(ur.nachname, '$CMS_SCHLUESSEL') AS urnach, AES_DECRYPT(ur.titel, '$CMS_SCHLUESSEL') AS urtitel, AES_DECRYPT(lehr.vorname, '$CMS_SCHLUESSEL') AS lehrvor, AES_DECRYPT(lehr.nachname, '$CMS_SCHLUESSEL') AS lehrnach, AES_DECRYPT(lehr.titel, '$CMS_SCHLUESSEL') AS lehrtitel, kuerzel, AES_DECRYPT(raeume.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL') FROM tagebuch JOIN unterricht ON tagebuch.id = unterricht.id LEFT JOIN personen AS ur ON ur.id = tagebuch.urheber LEFT JOIN lehrer ON lehrer.id = tlehrer LEFT JOIN personen AS lehr ON lehr.id = tlehrer LEFT JOIN kurse ON tkurs = kurse.id LEFT JOIN raeume ON traum = raeume.id WHERE tagebuch.id = ? AND freigabe != 1");
-$sql->bind_param("i", $eintrag);
+$sql->bind_param("i", $unterricht);
 if ($sql->execute()) {
   $sql->bind_result($uid, $inhalt, $hausi, $frei, $leistung, $urheber, $tbeginn, $tende, $traum, $tkurs, $tlehrer, $urvor, $urnach, $urtitel, $lehrvor, $lehrnach, $lehrtitel, $kuerzel, $raumbez, $kursbez);
   $sql->fetch();
@@ -60,8 +62,13 @@ if ($angemeldet && $CMS_BENUTZERART == 'l' && $tlehrer == $CMS_BENUTZERID) {
   $fzanzahl = 0;
   $fznr = 0;
   $fzids = [];
-  $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_ENCRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE (von < ? AND bis > ?) OR (von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?) AND person IN (SELECT person FROM kursemitglieder WHERE id = ?)");
-  $sql->bind_param("iiiiiii", $tbeginn, $tende, $tbeginn, $tende, $tbeginn, $tende, $tkurs);
+  $t = date("d", $tbeginn);
+  $m = date("m", $tbeginn);
+  $j = date("Y", $tbeginn);
+  $a = mktime(0,0,0,$m,$t,$j);
+  $x = mktime(0,0,0,$m,$t+1,$j)-1;
+  $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_ENCRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?)) AND person IN (SELECT person FROM kursemitglieder WHERE id = ?)");
+  $sql->bind_param("iiiii", $a, $x, $a, $x, $tkurs);
   if ($sql->execute()) {
     $sql->bind_result($fid, $fzperson, $fzvon, $fzbis, $fzbem);
     while ($sql->fetch()) {
@@ -90,4 +97,6 @@ else {
   cms_lehrerdb_header(false);
 	echo "BERECHTIGUNG";
 }
+
+cms_trennen($dbs);
 ?>

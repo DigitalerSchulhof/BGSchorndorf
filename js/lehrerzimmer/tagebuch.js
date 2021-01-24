@@ -287,7 +287,7 @@ function cms_eintrag_ltdazu() {
   var personen = document.getElementById('cms_eintrag_vorlage').innerHTML;
 
 	var code = "";
-	code += "<tr><th>Person:</th><td><select name=\"cms_eintrag_lt_person_"+neueid+"\" id=\"cms_eintrag_lt_person_"+neueid+"\">"+personen+"<option value=\"-\">ganzer Kurs</option></select></td></tr>";
+	code += "<tr><th>Person:</th><td><select name=\"cms_eintrag_lt_person_"+neueid+"\" id=\"cms_eintrag_lt_person_"+neueid+"\">"+personen+"<option value=\"a\">ganzer Kurs</option></select></td></tr>";
 	code += "<tr><th>Art:</th><td><select name=\"cms_eintrag_lt_art_"+neueid+"\" id=\"cms_eintrag_lt_art_"+neueid+"\"><option value=\"m\">Mitarbeits-Tadel</option><option value=\"v\">Verhaltens-Tadel</option><option value=\"l\">Lob</option></select></td></tr>";
   code += "<tr><th>Bemerkung:</th><td><textarea name=\"cms_eintrag_lt_bemerkung_"+neueid+"\" id=\"cms_eintrag_lt_bemerkung_"+neueid+"\"></textarea></td></tr>";
 	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_eintrag_ltweg('"+neueid+"');\">– Lob / Tadel entfernen</span></td></tr>";
@@ -302,7 +302,7 @@ function cms_eintrag_ltdazu() {
 }
 
 function cms_eintrag_ltweg(id) {
-  var box = document.getElementById('cms_eintrag_lobtadel');
+  var box = document.getElementById('cms_eintrag_lobundtadel');
 	var anzahl = document.getElementById('cms_eintrag_ltan');
 	var ids = document.getElementById('cms_eintrag_ltids');
 	var lt = document.getElementById('cms_eintrag_lt_'+id);
@@ -331,7 +331,9 @@ function cms_eintrag_fzladen(uid) {
       box.innerHTML = box.innerHTML+rueck[0];
       anzahl.value = parseInt(anzahl.value)+parseInt(rueck[1]);
       nr.value = parseInt(nr.value)+parseInt(rueck[1]);
-      ids.value = ids.value+"|"+rueck[2];
+      if (rueck[2].length > 0) {
+        ids.value = ids.value+"|"+rueck[2];
+      }
     }
     // Laden entfernen
     var box = document.getElementById('cms_eintrag_fehlzeiten');
@@ -398,10 +400,10 @@ function cms_tagebuch_eintrag_speichern() {
     var ltid = lids[i];
     var person = document.getElementById("cms_eintrag_lt_person_"+ltid).value;
     var art = document.getElementById("cms_eintrag_lt_art_"+ltid).value;
-    if (!cms_check_ganzzahl(person,0) && (person != "-")) {lobtadelfehler = true;}
+    if (!cms_check_ganzzahl(person,0) && (person != "a")) {lobtadelfehler = true;}
   }
   if (lobtadelfehler) {
-    meldung += '<li>mindestens ein Lob/tadel ist ungültig.</li>';
+    meldung += '<li>mindestens ein Lob/tadel ist ungültig. Es muss eine Person ausgewählt sein.</li>';
     fehler = true;
   }
 
@@ -456,4 +458,37 @@ function cms_tagebuch_eintrag_speichern() {
 
 		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 	}
+}
+
+
+
+
+function cms_tagebuch_tagesansicht(veraenderung, eintrag) {
+  /*if (((veraenderung == '+') || (veraenderung == '-') || (veraenderung == 'j')) && (cms_check_ganzzahl(eintrag,0))) {
+    var formulardaten = new FormData();
+    cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+    formulardaten.append("anfragenziel", '31');
+    formulardaten.append("unterricht", uid);
+
+    function anfragennachbehandlung(rueckgabe) {
+      var box = document.getElementById('cms_eintrag_fehlzeiten');
+    	var anzahl = document.getElementById('cms_eintrag_fzan');
+    	var nr = document.getElementById('cms_eintrag_fznr');
+    	var ids = document.getElementById('cms_eintrag_fzids');
+
+      rueck = rueckgabe.split("|||||");
+      if (rueck.length == 3) {
+        box.innerHTML = box.innerHTML+rueck[0];
+        anzahl.value = parseInt(anzahl.value)+parseInt(rueck[1]);
+        nr.value = parseInt(nr.value)+parseInt(rueck[1]);
+        ids.value = ids.value+"|"+rueck[2];
+      }
+      // Laden entfernen
+      var box = document.getElementById('cms_eintrag_fehlzeiten');
+    	var laden = document.getElementById('cms_eintrag_fehlzeiten_laden');
+    	box.removeChild(laden);
+    }
+
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  }*/
 }

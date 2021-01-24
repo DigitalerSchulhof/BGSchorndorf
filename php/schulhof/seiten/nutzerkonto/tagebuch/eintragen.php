@@ -21,6 +21,10 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
   if ($CMS_BENUTZERART == 'l' && $tlehrer == $CMS_BENUTZERID) {
     $code = "<h1>Eintrag für $kursbez</h1>";
 
+    if ($CMS_IMLN) {
+      $code .= "</div><div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+    }
+
     $code .= "<h2>Stundendetails</h2>";
 
     $code .= "<table class=\"cms_formular\">";
@@ -46,7 +50,7 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
       }
     }
     $sql->close();
-    $code .= "<p style=\"display:none\"><select name=\"cms_eintrag_vorlage\" id=\"cms_eintrag_vorlage\">$schueler</select></p>";
+    $code .= "<p style=\"display:none\"><select name=\"cms_eintrag_vorlage\" id=\"cms_eintrag_vorlage\"><option value=\"-\">-- Bitte wählen --</option>$schueler</select></p>";
 
 
     $code .= "<h2>Fehlzeiten</h2>";
@@ -55,12 +59,17 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
     }
 
     // Fehlzeiten laden
+    $t = date("d", $tbeginn);
+    $m = date("m", $tbeginn);
+    $j = date("Y", $tbeginn);
+    $a = mktime(0,0,0,$m,$t,$j);
+    $x = mktime(0,0,0,$m,$t+1,$j)-1;
     $fehlzeiten = "";
     $fzanzahl = 0;
     $fznr = 0;
     $fzids = "";
-    $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE (von < ? AND bis > ?) OR (von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?) AND person IN (SELECT person FROM kursemitglieder WHERE id = ?)");
-    $sql->bind_param("iiiiiii", $tbeginn, $tende, $tbeginn, $tende, $tbeginn, $tende, $tkurs);
+    $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?)) AND person IN (SELECT person FROM kursemitglieder WHERE gruppe = ?)");
+    $sql->bind_param("iiiii", $a, $x, $a, $x, $tkurs);
     if ($sql->execute()) {
       $sql->bind_result($fid, $fzperson, $fzvon, $fzbis, $fzbem);
       while ($sql->fetch()) {
@@ -96,14 +105,14 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
     $ltanzahl = 0;
     $ltnr = 0;
     $ltids = "";
-    $ltpersonen = $schueler."<option value=\"-\">ganzer Kurs</option>";
+    $ltpersonen = $schueler."<option value=\"a\">ganzer Kurs</option>";
     $ltartwahl = "<option value=\"m\">Mitarbeits-Tadel</option><option value=\"v\">Verhaltens-Tadel</option><option value=\"l\">Lob</option>";
     $sql = $dbs->prepare("SELECT lobtadel.id, person, art, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM lobtadel WHERE eintrag = ?");
     $sql->bind_param("i", $uid);
     if ($sql->execute()) {
       $sql->bind_result($ltid, $ltperson, $ltart, $ltbem);
       while ($sql->fetch()) {
-        if ($ltperson == null) {$ltperson = "-";}
+        if ($ltperson == null) {$ltperson = "a";}
         $lobundtadel .= "<table class=\"cms_formular\" id=\"cms_eintrag_lt_$ltid\">";
         $lobundtadel .= "<tr><th>Person:</th><td><select name=\"cms_eintrag_lt_person_$ltid\" id=\"cms_eintrag_lt_person_$ltid\">".str_replace("value=\"$ltperson\"", "value=\"$ltperson\" selected=\"selected\"", $ltpersonen)."</select></td></tr>";
       	$lobundtadel .= "<tr><th>Art:</th><td><select name=\"cms_eintrag_lt_art_$ltid\" id=\"cms_eintrag_lt_art_$ltid\">".str_replace("value=\"$ltart\"", "value=\"$ltart\" selected=\"selected\"", $ltartwahl)."</select></td></tr>";
@@ -127,6 +136,21 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
 
 
     $code .= "<p><span class=\"cms_button\" onclick=\"cms_tagebuch_eintrag_speichern();\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto/Tagebuch\">Abbrechen</a></p>";
+
+    if ($CMS_IMLN) {
+      $code .= "</div></div><div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
+      $code .= "<h2>Tagesansicht</h2>";
+
+      $code .= "<table class=\"cms_zeitwahl\"><tbody><tr>";
+      $code .= "<td><span class=\"cms_button\" onclick=\"cms_tagebuch_tagesansicht('-', '$uid')\">«</span></td>";
+      $code .= "<td>".cms_datum_eingabe("cms_tagebuch_tagesansicht_tag", $t, $m, $j, "cms_tagebuch_tagesansicht('j', '$uid')")."</td>";
+      $code .= "<td><span class=\"cms_button\" onclick=\"cms_tagebuch_tagesansicht('+', '$uid')\">»</span></td></tr></tbody></table>";
+      $code .= cms_generiere_nachladen("cms_tagebuch_tagesansicht", "");
+      $CMS_ONLOAD_EVENTS .= "cms_tagebuch_tagesansicht('j', '$uid');";
+      $code .= "</div></div><div class=\"cms_clear\"></div>";
+    }
+
+
     echo $code;
   }
   else {
