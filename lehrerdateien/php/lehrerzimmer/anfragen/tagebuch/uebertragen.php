@@ -43,9 +43,9 @@ $sql->close();
 // Lob und Tadel
 $LOBTADEL = [];
 $LTIDS = [];
-$sql = $dbs->prepare("SELECT id, eintrag, person, art, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL'), idvon, idzeit FROM lobtadel WHERE eintrag IN (SELECT id FROM tagebuch WHERE freigabe = 1)");
+$sql = $dbs->prepare("SELECT id, eintrag, person, art, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL'), urheber, eintragszeit FROM lobtadel WHERE eintrag IN (SELECT id FROM tagebuch WHERE freigabe = 1)");
 if ($sql->execute()) {
-  $sql->bind_result($ltid, $lteintrag, $ltperson, $ltart, $ltbem, $ltidvon, $ltidzeit);
+  $sql->bind_result($ltid, $lteintrag, $ltperson, $ltart, $ltbem, $lturheber, $lteintragszeit);
   while ($sql->fetch()) {
     $lt = [];
     $lt['id'] = $ltid;
@@ -53,8 +53,8 @@ if ($sql->execute()) {
     $lt['person'] = $ltperson;
     $lt['art'] = $ltart;
     $lt['bem'] = $ltbem;
-    $lt['idvon'] = $ltidvon;
-    $lt['idzeit'] = $ltidzeit;
+    $lt['urheber'] = $lturheber;
+    $lt['eintragszeit'] = $lteintragszeit;
     array_push($LTIDS, $ltid);
     array_push($LOBTADEL, $lt);
   }
@@ -65,9 +65,9 @@ $sql->close();
 // Fehlzeiten
 $FEHLZEITEN = [];
 $FZIDS = [];
-$sql = $dbs->prepare("SELECT id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL'), idvon, idzeit FROM fehlzeiten");
+$sql = $dbs->prepare("SELECT id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL'), urheber, eintragszeit FROM fehlzeiten");
 if ($sql->execute()) {
-  $sql->bind_result($fzid, $fzperson, $fzvon, $fzbis, $fzbem, $fzidvon, $fzidzeit);
+  $sql->bind_result($fzid, $fzperson, $fzvon, $fzbis, $fzbem, $fzurheber, $fzeintragszeit);
   while ($sql->fetch()) {
     $ft = [];
     $lt['id'] = $fzid;
@@ -75,8 +75,8 @@ if ($sql->execute()) {
     $lt['von'] = $fzvon;
     $lt['bis'] = $fzbis;
     $lt['bem'] = $fzbem;
-    $lt['idvon'] = $fzidvon;
-    $lt['idzeit'] = $fzidzeit;
+    $lt['urheber'] = $fzurheber;
+    $lt['eintragszeit'] = $fzeintragszeit;
     array_push($FZIDS, $fzid);
     array_push($FEHLZEITEN, $fz);
   }
@@ -144,11 +144,11 @@ if (count($TIDS) > 0) {
     $sql->close();
 
     // Lob und Tadel übernehmen
-    $anfrage = "INSERT INTO lobtadel (id, eintrag, person, art, bemerkung, idvon, idzeit)";
+    $anfrage = "INSERT INTO lobtadel (id, eintrag, person, art, bemerkung, urheber, eintragszeit)";
     $anfrage .= " VALUES (?, ?, ?, ?, AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), ?, ?)";
     $sql = $dbl->prepare($anfrage);
     foreach ($LOBTADEL as $lt) {
-      $sql->bind_param("iiissii", $lt['id'], $lt['eintrag'], $lt['person'], $lt['art'], $lt['bemerkung'], $lt['idvon'], $lt['idzeit']);
+      $sql->bind_param("iiissii", $lt['id'], $lt['eintrag'], $lt['person'], $lt['art'], $lt['bemerkung'], $lt['urheber'], $lt['eintragszeit']);
       $sql->execute();
     }
     $sql->close();
@@ -170,10 +170,10 @@ if (count($TIDS) > 0) {
     if (count($kurspersonen) > 0) {
       $anpassungfz = [];
       $kurspersonen = "(".implode(",", $kurspersonen).")"
-      $sql = $dbl->prepare("SELECT id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL'), entschuldigt, idvon, idzeit FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?) OR (von <= ? AND bis >= ?)) AND person IN $kurspersonen");
+      $sql = $dbl->prepare("SELECT id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL'), entschuldigt, urheber, eintragszeit FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?) OR (von <= ? AND bis >= ?)) AND person IN $kurspersonen");
       $sql->bind_param("iiiiii", $beginn, $ende, $beginn, $ende, $beginn, $ende);
       if ($sql->execute()) {
-        $sql->bind_result($aid, $apers, $avon, $bis, $abem, $aent, $aidvon, $aidzeit);
+        $sql->bind_result($aid, $apers, $avon, $bis, $abem, $aent, $aurheber, $aeintragszeit);
         $a = [];
         $a['id'] = $aid;
         $a['person'] = $apers;
@@ -181,8 +181,8 @@ if (count($TIDS) > 0) {
         $a['bis'] = $abis;
         $a['bemerkung'] = $abem;
         $a['entschuldigt'] = $aent;
-        $a['idvon'] = $aidvon;
-        $a['idzeit'] = $aidzeit;
+        $a['urheber'] = $aurheber;
+        $a['eintragszeit'] = $aeintragszeit;
       }
       $sql->close();
 
@@ -196,8 +196,8 @@ if (count($TIDS) > 0) {
           $sql->close();
           // Neue Fehlzeit für die Restzeit einfügen
           $id = cms_generiere_kleinste_id("fehlzeiten", "l");
-          $sql = $dbl->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = ?, idvon = ?, idzeit = ? WHERE id = ?");
-          $sql->bind_param("ii", $a['person'], $nvon, $a['bis'], $a['bemerkung'], $a['entschudligt'], $a['idvon'], $a['idzeit'], $id);
+          $sql = $dbl->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = ?, urheber = ?, eintragszeit = ? WHERE id = ?");
+          $sql->bind_param("ii", $a['person'], $nvon, $a['bis'], $a['bemerkung'], $a['entschudligt'], $a['urheber'], $a['eintragszeit'], $id);
           $sql->execute();
           $sql->close();
         }
@@ -247,9 +247,9 @@ foreach ($FEHLZEITEN as $fz) {
 
   // Fehlzeit einpassen
   if ($fzvon !== null) && ($fzbis !== null) {
-    $sql = $dbl->prepare("UPDATE fehlzeiten SET bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = 0, idvon = ?, idzeit = ? WHERE id = ?");
+    $sql = $dbl->prepare("UPDATE fehlzeiten SET bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = 0, urheber = ?, eintragszeit = ? WHERE id = ?");
     $neuebemerkung = $fzvbem." – ".$fz['bemerkung'];
-    $sql->bind_param("isiii", $fz['bis'], $neuebemerkung, $fz['idvon'], $fz['idzeit'], $fzvon);
+    $sql->bind_param("isiii", $fz['bis'], $neuebemerkung, $fz['urheber'], $fz['eintragszeit'], $fzvon);
     $sql->execute();
     $sql->close();
 
@@ -258,21 +258,21 @@ foreach ($FEHLZEITEN as $fz) {
     $sql->execute();
     $sql->close();
   } else if ($fzvon !== null) { // Alte Fehlzeit später beenden
-    $sql = $dbl->prepare("UPDATE fehlzeiten SET bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = 0, idvon = ?, idzeit = ? WHERE id = ?");
+    $sql = $dbl->prepare("UPDATE fehlzeiten SET bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = 0, urheber = ?, eintragszeit = ? WHERE id = ?");
     $neuebemerkung = $fzvbem." – ".$fz['bemerkung'];
-    $sql->bind_param("isiii", $fz['bis'], $neuebemerkung, $fz['idvon'], $fz['idzeit'], $fzvon);
+    $sql->bind_param("isiii", $fz['bis'], $neuebemerkung, $fz['urheber'], $fz['eintragszeit'], $fzvon);
     $sql->execute();
     $sql->close();
   } else if ($fzbis !== null) { // Alte Fehlzeit früher beginnen
-    $sql = $dbl->prepare("UPDATE fehlzeiten SET von = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = 0, idvon = ?, idzeit = ? WHERE id = ?");
+    $sql = $dbl->prepare("UPDATE fehlzeiten SET von = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = 0, urheber = ?, eintragszeit = ? WHERE id = ?");
     $neuebemerkung = $fz['bemerkung']." – ".$fzhbem;
-    $sql->bind_param("isiii", $fz['von'], $neuebemerkung, $fz['idvon'], $fz['idzeit'], $fzbis);
+    $sql->bind_param("isiii", $fz['von'], $neuebemerkung, $fz['urheber'], $fz['eintragszeit'], $fzbis);
     $sql->execute();
     $sql->close();
   } else if ($fz['von'] >= $beginn && $fz['bis'] <= $ende) {  // Neue Fehlzeit eintragen
     $id = cms_generiere_kleinste_id("fehlzeiten", "l");
-    $sql = $dbl->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = ?, idvon = ?, idzeit = ? WHERE id = ?");
-    $sql->bind_param("ii", $fz['person'], $fz['von'], $fz['bis'], $fz['bemerkung'], $fz['entschudligt'], $fz['idvon'], $a['idzeit'], $id);
+    $sql = $dbl->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), entschuldigt = ?, urheber = ?, eintragszeit = ? WHERE id = ?");
+    $sql->bind_param("ii", $fz['person'], $fz['von'], $fz['bis'], $fz['bemerkung'], $fz['entschudligt'], $fz['urheber'], $a['eintragszeit'], $id);
     $sql->execute();
     $sql->close();
   }

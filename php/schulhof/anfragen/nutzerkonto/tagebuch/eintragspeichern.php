@@ -135,10 +135,10 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID
 			if (substr($ltid,0,4) == 'temp') {
 				$id = cms_generiere_kleinste_id('lobtadel', 's');
 				if ($lt['person'] == 'a') {
-		    	$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+		    	$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 		    	$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
 				} else {
-					$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+					$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 		    	$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['person'], $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
 				}
 		    $sql->execute();
@@ -150,10 +150,10 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID
 			      $ltbestand[$ltid]['art'] != $lobtadel[$ltid]['art'] ||
 					  $ltbestand[$ltid]['bem'] != $lobtadel[$ltid]['bem']) {
 					if ($lobtadel[$ltid]['person'] == 'a') {
-						$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+						$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 						$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $ltid);
 					} else {
-						$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+						$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 						$sql->bind_param("iissiii", $eintrag, $lobtadel[$ltid]['person'], $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $ltid);
 					}
 			    $sql->execute();
@@ -203,7 +203,7 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID
 			// Neuen Fehlzeiten-Eintrag anlegen
 			if (substr($fzid,0,4) == 'temp') {
 				$id = cms_generiere_kleinste_id('fehlzeiten', 's');
-		    $sql = $dbs->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+		    $sql = $dbs->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 		    $sql->bind_param("iiisiii", $fehlzeiten[$fzid]['person'], $fehlzeiten[$fzid]['von'], $fehlzeiten[$fzid]['bis'], $fehlzeiten[$fzid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
 		    $sql->execute();
 		    $sql->close();
@@ -214,7 +214,7 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID
 			      $fzbestand[$fzid]['von'] != $fehlzeiten[$fzid]['von'] ||
 					  $fzbestand[$fzid]['bis'] != $fehlzeiten[$fzid]['bis'] ||
 					  $fzbestand[$fzid]['bem'] != $fehlzeiten[$fzid]['bem']) {
-					$sql = $dbs->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), idvon = ?, idzeit = ? WHERE id = ?");
+					$sql = $dbs->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 					$sql->bind_param("iiisiii", $fehlzeiten[$fzid]['person'], $fehlzeiten[$fzid]['von'], $fehlzeiten[$fzid]['bis'], $fehlzeiten[$fzid]['bem'], $CMS_BENUTZERID, $jetzt, $fzid);
 			    $sql->execute();
 			    $sql->close();
