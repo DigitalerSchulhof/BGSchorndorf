@@ -10,8 +10,8 @@ else {$anfragenziel = '';}
 include_once('../../lehrerzimmer/anfragen/ziele.php');
 
 if (isset($CMS_ZIELE[$anfragenziel])) {
-	include_once('../../../'.$CMS_ZIELE[34]);
 
+	//include_once('../../../'.$CMS_ZIELE[34]);
 	include_once('../../../'.$CMS_ZIELE[$anfragenziel]);
 }
 ?>

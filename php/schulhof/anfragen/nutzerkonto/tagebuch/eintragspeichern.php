@@ -48,6 +48,7 @@ $a = mktime(0,0,0,$m,$t,$j);
 $x = mktime(0,0,0,$m,$t+1,$j)-1;
 for ($i=1; $i<count($fids); $i++) {
 	$fzid = $fids[$i];
+	$fehlzeiten[$fzid]['id'] = $fids[$i];
 	if (isset($_POST["fzperson_".$fzid])) {$fehlzeiten[$fzid]['person'] = $_POST["fzperson_".$fzid];} else {echo "FEHLER13"; exit;}
 	if (isset($_POST["fzzeitbh_".$fzid])) {$fehlzeiten[$fzid]['bh'] = $_POST["fzzeitbh_".$fzid];} else {echo "FEHLER14"; exit;}
 	if (isset($_POST["fzzeitbm_".$fzid])) {$fehlzeiten[$fzid]['bm'] = $_POST["fzzeitbm_".$fzid];} else {echo "FEHLER15"; exit;}
@@ -63,7 +64,23 @@ for ($i=1; $i<count($fids); $i++) {
 	if ($fehlzeiten[$fzid]['bh']*60+$fehlzeiten[$fzid]['bm'] >= $fehlzeiten[$fzid]['eh']*60+$fehlzeiten[$fzid]['em']) {echo "FEHLER24"; exit;}
 	array_push($personen, $fehlzeiten[$fzid]['person']);
 	$fehlzeiten[$fzid]['von'] = mktime($fehlzeiten[$fzid]['bh'], $fehlzeiten[$fzid]['bm'], 0, $m, $t, $j);
-	$fehlzeiten[$fzid]['bis'] = mktime($fehlzeiten[$fzid]['eh'], $fehlzeiten[$fzid]['em'], 0, $m, $t, $j);;
+	$fehlzeiten[$fzid]['bis'] = mktime($fehlzeiten[$fzid]['eh'], $fehlzeiten[$fzid]['em'], 0, $m, $t, $j)-1;
+
+	echo $fehlzeiten[$fzid]['von']." < \n".$tbeginn."\n".$fehlzeiten[$fzid]['bis']." > \n".$tende;
+
+	if ($fehlzeiten[$fzid]['von'] < $tbeginn || $fehlzeiten[$fzid]['bis'] > $tende) {
+		echo "FEHLZEIT1"; exit;
+	}
+
+	// Püfe, ob sich diese Fehlzeit mit den bisherigen überschneidet
+	foreach ($fehlzeiten as $f) {
+		if ($f['person'] == $fehlzeiten[$fzid]['person'] && $f['id'] != $fehlzeiten[$fzid]['id']) {
+			if (($f['von'] <= $fehlzeiten[$fzid]['von'] && $f['bis'] >= $fehlzeiten[$fzid]['von']) ||
+		      ($f['von'] <= $fehlzeiten[$fzid]['bis'] && $f['bis'] >= $fehlzeiten[$fzid]['bis'])) {
+				echo "FEHLZEIT2"; exit;
+			}
+		}
+	}
 }
 
 for ($i=1; $i<count($lids); $i++) {
@@ -134,12 +151,13 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID
 			// Neuen Lob-Tadel-Eintrag anlegen
 			if (substr($ltid,0,4) == 'temp') {
 				$id = cms_generiere_kleinste_id('lobtadel', 's');
+				array_push($ltbearbeiten, $id);
 				if ($lt['person'] == 'a') {
 		    	$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 		    	$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
 				} else {
 					$sql = $dbs->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
-		    	$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['person'], $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
+		    	$sql->bind_param("iissiii", $eintrag, $lobtadel[$ltid]['person'], $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
 				}
 		    $sql->execute();
 		    $sql->close();
@@ -203,6 +221,7 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID
 			// Neuen Fehlzeiten-Eintrag anlegen
 			if (substr($fzid,0,4) == 'temp') {
 				$id = cms_generiere_kleinste_id('fehlzeiten', 's');
+				array_push($fzbearbeiten, $id);
 		    $sql = $dbs->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), urheber = ?, eintragszeit = ? WHERE id = ?");
 		    $sql->bind_param("iiisiii", $fehlzeiten[$fzid]['person'], $fehlzeiten[$fzid]['von'], $fehlzeiten[$fzid]['bis'], $fehlzeiten[$fzid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
 		    $sql->execute();
