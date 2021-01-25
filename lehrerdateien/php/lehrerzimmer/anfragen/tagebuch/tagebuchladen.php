@@ -425,7 +425,7 @@ function cms_fehlzeit($fz, $P) {
   if (strlen($urheber) > 0) {
     $urheber = " – ".$urheber;
   }
-  $urheber = "<br><span class=\"cms_tagebuch_klein\">".date("H:i", $fz['von'])." bis ".date("H:i", $fz['bis']).$urheber."</span>";
+  $urheber = "<br><span class=\"cms_tagebuch_klein\">".date("H:i", $fz['von'])." bis ".date("H:i", $fz['bis']+1).$urheber."</span>";
   return "<span class=\"cms_fehlzeit $klasse\">".$fehl.$urheber."</span>";
 }
 ?>
