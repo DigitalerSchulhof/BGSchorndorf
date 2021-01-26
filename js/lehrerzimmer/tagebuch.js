@@ -225,6 +225,24 @@ function cms_tagebuch_eintragen(unterricht) {
   cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+function cms_tagebuch_einsehen(id, art) {
+  cms_laden_an('Tagebucheintrag einsehen', 'Das Tagebuch wird geladen ...');
+
+  var formulardaten = new FormData();
+  formulardaten.append('gruppenid', id);
+  formulardaten.append('gruppenart', art);
+  formulardaten.append("anfragenziel", 	'432');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_link('Schulhof/Nutzerkonto/Tagebuch/Einsehen');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
 function cms_eintrag_fzdazu(beginn, ende, ln) {
   var ln = ln || '-';
   var box = document.getElementById('cms_eintrag_fehlzeiten');
@@ -472,6 +490,45 @@ function cms_tagebuch_eintrag_speichern(ln) {
 }
 
 
+function cms_tagebuch_tagesansicht(veraenderung, eintrag) {
+  if (((veraenderung == '+') || (veraenderung == '-') || (veraenderung == 'j')) && (cms_check_ganzzahl(eintrag,0))) {
+    var tag = document.getElementById('cms_tagebuch_tagesansicht_tag_T');
+    var monat = document.getElementById('cms_tagebuch_tagesansicht_tag_M');
+    var jahr = document.getElementById('cms_tagebuch_tagesansicht_tag_J');
+    var klasse = document.getElementById('cms_tagebuch_klasseg');
+    var tagwert = parseInt(tag.value);
+
+
+    if (klasse) {
+      cms_gesichert_laden('cms_tagebuch_tagesansicht');
+
+      if (veraenderung == '+') {
+        tag.value = tagwert+1;
+        cms_datumcheck('cms_tagebuch_tagesansicht_tag');
+      } else if (veraenderung == '-') {
+        tag.value = tagwert-1;
+        cms_datumcheck('cms_tagebuch_tagesansicht_tag');
+      }
+
+      var formulardaten = new FormData();
+      cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+      formulardaten.append("tag", tag.value);
+      formulardaten.append("monat", monat.value);
+      formulardaten.append("jahr", jahr.value);
+      formulardaten.append("klasse", klasse.value);
+      formulardaten.append("unterricht", eintrag);
+      formulardaten.append("anfragenziel", 	'34');
+
+      function anfragennachbehandlung(rueckgabe) {
+        var box = document.getElementById('cms_tagebuch_tagesansicht');
+        box.innerHTML = rueckgabe;
+      }
+
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+    }
+  }
+}
+
 
 
 function cms_tagebuch_tagesansicht(veraenderung, eintrag) {
@@ -510,5 +567,66 @@ function cms_tagebuch_tagesansicht(veraenderung, eintrag) {
 
       cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
     }
+  }
+}
+
+function cms_tagebuch_wochenansicht(veraenderung) {
+  if (((veraenderung == '+') || (veraenderung == '-') || (veraenderung == 'j'))) {
+    var gruppenid = document.getElementById('cms_tagebuchgruppenid');
+    var gruppenart = document.getElementById('cms_tagebuchgruppenart');
+    cms_gesichert_laden('cms_tagebuch_tagesansicht');
+
+    var formulardaten = new FormData();
+    cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+
+    if (gruppenart.value == 'klasse') {
+      var beginn = document.getElementById('cms_tagebuch_wochenansicht_datum');
+      var datum = document.getElementById('cms_tagebuch_wochenansicht_datum_text');
+      var ansicht = document.getElementById('cms_tagebuchansicht');
+      var beginnwert = parseInt(beginn.value);
+
+      if (veraenderung == '+') {
+        var alt = new Date(beginnwert*1000);
+        var neu = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()+7, 0, 0, 0, 0);
+        var neuende = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()+13, 23, 59, 59, 0);
+        beginn.value = neu.getTime()/1000;
+        datum.innerHTML = "MO "+cms_fuehrendenull(neu.getDate())+"."+cms_fuehrendenull((neu.getMonth()+1))+"."+neu.getFullYear()+" – SO "+cms_fuehrendenull(neuende.getDate())+"."+cms_fuehrendenull((neuende.getMonth()+1))+"."+neuende.getFullYear();
+      } else if (veraenderung == '-') {
+        var alt = new Date(beginnwert*1000);
+        var neu = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()-7, 0, 0, 0, 0);
+        var neuende = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()-1, 23, 59, 59, 0);
+        beginn.value = neu.getTime()/1000;
+        datum.innerHTML = "MO "+cms_fuehrendenull(neu.getDate())+"."+cms_fuehrendenull((neu.getMonth()+1))+"."+neu.getFullYear()+" – SO "+cms_fuehrendenull(neuende.getDate())+"."+cms_fuehrendenull((neuende.getMonth()+1))+"."+neuende.getFullYear();
+      }
+
+      formulardaten.append("beginn", beginn.value);
+      formulardaten.append("ansicht", ansicht.value);
+    }
+
+    formulardaten.append("gruppenid", gruppenid.value);
+    formulardaten.append("gruppenart", gruppenart.value);
+    formulardaten.append("anfragenziel", 	'32');
+
+    function anfragennachbehandlung(rueckgabe) {
+      var box = document.getElementById('cms_tagebuch_tagesansicht');
+      box.innerHTML = rueckgabe;
+    }
+
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  }
+}
+
+
+function cms_tagebuchansicht_aendern(art) {
+  if (art == 'v' || art == 'w') {
+    if (art == 'v') {
+      document.getElementById('cms_tagebuchansicht_v').className = "cms_button_ja";
+      document.getElementById('cms_tagebuchansicht_w').className = "cms_button";
+    } else {
+      document.getElementById('cms_tagebuchansicht_w').className = "cms_button_ja";
+      document.getElementById('cms_tagebuchansicht_v').className = "cms_button";
+    }
+    document.getElementById('cms_tagebuchansicht').value = art;
+    cms_tagebuch_wochenansicht('j');
   }
 }

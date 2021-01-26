@@ -154,7 +154,7 @@ function cms_tagebucheintrag_tag($dbs, $dbl, $klasse, $t, $m, $j) {
   return cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden, $fehlzeiten);
 }
 
-function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl) {
+function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl = null) {
   global $CMS_SCHLUESSEL, $CMS_SCHLUESSELL;
 
   $jetzt = mktime(23,59,59,$m,$t,$j);
@@ -173,8 +173,13 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl) {
   $unterricht = [];
   $uids = [];
   $personen = [];
-  $sql = $dbs->prepare("SELECT unterricht.id, tkurs, tbeginn, tende, tlehrer, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') FROM unterricht JOIN kurse ON tkurs = kurse.id WHERE tende < ? AND tkurs = ? ORDER BY tbeginn DESC LIMIT ?");
-  $sql->bind_param("iii", $jetzt, $kurs, $anzahl);
+  if ($anzahl === null) {
+    $sql = $dbs->prepare("SELECT unterricht.id, tkurs, tbeginn, tende, tlehrer, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') FROM unterricht JOIN kurse ON tkurs = kurse.id WHERE tkurs = ? ORDER BY tbeginn ASC");
+    $sql->bind_param("i", $kurs);
+  } else {
+    $sql = $dbs->prepare("SELECT unterricht.id, tkurs, tbeginn, tende, tlehrer, AES_DECRYPT(kurse.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(kurse.kurzbezeichnung, '$CMS_SCHLUESSEL') FROM unterricht JOIN kurse ON tkurs = kurse.id WHERE tende < ? AND tkurs = ? ORDER BY tbeginn DESC LIMIT ?");
+    $sql->bind_param("iii", $jetzt, $kurs, $anzahl);
+  }
   if ($sql->execute()) {
     $sql->bind_result($uid, $tkurs, $tbeginn, $tende, $tlehrer, $tkursbez, $tkurskbez);
     while ($sql->fetch()) {
@@ -215,7 +220,8 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl) {
   }
 
   $personenpool = [];
-  $sql = $dbs->prepare("SELECT person FROM kursemitglieder WHERE gruppe IN $kurseids");
+  $sql = $dbs->prepare("SELECT person FROM kursemitglieder WHERE gruppe = ?");
+  $sql->bind_param("i", $kurs);
   if ($sql->execute()) {
     $sql->bind_result($person);
     while ($sql->fetch()) {
@@ -252,7 +258,7 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl) {
       $b = mktime(0,0,0,date("m", $u['beginn']),date("d", $u['beginn']),date("Y", $u['beginn']));
       $e = mktime(0,0,0,date("m", $u['beginn']),date("d", $u['beginn'])+1,date("Y", $u['beginn']))-1;
       $sql = $dbl->prepare("SELECT person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL'), entschuldigt, urheber FROM fehlzeiten WHERE (von BETWEEN ? AND ?) AND (bis BETWEEN ? AND ?) AND person IN $pool");
-      $sql->bind_param("iiiii", $b, $e, $b, $e, $kurs);
+      $sql->bind_param("iiii", $b, $e, $b, $e);
       if ($sql->execute()) {
         $sql->bind_result($person, $von, $bis, $bem, $ent, $urheber);
         while ($sql->fetch()) {
@@ -290,13 +296,19 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl) {
   }
 
   // Tagebucheinträge zusammenbauen
-  return cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden, $fehlzeiten);
+  return cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden);
 }
 
 function cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden, $fehlzeiten = null) {
+  global $CMS_BENUTZERID;
   $ausgabe = "";
   foreach ($unterricht as $u) {
-    $ausgabe .= "<tr>";
+    if ($CMS_BENUTZERID == $u['lehrer']) {
+      $event = " onclick=\"cms_tagebuch_eintragen('".$u['id']."')\" class=\"cms_waehlbar\"";
+    } else {
+      $event = "";
+    }
+    $ausgabe .= "<tr$event>";
       $std = date("H:i", $u['beginn']);
       if (isset($schulstunden[$std])) {$std = $schulstunden[$std];}
       if (strlen($u['kurskbez']) > 0) {$f = $u['kurskbez'];} else {$f = $u['kursbez'];}

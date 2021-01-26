@@ -431,4 +431,5 @@ $CMS_ZIELE[428] = 'php/schulhof/anfragen/';
 $CMS_ZIELE[429] = 'php/schulhof/anfragen/';
 $CMS_ZIELE[430] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/eintragvorbereiten.php';
 $CMS_ZIELE[431] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/eintragspeichern.php';
+$CMS_ZIELE[432] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/einsichtvorbereiten.php';
 ?>

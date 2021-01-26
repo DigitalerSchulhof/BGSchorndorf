@@ -1,6 +1,10 @@
 // HELL;
 .cms_tagebuch_leistungsmessung {color: @h_haupt_meldungfehlerakzent;}
 
+.cms_waehlbar:hover {
+  cursor:pointer;
+}
+
 .cms_tagebuch_bemerkungen {
   display: block;
   margin-top: 10px;
