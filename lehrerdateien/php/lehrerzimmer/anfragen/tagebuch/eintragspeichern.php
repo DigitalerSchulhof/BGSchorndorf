@@ -3,14 +3,16 @@ include_once("../../lehrerzimmer/funktionen/config.php");
 include_once("../../lehrerzimmer/funktionen/texttrafo.php");
 include_once("../../lehrerzimmer/funktionen/check.php");
 
-session_start();
-
 // Variablen einlesen, falls übergeben
-if (isset($_POST['nutzerid'])) 		    {$nutzerid = $_POST['nutzerid'];} 			        else {cms_anfrage_beenden(); exit;}
-if (isset($_POST['sessionid']))     	{$sessionid = $_POST['sessionid'];} 		        else {cms_anfrage_beenden(); exit;}
-if (isset($_POST['eintrag'])) 	      {$eintragid = $_POST['eintrag'];} 		          else {cms_anfrage_beenden(); exit;}
-
-if (!cms_check_ganzzahl($eintragid,0)) {cms_anfrage_beenden(); exit;}
+if (isset($_POST['nutzerid'])) 		{$nutzerid = $_POST['nutzerid'];} 			  else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['sessionid'])) 	{$sessionid = $_POST['sessionid'];} 		  else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['inhalt'])) 						{$inhalt = $_POST['inhalt'];} 										else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['hausaufgaben'])) 			{$hausaufgabe = $_POST['hausaufgaben'];} 					else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['leistungsmessung'])) 	{$leistungsmessung = $_POST['leistungsmessung'];} else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['freigabe'])) 					{$freigabe = $_POST['freigabe'];}									else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['fzids'])) 						{$fzids = $_POST['fzids'];} 											else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['ltids'])) 						{$ltids = $_POST['ltids'];} 											else {cms_anfrage_beenden(); exit;}
+if (isset($_POST['eintrag'])) 					{$eintrag = $_POST['eintrag'];} 									else {cms_anfrage_beenden(); exit;}
 
 // REIHENFOLGE WICHTIG!! NICHT ÄNDERN -->
 include_once("../../lehrerzimmer/funktionen/entschluesseln.php");
@@ -18,313 +20,296 @@ include_once("../../lehrerzimmer/funktionen/sql.php");
 include_once("../../lehrerzimmer/funktionen/meldungen.php");
 include_once("../../lehrerzimmer/funktionen/generieren.php");
 $angemeldet = cms_angemeldet();
-
 // <-- NICHT ÄNDERN!! REIHENFOLGE WICHTIG
 
-if ($angemeldet) {
-  $code = "";
-  $dbs = cms_verbinden('s');
-  $dbl = cms_verbinden('l');
+if (!cms_check_ganzzahl($eintrag, 0)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_toggle($leistungsmessung)) {cms_anfrage_beenden(); exit;}
+if (!cms_check_toggle($freigabe)) {cms_anfrage_beenden(); exit;}
+if (strlen($inhalt) == 0) {cms_anfrage_beenden(); exit;}
 
-  $CMS_EINSTELLUNGEN = cms_einstellungen_laden('allgemeineeinstellungen');
-  $jetzt = time();
-  $EINTRAG = array();
+$dbs = cms_verbinden("s");
+$dbl = cms_verbinden("l");
 
-  // Kurs laden
-  $gefunden = false;
-  $sql = $dbs->prepare("SELECT tkurs, tbeginn, tende FROM unterricht WHERE tlehrer = ? AND id = ?");
-  $sql->bind_param("ii", $CMS_BENUTZERID, $eintragid);
-  if ($sql->execute()) {
-    $sql->bind_result($EINTRAG['kid'], $EINTRAG['beginn'], $EINTRAG['ende']);
-    if ($sql->fetch()) {
-      $gefunden = true;
-      $_SESSION['Tagebuch Eintrag'] = $eintragid;
-      $_SESSION['Tagebuch Kurs'] = $EINTRAG['kid'];
-      $_SESSION['Tagebuch Stundenbeginn'] = $EINTRAG['beginn'];
-      $_SESSION['Tagebuch Stundenende'] = $EINTRAG['ende'];
-    }
-  }
-  $sql->close();
+include_once("../../lehrerzimmer/anfragen/tagebuch/uebertragen.php");
 
-  if ($gefunden) {
-    // Schüler laden
-    $SCHUELER = array();
-    $SCHUELEROPT = "";
-    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(titel, '$CMS_SCHLUESSEL') FROM personen WHERE id IN (SELECT person FROM kursemitglieder WHERE gruppe = ?) AND art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL')) AS x ORDER BY nachname, vorname");
-    $sql->bind_param("i", $EINTRAG['kid']);
-    if ($sql->execute()) {
-      $sql->bind_result($id, $vor, $nach, $titel);
-      while ($sql->fetch()) {
-        $SCHUELER[$id] = array();
-        $SCHUELER[$id]['vor'] = $vor;
-        $SCHUELER[$id]['nach'] = $nach;
-        $SCHUELER[$id]['tit'] = $titel;
-        $SCHUELER[$id]['ganz'] = cms_generiere_anzeigename($vor, $nach, $titel);
-        $SCHUELEROPT .= "<option value=\"$id\">".cms_generiere_anzeigename($vor, $nach, $titel)."</option>";
-      }
-    }
-    $sql->close();
+$sql = $dbs->prepare("SELECT AES_DECRYPT(art, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?");
+$sql->bind_param("i", $CMS_BENTUZERID);
+if ($sql->execute()) {
+	$sql->bind_result($CMS_BENUTZERART);
+	$sql->fetch();
+}
+$sql->close();
 
-    // Eintrag laden
-    $sql = $dbl->prepare("SELECT id, AES_DECRYPT(inhalt, '$CMS_SCHLUESSELL'), AES_DECRYPT(hausaufgabe, '$CMS_SCHLUESSELL'), freigabe, leistungsmessung FROM tagebuch WHERE id = ?");
-    $sql->bind_param("i", $eintragid);
-    if ($sql->execute()) {
-      $sql->bind_result($id, $inhalt, $hausaufgabe, $freigabe, $lm);
-      if ($sql->fetch()) {
-        $EINTRAG['uid'] = $id;
-        $EINTRAG['inhalt'] = $inhalt;
-        $EINTRAG['hausaufgabe'] = $hausaufgabe;
-        $EINTRAG['freigabe'] = $freigabe;
-        $EINTRAG['lm'] = $lm;
-        $EINTRAG['fehl'] = array();
-        $EINTRAG['lobtadel'] = array();
-      }
-    }
-    $sql->close();
-
-    // Fehlzeiten ergänzen
-    $psql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(titel, '$CMS_SCHLUESSEL') FROM personen WHERE id = ?");
-    $sql = $dbl->prepare("SELECT id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL'), entschuldigt FROM fehlzeiten WHERE eintrag = ?");
-    $sql->bind_param("i", $eintragid);
-    if ($sql->execute()) {
-      $sql->bind_result($eid, $pers, $evon, $ebis, $ebem, $eent);
-      while ($sql->fetch()) {
-        $F = array();
-        $F['id'] = $eid;
-        $F['pers'] = $pers;
-        if (isset($SCHUELER[$pers])) {
-          $F['vor'] = $SCHUELER[$pers]['vor'];
-          $F['nach'] = $SCHUELER[$pers]['nach'];
-          $F['tit'] = $SCHUELER[$pers]['tit'];
-          $F['ganz'] = $SCHUELER[$pers]['ganz'];
-        }
-        else {
-          $psql->bind_param("i", $pers);
-          $psql->execute();
-          $psql->bind_result($vor, $nach, $tit);
-          $psql->fetch();
-          $F['vor'] = $vor;
-          $F['nach'] = $nach;
-          $F['tit'] = $tit;
-          $F['ganz'] = cms_generiere_anzeigename($vor, $nach, $tit);
-        }
-        $F['von'] = $evon;
-        $F['bis'] = $ebis;
-        $F['bem'] = $ebem;
-        $F['ent'] = $eent;
-        array_push($EINTRAG['fehl'], $F);
-      }
-    }
-    $sql->close();
-
-    // Lob und Tadel ergänzen
-    $sql = $dbl->prepare("SELECT id, person, art, charakter, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL') FROM lobtadel WHERE eintrag = ?");
-    $sql->bind_param("i", $eintragid);
-    if ($sql->execute()) {
-      $sql->bind_result($eid, $pers, $eart, $echar, $ebem);
-      while ($sql->fetch()) {
-        $LT = array();
-        $LT['id'] = $eid;
-        $LT['pers'] = $pers;
-        if ($pers != null) {
-          if (isset($SCHUELER[$pers])) {
-            $LT['vor'] = $SCHUELER[$pers]['vor'];
-            $LT['nach'] = $SCHUELER[$pers]['nach'];
-            $LT['tit'] = $SCHUELER[$pers]['tit'];
-            $LT['ganz'] = $SCHUELER[$pers]['ganz'];
-          }
-          else {
-            $psql->bind_param("i", $pers);
-            $psql->execute();
-            $psql->bind_result($vor, $nach, $tit);
-            $psql->fetch();
-            $LT['vor'] = $vor;
-            $LT['nach'] = $nach;
-            $LT['tit'] = $tit;
-            $LT['ganz'] = cms_generiere_anzeigename($vor, $nach, $tit);
-          }
-        }
-        else {
-          $LT['vor'] = "ganze Klasse";
-          $LT['nach'] = "ganze Klasse";
-          $LT['tit'] = "ganze Klasse";
-          $LT['ganz'] = "ganze Klasse";
-        }
-        $LT['art'] = $eart;
-        $LT['char'] = $echar;
-        $LT['bem'] = $ebem;
-        array_push($EINTRAG['lobtadel'], $LT);
-      }
-    }
-    $sql->close();
-    $psql->close();
-
-    // Bearbeiten ausgeben
-    $code = "<td colspan=\"6\">";
-
-    // Prüfen, ob der Inhalt bearbeitet werden darf
-    $jetzt = time();
-    $ifrist = $CMS_EINSTELLUNGEN["Tagebuch Frist Inhalt"];
-    $ffrist = $CMS_EINSTELLUNGEN["Tagebuch Frist Abwesenheit"];
-    $ltfrist = $CMS_EINSTELLUNGEN["Tagebuch Frist Lob und Tadel"];
-    $ierlaubt = false;
-    $ferlaubt = false;
-    $lterlaubt = false;
-    if ($EINTRAG['freigabe'] == 0) {
-      if ($ifrist == '-') {$ierlaubt = true;}
-      if (($ifrist == 's') && ($jetzt <= $EINTRAG['ende'])) {$ierlaubt = true;}
-      if (($ifrist == 't') && ($jetzt <= mktime(23,59,59,date('n',$EINTRAG['ende']), date('j',$EINTRAG['ende']), date('Y', $EINTRAG['ende'])))) {$ierlaubt = true;}
-      if (cms_check_ganzzahl($ifrist,1,14)) {
-        if ($jetzt <= mktime(23,59,59,date('n',$EINTRAG['ende']), date('j',$EINTRAG['ende'])+$ifrist, date('Y', $EINTRAG['ende']))) {$ierlaubt = true;}
-      }
-
-      if ($ffrist == '-') {$ferlaubt = true;}
-      if (($ffrist == 's') && ($jetzt <= $EINTRAG['ende'])) {$ferlaubt = true;}
-      if (($ffrist == 't') && ($jetzt <= mktime(23,59,59,date('n',$EINTRAG['ende']), date('j',$EINTRAG['ende']), date('Y', $EINTRAG['ende'])))) {$ferlaubt = true;}
-      if (cms_check_ganzzahl($ffrist,1,14)) {
-        if ($jetzt <= mktime(23,59,59,date('n',$EINTRAG['ende']), date('j',$EINTRAG['ende'])+$ffrist, date('Y', $EINTRAG['ende']))) {$ferlaubt = true;}
-      }
-
-      if ($ltfrist == '-') {$lterlaubt = true;}
-      if (($ltfrist == 's') && ($jetzt <= $EINTRAG['ende'])) {$lterlaubt = true;}
-      if (($ltfrist == 't') && ($jetzt <= mktime(23,59,59,date('n',$EINTRAG['ende']), date('j',$EINTRAG['ende']), date('Y', $EINTRAG['ende'])))) {$lterlaubt = true;}
-      if (cms_check_ganzzahl($ltfrist,1,14)) {
-        if ($jetzt <= mktime(23,59,59,date('n',$EINTRAG['ende']), date('j',$EINTRAG['ende'])+$ltfrist, date('Y', $EINTRAG['ende']))) {$lterlaubt = true;}
-      }
-    }
+$fids = explode("|", $fzids);
+$lids = explode("|", $ltids);
+$fehlzeiten = [];
+$lobtadel = [];
+$personen = [];
 
 
+$tlehrer = null;
+// Stundeninformationen laden
+$sql = $dbs->prepare("SELECT id, tbeginn, tende, tkurs, tlehrer FROM unterricht WHERE id = ?");
+$sql->bind_param("i", $eintrag);
+if ($sql->execute()) {
+	$sql->bind_result($uid, $tbeginn, $tende, $tkurs, $tlehrer);
+	$sql->fetch();
+}
+$sql->close();
 
-    $code .= "<table class=\"cms_formular\">";
-    // Inhalt
-    if (!$ierlaubt) {$dis = " disabled=\"disabled\"";} else {$dis = "";}
-    $code .= "<tr><th>Inhalt:</th><td><textarea name=\"cms_tagebuch_eintrag_inhalt\" id=\"cms_tagebuch_eintrag_inhalt\" rows=\"2\"$dis>".$EINTRAG['inhalt']."</textarea></td></tr>";
-    $code .= "<tr><th>Hausaufgaben:</th><td><textarea name=\"cms_tagebuch_eintrag_hausi\" id=\"cms_tagebuch_eintrag_hausi\" rows=\"2\"$dis>".$EINTRAG['hausaufgabe']."</textarea></td></tr>";
-    $code .= "<tr><th>Leistungsmessung:</th><td>";
-    if ($ierlaubt) {$code .= cms_generiere_schieber('cms_tagebuch_eintrag_lm', $EINTRAG['lm']);}
-    else {if ($EINTRAG['lm'] == 0) {$code .= "NEIN";} else {$code .= "JA";}}
-    $code .= "</td></tr>";
+if ($tlehrer === null) {cms_anfrage_beenden(); exit;}
 
-    // Sortieren
-    usort($EINTRAG['fehl'], function ($a, $b) {
-      if ($a['nach'] == $b['nach'])  {
-        if ($a['vor']<$b['vor']) {return -1;}
-        else {return 1;}
-      }
-      else {
-        if ($a['nach'] < $b['nach']) {return -1;}
-        else {return 1;}
-      }
-    });
-    usort($EINTRAG['lobtadel'], function ($a, $b) {
-      if ($a['nach'] == $b['nach'])  {
-        if ($a['vor']<$b['vor']) {return -1;}
-        else {return 1;}
-      }
-      else {
-        if ($a['nach'] < $b['nach']) {return -1;}
-        else {return 1;}
-      }
-    });
+$t = date("d", $tbeginn);
+$m = date("m", $tbeginn);
+$j = date("Y", $tbeginn);
+$a = mktime(0,0,0,$m,$t,$j);
+$x = mktime(0,0,0,$m,$t+1,$j)-1;
+for ($i=1; $i<count($fids); $i++) {
+	$fzid = $fids[$i];
+	$fehlzeiten[$fzid]['id'] = $fids[$i];
+	if (isset($_POST["fzperson_".$fzid])) {$fehlzeiten[$fzid]['person'] = $_POST["fzperson_".$fzid];} else {cms_anfrage_beenden(); exit;}
+	if (isset($_POST["fzzeitbh_".$fzid])) {$fehlzeiten[$fzid]['bh'] = $_POST["fzzeitbh_".$fzid];} else {cms_anfrage_beenden(); exit;}
+	if (isset($_POST["fzzeitbm_".$fzid])) {$fehlzeiten[$fzid]['bm'] = $_POST["fzzeitbm_".$fzid];} else {cms_anfrage_beenden(); exit;}
+	if (isset($_POST["fzzeiteh_".$fzid])) {$fehlzeiten[$fzid]['eh'] = $_POST["fzzeiteh_".$fzid];} else {cms_anfrage_beenden(); exit;}
+	if (isset($_POST["fzzeitem_".$fzid])) {$fehlzeiten[$fzid]['em'] = $_POST["fzzeitem_".$fzid];} else {cms_anfrage_beenden(); exit;}
+	if (isset($_POST["fzbemerkung_".$fzid])) {$fehlzeiten[$fzid]['bem'] = $_POST["fzbemerkung_".$fzid];} else {cms_anfrage_beenden(); exit;}
 
-    // Fehlzeiten
-    $code .= "<tr><th>Fehlzeiten:</th><td>";
-    $code .= "<ul id=\"cms_tagebuch_fehlzeiten\">";
-    $fehlids = array();
-    if ($ferlaubt) {
-      $code .= "<li><select name=\"cms_eintrag_fz_p\" id=\"cms_eintrag_fz_p\" class=\"cms_gross\">$SCHUELEROPT</select>";
-      $code .= " <span class=\"cms_button_ja\" onclick=\"cms_eintrag_fzdazu('".$EINTRAG['beginn']."', '".($EINTRAG['ende']+1)."');\">+</span></li>";
-      foreach ($EINTRAG['fehl'] AS $F) {
-        $code .= "<li id=\"cms_eintrag_fz_".$F['id']."\">";
-        $code .= "<input type=\"hidden\" name=\"cms_eintrag_fzp_".$F['id']."\" id=\"cms_eintrag_fzp_".$F['id']."\" value=\"".$F['pers']."\">";
-        $code .= cms_uhrzeit_eingabe('cms_eintrag_fz_beginn_'.$F['id'], date('H', $EINTRAG['beginn']), date('i', $EINTRAG['beginn']));
-        $code .= " – ".cms_uhrzeit_eingabe('cms_eintrag_fz_ende_'.$F['id'], date('H', $EINTRAG['ende']), date('i', $EINTRAG['ende']));
-        $code .= ": ".$F['ganz']."<br>";
-        $code .= "<input class=\"cms_gross\" type=\"text\" name=\"cms_eintrag_fz_bem_".$F['id']."\" id=\"cms_eintrag_fz_bem_".$F['id']."\" value=\"".$F['bem']."\"> ";
-        $code .= "<span class=\"cms_button_nein\" onclick=\"cms_eintrag_fzweg('".$F['id']."')\">–</span>";
-        $code .= "</li>";
-        array_push($fehlids, $F['id']);
-      }
-    }
-    else {
-      $code .= "<li class=\"cms_notiz\">Es können keine Fehlzeiten mehr erfasst werden.</li>";
-      foreach ($EINTRAG['fehl'] AS $F) {
-        if ($F['ent'] == 1) {$klasse = "cms_tagebuch_entschuldigt";}
-        else {$klasse = "cms_tagebuch_unentschuldig";}
-        $code .= "<li class=\"cms_tagebuch_fehlzeit $klasse\">".$F['ganz'];
-        if (($F['von'] != $EINTRAG['beginn']) || ($F['bis'] != $EINTRAG['ende'])) {
-          $code .= date("H:i", $F['von'])." - ".date("H:i", $F['bis']);
-          $code .= " - ".(($F['bis']-$F['von'])/60)."'";
-        }
-        if (strlen($F['bem']) > 0) {
-          $code .= "(".$F['bem'].")";
-        }
-        $code .= "</li>";
-        array_push($fehlids, $F['id']);
-      }
-    }
-    $code .= "</ul>";
-    $code .= "<p><input type=\"hidden\" id=\"cms_tagebuch_eintrag_fzids\" name=\"cms_tagebuch_eintrag_fzids\" value=\"".implode(',', $fehlids)."\"><input type=\"hidden\" id=\"cms_tagebuch_eintrag_fzan\" name=\"cms_tagebuch_eintrag_fzan\" value=\"0\"></p>";
-    $code .= "</td></tr>";
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['person'],0)) {cms_anfrage_beenden(); exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['bh'],0,23)) {cms_anfrage_beenden(); exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['bm'],0,59)) {cms_anfrage_beenden(); exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['eh'],0,23)) {cms_anfrage_beenden(); exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['em'],0,59)) {cms_anfrage_beenden(); exit;}
+	if ($fehlzeiten[$fzid]['bh']*60+$fehlzeiten[$fzid]['bm'] >= $fehlzeiten[$fzid]['eh']*60+$fehlzeiten[$fzid]['em']) {cms_anfrage_beenden(); exit;}
+	array_push($personen, $fehlzeiten[$fzid]['person']);
+	$fehlzeiten[$fzid]['von'] = mktime($fehlzeiten[$fzid]['bh'], $fehlzeiten[$fzid]['bm'], 0, $m, $t, $j);
+	$fehlzeiten[$fzid]['bis'] = mktime($fehlzeiten[$fzid]['eh'], $fehlzeiten[$fzid]['em'], 0, $m, $t, $j)-1;
 
-    // Lob und Tadel
-    $code .= "<tr><th>Bemerkung:</th><td>";
-    $code .= "<ul id=\"cms_tagebuch_bemerkungen\">";
-    $lobtadelids = array();
-    if ($lterlaubt) {
-      $code .= "<li><select name=\"cms_eintrag_lt_p\" id=\"cms_eintrag_lt_p\" class=\"cms_gross\"><option value=\"-\">ganze Klasse</option>$SCHUELEROPT</select>";
-      $code .= " <span class=\"cms_button_ja\" onclick=\"cms_eintrag_ltdazu();\">+</span></li>";
-      foreach ($EINTRAG['lobtadel'] AS $LT) {
-        $code .= "<li id=\"cms_eintrag_lt_".$LT['id']."\">";
-        $code .= "<input type=\"hidden\" name=\"cms_eintrag_ltp_".$LT['id']."\" id=\"cms_eintrag_ltp_".$LT['id']."\" value=\"".$LT['pers']."\">";
-        $code .= "<span class=\"cms_button\" id=\"cms_eintrag_ltart_knopf_".$LT['id']."\" onclick=\"cms_ltart_aendern('".$LT['id']."')\">Bemerkung</span> ";
-        $code .= "<span class=\"cms_button_nein\" id=\"cms_eintrag_ltchar_knopf_".$LT['id']."\" onclick=\"cms_ltchar_aendern('".$LT['id']."')\">negativ</span>: ";
-        $code .= $LT['ganz']."<br>";
-        $code .= "<input class=\"cms_gross\" type=\"text\" name=\"cms_eintrag_lt_bem_".$LT['id']."\" id=\"cms_eintrag_lt_bem_".$LT['id']."\" value=\"\"> ";
-        $code .= "<span class=\"cms_button_nein\" onclick=\"cms_eintrag_ltweg('".$LT['id']."')\">–</span> ";
-        $code .= "<input type=\"hidden\" name=\"cms_eintrag_ltchar_".$LT['id']."\" id=\"cms_eintrag_ltchar_".$LT['id']."\" value=\"-\">";
-        $code .= "<input type=\"hidden\" name=\"cms_eintrag_ltart_".$LT['id']."\" id=\"cms_eintrag_ltart_".$LT['id']."\" value=\"B\">";
-        $code .= "</li>";
-        array_push($lobtadel, $LT['id']);
-      }
-    }
-    else {
-      $code .= "<li class=\"cms_notiz\">Es können keine Bemerkungen mehr erfasst werden.</li>";
-      foreach ($EINTRAG['lobtadel'] AS $LT) {
-        if ($LT['char'] == '+') {$klasse = "cms_tagebuch_positiv";}
-        else if ($LT['char'] == '+') {$klasse = "cms_tagebuch_negativ";}
-        else {$klasse = "cms_tagebuch_neutral";}
-        $code .= "<li class=\"cms_tagebuch_lobtadel $klasse\">".$LT['ganz'];
-        $code .= "(<b>".$LT['art']."</b> - ".$LT['bem'].")";
-        $code .= "</li> ";
-        array_push($lobtadel, $LT['id']);
-      }
-    }
-    $code .= "</ul>";
-    $code .= "<p><input type=\"hidden\" id=\"cms_tagebuch_eintrag_ltids\" name=\"cms_tagebuch_eintrag_ltids\" value=\"".implode(',', $lobtadelids)."\"><input type=\"hidden\" id=\"cms_tagebuch_eintrag_ltan\" name=\"cms_tagebuch_eintrag_ltan\" value=\"0\"></p>";
-    $code .= "</td></tr>";
+	// Püfe, ob sich diese Fehlzeit mit den bisherigen überschneidet
+	foreach ($fehlzeiten as $f) {
+		if ($f['person'] == $fehlzeiten[$fzid]['person'] && $f['id'] != $fehlzeiten[$fzid]['id']) {
+			if (($f['von'] <= $fehlzeiten[$fzid]['von'] && $f['bis'] >= $fehlzeiten[$fzid]['von']) ||
+		      ($f['von'] <= $fehlzeiten[$fzid]['bis'] && $f['bis'] >= $fehlzeiten[$fzid]['bis'])) {
+				cms_anfrage_beenden("FEHLZEIT"); exit;
+			}
+		}
+	}
+}
 
-    // Änderungen übernehmen
-    $code .= "<tr><th></th><td>";
-    if ($ierlaubt || $ferlaubt || $lterlaubt) {$code .= "<span class=\"cms_button_ja\" onclick=\"cms_tagebuch_eintrag_speichern('0')\">Speichern</span> <span class=\"cms_button_ja\" onclick=\"cms_tagebuch_eintrag_speichern('1')\">Freigeben</span> ";}
-    else {$code .= "<span class=\"cms_button_passiv\">Speichern</span> <span class=\"cms_button_passiv\">Freigeben</span>";}
-    $code .= "<span class=\"cms_button_nein\" onclick=\"cms_tagebuch_eintraege_ausblenden()\">Abbrechen</span></td></tr>";
+for ($i=1; $i<count($lids); $i++) {
+	$ltid = $lids[$i];
+	if (isset($_POST["ltperson_".$ltid])) {$lobtadel[$ltid]['person'] = $_POST["ltperson_".$ltid];} else {cms_anfrage_beenden();exit;}
+	if (isset($_POST["ltart_".$ltid])) {$lobtadel[$ltid]['art'] = $_POST["ltart_".$ltid];} else {cms_anfrage_beenden();exit;}
+	if (isset($_POST["ltbemerkung_".$ltid])) {$lobtadel[$ltid]['bem'] = $_POST["ltbemerkung_".$ltid];} else {cms_anfrage_beenden();exit;}
+}
+foreach ($lobtadel as $lt) {
+	if (!cms_check_ganzzahl($lt['person'],0) && $lt['person'] != "a") {cms_anfrage_beenden();exit;}
+	if ($lt['art'] != 'v' && $lt['art'] != 'm' && $lt['art'] != 'l') {cms_anfrage_beenden();exit;}
+	if ($lt['person'] != 'a') {
+		array_push($personen, $lt['person']);
+	}
+}
+$pers = "";
+if (count($personen) > 0) {
+	$pers = "(".implode(",", $personen).")";
+	if (!cms_check_idliste($pers)) {cms_anfrage_beenden();exit;}
+}
 
-    $code .= "</table>";
-    $code .= "<p><input type=\"hidden\" id=\"cms_tagebuch_eintrag_id\" name=\"cms_tagebuch_eintrag_id\" value=\"".$EINTRAG['uid']."\"></p>";
-  }
-  else {
-    $code = "<td colspan=\"6\" class=\"cms_notiz\">Der passende Eintrag wurde nicht gefunden. Entweder sind Sie nicht berechtigt, diesen Eintrag vorzunehmen, oder diese Unterrichtsstunde existert nicht mehr.";
-  }
-  $code .= "</td>";
+if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID) {
+	$fehler = false;
+	// Personenzuordnung prüfen
+	if (count($personen) > 0) {
+		$anzahl = 0;
+		$sql = $dbs->prepare("SELECT count(id) FROM personen WHERE id NOT IN (SELECT person FROM kursemitglieder WHERE gruppe = ?) AND id IN $pers");
+		$sql->bind_param("i", $tkurs);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			if ($anzahl > 0) {
+				$fehler = true;
+			}
+		}
+		$sql->close();
+	}
 
-  cms_trennen($dbl);
-  cms_trennen($dbs);
-	cms_lehrerdb_header(true);
-  echo $code;
+	if (!$fehler) {
+		$jetzt = time();
+		// Änderung am Tagebucheintrag vornehmen
+		$update = false;
+		$sql = $dbl->prepare("SELECT COUNT(*) FROM tagebuch WHERE id = ?");
+		$sql->bind_param("i", $eintrag);
+		if ($sql->execute()) {
+			$sql->bind_result($anzahl);
+			$sql->fetch();
+			if ($anzahl > 0) {$update = true;}
+		}
+		$sql->close();
+		if ($update) {
+			$sql = $dbl->prepare("UPDATE tagebuch SET inhalt = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), hausaufgabe = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), freigabe = ?, leistungsmessung = ?, urheber = ?, eintragsdatum = ? WHERE id = ?");
+			$sql->bind_param("ssiiiii", $inhalt, $hausaufgabe, $freigabe, $leistungsmessung, $CMS_BENUTZERID, $jetzt, $eintrag);
+		} else {
+			$sql = $dbl->prepare("INSERT INTO tagebuch (id, inhalt, hausaufgabe, freigabe, leistungsmessung, urheber, eintragsdatum) VALUES (?, AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), ?, ?, ?, ?)");
+			$sql->bind_param("issiiii", $eintrag, $inhalt, $hausaufgabe, $freigabe, $leistungsmessung, $CMS_BENUTZERID, $jetzt);
+		}
+		$sql->execute();
+		$sql->close();
+
+		$sql = $dbs->prepare("DELETE FROM tagebuch WHERE id = ?");
+		$sql->bind_param("i", $eintrag);
+		$sql->execute();
+		$sql->close();
+
+		// Lob und Tadel bearbeiten
+		// Lob und Tadel dieser Stunde laden
+		$ltbestand = [];
+		$ltbestandsids = [];
+		$sql = $dbl->prepare("SELECT id, person, art, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL') FROM lobtadel WHERE eintrag = ?");
+		$sql->bind_param("i", $eintrag);
+		if ($sql->execute()) {
+			$sql->bind_result($ltid, $ltperson, $ltart, $ltbem);
+			while ($sql->fetch()) {
+				if ($ltperson === null) {$ltperson = 'a';}
+				$ltbestand[$ltid]['person'] = $ltperson;
+				$ltbestand[$ltid]['art'] = $ltart;
+				$ltbestand[$ltid]['bem'] = $ltbem;
+				array_push($ltbestandsids, $ltid);
+			}
+		}
+		$sql->close();
+
+		// Lob und Tadel bearbeiten
+		$ltbearbeiten = [];
+		for ($i=1; $i<count($lids); $i++) {
+			$ltid = $lids[$i];
+			// Neuen Lob-Tadel-Eintrag anlegen
+			if (substr($ltid,0,4) == 'temp') {
+				$id = cms_generiere_kleinste_id('lobtadel', 'l');
+				array_push($ltbearbeiten, $id);
+				if ($lt['person'] == 'a') {
+		    	$sql = $dbl->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), urheber = ?, eintragszeit = ? WHERE id = ?");
+		    	$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
+				} else {
+					$sql = $dbl->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), urheber = ?, eintragszeit = ? WHERE id = ?");
+		    	$sql->bind_param("iissiii", $eintrag, $lobtadel[$ltid]['person'], $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
+				}
+		    $sql->execute();
+		    $sql->close();
+			} else if (cms_check_ganzzahl($ltid,0) && in_array($ltid, $ltbestandsids)) {
+				array_push($ltbearbeiten, $ltid);
+				// Prüfen, ob Änderung erfolgte
+				if ($ltbestand[$ltid]['person'] != $lobtadel[$ltid]['person'] ||
+			      $ltbestand[$ltid]['art'] != $lobtadel[$ltid]['art'] ||
+					  $ltbestand[$ltid]['bem'] != $lobtadel[$ltid]['bem']) {
+					if ($lobtadel[$ltid]['person'] == 'a') {
+						$sql = $dbl->prepare("UPDATE lobtadel SET eintrag = ?, person = NULL, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), urheber = ?, eintragszeit = ? WHERE id = ?");
+						$sql->bind_param("issiii", $eintrag, $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $ltid);
+					} else {
+						$sql = $dbl->prepare("UPDATE lobtadel SET eintrag = ?, person = ?, art = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), urheber = ?, eintragszeit = ? WHERE id = ?");
+						$sql->bind_param("iissiii", $eintrag, $lobtadel[$ltid]['person'], $lobtadel[$ltid]['art'], $lobtadel[$ltid]['bem'], $CMS_BENUTZERID, $jetzt, $ltid);
+					}
+			    $sql->execute();
+			    $sql->close();
+				}
+			}
+		}
+
+		// Lob und Tadel löschen
+		if (count($ltbearbeiten) > 0) {
+			$ltb = "(".implode(",", $ltbearbeiten).")";
+			$sql = $dbl->prepare("DELETE FROM lobtadel WHERE eintrag = ? AND id NOT IN $ltb");
+			$sql->bind_param("i", $eintrag);
+			$sql->execute();
+			$sql->close();
+		} else {
+			$sql = $dbl->prepare("DELETE FROM lobtadel WHERE eintrag = ?");
+			$sql->bind_param("i", $eintrag);
+			$sql->execute();
+			$sql->close();
+		}
+
+
+		// FEHLZEITEN
+		// Personen des Kurses laden
+		$pimkurs = [];
+		$sql = $dbs->prepare("SELECT person FROM kursemitglieder WHERE gruppe = ?");
+		$sql->bind_param("i", $tkurs);
+		if ($sql->execute()) {
+			$sql->bind_result($pik);
+			while ($sql->fetch()) {
+				array_push($pimkurs, $pik);
+			}
+		}
+		$sql->close();
+		// Fehlzeiten dieses Tages laden
+		$fzbestand = [];
+		$fzbestandsids = [];
+		if (count($pimkurs) > 0) {
+			$pimkurs = "(".implode(",", $pimkurs).")";
+			$sql = $dbl->prepare("SELECT id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSELL') FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?)) AND person IN $pimkurs");
+			$sql->bind_param("iiii", $a, $x, $a, $x);
+			if ($sql->execute()) {
+				$sql->bind_result($fzid, $fzperson, $fzvon, $fzbis, $fzbem);
+				while ($sql->fetch()) {
+					$fzbestand[$fzid]['person'] = $fzperson;
+	  			$fzbestand[$fzid]['von'] = $fzvon;
+	  			$fzbestand[$fzid]['bis'] = $fzbis;
+	  			$fzbestand[$fzid]['bem'] = $fzbem;
+	  			array_push($fzbestandsids, $fzid);
+				}
+			}
+			$sql->close();
+
+			// Fehlzeiten bearbeiten
+			$fzbearbeiten = [];
+			for ($i=1; $i<count($fids); $i++) {
+				$fzid = $fids[$i];
+				// Neuen Fehlzeiten-Eintrag anlegen
+				if (substr($fzid,0,4) == 'temp') {
+					$id = cms_generiere_kleinste_id('fehlzeiten', 'l');
+					array_push($fzbearbeiten, $id);
+			    $sql = $dbl->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), urheber = ?, eintragszeit = ? WHERE id = ?");
+			    $sql->bind_param("iiisiii", $fehlzeiten[$fzid]['person'], $fehlzeiten[$fzid]['von'], $fehlzeiten[$fzid]['bis'], $fehlzeiten[$fzid]['bem'], $CMS_BENUTZERID, $jetzt, $id);
+			    $sql->execute();
+			    $sql->close();
+				} else if (cms_check_ganzzahl($fzid,0) && in_array($fzid, $fzbestandsids)) {
+					array_push($fzbearbeiten, $fzid);
+					// Prüfen, ob Änderung erfolgte
+					if ($fzbestand[$fzid]['person'] != $fehlzeiten[$fzid]['person'] ||
+				      $fzbestand[$fzid]['von'] != $fehlzeiten[$fzid]['von'] ||
+						  $fzbestand[$fzid]['bis'] != $fehlzeiten[$fzid]['bis'] ||
+						  $fzbestand[$fzid]['bem'] != $fehlzeiten[$fzid]['bem']) {
+						$sql = $dbl->prepare("UPDATE fehlzeiten SET person = ?, von = ?, bis = ?, bemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSELL'), urheber = ?, eintragszeit = ? WHERE id = ?");
+						$sql->bind_param("iiisiii", $fehlzeiten[$fzid]['person'], $fehlzeiten[$fzid]['von'], $fehlzeiten[$fzid]['bis'], $fehlzeiten[$fzid]['bem'], $CMS_BENUTZERID, $jetzt, $fzid);
+				    $sql->execute();
+				    $sql->close();
+					}
+				}
+			}
+
+			// Fehlzeiten löschen
+			if (count($fzbearbeiten) > 0) {
+				$fzb = "(".implode(",", $fzbearbeiten).")";
+				$sql = $dbl->prepare("DELETE FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?)) AND person IN $pimkurs AND id NOT IN $fzb");
+				$sql->bind_param("iiii", $a, $x, $a, $x);
+				$sql->execute();
+				$sql->close();
+			} else {
+				$sql = $dbl->prepare("DELETE FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?)) AND person IN $pimkurs");
+				$sql->bind_param("iiii", $a, $x, $a, $x);
+				$sql->execute();
+				$sql->close();
+			}
+		}
+
+		cms_lehrerdb_header(true);
+		echo "ERFOLG";
+	} else {
+		cms_lehrerdb_header(false);
+		echo "FEHLERZUORDNUNG";
+	}
 }
 else {
-  cms_lehrerdb_header(false);
+	cms_lehrerdb_header(false);
 	echo "BERECHTIGUNG";
 }
+cms_trennen($dbl);
+cms_trennen($dbs);
 ?>

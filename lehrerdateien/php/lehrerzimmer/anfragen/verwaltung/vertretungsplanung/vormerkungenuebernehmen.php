@@ -21,6 +21,7 @@ $zugriff = cms_r("lehrerzimmer.vertretungsplan.vertretungsplanung");
 
 if ($angemeldet && $zugriff) {
   $dbs = cms_verbinden('s');
+  $dbl = cms_verbinden('l');
 
   // KONFLIKTE LADEN
   $SONDEREINSAETZE = array();
@@ -105,7 +106,11 @@ if ($angemeldet && $zugriff) {
       $sql->execute();
       $sql->close();
       if ($k['vplanart'] == 'e') {
-        $sql = $dbs->prepare("INSERT INTO tagebuch (id, inhalt, freigabe) VALUE (?, AES_ENCRYPT('Entfall', '$CMS_SCHLUESSEL'), 1)");
+        $sql = $dbl->prepare("DELETE FROM tagebuch WHERE id = ?");
+        $sql->bind_param("i", $k['id']);
+        $sql->execute();
+        $sql->close();
+        $sql = $dbl->prepare("INSERT INTO tagebuch (id, inhalt, freigabe) VALUE (?, AES_ENCRYPT('Entfall', '$CMS_SCHLUESSEL'), 1)");
       } else {
         $sql = $dbs->prepare("INSERT INTO tagebuch (id) VALUE (?)");
       }
@@ -119,6 +124,7 @@ if ($angemeldet && $zugriff) {
   $sql->execute();
   $sql->close();
 
+  cms_trennen($dbl);
   cms_trennen($dbs);
 
   cms_lehrerdb_header(true);

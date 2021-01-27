@@ -225,7 +225,26 @@ function cms_tagebuch_eintragen(unterricht) {
   cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
-function cms_eintrag_fzdazu(beginn, ende) {
+function cms_tagebuch_einsehen(id, art) {
+  cms_laden_an('Tagebucheintrag einsehen', 'Das Tagebuch wird geladen ...');
+
+  var formulardaten = new FormData();
+  formulardaten.append('gruppenid', id);
+  formulardaten.append('gruppenart', art);
+  formulardaten.append("anfragenziel", 	'432');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == "ERFOLG") {
+      cms_link('Schulhof/Nutzerkonto/Tagebuch/Einsehen');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+function cms_eintrag_fzdazu(beginn, ende, ln) {
+  var ln = ln || '-';
   var box = document.getElementById('cms_eintrag_fehlzeiten');
 	var anzahl = document.getElementById('cms_eintrag_fzan');
 	var nr = document.getElementById('cms_eintrag_fznr');
@@ -242,7 +261,11 @@ function cms_eintrag_fzdazu(beginn, ende) {
 	code += "<tr><th>Person:</th><td><select name=\"cms_eintrag_fz_person_"+neueid+"\" id=\"cms_eintrag_fz_person_"+neueid+"\">"+personen+"</select></td></tr>";
   var von = cms_uhrzeit_eingabe("cms_eintrag_fz_von_"+neueid, b.getHours(), b.getMinutes());
   var bis = cms_uhrzeit_eingabe("cms_eintrag_fz_bis_"+neueid, e.getHours(), e.getMinutes());
-  var ganztaegig = "<span class=\"cms_button\" onclick=\"cms_eintrag_ganztaegig('"+neueid+"')\">Ganztägig</span>";
+  if (ln == 'ln') {
+    var ganztaegig = "<span class=\"cms_button\" onclick=\"cms_eintrag_ganztaegig('"+neueid+"')\">Ganztägig</span>";
+  } else {
+    var ganztaegig = "";
+  }
   code += "<tr><th>Zeitraum:</th><td>"+von+" – "+bis+" "+ganztaegig+"</td></tr>";
   code += "<tr><th>Bemerkung:</th><td><input type=\"text\" name=\"cms_eintrag_fz_bemerkung_"+neueid+"\" id=\"cms_eintrag_fz_bemerkung_"+neueid+"\"></td></tr>";
 	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_eintrag_fzweg('"+neueid+"');\">– Fehlzeit entfernen</span></td></tr>";
@@ -276,6 +299,17 @@ function cms_eintrag_fzweg(id) {
 	ids.value = neueids;
 }
 
+function cms_tagebuch_klassewechseln(klasse, uid) {
+  var alle = document.getElementById('cms_tagebuch_alleklassen').value;
+  alle = alle.split("|");
+  for (var i=0; i<alle.length; i++) {
+    document.getElementById('cms_klassen_'+alle[i]).className = "cms_button";
+  }
+  document.getElementById('cms_klassen_'+klasse).className = "cms_button_ja";
+  document.getElementById('cms_tagebuch_klasseg').value = klasse;
+  cms_tagebuch_tagesansicht('j', uid);
+}
+
 function cms_eintrag_ltdazu() {
   var box = document.getElementById('cms_eintrag_lobundtadel');
 	var anzahl = document.getElementById('cms_eintrag_ltan');
@@ -287,7 +321,7 @@ function cms_eintrag_ltdazu() {
   var personen = document.getElementById('cms_eintrag_vorlage').innerHTML;
 
 	var code = "";
-	code += "<tr><th>Person:</th><td><select name=\"cms_eintrag_lt_person_"+neueid+"\" id=\"cms_eintrag_lt_person_"+neueid+"\">"+personen+"<option value=\"-\">ganzer Kurs</option></select></td></tr>";
+	code += "<tr><th>Person:</th><td><select name=\"cms_eintrag_lt_person_"+neueid+"\" id=\"cms_eintrag_lt_person_"+neueid+"\">"+personen+"<option value=\"a\">ganzer Kurs</option></select></td></tr>";
 	code += "<tr><th>Art:</th><td><select name=\"cms_eintrag_lt_art_"+neueid+"\" id=\"cms_eintrag_lt_art_"+neueid+"\"><option value=\"m\">Mitarbeits-Tadel</option><option value=\"v\">Verhaltens-Tadel</option><option value=\"l\">Lob</option></select></td></tr>";
   code += "<tr><th>Bemerkung:</th><td><textarea name=\"cms_eintrag_lt_bemerkung_"+neueid+"\" id=\"cms_eintrag_lt_bemerkung_"+neueid+"\"></textarea></td></tr>";
 	code += "<tr><th></th><td><span class=\"cms_button_nein\" onclick=\"cms_eintrag_ltweg('"+neueid+"');\">– Lob / Tadel entfernen</span></td></tr>";
@@ -302,7 +336,7 @@ function cms_eintrag_ltdazu() {
 }
 
 function cms_eintrag_ltweg(id) {
-  var box = document.getElementById('cms_eintrag_lobtadel');
+  var box = document.getElementById('cms_eintrag_lobundtadel');
 	var anzahl = document.getElementById('cms_eintrag_ltan');
 	var ids = document.getElementById('cms_eintrag_ltids');
 	var lt = document.getElementById('cms_eintrag_lt_'+id);
@@ -314,36 +348,23 @@ function cms_eintrag_ltweg(id) {
 	ids.value = neueids;
 }
 
-function cms_eintrag_fzladen(uid) {
+function cms_eintrag_laden(uid) {
   var formulardaten = new FormData();
   cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
   formulardaten.append("anfragenziel", '31');
   formulardaten.append("unterricht", uid);
 
   function anfragennachbehandlung(rueckgabe) {
-    var box = document.getElementById('cms_eintrag_fehlzeiten');
-  	var anzahl = document.getElementById('cms_eintrag_fzan');
-  	var nr = document.getElementById('cms_eintrag_fznr');
-  	var ids = document.getElementById('cms_eintrag_fzids');
-
-    rueck = rueckgabe.split("|||||");
-    if (rueck.length == 3) {
-      box.innerHTML = box.innerHTML+rueck[0];
-      anzahl.value = parseInt(anzahl.value)+parseInt(rueck[1]);
-      nr.value = parseInt(nr.value)+parseInt(rueck[1]);
-      ids.value = ids.value+"|"+rueck[2];
-    }
-    // Laden entfernen
-    var box = document.getElementById('cms_eintrag_fehlzeiten');
-  	var laden = document.getElementById('cms_eintrag_fehlzeiten_laden');
-  	box.removeChild(laden);
+    var box = document.getElementById("cms_eintrag_lehrernetz");
+    box.innerHTML = rueckgabe;
   }
 
   cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
-
-function cms_tagebuch_eintrag_speichern() {
+function cms_tagebuch_eintrag_speichern(ln, eintrag) {
+  var ln = ln || '-';
+  var eintrag = eintrag || '-';
   cms_laden_an('Tagebucheintrag speichern', 'Die Eingaben werden überprüft.');
 	var inhalt = document.getElementById('cms_eintrag_inhalt').value;
 	var hausaufgaben = document.getElementById('cms_eintrag_hausi').value;
@@ -398,10 +419,10 @@ function cms_tagebuch_eintrag_speichern() {
     var ltid = lids[i];
     var person = document.getElementById("cms_eintrag_lt_person_"+ltid).value;
     var art = document.getElementById("cms_eintrag_lt_art_"+ltid).value;
-    if (!cms_check_ganzzahl(person,0) && (person != "-")) {lobtadelfehler = true;}
+    if (!cms_check_ganzzahl(person,0) && (person != "a")) {lobtadelfehler = true;}
   }
   if (lobtadelfehler) {
-    meldung += '<li>mindestens ein Lob/tadel ist ungültig.</li>';
+    meldung += '<li>mindestens ein Lob/tadel ist ungültig. Es muss eine Person ausgewählt sein.</li>';
     fehler = true;
   }
 
@@ -442,18 +463,172 @@ function cms_tagebuch_eintrag_speichern() {
       formulardaten.append("ltart_"+ltid, art);
       formulardaten.append("ltbemerkung_"+ltid, bemerkung);
     }
-		formulardaten.append("anfragenziel", 	'431');
 
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
 				cms_meldung_an('erfolg', 'Tagebucheintrag speichern', '<p>Der Tagebucheintrag wurde gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Tagebuch\');">Zurück zur Übersicht</span></p>');
-			} else if (rueckgabe == "ZUORDNUNG") {
+			} else if (rueckgabe == "FEHLERFEHLZEIT") {
+        meldung += '<li>Fehlzeiten desselben Schülers überschneiden sich oder liegen oder liegen außerhalb der Unterrichtsstunde.</li>';
+        cms_meldung_an('fehler', 'Tagebucheintrag speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
+      } else if (rueckgabe == "FEHLERZUORDNUNG") {
         meldung += '<li>Zugeordnete Schülerinnen und Schüler sind nicht in diesem Kurs.</li>';
         cms_meldung_an('fehler', 'Tagebucheintrag speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
       }
 			else {cms_fehlerbehandlung(rueckgabe);}
 		}
 
-		cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+    if (ln != 'ln') {
+      formulardaten.append("anfragenziel", 	'431');
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+    } else {
+      cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+      formulardaten.append("eintrag", 	eintrag);
+      formulardaten.append("anfragenziel", 	'35');
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+    }
+
+
 	}
+}
+
+
+function cms_tagebuch_tagesansicht(veraenderung, eintrag) {
+  if (((veraenderung == '+') || (veraenderung == '-') || (veraenderung == 'j')) && (cms_check_ganzzahl(eintrag,0))) {
+    var tag = document.getElementById('cms_tagebuch_tagesansicht_tag_T');
+    var monat = document.getElementById('cms_tagebuch_tagesansicht_tag_M');
+    var jahr = document.getElementById('cms_tagebuch_tagesansicht_tag_J');
+    var klasse = document.getElementById('cms_tagebuch_klasseg');
+    var tagwert = parseInt(tag.value);
+
+
+    if (klasse) {
+      cms_gesichert_laden('cms_tagebuch_tagesansicht');
+
+      if (veraenderung == '+') {
+        tag.value = tagwert+1;
+        cms_datumcheck('cms_tagebuch_tagesansicht_tag');
+      } else if (veraenderung == '-') {
+        tag.value = tagwert-1;
+        cms_datumcheck('cms_tagebuch_tagesansicht_tag');
+      }
+
+      var formulardaten = new FormData();
+      cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+      formulardaten.append("tag", tag.value);
+      formulardaten.append("monat", monat.value);
+      formulardaten.append("jahr", jahr.value);
+      formulardaten.append("klasse", klasse.value);
+      formulardaten.append("unterricht", eintrag);
+      formulardaten.append("anfragenziel", 	'34');
+
+      function anfragennachbehandlung(rueckgabe) {
+        var box = document.getElementById('cms_tagebuch_tagesansicht');
+        box.innerHTML = rueckgabe;
+      }
+
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+    }
+  }
+}
+
+
+
+function cms_tagebuch_tagesansicht(veraenderung, eintrag) {
+  if (((veraenderung == '+') || (veraenderung == '-') || (veraenderung == 'j')) && (cms_check_ganzzahl(eintrag,0))) {
+    var tag = document.getElementById('cms_tagebuch_tagesansicht_tag_T');
+    var monat = document.getElementById('cms_tagebuch_tagesansicht_tag_M');
+    var jahr = document.getElementById('cms_tagebuch_tagesansicht_tag_J');
+    var klasse = document.getElementById('cms_tagebuch_klasseg');
+    var tagwert = parseInt(tag.value);
+
+
+    if (klasse) {
+      cms_gesichert_laden('cms_tagebuch_tagesansicht');
+
+      if (veraenderung == '+') {
+        tag.value = tagwert+1;
+        cms_datumcheck('cms_tagebuch_tagesansicht_tag');
+      } else if (veraenderung == '-') {
+        tag.value = tagwert-1;
+        cms_datumcheck('cms_tagebuch_tagesansicht_tag');
+      }
+
+      var formulardaten = new FormData();
+      cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+      formulardaten.append("tag", tag.value);
+      formulardaten.append("monat", monat.value);
+      formulardaten.append("jahr", jahr.value);
+      formulardaten.append("klasse", klasse.value);
+      formulardaten.append("unterricht", eintrag);
+      formulardaten.append("anfragenziel", 	'34');
+
+      function anfragennachbehandlung(rueckgabe) {
+        var box = document.getElementById('cms_tagebuch_tagesansicht');
+        box.innerHTML = rueckgabe;
+      }
+
+      cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+    }
+  }
+}
+
+function cms_tagebuch_wochenansicht(veraenderung) {
+  if (((veraenderung == '+') || (veraenderung == '-') || (veraenderung == 'j'))) {
+    var gruppenid = document.getElementById('cms_tagebuchgruppenid');
+    var gruppenart = document.getElementById('cms_tagebuchgruppenart');
+    cms_gesichert_laden('cms_tagebuch_tagesansicht');
+
+    var formulardaten = new FormData();
+    cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
+
+    if (gruppenart.value == 'klasse') {
+      var beginn = document.getElementById('cms_tagebuch_wochenansicht_datum');
+      var datum = document.getElementById('cms_tagebuch_wochenansicht_datum_text');
+      var ansicht = document.getElementById('cms_tagebuchansicht');
+      var beginnwert = parseInt(beginn.value);
+
+      if (veraenderung == '+') {
+        var alt = new Date(beginnwert*1000);
+        var neu = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()+7, 0, 0, 0, 0);
+        var neuende = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()+13, 23, 59, 59, 0);
+        beginn.value = neu.getTime()/1000;
+        datum.innerHTML = "MO "+cms_fuehrendenull(neu.getDate())+"."+cms_fuehrendenull((neu.getMonth()+1))+"."+neu.getFullYear()+" – SO "+cms_fuehrendenull(neuende.getDate())+"."+cms_fuehrendenull((neuende.getMonth()+1))+"."+neuende.getFullYear();
+      } else if (veraenderung == '-') {
+        var alt = new Date(beginnwert*1000);
+        var neu = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()-7, 0, 0, 0, 0);
+        var neuende = new Date(alt.getFullYear(), alt.getMonth(), alt.getDate()-1, 23, 59, 59, 0);
+        beginn.value = neu.getTime()/1000;
+        datum.innerHTML = "MO "+cms_fuehrendenull(neu.getDate())+"."+cms_fuehrendenull((neu.getMonth()+1))+"."+neu.getFullYear()+" – SO "+cms_fuehrendenull(neuende.getDate())+"."+cms_fuehrendenull((neuende.getMonth()+1))+"."+neuende.getFullYear();
+      }
+
+      formulardaten.append("beginn", beginn.value);
+      formulardaten.append("ansicht", ansicht.value);
+    }
+
+    formulardaten.append("gruppenid", gruppenid.value);
+    formulardaten.append("gruppenart", gruppenart.value);
+    formulardaten.append("anfragenziel", 	'32');
+
+    function anfragennachbehandlung(rueckgabe) {
+      var box = document.getElementById('cms_tagebuch_tagesansicht');
+      box.innerHTML = rueckgabe;
+    }
+
+    cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
+  }
+}
+
+
+function cms_tagebuchansicht_aendern(art) {
+  if (art == 'v' || art == 'w') {
+    if (art == 'v') {
+      document.getElementById('cms_tagebuchansicht_v').className = "cms_button_ja";
+      document.getElementById('cms_tagebuchansicht_w').className = "cms_button";
+    } else {
+      document.getElementById('cms_tagebuchansicht_w').className = "cms_button_ja";
+      document.getElementById('cms_tagebuchansicht_v').className = "cms_button";
+    }
+    document.getElementById('cms_tagebuchansicht').value = art;
+    cms_tagebuch_wochenansicht('j');
+  }
 }
