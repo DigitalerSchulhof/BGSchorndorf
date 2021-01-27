@@ -1,5 +1,11 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_11:
+    version: 0.10.11
+    tag: Mittwoch, den 27. Januar 2021
+    neuerungen:
+      - Fehler bei leeren Gruppenlinks behoben [E]
+      - Gruppenlinks aus der Pinnwand importiert [E]
   0_10_10:
     version: 0.10.10
     tag: Mittwoch, den 27. Januar 2021
