@@ -202,12 +202,11 @@ function cms_dateisystem_ordner_ausgeben($pfad, $netz, $bereich, $id, $rechte, $
 				$icon = cms_dateisystem_icon($dateiname[count($dateiname)-1]);
 				$verzeichnis['dcode'] .= "<td><img src=\"res/dateiicons/klein/$icon\"></td>";
 				$verzeichnis['dcode'] .= "<td id=\"$feldid"."_datei".$verzeichnis['dateien']."\">".$vinhalt[$i]."</td>";
-				$dinfo = getimagesize($pfad.'/'.$vinhalt[$i]);
 				$info = "";
 				$groesse = filesize($pfad.'/'.$vinhalt[$i]);
 				$verzeichnis['groesse'] += $groesse;
 				$verzeichnis['dcode'] .= "<td>".$info."</td>";
-				$verzeichnis['dcode'] .= "<td style=\"text-align: right;\">".cms_groesse_umrechnen($groesse)."</td>";
+				$verzeichnis['dcode'] .= "<td style=\"text-align: right;\">".cms_groesse_umrechnen($groesse)." - ".date("d/m/Y H:i", filemtime($pfad."/".$vinhalt[$i]))."</td>";
 				$verzeichnis['dcode'] .= "<td>";
 				if ($rechte['dateidownload']) {$verzeichnis['dcode'] .= "<span class=\"cms_aktion_klein\" onclick=\"cms_herunterladen('$netz', '$bereich', '$id', '$anzeigepfad/".$vinhalt[$i]."')\"><span class=\"cms_hinweis\">Datei herunterladen</span><img src=\"res/icons/klein/download.png\"></span> ";}
 				if ($rechte['dateiumbenennen']) {$verzeichnis['dcode'] .= "<span class=\"cms_aktion_klein\" onclick=\"cms_dateiumbenennen_anzeigen('$netz', '$bereich', '$id', '$anzeigepfad', '".$verzeichnis['dateien']."', '$feldid')\"><span class=\"cms_hinweis\">Datei umbenennen</span><img src=\"res/icons/klein/umbenennen.png\"></span> ";}
