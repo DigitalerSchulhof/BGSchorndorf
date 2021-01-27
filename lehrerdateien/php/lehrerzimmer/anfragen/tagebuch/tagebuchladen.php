@@ -59,7 +59,8 @@ function cms_tagebucheintrag_tag($dbs, $dbl, $klasse, $t, $m, $j) {
     // Fehlzeiten von Personen dieser Klasse laden
     // Personen der Klasse laden
     $personenpool = [];
-    $sql = $dbs->prepare("SELECT person FROM kursemitglieder WHERE gruppe IN $kurseids");
+    $sql = $dbs->prepare("SELECT person FROM klassenmitglieder WHERE gruppe = ?");
+    $sql->bind_param("i", $klasse);
     if ($sql->execute()) {
       $sql->bind_result($person);
       while ($sql->fetch()) {
