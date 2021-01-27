@@ -38,7 +38,7 @@ if ($CMS_BENUTZERART == 'l') {
   if ($sql->execute()) {
     $sql->bind_result($klaid, $klabez, $klareihe);
     while ($sql->fetch()) {
-      $klassentagebuecher .= "<span class=\"cms_button\" onclick=\"cms_tagebuch_einsehen('$klaid', 'klasse')\">$klabez</span>";
+      $klassentagebuecher .= "<span class=\"cms_button\" onclick=\"cms_tagebuch_einsehen('$klaid', 'klasse')\">$klabez</span> ";
     }
   }
   $sql->close();
@@ -49,7 +49,7 @@ if ($CMS_BENUTZERART == 'l') {
   if ($sql->execute()) {
     $sql->bind_result($kurid, $kurbez, $kurreihe);
     while ($sql->fetch()) {
-      $kurstagebuecher .= "<span class=\"cms_button\" onclick=\"cms_tagebuch_einsehen('$kurid', 'kurs')\">$kurbez</span>";
+      $kurstagebuecher .= "<span class=\"cms_button\" onclick=\"cms_tagebuch_einsehen('$kurid', 'kurs')\">$kurbez</span> ";
     }
   }
   $sql->close();
@@ -57,14 +57,12 @@ if ($CMS_BENUTZERART == 'l') {
   if ((strlen($klassentagebuecher) > 0) || (strlen($kurstagebuecher) > 0)) {
     $code .= "<h2 style=\"padding-top:30px\">Tagebücher einsehen</h2>";
 
-    $code .= "<div class=\"cms_meldung cms_meldung_warnung\"><h4>Ansicht</h4><p>Die Tagebuchansicht wird so bald wie möglich nachgeliefert.</p></div>";
-
-    /*if (strlen($klassentagebuecher) > 0) {
+    if (strlen($klassentagebuecher) > 0) {
       $code .= "<h3>Klassentagebücher</h3><p>$klassentagebuecher</p>";
     }
     if (strlen($kurstagebuecher) > 0) {
       $code .= "<h3>Kurstagebücher</h3><p>$kurstagebuecher</p>";
-    }*/
+    }
   }
 
   $code .= "</div></div>";

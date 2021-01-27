@@ -184,3 +184,8 @@ function cms_format_preis(wert) {
   wert = (wert * 1000 + 1)/1000;
   return ((wert+"").substr(0,(wert+"").length-1)).replace(".", ",");
 }
+
+function cms_fuehrendenull(zahl) {
+  if ((zahl > -1) && (zahl < 10)) {return '0'+String(zahl);}
+  else {return zahl;}
+}

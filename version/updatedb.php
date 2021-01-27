@@ -232,3 +232,13 @@ ALTER TABLE `lobtadel` DROP `charakter`;
 CREATE TABLE `fehlzeiten` ( `id` bigint(255) UNSIGNED NOT NULL, `person` bigint(255) UNSIGNED DEFAULT NULL, `von` bigint(255) UNSIGNED DEFAULT NULL, `bis` bigint(255) UNSIGNED DEFAULT NULL, `bemerkung` blob DEFAULT NULL, `entschuldigt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0, `idvon` bigint(255) UNSIGNED DEFAULT NULL, `idzeit` bigint(255) UNSIGNED DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `fehlzeiten` ADD PRIMARY KEY (`id`);
+
+-- 0.10.9
+ALTER TABLE `tagebuch` ADD `eintragsdatum` BIGINT(255) UNSIGNED NOT NULL AFTER `urheber`;
+
+ALTER TABLE `lobtadel` ADD `urheber` BIGINT UNSIGNED NULL AFTER `bemerkung`, ADD `eintragszeit` BIGINT UNSIGNED NULL AFTER `urheber`;
+ALTER TABLE `fehlzeiten` ADD `urheber` BIGINT UNSIGNED NULL AFTER `entschuldigt`, ADD `eintragszeit` BIGINT UNSIGNED NULL AFTER `urheber`;
+ALTER TABLE `fehlzeiten` ADD CONSTRAINT `fzurheberperson` FOREIGN KEY (`urheber`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `fehlzeiten` ADD CONSTRAINT `fzpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `lobtadel` ADD CONSTRAINT `lturheberperson` FOREIGN KEY (`urheber`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `lobtadel` ADD CONSTRAINT `ltpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

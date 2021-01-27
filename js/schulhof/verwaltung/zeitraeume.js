@@ -798,6 +798,9 @@ function cms_stundenplanung_import_speichern() {
                 formulardaten.append('kursbezextern', '');
                 formulardaten.append('schiene', kursinfo[6]);
                 formulardaten.append('import', 'j');
+                formulardaten.append('linklink', '');
+                formulardaten.append('linktitel', '');
+                formulardaten.append('linkbeschreibung', '');
                 formulardaten.append('art', 'Kurse');
                 formulardaten.append('anfragenziel', '220');
                 cms_ajaxanfrage (formulardaten, kurseanlegen);
