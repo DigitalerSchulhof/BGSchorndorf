@@ -57,11 +57,12 @@ function cms_meldung_fehler () {
 }
 
 function cms_meldung_eingeschraenkt () {
-	global $CMS_EINSTELLUNGEN;
+	global $CMS_EINSTELLUNGEN, $CMS_LN_DA;
 	$inhalt = '<h4>Nur eingeschränkte Nutzung möglich</h4><p>Einige Funktionen stehen in diesem Netz nicht zur Verfügung.';
 	if ($CMS_EINSTELLUNGEN['Netze VPN-Anleitung'] == 1) {
 		$inhalt .= ' Um auf diese Funktionen zugreifen zu können, ist ein Fernzugriff (per VPN) auf ein anderes Netz erforderlich.</p>';
-		$inhalt .= '<p><a class="cms_button" href="Schulhof/Hilfe/VPN">VPN Verbindung einrichten</a>';
+		$inhalt .= '<p><a class="cms_button" href="Schulhof/Hilfe/VPN">VPN Verbindung einrichten</a> ';
+		$inhalt .= '<a class="cms_button" target=\"_blank\" href="'.$CMS_EINSTELLUNGEN['Netze Lehrerserver'].'">Schritt III - Zertifikat prüfen</a>'
 	}
 	$inhalt .= '</p>';
 	return cms_meldung ("firewall", $inhalt);
