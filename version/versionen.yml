@@ -6,6 +6,7 @@ version:
     neuerungen:
       - Fehler bei leeren Gruppenlinks behoben [E]
       - Gruppenlinks aus der Pinnwand importiert [E]
+      - Tagebuch-Bugfixes bei Übertragungen vom Webserver auf den gesicherten Server [W]
   0_10_10:
     version: 0.10.10
     tag: Mittwoch, den 27. Januar 2021

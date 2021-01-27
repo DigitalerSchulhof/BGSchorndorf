@@ -15,6 +15,7 @@
   display: inline-block;
   padding: 5px;
   margin-right: 2px;
+  margin-bottom: 2px;
 }
 
 .cms_tagebuch_klein {
