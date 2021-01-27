@@ -12,7 +12,7 @@
   $dbs = cms_verbinden("s");
   foreach($CMS_GRUPPEN as $g) {
     $gk = cms_textzudb($g);
-    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(pinnwand, '$CMS_SCHLUESSEL') FROM {$gk} WHERE LENGTH(AES_DECRYPT(pinnwand, '$CMS_SCHLUESSEL')) > 0 AND (SELECT COUNT(*) FROM {$gk}links WHERE gruppe = id) = 0");
+    $sql = $dbs->prepare("SELECT id, AES_DECRYPT(pinnwand, '$CMS_SCHLUESSEL') FROM {$gk} as gk WHERE LENGTH(AES_DECRYPT(pinnwand, '$CMS_SCHLUESSEL')) > 0 AND (SELECT COUNT(*) FROM {$gk}links WHERE gruppe = gk.id) = 0");
     $sql->bind_result($gID, $gPW);
     $sql->execute();
     $sql->store_result();
@@ -20,6 +20,8 @@
       if(preg_match("/https:\/\/elearning(\d)\.bg-schorndorf\.de\/(\D)\/([a-zA-Z]{3}-[a-zA-Z]{3}-[a-zA-Z]{3})/", $gPW, $link) === 1) {
         array_shift($link);
         $ins[] = [$gID, ...$link];
+        echo "($gk-$gID) Gefunden: {$link[2]}\n";
+        continue;
       }
     }
     $sql->close();
@@ -34,4 +36,5 @@
     }
     $sql->close();
   }
+  echo "Fertig";
 ?>
