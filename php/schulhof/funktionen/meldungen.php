@@ -62,7 +62,7 @@ function cms_meldung_eingeschraenkt () {
 	if ($CMS_EINSTELLUNGEN['Netze VPN-Anleitung'] == 1) {
 		$inhalt .= ' Um auf diese Funktionen zugreifen zu können, ist ein Fernzugriff (per VPN) auf ein anderes Netz erforderlich.</p>';
 		$inhalt .= '<p><a class="cms_button" href="Schulhof/Hilfe/VPN">VPN Verbindung einrichten</a> ';
-		$inhalt .= '<a class="cms_button" target=\"_blank\" href="'.$CMS_EINSTELLUNGEN['Netze Lehrerserver'].'">Schritt III - Zertifikat prüfen</a>'
+		$inhalt .= '<a class="cms_button" target=\"_blank\" href="'.$CMS_EINSTELLUNGEN['Netze Lehrerserver'].'">Schritt III - Zertifikat prüfen</a>';
 	}
 	$inhalt .= '</p>';
 	return cms_meldung ("firewall", $inhalt);
