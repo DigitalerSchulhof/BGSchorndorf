@@ -362,8 +362,9 @@ function cms_eintrag_laden(uid) {
   cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
 }
 
-function cms_tagebuch_eintrag_speichern(ln) {
+function cms_tagebuch_eintrag_speichern(ln, eintrag) {
   var ln = ln || '-';
+  var eintrag = eintrag || '-';
   cms_laden_an('Tagebucheintrag speichern', 'Die Eingaben werden überprüft.');
 	var inhalt = document.getElementById('cms_eintrag_inhalt').value;
 	var hausaufgaben = document.getElementById('cms_eintrag_hausi').value;
@@ -466,10 +467,10 @@ function cms_tagebuch_eintrag_speichern(ln) {
 		function anfragennachbehandlung(rueckgabe) {
 			if (rueckgabe == "ERFOLG") {
 				cms_meldung_an('erfolg', 'Tagebucheintrag speichern', '<p>Der Tagebucheintrag wurde gespeichert.</p>', '<p><span class="cms_button" onclick="cms_link(\'Schulhof/Nutzerkonto/Tagebuch\');">Zurück zur Übersicht</span></p>');
-			} else if (rueckgabe == "FEHLZEIT") {
+			} else if (rueckgabe == "FEHLERFEHLZEIT") {
         meldung += '<li>Fehlzeiten desselben Schülers überschneiden sich oder liegen oder liegen außerhalb der Unterrichtsstunde.</li>';
         cms_meldung_an('fehler', 'Tagebucheintrag speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
-      } else if (rueckgabe == "ZUORDNUNG") {
+      } else if (rueckgabe == "FEHLERZUORDNUNG") {
         meldung += '<li>Zugeordnete Schülerinnen und Schüler sind nicht in diesem Kurs.</li>';
         cms_meldung_an('fehler', 'Tagebucheintrag speichern', meldung+'</ul>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Zurück</span></p>');
       }
@@ -481,7 +482,8 @@ function cms_tagebuch_eintrag_speichern(ln) {
       cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
     } else {
       cms_lehrerdatenbankzugangsdaten_schicken(formulardaten);
-      formulardaten.append("anfragenziel", 	'??');
+      formulardaten.append("eintrag", 	eintrag);
+      formulardaten.append("anfragenziel", 	'35');
       cms_ajaxanfrage (formulardaten, anfragennachbehandlung, CMS_LN_DA);
     }
 

@@ -2,7 +2,7 @@
 version:
   0_10_10:
     version: 0.10.10
-    tag: Donnerstag, den 21. Januar 2021
+    tag: Mittwoch, den 27. Januar 2021
     neuerungen:
       - Fehler beim Löschen von Lob und Tadel behoben [W]
       - Fehler beim Eintragen der Fehlzeiten behoben [W]

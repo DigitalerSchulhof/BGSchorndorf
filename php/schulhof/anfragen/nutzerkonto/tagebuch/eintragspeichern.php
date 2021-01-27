@@ -8,20 +8,20 @@ include_once("../../schulhof/funktionen/generieren.php");
 session_start();
 
 // Variablen einlesen, falls übergeben
-if (isset($_POST['inhalt'])) {$inhalt = $_POST['inhalt'];} else {echo "FEHLER0";exit;}
-if (isset($_POST['hausaufgaben'])) {$hausaufgabe = $_POST['hausaufgaben'];} else {echo "FEHLER1";exit;}
-if (isset($_POST['leistungsmessung'])) {$leistungsmessung = $_POST['leistungsmessung'];} else {echo "FEHLER2";exit;}
-if (isset($_POST['freigabe'])) {$freigabe = $_POST['freigabe'];} else {echo "FEHLER3";exit;}
-if (isset($_POST['fzids'])) {$fzids = $_POST['fzids'];} else {echo "FEHLER4";exit;}
-if (isset($_POST['ltids'])) {$ltids = $_POST['ltids'];} else {echo "FEHLER5";exit;}
-if (isset($_SESSION['TAGEBUCHEINTRAG'])) {$eintrag = $_SESSION['TAGEBUCHEINTRAG'];} else {echo "FEHLER6";exit;}
+if (isset($_POST['inhalt'])) {$inhalt = $_POST['inhalt'];} else {echo "FEHLER";exit;}
+if (isset($_POST['hausaufgaben'])) {$hausaufgabe = $_POST['hausaufgaben'];} else {echo "FEHLER";exit;}
+if (isset($_POST['leistungsmessung'])) {$leistungsmessung = $_POST['leistungsmessung'];} else {echo "FEHLER";exit;}
+if (isset($_POST['freigabe'])) {$freigabe = $_POST['freigabe'];} else {echo "FEHLER";exit;}
+if (isset($_POST['fzids'])) {$fzids = $_POST['fzids'];} else {echo "FEHLER";exit;}
+if (isset($_POST['ltids'])) {$ltids = $_POST['ltids'];} else {echo "FEHLER";exit;}
+if (isset($_SESSION['TAGEBUCHEINTRAG'])) {$eintrag = $_SESSION['TAGEBUCHEINTRAG'];} else {echo "FEHLER";exit;}
 $CMS_BENUTZERART = $_SESSION['BENUTZERART'];
 $CMS_BENUTZERID = $_SESSION['BENUTZERID'];
 
-if (!cms_check_ganzzahl($eintrag, 0)) {echo "FEHLER7";exit;}
-if (!cms_check_toggle($leistungsmessung)) {echo "FEHLER8";exit;}
-if (!cms_check_toggle($freigabe)) {echo "FEHLER9";exit;}
-if (strlen($inhalt) == 0) {echo "FEHLER10";exit;}
+if (!cms_check_ganzzahl($eintrag, 0)) {echo "FEHLER";exit;}
+if (!cms_check_toggle($leistungsmessung)) {echo "FEHLER";exit;}
+if (!cms_check_toggle($freigabe)) {echo "FEHLER";exit;}
+if (strlen($inhalt) == 0) {echo "FEHLER";exit;}
 $fids = explode("|", $fzids);
 $lids = explode("|", $ltids);
 $fehlzeiten = [];
@@ -39,7 +39,7 @@ if ($sql->execute()) {
 }
 $sql->close();
 
-if ($tlehrer === null) {echo "FEHLER10";exit;}
+if ($tlehrer === null) {echo "FEHLER";exit;}
 
 $t = date("d", $tbeginn);
 $m = date("m", $tbeginn);
@@ -49,27 +49,25 @@ $x = mktime(0,0,0,$m,$t+1,$j)-1;
 for ($i=1; $i<count($fids); $i++) {
 	$fzid = $fids[$i];
 	$fehlzeiten[$fzid]['id'] = $fids[$i];
-	if (isset($_POST["fzperson_".$fzid])) {$fehlzeiten[$fzid]['person'] = $_POST["fzperson_".$fzid];} else {echo "FEHLER13"; exit;}
-	if (isset($_POST["fzzeitbh_".$fzid])) {$fehlzeiten[$fzid]['bh'] = $_POST["fzzeitbh_".$fzid];} else {echo "FEHLER14"; exit;}
-	if (isset($_POST["fzzeitbm_".$fzid])) {$fehlzeiten[$fzid]['bm'] = $_POST["fzzeitbm_".$fzid];} else {echo "FEHLER15"; exit;}
-	if (isset($_POST["fzzeiteh_".$fzid])) {$fehlzeiten[$fzid]['eh'] = $_POST["fzzeiteh_".$fzid];} else {echo "FEHLER16"; exit;}
-	if (isset($_POST["fzzeitem_".$fzid])) {$fehlzeiten[$fzid]['em'] = $_POST["fzzeitem_".$fzid];} else {echo "FEHLER17"; exit;}
-	if (isset($_POST["fzbemerkung_".$fzid])) {$fehlzeiten[$fzid]['bem'] = $_POST["fzbemerkung_".$fzid];} else {echo "FEHLER18"; exit;}
+	if (isset($_POST["fzperson_".$fzid])) {$fehlzeiten[$fzid]['person'] = $_POST["fzperson_".$fzid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["fzzeitbh_".$fzid])) {$fehlzeiten[$fzid]['bh'] = $_POST["fzzeitbh_".$fzid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["fzzeitbm_".$fzid])) {$fehlzeiten[$fzid]['bm'] = $_POST["fzzeitbm_".$fzid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["fzzeiteh_".$fzid])) {$fehlzeiten[$fzid]['eh'] = $_POST["fzzeiteh_".$fzid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["fzzeitem_".$fzid])) {$fehlzeiten[$fzid]['em'] = $_POST["fzzeitem_".$fzid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["fzbemerkung_".$fzid])) {$fehlzeiten[$fzid]['bem'] = $_POST["fzbemerkung_".$fzid];} else {echo "FEHLER"; exit;}
 
-	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['person'],0)) {echo "FEHLER19"; exit;}
-	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['bh'],0,23)) {echo "FEHLER20"; exit;}
-	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['bm'],0,59)) {echo "FEHLER21"; exit;}
-	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['eh'],0,23)) {echo "FEHLER22"; exit;}
-	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['em'],0,59)) {echo "FEHLER23"; exit;}
-	if ($fehlzeiten[$fzid]['bh']*60+$fehlzeiten[$fzid]['bm'] >= $fehlzeiten[$fzid]['eh']*60+$fehlzeiten[$fzid]['em']) {echo "FEHLER24"; exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['person'],0)) {echo "FEHLER"; exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['bh'],0,23)) {echo "FEHLER"; exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['bm'],0,59)) {echo "FEHLER"; exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['eh'],0,23)) {echo "FEHLER"; exit;}
+	if (!cms_check_ganzzahl($fehlzeiten[$fzid]['em'],0,59)) {echo "FEHLER"; exit;}
+	if ($fehlzeiten[$fzid]['bh']*60+$fehlzeiten[$fzid]['bm'] >= $fehlzeiten[$fzid]['eh']*60+$fehlzeiten[$fzid]['em']) {echo "FEHLER"; exit;}
 	array_push($personen, $fehlzeiten[$fzid]['person']);
 	$fehlzeiten[$fzid]['von'] = mktime($fehlzeiten[$fzid]['bh'], $fehlzeiten[$fzid]['bm'], 0, $m, $t, $j);
 	$fehlzeiten[$fzid]['bis'] = mktime($fehlzeiten[$fzid]['eh'], $fehlzeiten[$fzid]['em'], 0, $m, $t, $j)-1;
 
-	echo $fehlzeiten[$fzid]['von']." < \n".$tbeginn."\n".$fehlzeiten[$fzid]['bis']." > \n".$tende;
-
 	if ($fehlzeiten[$fzid]['von'] < $tbeginn || $fehlzeiten[$fzid]['bis'] > $tende) {
-		echo "FEHLZEIT1"; exit;
+		echo "FEHLZEIT"; exit;
 	}
 
 	// Püfe, ob sich diese Fehlzeit mit den bisherigen überschneidet
@@ -77,7 +75,7 @@ for ($i=1; $i<count($fids); $i++) {
 		if ($f['person'] == $fehlzeiten[$fzid]['person'] && $f['id'] != $fehlzeiten[$fzid]['id']) {
 			if (($f['von'] <= $fehlzeiten[$fzid]['von'] && $f['bis'] >= $fehlzeiten[$fzid]['von']) ||
 		      ($f['von'] <= $fehlzeiten[$fzid]['bis'] && $f['bis'] >= $fehlzeiten[$fzid]['bis'])) {
-				echo "FEHLZEIT2"; exit;
+				echo "FEHLZEIT"; exit;
 			}
 		}
 	}
@@ -85,13 +83,13 @@ for ($i=1; $i<count($fids); $i++) {
 
 for ($i=1; $i<count($lids); $i++) {
 	$ltid = $lids[$i];
-	if (isset($_POST["ltperson_".$ltid])) {$lobtadel[$ltid]['person'] = $_POST["ltperson_".$ltid];} else {echo "FEHLER25"; exit;}
-	if (isset($_POST["ltart_".$ltid])) {$lobtadel[$ltid]['art'] = $_POST["ltart_".$ltid];} else {echo "FEHLER26"; exit;}
-	if (isset($_POST["ltbemerkung_".$ltid])) {$lobtadel[$ltid]['bem'] = $_POST["ltbemerkung_".$ltid];} else {echo "FEHLER27"; exit;}
+	if (isset($_POST["ltperson_".$ltid])) {$lobtadel[$ltid]['person'] = $_POST["ltperson_".$ltid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["ltart_".$ltid])) {$lobtadel[$ltid]['art'] = $_POST["ltart_".$ltid];} else {echo "FEHLER"; exit;}
+	if (isset($_POST["ltbemerkung_".$ltid])) {$lobtadel[$ltid]['bem'] = $_POST["ltbemerkung_".$ltid];} else {echo "FEHLER"; exit;}
 }
 foreach ($lobtadel as $lt) {
-	if (!cms_check_ganzzahl($lt['person'],0) && $lt['person'] != "a") {echo "FEHLER28"; exit;}
-	if ($lt['art'] != 'v' && $lt['art'] != 'm' && $lt['art'] != 'l') {echo "FEHLER29"; exit;}
+	if (!cms_check_ganzzahl($lt['person'],0) && $lt['person'] != "a") {echo "FEHLER"; exit;}
+	if ($lt['art'] != 'v' && $lt['art'] != 'm' && $lt['art'] != 'l') {echo "FEHLER"; exit;}
 	if ($lt['person'] != 'a') {
 		array_push($personen, $lt['person']);
 	}
@@ -99,7 +97,7 @@ foreach ($lobtadel as $lt) {
 $pers = "";
 if (count($personen) > 0) {
 	$pers = "(".implode(",", $personen).")";
-	if (!cms_check_idliste($pers)) {echo "FEHLER30"; exit;}
+	if (!cms_check_idliste($pers)) {echo "FEHLER"; exit;}
 }
 
 if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') && $tlehrer == $CMS_BENUTZERID) {

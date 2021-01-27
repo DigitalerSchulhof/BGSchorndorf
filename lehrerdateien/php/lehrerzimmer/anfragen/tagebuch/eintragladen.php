@@ -182,7 +182,7 @@ if ($angemeldet && $CMS_BENUTZERART == 'l' && $tlehrer == $CMS_BENUTZERID) {
     $code .= "<p><input type=\"hidden\" value=\"$ltids\" id=\"cms_eintrag_ltids\" name=\"cms_eintrag_ltids\"></p>";
     $code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_eintrag_ltdazu()\">+ Lob oder Tadel hinzufügen</span></p>";
 
-    $code .= "<p><span class=\"cms_button\" onclick=\"cms_tagebuch_eintrag_speichern('ln');\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto/Tagebuch\">Abbrechen</a></p>";
+    $code .= "<p><span class=\"cms_button\" onclick=\"cms_tagebuch_eintrag_speichern('ln', '$unterricht');\">Speichern</span> <a class=\"cms_button_nein\" href=\"Schulhof/Nutzerkonto/Tagebuch\">Abbrechen</a></p>";
 
   $code .= "</div></div>";
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
