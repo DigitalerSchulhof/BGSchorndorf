@@ -359,8 +359,8 @@ $tododa = false;
 $sql = "";
 foreach($CMS_GRUPPEN as $g) {
 	$gk = cms_textzudb($g);
-	$sql .= "(SELECT 'b', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', g.id, AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), a.id, AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
-	$sql .= "(SELECT 't', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', g.id, AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), a.id, AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 'b', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL') as tbez, AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', g.id, AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), a.id, AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.datum FROM {$gk}blogeintraegeintern as a JOIN {$gk}todoartikel as t ON t.blogeintrag = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
+	$sql .= "(SELECT 't', AES_DECRYPT(t.bezeichnung, '$CMS_SCHLUESSEL') as tbez, AES_DECRYPT(t.beschreibung, '$CMS_SCHLUESSEL'), IFNULL(AES_DECRYPT(s.bezeichnung, '$CMS_SCHLUESSEL'), 'Schuljahrübergreifend'), '$g', g.id, AES_DECRYPT(g.bezeichnung, '$CMS_SCHLUESSEL'), a.id, AES_DECRYPT(a.bezeichnung, '$CMS_SCHLUESSEL') as abez, a.beginn FROM {$gk}termineintern as a JOIN {$gk}todoartikel as t ON t.termin = a.id JOIN $gk as g ON g.id = a.gruppe LEFT JOIN schuljahre as s ON s.id = g.schuljahr WHERE person = $CMS_BENUTZERID ORDER BY abez) UNION ";
 }
 $sql = substr($sql, 0, -6);
 $sql = $dbs->prepare($sql);
@@ -403,7 +403,7 @@ if ($sql->execute()) {
 }
 $sql->close();
 // Eigene ToDo's
-$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL'), AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ?";
+$sql = "SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') as bez, AES_DECRYPT(beschreibung, '$CMS_SCHLUESSEL') FROM todo WHERE person = ? ORDER BY bez";
 $sql = $dbs->prepare($sql);
 $sql->bind_param("i", $CMS_BENUTZERID);
 $sql->bind_result($tid, $bezeichnung, $beschreibung);
