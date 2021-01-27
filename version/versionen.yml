@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_12:
+    version: 0.10.12
+    tag: Donnerstag, den 28. Januar 2021
+    neuerungen:
+      - ToDo's alphabetisch sortiert [E]
   0_10_11:
     version: 0.10.11
     tag: Mittwoch, den 27. Januar 2021
