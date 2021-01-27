@@ -388,12 +388,13 @@ if (cms_angemeldet() && $zugriff) {
 		$sql->execute();
 		$sql->close();
 
-		$lid = cms_generiere_kleinste_id("{$artk}links");
-		$sql = $dbs->prepare("UPDATE {$artk}links SET gruppe = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
-		$sql->bind_param("isssi", $id, $linklink, $linktitel, $linkbeschreibung, $lid);
-		$sql->execute();
-		$sql->close();
-
+		if (strlen($linklink) > 0) {
+			$lid = cms_generiere_kleinste_id("{$artk}links");
+			$sql = $dbs->prepare("UPDATE {$artk}links SET gruppe = ?, link = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), titel = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), beschreibung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+			$sql->bind_param("isssi", $id, $linklink, $linktitel, $linkbeschreibung, $lid);
+			$sql->execute();
+			$sql->close();
+		}
 
 		if ($art == 'Stufen') {
 			// Nachfolgende Elemente verschieben

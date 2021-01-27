@@ -117,7 +117,7 @@ if (count($TIDS) > 0) {
       $sql = $dbl->prepare($anfrage);
       foreach ($LOBTADEL as $lt) {
         if ($lt['eintrag'] == $t['id']) {
-          $sql->bind_param("iiissii", $lt['id'], $lt['eintrag'], $lt['person'], $lt['art'], $lt['bemerkung'], $lt['urheber'], $lt['eintragszeit']);
+          $sql->bind_param("iiissii", $lt['id'], $lt['eintrag'], $lt['person'], $lt['art'], $lt['bem'], $lt['urheber'], $lt['eintragszeit']);
           $sql->execute();
         }
       }

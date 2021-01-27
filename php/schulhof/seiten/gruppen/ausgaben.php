@@ -320,13 +320,16 @@ function cms_gruppenlinks_ausgeben($dbs, $gruppe, $gruppenid, $icon) {
 
 		foreach ($LINKS as $L) {
 			$code .= "<a href=\"{$L["link"]}\" class=\"cms_artikellink_anzeige\" target=\"_blank\" style=\"background-image: url('res/gruppen/gross/$icon');\">";
-			$code .= "<h4>{$L["titel"]}</h4>";
+			if(strlen($L["titel"]) > 0) {
+				$code .= "<h4>{$L["titel"]}</h4>";
+			} else {
+				$code .= "<h4>{$L["link"]}</h4>";
+			}
 			if (strlen($L["beschreibung"]) > 0) {
 				$code .= "<p>{$L["beschreibung"]}</p>";
 			}
-			$info = $L["link"];
-			if (strlen($info) > 0) {
-				$code .= "<p class=\"cms_notiz\">" . $info . "</p>";
+			if (strlen($L["titel"]) > 0 && strlen($L["link"]) > 0) {
+				$code .= "<p class=\"cms_notiz\">{$L["link"]}</p>";
 			}
 			$code .= "</a>";
 		}

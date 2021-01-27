@@ -42,31 +42,39 @@ if (isset($_SESSION['TAGEBUCHEINSEHENID']) && isset($_SESSION['TAGEBUCHSEHENART'
     if ($gruppenart == "klasse") {
       $code .= "<h1>Klassentagebuch »".$titel."«</h1>";
 
-      $jetzt = time();
-      $t = date("d", $jetzt);
-      $m = date("m", $jetzt);
-      $j = date("Y", $jetzt);
-      $w = date("w", $jetzt)-1;
-      $anfang = mktime(0,0,0,$m,$t-$w,$j);
-      $ende = mktime(0,0,0,$m,$t-$w+7,$j)-1;
+      if ($CMS_IMLN) {
+        $jetzt = time();
+        $t = date("d", $jetzt);
+        $m = date("m", $jetzt);
+        $j = date("Y", $jetzt);
+        $w = date("w", $jetzt)-1;
+        $anfang = mktime(0,0,0,$m,$t-$w,$j);
+        $ende = mktime(0,0,0,$m,$t-$w+7,$j)-1;
 
-      // Schulwochenanzeige
-      $code .= "<p><span id=\"cms_tagebuchansicht_w\" class=\"cms_button_ja\" onclick=\"cms_tagebuchansicht_aendern('w')\">Wochenweise</span> <span id=\"cms_tagebuchansicht_v\" class=\"cms_button\" onclick=\"cms_tagebuchansicht_aendern('v')\">Vollständig</span> <input type=\"hidden\" id=\"cms_tagebuchansicht\" name=\"cms_tagebuchansicht\" value=\"w\"><input type=\"hidden\" id=\"cms_tagebuch_wochenansicht_datum\" name=\"cms_tagebuch_wochenansicht_datum\" value=\"$anfang\"></p>";
 
-      $code .= "<table class=\"cms_zeitwahl\"><tbody><tr>";
-      $code .= "<td><span class=\"cms_button\" onclick=\"cms_tagebuch_wochenansicht('-')\">«</span></td>";
-      $code .= "<td id=\"cms_tagebuch_wochenansicht_datum_text\">MO ".date("d.m.Y", $anfang)." – SO ".date("d.m.Y", $ende)."</td>";
-      $code .= "<td><span class=\"cms_button\" onclick=\"cms_tagebuch_wochenansicht('+')\">»</span></td></tr></tbody></table>";
 
+        // Schulwochenanzeige
+        $code .= "<p><span id=\"cms_tagebuchansicht_w\" class=\"cms_button_ja\" onclick=\"cms_tagebuchansicht_aendern('w')\">Wochenweise</span> <span id=\"cms_tagebuchansicht_v\" class=\"cms_button\" onclick=\"cms_tagebuchansicht_aendern('v')\">Vollständig</span> <input type=\"hidden\" id=\"cms_tagebuchansicht\" name=\"cms_tagebuchansicht\" value=\"w\"><input type=\"hidden\" id=\"cms_tagebuch_wochenansicht_datum\" name=\"cms_tagebuch_wochenansicht_datum\" value=\"$anfang\"></p>";
+
+        $code .= "<table class=\"cms_zeitwahl\"><tbody><tr>";
+        $code .= "<td><span class=\"cms_button\" onclick=\"cms_tagebuch_wochenansicht('-')\">«</span></td>";
+        $code .= "<td id=\"cms_tagebuch_wochenansicht_datum_text\">MO ".date("d.m.Y", $anfang)." – SO ".date("d.m.Y", $ende)."</td>";
+        $code .= "<td><span class=\"cms_button\" onclick=\"cms_tagebuch_wochenansicht('+')\">»</span></td></tr></tbody></table>";
+      }
     } else {
       $code .= "<h1>Kurstagebuch »".$titel."«</h1>";
     }
 
-    $code .= "<p><input type=\"hidden\" id=\"cms_tagebuchgruppenart\" name=\"cms_tagebuchgruppenart\" value=\"$gruppenart\"><input type=\"hidden\" id=\"cms_tagebuchgruppenid\" name=\"cms_tagebuchgruppenid\" value=\"$gruppenid\"></p>";
-    $code .= "<div id=\"cms_tagebuch_tagesansicht\">";
-    $code .= cms_generiere_nachladen("cms_tagebuchuebersicht_lehrernetz", "");
-    $CMS_ONLOAD_EVENTS .= "cms_tagebuch_wochenansicht('j');";
-    $code .= "</div>";
+    if ($CMS_IMLN) {
+      $code .= "<p><input type=\"hidden\" id=\"cms_tagebuchgruppenart\" name=\"cms_tagebuchgruppenart\" value=\"$gruppenart\"><input type=\"hidden\" id=\"cms_tagebuchgruppenid\" name=\"cms_tagebuchgruppenid\" value=\"$gruppenid\"></p>";
+      $code .= "<div id=\"cms_tagebuch_tagesansicht\">";
+      $code .= cms_generiere_nachladen("cms_tagebuchuebersicht_lehrernetz", "");
+      $CMS_ONLOAD_EVENTS .= "cms_tagebuch_wochenansicht('j');";
+      $code .= "</div>";
+    } else {
+      $code .= cms_meldung_eingeschraenkt();
+    }
+
     echo $code;
   }
   else {

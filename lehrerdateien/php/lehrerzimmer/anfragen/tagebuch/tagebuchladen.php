@@ -96,7 +96,7 @@ function cms_tagebucheintrag_tag($dbs, $dbl, $klasse, $t, $m, $j) {
   if (count($uids) > 0) {
     $uids = "(".implode(",", $uids).")";
     // Lade Inhalt der Unterrichtsstunden
-    $sql = $dbl->prepare("SELECT id, AES_DECRYPT(inhalt, '$CMS_SCHLUESSELL'), AES_DECRYPT(hausaufgabe, '$CMS_SCHLUESSEL'), freigabe, leistungsmessung, urheber, eintragsdatum FROM tagebuch WHERE id IN $uids");
+    $sql = $dbl->prepare("SELECT id, AES_DECRYPT(inhalt, '$CMS_SCHLUESSELL'), AES_DECRYPT(hausaufgabe, '$CMS_SCHLUESSELL'), freigabe, leistungsmessung, urheber, eintragsdatum FROM tagebuch WHERE id IN $uids");
     if ($sql->execute()) {
       $sql->bind_result($id, $inhalt, $hausi, $frei, $leistung, $urheber, $datum);
       while ($sql->fetch()) {
@@ -199,7 +199,7 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl = null)
   if (count($uids) > 0) {
     $uids = "(".implode(",", $uids).")";
     // Lade Inhalt der Unterrichtsstunden
-    $sql = $dbl->prepare("SELECT id, AES_DECRYPT(inhalt, '$CMS_SCHLUESSELL'), AES_DECRYPT(hausaufgabe, '$CMS_SCHLUESSEL'), freigabe, leistungsmessung, urheber, eintragsdatum FROM tagebuch WHERE id IN $uids");
+    $sql = $dbl->prepare("SELECT id, AES_DECRYPT(inhalt, '$CMS_SCHLUESSELL'), AES_DECRYPT(hausaufgabe, '$CMS_SCHLUESSELL'), freigabe, leistungsmessung, urheber, eintragsdatum FROM tagebuch WHERE id IN $uids");
     if ($sql->execute()) {
       $sql->bind_result($id, $inhalt, $hausi, $frei, $leistung, $urheber, $datum);
       while ($sql->fetch()) {
@@ -211,9 +211,7 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl = null)
         $tagebuch[$id]['datum'] = $datum;
         $tagebuch[$id]['lobtadel'] = [];
         $tagebuch[$id]['fehlzeiten'] = [];
-        if ($urheber !== null) {
-          array_push($personen, $urheber);
-        }
+        if ($urheber !== null) {array_push($personen, $urheber);}
       }
     }
     $sql->close();
@@ -247,7 +245,8 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl = null)
         $lt['eintragszeit'] = $eintragszeit;
         if (isset($tagebuch[$u['id']])) {
           array_push($tagebuch[$u['id']]['lobtadel'], $lt);
-          array_push($personen, $person, $urheber);
+          if ($person !== null) {array_push($personen, $person);}
+          if ($urheber !== null) {array_push($personen, $urheber);}
         }
       }
     }
@@ -272,10 +271,8 @@ function cms_tagebucheintrag_kurs($dbs, $dbl, $kurs, $t, $m, $j, $anzahl = null)
           $f['urheber'] = $urheber;
           if (isset($tagebuch[$u['id']])) {
             array_push($tagebuch[$u['id']]['fehlzeiten'], $f);
-            array_push($personen, $person);
-            if ($urheber !== null) {
-              array_push($personen, $urheber);
-            }
+            if ($person !== null) {array_push($personen, $person);}
+            if ($urheber !== null) {array_push($personen, $urheber);}
           }
         }
       }
@@ -321,14 +318,14 @@ function cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden, $fehlz
       if ($fehlzeiten === null) {
         $std = "<span class=\"cms_notiz\">".date("d.m.Y", $u['beginn'])."</span><br>".$std;
       }
-      $ausgabe .= "<th>$std</th><th>$f</th><th>$l</th>";
+      $ausgabe .= "<th style=\"width:10%\">$std</th><th style=\"width:10%\">$f</th><th style=\"width:10%\">$l</th>";
       if (isset($tagebuch[$u['id']])) {
         $i = $tagebuch[$u['id']]['inhalt'];
         $h = $tagebuch[$u['id']]['hausi'];
         $lm = $tagebuch[$u['id']]['leistung'];
       } else {$i = ""; $h = ""; $lm = '0';}
       if ($lm == "1") {$cssklasse = " class=\"cms_tagebuch_leistungsmessung\"";} else {$cssklasse = "";}
-      $ausgabe .= "<td$cssklasse>$i</td><td>$h</td>";
+      $ausgabe .= "<td$cssklasse>$i</td><td style=\"width:20%\">$h</td>";
 
 
       $bem = "";
@@ -341,8 +338,8 @@ function cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden, $fehlz
         foreach ($tagebuch[$u['id']]['lobtadel'] as $lt) {
           $bem .= cms_lobtadel($lt, $P, $f);
         }
-        $ausgabe .= "<td>$bem</td>";
-      } else {$ausgabe .= "<td></td>";}
+        $ausgabe .= "<td style=\"width:15%\">$bem</td>";
+      } else {$ausgabe .= "<td style=\"width:0%\"></td>";}
     $ausgabe .= "</tr>";
   }
 
@@ -364,14 +361,13 @@ function cms_tagebucheintraege($unterricht, $tagebuch, $P, $schulstunden, $fehlz
         foreach ($tagebuch[$u['id']]['lobtadel'] as $lt) {
           if (strlen($u['kurskbez'])) {$f = $u['kurskbez'];}
           else {$f = $u['kursbez'];}
-
           $bem .= cms_lobtadel($lt, $P, $f);
         }
       }
     }
   }
 
-  if (strlen($bem > 0)) {
+  if (strlen($bem) > 0) {
     $ausgabe .= "<div class=\"cms_tagebuch_bemerkungen\">$bem</div>";
   }
 
