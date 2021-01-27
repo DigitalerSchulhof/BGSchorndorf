@@ -33,7 +33,7 @@ if ($CMS_BENUTZERART == 'l') {
 
   $code .= "<div class=\"cms_spalte_2\"><div class=\"cms_spalte_i\">";
   $klassentagebuecher = "";
-  $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id AS id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, stufen.reihenfolge AS reihe FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ? AND klassen.id IN (SELECT gruppe FROM klassenvorsitz WHERE person = ?)) AS x ORDER BY x.reihe, x.bez");
+  $sql = $dbs->prepare("SELECT * FROM (SELECT klassen.id AS id, AES_DECRYPT(klassen.bezeichnung, '$CMS_SCHLUESSEL') AS bez, stufen.reihenfolge AS reihe FROM klassen LEFT JOIN stufen ON klassen.stufe = stufen.id WHERE klassen.schuljahr = ? AND klassen.id IN (SELECT gruppe FROM klassenmitglieder WHERE person = ?)) AS x ORDER BY x.reihe, x.bez");
   $sql->bind_param("ii", $CMS_BENUTZERSCHULJAHR, $CMS_BENUTZERID);
   if ($sql->execute()) {
     $sql->bind_result($klaid, $klabez, $klareihe);

@@ -87,7 +87,7 @@ if (isset($_SESSION['TAGEBUCHEINTRAG'])) {
 
       // Fehlzeiten laden
       $sql = $dbs->prepare("SELECT fehlzeiten.id, person, von, bis, AES_DECRYPT(bemerkung, '$CMS_SCHLUESSEL') FROM fehlzeiten WHERE ((von BETWEEN ? AND ?) OR (bis BETWEEN ? AND ?)) AND person IN (SELECT person FROM kursemitglieder WHERE gruppe = ?)");
-      $sql->bind_param("iiiii", $a, $x, $a, $x, $tkurs);
+      $sql->bind_param("iiiii", $tbeginn, $tende, $tbeginn, $tende, $tkurs);
       if ($sql->execute()) {
         $sql->bind_result($fid, $fzperson, $fzvon, $fzbis, $fzbem);
         while ($sql->fetch()) {

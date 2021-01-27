@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_11:
+    version: 0.10.11
+    tag: Mittwoch, den 27. Januar 2021
+    neuerungen:
+      - Tagebuch-Bugfixes bei Übertragungen vom Webserver auf den gesicherten Server [W]
   0_10_10:
     version: 0.10.10
     tag: Mittwoch, den 27. Januar 2021
