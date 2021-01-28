@@ -1,8 +1,13 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_14:
+    version: 0.10.14
+    tag: Donnerstag, den 28. Januar 2021
+    neuerungen:
+      - Sortierfehler bei ToDo's behoben [E]
   0_10_13:
     version: 0.10.13
-    tag: Mittwoch, den 28. Januar 2021
+    tag: Donnerstag, den 28. Januar 2021
     neuerungen:
       - Absolut dummen Fehler behoben
   0_10_12:
@@ -10,7 +15,7 @@ version:
     tag: Mittwoch, den 27. Januar 2021
     neuerungen:
       - ToDo's alphabetisch sortiert [E]
-      - Übersicht in Tagebüchern verbesser [W]
+      - Übersicht in Tagebüchern verbessert [W]
       - Fixes bei Tagebüchern [W]
   0_10_11:
     version: 0.10.11
