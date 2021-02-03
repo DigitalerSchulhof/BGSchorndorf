@@ -347,11 +347,11 @@
         echo "var CMS_BENUTZERART = '".$_SESSION['BENUTZERART']."';\n";
         echo "var CMS_MAX_DATEI = ".$CMS_EINSTELLUNGEN['Maximale Dateigröße'].";\n";
 				if ($CMS_URL[0] != 'App') {
-					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(1)', 30000);\n";
+					echo "var CMS_BEARBEITUNGSART = window.setInterval(() => cms_timeout_aktualisieren(1), 30000);\n";
 					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(1);";
 				}
 				else {
-					echo "var CMS_BEARBEITUNGSART = window.setInterval('cms_timeout_aktualisieren(2)', 30000);\n";
+					echo "var CMS_BEARBEITUNGSART = window.setInterval(() => cms_timeout_aktualisieren(2), 30000);\n";
 					$CMS_ONLOAD_EVENTS = "cms_timeout_aktualisieren(2);";
 				}
         if ($CMS_IMLN) {
