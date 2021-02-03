@@ -4,6 +4,7 @@ version:
     version: 0.10.15
     tag: Freitag, den 5. Februar 2021
     neuerungen:
+      - Passwort-Manager erkennen die Anmeldeseite als gültiges Formular (vielleicht) :) [E]
       - Sortierfehler bei ToDo's behoben [E]
   0_10_14:
     version: 0.10.14
