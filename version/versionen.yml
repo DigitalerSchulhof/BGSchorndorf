@@ -2,7 +2,7 @@
 version:
   0_10_15:
     version: 0.10.15
-    tag: Freitag, den 5. Februar 2021
+    tag: Mittwoch, den 3. Februar 2021
     neuerungen:
       - Passwort-Manager erkennen die Anmeldeseite als gültiges Formular (vielleicht) :) [E]
       - Vorzeitiges fehlerhaftes Abmelden behoben [E]
