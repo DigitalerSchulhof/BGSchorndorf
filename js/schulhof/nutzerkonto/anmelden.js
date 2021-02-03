@@ -140,7 +140,13 @@ function cms_abmelden(art) {
 }
 
 // Aktivitätsanzeige anpassen
-function cms_timeout_aktualisieren (art) {
+function cms_timeout_aktualisieren(art) {
+  // Ping für Session timeout
+  cms_ajaxanfrage(407).then(r => {
+    if (r !== "PONG") {
+      cms_abmelden('auto');
+    }
+  });
   // Breite für die Anzeige der Leiste berechnen
   var jetzt = new Date();
   jetzt = jetzt.getTime()/1000;

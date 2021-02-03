@@ -34,15 +34,17 @@ $anmeldung_moeglich = true;
 if ($anmeldung_moeglich) {
 	$code .= "<p>Um den Schulhof zu betreten, ist eine Anmeldung nötig ...</p>";
 
-	$code .= "<table class=\"cms_formular\">";
-		$code .= "<tr><th>Benutzername:</th><td><input name=\"cms_schulhof_anmeldung_bentuzer\" id=\"cms_schulhof_anmeldung_bentuzer\" type=\"text\"></td></tr>";
-		$code .= "<tr><th>Passwort:</th><td><input name=\"cms_schulhof_anmeldung_passwort\" id=\"cms_schulhof_anmeldung_passwort\" type=\"password\"></td></tr>";
-	$code .= "</table>";
+  $code .= "<form onsubmit=\"cms_anmelden(); return false\">";
+    $code .= "<table class=\"cms_formular\">";
+      $code .= "<tr><th>Benutzername:</th><td><input name=\"cms_schulhof_anmeldung_bentuzer\" id=\"cms_schulhof_anmeldung_bentuzer\" type=\"text\" autofill=\"username\"></td></tr>";
+      $code .= "<tr><th>Passwort:</th><td><input name=\"cms_schulhof_anmeldung_passwort\" id=\"cms_schulhof_anmeldung_passwort\" type=\"password\" autofill=\"current-password\"></td></tr>";
+    $code .= "</table>";
 
-	$code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden, ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
-	$code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch »Einwilligung A« erteilt.</p>";
+    $code .= "<p class=\"cms_notiz\"><b>Datenschutzhinweis:</b> Im Schulhof werden Daten anders verarbeitet als auf der normalen Website. Was gespeichert und wie die Daten verarbeitet werden, ist der <a href=\"Website/Datenschutz\">Datenschutzseite</a> zu entnehmen.</p>";
+    $code .= "<p class=\"cms_notiz\">Mit der Anmeldung wird automatisch »Einwilligung A« erteilt.</p>";
 
-	$code .= "<p><span class=\"cms_button_ja\" onclick=\"cms_anmelden();\">Anmelden</span> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a> <a class=\"cms_button\" href=\"Schulhof/Registrieren\">Registrieren</a></p>";
+    $code .= "<p><button class=\"cms_button_ja\">Anmelden</button> <a class=\"cms_button\" href=\"Schulhof/Passwort_vergessen\">Passwort vergessen?</a> <a class=\"cms_button\" href=\"Schulhof/Registrieren\">Registrieren</a></p>";
+  $code .= "</form>";
 
 	$code .= '<h3>Jetzt auch als App</h3>';
 	$code .= "<p><a class=\"cms_iconbutton\" style=\"background-image:url('res/icons/gross/apple.png');\" href=\"https://apps.apple.com/de/app/digitaler-schulhof/id1500912100\" target=\"_blank\">iPhone / iPad</a> <a class=\"cms_iconbutton\"  href=\"https://play.google.com/store/apps/details?id=de.dsh\" style=\"background-image:url('res/icons/gross/android.png');\">Android</a></p>";

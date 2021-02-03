@@ -1,5 +1,12 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_15:
+    version: 0.10.15
+    tag: Mittwoch, den 3. Februar 2021
+    neuerungen:
+      - Passwort-Manager erkennen die Anmeldeseite als gültiges Formular (vielleicht) :) [E]
+      - Vorzeitiges fehlerhaftes Abmelden behoben [E]
+      - Sortierfehler bei ToDo's behoben [E]
   0_10_14:
     version: 0.10.14
     tag: Donnerstag, den 28. Januar 2021
