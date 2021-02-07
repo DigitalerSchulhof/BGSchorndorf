@@ -202,6 +202,10 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 				$sql->execute();
 				$sql->close();
 
+				$sql = $dbs->prepare("DELETE FROM tagebuch WHERE id IN ($loeschenids)");
+				$sql->execute();
+				$sql->close();
+
 				$sql = $dbl->prepare("DELETE FROM tagebuch WHERE id IN ($loeschenids)");
 				$sql->execute();
 				$sql->close();
@@ -225,6 +229,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 		// Solange Stunden erzeugen, bis der Zeitraum überschritten ist
 		$sql = $dbs->prepare("UPDATE unterricht SET pkurs = ?, pbeginn = ?, pende = ?, plehrer = ?, praum = ?, tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = 0, vplanart = '-', vplanbemerkung = AES_ENCRYPT('', '$CMS_SCHLUESSEL') WHERE id = ?");
 		$sqll = $dbl->prepare("INSERT INTO tagebuch (id) VALUES (?)");
+		$sqls = $dbs->prepare("INSERT INTO tagebuch (id) VALUES (?)");
 		while ($jetzt < $zende) {
 			// Aktuellen Rythmus finden
 			// Wenn das aktuelle Datum nach dem Ende des Rythmus liegt
@@ -258,6 +263,8 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 					$sql->execute();
 					$sqll->bind_param("i", $uid);
 					$sqll->execute();
+					$sqls->bind_param("i", $uid);
+					$sqls->execute();
 				}
 			}
 			foreach ($REGELUNTERRICHT[$aktry][$wochentag] AS $ru) {
@@ -268,6 +275,8 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.stundentagebücher.er
 				$sql->execute();
 				$sqll->bind_param("i", $uid);
 				$sqll->execute();
+				$sqls->bind_param("i", $uid);
+				$sqls->execute();
 			}
 
 			// Nächsten Tag bestimmen
