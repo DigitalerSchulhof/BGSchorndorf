@@ -30,6 +30,7 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
   if (isset($_SESSION['VORANMELDUNG_S_LAND1'])) {$land1 = $_SESSION['VORANMELDUNG_S_LAND1'];} else {$land1 = "";}
   if (isset($_SESSION['VORANMELDUNG_S_LAND2'])) {$land2 = $_SESSION['VORANMELDUNG_S_LAND2'];} else {$land2 = "";}
   if (isset($_SESSION['VORANMELDUNG_S_IMPFUNG'])) {$impfung = $_SESSION['VORANMELDUNG_S_IMPFUNG'];} else {$impfung = 0;}
+  if (isset($_SESSION['VORANMELDUNG_S_WUNSCHSCHUELER'])) {$wunschschueler = $_SESSION['VORANMELDUNG_S_WUNSCHSCHUELER'];} else {$wunschschueler = "";}
   if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$strasse = $_SESSION['VORANMELDUNG_S_STRASSE'];} else {$strasse = "";}
   if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$hausnummer = $_SESSION['VORANMELDUNG_S_HAUSNUMMER'];} else {$hausnummer = "";}
   if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$plz = $_SESSION['VORANMELDUNG_S_PLZ'];} else {$plz = "";}
@@ -42,10 +43,11 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
   if (isset($_SESSION['VORANMELDUNG_S_HANDY2'])) {$handy2 = $_SESSION['VORANMELDUNG_S_HANDY2'];} else {$handy2 = "";}
   if (isset($_SESSION['VORANMELDUNG_S_MAIL'])) {$mail = $_SESSION['VORANMELDUNG_S_MAIL'];} else {$mail = "";}
   if (isset($_SESSION['VORANMELDUNG_S_ORT'])) {$ort = $_SESSION['VORANMELDUNG_S_ORT'];} else {$ort = "";}
-  if (isset($_SESSION['VORANMELDUNG_S_EINSCHULUNG'])) {$einschulung = $_SESSION['VORANMELDUNG_S_EINSCHULUNG']; $einschulunggeladen = false;}
-  else {$einschulung = $geburtsdatum; $einschulunggeladen = true;}
+  if (isset($_SESSION['VORANMELDUNG_S_EINSCHULUNG'])) {$einschulung = $_SESSION['VORANMELDUNG_S_EINSCHULUNG']; $einschulunggeladen = true;}
+  else {$einschulung = $geburtsdatum; $einschulunggeladen = false;}
   if (isset($_SESSION['VORANMELDUNG_S_VORIGESCHULE'])) {$vorigeschule = $_SESSION['VORANMELDUNG_S_VORIGESCHULE'];} else {$vorigeschule = "";}
   if (isset($_SESSION['VORANMELDUNG_S_KLASSE'])) {$klasse = $_SESSION['VORANMELDUNG_S_KLASSE'];} else {$klasse = "";}
+  if (isset($_SESSION['VORANMELDUNG_S_EMPFEHLUNG'])) {$empfehlung = $_SESSION['VORANMELDUNG_S_EMPFEHLUNG'];} else {$empfehlung = "-";}
   if (isset($_SESSION['VORANMELDUNG_S_PROFIL'])) {$profil = $_SESSION['VORANMELDUNG_S_PROFIL'];} else {$profil = "";}
 
   $geburtsdatumT = date('d', $geburtsdatum);
@@ -118,7 +120,11 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
     }
     $code .= "</td></tr>";
     $code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_generiere_schieber('voranmeldung_schueler_impfung', $impfung)."</td></tr>";
+    $code .= "<tr><th>WunschmitschülerIn:</th><td><input type=\"text\" name=\"cms_voranmeldung_schueler_wunschschueler\" id=\"cms_voranmeldung_schueler_wunschschueler\" value=\"$wunschschueler\"></td></tr>";
   $code .= "</table>";
+
+  $code .= cms_meldung("info", "<h4>WunschmitschülerIn angeben</h4><p>Bitte nur eine(n) einzelne(n) SchülerIn <b>mit vollem Namen</b> nennen. Werden mehrere Namen gelistet oder zum Beispiel Spitznamen verwendet, wird der Wunsch vollständig ignoriert.</p><p>Auch einzelne geäußerte Wünsche können gegebenenfalls aus organisatorischen Gründen nicht erfüllt werden.</p>");
+
   $code .= "</div>";
   $code .= "</div>";
 
@@ -152,6 +158,14 @@ $code .= "<p>Bitte füllen Sie die Formularfelder sorgfältig aus. Die Schreibwe
     $code .= "<option value=\"".$CMS_VORANMELDUNG['Anmeldung Klassenstufe'].$b."\"$zusatz>".$CMS_VORANMELDUNG['Anmeldung Klassenstufe'].$b."</option>";
   }
   $code .= "</select></td></tr>";
+
+  $code .= "<tr><th>Grundschulempfehlung:</th><td><select name=\"cms_voranmeldung_empfehlung\" id=\"cms_voranmeldung_empfehlung\">";
+  foreach ($empfehlungen as $e) {
+    if ($e['wert'] == $empfehlung) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+    $code .= "<option value=\"".$e['wert']."\"$zusatz>".$e['bezeichnung']."</option>";
+  }
+  $code .= "</select></td></tr>";
+
   $code .= "<tr><th>Künftiges Profil:</th><td><select name=\"cms_voranmeldung_profil\" id=\"cms_voranmeldung_profil\">";
   foreach ($profile as $p) {
     if ($p['wert'] == $profil) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}

@@ -84,6 +84,7 @@ function cms_schuelerdaten_speichern() {
 	var land1 = document.getElementById('cms_voranmeldung_schueler_land1').value;
 	var land2 = document.getElementById('cms_voranmeldung_schueler_land2').value;
 	var impfung = document.getElementById('cms_voranmeldung_schueler_impfung').value;
+	var wunschschueler = document.getElementById('cms_voranmeldung_schueler_wunschschueler').value;
 	var strasse = document.getElementById('cms_voranmeldung_schueler_strasse').value;
 	var hausnummer = document.getElementById('cms_voranmeldung_schueler_hausnummer').value;
 	var plz = document.getElementById('cms_voranmeldung_schueler_postleitzahl').value;
@@ -100,6 +101,7 @@ function cms_schuelerdaten_speichern() {
 	var einschulungJ = document.getElementById('cms_vornameldung_schueler_einschulung_J').value;
 	var vorigeschule = document.getElementById('cms_voranmeldung_vorigeschule').value;
 	var klasse = document.getElementById('cms_voranmeldung_klasse').value;
+	var empfehlung = document.getElementById('cms_voranmeldung_empfehlung').value;
 	var profil = document.getElementById('cms_voranmeldung_profil').value;
 
 	var meldung = '<p>Die Schülerdaten konnten nicht gespeichert werden, denn ...</p><ul>';
@@ -225,6 +227,11 @@ function cms_schuelerdaten_speichern() {
 		meldung += '<li>Die vorige Klasse ist ungültig.</li>';
 	}
 
+	if (empfehlung != 'G' && empfehlung != 'R' && empfehlung != 'W' && empfehlung != 'S') {
+		fehler = true;
+		meldung += '<li>Die Grundschulempfehlung ist ungültig.</li>';
+	}
+
 	if (profil.length <= 0) {
 		fehler = true;
 		meldung += '<li>Das gewünschte Profil ist ungültig.</li>';
@@ -248,6 +255,7 @@ function cms_schuelerdaten_speichern() {
 		formulardaten.append("land1", land1);
 		formulardaten.append("land2", land2);
 		formulardaten.append("impfung", impfung);
+		formulardaten.append("wunschschueler", wunschschueler);
 		formulardaten.append("strasse", strasse);
 		formulardaten.append("hausnummer", hausnummer);
 		formulardaten.append("plz", plz);
@@ -264,6 +272,7 @@ function cms_schuelerdaten_speichern() {
 		formulardaten.append("einschulungJ", einschulungJ);
 		formulardaten.append("vorigeschule", vorigeschule);
 		formulardaten.append("klasse", klasse);
+		formulardaten.append("empfehlung", empfehlung);
 		formulardaten.append("profil", profil);
 		formulardaten.append("anfragenziel", '243');
 

@@ -1,6 +1,6 @@
 <?php
 function cms_schulanmeldung_ausgeben ($id) {
-	global $CMS_SCHLUESSEL, $laender, $sprachen, $geschlechter, $religionen, $reliunterrichtangebot, $CMS_ONLOAD_EXTERN_EVENTS, $klassenbezeichnungen, $profile, $rollen;
+	global $CMS_SCHLUESSEL, $laender, $sprachen, $geschlechter, $religionen, $reliunterrichtangebot, $CMS_ONLOAD_EXTERN_EVENTS, $klassenbezeichnungen, $profile, $rollen, $empfehlungen;
 	$dbs = cms_verbinden('s');
 	$code = "";
 
@@ -36,6 +36,8 @@ function cms_schulanmeldung_ausgeben ($id) {
 	$svorigeschule = "";
 	$svorigeklasse = "";
 	$sprofil = "";
+	$sempfehlung = "-";
+	$swunschschueler = "";
 	$geburtsdatumgeladen = false;
 	$einschulunggeladen = false;
 	$ansprechpartner2 = 1;
@@ -74,10 +76,10 @@ function cms_schulanmeldung_ausgeben ($id) {
 
 	if ($id != "-") {
 		$ansprechpartner2 = 0;
-		$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(rufname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL'), AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(religion, '$CMS_SCHLUESSEL'), AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL'), AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(staat, '$CMS_SCHLUESSEL'), AES_DECRYPT(teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy1, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy2, '$CMS_SCHLUESSEL'), AES_DECRYPT(mail, '$CMS_SCHLUESSEL'), AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(geimpft, '$CMS_SCHLUESSEL'), AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert FROM voranmeldung_schueler WHERE id = ?");
+		$sql = $dbs->prepare("SELECT AES_DECRYPT(vorname, '$CMS_SCHLUESSEL'), AES_DECRYPT(rufname, '$CMS_SCHLUESSEL'), AES_DECRYPT(nachname, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsort, '$CMS_SCHLUESSEL'), AES_DECRYPT(geburtsland, '$CMS_SCHLUESSEL'), AES_DECRYPT(muttersprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(verkehrssprache, '$CMS_SCHLUESSEL'), AES_DECRYPT(geschlecht, '$CMS_SCHLUESSEL'), AES_DECRYPT(religion, '$CMS_SCHLUESSEL'), AES_DECRYPT(religionsunterricht, '$CMS_SCHLUESSEL'), AES_DECRYPT(staatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(zstaatsangehoerigkeit, '$CMS_SCHLUESSEL'), AES_DECRYPT(strasse, '$CMS_SCHLUESSEL'), AES_DECRYPT(hausnummer, '$CMS_SCHLUESSEL'), AES_DECRYPT(plz, '$CMS_SCHLUESSEL'), AES_DECRYPT(ort, '$CMS_SCHLUESSEL'), AES_DECRYPT(staat, '$CMS_SCHLUESSEL'), AES_DECRYPT(teilort, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon1, '$CMS_SCHLUESSEL'), AES_DECRYPT(telefon2, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy1, '$CMS_SCHLUESSEL'), AES_DECRYPT(handy2, '$CMS_SCHLUESSEL'), AES_DECRYPT(mail, '$CMS_SCHLUESSEL'), AES_DECRYPT(einschulung, '$CMS_SCHLUESSEL') AS einschulung, AES_DECRYPT(vorigeschule, '$CMS_SCHLUESSEL') AS vorigeschule, AES_DECRYPT(vorigeklasse, '$CMS_SCHLUESSEL') AS vorigeklasse, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS kuenftigesprofil, AES_DECRYPT(geimpft, '$CMS_SCHLUESSEL'), AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert, AES_DECRYPT(empfehlung, '$CMS_SCHLUESSEL'), AES_DECRYPT(wunschschueler, '$CMS_SCHLUESSEL') FROM voranmeldung_schueler WHERE id = ?");
 		$sql->bind_param("i", $id);
 		if ($sql->execute()) {
-			$sql->bind_result($svorname, $srufname, $snachname, $sgeburtsdatum, $sgeburtsort, $sgeburtsland, $smuttersprache, $sverkehrssprache, $sgeschlecht, $sreligion, $sreligionsunterricht, $sland1, $sland2, $sstrasse, $shausnummer, $splz, $sort, $sstaat, $steilort, $stelefon1, $stelefon2, $shandy1, $shandy2, $smail, $seinschulung, $svorigeschule, $svorigeklasse, $sprofil, $simpfung, $sakzeptiert);
+			$sql->bind_result($svorname, $srufname, $snachname, $sgeburtsdatum, $sgeburtsort, $sgeburtsland, $smuttersprache, $sverkehrssprache, $sgeschlecht, $sreligion, $sreligionsunterricht, $sland1, $sland2, $sstrasse, $shausnummer, $splz, $sort, $sstaat, $steilort, $stelefon1, $stelefon2, $shandy1, $shandy2, $smail, $seinschulung, $svorigeschule, $svorigeklasse, $sprofil, $simpfung, $sakzeptiert, $sempfehlung, $swunschschueler);
 			if ($sql->fetch()) {
 				if ($sakzeptiert == 'ja') {$sakzeptiert = 1;} else {$sakzeptiert = 0;}
 				$geburtsdatumgeladen = true;
@@ -185,6 +187,7 @@ function cms_schulanmeldung_ausgeben ($id) {
 		}
 		$code .= "</td></tr>";
 		$code .= "<tr><th>Vollständige Masernimpfung:</th><td>".cms_generiere_schieber('voranmeldung_schueler_impfung', $simpfung)."</td></tr>";
+		$code .= "<tr><th>WunschmitschülerIn:</th><td><input type=\"text\" name=\"cms_voranmeldung_schueler_wunschschueler\" id=\"cms_voranmeldung_schueler_wunschschueler\" value=\"$swunschschueler\"></td></tr>";
 	$code .= "</table>";
 	$code .= "</div>";
 	$code .= "</div>";
@@ -219,6 +222,14 @@ function cms_schulanmeldung_ausgeben ($id) {
 		$code .= "<option value=\"".$CMS_VORANMELDUNG['Anmeldung Klassenstufe'].$b."\"$zusatz>".$CMS_VORANMELDUNG['Anmeldung Klassenstufe'].$b."</option>";
 	}
 	$code .= "</select></td></tr>";
+
+	$code .= "<tr><th>Grundschulempfehlung:</th><td><select name=\"cms_voranmeldung_empfehlung\" id=\"cms_voranmeldung_empfehlung\">";
+	foreach ($empfehlungen as $e) {
+		if ($e['wert'] == $sempfehlung) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}
+		$code .= "<option value=\"".$e['wert']."\"$zusatz>".$e['bezeichnung']."</option>";
+	}
+	$code .= "</select></td></tr>";
+
 	$code .= "<tr><th>Künftiges Profil:</th><td><select name=\"cms_voranmeldung_profil\" id=\"cms_voranmeldung_profil\">";
 	foreach ($profile as $p) {
 		if ($p['wert'] == $sprofil) {$zusatz = " selected=\"selected\"";} else {$zusatz = "";}

@@ -26,6 +26,7 @@ if (isset($_POST['religionsunterricht'])) {$religionsunterricht = $_POST['religi
 if (isset($_POST['land1'])) {$land1 = $_POST['land1'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['land2'])) {$land2 = $_POST['land2'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['impfung'])) {$impfung = $_POST['impfung'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['wunschschueler'])) {$wunschschueler = $_POST['wunschschueler'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['strasse'])) {$strasse = $_POST['strasse'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['hausnummer'])) {$hausnummer = $_POST['hausnummer'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['plz'])) {$plz = $_POST['plz'];} else {echo "FEHLER"; exit;}
@@ -42,6 +43,7 @@ if (isset($_POST['einschulungM'])) {$einschulungM = $_POST['einschulungM'];} els
 if (isset($_POST['einschulungJ'])) {$einschulungJ = $_POST['einschulungJ'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['vorigeschule'])) {$vorigeschule = $_POST['vorigeschule'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['klasse'])) {$klasse = $_POST['klasse'];} else {echo "FEHLER"; exit;}
+if (isset($_POST['empfehlung'])) {$empfehlung = $_POST['empfehlung'];} else {echo "FEHLER"; exit;}
 if (isset($_POST['profil'])) {$profil = $_POST['profil'];} else {echo "FEHLER"; exit;}
 $jetzt = time();
 
@@ -76,6 +78,7 @@ if (strlen($mail)) {if (!cms_check_mail($mail)) {$fehler = true;}}
 if ($einschulung >= $jetzt) {$fehler = true;}
 if (strlen($vorigeschule) <= 0) {$fehler = true;}
 if (strlen($klasse) <= 0) {$fehler = true;}
+if ($empfehlung != 'G' && $empfehlung != 'R' && $empfehlung != 'W' && $empfehlung != 'S') {$fehler = true;}
 if (strlen($profil) <= 0) {$fehler = true;}
 
 if (!$fehler) {
@@ -94,6 +97,7 @@ if (!$fehler) {
 	$_SESSION['VORANMELDUNG_S_LAND1'] = $land1;
 	$_SESSION['VORANMELDUNG_S_LAND2'] = $land2;
 	$_SESSION['VORANMELDUNG_S_IMPFUNG'] = $impfung;
+	$_SESSION['VORANMELDUNG_S_WUNSCHSCHUELER'] = $wunschschueler;
 	$_SESSION['VORANMELDUNG_S_STRASSE'] = $strasse;
 	$_SESSION['VORANMELDUNG_S_HAUSNUMMER'] = $hausnummer;
 	$_SESSION['VORANMELDUNG_S_PLZ'] = $plz;
@@ -108,6 +112,7 @@ if (!$fehler) {
 	$_SESSION['VORANMELDUNG_S_EINSCHULUNG'] = $einschulung;
 	$_SESSION['VORANMELDUNG_S_VORIGESCHULE'] = $vorigeschule;
 	$_SESSION['VORANMELDUNG_S_KLASSE'] = $klasse;
+	$_SESSION['VORANMELDUNG_S_EMPFEHLUNG'] = $empfehlung;
 	$_SESSION['VORANMELDUNG_S_PROFIL'] = $profil;
 
   if (isset($_SESSION["VORANMELDUNG_FORTSCHITT"])) {

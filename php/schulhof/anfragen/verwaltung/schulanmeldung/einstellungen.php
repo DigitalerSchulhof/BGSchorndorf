@@ -18,6 +18,7 @@ if (isset($_POST['vorendeM'])) {$vorendeM = cms_texttrafo_e_db($_POST['vorendeM'
 if (isset($_POST['vorendeJ'])) {$vorendeJ = cms_texttrafo_e_db($_POST['vorendeJ']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['vorendes'])) {$vorendes = cms_texttrafo_e_db($_POST['vorendes']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['vorendem'])) {$vorendem = cms_texttrafo_e_db($_POST['vorendem']);} else {echo "FEHLER"; exit;}
+if (isset($_POST['persnoetig'])) {$persnoetig = cms_texttrafo_e_db($_POST['persnoetig']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['perbeginnT'])) {$perbeginnT = cms_texttrafo_e_db($_POST['perbeginnT']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['perbeginnM'])) {$perbeginnM = cms_texttrafo_e_db($_POST['perbeginnM']);} else {echo "FEHLER"; exit;}
 if (isset($_POST['perbeginnJ'])) {$perbeginnJ = cms_texttrafo_e_db($_POST['perbeginnJ']);} else {echo "FEHLER"; exit;}
@@ -40,8 +41,11 @@ if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.vorbereiten"
 	$perbeginn = mktime(0, 0, 0, $perbeginnM, $perbeginnT, $perbeginnJ);
   $perende = mktime(23, 59, 59, $perendeM, $perendeT, $perendeJ);
 	if (!cms_check_toggle($aktiv)) {$fehler = true;}
+	if (!cms_check_toggle($persnoetig)) {$fehler = true;}
   if ($vorbeginn-$vorende >= 0) {$fehler = true;}
-  if ($perbeginn-$perende >= 0) {$fehler = true;}
+	if ($persnoetig == '1') {
+		if ($perbeginn-$perende >= 0) {$fehler = true;}
+	}
   if (!cms_check_ganzzahl($ueberhang, 1, 1000)) {$fehler = true;}
   if (!cms_check_ganzzahl($eintritt, 1, 100)) {$fehler = true;}
   if (!cms_check_ganzzahl($einschulung, 1, 100)) {$fehler = true;}
@@ -81,6 +85,10 @@ if (cms_angemeldet() && cms_r("schulhof.organisation.schulanmeldung.vorbereiten"
 
 		$einstellungsname = 'Anmeldung persönlich von';
 	  $sql->bind_param("ss", $perbeginn, $einstellungsname);
+	  $sql->execute();
+
+		$einstellungsname = 'Persönlich nötig';
+	  $sql->bind_param("ss", $persnoetig, $einstellungsname);
 	  $sql->execute();
 
 		$einstellungsname = 'Anmeldung persönlich bis';
