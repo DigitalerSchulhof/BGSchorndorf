@@ -538,7 +538,7 @@ $laender[ 199]['bezeichnung'] = 'Ver. Arab. Emirate';
 $laender[ 200]['wert'] = 'VN';
 $laender[ 200]['bezeichnung'] = 'Vietnam';
 $laender[ 201]['wert'] = 'BY';
-$laender[ 201]['bezeichnung'] = 'Weißrussland';
+$laender[ 201]['bezeichnung'] = 'Weißrussland (auch: Belarus)';
 $laender[ 202]['wert'] = 'RCA';
 $laender[ 202]['bezeichnung'] = 'Zentralafrikan. Republik';
 $laender[ 203]['wert'] = 'CY';
@@ -645,10 +645,8 @@ $sprachen[22]['wert'] = 'UKR';
 $sprachen[22]['bezeichnung'] = 'ukrainisch';
 $sprachen[23]['wert'] = 'SOF';
 $sprachen[23]['bezeichnung'] = 'sonstige Sprache';
-$sprachen[24]['wert'] = 'N_D';
-$sprachen[24]['bezeichnung'] = 'nicht deutsch (ohne nähere Angabe)';
-$sprachen[25]['wert'] = 'K_A';
-$sprachen[25]['bezeichnung'] = 'keine Angabe';
+$sprachen[24]['wert'] = 'K_A';
+$sprachen[24]['bezeichnung'] = 'keine Angabe';
 
 
 $profile[ 0]['wert'] = 'keines';
@@ -656,6 +654,18 @@ $profile[ 1]['wert'] = 'bilingual';
 
 $profile[ 0]['bezeichnung'] = 'keines';
 $profile[ 1]['bezeichnung'] = 'bilingual';
+
+$empfehlungen[ 0]['wert'] = '-';
+$empfehlungen[ 1]['wert'] = 'G';
+$empfehlungen[ 2]['wert'] = 'R';
+$empfehlungen[ 3]['wert'] = 'W';
+$empfehlungen[ 4]['wert'] = 'S';
+
+$empfehlungen[ 0]['bezeichnung'] = '– Bitte wählen –';
+$empfehlungen[ 1]['bezeichnung'] = 'Gymnasium';
+$empfehlungen[ 2]['bezeichnung'] = 'Realschule';
+$empfehlungen[ 3]['bezeichnung'] = 'Werkrealschule/Gemeinschaftsschule';
+$empfehlungen[ 4]['bezeichnung'] = 'Sonstiges';
 
 
 function cms_bezeichnung_finden($wert, $auswahl) {

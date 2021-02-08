@@ -25,6 +25,7 @@ if (isset($_SESSION['VORANMELDUNG_S_RELIGIONSUNTERRICHT'])) {$sreligionsunterric
 if (isset($_SESSION['VORANMELDUNG_S_LAND1'])) {$sland1 = $_SESSION['VORANMELDUNG_S_LAND1'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_LAND2'])) {$sland2 = $_SESSION['VORANMELDUNG_S_LAND2'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_IMPFUNG'])) {$simpfung = $_SESSION['VORANMELDUNG_S_IMPFUNG'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_S_WUNSCHSCHUELER'])) {$swunschschueler = $_SESSION['VORANMELDUNG_S_WUNSCHSCHUELER'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_STRASSE'])) {$sstrasse = $_SESSION['VORANMELDUNG_S_STRASSE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_HAUSNUMMER'])) {$shausnummer = $_SESSION['VORANMELDUNG_S_HAUSNUMMER'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_PLZ'])) {$splz = $_SESSION['VORANMELDUNG_S_PLZ'];} else {$fehler = true;}
@@ -41,6 +42,7 @@ if (isset($_SESSION['VORANMELDUNG_S_EINSCHULUNG'])) {$seinschulung = $_SESSION['
 else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_VORIGESCHULE'])) {$svorigeschule = $_SESSION['VORANMELDUNG_S_VORIGESCHULE'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_KLASSE'])) {$sklasse = $_SESSION['VORANMELDUNG_S_KLASSE'];} else {$fehler = true;}
+if (isset($_SESSION['VORANMELDUNG_S_EMPFEHLUNG'])) {$sempfehlung = $_SESSION['VORANMELDUNG_S_EMPFEHLUNG'];} else {$fehler = true;}
 if (isset($_SESSION['VORANMELDUNG_S_PROFIL'])) {$sprofil = $_SESSION['VORANMELDUNG_S_PROFIL'];} else {$fehler = true;}
 
 if (isset($_SESSION['VORANMELDUNG_A1_NACHNAME'])) {$anachname1 = $_SESSION['VORANMELDUNG_A1_NACHNAME'];} else {$fehler = true;}
@@ -113,9 +115,11 @@ if (!$fehler) {
     $code .= "<tr><th>Name</th><td>$svorigeschule</td></tr>";
     $code .= "<tr><th>Klasse</th><td>$sklasse</td></tr>";
     $code .= "<tr><th>Einschulung</th><td>am ".date('d.m.Y', $seinschulung)."</td></tr>";
+    $code .= "<tr><th>Grundschulempfehlung</th><td>".cms_bezeichnung_finden($sempfehlung, 'empfehlungen')."</td></tr>";
     $code .= "<tr><th colspan=\"2\" class=\"cms_zwischenueberschrift\">Unterricht an der neuen Schule</th></tr>";
     $code .= "<tr><th>Religion</th><td>".cms_bezeichnung_finden($sreligionsunterricht, 'reliunterrichtangebot')."</td></tr>";
     $code .= "<tr><th>Profil</th><td>".cms_bezeichnung_finden($sprofil, 'profile')."</td></tr>";
+    $code .= "<tr><th>WunschmitschülerIn</th><td>$swunschschueler</td></tr>";
   $code .= "</table>";
   $code .= "</div></div>";
 

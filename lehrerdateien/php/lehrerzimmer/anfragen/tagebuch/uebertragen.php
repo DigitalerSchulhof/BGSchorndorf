@@ -70,6 +70,9 @@ if (count($TIDS) > 0) {
   $sql = $dbs->prepare("DELETE FROM tagebuch WHERE id IN $TIDS");
   $sql->execute();
   $sql->close();
+  $sql = $dbl->prepare("DELETE FROM tagebuch WHERE id IN $TIDS");
+  $sql->execute();
+  $sql->close();
 
   // Lob und Tadel löschen
   $sql = $dbs->prepare("DELETE FROM lobtadel WHERE eintrag IN $TIDS");

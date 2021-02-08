@@ -1,3 +1,15 @@
+function cms_voranmeldung_persoenlich_anaus() {
+  var wert = document.getElementById('cms_persoenlich_noetig').value;
+  if (wert == '1') {
+    cms_klasse_weg('cms_voranmeldung_persoenlich_beginn_f', 'cms_versteckt');
+    cms_klasse_weg('cms_voranmeldung_persoenlich_ende_f', 'cms_versteckt');
+  } else {
+    cms_klasse_dazu('cms_voranmeldung_persoenlich_beginn_f', 'cms_versteckt');
+    cms_klasse_dazu('cms_voranmeldung_persoenlich_ende_f', 'cms_versteckt');
+  }
+}
+
+
 function cms_schulanmeldung_einstellungen_aendern() {
   cms_laden_an('Einstellungen der Schulanmeldung ändern', 'Die Eingaben werden überprüft.');
 	var aktiv = document.getElementById('cms_voranmeldung_aktiv').value;
@@ -11,6 +23,7 @@ function cms_schulanmeldung_einstellungen_aendern() {
 	var vorendeJ = document.getElementById('cms_voranmeldung_ende_J').value;
 	var vorendes = document.getElementById('cms_voranmeldung_ende_h').value;
 	var vorendem = document.getElementById('cms_voranmeldung_ende_m').value;
+	var persnoetig = document.getElementById('cms_persoenlich_noetig').value;
 	var perbeginnT = document.getElementById('cms_voranmeldung_persoenlich_beginn_T').value;
 	var perbeginnM = document.getElementById('cms_voranmeldung_persoenlich_beginn_M').value;
 	var perbeginnJ = document.getElementById('cms_voranmeldung_persoenlich_beginn_J').value;
@@ -40,6 +53,11 @@ function cms_schulanmeldung_einstellungen_aendern() {
 		meldung += '<li>es wurde kein gültiger Zeitraum für die Online-Anmeldung eingegeben.</li>';
 		fehler = true;
 	}
+
+  if (!cms_check_toggle(persnoetig)) {
+    meldung += '<li>Die Notwendigkeit der persönlichen Anmeldung ist entweder gegeben, oder nicht.</li>';
+		fehler = true;
+  }
 
   var perbeginn = new Date(perbeginnJ, perbeginnM, perbeginnT, 0, 0, 0, 0);
 	var perende = new Date(perendeJ, perendeM, perendeT, 23, 59, 59, 999);
@@ -87,6 +105,7 @@ function cms_schulanmeldung_einstellungen_aendern() {
 		formulardaten.append("vorendeJ", vorendeJ);
 		formulardaten.append("vorendes", vorendes);
 		formulardaten.append("vorendem", vorendem);
+		formulardaten.append("persnoetig", persnoetig);
 		formulardaten.append("perbeginnT", perbeginnT);
 		formulardaten.append("perbeginnM", perbeginnM);
 		formulardaten.append("perbeginnJ", perbeginnJ);
@@ -370,6 +389,8 @@ function cms_schulanmeldung_eingabenpruefen() {
 	var vorigeschule = document.getElementById('cms_voranmeldung_vorigeschule').value;
 	var klasse = document.getElementById('cms_voranmeldung_klasse').value;
 	var profil = document.getElementById('cms_voranmeldung_profil').value;
+	var wunschschueler = document.getElementById('cms_voranmeldung_schueler_wunschschueler').value;
+	var empfehlung = document.getElementById('cms_voranmeldung_empfehlung').value;
   var vorname1 = document.getElementById('cms_voranmeldung_ansprechpartner1_vorname').value;
 	var nachname1 = document.getElementById('cms_voranmeldung_ansprechpartner1_nachname').value;
 	var geschlecht1 = document.getElementById('cms_voranmeldung_ansprechpartner1_geschlecht').value;
@@ -531,6 +552,11 @@ function cms_schulanmeldung_eingabenpruefen() {
 		fehler = true;
 		meldung += '<li>Die vorige Klasse ist ungültig.</li>';
 	}
+
+  if (empfehlung != 'G' && empfehlung != 'R' && empfehlung != 'W' && empfehlung != 'S') {
+    fehler = true;
+    meldung += '<li>Es muss eine korrekte Grundschulempfehlung ausgewählt werden.</li>';
+  }
 
 	if (profil.length <= 0) {
 		fehler = true;
@@ -712,6 +738,8 @@ function cms_schulanmeldung_eingabenpruefen() {
 	formulardaten.append("vorigeschule", vorigeschule);
 	formulardaten.append("klasse", klasse);
 	formulardaten.append("profil", profil);
+	formulardaten.append("empfehlung", empfehlung);
+	formulardaten.append("wunschschueler", wunschschueler);
   formulardaten.append("vorname1", vorname1);
   formulardaten.append("nachname1", nachname1);
   formulardaten.append("geschlecht1", geschlecht1);

@@ -242,3 +242,7 @@ ALTER TABLE `fehlzeiten` ADD CONSTRAINT `fzurheberperson` FOREIGN KEY (`urheber`
 ALTER TABLE `fehlzeiten` ADD CONSTRAINT `fzpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE `lobtadel` ADD CONSTRAINT `lturheberperson` FOREIGN KEY (`urheber`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE `lobtadel` ADD CONSTRAINT `ltpersonpersonen` FOREIGN KEY (`person`) REFERENCES `personen`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- 0.10.15
+INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (10, AES_ENCRYPT('Persönlich nötig', '{cms_schluessel}'), AES_ENCRYPT('1', '{cms_schluessel}'));
+ALTER TABLE `voranmeldung_schueler` ADD `empfehlung` VARBINARY(50) NULL DEFAULT NULL AFTER `geimpft`, ADD `wunschschueler` VARBINARY(2000) NULL DEFAULT NULL AFTER `empfehlung`;
