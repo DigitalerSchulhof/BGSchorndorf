@@ -246,3 +246,8 @@ ALTER TABLE `lobtadel` ADD CONSTRAINT `ltpersonpersonen` FOREIGN KEY (`person`) 
 -- 0.10.15
 INSERT INTO schulanmeldung (id, inhalt, wert) VALUES (10, AES_ENCRYPT('Persönlich nötig', '{cms_schluessel}'), AES_ENCRYPT('1', '{cms_schluessel}'));
 ALTER TABLE `voranmeldung_schueler` ADD `empfehlung` VARBINARY(50) NULL DEFAULT NULL AFTER `geimpft`, ADD `wunschschueler` VARBINARY(2000) NULL DEFAULT NULL AFTER `empfehlung`;
+
+-- 0.10.16
+ALTER TABLE `voranmeldung_schueler` ADD `staat` VARBINARY(2000) NULL AFTER `ort`;
+ALTER TABLE `voranmeldung_eltern` ADD `haupt` VARBINARY(50) NULL AFTER `briefe`;
+ALTER TABLE `voranmeldung_eltern` ADD `rolle` VARBINARY(50) NULL AFTER `haupt`;

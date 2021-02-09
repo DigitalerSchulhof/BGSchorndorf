@@ -52,7 +52,7 @@ function cms_check_url($url) {
 }
 
 function cms_check_dateiname($datei) {
-	if (preg_match("/^[\-\_a-zA-Z0-9!(). ]{1,244}\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $datei) != 1) {
+	if (preg_match("/^[\-\_a-zA-Z0-9]{1,244}\.((tar\.gz)|([a-zA-Z0-9]{2,10}))$/", $datei) != 1) {
 		return false;
 	}
 	else return true;

@@ -585,8 +585,8 @@ $reliunterrichtangebot[0]['bezeichnung'] = 'Evangelischer Religionsunterricht';
 $reliunterrichtangebot[0]['wert'] = 'EV';
 $reliunterrichtangebot[1]['bezeichnung'] = 'Römisch-katholischer Religionsunterricht';
 $reliunterrichtangebot[1]['wert'] = 'RK';
-$reliunterrichtangebot[2]['bezeichnung'] = 'Kein Religionsunterricht';
-$reliunterrichtangebot[2]['wert'] = 'KE';
+$reliunterrichtangebot[2]['bezeichnung'] = 'Ethikunterricht';
+$reliunterrichtangebot[2]['wert'] = 'ETH';
 
 $geschlechter[0]['bezeichnung'] = 'weiblich';
 $geschlechter[0]['wert'] = 'w';
