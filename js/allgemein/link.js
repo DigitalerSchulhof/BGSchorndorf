@@ -88,8 +88,5 @@ function cms_drucken(seite) {
 	document.body.appendChild(iframe);
   var container = document.getElementsByClassName("cms_nur_drucken")[0] || document.createElement("div");
   container.classList = "cms_nur_drucken";
-  container.style.position = "fixed";
-  container.style.top = "0";
-  container.style.left = "0";
   document.getElementsByClassName("cms_nur_drucken")[0] || document.body.appendChild(container);
 }
