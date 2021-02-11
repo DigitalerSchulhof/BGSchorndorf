@@ -59,16 +59,16 @@ if (cms_r("schulhof.organisation.schulanmeldung.*")) {
 	$code .= "<h3>Datensätze</h3>";
 	$code .= "<table class=\"cms_liste\">";
 		$code .= "<thead>";
-			$code .= "<tr><th></th><th>Vorname</th><th>Nachname</th><th>Geburtsdatum</th><th>Ort</th><th>Eingegangen</th><th></th><th>Aktionen</th></tr>";
+			$code .= "<tr><th></th><th>Profil</th><th>Vorname</th><th>Nachname</th><th>Geburtsdatum</th><th>Ort</th><th>Eingegangen</th><th></th><th>Aktionen</th></tr>";
 		$code .= "</thead>";
 		$code .= "<tbody id=\"cms_voranmeldung_schueler\">";
 		// Alle Rollen ausgeben
 		$dbs = cms_verbinden('s');
-		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL') AS geburtsdatum, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert, AES_DECRYPT(eingegangen, '$CMS_SCHLUESSEL') AS eingegangen FROM voranmeldung_schueler) AS schueler ORDER BY nachname ASC, vorname ASC, geburtsdatum ASC, ort ASC");
+		$sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(vorname, '$CMS_SCHLUESSEL') AS vorname, AES_DECRYPT(nachname, '$CMS_SCHLUESSEL') AS nachname, AES_DECRYPT(geburtsdatum, '$CMS_SCHLUESSEL') AS geburtsdatum, AES_DECRYPT(ort, '$CMS_SCHLUESSEL') AS ort, AES_DECRYPT(akzeptiert, '$CMS_SCHLUESSEL') AS akzeptiert, AES_DECRYPT(eingegangen, '$CMS_SCHLUESSEL') AS eingegangen, AES_DECRYPT(kuenftigesprofil, '$CMS_SCHLUESSEL') AS profil FROM voranmeldung_schueler) AS schueler ORDER BY nachname ASC, vorname ASC, geburtsdatum ASC, ort ASC");
 
 		$ausgabe = "";
 		if ($sql->execute()) {
-			$sql->bind_result($said, $savor, $sanach, $sageb, $saort, $saakz, $saeing);
+			$sql->bind_result($said, $savor, $sanach, $sageb, $saort, $saakz, $saeing, $aprofil);
 			while ($sql->fetch()) {
 				$ausgabe .= "<tr>";
 					// 0: Wurde aufgenommen?
@@ -77,6 +77,7 @@ if (cms_r("schulhof.organisation.schulanmeldung.*")) {
 					$hmeta = "<input type=\"hidden\" class=\"cms_multiselect_id\" value=\"$said\"><input type=\"hidden\" class=\"cms_multiselect_meta\" value=\"".$meta."\">";
 
 					$ausgabe .= "<td class=\"cms_multiselect\">$hmeta<img src=\"res/icons/klein/schulanmeldung.png\"></td>";
+					$ausgabe .= "<td>$aprofil</td>";
 					$ausgabe .= "<td>$savor</td>";
 					$ausgabe .= "<td>$sanach</td>";
 					$ausgabe .= "<td>".date('d', $sageb).". ".cms_monatsnamekomplett(date('m', $sageb))." ".date('Y', $sageb)."</td>";
