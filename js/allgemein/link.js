@@ -73,13 +73,11 @@ function cms_mobinavi_zeigen (id) {
 function cms_drucken(seite) {
 	seite = seite || "Drucken";
 	var iframe = document.createElement("iframe");
-	iframe.onload = function() {
-		this.contentWindow.__container__ = this;
-  	this.contentWindow.onbeforeunload = function() {document.body.removeChild(this.__container__)};
-  	this.contentWindow.onafterprint = function() {document.body.removeChild(this.__container__)};
-  	this.contentWindow.focus();
-  	this.contentWindow.print();
-	};
+  iframe.onload = function () {
+    container.innerHTML = iframe.contentWindow.document.body.innerHTML;
+    document.body.removeChild(this);
+    window.print();
+  }
 	iframe.style.position = "fixed";
 	iframe.style.right = "0";
 	iframe.style.bottom = "0";
@@ -88,4 +86,7 @@ function cms_drucken(seite) {
 	iframe.style.border = "0";
 	iframe.src = seite;
 	document.body.appendChild(iframe);
+  var container = document.getElementsByClassName("cms_nur_drucken")[0] || document.createElement("div");
+  container.classList = "cms_nur_drucken";
+  document.getElementsByClassName("cms_nur_drucken")[0] || document.body.appendChild(container);
 }

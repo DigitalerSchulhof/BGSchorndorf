@@ -204,9 +204,10 @@ if ((isset($keininclude) && $keininclude == true) || (cms_angemeldet() && cms_r(
 		$dunkel 	= preg_replace("/;}/", "}", $dunkel);
 		$drucken 	= preg_replace("/;}/", "}", $drucken);
 
-		$hell 		= "$hell";
-		$dunkel 	= "@media (prefers-color-scheme: dark) { $dunkel }";
-		$drucken 	= "@media screen {.cms_druckseite {display: none;}} @media print { $drucken }";
+		$hell 		= "@media only screen { $hell }";
+		$dunkel 	= "@media only screen and (prefers-color-scheme: dark) { $dunkel }";
+		$drucken 	= "@media screen {.cms_druckseite {display: none;}} @media only print { $drucken }";
+
 
 		@mkdir(__DIR__."/../../../../../css");
 		file_put_contents(__DIR__."/../../../../../css/hell.css", 		$hell);

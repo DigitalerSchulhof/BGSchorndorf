@@ -11,12 +11,21 @@
 	line-height: 1.2em;
 	text-decoration: none;
 	box-sizing: border-box;
+  visibility: hidden;
+  max-height: 0;
+  height: 0;
 }
 
 .cms_druckseite {
 	width: 210mm;
 	background: #ffffff;
 	color: #000000;
+}
+
+.cms_druckseite, .cms_druckseite * {
+  visibility: initial;
+  max-height: initial;
+  height: initial;
 }
 
 .cms_logo {

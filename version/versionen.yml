@@ -1,10 +1,17 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_17:
+    version: 0.10.17
+    tag: Donnerstag, 11. Februar 2021
+    neuerungen:
+      - In der Schulenamledungsliste wird das Profil mitausgegeben [W]
+      - Fehler beim Drucken in Firefox-Browsern behoben [E]
+      - Ausdruck von Schulanmeldungen angepasst [W]
   0_10_16:
     version: 0.10.16
     tag: Sonntag, den 07. Februar 2021
     neuerungen:
-      - Die Schulanmeldung wurde den Corona-Bedingungen gemäß angepasst. [W]
+      - Die Schulanmeldung wurde den Corona-Bedingungen gemäß angepasst [W]
   0_10_15:
     version: 0.10.15
     tag: Mittwoch, den 3. Februar 2021
