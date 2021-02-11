@@ -11,12 +11,16 @@
 	line-height: 1.2em;
 	text-decoration: none;
 	box-sizing: border-box;
+  visibility: hidden;
+  max-height: 0;
+  height: 0;
 }
 
 .cms_druckseite {
 	width: 210mm;
 	background: #ffffff;
 	color: #000000;
+  visibility: initial;
 }
 
 .cms_logo {
@@ -62,6 +66,12 @@ div#cms_druckfuss {
 	color: #aaaaaa;
 	margin-top: 1cm;
 	display: block;
+}
+
+.cms_nur_drucken, .cms_nur_drucken * {
+  visibility: initial;
+  max-height: initial;
+  height: initial;
 }
 
 div#cms_druckfuss p, div#cms_druckfuss b {

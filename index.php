@@ -198,7 +198,9 @@
 	<?php echo "<base href=\"".$CMS_EINSTELLUNGEN['Netze Basisverzeichnis']."\">";
 		$hellhash 	= substr(md5(filemtime("css/hell.css")), 0, 7);
 		$dunkelhash = substr(md5(filemtime("css/dunkel.css")), 0, 7);
+		$druckenhash = substr(md5(filemtime("css/drucken.css")), 0, 7);
 		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/hell.css?cb=$hellhash\">";
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/drucken.css?cb=$druckenhash\">";
 		if ($CMS_EINSTELLUNGEN['Website Darkmode'] == 1) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/dunkel.css?cb=$dunkelhash\">";
 		}

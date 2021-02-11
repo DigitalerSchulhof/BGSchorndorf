@@ -13,6 +13,10 @@
 	box-sizing: border-box;
 }
 
+.cms_nur_drucken {
+  visibility: hidden;
+}
+
 body {
 	background: @h_haupt_koerperhintergrund;
 }
