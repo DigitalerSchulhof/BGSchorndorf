@@ -7630,7 +7630,7 @@ $$1.summernote = $$1.extend($$1.summernote, {
             'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
             'Tahoma', 'Times New Roman', 'Verdana'
         ],
-        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontSizes: ['8', '9', '10', '11', '12', '13', '14', '18', '24', '36'],
         // pallete colors(n x n)
         colors: [
             ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF'],
@@ -7785,7 +7785,7 @@ function cms_editor_aktivieren(id, medien) {
 		$('#'+id).summernote({
 			toolbar: [
 				// [groupName, [list of button]]
-				['textstil', ['style', 'paragraph']],
+				['textstil', ['style', 'paragraph', 'fontsize', 'fontname']],
 				['textformat', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'clear']],
 				['textfarbe', ['color']],
 				['listentabellen', ['ul', 'ol', 'table']],
@@ -7801,7 +7801,7 @@ function cms_editor_aktivieren(id, medien) {
 		$('#'+id).summernote({
 			toolbar: [
 				// [groupName, [list of button]]
-				['textstil', ['style', 'paragraph']],
+				['textstil', ['style', 'paragraph', 'fontsize', 'fontname']],
 				['textformat', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'clear']],
 				['textfarbe', ['color']],
 				['listentabellen', ['ul', 'ol', 'table']],
