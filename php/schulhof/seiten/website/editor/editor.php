@@ -8,7 +8,7 @@ function cms_webeditor($id, $inhalt = '') {
     $('#$id').summernote({
       toolbar: [
         // [groupName, [list of button]]
-        ['textstil', ['style', 'paragraph']],
+        ['textstil', ['style', 'paragraph', 'fontsize', 'fontname']],
         ['textformat', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'clear']],
         ['textfarbe', ['color']],
         ['listentabellen', ['ul', 'ol', 'table']],
@@ -32,7 +32,7 @@ function cms_gruppeneditor($id, $inhalt = '') {
     $('#$id').summernote({
       toolbar: [
         // [groupName, [list of button]]
-        ['textstil', ['style', 'paragraph']],
+        ['textstil', ['style', 'paragraph', 'fontsize', 'fontname']],
         ['textformat', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'clear']],
         ['textfarbe', ['color']],
         ['listentabellen', ['ul', 'ol', 'table']],

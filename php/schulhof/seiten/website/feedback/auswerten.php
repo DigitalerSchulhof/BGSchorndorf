@@ -24,7 +24,7 @@
           else {
             $liste .= substr($fname, 0, strpos(wordwrap($fname, 80), "\n"));
           }
-          $liste .= "...</td>";
+          $liste .= "</td>";
           $liste .= "<td style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\" alt=\"$ffback\">";
 
           if (strpos(wordwrap($ffback, 80), "\n")==0) {
@@ -33,7 +33,7 @@
           else {
             $liste .= substr($ffback, 0, strpos(wordwrap($ffback, 80), "\n"));
           }
-          $liste .= "...</td>";
+          $liste .= "</td>";
           date_default_timezone_set("Europe/Berlin");
           $liste .= "<td>".date("d.m.Y", $fzeit)."</td>";
 

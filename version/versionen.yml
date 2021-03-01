@@ -1,5 +1,12 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_10_18:
+    version: 0.10.18
+    tag: Montag, den 16. Februar 2021
+    neuerungen:
+      - Designänderungen [E]
+      - Stabilität der Druckfunktion verbessert [E]
+      - In Texten können Schriftart und -größe angepasst werden [E]<br>Bitte nicht übertreiben!
   0_10_17:
     version: 0.10.17
     tag: Donnerstag, 11. Februar 2021
@@ -16,7 +23,7 @@ version:
     version: 0.10.15
     tag: Mittwoch, den 3. Februar 2021
     neuerungen:
-      - Passwort-Manager erkennen die Anmeldeseite als gültiges Formular (vielleicht) :) [E]
+      - Passwort-Manager erkennen die Anmeldeseite als gültiges Formular :) [E]
       - Vorzeitiges fehlerhaftes Abmelden behoben [E]
       - Sortierfehler bei ToDo's behoben [E]
   0_10_14:
@@ -355,7 +362,7 @@ version:
       - Ferientermine werden nicht mehr als normale Termine dargesetllt, sondern in einem eigenen Ferienplaner.
       - Auf der Startseite des Nutzerkontos können schnell Notizen gespeichert werden.
       - Identitäsdiebstähle können direkt gemeldet werden, wenn bemerkt wird, dass die letzte Anmeldung nicht durch die eigene Person erfolgt ist.
-      - Notifikationen wurden überarbeitet und mit Links zum betroffenen Inhalt versehen. <b>Alte Notifikationen wurden gelöscht.</b>
+      - Notifikationen wurden überarbeitet und mit Links zum betroffenen Inhalt versehen. <br>Alte Notifikationen wurden gelöscht.</br>
       - Es kann eingesetllt werden, nach welcher Zeitspanne der Inaktivität sich das System automatisch abmeldet.
   0_4_4:
     version: 0.4.4

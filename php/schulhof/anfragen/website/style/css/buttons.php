@@ -15,6 +15,7 @@
 	position: relative;
 	line-height: 1.5em;
 	text-align: center;
+  box-shadow: 0 0 1em rgba(0,0,0,.08);
 }
 
 .cms_konfliktstunde {font-size: 75%;}
@@ -137,6 +138,7 @@
 #cms_kopfzeile_i .cms_button {
 	background-color: @h_kopfzeile_buttonhintergrund;
 	color: @h_kopfzeile_buttonschrift;
+  box-shadow: none;
 }
 
 #cms_kopfzeile_i .cms_button:hover, #cms_kopfzeile_i .cms_button_aktiv {
@@ -318,6 +320,15 @@ h6+.cms_toggleeinblenden {
 
 // DUNKEL;
 
+// NORMALE BUTTONS
+.cms_button, .cms_button_ja, .cms_button_nein, .cms_button_wichtig,
+.cms_toggle, .cms_toggle_aktiv, .cms_toggle_inaktiv, .cms_iconbutton, .cms_iconbutton_ja,
+.cms_iconbutton_nein, .cms_button_passiv, .cms_button_passivda, .cms_button_gesichert,
+.cms_iconbutton_gesichert, .cms_toggle_aktiv_fest, .cms_datentypwahl,
+.cms_fussnavigation a, .cms_fussnavigation span {
+    box-shadow: 0 0 1em rgba(128,128,128,.08)
+}
+
 .cms_toggle:hover, .cms_toggle_inaktiv:hover {
 	background-color: @d_haupt_meldungerfolgakzent;
 	color: @d_haupt_schriftfarbenegativ !important;
@@ -418,6 +429,7 @@ h6+.cms_toggleeinblenden {
 #cms_kopfzeile_i .cms_button {
 	background-color: @d_kopfzeile_buttonhintergrund;
 	color: @d_kopfzeile_buttonschrift;
+  box-shadow: none;
 }
 
 #cms_kopfzeile_i .cms_button:hover, #cms_kopfzeile_i .cms_button_aktiv {

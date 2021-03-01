@@ -16,6 +16,8 @@
 	display: inline-block;
 	transition: 250ms ease-in-out;
 	position: relative;
+  border-radius: 2px;
+  box-shadow: 0 0 1em rgba(0,0,0,.08)!important;
 }
 
 .cms_neuigkeit a {color: @h_neuigkeit_schrift;}
@@ -113,6 +115,7 @@
 // DUNKEL;
 
 .cms_neuigkeit {
+  box-shadow: 0 0 1em rgba(128,128,128,.08)!important;
 	background: @d_haupt_abstufung1;
 }
 
