@@ -2,8 +2,9 @@
 version:
   0_10_18:
     version: 0.10.18
-    tag: Dienstag, den 16. Februar 2021
+    tag: Montag, den 16. Februar 2021
     neuerungen:
+      - Designänderungen [E]
       - In Texten können Schriftart und -größe angepasst werden [E]<br>Bitte nicht übertreiben!
   0_10_17:
     version: 0.10.17
