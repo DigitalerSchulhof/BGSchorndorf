@@ -78,6 +78,7 @@ function cms_drucken(seite) {
       container.classList = "cms_nur_drucken";
       container.innerHTML = anfrage.responseText;
       document.getElementsByClassName("cms_nur_drucken")[0] || document.body.appendChild(container);
+      window.print();
     }
   };
   anfrage.open("GET", seite, false);
