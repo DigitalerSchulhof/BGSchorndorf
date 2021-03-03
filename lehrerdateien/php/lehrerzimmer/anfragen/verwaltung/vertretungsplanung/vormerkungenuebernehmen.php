@@ -82,7 +82,6 @@ if ($angemeldet && $zugriff) {
   $sql->execute();
   $sql->close();
 
-
   foreach ($AENDERUNGEN AS $k) {
     $sql = "UPDATE unterricht SET tkurs = ?, tbeginn = ?, tende = ?, tlehrer = ?, traum = ?, vplananzeigen = ?, vplanart = ?, vplanbemerkung = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?";
     $sql = $dbs->prepare($sql);
@@ -136,4 +135,3 @@ else {
 	echo "BERECHTIGUNG";
 }
 cms_trennen($dbs);
-?>

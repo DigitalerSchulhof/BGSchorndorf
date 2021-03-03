@@ -1,12 +1,16 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_11:
+    version: 0.11
+    tag: Mittwoch, den 3. März 2021
+    neuerungen:
+      - Technische Vorbereitungen für Push-Benachrichtigungen sind im Gange [E]<br>Ansonsten keine Änderungen
   0_10_18:
     version: 0.10.18
     tag: Montag, den 16. Februar 2021
     neuerungen:
       - Designänderungen [E]
       - Stabilität der Druckfunktion verbessert [E]
-      - In Texten können Schriftart und -größe angepasst werden [E]<br>Bitte nicht übertreiben!
   0_10_17:
     version: 0.10.17
     tag: Donnerstag, 11. Februar 2021

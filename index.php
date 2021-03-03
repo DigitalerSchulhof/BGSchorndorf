@@ -14,8 +14,7 @@
 	include_once("php/schulhof/seiten/website/besucherstatistiken/auswerten.php");
 	include_once("php/allgemein/funktionen/captcha.php");
 	include_once("php/allgemein/funktionen/rechte/rechte.php");
-
-	session_start();
+  session_start();
 
 	$CMS_ANGEMELDET = cms_angemeldet();
 	$CMS_LINKMUSTER = "[-.!a-zA-Z0-9äöüßÄÖÜ()_]+";
@@ -239,6 +238,7 @@
 		echo js("js/website/kontaktformular.js");
 
 		echo js("js/website/newsletter.js");
+		echo js("js/schulhof/pwa.js");
 
 		// Skripte, die nur für Angemeldete notwendig sind
 		if ($CMS_ANGEMELDET) {
@@ -376,15 +376,6 @@
 				return this[this.length - 1];
 			};
 		};
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.register("sw.js")
-				.then(function(registration) {
-					console.log("Service Worker registriert.");
-				})
-				.catch(function(error) {
-					console.log("Service Worker nicht registriert.");
-				});
-		}
 		a2hs = {
 			prompt: null,
 			handler: e => {

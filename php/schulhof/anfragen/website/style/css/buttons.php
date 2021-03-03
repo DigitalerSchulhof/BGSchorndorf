@@ -149,6 +149,7 @@
 #cms_fusszeile_i .cms_button, .cms_fussnavigation a, .cms_fussnavigation span {
 	background-color: @h_fusszeile_buttonhintergrund;
 	color: @h_fusszeile_buttonschrift;
+  box-shadow: none;
 }
 
 #cms_fusszeile_i li.cms_footer_feedback a {
@@ -440,6 +441,7 @@ h6+.cms_toggleeinblenden {
 #cms_fusszeile_i .cms_button, .cms_fussnavigation a, .cms_fussnavigation span {
 	background-color: @d_fusszeile_buttonhintergrund;
 	color: @d_fusszeile_buttonschrift;
+  box-shadow: none;
 }
 
 #cms_fusszeile_i li.cms_footer_feedback a {

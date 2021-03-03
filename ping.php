@@ -5,7 +5,6 @@ include_once("php/schulhof/funktionen/config.php");
 include_once("php/schulhof/funktionen/check.php");
 
 session_start();
-
 if(cms_angemeldet()) {
   echo "PONG";
 } else {

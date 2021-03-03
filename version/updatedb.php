@@ -251,3 +251,18 @@ ALTER TABLE `voranmeldung_schueler` ADD `empfehlung` VARBINARY(50) NULL DEFAULT 
 ALTER TABLE `voranmeldung_schueler` ADD `staat` VARBINARY(2000) NULL AFTER `ort`;
 ALTER TABLE `voranmeldung_eltern` ADD `haupt` VARBINARY(50) NULL AFTER `briefe`;
 ALTER TABLE `voranmeldung_eltern` ADD `rolle` VARBINARY(50) NULL AFTER `haupt`;
+
+-- 0.10.18
+
+CREATE TABLE `pushendpoints` (
+ `id` bigint(255) unsigned NOT NULL,
+ `nutzer` bigint(255) unsigned NOT NULL,
+ `endpoint` varbinary(5000) NOT NULL,
+ `p256dh` varbinary(5000) NOT NULL,
+ `auth` varbinary(5000) NOT NULL,
+ `idvon` bigint(255) unsigned DEFAULT NULL,
+ `idzeit` bigint(255) unsigned DEFAULT NULL,
+ PRIMARY KEY (`id`),
+ KEY `pushendpointsnutzer` (`nutzer`),
+ CONSTRAINT `pushendpointsnutzer` FOREIGN KEY (`nutzer`) REFERENCES `nutzerkonten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci

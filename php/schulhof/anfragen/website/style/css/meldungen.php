@@ -9,6 +9,8 @@
 	margin: 10px 0px;
 	min-height: 42px;
 	text-align: left !important;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .cms_meldung:first-child {
