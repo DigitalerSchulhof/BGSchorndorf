@@ -257,7 +257,7 @@ user-select: none;
 
 #cms_aktivitaet_out, #cms_maktivitaet_out, #cms_aktivitaet_out_profil, .cms_fortschritt_o {
 	width: 100%;
-	border-radius: 5px;
+	border-radius: 3px;
 	margin-bottom: 3px;
 	background: @h_haupt_meldungfehlerhinter;
 	overflow:hidden;

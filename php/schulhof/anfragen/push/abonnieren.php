@@ -24,7 +24,7 @@ if (cms_angemeldet()) {
     $dbs = cms_verbinden("s");
 
     $id = cms_generiere_kleinste_id("pushendpoints");
-    $sql = $dbs->prepare("UPDATE pushendpoints SET nutzer = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), endpoint = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), p256dh = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), auth = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
+    $sql = $dbs->prepare("UPDATE pushendpoints SET nutzer = ?, endpoint = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), p256dh = AES_ENCRYPT(?, '$CMS_SCHLUESSEL'), auth = AES_ENCRYPT(?, '$CMS_SCHLUESSEL') WHERE id = ?");
     $sql->bind_param("isssi", $_SESSION['BENUTZERID'], $endpoint, $p256dh, $auth, $id);
     $sql->execute();
     echo "ERFOLG";

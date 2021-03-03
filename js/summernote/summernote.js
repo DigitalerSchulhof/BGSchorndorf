@@ -7785,7 +7785,7 @@ function cms_editor_aktivieren(id, medien) {
 		$('#'+id).summernote({
 			toolbar: [
 				// [groupName, [list of button]]
-				['textstil', ['style', 'paragraph', 'fontsize', 'fontname']],
+				['textstil', ['style', 'paragraph']],
 				['textformat', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'clear']],
 				['textfarbe', ['color']],
 				['listentabellen', ['ul', 'ol', 'table']],
@@ -7801,7 +7801,7 @@ function cms_editor_aktivieren(id, medien) {
 		$('#'+id).summernote({
 			toolbar: [
 				// [groupName, [list of button]]
-				['textstil', ['style', 'paragraph', 'fontsize', 'fontname']],
+				['textstil', ['style', 'paragraph']],
 				['textformat', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'clear']],
 				['textfarbe', ['color']],
 				['listentabellen', ['ul', 'ol', 'table']],

@@ -1,5 +1,12 @@
 <div class="cms_spalte_i">
-<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p><?php
+<p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
+<?php
+echo "<div style=\"display: none\" id=\"cms_push\">";
+  echo cms_meldung("erfolg", "<h4>Push-Benachrichtigungen</h4><p>Um von Änderungen im Stundenplan zu erfahren, müssen Push-Benachrichtungen aktiviert werden.</p>");
+  echo "<span class=\"cms_button_ja\">Push-Benachrichtigungen aktivieren</span> ";
+  echo "<span class=\"cms_button_nein\" onclick=\"localStorage.setItem('push', 'aus');$('#cms_push').remove()\">Push-Benachrichtigungen nicht aktivieren</span> ";
+echo "</div>";
+
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {
 	echo "<div style=\"display: none\" id=\"cms_schulhof_nutzerkonto_updater\">";
@@ -35,8 +42,6 @@ if($num > 0) {
 	$meldung .= "<p>Weitere Informationen können der <a href=\"Schulhof/Neuerungen\" style=\"color: inherit\"><b>Neuerungsseite</b></a> entnommen werden.</p>";
 	echo cms_meldung("info", $meldung);
 }
-
-?><?php
 echo "<h1>Willkommen $CMS_BENUTZERVORNAME $CMS_BENUTZERNACHNAME!</h1>";
 
 
