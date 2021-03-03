@@ -35,7 +35,7 @@ $(document).ready(_ => {
                   .then(function (subscription) {
                     console.log("Push akzeptiert");
                     cms_ajaxanfrage(384, "Push-Benachrichtigungen werden akzeptiert", { sub: JSON.stringify(subscription) }).then(_ => cms_laden_aus());
-                    $("#cms_push_verboten").hide();
+                    $("#cms_push").hide();
                   })
                   .catch(function (err) {
                     console.log("Push akzeptieren fehlgeschlagen: ", err);
@@ -88,4 +88,10 @@ a2hs = {
 };
 window.addEventListener("beforeinstallprompt", e => {
   a2hs.handler(e);
+});
+
+$(document).ready(() => {
+  if (Notification.permission !== "granted" && localStorage.getItem("push") !== "aus") {
+    $("#cms_push").show();
+  }
 });

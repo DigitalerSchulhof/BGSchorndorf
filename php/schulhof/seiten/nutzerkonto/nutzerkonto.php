@@ -1,11 +1,11 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-// echo "<div id=\"cms_push\">";
-//   echo cms_meldung("erfolg", "<h4>Benachrichtigungen</h4><p></p>");
-//   echo "<span class=\"cms_button_ja\">Push-Benachrichtigungen aktivieren</span> ";
-//   echo "<span class=\"cms_button_nein\">Push-Benachrichtigungen nicht aktivieren</span> ";
-// echo "</div>";
+echo "<div style=\"display: none\" id=\"cms_push\">";
+  echo cms_meldung("erfolg", "<h4>Push-Benachrichtigungen</h4><p>Um von Änderungen im Stundenplan zu erfahren, müssen Push-Benachrichtungen aktiviert werden.</p>");
+  echo "<span class=\"cms_button_ja\">Push-Benachrichtigungen aktivieren</span> ";
+  echo "<span class=\"cms_button_nein\" onclick=\"localStorage.setItem('push', 'aus');$('#cms_push').remove()\">Push-Benachrichtigungen nicht aktivieren</span> ";
+echo "</div>";
 
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {

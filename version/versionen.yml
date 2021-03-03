@@ -4,7 +4,7 @@ version:
     version: 0.11
     tag: Mittwoch, den 3. März 2021
     neuerungen:
-      - Technische Vorbereitungen für Push-Benachrichtigungen sind im Gange [E]<br>Ansonsten keine Änderungen
+      - Push-Benachrichtigungen für Änderungen im Vertretungsplan wurden hinzugefügt [E] (Funktioniert eventuell)
   0_10_18:
     version: 0.10.18
     tag: Montag, den 16. Februar 2021
