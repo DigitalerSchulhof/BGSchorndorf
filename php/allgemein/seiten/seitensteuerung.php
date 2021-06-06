@@ -288,6 +288,8 @@ else if ($CMS_URL[0] == 'Schulhof') {
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Produkte/Produkt_bearbeiten']              = 'php/schulhof/seiten/verwaltung/shop/produktbearbeiten.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Bestellungen']                             = 'php/schulhof/seiten/verwaltung/shop/bestellungen.php';
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Bestellungen/Bestellung_ansehen']          = 'php/schulhof/seiten/verwaltung/shop/bestellungansehen.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Coronatest']                               = 'php/schulhof/seiten/verwaltung/corona/test.php';
+  $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Coronatest/Test_einsehen']                 = 'php/schulhof/seiten/verwaltung/corona/einsehen.php';
 
   $CMS_VERFUEGBARE_SEITEN['Schulhof/Verwaltung/Update']                                   = 'php/schulhof/seiten/verwaltung/update/update.php';
   if (preg_match("/^Schulhof\/Ferien(\/[0-9]{4}){0,1}$/", $CMS_URLGANZ))

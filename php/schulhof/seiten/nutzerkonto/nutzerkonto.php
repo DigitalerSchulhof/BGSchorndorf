@@ -1,11 +1,11 @@
 <div class="cms_spalte_i">
 <p class="cms_brotkrumen"><?php echo cms_brotkrumen($CMS_URL); ?></p>
 <?php
-echo "<div style=\"display: none\" id=\"cms_push\">";
-  echo cms_meldung("erfolg", "<h4>Push-Benachrichtigungen</h4><p>Um von Änderungen im Stundenplan zu erfahren, müssen Push-Benachrichtungen aktiviert werden.</p>");
-  echo "<span class=\"cms_button_ja\">Push-Benachrichtigungen aktivieren</span> ";
-  echo "<span class=\"cms_button_nein\" onclick=\"localStorage.setItem('push', 'aus');$('#cms_push').remove()\">Push-Benachrichtigungen nicht aktivieren</span> ";
-echo "</div>";
+//echo "<div style=\"display: none\" id=\"cms_push\">";
+  //echo cms_meldung("erfolg", "<h4>Push-Benachrichtigungen</h4><p>Um von Änderungen im Stundenplan zu erfahren, müssen Push-Benachrichtungen aktiviert werden.</p>");
+  //echo "<span class=\"cms_button_ja\">Push-Benachrichtigungen aktivieren</span> ";
+  //echo "<span class=\"cms_button_nein\" onclick=\"localStorage.setItem('push', 'aus');$('#cms_push').remove()\">Push-Benachrichtigungen nicht aktivieren</span> ";
+//echo "</div>";
 
 // Nach Updates prüfen
 if(cms_r("technik.server.update")) {
@@ -652,6 +652,9 @@ if (cms_r("lehrerzimmer.tagebuch.notfallzustand")) {
 		}
 	}
 }
+if (($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) {
+  $aktionen .= "<li><a class=\"cms_button\" href=\"Schulhof/Verwaltung/Coronatest\">Coronatest</a></li> ";
+}
 if (cms_r("artikel.%ARTIKELSTUFEN%.termine.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neuer_termin('".implode('/', $CMS_URL)."')\">+ Neuer öffentlicher Termin</span></li> ";
 }
@@ -661,6 +664,7 @@ if (cms_r("artikel.%ARTIKELSTUFEN%.blogeinträge.anlegen")) {
 if (cms_r("artikel.galerien.anlegen")) {
 	$aktionen .= "<li><span class=\"cms_button_ja\" onclick=\"cms_neue_galerie('".implode('/', $CMS_URL)."')\">+ Neue öffentliche Galerie</span></li> ";
 }
+
 if (strlen($aktionen) > 0) {
 	echo "<h2>Aktionen</h2><ul class=\"cms_aktionen_liste\">$aktionen</ul>";
 }
