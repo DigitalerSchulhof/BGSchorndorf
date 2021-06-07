@@ -268,7 +268,7 @@ CREATE TABLE `pushendpoints` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 
 
--- 0.11.1
+-- 0.11
 
 CREATE TABLE `coronatest` (
   `id` bigint(255) UNSIGNED NOT NULL,
@@ -283,7 +283,7 @@ ALTER TABLE `coronatest`
 ALTER TABLE `coronatest`
   ADD CONSTRAINT `coronatesttester` FOREIGN KEY (`tester`) REFERENCES `personen` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
-ALTER TABLE `coronatest` ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zeit`, ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idzeit`; 
+ALTER TABLE `coronatest` ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zeit`, ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idzeit`;
 
 CREATE TABLE `coronagetestet` (
   `person` bigint(255) UNSIGNED NOT NULL,
