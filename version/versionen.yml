@@ -2,6 +2,12 @@
 version:
   0_11_1:
     version: 0.11.1
+    tag: Dienstag, den 8. Juni 2021
+    neuerungen:
+      - Bug in Coronatest-Statistik behoben [W]
+      - Kleinere Bug-Fixes [W]
+  0_11_1:
+    version: 0.11.1
     tag: Montag, den 7. Juni 2021
     neuerungen:
       - Coronatests können erfasst werden [W]

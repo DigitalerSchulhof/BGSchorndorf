@@ -51,6 +51,7 @@ if ($zugriff) {
     }
   }
 
+  
   $code .= "<h2>Statistik getesteter Schüler in den letzten 10 Tagen</h2>";
   // Stufen laden
   $STATISTIK = array();
@@ -59,11 +60,11 @@ if ($zugriff) {
   $hmonat = date("m", $heute);
   $hjahr = date("Y", $heute);
   $stufenreihenfolge = array();
-  $sql = $dbs->prepare("SELECT stufen.id, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL'), stufen.reihenfolge, COUNT(*) as anzahl FROM coronagetestet JOIN coronatest ON coronagetestet.test = coronatest.id JOIN personen ON coronagetestet.person = personen.id LEFT JOIN stufenmitglieder ON coronagetestet.person = stufenmitglieder.person JOIN stufen ON stufen.id = stufenmitglieder.gruppe WHERE coronagetestet.art = AES_ENCRYPT('t', '$CMS_SCHLUESSEL') AND (zeit BETWEEN ? AND ?) AND personen.art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL') GROUP BY stufen.id ORDER BY stufen.reihenfolge ASC");
+  $sql = $dbs->prepare("SELECT stufen.id, AES_DECRYPT(stufen.bezeichnung, '$CMS_SCHLUESSEL'), stufen.reihenfolge, COUNT(*) as anzahl FROM coronagetestet JOIN coronatest ON coronagetestet.test = coronatest.id JOIN personen ON coronagetestet.person = personen.id LEFT JOIN stufenmitglieder ON coronagetestet.person = stufenmitglieder.person JOIN stufen ON stufen.id = stufenmitglieder.gruppe WHERE coronagetestet.art = AES_ENCRYPT('t', '$CMS_SCHLUESSEL') AND (zeit BETWEEN ? AND ?) AND personen.art = AES_ENCRYPT('s', '$CMS_SCHLUESSEL') AND stufen.schuljahr IN (SELECT id FROM schuljahre WHERE (beginn BETWEEN ? AND ?) OR (ende BETWEEN ? AND ?) OR ((beginn < ?) AND (ende > ?))) GROUP BY stufen.id ORDER BY stufen.reihenfolge ASC");
   $von = mktime(0,0,0,$hmonat,$htag-9,$hjahr);
   $bis = mktime(23,59,59,$hmonat,$htag,$hjahr);
 
-  $sql->bind_param("ii", $von, $bis);
+  $sql->bind_param("iiiiiiii", $von, $bis, $von, $bis, $von, $bis, $von, $bis);
   $nr = 0;
   if ($sql->execute()) {
     $sql->bind_result($sid, $sbez, $reihenfolge, $sanzahl);
@@ -81,7 +82,7 @@ if ($zugriff) {
     $von = mktime(0,0,0,$hmonat,$htag-9+$tag,$hjahr);
     $TAGE[$tag] = date("d.m.Y", $von);
     $bis = mktime(23,59,59,$hmonat,$htag-9+$tag,$hjahr);
-    $sql->bind_param("ii", $von, $bis);
+    $sql->bind_param("iiiiiiii", $von, $bis, $von, $bis, $von, $bis, $von, $bis);
     if ($sql->execute()) {
       $sql->bind_result($sid, $sbez, $reihenfolge, $sanzahl);
       while ($sql->fetch()) {
