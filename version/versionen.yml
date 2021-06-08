@@ -1,7 +1,12 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
-  0_11_1:
-    version: 0.11.1
+  0_11_3:
+    version: 0.11.3
+    tag: Dienstag, den 8. Juni 2021
+    neuerungen:
+      - Richtig dämlicher Fehler behoben [W]
+  0_11_2:
+    version: 0.11.2
     tag: Dienstag, den 8. Juni 2021
     neuerungen:
       - Bug in Coronatest-Statistik behoben [W]
