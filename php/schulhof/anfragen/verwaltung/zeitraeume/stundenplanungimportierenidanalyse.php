@@ -138,6 +138,7 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.st
 			$text = str_replace('CH2', 'CH2 - 124', $text);
 			$text = str_replace('025', 'NWT - 025', $text);
 			$text = str_replace('1.02', 'TH - 1.02', $text);
+			$text = str_replace('THEA', 'TH - 1.02', $text);
 			return $text;
 		}
 
