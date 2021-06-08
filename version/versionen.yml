@@ -1,5 +1,10 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_11_1:
+    version: 0.11.1
+    tag: Montag, den 7. Juni 2021
+    neuerungen:
+      - Coronatests können erfasst werden [W]
   0_11:
     version: 0.11
     tag: Mittwoch, den 3. März 2021

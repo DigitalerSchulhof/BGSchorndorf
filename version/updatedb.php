@@ -266,3 +266,36 @@ CREATE TABLE `pushendpoints` (
  KEY `pushendpointsnutzer` (`nutzer`),
  CONSTRAINT `pushendpointsnutzer` FOREIGN KEY (`nutzer`) REFERENCES `nutzerkonten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+
+
+-- 0.11
+
+CREATE TABLE `coronatest` (
+  `id` bigint(255) UNSIGNED NOT NULL,
+  `tester` bigint(255) UNSIGNED DEFAULT NULL,
+  `zeit` bigint(255) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `coronatest`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `coronatesttester` (`tester`);
+
+ALTER TABLE `coronatest`
+  ADD CONSTRAINT `coronatesttester` FOREIGN KEY (`tester`) REFERENCES `personen` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `coronatest` ADD `idzeit` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `zeit`, ADD `idvon` BIGINT(255) UNSIGNED NULL DEFAULT NULL AFTER `idzeit`;
+
+CREATE TABLE `coronagetestet` (
+  `person` bigint(255) UNSIGNED NOT NULL,
+  `test` bigint(255) UNSIGNED NOT NULL,
+  `art` varbinary(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `coronagetestet`
+  ADD PRIMARY KEY (`person`,`test`),
+  ADD KEY `coronagetestettest` (`test`);
+
+
+ALTER TABLE `coronagetestet`
+  ADD CONSTRAINT `coronagetestetperson` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `coronagetestettest` FOREIGN KEY (`test`) REFERENCES `coronatest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
