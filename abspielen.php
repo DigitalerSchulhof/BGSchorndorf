@@ -1,7 +1,12 @@
 <?php
 
 if (isset($_GET['datei'])) {
-  $file = __dir__ . "/dateien/schulhof/" . $_GET['datei'];
+  if (!preg_match("/^[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/", $_GET['datei'])) {
+    $file = __dir__ . "/dateien/schulhof/" . $_GET['datei'];
+  }
+  else {
+    die();
+  }
 } else {
   die();
 }
