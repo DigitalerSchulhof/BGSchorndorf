@@ -165,6 +165,12 @@ if (cms_angemeldet() && cms_r("schulhof.planung.schuljahre.planungszeiträume.be
 		  $sql->close();
 		}
 
+		// Rhythmisierung nach dem Ende dieses Zeitraums Löschen
+		$sql = $dbs->prepare("DELETE FROM rythmisierung WHERE zeitraum = ? AND beginn > ?");
+	  $sql->bind_param("ii", $zeitraumid, $ende);
+	  $sql->execute();
+	  $sql->close();
+
 		// Schulstunden
 		// Alle vorhandenen Schulstunden laden
 		$sidsvorhanden = "";
