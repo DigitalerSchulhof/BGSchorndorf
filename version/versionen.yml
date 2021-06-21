@@ -1,5 +1,14 @@
 # Werte, die ":" beinhalten, müssen mit "" umschlossen sein!
 version:
+  0_11_4:
+    version: 0.11.4
+    tag: Montag, den 21. Juni 2021
+    neuerungen:
+      - Problem mit der Tagebucheinsicht behoben [W]
+      - Bei Coronatests werden nur noch die Gruppen des aktuellen Schuljahres angezeigt. [W]
+      - Stundenplanimportproblem mit Wochenrythmisierung behoben [W]
+      - Coronatest-Typo [W]
+      - Tests können entfernt werden [W]
   0_11_3:
     version: 0.11.3
     tag: Dienstag, den 8. Juni 2021

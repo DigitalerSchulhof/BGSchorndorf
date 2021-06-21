@@ -16,7 +16,7 @@ if (cms_angemeldet() && ($CMS_BENUTZERART == 'l') || ($CMS_BENUTZERART == 'v')) 
 	$fehler = false;
 
 	// Pflichteingaben prüfen
-	if (!cms_check_idliste("($personen)")) {$fehler = true;echo "5";}
+	if (!cms_check_idliste("($personen)")) {$fehler = true;}
 
 	$anz = 0;
 

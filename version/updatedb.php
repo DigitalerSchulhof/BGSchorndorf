@@ -299,3 +299,18 @@ ALTER TABLE `coronagetestet`
 ALTER TABLE `coronagetestet`
   ADD CONSTRAINT `coronagetestetperson` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `coronagetestettest` FOREIGN KEY (`test`) REFERENCES `coronatest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- 0.11.3
+
+CREATE TABLE `coronafrei` (
+  `person` bigint(255) UNSIGNED NOT NULL,
+  `freibis` bigint(255) UNSIGNED DEFAULT NULL,
+  `idvon` bigint(255) UNSIGNED DEFAULT NULL,
+  `idzeit` bigint(255) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `coronafrei`
+  ADD PRIMARY KEY (`person`);
+
+ALTER TABLE `coronafrei`
+  ADD CONSTRAINT `coronafreiperson` FOREIGN KEY (`person`) REFERENCES `personen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -231,7 +231,7 @@ function cms_tagebuch_einsehen(id, art) {
   var formulardaten = new FormData();
   formulardaten.append('gruppenid', id);
   formulardaten.append('gruppenart', art);
-  formulardaten.append("anfragenziel", 	'432');
+  formulardaten.append("anfragenziel", 	'434');
 
   function anfragennachbehandlung(rueckgabe) {
     if (rueckgabe == "ERFOLG") {

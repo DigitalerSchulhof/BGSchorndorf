@@ -15,8 +15,11 @@ if ($zugriff) {
     $kg = strtolower(str_replace(" ", "", $g));
     $gcode = "";
 
-    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM $kg WHERE id IN (SELECT DISTINCT gruppe FROM $kg"."mitglieder WHERE person = ?)) AS x ORDER BY bez ASC");
-    $sql->bind_param("i", $CMS_BENUTZERID);
+    $heute = time();
+
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM $kg WHERE id IN (SELECT DISTINCT gruppe FROM $kg"."mitglieder WHERE person = ?) AND schuljahr IN (SELECT id FROM schuljahre WHERE ? BETWEEN beginn AND ende)) AS x ORDER BY bez ASC");
+
+    $sql->bind_param("ii", $CMS_BENUTZERID, $heute);
 	  if ($sql->execute()) {
 	    $sql->bind_result($gid, $gbez);
 	    while ($sql->fetch()) {
@@ -36,8 +39,8 @@ if ($zugriff) {
     $kg = strtolower(str_replace(" ", "", $g));
     $gcode = "";
 
-    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM $kg WHERE id NOT IN (SELECT DISTINCT gruppe FROM $kg"."mitglieder WHERE person = ?)) AS x ORDER BY bez ASC");
-    $sql->bind_param("i", $CMS_BENUTZERID);
+    $sql = $dbs->prepare("SELECT * FROM (SELECT id, AES_DECRYPT(bezeichnung, '$CMS_SCHLUESSEL') AS bez FROM $kg WHERE id NOT IN (SELECT DISTINCT gruppe FROM $kg"."mitglieder WHERE person = ?) AND schuljahr IN (SELECT id FROM schuljahre WHERE ? BETWEEN beginn AND ende)) AS x ORDER BY bez ASC");
+    $sql->bind_param("ii", $CMS_BENUTZERID, $heute);
 	  if ($sql->execute()) {
 	    $sql->bind_result($gid, $gbez);
 	    while ($sql->fetch()) {
@@ -51,11 +54,10 @@ if ($zugriff) {
     }
   }
 
-  
+
   $code .= "<h2>Statistik getesteter Schüler in den letzten 10 Tagen</h2>";
   // Stufen laden
   $STATISTIK = array();
-  $heute = time();
   $htag = date("d", $heute);
   $hmonat = date("m", $heute);
   $hjahr = date("Y", $heute);
