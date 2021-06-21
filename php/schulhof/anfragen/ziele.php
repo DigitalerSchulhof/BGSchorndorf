@@ -434,4 +434,5 @@ $CMS_ZIELE[431] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/eintragspeichern.p
 $CMS_ZIELE[432] = 'php/schulhof/anfragen/verwaltung/corona/einsichtvorbereiten.php';
 $CMS_ZIELE[433] = 'php/schulhof/anfragen/verwaltung/corona/testerfassen.php';
 $CMS_ZIELE[434] = 'php/schulhof/anfragen/nutzerkonto/tagebuch/einsichtvorbereiten.php';
+$CMS_ZIELE[435] = 'php/schulhof/anfragen/verwaltung/corona/testloeschen.php';
 ?>

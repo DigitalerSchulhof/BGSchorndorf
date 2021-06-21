@@ -16,6 +16,30 @@ function cms_coronatest_vorbereiten(gruppe, id) {
   cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
 }
 
+
+function cms_coronatestung_loeschen_anzeigen(person, test) {
+  cms_meldung_an('warnung', 'Coronatest löschen', '<p>Soll der Test wirklich gelöscht werden?</p>', '<p><span class="cms_button" onclick="cms_meldung_aus();">Abbrechen</span> <span class="cms_button_nein" onclick="cms_coronatestung_loeschen(\''+person+'\','+test+')">Löschung durchführen</span></p>');
+}
+
+function cms_coronatestung_loeschen(person, test) {
+  cms_laden_an('Test löschen', 'Der Test wird gelöscht.');
+
+  var formulardaten = new FormData();
+  formulardaten.append("person",   person);
+  formulardaten.append("test", test);
+  formulardaten.append("anfragenziel", 	'435');
+
+  function anfragennachbehandlung(rueckgabe) {
+    if (rueckgabe == 'ERFOLG') {
+      cms_link('Schulhof/Verwaltung/Coronatest/Test_einsehen');
+    }
+    else {cms_fehlerbehandlung(rueckgabe);}
+  }
+
+  cms_ajaxanfrage (formulardaten, anfragennachbehandlung);
+}
+
+
 function cms_coronatest_speichern() {
   cms_laden_an('Test erfassen', 'Die Eingaben werden überprüft.');
 	var personen = document.getElementById('cms_testpersonen').value;
